@@ -1,0 +1,297 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="dbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="EFBAction">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="500" />
+          <Property Name="DateCreate" Type="datetime2" Precision="7" />
+          <Property Name="ActionName" Type="varchar" MaxLength="1000" />
+          <Property Name="OldValue" Type="varchar" MaxLength="4000" />
+          <Property Name="NewValue" Type="varchar" MaxLength="4000" />
+        </EntityType>
+        <EntityType Name="EFBValue">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TableName" Type="varchar" MaxLength="500" />
+          <Property Name="FieldName" Type="varchar" MaxLength="500" />
+          <Property Name="FieldValue" Type="nvarchar" MaxLength="2000" />
+          <Property Name="FieldValueDate" Type="datetime2" Precision="7" />
+          <Property Name="DateCreate" Type="datetime2" Precision="7" />
+          <Property Name="UserName" Type="varchar" MaxLength="255" />
+          <Property Name="Remark" Type="varchar" MaxLength="500" />
+          <Property Name="FlightId" Type="int" />
+          <Property Name="TableKey" Type="varchar" MaxLength="255" />
+          <Property Name="TableKeyValueInt" Type="int" />
+          <Property Name="TableKey2" Type="varchar" MaxLength="255" />
+          <Property Name="TableKey2Value" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="TOLNDCard">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FlightId" Type="int" Nullable="false" />
+          <Property Name="Information" Type="varchar" MaxLength="1000" />
+          <Property Name="RW" Type="varchar" MaxLength="200" />
+          <Property Name="TL" Type="varchar" MaxLength="200" />
+          <Property Name="FE" Type="varchar" MaxLength="200" />
+          <Property Name="Wind" Type="varchar" MaxLength="200" />
+          <Property Name="Visibility" Type="varchar" MaxLength="200" />
+          <Property Name="Cloud" Type="varchar" MaxLength="200" />
+          <Property Name="Temp" Type="varchar" MaxLength="200" />
+          <Property Name="QNH" Type="varchar" MaxLength="200" />
+          <Property Name="DewP" Type="varchar" MaxLength="200" />
+          <Property Name="WXCondition" Type="varchar" MaxLength="200" />
+          <Property Name="STAR" Type="varchar" MaxLength="500" />
+          <Property Name="APP" Type="varchar" MaxLength="500" />
+          <Property Name="MAS" Type="varchar" MaxLength="500" />
+          <Property Name="ActLandingWeight" Type="varchar" MaxLength="200" />
+          <Property Name="Flap" Type="varchar" MaxLength="200" />
+          <Property Name="StabTrim" Type="varchar" MaxLength="200" />
+          <Property Name="Verf" Type="varchar" MaxLength="200" />
+          <Property Name="FuelToAlternate" Type="varchar" MaxLength="200" />
+          <Property Name="TA" Type="varchar" MaxLength="200" />
+          <Property Name="ZFW" Type="varchar" MaxLength="200" />
+          <Property Name="TOFuel" Type="varchar" MaxLength="200" />
+          <Property Name="TOWeight" Type="varchar" MaxLength="200" />
+          <Property Name="CG" Type="varchar" MaxLength="200" />
+          <Property Name="V1" Type="varchar" MaxLength="200" />
+          <Property Name="Vr" Type="varchar" MaxLength="200" />
+          <Property Name="V2" Type="varchar" MaxLength="200" />
+          <Property Name="Type" Type="varchar" MaxLength="200" />
+          <Property Name="DateUpdate" Type="varchar" MaxLength="500" />
+          <Property Name="User" Type="varchar" MaxLength="500" />
+          <Property Name="LDA" Type="varchar" MaxLength="255" />
+          <Property Name="JLSignedBy" Type="varchar" MaxLength="255" />
+          <Property Name="JLDatePICApproved" Type="datetime2" Precision="7" />
+          <Property Name="CTime" Type="varchar" MaxLength="255" />
+          <Property Name="AC" Type="varchar" MaxLength="255" />
+          <Property Name="AI" Type="varchar" MaxLength="255" />
+          <Property Name="NERP" Type="varchar" MaxLength="255" />
+          <Property Name="MERP" Type="varchar" MaxLength="255" />
+          <Property Name="ATEMP" Type="varchar" MaxLength="255" />
+          <Property Name="FERP" Type="varchar" MaxLength="255" />
+          <Property Name="RWINUSE" Type="varchar" MaxLength="255" />
+          <Property Name="VGA" Type="varchar" MaxLength="255" />
+          <Property Name="VFLAP" Type="varchar" MaxLength="255" />
+          <Property Name="VSLAT" Type="varchar" MaxLength="255" />
+          <Property Name="VCLEAN" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityContainer Name="dbModelStoreContainer">
+          <EntitySet Name="EFBAction" EntityType="Self.EFBAction" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EFBValue" EntityType="Self.EFBValue" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TOLNDCard" EntityType="Self.TOLNDCard" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="dbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="dbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="TOLNDCards" EntityType="dbModel.TOLNDCard" />
+          <EntitySet Name="EFBValues" EntityType="dbModel.EFBValue" />
+          <EntitySet Name="EFBActions" EntityType="dbModel.EFBAction" />
+        </EntityContainer>
+        <EntityType Name="TOLNDCard">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FlightId" Type="Int32" Nullable="false" />
+          <Property Name="Information" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="RW" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="TL" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="FE" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Wind" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Visibility" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Cloud" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Temp" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="QNH" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="DewP" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="WXCondition" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="STAR" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="APP" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="MAS" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ActLandingWeight" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Flap" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="StabTrim" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Verf" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="FuelToAlternate" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="TA" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="ZFW" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="TOFuel" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="TOWeight" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="CG" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="V1" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Vr" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="V2" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Type" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="DateUpdate" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="User" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="LDA" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="JLSignedBy" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="JLDatePICApproved" Type="DateTime" Precision="7" />
+          <Property Name="CTime" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="AC" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="AI" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="NERP" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="MERP" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ATEMP" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="FERP" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="RWINUSE" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="VGA" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="VFLAP" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="VSLAT" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="VCLEAN" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="EFBValue">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TableName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="FieldName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="FieldValue" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="FieldValueDate" Type="DateTime" Precision="7" />
+          <Property Name="DateCreate" Type="DateTime" Precision="7" />
+          <Property Name="UserName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="FlightId" Type="Int32" />
+          <Property Name="TableKey" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="TableKeyValueInt" Type="Int32" />
+          <Property Name="TableKey2" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="TableKey2Value" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="EFBAction">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="DateCreate" Type="DateTime" Precision="7" />
+          <Property Name="ActionName" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="OldValue" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Name="NewValue" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="dbModelStoreContainer" CdmEntityContainer="dbEntities">
+          <EntitySetMapping Name="TOLNDCards">
+            <EntityTypeMapping TypeName="dbModel.TOLNDCard">
+              <MappingFragment StoreEntitySet="TOLNDCard">
+                <ScalarProperty Name="VCLEAN" ColumnName="VCLEAN" />
+                <ScalarProperty Name="VSLAT" ColumnName="VSLAT" />
+                <ScalarProperty Name="VFLAP" ColumnName="VFLAP" />
+                <ScalarProperty Name="VGA" ColumnName="VGA" />
+                <ScalarProperty Name="RWINUSE" ColumnName="RWINUSE" />
+                <ScalarProperty Name="FERP" ColumnName="FERP" />
+                <ScalarProperty Name="ATEMP" ColumnName="ATEMP" />
+                <ScalarProperty Name="MERP" ColumnName="MERP" />
+                <ScalarProperty Name="NERP" ColumnName="NERP" />
+                <ScalarProperty Name="AI" ColumnName="AI" />
+                <ScalarProperty Name="AC" ColumnName="AC" />
+                <ScalarProperty Name="CTime" ColumnName="CTime" />
+                <ScalarProperty Name="JLDatePICApproved" ColumnName="JLDatePICApproved" />
+                <ScalarProperty Name="JLSignedBy" ColumnName="JLSignedBy" />
+                <ScalarProperty Name="LDA" ColumnName="LDA" />
+                <ScalarProperty Name="User" ColumnName="User" />
+                <ScalarProperty Name="DateUpdate" ColumnName="DateUpdate" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="V2" ColumnName="V2" />
+                <ScalarProperty Name="Vr" ColumnName="Vr" />
+                <ScalarProperty Name="V1" ColumnName="V1" />
+                <ScalarProperty Name="CG" ColumnName="CG" />
+                <ScalarProperty Name="TOWeight" ColumnName="TOWeight" />
+                <ScalarProperty Name="TOFuel" ColumnName="TOFuel" />
+                <ScalarProperty Name="ZFW" ColumnName="ZFW" />
+                <ScalarProperty Name="TA" ColumnName="TA" />
+                <ScalarProperty Name="FuelToAlternate" ColumnName="FuelToAlternate" />
+                <ScalarProperty Name="Verf" ColumnName="Verf" />
+                <ScalarProperty Name="StabTrim" ColumnName="StabTrim" />
+                <ScalarProperty Name="Flap" ColumnName="Flap" />
+                <ScalarProperty Name="ActLandingWeight" ColumnName="ActLandingWeight" />
+                <ScalarProperty Name="MAS" ColumnName="MAS" />
+                <ScalarProperty Name="APP" ColumnName="APP" />
+                <ScalarProperty Name="STAR" ColumnName="STAR" />
+                <ScalarProperty Name="WXCondition" ColumnName="WXCondition" />
+                <ScalarProperty Name="DewP" ColumnName="DewP" />
+                <ScalarProperty Name="QNH" ColumnName="QNH" />
+                <ScalarProperty Name="Temp" ColumnName="Temp" />
+                <ScalarProperty Name="Cloud" ColumnName="Cloud" />
+                <ScalarProperty Name="Visibility" ColumnName="Visibility" />
+                <ScalarProperty Name="Wind" ColumnName="Wind" />
+                <ScalarProperty Name="FE" ColumnName="FE" />
+                <ScalarProperty Name="TL" ColumnName="TL" />
+                <ScalarProperty Name="RW" ColumnName="RW" />
+                <ScalarProperty Name="Information" ColumnName="Information" />
+                <ScalarProperty Name="FlightId" ColumnName="FlightId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EFBValues">
+            <EntityTypeMapping TypeName="dbModel.EFBValue">
+              <MappingFragment StoreEntitySet="EFBValue">
+                <ScalarProperty Name="TableKey2Value" ColumnName="TableKey2Value" />
+                <ScalarProperty Name="TableKey2" ColumnName="TableKey2" />
+                <ScalarProperty Name="TableKeyValueInt" ColumnName="TableKeyValueInt" />
+                <ScalarProperty Name="TableKey" ColumnName="TableKey" />
+                <ScalarProperty Name="FlightId" ColumnName="FlightId" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="DateCreate" ColumnName="DateCreate" />
+                <ScalarProperty Name="FieldValueDate" ColumnName="FieldValueDate" />
+                <ScalarProperty Name="FieldValue" ColumnName="FieldValue" />
+                <ScalarProperty Name="FieldName" ColumnName="FieldName" />
+                <ScalarProperty Name="TableName" ColumnName="TableName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EFBActions">
+            <EntityTypeMapping TypeName="dbModel.EFBAction">
+              <MappingFragment StoreEntitySet="EFBAction">
+                <ScalarProperty Name="NewValue" ColumnName="NewValue" />
+                <ScalarProperty Name="OldValue" ColumnName="OldValue" />
+                <ScalarProperty Name="ActionName" ColumnName="ActionName" />
+                <ScalarProperty Name="DateCreate" ColumnName="DateCreate" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

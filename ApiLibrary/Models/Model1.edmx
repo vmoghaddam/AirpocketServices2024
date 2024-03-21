@@ -1,0 +1,988 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ppaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="BookChapter">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="ParentId" Type="int" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="500" />
+          <Property Name="Code" Type="varchar" MaxLength="255" />
+          <Property Name="FullCode" Type="varchar" MaxLength="500" />
+          <Property Name="BookId" Type="int" />
+          <Property Name="BookKey" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="BookFile">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BookId" Type="int" Nullable="false" />
+          <Property Name="DocumentId" Type="int" Nullable="false" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="500" />
+          <Property Name="ChapterId" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.HelperBookApplicableEmployee' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="HelperBookApplicableEmployee">
+          <Key>
+            <PropertyRef Name="EmployeeId" />
+            <PropertyRef Name="BookId" />
+          </Key>
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+          <Property Name="BookId" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.ViewBookApplicableEmployee' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ViewBookApplicableEmployee">
+          <Key>
+            <PropertyRef Name="EmployeeId" />
+            <PropertyRef Name="BookId" />
+            <PropertyRef Name="PID" />
+            <PropertyRef Name="IsActive" />
+            <PropertyRef Name="IsDeleted" />
+            <PropertyRef Name="NID" />
+            <PropertyRef Name="SexId" />
+            <PropertyRef Name="FirstName" />
+            <PropertyRef Name="LastName" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="Customer" />
+            <PropertyRef Name="PersonId" />
+            <PropertyRef Name="Title" />
+            <PropertyRef Name="CategoryId" />
+            <PropertyRef Name="IsExposed" />
+            <PropertyRef Name="IsSigned" />
+            <PropertyRef Name="TypeId" />
+          </Key>
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+          <Property Name="BookId" Type="int" Nullable="false" />
+          <Property Name="PID" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="DateJoinCompany" Type="date" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="EmployeeCustomerId" Type="int" />
+          <Property Name="GroupId" Type="int" />
+          <Property Name="JobGroup" Type="nvarchar" MaxLength="500" />
+          <Property Name="JobGroupCode" Type="varchar" MaxLength="500" />
+          <Property Name="NID" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="SexId" Type="int" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="1001" Nullable="false" />
+          <Property Name="DateBirth" Type="date" />
+          <Property Name="Email" Type="nvarchar" MaxLength="500" />
+          <Property Name="Phone1" Type="nvarchar" MaxLength="500" />
+          <Property Name="Phone2" Type="nvarchar" MaxLength="500" />
+          <Property Name="Mobile" Type="nvarchar" MaxLength="500" />
+          <Property Name="FaxTelNumber" Type="nvarchar" MaxLength="500" />
+          <Property Name="DateJoinAvation" Type="date" />
+          <Property Name="DateYearOfExperience" Type="date" />
+          <Property Name="CaoCardNumber" Type="nvarchar" MaxLength="500" />
+          <Property Name="DateCaoCardIssue" Type="date" />
+          <Property Name="DateCaoCardExpire" Type="date" />
+          <Property Name="CompetencyNo" Type="nvarchar" MaxLength="500" />
+          <Property Name="CaoInterval" Type="int" />
+          <Property Name="CaoIntervalCalanderTypeId" Type="int" />
+          <Property Name="StampNumber" Type="nvarchar" MaxLength="500" />
+          <Property Name="StampUrl" Type="nvarchar" MaxLength="500" />
+          <Property Name="TechLogNo" Type="varchar" MaxLength="100" />
+          <Property Name="DateIssueNDT" Type="date" />
+          <Property Name="IntervalNDT" Type="int" />
+          <Property Name="NDTNumber" Type="nvarchar" MaxLength="200" />
+          <Property Name="NDTIntervalCalanderTypeId" Type="int" />
+          <Property Name="IDNo" Type="nvarchar" MaxLength="500" />
+          <Property Name="EmployeeImageUrl" Type="nvarchar" MaxLength="1000" />
+          <Property Name="CustomerCreatorId" Type="int" />
+          <Property Name="Age" Type="int" />
+          <Property Name="Sex" Type="nvarchar" MaxLength="1000" />
+          <Property Name="CaoIntervalCalanderType" Type="nvarchar" MaxLength="1000" />
+          <Property Name="NDTIntervalCalanderType" Type="nvarchar" MaxLength="1000" />
+          <Property Name="Customer" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="PersonId" Type="int" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="ISBN" Type="nvarchar" MaxLength="500" />
+          <Property Name="DateRelease" Type="date" />
+          <Property Name="PublisherId" Type="int" />
+          <Property Name="ISSNPrint" Type="nvarchar" MaxLength="200" />
+          <Property Name="ISSNElectronic" Type="nvarchar" MaxLength="200" />
+          <Property Name="DOI" Type="nvarchar" MaxLength="200" />
+          <Property Name="Pages" Type="nvarchar" MaxLength="50" />
+          <Property Name="CategoryId" Type="int" Nullable="false" />
+          <Property Name="CustomerId" Type="int" />
+          <Property Name="Category" Type="nvarchar" MaxLength="1000" />
+          <Property Name="Publisher" Type="nvarchar" MaxLength="1000" />
+          <Property Name="PublisherWebsite" Type="nvarchar" MaxLength="500" />
+          <Property Name="DateCreate" Type="datetime" />
+          <Property Name="Abstract" Type="nvarchar" MaxLength="4000" />
+          <Property Name="ImageUrl" Type="varchar" MaxLength="500" />
+          <Property Name="Keywords" Type="nvarchar(max)" />
+          <Property Name="AuthorIds" Type="nvarchar(max)" />
+          <Property Name="Authors" Type="nvarchar(max)" />
+          <Property Name="TranslatorIds" Type="nvarchar(max)" />
+          <Property Name="DateExposure" Type="datetime" />
+          <Property Name="IsExposed" Type="int" Nullable="false" />
+          <Property Name="DeadLine" Type="datetime" />
+          <Property Name="DateValidUntil" Type="datetime" />
+          <Property Name="RemainingDeadLine" Type="int" />
+          <Property Name="RemainingValid" Type="int" />
+          <Property Name="IsValid" Type="bit" />
+          <Property Name="IsDownloaded" Type="bit" />
+          <Property Name="IsVisited" Type="bit" />
+          <Property Name="DateSigned" Type="datetime" />
+          <Property Name="IsSigned" Type="int" Nullable="false" />
+          <Property Name="DateVisit" Type="datetime" />
+          <Property Name="DateDownload" Type="datetime" />
+          <Property Name="No" Type="nvarchar" MaxLength="500" />
+          <Property Name="Sender" Type="nvarchar" MaxLength="1000" />
+          <Property Name="DateConference" Type="nvarchar" MaxLength="200" />
+          <Property Name="ConferenceLocationId" Type="int" />
+          <Property Name="Conference" Type="nvarchar" MaxLength="500" />
+          <Property Name="JournalId" Type="int" />
+          <Property Name="TypeId" Type="int" Nullable="false" />
+          <Property Name="NumberOfLessens" Type="int" />
+          <Property Name="ExternalUrl" Type="nvarchar" MaxLength="1000" />
+          <Property Name="Duration" Type="nvarchar" MaxLength="100" />
+          <Property Name="LanguageId" Type="int" />
+          <Property Name="DateDeadline" Type="datetime" />
+          <Property Name="Language" Type="nvarchar" MaxLength="1000" />
+          <Property Name="Type" Type="nvarchar" MaxLength="1000" />
+          <Property Name="Journal" Type="nvarchar" MaxLength="1000" />
+          <Property Name="PublishedIn" Type="nvarchar" MaxLength="500" />
+          <Property Name="INSPECAccessionNumber" Type="nvarchar" MaxLength="200" />
+          <Property Name="DateEffective" Type="nvarchar" MaxLength="500" />
+          <Property Name="Edition" Type="nvarchar" MaxLength="500" />
+          <Property Name="FolderId" Type="int" />
+          <Property Name="FolderCode" Type="varchar" MaxLength="500" />
+          <Property Name="FileCount" Type="int" />
+          <Property Name="FileUrl" Type="nvarchar" MaxLength="1000" />
+          <Property Name="FileId" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.ViewBookChapter' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ViewBookChapter">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Title" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="ParentId" Type="int" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="500" />
+          <Property Name="Code" Type="varchar" MaxLength="255" />
+          <Property Name="Fullcode" Type="varchar" MaxLength="500" />
+          <Property Name="BookId" Type="int" />
+          <Property Name="BookKey" Type="varchar" MaxLength="500" />
+          <Property Name="TitleFormated" Type="nvarchar" MaxLength="4000" />
+          <Property Name="TitleFormatedSpace" Type="nvarchar" MaxLength="4000" />
+          <Property Name="Files" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.ViewBookFile' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ViewBookFile">
+          <Key>
+            <PropertyRef Name="Title" />
+            <PropertyRef Name="DocumentId" />
+            <PropertyRef Name="BookId" />
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Title" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="FileUrl" Type="nvarchar" MaxLength="1000" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="500" />
+          <Property Name="DocumentId" Type="int" Nullable="false" />
+          <Property Name="SysUrl" Type="nvarchar" MaxLength="1000" />
+          <Property Name="FileType" Type="nvarchar" MaxLength="500" />
+          <Property Name="DocumentTypeId" Type="int" />
+          <Property Name="FileTypeId" Type="int" />
+          <Property Name="ParentId" Type="int" />
+          <Property Name="BookId" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="ChapterId" Type="int" />
+          <Property Name="Chapter" Type="nvarchar" MaxLength="500" />
+          <Property Name="FolderPath" Type="varchar" MaxLength="8000" />
+          <Property Name="BookPath" Type="nvarchar" MaxLength="4000" />
+          <Property Name="FilePath" Type="nvarchar" MaxLength="4000" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.ViewBookFileVisited' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ViewBookFileVisited">
+          <Key>
+            <PropertyRef Name="Title" />
+            <PropertyRef Name="DocumentId" />
+            <PropertyRef Name="BookId" />
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="IsVisited" />
+            <PropertyRef Name="EmployeeId" />
+          </Key>
+          <Property Name="Title" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="FileUrl" Type="nvarchar" MaxLength="1000" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="500" />
+          <Property Name="DocumentId" Type="int" Nullable="false" />
+          <Property Name="SysUrl" Type="nvarchar" MaxLength="1000" />
+          <Property Name="FileType" Type="nvarchar" MaxLength="500" />
+          <Property Name="DocumentTypeId" Type="int" />
+          <Property Name="FileTypeId" Type="int" />
+          <Property Name="ParentId" Type="int" />
+          <Property Name="BookId" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="DateVisited" Type="datetime" />
+          <Property Name="IsVisited" Type="int" Nullable="false" />
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+          <Property Name="Chapter" Type="nvarchar" MaxLength="4000" />
+          <Property Name="ChapterS" Type="nvarchar" MaxLength="4000" />
+          <Property Name="ChapterId" Type="int" />
+          <Property Name="ChapterParentId" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.ViewFolderApplicable' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ViewFolderApplicable">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="ParentId" />
+            <PropertyRef Name="EmployeeId" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="ParentId" Type="int" Nullable="false" />
+          <Property Name="Title" Type="varchar" MaxLength="500" />
+          <Property Name="FullCode" Type="varchar" MaxLength="500" />
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+          <Property Name="Items" Type="int" />
+          <Property Name="Files" Type="int" />
+          <Property Name="NotVisited" Type="int" />
+          <Property Name="NotDownloaded" Type="int" />
+          <Property Name="CustomerId" Type="int" />
+          <Property Name="EmployeeCustomerId" Type="int" />
+        </EntityType>
+        <Association Name="fk_bf_bf">
+          <End Role="BookChapter" Type="Self.BookChapter" Multiplicity="0..1" />
+          <End Role="BookChapter1" Type="Self.BookChapter" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BookChapter">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BookChapter1">
+              <PropertyRef Name="ParentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ppaModelStoreContainer">
+          <EntitySet Name="BookChapter" EntityType="Self.BookChapter" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BookFile" EntityType="Self.BookFile" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HelperBookApplicableEmployee" EntityType="Self.HelperBookApplicableEmployee" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [HelperBookApplicableEmployee].[EmployeeId] AS [EmployeeId], 
+    [HelperBookApplicableEmployee].[BookId] AS [BookId]
+    FROM [dbo].[HelperBookApplicableEmployee] AS [HelperBookApplicableEmployee]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="ViewBookApplicableEmployee" EntityType="Self.ViewBookApplicableEmployee" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ViewBookApplicableEmployee].[EmployeeId] AS [EmployeeId], 
+    [ViewBookApplicableEmployee].[BookId] AS [BookId], 
+    [ViewBookApplicableEmployee].[PID] AS [PID], 
+    [ViewBookApplicableEmployee].[DateJoinCompany] AS [DateJoinCompany], 
+    [ViewBookApplicableEmployee].[IsActive] AS [IsActive], 
+    [ViewBookApplicableEmployee].[IsDeleted] AS [IsDeleted], 
+    [ViewBookApplicableEmployee].[EmployeeCustomerId] AS [EmployeeCustomerId], 
+    [ViewBookApplicableEmployee].[GroupId] AS [GroupId], 
+    [ViewBookApplicableEmployee].[JobGroup] AS [JobGroup], 
+    [ViewBookApplicableEmployee].[JobGroupCode] AS [JobGroupCode], 
+    [ViewBookApplicableEmployee].[NID] AS [NID], 
+    [ViewBookApplicableEmployee].[SexId] AS [SexId], 
+    [ViewBookApplicableEmployee].[FirstName] AS [FirstName], 
+    [ViewBookApplicableEmployee].[LastName] AS [LastName], 
+    [ViewBookApplicableEmployee].[Name] AS [Name], 
+    [ViewBookApplicableEmployee].[DateBirth] AS [DateBirth], 
+    [ViewBookApplicableEmployee].[Email] AS [Email], 
+    [ViewBookApplicableEmployee].[Phone1] AS [Phone1], 
+    [ViewBookApplicableEmployee].[Phone2] AS [Phone2], 
+    [ViewBookApplicableEmployee].[Mobile] AS [Mobile], 
+    [ViewBookApplicableEmployee].[FaxTelNumber] AS [FaxTelNumber], 
+    [ViewBookApplicableEmployee].[DateJoinAvation] AS [DateJoinAvation], 
+    [ViewBookApplicableEmployee].[DateYearOfExperience] AS [DateYearOfExperience], 
+    [ViewBookApplicableEmployee].[CaoCardNumber] AS [CaoCardNumber], 
+    [ViewBookApplicableEmployee].[DateCaoCardIssue] AS [DateCaoCardIssue], 
+    [ViewBookApplicableEmployee].[DateCaoCardExpire] AS [DateCaoCardExpire], 
+    [ViewBookApplicableEmployee].[CompetencyNo] AS [CompetencyNo], 
+    [ViewBookApplicableEmployee].[CaoInterval] AS [CaoInterval], 
+    [ViewBookApplicableEmployee].[CaoIntervalCalanderTypeId] AS [CaoIntervalCalanderTypeId], 
+    [ViewBookApplicableEmployee].[StampNumber] AS [StampNumber], 
+    [ViewBookApplicableEmployee].[StampUrl] AS [StampUrl], 
+    [ViewBookApplicableEmployee].[TechLogNo] AS [TechLogNo], 
+    [ViewBookApplicableEmployee].[DateIssueNDT] AS [DateIssueNDT], 
+    [ViewBookApplicableEmployee].[IntervalNDT] AS [IntervalNDT], 
+    [ViewBookApplicableEmployee].[NDTNumber] AS [NDTNumber], 
+    [ViewBookApplicableEmployee].[NDTIntervalCalanderTypeId] AS [NDTIntervalCalanderTypeId], 
+    [ViewBookApplicableEmployee].[IDNo] AS [IDNo], 
+    [ViewBookApplicableEmployee].[EmployeeImageUrl] AS [EmployeeImageUrl], 
+    [ViewBookApplicableEmployee].[CustomerCreatorId] AS [CustomerCreatorId], 
+    [ViewBookApplicableEmployee].[Age] AS [Age], 
+    [ViewBookApplicableEmployee].[Sex] AS [Sex], 
+    [ViewBookApplicableEmployee].[CaoIntervalCalanderType] AS [CaoIntervalCalanderType], 
+    [ViewBookApplicableEmployee].[NDTIntervalCalanderType] AS [NDTIntervalCalanderType], 
+    [ViewBookApplicableEmployee].[Customer] AS [Customer], 
+    [ViewBookApplicableEmployee].[PersonId] AS [PersonId], 
+    [ViewBookApplicableEmployee].[Title] AS [Title], 
+    [ViewBookApplicableEmployee].[ISBN] AS [ISBN], 
+    [ViewBookApplicableEmployee].[DateRelease] AS [DateRelease], 
+    [ViewBookApplicableEmployee].[PublisherId] AS [PublisherId], 
+    [ViewBookApplicableEmployee].[ISSNPrint] AS [ISSNPrint], 
+    [ViewBookApplicableEmployee].[ISSNElectronic] AS [ISSNElectronic], 
+    [ViewBookApplicableEmployee].[DOI] AS [DOI], 
+    [ViewBookApplicableEmployee].[Pages] AS [Pages], 
+    [ViewBookApplicableEmployee].[CategoryId] AS [CategoryId], 
+    [ViewBookApplicableEmployee].[CustomerId] AS [CustomerId], 
+    [ViewBookApplicableEmployee].[Category] AS [Category], 
+    [ViewBookApplicableEmployee].[Publisher] AS [Publisher], 
+    [ViewBookApplicableEmployee].[PublisherWebsite] AS [PublisherWebsite], 
+    [ViewBookApplicableEmployee].[DateCreate] AS [DateCreate], 
+    [ViewBookApplicableEmployee].[Abstract] AS [Abstract], 
+    [ViewBookApplicableEmployee].[ImageUrl] AS [ImageUrl], 
+    [ViewBookApplicableEmployee].[Keywords] AS [Keywords], 
+    [ViewBookApplicableEmployee].[AuthorIds] AS [AuthorIds], 
+    [ViewBookApplicableEmployee].[Authors] AS [Authors], 
+    [ViewBookApplicableEmployee].[TranslatorIds] AS [TranslatorIds], 
+    [ViewBookApplicableEmployee].[DateExposure] AS [DateExposure], 
+    [ViewBookApplicableEmployee].[IsExposed] AS [IsExposed], 
+    [ViewBookApplicableEmployee].[DeadLine] AS [DeadLine], 
+    [ViewBookApplicableEmployee].[DateValidUntil] AS [DateValidUntil], 
+    [ViewBookApplicableEmployee].[RemainingDeadLine] AS [RemainingDeadLine], 
+    [ViewBookApplicableEmployee].[RemainingValid] AS [RemainingValid], 
+    [ViewBookApplicableEmployee].[IsValid] AS [IsValid], 
+    [ViewBookApplicableEmployee].[IsDownloaded] AS [IsDownloaded], 
+    [ViewBookApplicableEmployee].[IsVisited] AS [IsVisited], 
+    [ViewBookApplicableEmployee].[DateSigned] AS [DateSigned], 
+    [ViewBookApplicableEmployee].[IsSigned] AS [IsSigned], 
+    [ViewBookApplicableEmployee].[DateVisit] AS [DateVisit], 
+    [ViewBookApplicableEmployee].[DateDownload] AS [DateDownload], 
+    [ViewBookApplicableEmployee].[No] AS [No], 
+    [ViewBookApplicableEmployee].[Sender] AS [Sender], 
+    [ViewBookApplicableEmployee].[DateConference] AS [DateConference], 
+    [ViewBookApplicableEmployee].[ConferenceLocationId] AS [ConferenceLocationId], 
+    [ViewBookApplicableEmployee].[Conference] AS [Conference], 
+    [ViewBookApplicableEmployee].[JournalId] AS [JournalId], 
+    [ViewBookApplicableEmployee].[TypeId] AS [TypeId], 
+    [ViewBookApplicableEmployee].[NumberOfLessens] AS [NumberOfLessens], 
+    [ViewBookApplicableEmployee].[ExternalUrl] AS [ExternalUrl], 
+    [ViewBookApplicableEmployee].[Duration] AS [Duration], 
+    [ViewBookApplicableEmployee].[LanguageId] AS [LanguageId], 
+    [ViewBookApplicableEmployee].[DateDeadline] AS [DateDeadline], 
+    [ViewBookApplicableEmployee].[Language] AS [Language], 
+    [ViewBookApplicableEmployee].[Type] AS [Type], 
+    [ViewBookApplicableEmployee].[Journal] AS [Journal], 
+    [ViewBookApplicableEmployee].[PublishedIn] AS [PublishedIn], 
+    [ViewBookApplicableEmployee].[INSPECAccessionNumber] AS [INSPECAccessionNumber], 
+    [ViewBookApplicableEmployee].[DateEffective] AS [DateEffective], 
+    [ViewBookApplicableEmployee].[Edition] AS [Edition], 
+    [ViewBookApplicableEmployee].[FolderId] AS [FolderId], 
+    [ViewBookApplicableEmployee].[FolderCode] AS [FolderCode], 
+    [ViewBookApplicableEmployee].[FileCount] AS [FileCount], 
+    [ViewBookApplicableEmployee].[FileUrl] AS [FileUrl], 
+    [ViewBookApplicableEmployee].[FileId] AS [FileId]
+    FROM [dbo].[ViewBookApplicableEmployee] AS [ViewBookApplicableEmployee]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="ViewBookChapter" EntityType="Self.ViewBookChapter" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ViewBookChapter].[Id] AS [Id], 
+    [ViewBookChapter].[Title] AS [Title], 
+    [ViewBookChapter].[ParentId] AS [ParentId], 
+    [ViewBookChapter].[Remark] AS [Remark], 
+    [ViewBookChapter].[Code] AS [Code], 
+    [ViewBookChapter].[Fullcode] AS [Fullcode], 
+    [ViewBookChapter].[BookId] AS [BookId], 
+    [ViewBookChapter].[BookKey] AS [BookKey], 
+    [ViewBookChapter].[TitleFormated] AS [TitleFormated], 
+    [ViewBookChapter].[TitleFormatedSpace] AS [TitleFormatedSpace], 
+    [ViewBookChapter].[Files] AS [Files]
+    FROM [dbo].[ViewBookChapter] AS [ViewBookChapter]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="ViewBookFile" EntityType="Self.ViewBookFile" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ViewBookFile].[Title] AS [Title], 
+    [ViewBookFile].[FileUrl] AS [FileUrl], 
+    [ViewBookFile].[Remark] AS [Remark], 
+    [ViewBookFile].[DocumentId] AS [DocumentId], 
+    [ViewBookFile].[SysUrl] AS [SysUrl], 
+    [ViewBookFile].[FileType] AS [FileType], 
+    [ViewBookFile].[DocumentTypeId] AS [DocumentTypeId], 
+    [ViewBookFile].[FileTypeId] AS [FileTypeId], 
+    [ViewBookFile].[ParentId] AS [ParentId], 
+    [ViewBookFile].[BookId] AS [BookId], 
+    [ViewBookFile].[Id] AS [Id], 
+    [ViewBookFile].[ChapterId] AS [ChapterId], 
+    [ViewBookFile].[Chapter] AS [Chapter], 
+    [ViewBookFile].[FolderPath] AS [FolderPath], 
+    [ViewBookFile].[BookPath] AS [BookPath], 
+    [ViewBookFile].[FilePath] AS [FilePath]
+    FROM [dbo].[ViewBookFile] AS [ViewBookFile]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="ViewBookFileVisited" EntityType="Self.ViewBookFileVisited" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ViewBookFileVisited].[Title] AS [Title], 
+    [ViewBookFileVisited].[FileUrl] AS [FileUrl], 
+    [ViewBookFileVisited].[Remark] AS [Remark], 
+    [ViewBookFileVisited].[DocumentId] AS [DocumentId], 
+    [ViewBookFileVisited].[SysUrl] AS [SysUrl], 
+    [ViewBookFileVisited].[FileType] AS [FileType], 
+    [ViewBookFileVisited].[DocumentTypeId] AS [DocumentTypeId], 
+    [ViewBookFileVisited].[FileTypeId] AS [FileTypeId], 
+    [ViewBookFileVisited].[ParentId] AS [ParentId], 
+    [ViewBookFileVisited].[BookId] AS [BookId], 
+    [ViewBookFileVisited].[Id] AS [Id], 
+    [ViewBookFileVisited].[DateVisited] AS [DateVisited], 
+    [ViewBookFileVisited].[IsVisited] AS [IsVisited], 
+    [ViewBookFileVisited].[EmployeeId] AS [EmployeeId], 
+    [ViewBookFileVisited].[Chapter] AS [Chapter], 
+    [ViewBookFileVisited].[ChapterS] AS [ChapterS], 
+    [ViewBookFileVisited].[ChapterId] AS [ChapterId], 
+    [ViewBookFileVisited].[ChapterParentId] AS [ChapterParentId]
+    FROM [dbo].[ViewBookFileVisited] AS [ViewBookFileVisited]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="ViewFolderApplicable" EntityType="Self.ViewFolderApplicable" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ViewFolderApplicable].[Id] AS [Id], 
+    [ViewFolderApplicable].[ParentId] AS [ParentId], 
+    [ViewFolderApplicable].[Title] AS [Title], 
+    [ViewFolderApplicable].[FullCode] AS [FullCode], 
+    [ViewFolderApplicable].[EmployeeId] AS [EmployeeId], 
+    [ViewFolderApplicable].[Items] AS [Items], 
+    [ViewFolderApplicable].[Files] AS [Files], 
+    [ViewFolderApplicable].[NotVisited] AS [NotVisited], 
+    [ViewFolderApplicable].[NotDownloaded] AS [NotDownloaded], 
+    [ViewFolderApplicable].[CustomerId] AS [CustomerId], 
+    [ViewFolderApplicable].[EmployeeCustomerId] AS [EmployeeCustomerId]
+    FROM [dbo].[ViewFolderApplicable] AS [ViewFolderApplicable]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="fk_bf_bf" Association="Self.fk_bf_bf">
+            <End Role="BookChapter" EntitySet="BookChapter" />
+            <End Role="BookChapter1" EntitySet="BookChapter" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ppaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="ppa_entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ViewBookFiles" EntityType="ppaModel.ViewBookFile" />
+          <EntitySet Name="HelperBookApplicableEmployees" EntityType="ppaModel.HelperBookApplicableEmployee" />
+          <EntitySet Name="ViewFolderApplicables" EntityType="ppaModel.ViewFolderApplicable" />
+          <EntitySet Name="ViewBookApplicableEmployees" EntityType="ppaModel.ViewBookApplicableEmployee" />
+          <EntitySet Name="BookChapters" EntityType="ppaModel.BookChapter" />
+          <EntitySet Name="BookFiles" EntityType="ppaModel.BookFile" />
+          <AssociationSet Name="fk_bf_bf" Association="ppaModel.fk_bf_bf">
+            <End Role="BookChapter" EntitySet="BookChapters" />
+            <End Role="BookChapter1" EntitySet="BookChapters" />
+          </AssociationSet>
+          <EntitySet Name="ViewBookChapters" EntityType="ppaModel.ViewBookChapter" />
+          <EntitySet Name="ViewBookFileVisiteds" EntityType="ppaModel.ViewBookFileVisited" />
+        </EntityContainer>
+        <EntityType Name="ViewBookFile">
+          <Key>
+            <PropertyRef Name="Title" />
+            <PropertyRef Name="DocumentId" />
+            <PropertyRef Name="BookId" />
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="FileUrl" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="DocumentId" Type="Int32" Nullable="false" />
+          <Property Name="SysUrl" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="FileType" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="DocumentTypeId" Type="Int32" />
+          <Property Name="FileTypeId" Type="Int32" />
+          <Property Name="ParentId" Type="Int32" />
+          <Property Name="BookId" Type="Int32" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="ChapterId" Type="Int32" />
+          <Property Name="Chapter" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="FolderPath" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
+          <Property Name="BookPath" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="FilePath" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="HelperBookApplicableEmployee">
+          <Key>
+            <PropertyRef Name="EmployeeId" />
+            <PropertyRef Name="BookId" />
+          </Key>
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="BookId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ViewFolderApplicable">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="ParentId" />
+            <PropertyRef Name="EmployeeId" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="ParentId" Type="Int32" Nullable="false" />
+          <Property Name="Title" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="FullCode" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="Items" Type="Int32" />
+          <Property Name="Files" Type="Int32" />
+          <Property Name="NotVisited" Type="Int32" />
+          <Property Name="NotDownloaded" Type="Int32" />
+          <Property Name="CustomerId" Type="Int32" />
+          <Property Name="EmployeeCustomerId" Type="Int32" />
+        </EntityType>
+        <EntityType Name="ViewBookApplicableEmployee">
+          <Key>
+            <PropertyRef Name="EmployeeId" />
+            <PropertyRef Name="BookId" />
+            <PropertyRef Name="PID" />
+            <PropertyRef Name="IsActive" />
+            <PropertyRef Name="IsDeleted" />
+            <PropertyRef Name="NID" />
+            <PropertyRef Name="SexId" />
+            <PropertyRef Name="FirstName" />
+            <PropertyRef Name="LastName" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="Customer" />
+            <PropertyRef Name="PersonId" />
+            <PropertyRef Name="Title" />
+            <PropertyRef Name="CategoryId" />
+            <PropertyRef Name="IsExposed" />
+            <PropertyRef Name="IsSigned" />
+            <PropertyRef Name="TypeId" />
+          </Key>
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="BookId" Type="Int32" Nullable="false" />
+          <Property Name="PID" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="DateJoinCompany" Type="DateTime" Precision="0" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="EmployeeCustomerId" Type="Int32" />
+          <Property Name="GroupId" Type="Int32" />
+          <Property Name="JobGroup" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="JobGroupCode" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="NID" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="SexId" Type="Int32" Nullable="false" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="DateBirth" Type="DateTime" Precision="0" />
+          <Property Name="Email" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Phone1" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Phone2" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Mobile" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="FaxTelNumber" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="DateJoinAvation" Type="DateTime" Precision="0" />
+          <Property Name="DateYearOfExperience" Type="DateTime" Precision="0" />
+          <Property Name="CaoCardNumber" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="DateCaoCardIssue" Type="DateTime" Precision="0" />
+          <Property Name="DateCaoCardExpire" Type="DateTime" Precision="0" />
+          <Property Name="CompetencyNo" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CaoInterval" Type="Int32" />
+          <Property Name="CaoIntervalCalanderTypeId" Type="Int32" />
+          <Property Name="StampNumber" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="StampUrl" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="TechLogNo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="DateIssueNDT" Type="DateTime" Precision="0" />
+          <Property Name="IntervalNDT" Type="Int32" />
+          <Property Name="NDTNumber" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="NDTIntervalCalanderTypeId" Type="Int32" />
+          <Property Name="IDNo" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="EmployeeImageUrl" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerCreatorId" Type="Int32" />
+          <Property Name="Age" Type="Int32" />
+          <Property Name="Sex" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="CaoIntervalCalanderType" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="NDTIntervalCalanderType" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Customer" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="PersonId" Type="Int32" Nullable="false" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ISBN" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="DateRelease" Type="DateTime" Precision="0" />
+          <Property Name="PublisherId" Type="Int32" />
+          <Property Name="ISSNPrint" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ISSNElectronic" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="DOI" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Pages" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CategoryId" Type="Int32" Nullable="false" />
+          <Property Name="CustomerId" Type="Int32" />
+          <Property Name="Category" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Publisher" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="PublisherWebsite" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="DateCreate" Type="DateTime" Precision="3" />
+          <Property Name="Abstract" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="ImageUrl" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Keywords" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AuthorIds" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Authors" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TranslatorIds" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DateExposure" Type="DateTime" Precision="3" />
+          <Property Name="IsExposed" Type="Int32" Nullable="false" />
+          <Property Name="DeadLine" Type="DateTime" Precision="3" />
+          <Property Name="DateValidUntil" Type="DateTime" Precision="3" />
+          <Property Name="RemainingDeadLine" Type="Int32" />
+          <Property Name="RemainingValid" Type="Int32" />
+          <Property Name="IsValid" Type="Boolean" />
+          <Property Name="IsDownloaded" Type="Boolean" />
+          <Property Name="IsVisited" Type="Boolean" />
+          <Property Name="DateSigned" Type="DateTime" Precision="3" />
+          <Property Name="IsSigned" Type="Int32" Nullable="false" />
+          <Property Name="DateVisit" Type="DateTime" Precision="3" />
+          <Property Name="DateDownload" Type="DateTime" Precision="3" />
+          <Property Name="No" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Sender" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="DateConference" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ConferenceLocationId" Type="Int32" />
+          <Property Name="Conference" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="JournalId" Type="Int32" />
+          <Property Name="TypeId" Type="Int32" Nullable="false" />
+          <Property Name="NumberOfLessens" Type="Int32" />
+          <Property Name="ExternalUrl" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Duration" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LanguageId" Type="Int32" />
+          <Property Name="DateDeadline" Type="DateTime" Precision="3" />
+          <Property Name="Language" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Journal" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="PublishedIn" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="INSPECAccessionNumber" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="DateEffective" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Edition" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="FolderId" Type="Int32" />
+          <Property Name="FolderCode" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="FileCount" Type="Int32" />
+          <Property Name="FileUrl" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="FileId" Type="Int32" />
+        </EntityType>
+        <EntityType Name="BookChapter">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ParentId" Type="Int32" />
+          <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Code" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="FullCode" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="BookId" Type="Int32" />
+          <Property Name="BookKey" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="BookChapter1" Relationship="ppaModel.fk_bf_bf" FromRole="BookChapter" ToRole="BookChapter1" />
+          <NavigationProperty Name="BookChapter2" Relationship="ppaModel.fk_bf_bf" FromRole="BookChapter1" ToRole="BookChapter" />
+        </EntityType>
+        <EntityType Name="BookFile">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BookId" Type="Int32" Nullable="false" />
+          <Property Name="DocumentId" Type="Int32" Nullable="false" />
+          <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ChapterId" Type="Int32" />
+        </EntityType>
+        <Association Name="fk_bf_bf">
+          <End Type="ppaModel.BookChapter" Role="BookChapter" Multiplicity="0..1" />
+          <End Type="ppaModel.BookChapter" Role="BookChapter1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BookChapter">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BookChapter1">
+              <PropertyRef Name="ParentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ViewBookChapter">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Title" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ParentId" Type="Int32" />
+          <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Code" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Fullcode" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="BookId" Type="Int32" />
+          <Property Name="BookKey" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="TitleFormated" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="TitleFormatedSpace" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="Files" Type="Int32" />
+        </EntityType>
+        <EntityType Name="ViewBookFileVisited">
+          <Key>
+            <PropertyRef Name="Title" />
+            <PropertyRef Name="DocumentId" />
+            <PropertyRef Name="BookId" />
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="IsVisited" />
+            <PropertyRef Name="EmployeeId" />
+          </Key>
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="FileUrl" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="DocumentId" Type="Int32" Nullable="false" />
+          <Property Name="SysUrl" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="FileType" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="DocumentTypeId" Type="Int32" />
+          <Property Name="FileTypeId" Type="Int32" />
+          <Property Name="ParentId" Type="Int32" />
+          <Property Name="BookId" Type="Int32" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="DateVisited" Type="DateTime" Precision="3" />
+          <Property Name="IsVisited" Type="Int32" Nullable="false" />
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="Chapter" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="ChapterS" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="ChapterId" Type="Int32" />
+          <Property Name="ChapterParentId" Type="Int32" />
+        </EntityType>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ppaModelStoreContainer" CdmEntityContainer="ppa_entities">
+          <EntitySetMapping Name="ViewBookFiles">
+            <EntityTypeMapping TypeName="ppaModel.ViewBookFile">
+              <MappingFragment StoreEntitySet="ViewBookFile">
+                <ScalarProperty Name="FilePath" ColumnName="FilePath" />
+                <ScalarProperty Name="BookPath" ColumnName="BookPath" />
+                <ScalarProperty Name="FolderPath" ColumnName="FolderPath" />
+                <ScalarProperty Name="Chapter" ColumnName="Chapter" />
+                <ScalarProperty Name="ChapterId" ColumnName="ChapterId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="BookId" ColumnName="BookId" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="FileTypeId" ColumnName="FileTypeId" />
+                <ScalarProperty Name="DocumentTypeId" ColumnName="DocumentTypeId" />
+                <ScalarProperty Name="FileType" ColumnName="FileType" />
+                <ScalarProperty Name="SysUrl" ColumnName="SysUrl" />
+                <ScalarProperty Name="DocumentId" ColumnName="DocumentId" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="FileUrl" ColumnName="FileUrl" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HelperBookApplicableEmployees">
+            <EntityTypeMapping TypeName="ppaModel.HelperBookApplicableEmployee">
+              <MappingFragment StoreEntitySet="HelperBookApplicableEmployee">
+                <ScalarProperty Name="BookId" ColumnName="BookId" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ViewFolderApplicables">
+            <EntityTypeMapping TypeName="ppaModel.ViewFolderApplicable">
+              <MappingFragment StoreEntitySet="ViewFolderApplicable">
+                <ScalarProperty Name="EmployeeCustomerId" ColumnName="EmployeeCustomerId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="NotDownloaded" ColumnName="NotDownloaded" />
+                <ScalarProperty Name="NotVisited" ColumnName="NotVisited" />
+                <ScalarProperty Name="Files" ColumnName="Files" />
+                <ScalarProperty Name="Items" ColumnName="Items" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="FullCode" ColumnName="FullCode" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ViewBookApplicableEmployees">
+            <EntityTypeMapping TypeName="ppaModel.ViewBookApplicableEmployee">
+              <MappingFragment StoreEntitySet="ViewBookApplicableEmployee">
+                <ScalarProperty Name="FileId" ColumnName="FileId" />
+                <ScalarProperty Name="FileUrl" ColumnName="FileUrl" />
+                <ScalarProperty Name="FileCount" ColumnName="FileCount" />
+                <ScalarProperty Name="FolderCode" ColumnName="FolderCode" />
+                <ScalarProperty Name="FolderId" ColumnName="FolderId" />
+                <ScalarProperty Name="Edition" ColumnName="Edition" />
+                <ScalarProperty Name="DateEffective" ColumnName="DateEffective" />
+                <ScalarProperty Name="INSPECAccessionNumber" ColumnName="INSPECAccessionNumber" />
+                <ScalarProperty Name="PublishedIn" ColumnName="PublishedIn" />
+                <ScalarProperty Name="Journal" ColumnName="Journal" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Language" ColumnName="Language" />
+                <ScalarProperty Name="DateDeadline" ColumnName="DateDeadline" />
+                <ScalarProperty Name="LanguageId" ColumnName="LanguageId" />
+                <ScalarProperty Name="Duration" ColumnName="Duration" />
+                <ScalarProperty Name="ExternalUrl" ColumnName="ExternalUrl" />
+                <ScalarProperty Name="NumberOfLessens" ColumnName="NumberOfLessens" />
+                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+                <ScalarProperty Name="JournalId" ColumnName="JournalId" />
+                <ScalarProperty Name="Conference" ColumnName="Conference" />
+                <ScalarProperty Name="ConferenceLocationId" ColumnName="ConferenceLocationId" />
+                <ScalarProperty Name="DateConference" ColumnName="DateConference" />
+                <ScalarProperty Name="Sender" ColumnName="Sender" />
+                <ScalarProperty Name="No" ColumnName="No" />
+                <ScalarProperty Name="DateDownload" ColumnName="DateDownload" />
+                <ScalarProperty Name="DateVisit" ColumnName="DateVisit" />
+                <ScalarProperty Name="IsSigned" ColumnName="IsSigned" />
+                <ScalarProperty Name="DateSigned" ColumnName="DateSigned" />
+                <ScalarProperty Name="IsVisited" ColumnName="IsVisited" />
+                <ScalarProperty Name="IsDownloaded" ColumnName="IsDownloaded" />
+                <ScalarProperty Name="IsValid" ColumnName="IsValid" />
+                <ScalarProperty Name="RemainingValid" ColumnName="RemainingValid" />
+                <ScalarProperty Name="RemainingDeadLine" ColumnName="RemainingDeadLine" />
+                <ScalarProperty Name="DateValidUntil" ColumnName="DateValidUntil" />
+                <ScalarProperty Name="DeadLine" ColumnName="DeadLine" />
+                <ScalarProperty Name="IsExposed" ColumnName="IsExposed" />
+                <ScalarProperty Name="DateExposure" ColumnName="DateExposure" />
+                <ScalarProperty Name="TranslatorIds" ColumnName="TranslatorIds" />
+                <ScalarProperty Name="Authors" ColumnName="Authors" />
+                <ScalarProperty Name="AuthorIds" ColumnName="AuthorIds" />
+                <ScalarProperty Name="Keywords" ColumnName="Keywords" />
+                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+                <ScalarProperty Name="Abstract" ColumnName="Abstract" />
+                <ScalarProperty Name="DateCreate" ColumnName="DateCreate" />
+                <ScalarProperty Name="PublisherWebsite" ColumnName="PublisherWebsite" />
+                <ScalarProperty Name="Publisher" ColumnName="Publisher" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="Pages" ColumnName="Pages" />
+                <ScalarProperty Name="DOI" ColumnName="DOI" />
+                <ScalarProperty Name="ISSNElectronic" ColumnName="ISSNElectronic" />
+                <ScalarProperty Name="ISSNPrint" ColumnName="ISSNPrint" />
+                <ScalarProperty Name="PublisherId" ColumnName="PublisherId" />
+                <ScalarProperty Name="DateRelease" ColumnName="DateRelease" />
+                <ScalarProperty Name="ISBN" ColumnName="ISBN" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="Customer" ColumnName="Customer" />
+                <ScalarProperty Name="NDTIntervalCalanderType" ColumnName="NDTIntervalCalanderType" />
+                <ScalarProperty Name="CaoIntervalCalanderType" ColumnName="CaoIntervalCalanderType" />
+                <ScalarProperty Name="Sex" ColumnName="Sex" />
+                <ScalarProperty Name="Age" ColumnName="Age" />
+                <ScalarProperty Name="CustomerCreatorId" ColumnName="CustomerCreatorId" />
+                <ScalarProperty Name="EmployeeImageUrl" ColumnName="EmployeeImageUrl" />
+                <ScalarProperty Name="IDNo" ColumnName="IDNo" />
+                <ScalarProperty Name="NDTIntervalCalanderTypeId" ColumnName="NDTIntervalCalanderTypeId" />
+                <ScalarProperty Name="NDTNumber" ColumnName="NDTNumber" />
+                <ScalarProperty Name="IntervalNDT" ColumnName="IntervalNDT" />
+                <ScalarProperty Name="DateIssueNDT" ColumnName="DateIssueNDT" />
+                <ScalarProperty Name="TechLogNo" ColumnName="TechLogNo" />
+                <ScalarProperty Name="StampUrl" ColumnName="StampUrl" />
+                <ScalarProperty Name="StampNumber" ColumnName="StampNumber" />
+                <ScalarProperty Name="CaoIntervalCalanderTypeId" ColumnName="CaoIntervalCalanderTypeId" />
+                <ScalarProperty Name="CaoInterval" ColumnName="CaoInterval" />
+                <ScalarProperty Name="CompetencyNo" ColumnName="CompetencyNo" />
+                <ScalarProperty Name="DateCaoCardExpire" ColumnName="DateCaoCardExpire" />
+                <ScalarProperty Name="DateCaoCardIssue" ColumnName="DateCaoCardIssue" />
+                <ScalarProperty Name="CaoCardNumber" ColumnName="CaoCardNumber" />
+                <ScalarProperty Name="DateYearOfExperience" ColumnName="DateYearOfExperience" />
+                <ScalarProperty Name="DateJoinAvation" ColumnName="DateJoinAvation" />
+                <ScalarProperty Name="FaxTelNumber" ColumnName="FaxTelNumber" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="Phone2" ColumnName="Phone2" />
+                <ScalarProperty Name="Phone1" ColumnName="Phone1" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="DateBirth" ColumnName="DateBirth" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="SexId" ColumnName="SexId" />
+                <ScalarProperty Name="NID" ColumnName="NID" />
+                <ScalarProperty Name="JobGroupCode" ColumnName="JobGroupCode" />
+                <ScalarProperty Name="JobGroup" ColumnName="JobGroup" />
+                <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+                <ScalarProperty Name="EmployeeCustomerId" ColumnName="EmployeeCustomerId" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="DateJoinCompany" ColumnName="DateJoinCompany" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="BookId" ColumnName="BookId" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BookChapters">
+            <EntityTypeMapping TypeName="ppaModel.BookChapter">
+              <MappingFragment StoreEntitySet="BookChapter">
+                <ScalarProperty Name="BookKey" ColumnName="BookKey" />
+                <ScalarProperty Name="BookId" ColumnName="BookId" />
+                <ScalarProperty Name="FullCode" ColumnName="FullCode" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BookFiles">
+            <EntityTypeMapping TypeName="ppaModel.BookFile">
+              <MappingFragment StoreEntitySet="BookFile">
+                <ScalarProperty Name="ChapterId" ColumnName="ChapterId" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="DocumentId" ColumnName="DocumentId" />
+                <ScalarProperty Name="BookId" ColumnName="BookId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ViewBookChapters">
+            <EntityTypeMapping TypeName="ppaModel.ViewBookChapter">
+              <MappingFragment StoreEntitySet="ViewBookChapter">
+                <ScalarProperty Name="Files" ColumnName="Files" />
+                <ScalarProperty Name="TitleFormatedSpace" ColumnName="TitleFormatedSpace" />
+                <ScalarProperty Name="TitleFormated" ColumnName="TitleFormated" />
+                <ScalarProperty Name="BookKey" ColumnName="BookKey" />
+                <ScalarProperty Name="BookId" ColumnName="BookId" />
+                <ScalarProperty Name="Fullcode" ColumnName="Fullcode" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ViewBookFileVisiteds">
+            <EntityTypeMapping TypeName="ppaModel.ViewBookFileVisited">
+              <MappingFragment StoreEntitySet="ViewBookFileVisited">
+                <ScalarProperty Name="ChapterParentId" ColumnName="ChapterParentId" />
+                <ScalarProperty Name="ChapterId" ColumnName="ChapterId" />
+                <ScalarProperty Name="ChapterS" ColumnName="ChapterS" />
+                <ScalarProperty Name="Chapter" ColumnName="Chapter" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="IsVisited" ColumnName="IsVisited" />
+                <ScalarProperty Name="DateVisited" ColumnName="DateVisited" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="BookId" ColumnName="BookId" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="FileTypeId" ColumnName="FileTypeId" />
+                <ScalarProperty Name="DocumentTypeId" ColumnName="DocumentTypeId" />
+                <ScalarProperty Name="FileType" ColumnName="FileType" />
+                <ScalarProperty Name="SysUrl" ColumnName="SysUrl" />
+                <ScalarProperty Name="DocumentId" ColumnName="DocumentId" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="FileUrl" ColumnName="FileUrl" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

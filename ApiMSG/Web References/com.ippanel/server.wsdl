@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="urn:smsserver" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns="http://schemas.xmlsoap.org/wsdl/" targetNamespace="urn:smsserver" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="urn:smsserver">
+      <xsd:import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
+      <xsd:import namespace="http://schemas.xmlsoap.org/wsdl/" />
+      <xsd:complexType name="ListArray">
+        <xsd:complexContent mixed="false">
+          <xsd:restriction base="SOAP-ENC:Array">
+            <xsd:attribute wsdl:arrayType="xsd:string[]" ref="SOAP-ENC:arrayType" />
+          </xsd:restriction>
+        </xsd:complexContent>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="SendSMSRequest">
+    <wsdl:part name="fromNum" type="xsd:string" />
+    <wsdl:part name="toNum" type="xsd:ArrayOfString" />
+    <wsdl:part name="messageContent" type="xsd:ArrayOfString" />
+    <wsdl:part name="user" type="xsd:string" />
+    <wsdl:part name="pass" type="xsd:string" />
+    <wsdl:part name="time" type="xsd:string" />
+    <wsdl:part name="op" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="SendSMSResponse">
+    <wsdl:part name="return" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="SendSMSV2Request">
+    <wsdl:part name="fromNum" type="xsd:string" />
+    <wsdl:part name="toNum" type="xsd:ArrayOfString" />
+    <wsdl:part name="messageContent" type="xsd:ArrayOfString" />
+    <wsdl:part name="user" type="xsd:string" />
+    <wsdl:part name="pass" type="xsd:string" />
+    <wsdl:part name="time" type="xsd:string" />
+    <wsdl:part name="op" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="SendSMSV2Response">
+    <wsdl:part name="return" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="GetCreditRequest">
+    <wsdl:part name="user" type="xsd:string" />
+    <wsdl:part name="pass" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="GetCreditResponse">
+    <wsdl:part name="return" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="GetStatusRequest">
+    <wsdl:part name="user" type="xsd:string" />
+    <wsdl:part name="pass" type="xsd:string" />
+    <wsdl:part name="batchid" type="xsd:string" />
+    <wsdl:part name="unique_ids" type="tns:ListArray" />
+  </wsdl:message>
+  <wsdl:message name="GetStatusResponse">
+    <wsdl:part name="return" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="deleteperiodRequest">
+    <wsdl:part name="user" type="xsd:string" />
+    <wsdl:part name="pass" type="xsd:string" />
+    <wsdl:part name="bulkid" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="deleteperiodResponse">
+    <wsdl:part name="return" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="sendvoiceRequest">
+    <wsdl:part name="user" type="xsd:string" />
+    <wsdl:part name="pass" type="xsd:string" />
+    <wsdl:part name="repeat" type="xsd:string" />
+    <wsdl:part name="time" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="sendvoiceResponse">
+    <wsdl:part name="return" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="GetLinesRequest">
+    <wsdl:part name="user" type="xsd:string" />
+    <wsdl:part name="pass" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="GetLinesResponse">
+    <wsdl:part name="return" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="inboxlistRequest">
+    <wsdl:part name="user" type="xsd:string" />
+    <wsdl:part name="pass" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="inboxlistResponse">
+    <wsdl:part name="return" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="GetDeliveryRequest">
+    <wsdl:part name="user" type="xsd:string" />
+    <wsdl:part name="pass" type="xsd:string" />
+    <wsdl:part name="uniqid" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="GetDeliveryResponse">
+    <wsdl:part name="return" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="GetUsertimeRequest">
+    <wsdl:part name="user" type="xsd:string" />
+    <wsdl:part name="pass" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="GetUsertimeResponse">
+    <wsdl:part name="return" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="CheckMessageRequest">
+    <wsdl:part name="user" type="xsd:string" />
+    <wsdl:part name="pass" type="xsd:string" />
+    <wsdl:part name="messageid" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="CheckMessageResponse">
+    <wsdl:part name="return" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="GetTicketListRequest">
+    <wsdl:part name="user" type="xsd:string" />
+    <wsdl:part name="pass" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="GetTicketListResponse">
+    <wsdl:part name="return" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="GetTicketDetailRequest">
+    <wsdl:part name="user" type="xsd:string" />
+    <wsdl:part name="pass" type="xsd:string" />
+    <wsdl:part name="ticket_id" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="GetTicketDetailResponse">
+    <wsdl:part name="return" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="AddTicketRequest">
+    <wsdl:part name="user" type="xsd:string" />
+    <wsdl:part name="pass" type="xsd:string" />
+    <wsdl:part name="subject" type="xsd:string" />
+    <wsdl:part name="description" type="xsd:string" />
+    <wsdl:part name="type" type="xsd:string" />
+    <wsdl:part name="importance" type="xsd:string" />
+    <wsdl:part name="sms_notification" type="xsd:string" />
+    <wsdl:part name="file" type="xsd:string" />
+    <wsdl:part name="page" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="AddTicketResponse">
+    <wsdl:part name="return" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="AnswerTicketRequest">
+    <wsdl:part name="user" type="xsd:string" />
+    <wsdl:part name="pass" type="xsd:string" />
+    <wsdl:part name="ticket_id" type="xsd:string" />
+    <wsdl:part name="description" type="xsd:string" />
+    <wsdl:part name="file" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="AnswerTicketResponse">
+    <wsdl:part name="return" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="SendQuickSMSRequest">
+    <wsdl:part name="fromNum" type="xsd:string" />
+    <wsdl:part name="toNum" type="xsd:ArrayOfString" />
+    <wsdl:part name="messageContent" type="xsd:ArrayOfString" />
+    <wsdl:part name="user" type="xsd:string" />
+    <wsdl:part name="pass" type="xsd:string" />
+    <wsdl:part name="time" type="xsd:string" />
+    <wsdl:part name="op" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="SendQuickSMSResponse">
+    <wsdl:part name="return" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="sendPatternSmsRequest">
+    <wsdl:part name="fromNum" type="xsd:string" />
+    <wsdl:part name="toNum" type="xsd:ArrayOfString" />
+    <wsdl:part name="user" type="xsd:string" />
+    <wsdl:part name="pass" type="xsd:string" />
+    <wsdl:part name="pattern_code" type="xsd:string" />
+    <wsdl:part name="input_data" type="xsd:ArrayOfString" />
+  </wsdl:message>
+  <wsdl:message name="sendPatternSmsResponse">
+    <wsdl:part name="return" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:portType name="smsserverPortType">
+    <wsdl:operation name="SendSMS">
+      <documentation>send your sms</documentation>
+      <wsdl:input message="tns:SendSMSRequest" />
+      <wsdl:output message="tns:SendSMSResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="SendSMSV2">
+      <documentation>send your sms </documentation>
+      <wsdl:input message="tns:SendSMSV2Request" />
+      <wsdl:output message="tns:SendSMSV2Response" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCredit">
+      <documentation>check your credit</documentation>
+      <wsdl:input message="tns:GetCreditRequest" />
+      <wsdl:output message="tns:GetCreditResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="GetStatus">
+      <documentation>get messages delivery status</documentation>
+      <wsdl:input message="tns:GetStatusRequest" />
+      <wsdl:output message="tns:GetStatusResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="deleteperiod">
+      <documentation>delete period sms</documentation>
+      <wsdl:input message="tns:deleteperiodRequest" />
+      <wsdl:output message="tns:deleteperiodResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="sendvoice">
+      <documentation>sendvoice sms</documentation>
+      <wsdl:input message="tns:sendvoiceRequest" />
+      <wsdl:output message="tns:sendvoiceResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="GetLines">
+      <documentation>get your line</documentation>
+      <wsdl:input message="tns:GetLinesRequest" />
+      <wsdl:output message="tns:GetLinesResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="inboxlist">
+      <documentation>inboxlist</documentation>
+      <wsdl:input message="tns:inboxlistRequest" />
+      <wsdl:output message="tns:inboxlistResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDelivery">
+      <documentation>Get Delivery</documentation>
+      <wsdl:input message="tns:GetDeliveryRequest" />
+      <wsdl:output message="tns:GetDeliveryResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUsertime">
+      <documentation>Get Panel Credit</documentation>
+      <wsdl:input message="tns:GetUsertimeRequest" />
+      <wsdl:output message="tns:GetUsertimeResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckMessage">
+      <documentation>Check Status Message</documentation>
+      <wsdl:input message="tns:CheckMessageRequest" />
+      <wsdl:output message="tns:CheckMessageResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTicketList">
+      <documentation>Get Ticket List</documentation>
+      <wsdl:input message="tns:GetTicketListRequest" />
+      <wsdl:output message="tns:GetTicketListResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTicketDetail">
+      <documentation>Get Ticket Detail</documentation>
+      <wsdl:input message="tns:GetTicketDetailRequest" />
+      <wsdl:output message="tns:GetTicketDetailResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="AddTicket">
+      <documentation>Add Ticket</documentation>
+      <wsdl:input message="tns:AddTicketRequest" />
+      <wsdl:output message="tns:AddTicketResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="AnswerTicket">
+      <documentation>Answer Ticket</documentation>
+      <wsdl:input message="tns:AnswerTicketRequest" />
+      <wsdl:output message="tns:AnswerTicketResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="SendQuickSMS">
+      <documentation>send Quick sms</documentation>
+      <wsdl:input message="tns:SendQuickSMSRequest" />
+      <wsdl:output message="tns:SendQuickSMSResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="sendPatternSms">
+      <documentation>send a sms with pattern</documentation>
+      <wsdl:input message="tns:sendPatternSmsRequest" />
+      <wsdl:output message="tns:sendPatternSmsResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="smsserverBinding" type="tns:smsserverPortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc" />
+    <wsdl:operation name="SendSMS">
+      <soap:operation soapAction="SendSMS" style="rpc" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="https://ippanel.com/class/sms/wsdlservice/server.php" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="https://ippanel.com/class/sms/wsdlservice/server.php" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendSMSV2">
+      <soap:operation soapAction="SendSMSV2" style="rpc" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="https://ippanel.com/class/sms/wsdlservice/server.php" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="https://ippanel.com/class/sms/wsdlservice/server.php" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCredit">
+      <soap:operation soapAction="GetCredit" style="rpc" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="https://ippanel.com/class/sms/wsdlservice/server.php" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="https://ippanel.com/class/sms/wsdlservice/server.php" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetStatus">
+      <soap:operation soapAction="GetStatus" style="rpc" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="https://ippanel.com/class/sms/wsdlservice/server.php" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="https://ippanel.com/class/sms/wsdlservice/server.php" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteperiod">
+      <soap:operation soapAction="deleteperiod" style="rpc" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="https://ippanel.com/class/sms/wsdlservice/server.php" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="https://ippanel.com/class/sms/wsdlservice/server.php" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="sendvoice">
+      <soap:operation soapAction="sendvoice" style="rpc" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="https://ippanel.com/class/sms/wsdlservice/server.php" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="https://ippanel.com/class/sms/wsdlservice/server.php" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLines">
+      <soap:operation soapAction="GetLines" style="rpc" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="https://ippanel.com/class/sms/wsdlservice/server.php" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="https://ippanel.com/class/sms/wsdlservice/server.php" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="inboxlist">
+      <soap:operation soapAction="inboxlist" style="rpc" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="https://ippanel.com/class/sms/wsdlservice/server.php" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="https://ippanel.com/class/sms/wsdlservice/server.php" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDelivery">
+      <soap:operation soapAction="GetDelivery" style="rpc" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="https://ippanel.com/class/sms/wsdlservice/server.php" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="https://ippanel.com/class/sms/wsdlservice/server.php" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUsertime">
+      <soap:operation soapAction="GetUsertime" style="rpc" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="https://ippanel.com/class/sms/wsdlservice/server.php" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="https://ippanel.com/class/sms/wsdlservice/server.php" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckMessage">
+      <soap:operation soapAction="CheckMessage" style="rpc" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="https://ippanel.com/class/sms/wsdlservice/server.php" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="https://ippanel.com/class/sms/wsdlservice/server.php" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTicketList">
+      <soap:operation soapAction="GetTicketList" style="rpc" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="https://ippanel.com/class/sms/wsdlservice/server.php" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="https://ippanel.com/class/sms/wsdlservice/server.php" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTicketDetail">
+      <soap:operation soapAction="GetTicketDetail" style="rpc" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="https://ippanel.com/class/sms/wsdlservice/server.php" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="https://ippanel.com/class/sms/wsdlservice/server.php" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddTicket">
+      <soap:operation soapAction="AddTicket" style="rpc" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="https://ippanel.com/class/sms/wsdlservice/server.php" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="https://ippanel.com/class/sms/wsdlservice/server.php" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AnswerTicket">
+      <soap:operation soapAction="AnswerTicket" style="rpc" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="https://ippanel.com/class/sms/wsdlservice/server.php" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="https://ippanel.com/class/sms/wsdlservice/server.php" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendQuickSMS">
+      <soap:operation soapAction="SendQuickSMS" style="rpc" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="https://ippanel.com/class/sms/wsdlservice/server.php" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="https://ippanel.com/class/sms/wsdlservice/server.php" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="sendPatternSms">
+      <soap:operation soapAction="sendPatternSms" style="rpc" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="https://ippanel.com/class/sms/wsdlservice/server.php" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="https://ippanel.com/class/sms/wsdlservice/server.php" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="smsserver">
+    <wsdl:port name="smsserverPort" binding="tns:smsserverBinding">
+      <soap:address location="https://ippanel.com/class/sms/wsdlservice/server.php" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

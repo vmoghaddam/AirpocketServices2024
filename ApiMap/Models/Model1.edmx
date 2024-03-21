@@ -1,0 +1,615 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ppa_mainModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="FR_Flight">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FlightId" Type="nvarchar" MaxLength="500" />
+          <Property Name="FlightNo" Type="varchar" MaxLength="255" />
+          <Property Name="Register" Type="varchar" MaxLength="500" />
+          <Property Name="Model" Type="varchar" MaxLength="500" />
+          <Property Name="Airline" Type="varchar" MaxLength="500" />
+          <Property Name="AirlineIATA" Type="varchar" MaxLength="255" />
+          <Property Name="AirlineICAO" Type="varchar" MaxLength="255" />
+          <Property Name="Origin" Type="varchar" MaxLength="255" />
+          <Property Name="Destination" Type="varchar" MaxLength="255" />
+          <Property Name="Status" Type="varchar" MaxLength="255" />
+          <Property Name="DateCreate" Type="datetime" />
+          <Property Name="DateFlight" Type="datetime" />
+          <Property Name="APFlightId" Type="int" />
+        </EntityType>
+        <EntityType Name="FR_Flight_Track">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FlightId" Type="int" Nullable="false" />
+          <Property Name="Latitude" Type="decimal" Precision="14" Scale="8" />
+          <Property Name="Longitude" Type="decimal" Precision="14" Scale="8" />
+          <Property Name="Squawk" Type="float" />
+          <Property Name="TimeStamp" Type="bigint" />
+          <Property Name="EMS" Type="varchar" MaxLength="255" />
+          <Property Name="Altitude_F" Type="float" />
+          <Property Name="Altitude_M" Type="float" />
+          <Property Name="Speed_KMH" Type="float" />
+          <Property Name="Speed_KTS" Type="float" />
+          <Property Name="Speed_MPH" Type="float" />
+          <Property Name="VSpeed_FPM" Type="float" />
+          <Property Name="VSpeed_MS" Type="float" />
+          <Property Name="DateTrack" Type="datetime2" Precision="7" />
+          <Property Name="Heading" Type="float" />
+        </EntityType>
+        <EntityType Name="Option">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="ParentId" Type="int" />
+          <Property Name="IsSystem" Type="bit" Nullable="false" />
+          <Property Name="OrderIndex" Type="int" Nullable="false" />
+          <Property Name="CreatorId" Type="int" />
+          <Property Name="Prop1" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_main.dbo.VFR_Flight' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="VFR_Flight">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="FlightStatus" />
+            <PropertyRef Name="FlightStatusId" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FlightId" Type="nvarchar" MaxLength="500" />
+          <Property Name="FlightNo" Type="varchar" MaxLength="255" />
+          <Property Name="Register" Type="varchar" MaxLength="500" />
+          <Property Name="Model" Type="varchar" MaxLength="500" />
+          <Property Name="Airline" Type="varchar" MaxLength="500" />
+          <Property Name="AirlineIATA" Type="varchar" MaxLength="255" />
+          <Property Name="AirlineICAO" Type="varchar" MaxLength="255" />
+          <Property Name="Origin" Type="varchar" MaxLength="255" />
+          <Property Name="Destination" Type="varchar" MaxLength="255" />
+          <Property Name="Status" Type="varchar" MaxLength="255" />
+          <Property Name="DateCreate" Type="datetime" />
+          <Property Name="APFlightId" Type="int" />
+          <Property Name="DateFlight" Type="date" />
+          <Property Name="FlightStatus" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="FlightStatusId" Type="int" Nullable="false" />
+          <Property Name="Dep" Type="datetime" />
+          <Property Name="Arr" Type="datetime" />
+          <Property Name="DepLocal" Type="datetime" />
+          <Property Name="ArrLocal" Type="datetime" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_main.dbo.VFR_Flight_Track' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="VFR_Flight_Track">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="FlightId" />
+            <PropertyRef Name="AltitudeLvl" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FlightId" Type="int" Nullable="false" />
+          <Property Name="Latitude" Type="decimal" Precision="14" Scale="8" />
+          <Property Name="Longitude" Type="decimal" Precision="14" Scale="8" />
+          <Property Name="Squawk" Type="float" />
+          <Property Name="TimeStamp" Type="bigint" />
+          <Property Name="EMS" Type="varchar" MaxLength="255" />
+          <Property Name="Altitude_F" Type="float" />
+          <Property Name="Altitude_M" Type="float" />
+          <Property Name="Speed_KMH" Type="float" />
+          <Property Name="Speed_KTS" Type="float" />
+          <Property Name="Speed_MPH" Type="float" />
+          <Property Name="VSpeed_FPM" Type="float" />
+          <Property Name="VSpeed_MS" Type="float" />
+          <Property Name="DateTrack" Type="datetime2" Precision="7" />
+          <Property Name="DateTrackIR" Type="datetime2" Precision="7" />
+          <Property Name="AltitudeLvl" Type="int" Nullable="false" />
+          <Property Name="Heading" Type="float" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_main.dbo.VFR_OFPPoint' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="VFR_OFPPoint">
+          <Key>
+            <PropertyRef Name="OFPId" />
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="OFPId" Type="int" Nullable="false" />
+          <Property Name="Plan" Type="varchar" MaxLength="255" />
+          <Property Name="Lat" Type="decimal" Precision="16" Scale="10" />
+          <Property Name="Long" Type="decimal" Precision="16" Scale="10" />
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="WAP" Type="varchar" MaxLength="500" />
+          <Property Name="VIA" Type="varchar" MaxLength="500" />
+          <Property Name="ALT" Type="varchar" MaxLength="500" />
+          <Property Name="WIND" Type="varchar" MaxLength="500" />
+          <Property Name="TRK" Type="varchar" MaxLength="500" />
+          <Property Name="TMP" Type="varchar" MaxLength="500" />
+          <Property Name="BODY" Type="varchar" MaxLength="1000" />
+          <Property Name="FRQ" Type="varchar" MaxLength="500" />
+          <Property Name="MEA" Type="varchar" MaxLength="500" />
+          <Property Name="GMR" Type="varchar" MaxLength="500" />
+          <Property Name="DIS" Type="varchar" MaxLength="255" />
+          <Property Name="TDS" Type="varchar" MaxLength="255" />
+          <Property Name="FRE" Type="varchar" MaxLength="255" />
+          <Property Name="FUS" Type="varchar" MaxLength="255" />
+          <Property Name="TAS" Type="varchar" MaxLength="255" />
+          <Property Name="GSP" Type="varchar" MaxLength="255" />
+          <Property Name="TTM" Type="int" />
+          <Property Name="TME" Type="int" />
+          <Property Name="FlightNo" Type="varchar" MaxLength="255" />
+          <Property Name="Origin" Type="varchar" MaxLength="255" />
+          <Property Name="Destination" Type="varchar" MaxLength="255" />
+          <Property Name="DateFlight" Type="date" />
+          <Property Name="DateCreate" Type="datetime" />
+          <Property Name="FlightId" Type="int" />
+          <Property Name="ETA" Type="varchar" MaxLength="500" />
+          <Property Name="ETD" Type="varchar" MaxLength="500" />
+          <Property Name="ALT1" Type="varchar" MaxLength="255" />
+          <Property Name="ALT2" Type="varchar" MaxLength="255" />
+          <Property Name="Register" Type="varchar(max)" />
+        </EntityType>
+        <Association Name="fk_track_flight">
+          <End Role="FR_Flight" Type="Self.FR_Flight" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="FR_Flight_Track" Type="Self.FR_Flight_Track" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FR_Flight">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FR_Flight_Track">
+              <PropertyRef Name="FlightId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ppa_mainModelStoreContainer">
+          <EntitySet Name="FR_Flight" EntityType="Self.FR_Flight" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FR_Flight_Track" EntityType="Self.FR_Flight_Track" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Option" EntityType="Self.Option" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VFR_Flight" EntityType="Self.VFR_Flight" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [VFR_Flight].[Id] AS [Id], 
+    [VFR_Flight].[FlightId] AS [FlightId], 
+    [VFR_Flight].[FlightNo] AS [FlightNo], 
+    [VFR_Flight].[Register] AS [Register], 
+    [VFR_Flight].[Model] AS [Model], 
+    [VFR_Flight].[Airline] AS [Airline], 
+    [VFR_Flight].[AirlineIATA] AS [AirlineIATA], 
+    [VFR_Flight].[AirlineICAO] AS [AirlineICAO], 
+    [VFR_Flight].[Origin] AS [Origin], 
+    [VFR_Flight].[Destination] AS [Destination], 
+    [VFR_Flight].[Status] AS [Status], 
+    [VFR_Flight].[DateCreate] AS [DateCreate], 
+    [VFR_Flight].[APFlightId] AS [APFlightId], 
+    [VFR_Flight].[DateFlight] AS [DateFlight], 
+    [VFR_Flight].[FlightStatus] AS [FlightStatus], 
+    [VFR_Flight].[FlightStatusId] AS [FlightStatusId], 
+    [VFR_Flight].[Dep] AS [Dep], 
+    [VFR_Flight].[Arr] AS [Arr], 
+    [VFR_Flight].[DepLocal] AS [DepLocal], 
+    [VFR_Flight].[ArrLocal] AS [ArrLocal]
+    FROM [dbo].[VFR_Flight] AS [VFR_Flight]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="VFR_Flight_Track" EntityType="Self.VFR_Flight_Track" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [VFR_Flight_Track].[Id] AS [Id], 
+    [VFR_Flight_Track].[FlightId] AS [FlightId], 
+    [VFR_Flight_Track].[Latitude] AS [Latitude], 
+    [VFR_Flight_Track].[Longitude] AS [Longitude], 
+    [VFR_Flight_Track].[Squawk] AS [Squawk], 
+    [VFR_Flight_Track].[TimeStamp] AS [TimeStamp], 
+    [VFR_Flight_Track].[EMS] AS [EMS], 
+    [VFR_Flight_Track].[Altitude_F] AS [Altitude_F], 
+    [VFR_Flight_Track].[Altitude_M] AS [Altitude_M], 
+    [VFR_Flight_Track].[Speed_KMH] AS [Speed_KMH], 
+    [VFR_Flight_Track].[Speed_KTS] AS [Speed_KTS], 
+    [VFR_Flight_Track].[Speed_MPH] AS [Speed_MPH], 
+    [VFR_Flight_Track].[VSpeed_FPM] AS [VSpeed_FPM], 
+    [VFR_Flight_Track].[VSpeed_MS] AS [VSpeed_MS], 
+    [VFR_Flight_Track].[DateTrack] AS [DateTrack], 
+    [VFR_Flight_Track].[DateTrackIR] AS [DateTrackIR], 
+    [VFR_Flight_Track].[AltitudeLvl] AS [AltitudeLvl], 
+    [VFR_Flight_Track].[Heading] AS [Heading]
+    FROM [dbo].[VFR_Flight_Track] AS [VFR_Flight_Track]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="VFR_OFPPoint" EntityType="Self.VFR_OFPPoint" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [VFR_OFPPoint].[OFPId] AS [OFPId], 
+    [VFR_OFPPoint].[Plan] AS [Plan], 
+    [VFR_OFPPoint].[Lat] AS [Lat], 
+    [VFR_OFPPoint].[Long] AS [Long], 
+    [VFR_OFPPoint].[Id] AS [Id], 
+    [VFR_OFPPoint].[WAP] AS [WAP], 
+    [VFR_OFPPoint].[VIA] AS [VIA], 
+    [VFR_OFPPoint].[ALT] AS [ALT], 
+    [VFR_OFPPoint].[WIND] AS [WIND], 
+    [VFR_OFPPoint].[TRK] AS [TRK], 
+    [VFR_OFPPoint].[TMP] AS [TMP], 
+    [VFR_OFPPoint].[BODY] AS [BODY], 
+    [VFR_OFPPoint].[FRQ] AS [FRQ], 
+    [VFR_OFPPoint].[MEA] AS [MEA], 
+    [VFR_OFPPoint].[GMR] AS [GMR], 
+    [VFR_OFPPoint].[DIS] AS [DIS], 
+    [VFR_OFPPoint].[TDS] AS [TDS], 
+    [VFR_OFPPoint].[FRE] AS [FRE], 
+    [VFR_OFPPoint].[FUS] AS [FUS], 
+    [VFR_OFPPoint].[TAS] AS [TAS], 
+    [VFR_OFPPoint].[GSP] AS [GSP], 
+    [VFR_OFPPoint].[TTM] AS [TTM], 
+    [VFR_OFPPoint].[TME] AS [TME], 
+    [VFR_OFPPoint].[FlightNo] AS [FlightNo], 
+    [VFR_OFPPoint].[Origin] AS [Origin], 
+    [VFR_OFPPoint].[Destination] AS [Destination], 
+    [VFR_OFPPoint].[DateFlight] AS [DateFlight], 
+    [VFR_OFPPoint].[DateCreate] AS [DateCreate], 
+    [VFR_OFPPoint].[FlightId] AS [FlightId], 
+    [VFR_OFPPoint].[ETA] AS [ETA], 
+    [VFR_OFPPoint].[ETD] AS [ETD], 
+    [VFR_OFPPoint].[ALT1] AS [ALT1], 
+    [VFR_OFPPoint].[ALT2] AS [ALT2], 
+    [VFR_OFPPoint].[Register] AS [Register]
+    FROM [dbo].[VFR_OFPPoint] AS [VFR_OFPPoint]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="fk_track_flight" Association="Self.fk_track_flight">
+            <End Role="FR_Flight" EntitySet="FR_Flight" />
+            <End Role="FR_Flight_Track" EntitySet="FR_Flight_Track" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ppa_mainModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Option">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ParentId" Type="Int32" />
+          <Property Name="IsSystem" Type="Boolean" Nullable="false" />
+          <Property Name="OrderIndex" Type="Int32" Nullable="false" />
+          <Property Name="CreatorId" Type="Int32" />
+          <Property Name="Prop1" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityContainer Name="ppa_mainEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Options" EntityType="Self.Option" />
+          <EntitySet Name="FR_Flight" EntityType="ppa_mainModel.FR_Flight" />
+          <EntitySet Name="FR_Flight_Track" EntityType="ppa_mainModel.FR_Flight_Track" />
+          <EntitySet Name="VFR_Flight_Track" EntityType="ppa_mainModel.VFR_Flight_Track" />
+          <AssociationSet Name="fk_track_flight" Association="ppa_mainModel.fk_track_flight">
+            <End Role="FR_Flight" EntitySet="FR_Flight" />
+            <End Role="FR_Flight_Track" EntitySet="FR_Flight_Track" />
+          </AssociationSet>
+          <EntitySet Name="VFR_Flight" EntityType="ppa_mainModel.VFR_Flight" />
+          <EntitySet Name="VFR_OFPPoint" EntityType="ppa_mainModel.VFR_OFPPoint" />
+        </EntityContainer>
+        <EntityType Name="FR_Flight">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FlightId" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="FlightNo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Register" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Model" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Airline" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="AirlineIATA" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="AirlineICAO" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Origin" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Destination" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="DateCreate" Type="DateTime" Precision="3" />
+          <Property Name="DateFlight" Type="DateTime" Precision="3" />
+          <Property Name="APFlightId" Type="Int32" />
+          <NavigationProperty Name="FR_Flight_Track" Relationship="ppa_mainModel.fk_track_flight" FromRole="FR_Flight" ToRole="FR_Flight_Track" />
+        </EntityType>
+        <EntityType Name="FR_Flight_Track">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FlightId" Type="Int32" Nullable="false" />
+          <Property Name="Latitude" Type="Decimal" Precision="14" Scale="8" />
+          <Property Name="Longitude" Type="Decimal" Precision="14" Scale="8" />
+          <Property Name="Squawk" Type="Double" />
+          <Property Name="TimeStamp" Type="Int64" />
+          <Property Name="EMS" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Altitude_F" Type="Double" />
+          <Property Name="Altitude_M" Type="Double" />
+          <Property Name="Speed_KMH" Type="Double" />
+          <Property Name="Speed_KTS" Type="Double" />
+          <Property Name="Speed_MPH" Type="Double" />
+          <Property Name="VSpeed_FPM" Type="Double" />
+          <Property Name="VSpeed_MS" Type="Double" />
+          <Property Name="DateTrack" Type="DateTime" Precision="7" />
+          <Property Name="Heading" Type="Double" />
+          <NavigationProperty Name="FR_Flight" Relationship="ppa_mainModel.fk_track_flight" FromRole="FR_Flight_Track" ToRole="FR_Flight" />
+        </EntityType>
+        <EntityType Name="VFR_Flight_Track">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="FlightId" />
+            <PropertyRef Name="AltitudeLvl" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FlightId" Type="Int32" Nullable="false" />
+          <Property Name="Latitude" Type="Decimal" Precision="14" Scale="8" />
+          <Property Name="Longitude" Type="Decimal" Precision="14" Scale="8" />
+          <Property Name="Squawk" Type="Double" />
+          <Property Name="TimeStamp" Type="Int64" />
+          <Property Name="EMS" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Altitude_F" Type="Double" />
+          <Property Name="Altitude_M" Type="Double" />
+          <Property Name="Speed_KMH" Type="Double" />
+          <Property Name="Speed_KTS" Type="Double" />
+          <Property Name="Speed_MPH" Type="Double" />
+          <Property Name="VSpeed_FPM" Type="Double" />
+          <Property Name="VSpeed_MS" Type="Double" />
+          <Property Name="DateTrack" Type="DateTime" Precision="7" />
+          <Property Name="DateTrackIR" Type="DateTime" Precision="7" />
+          <Property Name="AltitudeLvl" Type="Int32" Nullable="false" />
+          <Property Name="Heading" Type="Double" />
+        </EntityType>
+        <Association Name="fk_track_flight">
+          <End Type="ppa_mainModel.FR_Flight" Role="FR_Flight" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ppa_mainModel.FR_Flight_Track" Role="FR_Flight_Track" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FR_Flight">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FR_Flight_Track">
+              <PropertyRef Name="FlightId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="VFR_Flight">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="FlightStatus" />
+            <PropertyRef Name="FlightStatusId" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FlightId" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="FlightNo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Register" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Model" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Airline" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="AirlineIATA" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="AirlineICAO" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Origin" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Destination" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="DateCreate" Type="DateTime" Precision="3" />
+          <Property Name="APFlightId" Type="Int32" />
+          <Property Name="DateFlight" Type="DateTime" Precision="0" />
+          <Property Name="FlightStatus" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="FlightStatusId" Type="Int32" Nullable="false" />
+          <Property Name="Dep" Type="DateTime" Precision="3" />
+          <Property Name="Arr" Type="DateTime" Precision="3" />
+          <Property Name="DepLocal" Type="DateTime" Precision="3" />
+          <Property Name="ArrLocal" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="VFR_OFPPoint">
+          <Key>
+            <PropertyRef Name="OFPId" />
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="OFPId" Type="Int32" Nullable="false" />
+          <Property Name="Plan" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Lat" Type="Decimal" Precision="16" Scale="10" />
+          <Property Name="Long" Type="Decimal" Precision="16" Scale="10" />
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="WAP" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="VIA" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ALT" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="WIND" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="TRK" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="TMP" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="BODY" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="FRQ" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="MEA" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="GMR" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="DIS" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="TDS" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="FRE" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="FUS" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="TAS" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="GSP" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="TTM" Type="Int32" />
+          <Property Name="TME" Type="Int32" />
+          <Property Name="FlightNo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Origin" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Destination" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="DateFlight" Type="DateTime" Precision="0" />
+          <Property Name="DateCreate" Type="DateTime" Precision="3" />
+          <Property Name="FlightId" Type="Int32" />
+          <Property Name="ETA" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ETD" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ALT1" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ALT2" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Register" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ppa_mainModelStoreContainer" CdmEntityContainer="ppa_mainEntities">
+          <EntitySetMapping Name="Options">
+            <EntityTypeMapping TypeName="ppa_mainModel.Option">
+              <MappingFragment StoreEntitySet="Option">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="IsSystem" ColumnName="IsSystem" />
+                <ScalarProperty Name="OrderIndex" ColumnName="OrderIndex" />
+                <ScalarProperty Name="CreatorId" ColumnName="CreatorId" />
+                <ScalarProperty Name="Prop1" ColumnName="Prop1" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FR_Flight">
+            <EntityTypeMapping TypeName="ppa_mainModel.FR_Flight">
+              <MappingFragment StoreEntitySet="FR_Flight">
+                <ScalarProperty Name="APFlightId" ColumnName="APFlightId" />
+                <ScalarProperty Name="DateFlight" ColumnName="DateFlight" />
+                <ScalarProperty Name="DateCreate" ColumnName="DateCreate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Destination" ColumnName="Destination" />
+                <ScalarProperty Name="Origin" ColumnName="Origin" />
+                <ScalarProperty Name="AirlineICAO" ColumnName="AirlineICAO" />
+                <ScalarProperty Name="AirlineIATA" ColumnName="AirlineIATA" />
+                <ScalarProperty Name="Airline" ColumnName="Airline" />
+                <ScalarProperty Name="Model" ColumnName="Model" />
+                <ScalarProperty Name="Register" ColumnName="Register" />
+                <ScalarProperty Name="FlightNo" ColumnName="FlightNo" />
+                <ScalarProperty Name="FlightId" ColumnName="FlightId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FR_Flight_Track">
+            <EntityTypeMapping TypeName="ppa_mainModel.FR_Flight_Track">
+              <MappingFragment StoreEntitySet="FR_Flight_Track">
+                <ScalarProperty Name="Heading" ColumnName="Heading" />
+                <ScalarProperty Name="DateTrack" ColumnName="DateTrack" />
+                <ScalarProperty Name="VSpeed_MS" ColumnName="VSpeed_MS" />
+                <ScalarProperty Name="VSpeed_FPM" ColumnName="VSpeed_FPM" />
+                <ScalarProperty Name="Speed_MPH" ColumnName="Speed_MPH" />
+                <ScalarProperty Name="Speed_KTS" ColumnName="Speed_KTS" />
+                <ScalarProperty Name="Speed_KMH" ColumnName="Speed_KMH" />
+                <ScalarProperty Name="Altitude_M" ColumnName="Altitude_M" />
+                <ScalarProperty Name="Altitude_F" ColumnName="Altitude_F" />
+                <ScalarProperty Name="EMS" ColumnName="EMS" />
+                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+                <ScalarProperty Name="Squawk" ColumnName="Squawk" />
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+                <ScalarProperty Name="FlightId" ColumnName="FlightId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VFR_Flight_Track">
+            <EntityTypeMapping TypeName="ppa_mainModel.VFR_Flight_Track">
+              <MappingFragment StoreEntitySet="VFR_Flight_Track">
+                <ScalarProperty Name="Heading" ColumnName="Heading" />
+                <ScalarProperty Name="AltitudeLvl" ColumnName="AltitudeLvl" />
+                <ScalarProperty Name="DateTrackIR" ColumnName="DateTrackIR" />
+                <ScalarProperty Name="DateTrack" ColumnName="DateTrack" />
+                <ScalarProperty Name="VSpeed_MS" ColumnName="VSpeed_MS" />
+                <ScalarProperty Name="VSpeed_FPM" ColumnName="VSpeed_FPM" />
+                <ScalarProperty Name="Speed_MPH" ColumnName="Speed_MPH" />
+                <ScalarProperty Name="Speed_KTS" ColumnName="Speed_KTS" />
+                <ScalarProperty Name="Speed_KMH" ColumnName="Speed_KMH" />
+                <ScalarProperty Name="Altitude_M" ColumnName="Altitude_M" />
+                <ScalarProperty Name="Altitude_F" ColumnName="Altitude_F" />
+                <ScalarProperty Name="EMS" ColumnName="EMS" />
+                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+                <ScalarProperty Name="Squawk" ColumnName="Squawk" />
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+                <ScalarProperty Name="FlightId" ColumnName="FlightId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VFR_Flight">
+            <EntityTypeMapping TypeName="ppa_mainModel.VFR_Flight">
+              <MappingFragment StoreEntitySet="VFR_Flight">
+                <ScalarProperty Name="ArrLocal" ColumnName="ArrLocal" />
+                <ScalarProperty Name="DepLocal" ColumnName="DepLocal" />
+                <ScalarProperty Name="Arr" ColumnName="Arr" />
+                <ScalarProperty Name="Dep" ColumnName="Dep" />
+                <ScalarProperty Name="FlightStatusId" ColumnName="FlightStatusId" />
+                <ScalarProperty Name="FlightStatus" ColumnName="FlightStatus" />
+                <ScalarProperty Name="DateFlight" ColumnName="DateFlight" />
+                <ScalarProperty Name="APFlightId" ColumnName="APFlightId" />
+                <ScalarProperty Name="DateCreate" ColumnName="DateCreate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Destination" ColumnName="Destination" />
+                <ScalarProperty Name="Origin" ColumnName="Origin" />
+                <ScalarProperty Name="AirlineICAO" ColumnName="AirlineICAO" />
+                <ScalarProperty Name="AirlineIATA" ColumnName="AirlineIATA" />
+                <ScalarProperty Name="Airline" ColumnName="Airline" />
+                <ScalarProperty Name="Model" ColumnName="Model" />
+                <ScalarProperty Name="Register" ColumnName="Register" />
+                <ScalarProperty Name="FlightNo" ColumnName="FlightNo" />
+                <ScalarProperty Name="FlightId" ColumnName="FlightId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VFR_OFPPoint">
+            <EntityTypeMapping TypeName="ppa_mainModel.VFR_OFPPoint">
+              <MappingFragment StoreEntitySet="VFR_OFPPoint">
+                <ScalarProperty Name="Register" ColumnName="Register" />
+                <ScalarProperty Name="ALT2" ColumnName="ALT2" />
+                <ScalarProperty Name="ALT1" ColumnName="ALT1" />
+                <ScalarProperty Name="ETD" ColumnName="ETD" />
+                <ScalarProperty Name="ETA" ColumnName="ETA" />
+                <ScalarProperty Name="FlightId" ColumnName="FlightId" />
+                <ScalarProperty Name="DateCreate" ColumnName="DateCreate" />
+                <ScalarProperty Name="DateFlight" ColumnName="DateFlight" />
+                <ScalarProperty Name="Destination" ColumnName="Destination" />
+                <ScalarProperty Name="Origin" ColumnName="Origin" />
+                <ScalarProperty Name="FlightNo" ColumnName="FlightNo" />
+                <ScalarProperty Name="TME" ColumnName="TME" />
+                <ScalarProperty Name="TTM" ColumnName="TTM" />
+                <ScalarProperty Name="GSP" ColumnName="GSP" />
+                <ScalarProperty Name="TAS" ColumnName="TAS" />
+                <ScalarProperty Name="FUS" ColumnName="FUS" />
+                <ScalarProperty Name="FRE" ColumnName="FRE" />
+                <ScalarProperty Name="TDS" ColumnName="TDS" />
+                <ScalarProperty Name="DIS" ColumnName="DIS" />
+                <ScalarProperty Name="GMR" ColumnName="GMR" />
+                <ScalarProperty Name="MEA" ColumnName="MEA" />
+                <ScalarProperty Name="FRQ" ColumnName="FRQ" />
+                <ScalarProperty Name="BODY" ColumnName="BODY" />
+                <ScalarProperty Name="TMP" ColumnName="TMP" />
+                <ScalarProperty Name="TRK" ColumnName="TRK" />
+                <ScalarProperty Name="WIND" ColumnName="WIND" />
+                <ScalarProperty Name="ALT" ColumnName="ALT" />
+                <ScalarProperty Name="VIA" ColumnName="VIA" />
+                <ScalarProperty Name="WAP" ColumnName="WAP" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Long" ColumnName="Long" />
+                <ScalarProperty Name="Lat" ColumnName="Lat" />
+                <ScalarProperty Name="Plan" ColumnName="Plan" />
+                <ScalarProperty Name="OFPId" ColumnName="OFPId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,505 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="CrewVAModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="FlightInformation">
+          <Key>
+            <PropertyRef Name="DateUTC" />
+            <PropertyRef Name="FltNo" />
+            <PropertyRef Name="DepStn" />
+            <PropertyRef Name="ArrStn" />
+          </Key>
+          <Property Name="DateUTC" Type="date" Nullable="false" />
+          <Property Name="FltNo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="DepStn" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ArrStn" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ACType" Type="varchar" MaxLength="50" />
+          <Property Name="ACReg" Type="varchar" MaxLength="50" />
+          <Property Name="STD" Type="datetime" />
+          <Property Name="STA" Type="datetime" />
+          <Property Name="ATD" Type="datetime" />
+          <Property Name="ATA" Type="datetime" />
+          <Property Name="OffBlock" Type="datetime" />
+          <Property Name="OnBlock" Type="datetime" />
+          <Property Name="TakeOff" Type="datetime" />
+          <Property Name="OnRunway" Type="datetime" />
+          <Property Name="SaveTime" Type="datetime" />
+          <Property Name="PaxADL" Type="int" />
+          <Property Name="PaxCHD" Type="int" />
+          <Property Name="PaxINF" Type="int" />
+          <Property Name="TotalSeats" Type="int" />
+          <Property Name="OverPax" Type="int" />
+          <Property Name="FuelRemain" Type="float" />
+          <Property Name="FuelUpLift" Type="float" />
+          <Property Name="FuelDefuel" Type="float" />
+          <Property Name="FuelTotal" Type="float" />
+          <Property Name="FuelTaxi" Type="float" />
+          <Property Name="FuelTrip" Type="float" />
+          <Property Name="FuelUnit" Type="char" MaxLength="3" />
+          <Property Name="CargoWeight" Type="float" />
+          <Property Name="CargoPiece" Type="float" />
+          <Property Name="Baggage" Type="float" />
+          <Property Name="BagPiece" Type="float" />
+          <Property Name="ExtraBag" Type="float" />
+          <Property Name="ExtraBagPiece" Type="float" />
+          <Property Name="ExtraBagAmount" Type="float" />
+          <Property Name="CargoUnit" Type="char" MaxLength="3" />
+          <Property Name="FlightType" Type="varchar" MaxLength="50" />
+          <Property Name="FlightCharterer" Type="nvarchar" MaxLength="100" />
+          <Property Name="DelayReason" Type="nvarchar" MaxLength="500" />
+          <Property Name="Distance" Type="int" />
+          <Property Name="StationIncome" Type="int" />
+          <Property Name="CrewXML" Type="varchar" MaxLength="4000" />
+          <Property Name="PaxXML" Type="varchar" MaxLength="4000" />
+          <Property Name="DelayXML" Type="nvarchar" MaxLength="4000" />
+          <Property Name="ExtraXML" Type="nvarchar" MaxLength="4000" />
+          <Property Name="CargoXML" Type="nvarchar" MaxLength="4000" />
+          <Property Name="MaintenanceXML" Type="varchar" MaxLength="8000" />
+          <Property Name="Tag1" Type="nvarchar" MaxLength="50" />
+          <Property Name="Tag2" Type="nvarchar" MaxLength="50" />
+          <Property Name="Tag3" Type="nvarchar" MaxLength="50" />
+          <Property Name="Parking" Type="varchar" MaxLength="50" />
+          <Property Name="PAXStation" Type="int" />
+          <Property Name="StationIncomeCurrency" Type="varchar" MaxLength="50" />
+          <Property Name="AlternateStation" Type="varchar" MaxLength="50" />
+          <Property Name="Status" Type="varchar" MaxLength="50" />
+          <Property Name="UpdateUser" Type="varchar" MaxLength="50" />
+          <Property Name="UpdateTime" Type="datetime" />
+          <Property Name="SavingTime" Type="datetime" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="2000" />
+          <Property Name="Male" Type="int" />
+          <Property Name="Female" Type="int" />
+        </EntityType>
+        <EntityType Name="Leg">
+          <Key>
+            <PropertyRef Name="DateUTC" />
+            <PropertyRef Name="FltNo" />
+            <PropertyRef Name="DepStn" />
+            <PropertyRef Name="ArrStn" />
+          </Key>
+          <Property Name="DateUTC" Type="datetime" Nullable="false" />
+          <Property Name="FltNo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="DepStn" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ArrStn" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="DepTime" Type="datetime" />
+          <Property Name="ArrTime" Type="datetime" />
+          <Property Name="DepTimeLCL" Type="datetime" />
+          <Property Name="ArrTimeLCL" Type="datetime" />
+          <Property Name="STD" Type="datetime" />
+          <Property Name="STA" Type="datetime" />
+          <Property Name="STC" Type="varchar" MaxLength="50" />
+          <Property Name="ACType" Type="varchar" MaxLength="50" />
+          <Property Name="ACReg" Type="varchar" MaxLength="50" />
+          <Property Name="Flt" Type="varchar" MaxLength="4000" />
+          <Property Name="UpdateFlag" Type="varchar" MaxLength="200" />
+          <Property Name="ScheduleGroup" Type="varchar" MaxLength="200" />
+          <Property Name="TurnType" Type="varchar" MaxLength="200" />
+          <Property Name="RouteType" Type="char" MaxLength="10" />
+          <Property Name="LegDesc" Type="varchar" MaxLength="50" />
+          <Property Name="Change" Type="varchar" MaxLength="50" />
+          <Property Name="Importance" Type="int" />
+          <Property Name="LastUpdateTime" Type="datetime" />
+          <Property Name="LastUpdateScher" Type="varchar" MaxLength="200" />
+          <Property Name="Comment" Type="nvarchar" MaxLength="250" />
+          <Property Name="FltGroup" Type="varchar" MaxLength="50" />
+          <Property Name="StandardTime" Type="datetime" />
+          <Property Name="Holyday" Type="bit" />
+          <Property Name="HolydayName" Type="nvarchar" MaxLength="50" />
+          <Property Name="NormalCorrectedTime" Type="datetime" />
+          <Property Name="ChangedCorrectedTime" Type="datetime" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'CrewVA.dbo.LegAssign' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="LegAssign">
+          <Key>
+            <PropertyRef Name="Route" />
+            <PropertyRef Name="Crew" />
+            <PropertyRef Name="Pos" />
+            <PropertyRef Name="DateUTC" />
+            <PropertyRef Name="FltNo" />
+            <PropertyRef Name="DepStn" />
+            <PropertyRef Name="ArrStn" />
+            <PropertyRef Name="Status" />
+          </Key>
+          <Property Name="Route" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Crew" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Pos" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Rank" Type="varchar" MaxLength="50" />
+          <Property Name="TurnType" Type="varchar" MaxLength="200" />
+          <Property Name="ScheduleGroup" Type="varchar" MaxLength="200" />
+          <Property Name="Scheduler" Type="varchar" MaxLength="50" />
+          <Property Name="DateUTC" Type="datetime" Nullable="false" />
+          <Property Name="FltNo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="DepStn" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ArrStn" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="DepTime" Type="datetime" />
+          <Property Name="ArrTime" Type="datetime" />
+          <Property Name="ACType" Type="varchar" MaxLength="50" />
+          <Property Name="ACReg" Type="varchar" MaxLength="50" />
+          <Property Name="Flt" Type="varchar" MaxLength="4000" />
+          <Property Name="RouteType" Type="char" MaxLength="10" />
+          <Property Name="JobType" Type="varchar" MaxLength="50" />
+          <Property Name="DepTimeLCL" Type="datetime" />
+          <Property Name="ArrTimeLCL" Type="datetime" />
+          <Property Name="Change" Type="varchar" MaxLength="50" />
+          <Property Name="StandardTime" Type="datetime" />
+          <Property Name="Status" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Expr1" Type="varchar" MaxLength="50" />
+          <Property Name="OffBlock" Type="datetime" />
+          <Property Name="OnBlock" Type="datetime" />
+        </EntityType>
+        <EntityContainer Name="CrewVAModelStoreContainer">
+          <EntitySet Name="FlightInformation" EntityType="Self.FlightInformation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Leg" EntityType="Self.Leg" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LegAssign" EntityType="Self.LegAssign" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [LegAssign].[Route] AS [Route], 
+    [LegAssign].[Crew] AS [Crew], 
+    [LegAssign].[Pos] AS [Pos], 
+    [LegAssign].[Rank] AS [Rank], 
+    [LegAssign].[TurnType] AS [TurnType], 
+    [LegAssign].[ScheduleGroup] AS [ScheduleGroup], 
+    [LegAssign].[Scheduler] AS [Scheduler], 
+    [LegAssign].[DateUTC] AS [DateUTC], 
+    [LegAssign].[FltNo] AS [FltNo], 
+    [LegAssign].[DepStn] AS [DepStn], 
+    [LegAssign].[ArrStn] AS [ArrStn], 
+    [LegAssign].[DepTime] AS [DepTime], 
+    [LegAssign].[ArrTime] AS [ArrTime], 
+    [LegAssign].[ACType] AS [ACType], 
+    [LegAssign].[ACReg] AS [ACReg], 
+    [LegAssign].[Flt] AS [Flt], 
+    [LegAssign].[RouteType] AS [RouteType], 
+    [LegAssign].[JobType] AS [JobType], 
+    [LegAssign].[DepTimeLCL] AS [DepTimeLCL], 
+    [LegAssign].[ArrTimeLCL] AS [ArrTimeLCL], 
+    [LegAssign].[Change] AS [Change], 
+    [LegAssign].[StandardTime] AS [StandardTime], 
+    [LegAssign].[Status] AS [Status], 
+    [LegAssign].[Expr1] AS [Expr1], 
+    [LegAssign].[OffBlock] AS [OffBlock], 
+    [LegAssign].[OnBlock] AS [OnBlock]
+    FROM [dbo].[LegAssign] AS [LegAssign]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CrewVAModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="FlightInformation">
+          <Key>
+            <PropertyRef Name="DateUTC" />
+            <PropertyRef Name="FltNo" />
+            <PropertyRef Name="DepStn" />
+            <PropertyRef Name="ArrStn" />
+          </Key>
+          <Property Name="DateUTC" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="FltNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DepStn" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ArrStn" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ACType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ACReg" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="STD" Type="DateTime" Precision="3" />
+          <Property Name="STA" Type="DateTime" Precision="3" />
+          <Property Name="ATD" Type="DateTime" Precision="3" />
+          <Property Name="ATA" Type="DateTime" Precision="3" />
+          <Property Name="OffBlock" Type="DateTime" Precision="3" />
+          <Property Name="OnBlock" Type="DateTime" Precision="3" />
+          <Property Name="TakeOff" Type="DateTime" Precision="3" />
+          <Property Name="OnRunway" Type="DateTime" Precision="3" />
+          <Property Name="SaveTime" Type="DateTime" Precision="3" />
+          <Property Name="PaxADL" Type="Int32" />
+          <Property Name="PaxCHD" Type="Int32" />
+          <Property Name="PaxINF" Type="Int32" />
+          <Property Name="TotalSeats" Type="Int32" />
+          <Property Name="OverPax" Type="Int32" />
+          <Property Name="FuelRemain" Type="Double" />
+          <Property Name="FuelUpLift" Type="Double" />
+          <Property Name="FuelDefuel" Type="Double" />
+          <Property Name="FuelTotal" Type="Double" />
+          <Property Name="FuelTaxi" Type="Double" />
+          <Property Name="FuelTrip" Type="Double" />
+          <Property Name="FuelUnit" Type="String" MaxLength="3" FixedLength="true" Unicode="false" />
+          <Property Name="CargoWeight" Type="Double" />
+          <Property Name="CargoPiece" Type="Double" />
+          <Property Name="Baggage" Type="Double" />
+          <Property Name="BagPiece" Type="Double" />
+          <Property Name="ExtraBag" Type="Double" />
+          <Property Name="ExtraBagPiece" Type="Double" />
+          <Property Name="ExtraBagAmount" Type="Double" />
+          <Property Name="CargoUnit" Type="String" MaxLength="3" FixedLength="true" Unicode="false" />
+          <Property Name="FlightType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FlightCharterer" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DelayReason" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Distance" Type="Int32" />
+          <Property Name="StationIncome" Type="Int32" />
+          <Property Name="CrewXML" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Name="PaxXML" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Name="DelayXML" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="ExtraXML" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="CargoXML" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="MaintenanceXML" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
+          <Property Name="Tag1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Tag2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Tag3" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Parking" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PAXStation" Type="Int32" />
+          <Property Name="StationIncomeCurrency" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AlternateStation" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UpdateUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UpdateTime" Type="DateTime" Precision="3" />
+          <Property Name="SavingTime" Type="DateTime" Precision="3" />
+          <Property Name="Remark" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="Male" Type="Int32" />
+          <Property Name="Female" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Leg">
+          <Key>
+            <PropertyRef Name="DateUTC" />
+            <PropertyRef Name="FltNo" />
+            <PropertyRef Name="DepStn" />
+            <PropertyRef Name="ArrStn" />
+          </Key>
+          <Property Name="DateUTC" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="FltNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DepStn" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ArrStn" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DepTime" Type="DateTime" Precision="3" />
+          <Property Name="ArrTime" Type="DateTime" Precision="3" />
+          <Property Name="DepTimeLCL" Type="DateTime" Precision="3" />
+          <Property Name="ArrTimeLCL" Type="DateTime" Precision="3" />
+          <Property Name="STD" Type="DateTime" Precision="3" />
+          <Property Name="STA" Type="DateTime" Precision="3" />
+          <Property Name="STC" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ACType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ACReg" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Flt" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Name="UpdateFlag" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="ScheduleGroup" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="TurnType" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="RouteType" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="LegDesc" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Change" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Importance" Type="Int32" />
+          <Property Name="LastUpdateTime" Type="DateTime" Precision="3" />
+          <Property Name="LastUpdateScher" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Comment" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="FltGroup" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="StandardTime" Type="DateTime" Precision="3" />
+          <Property Name="Holyday" Type="Boolean" />
+          <Property Name="HolydayName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NormalCorrectedTime" Type="DateTime" Precision="3" />
+          <Property Name="ChangedCorrectedTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="LegAssign">
+          <Key>
+            <PropertyRef Name="Route" />
+            <PropertyRef Name="Crew" />
+            <PropertyRef Name="Pos" />
+            <PropertyRef Name="DateUTC" />
+            <PropertyRef Name="FltNo" />
+            <PropertyRef Name="DepStn" />
+            <PropertyRef Name="ArrStn" />
+            <PropertyRef Name="Status" />
+          </Key>
+          <Property Name="Route" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Crew" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Pos" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Rank" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TurnType" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="ScheduleGroup" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Scheduler" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DateUTC" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="FltNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DepStn" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ArrStn" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DepTime" Type="DateTime" Precision="3" />
+          <Property Name="ArrTime" Type="DateTime" Precision="3" />
+          <Property Name="ACType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ACReg" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Flt" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Name="RouteType" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="JobType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DepTimeLCL" Type="DateTime" Precision="3" />
+          <Property Name="ArrTimeLCL" Type="DateTime" Precision="3" />
+          <Property Name="Change" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="StandardTime" Type="DateTime" Precision="3" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Expr1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="OffBlock" Type="DateTime" Precision="3" />
+          <Property Name="OnBlock" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityContainer Name="CrewVAEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="FlightInformations" EntityType="Self.FlightInformation" />
+          <EntitySet Name="Legs" EntityType="Self.Leg" />
+          <EntitySet Name="LegAssigns" EntityType="Self.LegAssign" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CrewVAModelStoreContainer" CdmEntityContainer="CrewVAEntities">
+          <EntitySetMapping Name="FlightInformations">
+            <EntityTypeMapping TypeName="CrewVAModel.FlightInformation">
+              <MappingFragment StoreEntitySet="FlightInformation">
+                <ScalarProperty Name="DateUTC" ColumnName="DateUTC" />
+                <ScalarProperty Name="FltNo" ColumnName="FltNo" />
+                <ScalarProperty Name="DepStn" ColumnName="DepStn" />
+                <ScalarProperty Name="ArrStn" ColumnName="ArrStn" />
+                <ScalarProperty Name="ACType" ColumnName="ACType" />
+                <ScalarProperty Name="ACReg" ColumnName="ACReg" />
+                <ScalarProperty Name="STD" ColumnName="STD" />
+                <ScalarProperty Name="STA" ColumnName="STA" />
+                <ScalarProperty Name="ATD" ColumnName="ATD" />
+                <ScalarProperty Name="ATA" ColumnName="ATA" />
+                <ScalarProperty Name="OffBlock" ColumnName="OffBlock" />
+                <ScalarProperty Name="OnBlock" ColumnName="OnBlock" />
+                <ScalarProperty Name="TakeOff" ColumnName="TakeOff" />
+                <ScalarProperty Name="OnRunway" ColumnName="OnRunway" />
+                <ScalarProperty Name="SaveTime" ColumnName="SaveTime" />
+                <ScalarProperty Name="PaxADL" ColumnName="PaxADL" />
+                <ScalarProperty Name="PaxCHD" ColumnName="PaxCHD" />
+                <ScalarProperty Name="PaxINF" ColumnName="PaxINF" />
+                <ScalarProperty Name="TotalSeats" ColumnName="TotalSeats" />
+                <ScalarProperty Name="OverPax" ColumnName="OverPax" />
+                <ScalarProperty Name="FuelRemain" ColumnName="FuelRemain" />
+                <ScalarProperty Name="FuelUpLift" ColumnName="FuelUpLift" />
+                <ScalarProperty Name="FuelDefuel" ColumnName="FuelDefuel" />
+                <ScalarProperty Name="FuelTotal" ColumnName="FuelTotal" />
+                <ScalarProperty Name="FuelTaxi" ColumnName="FuelTaxi" />
+                <ScalarProperty Name="FuelTrip" ColumnName="FuelTrip" />
+                <ScalarProperty Name="FuelUnit" ColumnName="FuelUnit" />
+                <ScalarProperty Name="CargoWeight" ColumnName="CargoWeight" />
+                <ScalarProperty Name="CargoPiece" ColumnName="CargoPiece" />
+                <ScalarProperty Name="Baggage" ColumnName="Baggage" />
+                <ScalarProperty Name="BagPiece" ColumnName="BagPiece" />
+                <ScalarProperty Name="ExtraBag" ColumnName="ExtraBag" />
+                <ScalarProperty Name="ExtraBagPiece" ColumnName="ExtraBagPiece" />
+                <ScalarProperty Name="ExtraBagAmount" ColumnName="ExtraBagAmount" />
+                <ScalarProperty Name="CargoUnit" ColumnName="CargoUnit" />
+                <ScalarProperty Name="FlightType" ColumnName="FlightType" />
+                <ScalarProperty Name="FlightCharterer" ColumnName="FlightCharterer" />
+                <ScalarProperty Name="DelayReason" ColumnName="DelayReason" />
+                <ScalarProperty Name="Distance" ColumnName="Distance" />
+                <ScalarProperty Name="StationIncome" ColumnName="StationIncome" />
+                <ScalarProperty Name="CrewXML" ColumnName="CrewXML" />
+                <ScalarProperty Name="PaxXML" ColumnName="PaxXML" />
+                <ScalarProperty Name="DelayXML" ColumnName="DelayXML" />
+                <ScalarProperty Name="ExtraXML" ColumnName="ExtraXML" />
+                <ScalarProperty Name="CargoXML" ColumnName="CargoXML" />
+                <ScalarProperty Name="MaintenanceXML" ColumnName="MaintenanceXML" />
+                <ScalarProperty Name="Tag1" ColumnName="Tag1" />
+                <ScalarProperty Name="Tag2" ColumnName="Tag2" />
+                <ScalarProperty Name="Tag3" ColumnName="Tag3" />
+                <ScalarProperty Name="Parking" ColumnName="Parking" />
+                <ScalarProperty Name="PAXStation" ColumnName="PAXStation" />
+                <ScalarProperty Name="StationIncomeCurrency" ColumnName="StationIncomeCurrency" />
+                <ScalarProperty Name="AlternateStation" ColumnName="AlternateStation" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="UpdateUser" ColumnName="UpdateUser" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="SavingTime" ColumnName="SavingTime" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="Male" ColumnName="Male" />
+                <ScalarProperty Name="Female" ColumnName="Female" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Legs">
+            <EntityTypeMapping TypeName="CrewVAModel.Leg">
+              <MappingFragment StoreEntitySet="Leg">
+                <ScalarProperty Name="DateUTC" ColumnName="DateUTC" />
+                <ScalarProperty Name="FltNo" ColumnName="FltNo" />
+                <ScalarProperty Name="DepStn" ColumnName="DepStn" />
+                <ScalarProperty Name="ArrStn" ColumnName="ArrStn" />
+                <ScalarProperty Name="DepTime" ColumnName="DepTime" />
+                <ScalarProperty Name="ArrTime" ColumnName="ArrTime" />
+                <ScalarProperty Name="DepTimeLCL" ColumnName="DepTimeLCL" />
+                <ScalarProperty Name="ArrTimeLCL" ColumnName="ArrTimeLCL" />
+                <ScalarProperty Name="STD" ColumnName="STD" />
+                <ScalarProperty Name="STA" ColumnName="STA" />
+                <ScalarProperty Name="STC" ColumnName="STC" />
+                <ScalarProperty Name="ACType" ColumnName="ACType" />
+                <ScalarProperty Name="ACReg" ColumnName="ACReg" />
+                <ScalarProperty Name="Flt" ColumnName="Flt" />
+                <ScalarProperty Name="UpdateFlag" ColumnName="UpdateFlag" />
+                <ScalarProperty Name="ScheduleGroup" ColumnName="ScheduleGroup" />
+                <ScalarProperty Name="TurnType" ColumnName="TurnType" />
+                <ScalarProperty Name="RouteType" ColumnName="RouteType" />
+                <ScalarProperty Name="LegDesc" ColumnName="LegDesc" />
+                <ScalarProperty Name="Change" ColumnName="Change" />
+                <ScalarProperty Name="Importance" ColumnName="Importance" />
+                <ScalarProperty Name="LastUpdateTime" ColumnName="LastUpdateTime" />
+                <ScalarProperty Name="LastUpdateScher" ColumnName="LastUpdateScher" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="FltGroup" ColumnName="FltGroup" />
+                <ScalarProperty Name="StandardTime" ColumnName="StandardTime" />
+                <ScalarProperty Name="Holyday" ColumnName="Holyday" />
+                <ScalarProperty Name="HolydayName" ColumnName="HolydayName" />
+                <ScalarProperty Name="NormalCorrectedTime" ColumnName="NormalCorrectedTime" />
+                <ScalarProperty Name="ChangedCorrectedTime" ColumnName="ChangedCorrectedTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LegAssigns">
+            <EntityTypeMapping TypeName="CrewVAModel.LegAssign">
+              <MappingFragment StoreEntitySet="LegAssign">
+                <ScalarProperty Name="Route" ColumnName="Route" />
+                <ScalarProperty Name="Crew" ColumnName="Crew" />
+                <ScalarProperty Name="Pos" ColumnName="Pos" />
+                <ScalarProperty Name="Rank" ColumnName="Rank" />
+                <ScalarProperty Name="TurnType" ColumnName="TurnType" />
+                <ScalarProperty Name="ScheduleGroup" ColumnName="ScheduleGroup" />
+                <ScalarProperty Name="Scheduler" ColumnName="Scheduler" />
+                <ScalarProperty Name="DateUTC" ColumnName="DateUTC" />
+                <ScalarProperty Name="FltNo" ColumnName="FltNo" />
+                <ScalarProperty Name="DepStn" ColumnName="DepStn" />
+                <ScalarProperty Name="ArrStn" ColumnName="ArrStn" />
+                <ScalarProperty Name="DepTime" ColumnName="DepTime" />
+                <ScalarProperty Name="ArrTime" ColumnName="ArrTime" />
+                <ScalarProperty Name="ACType" ColumnName="ACType" />
+                <ScalarProperty Name="ACReg" ColumnName="ACReg" />
+                <ScalarProperty Name="Flt" ColumnName="Flt" />
+                <ScalarProperty Name="RouteType" ColumnName="RouteType" />
+                <ScalarProperty Name="JobType" ColumnName="JobType" />
+                <ScalarProperty Name="DepTimeLCL" ColumnName="DepTimeLCL" />
+                <ScalarProperty Name="ArrTimeLCL" ColumnName="ArrTimeLCL" />
+                <ScalarProperty Name="Change" ColumnName="Change" />
+                <ScalarProperty Name="StandardTime" ColumnName="StandardTime" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Expr1" ColumnName="Expr1" />
+                <ScalarProperty Name="OffBlock" ColumnName="OffBlock" />
+                <ScalarProperty Name="OnBlock" ColumnName="OnBlock" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,742 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ppaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="crm_crew_score">
+          <Key>
+            <PropertyRef Name="flight_pax_id" />
+            <PropertyRef Name="crew_id" />
+          </Key>
+          <Property Name="flight_pax_id" Type="int" Nullable="false" />
+          <Property Name="crew_id" Type="int" Nullable="false" />
+          <Property Name="score" Type="int" />
+          <Property Name="remark" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="crm_pax">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="first_name" Type="nvarchar" MaxLength="500" />
+          <Property Name="last_name" Type="nvarchar" MaxLength="500" />
+          <Property Name="nid" Type="nvarchar" MaxLength="500" />
+          <Property Name="date_birth" Type="nvarchar" MaxLength="500" />
+          <Property Name="ticket_no" Type="nvarchar" MaxLength="1000" />
+          <Property Name="remark" Type="nvarchar" MaxLength="1000" />
+          <Property Name="first_name2" Type="nvarchar" MaxLength="500" />
+          <Property Name="last_name2" Type="nvarchar" MaxLength="500" />
+          <Property Name="passport_no" Type="nvarchar" MaxLength="500" />
+          <Property Name="age" Type="int" />
+          <Property Name="sex_id" Type="int" />
+          <Property Name="mobile" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="crm_pax_flight">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="flight_id" Type="int" />
+          <Property Name="passenger_id" Type="int" />
+          <Property Name="date_send" Type="datetime2" Precision="7" />
+          <Property Name="ref_id" Type="varchar" MaxLength="500" />
+          <Property Name="status" Type="varchar" MaxLength="500" />
+          <Property Name="comments" Type="nvarchar" MaxLength="2000" />
+          <Property Name="date_result" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="crm_question">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="question" Type="nvarchar" MaxLength="2000" />
+          <Property Name="type" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="crm_question_result">
+          <Key>
+            <PropertyRef Name="flight_pax_id" />
+            <PropertyRef Name="question_id" />
+          </Key>
+          <Property Name="flight_pax_id" Type="int" Nullable="false" />
+          <Property Name="question_id" Type="int" Nullable="false" />
+          <Property Name="score" Type="int" />
+          <Property Name="remark" Type="nvarchar" MaxLength="1000" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.view_crew_score' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_crew_score">
+          <Key>
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="NID" />
+            <PropertyRef Name="GroupOrder" />
+            <PropertyRef Name="JobGroup" />
+          </Key>
+          <Property Name="flight_id" Type="int" />
+          <Property Name="crew_id" Type="int" />
+          <Property Name="Position" Type="varchar" MaxLength="255" />
+          <Property Name="Name" Type="nvarchar" MaxLength="1001" Nullable="false" />
+          <Property Name="PFirstName" Type="nvarchar" MaxLength="500" />
+          <Property Name="PLastName" Type="nvarchar" MaxLength="500" />
+          <Property Name="PName" Type="nvarchar" MaxLength="1001" />
+          <Property Name="NID" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="GroupOrder" Type="int" Nullable="false" />
+          <Property Name="JobGroup" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="flight_pax_id" Type="int" />
+          <Property Name="score" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.view_crm_pax_flight' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_crm_pax_flight">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="flight_id" Type="int" />
+          <Property Name="passenger_id" Type="int" />
+          <Property Name="date_send" Type="datetime2" Precision="7" />
+          <Property Name="ref_id" Type="varchar" MaxLength="500" />
+          <Property Name="status" Type="varchar" MaxLength="500" />
+          <Property Name="first_name" Type="nvarchar" MaxLength="500" />
+          <Property Name="last_name" Type="nvarchar" MaxLength="500" />
+          <Property Name="nid" Type="nvarchar" MaxLength="500" />
+          <Property Name="first_name2" Type="nvarchar" MaxLength="500" />
+          <Property Name="last_name2" Type="nvarchar" MaxLength="500" />
+          <Property Name="sex_id" Type="int" />
+          <Property Name="mobile" Type="varchar" MaxLength="500" />
+          <Property Name="flight_no" Type="nvarchar" MaxLength="50" />
+          <Property Name="dep_id" Type="int" />
+          <Property Name="arr_id" Type="int" />
+          <Property Name="flight_date" Type="date" />
+          <Property Name="flight_date_local" Type="date" />
+          <Property Name="std" Type="datetime" />
+          <Property Name="std_local" Type="datetime" />
+          <Property Name="sta" Type="datetime" />
+          <Property Name="sta_local" Type="datetime" />
+          <Property Name="offblock" Type="datetime" />
+          <Property Name="takeoff" Type="datetime" />
+          <Property Name="landing" Type="datetime" />
+          <Property Name="onblock" Type="datetime" />
+          <Property Name="dep_iata" Type="nvarchar" MaxLength="255" />
+          <Property Name="dep_name" Type="nvarchar" MaxLength="500" />
+          <Property Name="arr_iata" Type="nvarchar" MaxLength="255" />
+          <Property Name="arr_name" Type="nvarchar" MaxLength="500" />
+          <Property Name="pdate" Type="nvarchar" MaxLength="500" />
+          <Property Name="pdayname" Type="nvarchar" MaxLength="255" />
+          <Property Name="comments" Type="nvarchar" MaxLength="2000" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="XFlightCrew">
+          <Key>
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="NID" />
+            <PropertyRef Name="JobGroupCode" />
+            <PropertyRef Name="JobGroup" />
+            <PropertyRef Name="SexId" />
+            <PropertyRef Name="GroupOrder" />
+            <PropertyRef Name="IsCockpit" />
+          </Key>
+          <Property Name="CrewId" Type="int" />
+          <Property Name="FlightId" Type="int" />
+          <Property Name="IsPositioning" Type="bit" />
+          <Property Name="PositionId" Type="int" />
+          <Property Name="Position" Type="varchar" MaxLength="255" />
+          <Property Name="Name" Type="nvarchar" MaxLength="1001" Nullable="false" />
+          <Property Name="PFirstName" Type="nvarchar" MaxLength="500" />
+          <Property Name="PLastName" Type="nvarchar" MaxLength="500" />
+          <Property Name="PName" Type="nvarchar" MaxLength="1001" />
+          <Property Name="NID" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Mobile" Type="nvarchar" MaxLength="500" />
+          <Property Name="ScheduleName" Type="varchar" MaxLength="500" />
+          <Property Name="GroupId" Type="int" />
+          <Property Name="JobGroupCode" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="JobGroup" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="SexId" Type="int" Nullable="false" />
+          <Property Name="Sex" Type="nvarchar" MaxLength="500" />
+          <Property Name="GroupOrder" Type="int" Nullable="false" />
+          <Property Name="IsCockpit" Type="int" Nullable="false" />
+          <Property Name="Code" Type="varchar" MaxLength="500" />
+          <Property Name="DateConfirmed" Type="datetime" />
+          <Property Name="IsConfirmed" Type="bit" />
+        </EntityType>
+        <Association Name="fk_fpax_pax">
+          <End Role="crm_pax" Type="Self.crm_pax" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="crm_pax_flight" Type="Self.crm_pax_flight" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="crm_pax">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="crm_pax_flight">
+              <PropertyRef Name="passenger_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_fpcs_fpax">
+          <End Role="crm_pax_flight" Type="Self.crm_pax_flight" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="crm_crew_score" Type="Self.crm_crew_score" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="crm_pax_flight">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="crm_crew_score">
+              <PropertyRef Name="flight_pax_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_qr_fp">
+          <End Role="crm_pax_flight" Type="Self.crm_pax_flight" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="crm_question_result" Type="Self.crm_question_result" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="crm_pax_flight">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="crm_question_result">
+              <PropertyRef Name="flight_pax_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_qr_q">
+          <End Role="crm_question" Type="Self.crm_question" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="crm_question_result" Type="Self.crm_question_result" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="crm_question">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="crm_question_result">
+              <PropertyRef Name="question_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ppaModelStoreContainer">
+          <EntitySet Name="crm_crew_score" EntityType="Self.crm_crew_score" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="crm_pax" EntityType="Self.crm_pax" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="crm_pax_flight" EntityType="Self.crm_pax_flight" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="crm_question" EntityType="Self.crm_question" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="crm_question_result" EntityType="Self.crm_question_result" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="view_crew_score" EntityType="Self.view_crew_score" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_crew_score].[flight_id] AS [flight_id], 
+    [view_crew_score].[crew_id] AS [crew_id], 
+    [view_crew_score].[Position] AS [Position], 
+    [view_crew_score].[Name] AS [Name], 
+    [view_crew_score].[PFirstName] AS [PFirstName], 
+    [view_crew_score].[PLastName] AS [PLastName], 
+    [view_crew_score].[PName] AS [PName], 
+    [view_crew_score].[NID] AS [NID], 
+    [view_crew_score].[GroupOrder] AS [GroupOrder], 
+    [view_crew_score].[JobGroup] AS [JobGroup], 
+    [view_crew_score].[flight_pax_id] AS [flight_pax_id], 
+    [view_crew_score].[score] AS [score]
+    FROM [dbo].[view_crew_score] AS [view_crew_score]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="view_crm_pax_flight" EntityType="Self.view_crm_pax_flight" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_crm_pax_flight].[id] AS [id], 
+    [view_crm_pax_flight].[flight_id] AS [flight_id], 
+    [view_crm_pax_flight].[passenger_id] AS [passenger_id], 
+    [view_crm_pax_flight].[date_send] AS [date_send], 
+    [view_crm_pax_flight].[ref_id] AS [ref_id], 
+    [view_crm_pax_flight].[status] AS [status], 
+    [view_crm_pax_flight].[first_name] AS [first_name], 
+    [view_crm_pax_flight].[last_name] AS [last_name], 
+    [view_crm_pax_flight].[nid] AS [nid], 
+    [view_crm_pax_flight].[first_name2] AS [first_name2], 
+    [view_crm_pax_flight].[last_name2] AS [last_name2], 
+    [view_crm_pax_flight].[sex_id] AS [sex_id], 
+    [view_crm_pax_flight].[mobile] AS [mobile], 
+    [view_crm_pax_flight].[flight_no] AS [flight_no], 
+    [view_crm_pax_flight].[dep_id] AS [dep_id], 
+    [view_crm_pax_flight].[arr_id] AS [arr_id], 
+    [view_crm_pax_flight].[flight_date] AS [flight_date], 
+    [view_crm_pax_flight].[flight_date_local] AS [flight_date_local], 
+    [view_crm_pax_flight].[std] AS [std], 
+    [view_crm_pax_flight].[std_local] AS [std_local], 
+    [view_crm_pax_flight].[sta] AS [sta], 
+    [view_crm_pax_flight].[sta_local] AS [sta_local], 
+    [view_crm_pax_flight].[offblock] AS [offblock], 
+    [view_crm_pax_flight].[takeoff] AS [takeoff], 
+    [view_crm_pax_flight].[landing] AS [landing], 
+    [view_crm_pax_flight].[onblock] AS [onblock], 
+    [view_crm_pax_flight].[dep_iata] AS [dep_iata], 
+    [view_crm_pax_flight].[dep_name] AS [dep_name], 
+    [view_crm_pax_flight].[arr_iata] AS [arr_iata], 
+    [view_crm_pax_flight].[arr_name] AS [arr_name], 
+    [view_crm_pax_flight].[pdate] AS [pdate], 
+    [view_crm_pax_flight].[pdayname] AS [pdayname], 
+    [view_crm_pax_flight].[comments] AS [comments]
+    FROM [dbo].[view_crm_pax_flight] AS [view_crm_pax_flight]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="XFlightCrew" EntityType="Self.XFlightCrew" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [XFlightCrew].[CrewId] AS [CrewId], 
+    [XFlightCrew].[FlightId] AS [FlightId], 
+    [XFlightCrew].[IsPositioning] AS [IsPositioning], 
+    [XFlightCrew].[PositionId] AS [PositionId], 
+    [XFlightCrew].[Position] AS [Position], 
+    [XFlightCrew].[Name] AS [Name], 
+    [XFlightCrew].[PFirstName] AS [PFirstName], 
+    [XFlightCrew].[PLastName] AS [PLastName], 
+    [XFlightCrew].[PName] AS [PName], 
+    [XFlightCrew].[NID] AS [NID], 
+    [XFlightCrew].[Mobile] AS [Mobile], 
+    [XFlightCrew].[ScheduleName] AS [ScheduleName], 
+    [XFlightCrew].[GroupId] AS [GroupId], 
+    [XFlightCrew].[JobGroupCode] AS [JobGroupCode], 
+    [XFlightCrew].[JobGroup] AS [JobGroup], 
+    [XFlightCrew].[SexId] AS [SexId], 
+    [XFlightCrew].[Sex] AS [Sex], 
+    [XFlightCrew].[GroupOrder] AS [GroupOrder], 
+    [XFlightCrew].[IsCockpit] AS [IsCockpit], 
+    [XFlightCrew].[Code] AS [Code], 
+    [XFlightCrew].[DateConfirmed] AS [DateConfirmed], 
+    [XFlightCrew].[IsConfirmed] AS [IsConfirmed]
+    FROM [dbo].[XFlightCrew] AS [XFlightCrew]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="fk_fpax_pax" Association="Self.fk_fpax_pax">
+            <End Role="crm_pax" EntitySet="crm_pax" />
+            <End Role="crm_pax_flight" EntitySet="crm_pax_flight" />
+          </AssociationSet>
+          <AssociationSet Name="fk_fpcs_fpax" Association="Self.fk_fpcs_fpax">
+            <End Role="crm_pax_flight" EntitySet="crm_pax_flight" />
+            <End Role="crm_crew_score" EntitySet="crm_crew_score" />
+          </AssociationSet>
+          <AssociationSet Name="fk_qr_fp" Association="Self.fk_qr_fp">
+            <End Role="crm_pax_flight" EntitySet="crm_pax_flight" />
+            <End Role="crm_question_result" EntitySet="crm_question_result" />
+          </AssociationSet>
+          <AssociationSet Name="fk_qr_q" Association="Self.fk_qr_q">
+            <End Role="crm_question" EntitySet="crm_question" />
+            <End Role="crm_question_result" EntitySet="crm_question_result" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ppaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="ppa_entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="crm_pax" EntityType="ppaModel.crm_pax" />
+          <EntitySet Name="XFlightCrews" EntityType="ppaModel.XFlightCrew" />
+          <EntitySet Name="view_crew_score" EntityType="ppaModel.view_crew_score" />
+          <EntitySet Name="crm_crew_score" EntityType="ppaModel.crm_crew_score" />
+          <EntitySet Name="crm_question" EntityType="ppaModel.crm_question" />
+          <EntitySet Name="view_crm_pax_flight" EntityType="ppaModel.view_crm_pax_flight" />
+          <EntitySet Name="crm_pax_flight" EntityType="ppaModel.crm_pax_flight" />
+          <AssociationSet Name="fk_fpcs_fpax" Association="ppaModel.fk_fpcs_fpax">
+            <End Role="crm_pax_flight" EntitySet="crm_pax_flight" />
+            <End Role="crm_crew_score" EntitySet="crm_crew_score" />
+          </AssociationSet>
+          <AssociationSet Name="fk_fpax_pax" Association="ppaModel.fk_fpax_pax">
+            <End Role="crm_pax" EntitySet="crm_pax" />
+            <End Role="crm_pax_flight" EntitySet="crm_pax_flight" />
+          </AssociationSet>
+          <EntitySet Name="crm_question_result" EntityType="ppaModel.crm_question_result" />
+          <AssociationSet Name="fk_qr_fp" Association="ppaModel.fk_qr_fp">
+            <End Role="crm_pax_flight" EntitySet="crm_pax_flight" />
+            <End Role="crm_question_result" EntitySet="crm_question_result" />
+          </AssociationSet>
+          <AssociationSet Name="fk_qr_q" Association="ppaModel.fk_qr_q">
+            <End Role="crm_question" EntitySet="crm_question" />
+            <End Role="crm_question_result" EntitySet="crm_question_result" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="crm_pax">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="first_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="last_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="nid" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="date_birth" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ticket_no" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="remark" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="first_name2" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="last_name2" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="passport_no" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="age" Type="Int32" />
+          <Property Name="sex_id" Type="Int32" />
+          <Property Name="mobile" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="crm_pax_flight" Relationship="ppaModel.fk_fpax_pax" FromRole="crm_pax" ToRole="crm_pax_flight" />
+        </EntityType>
+        <EntityType Name="XFlightCrew">
+          <Key>
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="NID" />
+            <PropertyRef Name="JobGroupCode" />
+            <PropertyRef Name="JobGroup" />
+            <PropertyRef Name="SexId" />
+            <PropertyRef Name="GroupOrder" />
+            <PropertyRef Name="IsCockpit" />
+          </Key>
+          <Property Name="CrewId" Type="Int32" />
+          <Property Name="FlightId" Type="Int32" />
+          <Property Name="IsPositioning" Type="Boolean" />
+          <Property Name="PositionId" Type="Int32" />
+          <Property Name="Position" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="PFirstName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="PLastName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="PName" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="NID" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Mobile" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ScheduleName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="GroupId" Type="Int32" />
+          <Property Name="JobGroupCode" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="JobGroup" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="SexId" Type="Int32" Nullable="false" />
+          <Property Name="Sex" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="GroupOrder" Type="Int32" Nullable="false" />
+          <Property Name="IsCockpit" Type="Int32" Nullable="false" />
+          <Property Name="Code" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="DateConfirmed" Type="DateTime" Precision="3" />
+          <Property Name="IsConfirmed" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="view_crew_score">
+          <Key>
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="NID" />
+            <PropertyRef Name="GroupOrder" />
+            <PropertyRef Name="JobGroup" />
+          </Key>
+          <Property Name="flight_id" Type="Int32" />
+          <Property Name="crew_id" Type="Int32" />
+          <Property Name="Position" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="PFirstName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="PLastName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="PName" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="NID" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="GroupOrder" Type="Int32" Nullable="false" />
+          <Property Name="JobGroup" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="flight_pax_id" Type="Int32" />
+          <Property Name="score" Type="Int32" />
+        </EntityType>
+        <EntityType Name="crm_crew_score">
+          <Key>
+            <PropertyRef Name="flight_pax_id" />
+            <PropertyRef Name="crew_id" />
+          </Key>
+          <Property Name="flight_pax_id" Type="Int32" Nullable="false" />
+          <Property Name="crew_id" Type="Int32" Nullable="false" />
+          <Property Name="score" Type="Int32" />
+          <Property Name="remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="crm_pax_flight" Relationship="ppaModel.fk_fpcs_fpax" FromRole="crm_crew_score" ToRole="crm_pax_flight" />
+        </EntityType>
+        <EntityType Name="crm_question">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="question" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="type" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="crm_question_result" Relationship="ppaModel.fk_qr_q" FromRole="crm_question" ToRole="crm_question_result" />
+        </EntityType>
+        <EntityType Name="view_crm_pax_flight">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="flight_id" Type="Int32" />
+          <Property Name="passenger_id" Type="Int32" />
+          <Property Name="date_send" Type="DateTime" Precision="7" />
+          <Property Name="ref_id" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="status" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="first_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="last_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="nid" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="first_name2" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="last_name2" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="sex_id" Type="Int32" />
+          <Property Name="mobile" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="flight_no" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="dep_id" Type="Int32" />
+          <Property Name="arr_id" Type="Int32" />
+          <Property Name="flight_date" Type="DateTime" Precision="0" />
+          <Property Name="flight_date_local" Type="DateTime" Precision="0" />
+          <Property Name="std" Type="DateTime" Precision="3" />
+          <Property Name="std_local" Type="DateTime" Precision="3" />
+          <Property Name="sta" Type="DateTime" Precision="3" />
+          <Property Name="sta_local" Type="DateTime" Precision="3" />
+          <Property Name="offblock" Type="DateTime" Precision="3" />
+          <Property Name="takeoff" Type="DateTime" Precision="3" />
+          <Property Name="landing" Type="DateTime" Precision="3" />
+          <Property Name="onblock" Type="DateTime" Precision="3" />
+          <Property Name="dep_iata" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="dep_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="arr_iata" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="arr_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="pdate" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="pdayname" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="comments" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="crm_pax_flight">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="flight_id" Type="Int32" />
+          <Property Name="passenger_id" Type="Int32" />
+          <Property Name="date_send" Type="DateTime" Precision="7" />
+          <Property Name="ref_id" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="status" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="comments" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="date_result" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="crm_crew_score" Relationship="ppaModel.fk_fpcs_fpax" FromRole="crm_pax_flight" ToRole="crm_crew_score" />
+          <NavigationProperty Name="crm_pax" Relationship="ppaModel.fk_fpax_pax" FromRole="crm_pax_flight" ToRole="crm_pax" />
+          <NavigationProperty Name="crm_question_result" Relationship="ppaModel.fk_qr_fp" FromRole="crm_pax_flight" ToRole="crm_question_result" />
+        </EntityType>
+        <Association Name="fk_fpcs_fpax">
+          <End Type="ppaModel.crm_pax_flight" Role="crm_pax_flight" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ppaModel.crm_crew_score" Role="crm_crew_score" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="crm_pax_flight">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="crm_crew_score">
+              <PropertyRef Name="flight_pax_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_fpax_pax">
+          <End Type="ppaModel.crm_pax" Role="crm_pax" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ppaModel.crm_pax_flight" Role="crm_pax_flight" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="crm_pax">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="crm_pax_flight">
+              <PropertyRef Name="passenger_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="crm_question_result">
+          <Key>
+            <PropertyRef Name="flight_pax_id" />
+            <PropertyRef Name="question_id" />
+          </Key>
+          <Property Name="flight_pax_id" Type="Int32" Nullable="false" />
+          <Property Name="question_id" Type="Int32" Nullable="false" />
+          <Property Name="score" Type="Int32" />
+          <Property Name="remark" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="crm_pax_flight" Relationship="ppaModel.fk_qr_fp" FromRole="crm_question_result" ToRole="crm_pax_flight" />
+          <NavigationProperty Name="crm_question" Relationship="ppaModel.fk_qr_q" FromRole="crm_question_result" ToRole="crm_question" />
+        </EntityType>
+        <Association Name="fk_qr_fp">
+          <End Type="ppaModel.crm_pax_flight" Role="crm_pax_flight" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ppaModel.crm_question_result" Role="crm_question_result" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="crm_pax_flight">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="crm_question_result">
+              <PropertyRef Name="flight_pax_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_qr_q">
+          <End Type="ppaModel.crm_question" Role="crm_question" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ppaModel.crm_question_result" Role="crm_question_result" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="crm_question">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="crm_question_result">
+              <PropertyRef Name="question_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ppaModelStoreContainer" CdmEntityContainer="ppa_entities">
+          <EntitySetMapping Name="crm_pax">
+            <EntityTypeMapping TypeName="ppaModel.crm_pax">
+              <MappingFragment StoreEntitySet="crm_pax">
+                <ScalarProperty Name="mobile" ColumnName="mobile" />
+                <ScalarProperty Name="sex_id" ColumnName="sex_id" />
+                <ScalarProperty Name="age" ColumnName="age" />
+                <ScalarProperty Name="passport_no" ColumnName="passport_no" />
+                <ScalarProperty Name="last_name2" ColumnName="last_name2" />
+                <ScalarProperty Name="first_name2" ColumnName="first_name2" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="ticket_no" ColumnName="ticket_no" />
+                <ScalarProperty Name="date_birth" ColumnName="date_birth" />
+                <ScalarProperty Name="nid" ColumnName="nid" />
+                <ScalarProperty Name="last_name" ColumnName="last_name" />
+                <ScalarProperty Name="first_name" ColumnName="first_name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="XFlightCrews">
+            <EntityTypeMapping TypeName="ppaModel.XFlightCrew">
+              <MappingFragment StoreEntitySet="XFlightCrew">
+                <ScalarProperty Name="IsConfirmed" ColumnName="IsConfirmed" />
+                <ScalarProperty Name="DateConfirmed" ColumnName="DateConfirmed" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="IsCockpit" ColumnName="IsCockpit" />
+                <ScalarProperty Name="GroupOrder" ColumnName="GroupOrder" />
+                <ScalarProperty Name="Sex" ColumnName="Sex" />
+                <ScalarProperty Name="SexId" ColumnName="SexId" />
+                <ScalarProperty Name="JobGroup" ColumnName="JobGroup" />
+                <ScalarProperty Name="JobGroupCode" ColumnName="JobGroupCode" />
+                <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+                <ScalarProperty Name="ScheduleName" ColumnName="ScheduleName" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="NID" ColumnName="NID" />
+                <ScalarProperty Name="PName" ColumnName="PName" />
+                <ScalarProperty Name="PLastName" ColumnName="PLastName" />
+                <ScalarProperty Name="PFirstName" ColumnName="PFirstName" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="PositionId" ColumnName="PositionId" />
+                <ScalarProperty Name="IsPositioning" ColumnName="IsPositioning" />
+                <ScalarProperty Name="FlightId" ColumnName="FlightId" />
+                <ScalarProperty Name="CrewId" ColumnName="CrewId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_crew_score">
+            <EntityTypeMapping TypeName="ppaModel.view_crew_score">
+              <MappingFragment StoreEntitySet="view_crew_score">
+                <ScalarProperty Name="score" ColumnName="score" />
+                <ScalarProperty Name="flight_pax_id" ColumnName="flight_pax_id" />
+                <ScalarProperty Name="JobGroup" ColumnName="JobGroup" />
+                <ScalarProperty Name="GroupOrder" ColumnName="GroupOrder" />
+                <ScalarProperty Name="NID" ColumnName="NID" />
+                <ScalarProperty Name="PName" ColumnName="PName" />
+                <ScalarProperty Name="PLastName" ColumnName="PLastName" />
+                <ScalarProperty Name="PFirstName" ColumnName="PFirstName" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="crew_id" ColumnName="crew_id" />
+                <ScalarProperty Name="flight_id" ColumnName="flight_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="crm_crew_score">
+            <EntityTypeMapping TypeName="ppaModel.crm_crew_score">
+              <MappingFragment StoreEntitySet="crm_crew_score">
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="score" ColumnName="score" />
+                <ScalarProperty Name="crew_id" ColumnName="crew_id" />
+                <ScalarProperty Name="flight_pax_id" ColumnName="flight_pax_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="crm_question">
+            <EntityTypeMapping TypeName="ppaModel.crm_question">
+              <MappingFragment StoreEntitySet="crm_question">
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="question" ColumnName="question" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_crm_pax_flight">
+            <EntityTypeMapping TypeName="ppaModel.view_crm_pax_flight">
+              <MappingFragment StoreEntitySet="view_crm_pax_flight">
+                <ScalarProperty Name="comments" ColumnName="comments" />
+                <ScalarProperty Name="pdayname" ColumnName="pdayname" />
+                <ScalarProperty Name="pdate" ColumnName="pdate" />
+                <ScalarProperty Name="arr_name" ColumnName="arr_name" />
+                <ScalarProperty Name="arr_iata" ColumnName="arr_iata" />
+                <ScalarProperty Name="dep_name" ColumnName="dep_name" />
+                <ScalarProperty Name="dep_iata" ColumnName="dep_iata" />
+                <ScalarProperty Name="onblock" ColumnName="onblock" />
+                <ScalarProperty Name="landing" ColumnName="landing" />
+                <ScalarProperty Name="takeoff" ColumnName="takeoff" />
+                <ScalarProperty Name="offblock" ColumnName="offblock" />
+                <ScalarProperty Name="sta_local" ColumnName="sta_local" />
+                <ScalarProperty Name="sta" ColumnName="sta" />
+                <ScalarProperty Name="std_local" ColumnName="std_local" />
+                <ScalarProperty Name="std" ColumnName="std" />
+                <ScalarProperty Name="flight_date_local" ColumnName="flight_date_local" />
+                <ScalarProperty Name="flight_date" ColumnName="flight_date" />
+                <ScalarProperty Name="arr_id" ColumnName="arr_id" />
+                <ScalarProperty Name="dep_id" ColumnName="dep_id" />
+                <ScalarProperty Name="flight_no" ColumnName="flight_no" />
+                <ScalarProperty Name="mobile" ColumnName="mobile" />
+                <ScalarProperty Name="sex_id" ColumnName="sex_id" />
+                <ScalarProperty Name="last_name2" ColumnName="last_name2" />
+                <ScalarProperty Name="first_name2" ColumnName="first_name2" />
+                <ScalarProperty Name="nid" ColumnName="nid" />
+                <ScalarProperty Name="last_name" ColumnName="last_name" />
+                <ScalarProperty Name="first_name" ColumnName="first_name" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="ref_id" ColumnName="ref_id" />
+                <ScalarProperty Name="date_send" ColumnName="date_send" />
+                <ScalarProperty Name="passenger_id" ColumnName="passenger_id" />
+                <ScalarProperty Name="flight_id" ColumnName="flight_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="crm_pax_flight">
+            <EntityTypeMapping TypeName="ppaModel.crm_pax_flight">
+              <MappingFragment StoreEntitySet="crm_pax_flight">
+                <ScalarProperty Name="date_result" ColumnName="date_result" />
+                <ScalarProperty Name="comments" ColumnName="comments" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="ref_id" ColumnName="ref_id" />
+                <ScalarProperty Name="date_send" ColumnName="date_send" />
+                <ScalarProperty Name="passenger_id" ColumnName="passenger_id" />
+                <ScalarProperty Name="flight_id" ColumnName="flight_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="crm_question_result">
+            <EntityTypeMapping TypeName="ppaModel.crm_question_result">
+              <MappingFragment StoreEntitySet="crm_question_result">
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="score" ColumnName="score" />
+                <ScalarProperty Name="question_id" ColumnName="question_id" />
+                <ScalarProperty Name="flight_pax_id" ColumnName="flight_pax_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

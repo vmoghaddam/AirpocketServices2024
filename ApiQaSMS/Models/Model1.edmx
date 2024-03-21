@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ppaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="qa_event_category">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="title" Type="nvarchar" MaxLength="1000" />
+          <Property Name="abbreviation" Type="varchar" MaxLength="255" />
+          <Property Name="tire" Type="varchar" MaxLength="255" />
+          <Property Name="parent_id" Type="int" />
+          <Property Name="remark" Type="varchar" MaxLength="1000" />
+          <Property Name="code" Type="varchar" MaxLength="50" />
+          <Property Name="full_code" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.view_qa_event_category' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_qa_event_category">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="full_code" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="parent_id" Type="int" />
+          <Property Name="title" Type="nvarchar" MaxLength="1000" />
+          <Property Name="remark" Type="varchar" MaxLength="1000" />
+          <Property Name="full_title" Type="varchar" MaxLength="200" />
+          <Property Name="full_code" Type="varchar" MaxLength="200" Nullable="false" />
+        </EntityType>
+        <Association Name="fk_q1_01">
+          <End Role="qa_event_category" Type="Self.qa_event_category" Multiplicity="0..1" />
+          <End Role="qa_event_category1" Type="Self.qa_event_category" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="qa_event_category">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="qa_event_category1">
+              <PropertyRef Name="parent_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ppaModelStoreContainer">
+          <EntitySet Name="qa_event_category" EntityType="Self.qa_event_category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="view_qa_event_category" EntityType="Self.view_qa_event_category" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_qa_event_category].[id] AS [id], 
+    [view_qa_event_category].[parent_id] AS [parent_id], 
+    [view_qa_event_category].[title] AS [title], 
+    [view_qa_event_category].[remark] AS [remark], 
+    [view_qa_event_category].[full_title] AS [full_title], 
+    [view_qa_event_category].[full_code] AS [full_code]
+    FROM [dbo].[view_qa_event_category] AS [view_qa_event_category]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="fk_q1_01" Association="Self.fk_q1_01">
+            <End Role="qa_event_category" EntitySet="qa_event_category" />
+            <End Role="qa_event_category1" EntitySet="qa_event_category" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ppaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="ppa_entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="qa_event_category" EntityType="ppaModel.qa_event_category" />
+          <AssociationSet Name="fk_q1_01" Association="ppaModel.fk_q1_01">
+            <End Role="qa_event_category" EntitySet="qa_event_category" />
+            <End Role="qa_event_category1" EntitySet="qa_event_category" />
+          </AssociationSet>
+          <EntitySet Name="view_qa_event_category" EntityType="ppaModel.view_qa_event_category" />
+        </EntityContainer>
+        <EntityType Name="qa_event_category">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="title" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="abbreviation" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="tire" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="parent_id" Type="Int32" />
+          <Property Name="remark" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="full_code" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="qa_event_category1" Relationship="ppaModel.fk_q1_01" FromRole="qa_event_category" ToRole="qa_event_category1" />
+          <NavigationProperty Name="qa_event_category2" Relationship="ppaModel.fk_q1_01" FromRole="qa_event_category1" ToRole="qa_event_category" />
+        </EntityType>
+        <Association Name="fk_q1_01">
+          <End Type="ppaModel.qa_event_category" Role="qa_event_category" Multiplicity="0..1" />
+          <End Type="ppaModel.qa_event_category" Role="qa_event_category1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="qa_event_category">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="qa_event_category1">
+              <PropertyRef Name="parent_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="view_qa_event_category">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="full_code" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="parent_id" Type="Int32" />
+          <Property Name="title" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="remark" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="full_title" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="full_code" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+        </EntityType>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ppaModelStoreContainer" CdmEntityContainer="ppa_entities">
+          <EntitySetMapping Name="qa_event_category">
+            <EntityTypeMapping TypeName="ppaModel.qa_event_category">
+              <MappingFragment StoreEntitySet="qa_event_category">
+                <ScalarProperty Name="full_code" ColumnName="full_code" />
+                <ScalarProperty Name="code" ColumnName="code" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="parent_id" ColumnName="parent_id" />
+                <ScalarProperty Name="tire" ColumnName="tire" />
+                <ScalarProperty Name="abbreviation" ColumnName="abbreviation" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_qa_event_category">
+            <EntityTypeMapping TypeName="ppaModel.view_qa_event_category">
+              <MappingFragment StoreEntitySet="view_qa_event_category">
+                <ScalarProperty Name="full_code" ColumnName="full_code" />
+                <ScalarProperty Name="full_title" ColumnName="full_title" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="parent_id" ColumnName="parent_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
