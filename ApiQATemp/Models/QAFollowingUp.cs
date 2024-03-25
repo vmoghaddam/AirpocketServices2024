@@ -7,23 +7,25 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ApiQA.Models
+namespace ApiQATemp.Models
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class ViewQABYEmployee
+    public partial class QAFollowingUp
     {
-        public Nullable<int> EmployeeId { get; set; }
-        public Nullable<int> EntityId { get; set; }
+        public int Id { get; set; }
         public Nullable<int> Type { get; set; }
-        public string Comment { get; set; }
-        public Nullable<int> Priority { get; set; }
-        public Nullable<System.DateTime> DeadLine { get; set; }
-        public string Category { get; set; }
+        public Nullable<int> EntityId { get; set; }
+        public Nullable<int> ReferrerId { get; set; }
+        public Nullable<int> ReferredId { get; set; }
         public Nullable<int> ReviewResult { get; set; }
-        public string ReviewResultTitle { get; set; }
-       // public Nullable<int> Priority { get; set; }
-        //public Nullable<System.DateTime> DeadLine { get; set; }
+        public string Comment { get; set; }
+        public Nullable<System.DateTime> DateStatus { get; set; }
+        public Nullable<int> ParentId { get; set; }
+        public Nullable<System.DateTime> DeadLine { get; set; }
+        public Nullable<int> Priority { get; set; }
+        public Nullable<System.DateTime> DateVisit { get; set; }
+        public Nullable<System.DateTime> ReceiverDateVisit { get; set; }
     }
 }

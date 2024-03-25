@@ -1,5 +1,5 @@
-﻿using ApiQA.Models;
-using ApiQA.ViewModels;
+﻿using ApiQATemp.Models;
+using ApiQATemp.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -12,9 +12,9 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Cors;
-using static ApiQA.Controllers.QaController;
+//using static ApiQATemp.Controllers.QaController;
 
-namespace ApiQA.Controllers
+namespace ApiQATemp.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class LogController : ApiController
@@ -23,7 +23,7 @@ namespace ApiQA.Controllers
 
         [HttpGet]
         [Route("api/qa/log/main")]
-        public async Task<DataResponse> GetFlightLogMain(DateTime df,DateTime dt)
+        public async Task<DataResponse> GetFlightLogMain(DateTime df, DateTime dt)
         {
             try
             {
@@ -87,7 +87,7 @@ namespace ApiQA.Controllers
             {
                 //df = df.Date;
                 //dt = dt.Date.AddDays(1);
-                var result = await context.ViewProfileLogs.Where(q => q.PersonId==id).OrderByDescending(q => q.DateCreate).ThenBy(q=>q.CertificateType).ToListAsync();
+                var result = await context.ViewProfileLogs.Where(q => q.PersonId == id).OrderByDescending(q => q.DateCreate).ThenBy(q => q.CertificateType).ToListAsync();
                 return new DataResponse()
                 {
                     Data = result,
@@ -149,7 +149,7 @@ namespace ApiQA.Controllers
                             select x;
                 if (grp != "-1")
                     query = query.Where(q => q.JobGroupRoot == grp);
-                var result = await query.OrderBy(q=>q.LastName).ThenBy(q=>q.FirstName) .ToListAsync();
+                var result = await query.OrderBy(q => q.LastName).ThenBy(q => q.FirstName).ToListAsync();
                 return new DataResponse()
                 {
                     Data = result,
@@ -178,7 +178,7 @@ namespace ApiQA.Controllers
             {
                 //df = df.Date;
                 //dt = dt.Date.AddDays(1);
-                var grps = new List<string>() {"TRE","TRI","P1","P2" };
+                var grps = new List<string>() { "TRE", "TRI", "P1", "P2" };
                 var query = from x in context.ViewProfiles
                             where grps.Contains(x.JobGroup)
                             select x;
@@ -205,7 +205,12 @@ namespace ApiQA.Controllers
         }
 
 
-
+        public class DataResponse
+        {
+            public bool IsSuccess { get; set; }
+            public object Data { get; set; }
+            public List<string> Errors { get; set; }
+        }
 
 
     }
