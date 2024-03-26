@@ -37,7 +37,6 @@ namespace ApiQATemp.Models
         public virtual DbSet<ViewQACSREvent> ViewQACSREvents { get; set; }
         public virtual DbSet<ViewQAResponsibility> ViewQAResponsibilities { get; set; }
         public virtual DbSet<ViewQAComment> ViewQAComments { get; set; }
-        public virtual DbSet<ViewQAFollowingUp> ViewQAFollowingUps { get; set; }
         public virtual DbSet<ViewQAByEmployeeCount> ViewQAByEmployeeCounts { get; set; }
         public virtual DbSet<ViewFlightLogMain> ViewFlightLogMains { get; set; }
         public virtual DbSet<ViewFlightLog> ViewFlightLogs { get; set; }
@@ -82,6 +81,7 @@ namespace ApiQATemp.Models
         public virtual DbSet<QAFollowingUp> QAFollowingUps { get; set; }
         public virtual DbSet<ViewQaVoyageReport> ViewQaVoyageReports { get; set; }
         public virtual DbSet<QAGetEntites_Result> QAGetEntites_Result { get; set; }
+        public virtual DbSet<ViewQAFollowingUp> ViewQAFollowingUps { get; set; }
     
         public virtual int QAByEmployeeCount(Nullable<int> type, Nullable<int> entityId)
         {

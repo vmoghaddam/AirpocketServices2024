@@ -16,6 +16,7 @@ namespace ApiQATemp.Models
     {
         public int Id { get; set; }
         public Nullable<int> Type { get; set; }
+        public string TypeTitle { get; set; }
         public Nullable<int> EntityId { get; set; }
         public int ReferrerId { get; set; }
         public string ReferrerName { get; set; }
@@ -23,6 +24,7 @@ namespace ApiQATemp.Models
         public string ReferredName { get; set; }
         public Nullable<int> ReviewResult { get; set; }
         public Nullable<int> ParentId { get; set; }
+        public Nullable<System.DateTime> DateVisit { get; set; }
         public string ReviewResultTitle { get; set; }
         public string Comment { get; set; }
         public Nullable<System.DateTime> DateStatus { get; set; }
@@ -30,7 +32,6 @@ namespace ApiQATemp.Models
         public Nullable<int> PriorityId { get; set; }
         public string Priority { get; set; }
         public int ReceiverDateVisit { get; set; }
-        public string TypeTitle { get; set; }
-        public Nullable<System.DateTime> DateVisit { get; set; }
+        public Nullable<int> FlightId { get; set; }
     }
 }

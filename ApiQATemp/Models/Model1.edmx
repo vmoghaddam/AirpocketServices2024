@@ -2342,6 +2342,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQAFollowingUp' does not have a 
           <Property Name="PriorityId" Type="int" />
           <Property Name="Priority" Type="varchar" MaxLength="6" />
           <Property Name="ReceiverDateVisit" Type="int" Nullable="false" />
+          <Property Name="FlightId" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.ViewQAGround' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -4304,7 +4305,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQaVoyageReport' does not have a
     [ViewQAFollowingUp].[DeadLine] AS [DeadLine], 
     [ViewQAFollowingUp].[PriorityId] AS [PriorityId], 
     [ViewQAFollowingUp].[Priority] AS [Priority], 
-    [ViewQAFollowingUp].[ReceiverDateVisit] AS [ReceiverDateVisit]
+    [ViewQAFollowingUp].[ReceiverDateVisit] AS [ReceiverDateVisit], 
+    [ViewQAFollowingUp].[FlightId] AS [FlightId]
     FROM [dbo].[ViewQAFollowingUp] AS [ViewQAFollowingUp]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ViewQAGround" EntityType="Self.ViewQAGround" store:Type="Views" store:Schema="dbo">
@@ -4793,7 +4795,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQaVoyageReport' does not have a
           <EntitySet Name="ViewQACSREvents" EntityType="ppaModel.ViewQACSREvent" />
           <EntitySet Name="ViewQAResponsibilities" EntityType="ppaModel.ViewQAResponsibility" />
           <EntitySet Name="ViewQAComments" EntityType="ppaModel.ViewQAComment" />
-          <EntitySet Name="ViewQAFollowingUps" EntityType="ppaModel.ViewQAFollowingUp" />
           <EntitySet Name="ViewQAByEmployeeCounts" EntityType="ppaModel.ViewQAByEmployeeCount" />
           <FunctionImport Name="QAByEmployeeCount">
             <Parameter Name="Type" Mode="In" Type="Int32" />
@@ -4972,6 +4973,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQaVoyageReport' does not have a
             <Parameter Name="FromDate" Mode="In" Type="DateTime" />
             <Parameter Name="ToDate" Mode="In" Type="DateTime" />
           </FunctionImport>
+          <EntitySet Name="ViewQAFollowingUps" EntityType="ppaModel.ViewQAFollowingUp" />
           </EntityContainer>
         <EntityType Name="FlightInformation">
           <Key>
@@ -6104,32 +6106,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQaVoyageReport' does not have a
           <Property Name="Comment" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
           <Property Name="DateComment" Type="DateTime" Precision="3" />
           <Property Name="ReceiverList" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="ViewQAFollowingUp">
-          <Key>
-            <PropertyRef Name="Id" />
-            <PropertyRef Name="ReferrerId" />
-            <PropertyRef Name="ReviewResultTitle" />
-            <PropertyRef Name="ReceiverDateVisit" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="Type" Type="Int32" />
-          <Property Name="EntityId" Type="Int32" />
-          <Property Name="ReferrerId" Type="Int32" Nullable="false" />
-          <Property Name="ReferrerName" Type="String" MaxLength="1003" FixedLength="false" Unicode="true" />
-          <Property Name="ReferredId" Type="Int32" />
-          <Property Name="ReferredName" Type="String" MaxLength="1003" FixedLength="false" Unicode="true" />
-          <Property Name="ReviewResult" Type="Int32" />
-          <Property Name="ParentId" Type="Int32" />
-          <Property Name="ReviewResultTitle" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
-          <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="DateStatus" Type="DateTime" Precision="3" />
-          <Property Name="DeadLine" Type="DateTime" Precision="3" />
-          <Property Name="PriorityId" Type="Int32" />
-          <Property Name="Priority" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
-          <Property Name="ReceiverDateVisit" Type="Int32" Nullable="false" />
-          <Property Name="TypeTitle" Type="String" MaxLength="38" FixedLength="false" Unicode="false" />
-          <Property Name="DateVisit" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="ViewQAByEmployeeCount">
           <Key>
@@ -9082,6 +9058,33 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQaVoyageReport' does not have a
           <Property Name="FollowingId" Type="Int32" />
           <Property Name="CategoryOrder" Type="Int32" />
         </EntityType>
+        <EntityType Name="ViewQAFollowingUp">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="ReferrerId" />
+            <PropertyRef Name="ReviewResultTitle" />
+            <PropertyRef Name="ReceiverDateVisit" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Type" Type="Int32" />
+          <Property Name="TypeTitle" Type="String" MaxLength="38" FixedLength="false" Unicode="false" />
+          <Property Name="EntityId" Type="Int32" />
+          <Property Name="ReferrerId" Type="Int32" Nullable="false" />
+          <Property Name="ReferrerName" Type="String" MaxLength="1003" FixedLength="false" Unicode="true" />
+          <Property Name="ReferredId" Type="Int32" />
+          <Property Name="ReferredName" Type="String" MaxLength="1003" FixedLength="false" Unicode="true" />
+          <Property Name="ReviewResult" Type="Int32" />
+          <Property Name="ParentId" Type="Int32" />
+          <Property Name="DateVisit" Type="DateTime" Precision="3" />
+          <Property Name="ReviewResultTitle" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DateStatus" Type="DateTime" Precision="3" />
+          <Property Name="DeadLine" Type="DateTime" Precision="3" />
+          <Property Name="PriorityId" Type="Int32" />
+          <Property Name="Priority" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="ReceiverDateVisit" Type="Int32" Nullable="false" />
+          <Property Name="FlightId" Type="Int32" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -9648,30 +9651,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQaVoyageReport' does not have a
                 <ScalarProperty Name="Comment" ColumnName="Comment" />
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
-                <ScalarProperty Name="EntityId" ColumnName="EntityId" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ViewQAFollowingUps">
-            <EntityTypeMapping TypeName="ppaModel.ViewQAFollowingUp">
-              <MappingFragment StoreEntitySet="ViewQAFollowingUp">
-                <ScalarProperty Name="DateVisit" ColumnName="DateVisit" />
-                <ScalarProperty Name="TypeTitle" ColumnName="TypeTitle" />
-                <ScalarProperty Name="ReceiverDateVisit" ColumnName="ReceiverDateVisit" />
-                <ScalarProperty Name="Priority" ColumnName="Priority" />
-                <ScalarProperty Name="PriorityId" ColumnName="PriorityId" />
-                <ScalarProperty Name="DeadLine" ColumnName="DeadLine" />
-                <ScalarProperty Name="DateStatus" ColumnName="DateStatus" />
-                <ScalarProperty Name="Comment" ColumnName="Comment" />
-                <ScalarProperty Name="ReviewResultTitle" ColumnName="ReviewResultTitle" />
-                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
-                <ScalarProperty Name="ReviewResult" ColumnName="ReviewResult" />
-                <ScalarProperty Name="ReferredName" ColumnName="ReferredName" />
-                <ScalarProperty Name="ReferredId" ColumnName="ReferredId" />
-                <ScalarProperty Name="ReferrerName" ColumnName="ReferrerName" />
-                <ScalarProperty Name="ReferrerId" ColumnName="ReferrerId" />
                 <ScalarProperty Name="EntityId" ColumnName="EntityId" />
                 <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -11976,6 +11955,31 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQaVoyageReport' does not have a
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="QAGetEntities" FunctionName="ppaModel.Store.QAGetEntities" />
+          <EntitySetMapping Name="ViewQAFollowingUps">
+            <EntityTypeMapping TypeName="ppaModel.ViewQAFollowingUp">
+              <MappingFragment StoreEntitySet="ViewQAFollowingUp">
+                <ScalarProperty Name="FlightId" ColumnName="FlightId" />
+                <ScalarProperty Name="ReceiverDateVisit" ColumnName="ReceiverDateVisit" />
+                <ScalarProperty Name="Priority" ColumnName="Priority" />
+                <ScalarProperty Name="PriorityId" ColumnName="PriorityId" />
+                <ScalarProperty Name="DeadLine" ColumnName="DeadLine" />
+                <ScalarProperty Name="DateStatus" ColumnName="DateStatus" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="ReviewResultTitle" ColumnName="ReviewResultTitle" />
+                <ScalarProperty Name="DateVisit" ColumnName="DateVisit" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="ReviewResult" ColumnName="ReviewResult" />
+                <ScalarProperty Name="ReferredName" ColumnName="ReferredName" />
+                <ScalarProperty Name="ReferredId" ColumnName="ReferredId" />
+                <ScalarProperty Name="ReferrerName" ColumnName="ReferrerName" />
+                <ScalarProperty Name="ReferrerId" ColumnName="ReferrerId" />
+                <ScalarProperty Name="EntityId" ColumnName="EntityId" />
+                <ScalarProperty Name="TypeTitle" ColumnName="TypeTitle" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

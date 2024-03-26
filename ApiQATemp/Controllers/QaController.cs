@@ -3738,7 +3738,7 @@ namespace ApiQA.Controllers
         {
             try
             {
-                var result = context.ViewQAFollowingUps.Where(q => q.ReferredId == employeeid && q.ReceiverDateVisit == 0);
+                var result = context.ViewQAFollowingUps.Where(q => q.ReferredId == employeeid && q.ReceiverDateVisit == 0).OrderByDescending(q=>q.DateStatus).ToList();
                 return new DataResponse()
                 {
                     Data = result,
