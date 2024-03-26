@@ -2790,7 +2790,7 @@ namespace ApiQA.Controllers
                         DeadLine = x.DeadLine;
 
 
-                    var cmd = "select case when isnull(send.id,-1) =-1 and  isnull(recive.id,-1)<>-1 then 3       when isnull(send.id,-1)<isnull(recive.id,-1) then 3      else 2  end as ReviewRes  from  (select top 1 a.* from QAFollowingUp a where EntityId=" + x.EntityId + " and type= " + x.Type + " and ReferrerId= " + x.ReferrerId + " order by id) as send FULL JOIN (select top 1 a.* from QAFollowingUp a  where EntityId=" + x.EntityId + " and type=" + x.Type + " and ReferrerId=" + x.ReferredId + " order by id) as recive on 1=1 full join ( select top 1 a.Id from QAFollowingUp a order by a.Id) as r on 1 =1";
+                    var cmd = "select case when isnull(send.id,-1) =-1 and  isnull(recive.id,-1)<>-1 then 3       when isnull(send.id,-1)<isnull(recive.id,-1) then 3      else 2  end as ReviewRes  from  (select top 1 a.* from QAFollowingUp a where EntityId=" + x.EntityId + " and type= " + x.Type + " and ReferrerId= " + x.ReferrerId + " order by id DESC) as send FULL JOIN (select top 1 a.* from QAFollowingUp a  where EntityId=" + x.EntityId + " and type=" + x.Type + " and ReferrerId=" + x.ReferredId + " order by id DESC) as recive on 1=1 full join ( select top 1 a.Id from QAFollowingUp a order by a.Id) as r on 1 =1";
                     var referred = context.Database.SqlQuery<int>(cmd).FirstOrDefault();
 
 
