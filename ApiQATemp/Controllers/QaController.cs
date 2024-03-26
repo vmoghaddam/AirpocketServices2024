@@ -2015,7 +2015,7 @@ namespace ApiQA.Controllers
                 var ds = context.QAGetEntities((int?)dto.employeeId, (int?)dto.type, df, dt).ToList().OrderBy(q => q.DateSign).ThenBy(q => q.DeadLine);
                 var result = new
                 {
-                    New = ds.Where(q => q.Category == "New"),
+                    New = ds.Where(q => q.Category == "New" || q.Category == "Return"),
                     Determined = ds.Where(q => q.Category == "Closed"),
                     Open = ds.Where(q => q.Category == "InProgress"),
                 };
@@ -3691,6 +3691,33 @@ namespace ApiQA.Controllers
                     Data = result,
                     IsSuccess = true
                 };
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += "   Inner: " + ex.InnerException.Message;
+                return new DataResponse()
+                {
+                    Data = msg,
+                    IsSuccess = false
+                };
+            }
+        }
+
+        [HttpGet]
+        [Route("api/qa/notifications/{employeeid}")]
+        public async Task<DataResponse> QANotifications(int employeeid)
+        {
+            try
+            {
+                var result = context.ViewQAFollowingUps.Where(q => q.ReferredId == employeeid && q.ReceiverDateVisit == 0);
+                return new DataResponse()
+                {
+                    Data = result,
+                    IsSuccess = true
+                };
+
             }
             catch (Exception ex)
             {
