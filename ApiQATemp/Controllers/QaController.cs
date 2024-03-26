@@ -2022,7 +2022,7 @@ namespace ApiQA.Controllers
 
                 return new DataResponse()
                 {
-                    Data = null,
+                    Data = result,
                     IsSuccess = true
                 };
             }
