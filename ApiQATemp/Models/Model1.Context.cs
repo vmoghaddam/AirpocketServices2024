@@ -77,11 +77,11 @@ namespace ApiQATemp.Models
         public virtual DbSet<ViewQaFeedback> ViewQaFeedbacks { get; set; }
         public virtual DbSet<ViewQaReportsByCreator> ViewQaReportsByCreators { get; set; }
         public virtual DbSet<QAFeedback> QAFeedbacks { get; set; }
-        public virtual DbSet<QAGetEntites_Result> QAGetEntites_Result { get; set; }
         public virtual DbSet<ViewQABYEmployee> ViewQABYEmployees { get; set; }
         public virtual DbSet<EFBASR> EFBASRs { get; set; }
         public virtual DbSet<QAFollowingUp> QAFollowingUps { get; set; }
         public virtual DbSet<ViewQaVoyageReport> ViewQaVoyageReports { get; set; }
+        public virtual DbSet<QAGetEntites_Result> QAGetEntites_Result { get; set; }
     
         public virtual int QAByEmployeeCount(Nullable<int> type, Nullable<int> entityId)
         {

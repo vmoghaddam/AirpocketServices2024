@@ -37,5 +37,6 @@ namespace ApiQATemp.Models
         public Nullable<int> Priority { get; set; }
         public string FormNo { get; set; }
         public Nullable<int> FollowingId { get; set; }
+        public Nullable<int> CategoryOrder { get; set; }
     }
 }

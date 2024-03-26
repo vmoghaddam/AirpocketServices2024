@@ -27,5 +27,9 @@ namespace ApiQATemp.Models
         public Nullable<int> Priority { get; set; }
         public Nullable<System.DateTime> DateVisit { get; set; }
         public Nullable<System.DateTime> ReceiverDateVisit { get; set; }
+        public Nullable<System.DateTime> DateNotified { get; set; }
+        public Nullable<int> NotificationCount { get; set; }
+        public string SMS { get; set; }
+        public Nullable<int> SMSRefId { get; set; }
     }
 }

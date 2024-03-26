@@ -1678,8 +1678,9 @@ namespace ApiQA.Controllers
                                 grp.Key.TypeTitle,
                                 grp.Key.type,
                                 NewCount = grp.Sum(q => q.NewCount),
-                                OpenCount = grp.Sum(q => q.InProgressCount) + grp.Sum(q => q.ReturnCount),
-                                DeterminedCount = grp.Sum(q => q.ClosedCount)
+                                OpenCount = grp.Sum(q => q.InProgressCount) ,
+                                DeterminedCount = grp.Sum(q => q.ClosedCount),
+                                ReturnedCount = grp.Sum(q => q.ReturnCount)
                             };
 
                 var result = query.ToList();
@@ -2010,14 +2011,40 @@ namespace ApiQA.Controllers
         {
             try
             {
-                var df = ((DateTime)dto.dt_from).Date;
-                var dt = ((DateTime)dto.dt_to).Date.AddDays(1);
+                //var df = ((DateTime)dto.dt_from).Date;
+                //var dt = ((DateTime)dto.dt_to).Date.AddDays(1);
+                var df = new DateTime(2020, 1, 1);
+                var dt = new DateTime(2030, 1, 1);
                 var ds = context.QAGetEntities((int?)dto.employeeId, (int?)dto.type, df, dt).ToList().OrderBy(q => q.DateSign).ThenBy(q => q.DeadLine);
+                //var result = new
+                //{
+                //    New = ds.Where(q => q.Category == "New" || q.Category == "Return"),
+                //    Determined = ds.Where(q => q.Category == "Closed"),
+                //    Open = ds.Where(q => q.Category == "InProgress"),
+                //};
+                foreach (var x in ds)
+                {
+
+                    if (x.Category == "InProgress")
+                    {
+                        x.CategoryOrder = 3;
+                        x.Category = "In Progress";
+                    }
+                    if (x.Category == "Return")
+                    { x.Category = "Returned"; x.CategoryOrder = 2; }
+                    if (x.Category == "New")
+                    { x.CategoryOrder = 1; }
+                    if (x.Category == "Closed")
+                    { x.CategoryOrder = 4; }
+                }
+
                 var result = new
                 {
-                    New = ds.Where(q => q.Category == "New" || q.Category == "Return"),
-                    Determined = ds.Where(q => q.Category == "Closed"),
-                    Open = ds.Where(q => q.Category == "InProgress"),
+                        New = ds.Where(q => q.Category == "New" || q.Category == "Return").OrderBy(q=>q.CategoryOrder).ThenByDescending(q=>q.DateStatus).ToList(),
+                        Determined = ds.Where(q => q.Category == "Closed").OrderBy(q => q.CategoryOrder).ThenByDescending(q => q.DateStatus).ToList(),
+                        Open = ds.Where(q => q.Category == "InProgress").OrderBy(q => q.CategoryOrder).ThenByDescending(q => q.DateStatus).ToList(),
+                        All=ds.OrderBy(q => q.CategoryOrder).ThenByDescending(q => q.DateStatus).ToList().ToList(),
+                        Active= ds.Where(q => q.Category != "Closed").OrderBy(q => q.CategoryOrder).ThenByDescending(q => q.DateStatus).ToList(),
                 };
 
                 return new DataResponse()

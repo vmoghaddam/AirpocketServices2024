@@ -691,6 +691,10 @@
           <Property Name="Priority" Type="int" />
           <Property Name="DateVisit" Type="datetime" />
           <Property Name="ReceiverDateVisit" Type="datetime" />
+          <Property Name="DateNotified" Type="datetime" />
+          <Property Name="NotificationCount" Type="int" />
+          <Property Name="SMS" Type="nvarchar" MaxLength="2000" />
+          <Property Name="SMSRefId" Type="int" />
         </EntityType>
         <EntityType Name="QAGetEntites_Result">
           <Key>
@@ -719,6 +723,7 @@
           <Property Name="Priority" Type="int" />
           <Property Name="FormNo" Type="varchar" MaxLength="255" />
           <Property Name="FollowingId" Type="int" />
+          <Property Name="CategoryOrder" Type="int" />
         </EntityType>
         <EntityType Name="QAGroundIAD">
           <Key>
@@ -2321,6 +2326,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQAFollowingUp' does not have a 
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="Type" Type="int" />
+          <Property Name="TypeTitle" Type="varchar" MaxLength="38" />
           <Property Name="EntityId" Type="int" />
           <Property Name="ReferrerId" Type="int" Nullable="false" />
           <Property Name="ReferrerName" Type="nvarchar" MaxLength="1003" />
@@ -2328,6 +2334,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQAFollowingUp' does not have a 
           <Property Name="ReferredName" Type="nvarchar" MaxLength="1003" />
           <Property Name="ReviewResult" Type="int" />
           <Property Name="ParentId" Type="int" />
+          <Property Name="DateVisit" Type="datetime" />
           <Property Name="ReviewResultTitle" Type="varchar" MaxLength="6" Nullable="false" />
           <Property Name="Comment" Type="nvarchar(max)" />
           <Property Name="DateStatus" Type="datetime" />
@@ -4282,6 +4289,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQaVoyageReport' does not have a
             <DefiningQuery>SELECT 
     [ViewQAFollowingUp].[Id] AS [Id], 
     [ViewQAFollowingUp].[Type] AS [Type], 
+    [ViewQAFollowingUp].[TypeTitle] AS [TypeTitle], 
     [ViewQAFollowingUp].[EntityId] AS [EntityId], 
     [ViewQAFollowingUp].[ReferrerId] AS [ReferrerId], 
     [ViewQAFollowingUp].[ReferrerName] AS [ReferrerName], 
@@ -4289,6 +4297,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQaVoyageReport' does not have a
     [ViewQAFollowingUp].[ReferredName] AS [ReferredName], 
     [ViewQAFollowingUp].[ReviewResult] AS [ReviewResult], 
     [ViewQAFollowingUp].[ParentId] AS [ParentId], 
+    [ViewQAFollowingUp].[DateVisit] AS [DateVisit], 
     [ViewQAFollowingUp].[ReviewResultTitle] AS [ReviewResultTitle], 
     [ViewQAFollowingUp].[Comment] AS [Comment], 
     [ViewQAFollowingUp].[DateStatus] AS [DateStatus], 
@@ -4948,14 +4957,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQaVoyageReport' does not have a
           <EntitySet Name="ViewQaFeedbacks" EntityType="ppaModel.ViewQaFeedback" />
           <EntitySet Name="ViewQaReportsByCreators" EntityType="ppaModel.ViewQaReportsByCreator" />
           <EntitySet Name="QAFeedbacks" EntityType="ppaModel.QAFeedback" />
-          <EntitySet Name="QAGetEntites_Result" EntityType="ppaModel.QAGetEntites_Result" />
           <EntitySet Name="ViewQABYEmployees" EntityType="ppaModel.ViewQABYEmployee" />
-          <FunctionImport Name="QAGetEntities" EntitySet="QAGetEntites_Result" ReturnType="Collection(ppaModel.QAGetEntites_Result)">
-            <Parameter Name="EmployeeId" Mode="In" Type="Int32" />
-            <Parameter Name="Type" Mode="In" Type="Int32" />
-            <Parameter Name="FromDate" Mode="In" Type="DateTime" />
-            <Parameter Name="ToDate" Mode="In" Type="DateTime" />
-          </FunctionImport>
           <EntitySet Name="EFBASRs" EntityType="ppaModel.EFBASR" />
           <AssociationSet Name="fk_asr_flt" Association="ppaModel.fk_asr_flt">
             <End Role="FlightInformation" EntitySet="FlightInformations" />
@@ -4963,6 +4965,13 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQaVoyageReport' does not have a
           </AssociationSet>
           <EntitySet Name="QAFollowingUps" EntityType="ppaModel.QAFollowingUp" />
           <EntitySet Name="ViewQaVoyageReports" EntityType="ppaModel.ViewQaVoyageReport" />
+          <EntitySet Name="QAGetEntites_Result" EntityType="ppaModel.QAGetEntites_Result" />
+          <FunctionImport Name="QAGetEntities" EntitySet="QAGetEntites_Result" ReturnType="Collection(ppaModel.QAGetEntites_Result)">
+            <Parameter Name="EmployeeId" Mode="In" Type="Int32" />
+            <Parameter Name="Type" Mode="In" Type="Int32" />
+            <Parameter Name="FromDate" Mode="In" Type="DateTime" />
+            <Parameter Name="ToDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
           </EntityContainer>
         <EntityType Name="FlightInformation">
           <Key>
@@ -6119,6 +6128,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQaVoyageReport' does not have a
           <Property Name="PriorityId" Type="Int32" />
           <Property Name="Priority" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
           <Property Name="ReceiverDateVisit" Type="Int32" Nullable="false" />
+          <Property Name="TypeTitle" Type="String" MaxLength="38" FixedLength="false" Unicode="false" />
+          <Property Name="DateVisit" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="ViewQAByEmployeeCount">
           <Key>
@@ -8732,34 +8743,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQaVoyageReport' does not have a
           <Property Name="ReceiverId" Type="Int32" />
           <Property Name="TypeId" Type="Int32" />
         </EntityType>
-        <EntityType Name="QAGetEntites_Result">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="ReviewResult" Type="Int32" />
-          <Property Name="ReviewResultTitle" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="ClosedCount" Type="Int32" />
-          <Property Name="ReferCount" Type="Int32" />
-          <Property Name="Category" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="EmployeeName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="Status" Type="Int32" />
-          <Property Name="DateStatus" Type="DateTime" Precision="0" />
-          <Property Name="StatusEmployeeId" Type="Int32" />
-          <Property Name="FlightNumber" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Name="MainStatus" Type="Int32" />
-          <Property Name="EmployeeStatus" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="DateOccurrence" Type="DateTime" Precision="0" />
-          <Property Name="EmployeeId" Type="Int32" />
-          <Property Name="Register" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="Route" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="FlightDate" Type="DateTime" Precision="7" />
-          <Property Name="DateSign" Type="DateTime" Precision="0" />
-          <Property Name="DeadLine" Type="DateTime" Precision="7" />
-          <Property Name="Priority" Type="Int32" />
-          <Property Name="FormNo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="FollowingId" Type="Int32" />
-        </EntityType>
         <EntityType Name="ViewQABYEmployee">
           <Key>
             <PropertyRef Name="Category" />
@@ -8920,6 +8903,10 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQaVoyageReport' does not have a
           <Property Name="Priority" Type="Int32" />
           <Property Name="DateVisit" Type="DateTime" Precision="3" />
           <Property Name="ReceiverDateVisit" Type="DateTime" Precision="3" />
+          <Property Name="DateNotified" Type="DateTime" Precision="3" />
+          <Property Name="NotificationCount" Type="Int32" />
+          <Property Name="SMS" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="SMSRefId" Type="Int32" />
         </EntityType>
         <EntityType Name="ViewQaVoyageReport">
           <Key>
@@ -9065,6 +9052,35 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQaVoyageReport' does not have a
           <Property Name="ReporterId" Type="Int32" />
           <Property Name="User" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="DateOccurrence" Type="DateTime" Precision="7" />
+        </EntityType>
+        <EntityType Name="QAGetEntites_Result">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="ReviewResult" Type="Int32" />
+          <Property Name="ReviewResultTitle" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ClosedCount" Type="Int32" />
+          <Property Name="ReferCount" Type="Int32" />
+          <Property Name="Category" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="EmployeeName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="Int32" />
+          <Property Name="DateStatus" Type="DateTime" Precision="0" />
+          <Property Name="StatusEmployeeId" Type="Int32" />
+          <Property Name="FlightNumber" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="MainStatus" Type="Int32" />
+          <Property Name="EmployeeStatus" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="DateOccurrence" Type="DateTime" Precision="0" />
+          <Property Name="EmployeeId" Type="Int32" />
+          <Property Name="Register" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Route" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="FlightDate" Type="DateTime" Precision="7" />
+          <Property Name="DateSign" Type="DateTime" Precision="0" />
+          <Property Name="DeadLine" Type="DateTime" Precision="7" />
+          <Property Name="Priority" Type="Int32" />
+          <Property Name="FormNo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="FollowingId" Type="Int32" />
+          <Property Name="CategoryOrder" Type="Int32" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -9641,6 +9657,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQaVoyageReport' does not have a
           <EntitySetMapping Name="ViewQAFollowingUps">
             <EntityTypeMapping TypeName="ppaModel.ViewQAFollowingUp">
               <MappingFragment StoreEntitySet="ViewQAFollowingUp">
+                <ScalarProperty Name="DateVisit" ColumnName="DateVisit" />
+                <ScalarProperty Name="TypeTitle" ColumnName="TypeTitle" />
                 <ScalarProperty Name="ReceiverDateVisit" ColumnName="ReceiverDateVisit" />
                 <ScalarProperty Name="Priority" ColumnName="Priority" />
                 <ScalarProperty Name="PriorityId" ColumnName="PriorityId" />
@@ -11634,35 +11652,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQaVoyageReport' does not have a
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="QAGetEntites_Result">
-            <EntityTypeMapping TypeName="ppaModel.QAGetEntites_Result">
-              <MappingFragment StoreEntitySet="QAGetEntites_Result">
-                <ScalarProperty Name="FollowingId" ColumnName="FollowingId" />
-                <ScalarProperty Name="FormNo" ColumnName="FormNo" />
-                <ScalarProperty Name="Priority" ColumnName="Priority" />
-                <ScalarProperty Name="DeadLine" ColumnName="DeadLine" />
-                <ScalarProperty Name="DateSign" ColumnName="DateSign" />
-                <ScalarProperty Name="FlightDate" ColumnName="FlightDate" />
-                <ScalarProperty Name="Route" ColumnName="Route" />
-                <ScalarProperty Name="Register" ColumnName="Register" />
-                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
-                <ScalarProperty Name="DateOccurrence" ColumnName="DateOccurrence" />
-                <ScalarProperty Name="EmployeeStatus" ColumnName="EmployeeStatus" />
-                <ScalarProperty Name="MainStatus" ColumnName="MainStatus" />
-                <ScalarProperty Name="FlightNumber" ColumnName="FlightNumber" />
-                <ScalarProperty Name="StatusEmployeeId" ColumnName="StatusEmployeeId" />
-                <ScalarProperty Name="DateStatus" ColumnName="DateStatus" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
-                <ScalarProperty Name="Category" ColumnName="Category" />
-                <ScalarProperty Name="ReferCount" ColumnName="ReferCount" />
-                <ScalarProperty Name="ClosedCount" ColumnName="ClosedCount" />
-                <ScalarProperty Name="ReviewResultTitle" ColumnName="ReviewResultTitle" />
-                <ScalarProperty Name="ReviewResult" ColumnName="ReviewResult" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ViewQABYEmployees">
             <EntityTypeMapping TypeName="ppaModel.ViewQABYEmployee">
               <MappingFragment StoreEntitySet="ViewQABYEmployee">
@@ -11679,7 +11668,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQaVoyageReport' does not have a
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="QAGetEntities" FunctionName="ppaModel.Store.QAGetEntities" />
           <EntitySetMapping Name="EFBASRs">
             <EntityTypeMapping TypeName="ppaModel.EFBASR">
               <MappingFragment StoreEntitySet="EFBASR">
@@ -11798,6 +11786,10 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQaVoyageReport' does not have a
           <EntitySetMapping Name="QAFollowingUps">
             <EntityTypeMapping TypeName="ppaModel.QAFollowingUp">
               <MappingFragment StoreEntitySet="QAFollowingUp">
+                <ScalarProperty Name="SMSRefId" ColumnName="SMSRefId" />
+                <ScalarProperty Name="SMS" ColumnName="SMS" />
+                <ScalarProperty Name="NotificationCount" ColumnName="NotificationCount" />
+                <ScalarProperty Name="DateNotified" ColumnName="DateNotified" />
                 <ScalarProperty Name="ReceiverDateVisit" ColumnName="ReceiverDateVisit" />
                 <ScalarProperty Name="DateVisit" ColumnName="DateVisit" />
                 <ScalarProperty Name="Priority" ColumnName="Priority" />
@@ -11953,6 +11945,37 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQaVoyageReport' does not have a
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="QAGetEntites_Result">
+            <EntityTypeMapping TypeName="ppaModel.QAGetEntites_Result">
+              <MappingFragment StoreEntitySet="QAGetEntites_Result">
+                <ScalarProperty Name="CategoryOrder" ColumnName="CategoryOrder" />
+                <ScalarProperty Name="FollowingId" ColumnName="FollowingId" />
+                <ScalarProperty Name="FormNo" ColumnName="FormNo" />
+                <ScalarProperty Name="Priority" ColumnName="Priority" />
+                <ScalarProperty Name="DeadLine" ColumnName="DeadLine" />
+                <ScalarProperty Name="DateSign" ColumnName="DateSign" />
+                <ScalarProperty Name="FlightDate" ColumnName="FlightDate" />
+                <ScalarProperty Name="Route" ColumnName="Route" />
+                <ScalarProperty Name="Register" ColumnName="Register" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="DateOccurrence" ColumnName="DateOccurrence" />
+                <ScalarProperty Name="EmployeeStatus" ColumnName="EmployeeStatus" />
+                <ScalarProperty Name="MainStatus" ColumnName="MainStatus" />
+                <ScalarProperty Name="FlightNumber" ColumnName="FlightNumber" />
+                <ScalarProperty Name="StatusEmployeeId" ColumnName="StatusEmployeeId" />
+                <ScalarProperty Name="DateStatus" ColumnName="DateStatus" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="ReferCount" ColumnName="ReferCount" />
+                <ScalarProperty Name="ClosedCount" ColumnName="ClosedCount" />
+                <ScalarProperty Name="ReviewResultTitle" ColumnName="ReviewResultTitle" />
+                <ScalarProperty Name="ReviewResult" ColumnName="ReviewResult" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="QAGetEntities" FunctionName="ppaModel.Store.QAGetEntities" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

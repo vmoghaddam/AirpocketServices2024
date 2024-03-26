@@ -30,5 +30,7 @@ namespace ApiQATemp.Models
         public Nullable<int> PriorityId { get; set; }
         public string Priority { get; set; }
         public int ReceiverDateVisit { get; set; }
+        public string TypeTitle { get; set; }
+        public Nullable<System.DateTime> DateVisit { get; set; }
     }
 }
