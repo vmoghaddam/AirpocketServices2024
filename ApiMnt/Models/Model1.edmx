@@ -1,0 +1,1025 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ppaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Ac_MSN">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AC_ModelID" Type="int" />
+          <Property Name="pkAircraftMSN" Type="uniqueidentifier" />
+          <Property Name="fkFlight_Range" Type="int" />
+          <Property Name="AirlineOperatorsID" Type="int" Nullable="false" />
+          <Property Name="fkAc_MSN_Status" Type="int" />
+          <Property Name="MSN" Type="int" />
+          <Property Name="Register" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="TFH_Hours" Type="int" />
+          <Property Name="TFH_Minutes" Type="tinyint" />
+          <Property Name="TFC" Type="int" />
+          <Property Name="ManDate" Type="date" />
+          <Property Name="Last_WB" Type="smalldatetime" />
+          <Property Name="ETOPS" Type="bit" />
+          <Property Name="AC_Flag" Type="bit" />
+          <Property Name="Cabin_Seat_Ver_F" Type="int" />
+          <Property Name="Cabin_Seat_Ver_B" Type="int" />
+          <Property Name="Cabin_Seat_Ver_C" Type="int" />
+          <Property Name="Cabin_Seat_Ver_R" Type="int" />
+          <Property Name="Lav_QTY" Type="int" />
+          <Property Name="Galley_QTY" Type="int" />
+          <Property Name="Cabin_CrewVer" Type="int" />
+          <Property Name="Cockpit_Seat_Ver_Pilot" Type="int" />
+          <Property Name="Cockpit_Seat_Ver_FlightEngineer" Type="int" />
+          <Property Name="Cockpit_Seat_Ver_Observer" Type="int" />
+          <Property Name="Previous_Register" Type="nvarchar" MaxLength="50" />
+          <Property Name="Fuel_LH_Outer" Type="int" />
+          <Property Name="Fuel_LH_Inner" Type="int" />
+          <Property Name="Fuel_Center" Type="int" />
+          <Property Name="Fuel_RH_Inner" Type="int" />
+          <Property Name="Fuel_RH_Outer" Type="int" />
+          <Property Name="Fuel_ACT1" Type="int" />
+          <Property Name="Fuel_ACT2" Type="int" />
+          <Property Name="Fuel_Trim" Type="int" />
+          <Property Name="Fuel_Total" Type="int" />
+          <Property Name="FuelUnit" Type="bit" />
+          <Property Name="CustomerId" Type="int" Nullable="false" />
+          <Property Name="IsVirtual" Type="bit" />
+          <Property Name="TypeId" Type="int" />
+          <Property Name="TotalSeat" Type="int" />
+          <Property Name="Color1" Type="varchar" MaxLength="255" />
+          <Property Name="Color2" Type="varchar" MaxLength="255" />
+          <Property Name="MAXZFW" Type="int" />
+          <Property Name="MAXLNW" Type="int" />
+          <Property Name="OASecLimit" Type="int" />
+          <Property Name="OBSecLimit" Type="int" />
+          <Property Name="OCSecLimit" Type="int" />
+          <Property Name="ODSecLimit" Type="int" />
+          <Property Name="CPT1Limit" Type="int" />
+          <Property Name="CPT2Limit" Type="int" />
+          <Property Name="CPT3Limit" Type="int" />
+          <Property Name="CPT4Limit" Type="int" />
+          <Property Name="AircraftType" Type="nvarchar" MaxLength="50" />
+          <Property Name="deffects_no" Type="int" />
+          <Property Name="eng1_remaining" Type="int" />
+          <Property Name="eng2_remaining" Type="int" />
+          <Property Name="landing_gear_remaining" Type="int" />
+          <Property Name="apu_remaining" Type="int" />
+          <Property Name="ht1_remaining" Type="int" />
+          <Property Name="ht2_remaining" Type="int" />
+          <Property Name="ht3_remaining" Type="int" />
+          <Property Name="first_due_remaining" Type="int" />
+          <Property Name="total_flight_cycle" Type="int" />
+          <Property Name="total_flight_minute" Type="int" />
+          <Property Name="serial_no" Type="varchar" MaxLength="500" />
+          <Property Name="date_initial" Type="datetime2" Precision="7" />
+          <Property Name="maintenance_setting_group" Type="varchar" MaxLength="500" />
+          <Property Name="date_initial_landing_gear" Type="datetime2" Precision="7" />
+          <Property Name="date_initial_apu" Type="datetime2" Precision="7" />
+          <Property Name="date_initial_ht1" Type="datetime2" Precision="7" />
+          <Property Name="date_initial_ht2" Type="datetime2" Precision="7" />
+          <Property Name="date_initial_ht3" Type="datetime2" Precision="7" />
+          <Property Name="date_initial_due" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="mnt_aircraft_adsb">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="reference" Type="varchar" MaxLength="500" />
+          <Property Name="subject" Type="varchar" MaxLength="2000" />
+          <Property Name="estimated_working_days" Type="int" />
+          <Property Name="date_due" Type="datetime2" Precision="7" />
+          <Property Name="aircraft_id" Type="int" />
+          <Property Name="remainig_cycles" Type="int" />
+          <Property Name="date_initial" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="mnt_aircraft_check">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="item_no" Type="int" />
+          <Property Name="check" Type="varchar" MaxLength="500" />
+          <Property Name="remaining_hours" Type="int" />
+          <Property Name="remaining_minutes" Type="int" />
+          <Property Name="estimated_working_days" Type="int" />
+          <Property Name="aircraft_id" Type="int" />
+          <Property Name="date_initial" Type="datetime2" Precision="7" />
+          <Property Name="tasks" Type="varchar" MaxLength="4000" />
+        </EntityType>
+        <EntityType Name="mnt_aircraft_check_task">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="description" Type="nvarchar" MaxLength="2000" />
+          <Property Name="check_id" Type="int" />
+        </EntityType>
+        <EntityType Name="mnt_engine">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="engine_no" Type="int" />
+          <Property Name="cat" Type="varchar" MaxLength="255" />
+          <Property Name="model" Type="varchar" MaxLength="255" />
+          <Property Name="serial_no" Type="varchar" MaxLength="255" />
+          <Property Name="remaining_cycles" Type="int" />
+          <Property Name="remaining_minutes" Type="int" />
+          <Property Name="aircraft_id" Type="int" />
+          <Property Name="date_initial" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="mnt_engine_adsb">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="item_no" Type="int" />
+          <Property Name="reference" Type="varchar" MaxLength="255" />
+          <Property Name="subject" Type="varchar" MaxLength="2000" />
+          <Property Name="remark" Type="varchar" MaxLength="4000" />
+          <Property Name="date_due" Type="datetime2" Precision="7" />
+          <Property Name="remaining_cycles" Type="int" />
+          <Property Name="engine_id" Type="int" />
+          <Property Name="date_initial" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="mnt_engine_llp">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="engine_id" Type="int" />
+          <Property Name="cat" Type="varchar" MaxLength="255" />
+          <Property Name="cat_a" Type="varchar" MaxLength="255" />
+          <Property Name="cat_b" Type="varchar" MaxLength="255" />
+          <Property Name="cat_c" Type="varchar" MaxLength="255" />
+          <Property Name="remaining_cycles" Type="int" />
+          <Property Name="date_initial" Type="datetime2" Precision="7" />
+          <Property Name="date_due" Type="datetime2" Precision="7" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.AppFuel' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="AppFuel">
+          <Key>
+            <PropertyRef Name="FlightId" />
+            
+            
+            
+            
+            
+            
+            
+          </Key>
+          <Property Name="FlightId" Type="int" Nullable="false" />
+          <Property Name="UpLift" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="FuelTotal" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="Remaining" Type="decimal" Precision="20" Scale="4" />
+          <Property Name="UsedFuel" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="UsedFuelAvg" Type="numeric" Precision="1" Scale="1" Nullable="false" />
+          <Property Name="UsedFuelAvgReg" Type="numeric" Precision="1" Scale="1" Nullable="false" />
+          <Property Name="Taxi" Type="int" />
+          <Property Name="FPTripFuel" Type="int" />
+          <Property Name="FPFuel" Type="int" />
+          <Property Name="DifTripFuel" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="DifTripFuelPercent" Type="numeric" Precision="37" Scale="16" />
+          <Property Name="DifTotalFuel" Type="decimal" Precision="20" Scale="4" />
+          <Property Name="DifTotalFuelPercent" Type="numeric" Precision="38" Scale="16" />
+          <Property Name="FPVar" Type="numeric" Precision="38" Scale="13" />
+          <Property Name="TotalPax" Type="int" />
+          <Property Name="FuelUnitID" Type="int" Nullable="false" />
+          <Property Name="FuelUnit" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="BaggageWeight" Type="int" Nullable="false" />
+          <Property Name="CargoWeight" Type="int" Nullable="false" />
+          <Property Name="Freight" Type="int" />
+          <Property Name="STD" Type="datetime" />
+          <Property Name="STA" Type="datetime" />
+          <Property Name="BlockOn" Type="datetime" />
+          <Property Name="BlockOff" Type="datetime" />
+          <Property Name="TakeOff" Type="datetime" />
+          <Property Name="Landing" Type="datetime" />
+          <Property Name="FlightDate" Type="datetime" />
+          <Property Name="FlightNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="RegisterID" Type="int" />
+          <Property Name="Register" Type="nvarchar" MaxLength="50" />
+          <Property Name="TypeId" Type="int" />
+          <Property Name="AircraftType" Type="nvarchar" MaxLength="255" />
+          <Property Name="FromAirportId" Type="int" />
+          <Property Name="ToAirportId" Type="int" />
+          <Property Name="FromAirport" Type="nvarchar" MaxLength="255" />
+          <Property Name="ToAirport" Type="nvarchar" MaxLength="255" />
+          <Property Name="FromAirportIATA" Type="nvarchar" MaxLength="255" />
+          <Property Name="ToAirportIATA" Type="nvarchar" MaxLength="255" />
+          <Property Name="FlightStatus" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="FlightStatusID" Type="int" />
+          <Property Name="STDDay" Type="date" />
+          <Property Name="STADay" Type="date" />
+          <Property Name="DelayBlockOff" Type="int" />
+          <Property Name="BlockTime" Type="int" />
+          <Property Name="FlightTime" Type="int" />
+          <Property Name="FuelDensity" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="CARGO" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="PF" Type="varchar" MaxLength="255" />
+          <Property Name="PIC" Type="nvarchar" MaxLength="1001" />
+          <Property Name="PICId" Type="int" />
+          <Property Name="SIC" Type="varchar" MaxLength="500" />
+          <Property Name="SICId" Type="int" />
+          <Property Name="ALT1" Type="varchar" MaxLength="255" />
+          <Property Name="ALT2" Type="varchar" MaxLength="255" />
+          <Property Name="ALT3" Type="varchar" MaxLength="255" />
+          <Property Name="IPName" Type="nvarchar" MaxLength="1001" />
+          <Property Name="IPId" Type="int" />
+          <Property Name="IPScheduleName" Type="varchar" MaxLength="500" />
+          <Property Name="P1Name" Type="nvarchar" MaxLength="1001" />
+          <Property Name="P1Id" Type="int" />
+          <Property Name="P1ScheduleName" Type="varchar" MaxLength="500" />
+          <Property Name="P2Name" Type="nvarchar" MaxLength="1001" />
+          <Property Name="P2Id" Type="int" />
+          <Property Name="P2ScheduleName" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <Association Name="fk_adsb_aircraft">
+          <End Role="Ac_MSN" Type="Self.Ac_MSN" Multiplicity="0..1" />
+          <End Role="mnt_aircraft_adsb" Type="Self.mnt_aircraft_adsb" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ac_MSN">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="mnt_aircraft_adsb">
+              <PropertyRef Name="aircraft_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_adsb_eng">
+          <End Role="mnt_engine" Type="Self.mnt_engine" Multiplicity="0..1" />
+          <End Role="mnt_engine_adsb" Type="Self.mnt_engine_adsb" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mnt_engine">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="mnt_engine_adsb">
+              <PropertyRef Name="engine_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_check_aircraft">
+          <End Role="Ac_MSN" Type="Self.Ac_MSN" Multiplicity="0..1" />
+          <End Role="mnt_aircraft_check" Type="Self.mnt_aircraft_check" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ac_MSN">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="mnt_aircraft_check">
+              <PropertyRef Name="aircraft_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_eng_ac">
+          <End Role="Ac_MSN" Type="Self.Ac_MSN" Multiplicity="0..1" />
+          <End Role="mnt_engine" Type="Self.mnt_engine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ac_MSN">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="mnt_engine">
+              <PropertyRef Name="aircraft_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_llp_engine">
+          <End Role="mnt_engine" Type="Self.mnt_engine" Multiplicity="0..1" />
+          <End Role="mnt_engine_llp" Type="Self.mnt_engine_llp" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mnt_engine">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="mnt_engine_llp">
+              <PropertyRef Name="engine_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_task_check">
+          <End Role="mnt_aircraft_check" Type="Self.mnt_aircraft_check" Multiplicity="0..1" />
+          <End Role="mnt_aircraft_check_task" Type="Self.mnt_aircraft_check_task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mnt_aircraft_check">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="mnt_aircraft_check_task">
+              <PropertyRef Name="check_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ppaModelStoreContainer">
+          <EntitySet Name="Ac_MSN" EntityType="Self.Ac_MSN" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="mnt_aircraft_adsb" EntityType="Self.mnt_aircraft_adsb" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="mnt_aircraft_check" EntityType="Self.mnt_aircraft_check" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="mnt_aircraft_check_task" EntityType="Self.mnt_aircraft_check_task" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="mnt_engine" EntityType="Self.mnt_engine" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="mnt_engine_adsb" EntityType="Self.mnt_engine_adsb" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="mnt_engine_llp" EntityType="Self.mnt_engine_llp" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AppFuel" EntityType="Self.AppFuel" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [AppFuel].[FlightId] AS [FlightId], 
+    [AppFuel].[UpLift] AS [UpLift], 
+    [AppFuel].[FuelTotal] AS [FuelTotal], 
+    [AppFuel].[Remaining] AS [Remaining], 
+    [AppFuel].[UsedFuel] AS [UsedFuel], 
+    [AppFuel].[UsedFuelAvg] AS [UsedFuelAvg], 
+    [AppFuel].[UsedFuelAvgReg] AS [UsedFuelAvgReg], 
+    [AppFuel].[Taxi] AS [Taxi], 
+    [AppFuel].[FPTripFuel] AS [FPTripFuel], 
+    [AppFuel].[FPFuel] AS [FPFuel], 
+    [AppFuel].[DifTripFuel] AS [DifTripFuel], 
+    [AppFuel].[DifTripFuelPercent] AS [DifTripFuelPercent], 
+    [AppFuel].[DifTotalFuel] AS [DifTotalFuel], 
+    [AppFuel].[DifTotalFuelPercent] AS [DifTotalFuelPercent], 
+    [AppFuel].[FPVar] AS [FPVar], 
+    [AppFuel].[TotalPax] AS [TotalPax], 
+    [AppFuel].[FuelUnitID] AS [FuelUnitID], 
+    [AppFuel].[FuelUnit] AS [FuelUnit], 
+    [AppFuel].[BaggageWeight] AS [BaggageWeight], 
+    [AppFuel].[CargoWeight] AS [CargoWeight], 
+    [AppFuel].[Freight] AS [Freight], 
+    [AppFuel].[STD] AS [STD], 
+    [AppFuel].[STA] AS [STA], 
+    [AppFuel].[BlockOn] AS [BlockOn], 
+    [AppFuel].[BlockOff] AS [BlockOff], 
+    [AppFuel].[TakeOff] AS [TakeOff], 
+    [AppFuel].[Landing] AS [Landing], 
+    [AppFuel].[FlightDate] AS [FlightDate], 
+    [AppFuel].[FlightNumber] AS [FlightNumber], 
+    [AppFuel].[RegisterID] AS [RegisterID], 
+    [AppFuel].[Register] AS [Register], 
+    [AppFuel].[TypeId] AS [TypeId], 
+    [AppFuel].[AircraftType] AS [AircraftType], 
+    [AppFuel].[FromAirportId] AS [FromAirportId], 
+    [AppFuel].[ToAirportId] AS [ToAirportId], 
+    [AppFuel].[FromAirport] AS [FromAirport], 
+    [AppFuel].[ToAirport] AS [ToAirport], 
+    [AppFuel].[FromAirportIATA] AS [FromAirportIATA], 
+    [AppFuel].[ToAirportIATA] AS [ToAirportIATA], 
+    [AppFuel].[FlightStatus] AS [FlightStatus], 
+    [AppFuel].[FlightStatusID] AS [FlightStatusID], 
+    [AppFuel].[STDDay] AS [STDDay], 
+    [AppFuel].[STADay] AS [STADay], 
+    [AppFuel].[DelayBlockOff] AS [DelayBlockOff], 
+    [AppFuel].[BlockTime] AS [BlockTime], 
+    [AppFuel].[FlightTime] AS [FlightTime], 
+    [AppFuel].[FuelDensity] AS [FuelDensity], 
+    [AppFuel].[CARGO] AS [CARGO], 
+    [AppFuel].[PF] AS [PF], 
+    [AppFuel].[PIC] AS [PIC], 
+    [AppFuel].[PICId] AS [PICId], 
+    [AppFuel].[SIC] AS [SIC], 
+    [AppFuel].[SICId] AS [SICId], 
+    [AppFuel].[ALT1] AS [ALT1], 
+    [AppFuel].[ALT2] AS [ALT2], 
+    [AppFuel].[ALT3] AS [ALT3], 
+    [AppFuel].[IPName] AS [IPName], 
+    [AppFuel].[IPId] AS [IPId], 
+    [AppFuel].[IPScheduleName] AS [IPScheduleName], 
+    [AppFuel].[P1Name] AS [P1Name], 
+    [AppFuel].[P1Id] AS [P1Id], 
+    [AppFuel].[P1ScheduleName] AS [P1ScheduleName], 
+    [AppFuel].[P2Name] AS [P2Name], 
+    [AppFuel].[P2Id] AS [P2Id], 
+    [AppFuel].[P2ScheduleName] AS [P2ScheduleName]
+    FROM [dbo].[AppFuel] AS [AppFuel]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="fk_adsb_aircraft" Association="Self.fk_adsb_aircraft">
+            <End Role="Ac_MSN" EntitySet="Ac_MSN" />
+            <End Role="mnt_aircraft_adsb" EntitySet="mnt_aircraft_adsb" />
+          </AssociationSet>
+          <AssociationSet Name="fk_adsb_eng" Association="Self.fk_adsb_eng">
+            <End Role="mnt_engine" EntitySet="mnt_engine" />
+            <End Role="mnt_engine_adsb" EntitySet="mnt_engine_adsb" />
+          </AssociationSet>
+          <AssociationSet Name="fk_check_aircraft" Association="Self.fk_check_aircraft">
+            <End Role="Ac_MSN" EntitySet="Ac_MSN" />
+            <End Role="mnt_aircraft_check" EntitySet="mnt_aircraft_check" />
+          </AssociationSet>
+          <AssociationSet Name="fk_eng_ac" Association="Self.fk_eng_ac">
+            <End Role="Ac_MSN" EntitySet="Ac_MSN" />
+            <End Role="mnt_engine" EntitySet="mnt_engine" />
+          </AssociationSet>
+          <AssociationSet Name="fk_llp_engine" Association="Self.fk_llp_engine">
+            <End Role="mnt_engine" EntitySet="mnt_engine" />
+            <End Role="mnt_engine_llp" EntitySet="mnt_engine_llp" />
+          </AssociationSet>
+          <AssociationSet Name="fk_task_check" Association="Self.fk_task_check">
+            <End Role="mnt_aircraft_check" EntitySet="mnt_aircraft_check" />
+            <End Role="mnt_aircraft_check_task" EntitySet="mnt_aircraft_check_task" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ppaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="ppa_entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AppFuels" EntityType="ppaModel.AppFuel" />
+          <EntitySet Name="Ac_MSN" EntityType="ppaModel.Ac_MSN" />
+          <EntitySet Name="mnt_engine" EntityType="ppaModel.mnt_engine" />
+          <EntitySet Name="mnt_engine_adsb" EntityType="ppaModel.mnt_engine_adsb" />
+          <EntitySet Name="mnt_engine_llp" EntityType="ppaModel.mnt_engine_llp" />
+          <AssociationSet Name="fk_eng_ac" Association="ppaModel.fk_eng_ac">
+            <End Role="Ac_MSN" EntitySet="Ac_MSN" />
+            <End Role="mnt_engine" EntitySet="mnt_engine" />
+          </AssociationSet>
+          <AssociationSet Name="fk_adsb_eng" Association="ppaModel.fk_adsb_eng">
+            <End Role="mnt_engine" EntitySet="mnt_engine" />
+            <End Role="mnt_engine_adsb" EntitySet="mnt_engine_adsb" />
+          </AssociationSet>
+          <AssociationSet Name="fk_llp_engine" Association="ppaModel.fk_llp_engine">
+            <End Role="mnt_engine" EntitySet="mnt_engine" />
+            <End Role="mnt_engine_llp" EntitySet="mnt_engine_llp" />
+          </AssociationSet>
+          <EntitySet Name="mnt_aircraft_adsb" EntityType="ppaModel.mnt_aircraft_adsb" />
+          <EntitySet Name="mnt_aircraft_check" EntityType="ppaModel.mnt_aircraft_check" />
+          <EntitySet Name="mnt_aircraft_check_task" EntityType="ppaModel.mnt_aircraft_check_task" />
+          <AssociationSet Name="fk_adsb_aircraft" Association="ppaModel.fk_adsb_aircraft">
+            <End Role="Ac_MSN" EntitySet="Ac_MSN" />
+            <End Role="mnt_aircraft_adsb" EntitySet="mnt_aircraft_adsb" />
+          </AssociationSet>
+          <AssociationSet Name="fk_check_aircraft" Association="ppaModel.fk_check_aircraft">
+            <End Role="Ac_MSN" EntitySet="Ac_MSN" />
+            <End Role="mnt_aircraft_check" EntitySet="mnt_aircraft_check" />
+          </AssociationSet>
+          <AssociationSet Name="fk_task_check" Association="ppaModel.fk_task_check">
+            <End Role="mnt_aircraft_check" EntitySet="mnt_aircraft_check" />
+            <End Role="mnt_aircraft_check_task" EntitySet="mnt_aircraft_check_task" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="AppFuel">
+          <Key>
+            <PropertyRef Name="FlightId" />
+          </Key>
+          <Property Name="FlightId" Type="Int32" Nullable="false" />
+          <Property Name="UpLift" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="FuelTotal" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Remaining" Type="Decimal" Precision="20" Scale="4" />
+          <Property Name="UsedFuel" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="UsedFuelAvg" Type="Decimal" Precision="1" Scale="1" Nullable="false" />
+          <Property Name="UsedFuelAvgReg" Type="Decimal" Precision="1" Scale="1" Nullable="false" />
+          <Property Name="Taxi" Type="Int32" />
+          <Property Name="FPTripFuel" Type="Int32" />
+          <Property Name="FPFuel" Type="Int32" />
+          <Property Name="DifTripFuel" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="DifTripFuelPercent" Type="Decimal" Precision="37" Scale="16" />
+          <Property Name="DifTotalFuel" Type="Decimal" Precision="20" Scale="4" />
+          <Property Name="DifTotalFuelPercent" Type="Decimal" Precision="38" Scale="16" />
+          <Property Name="FPVar" Type="Decimal" Precision="38" Scale="13" />
+          <Property Name="TotalPax" Type="Int32" />
+          <Property Name="FuelUnitID" Type="Int32" Nullable="false" />
+          <Property Name="FuelUnit" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="BaggageWeight" Type="Int32" Nullable="false" />
+          <Property Name="CargoWeight" Type="Int32" Nullable="false" />
+          <Property Name="Freight" Type="Int32" />
+          <Property Name="STD" Type="DateTime" Precision="3" />
+          <Property Name="STA" Type="DateTime" Precision="3" />
+          <Property Name="BlockOn" Type="DateTime" Precision="3" />
+          <Property Name="BlockOff" Type="DateTime" Precision="3" />
+          <Property Name="TakeOff" Type="DateTime" Precision="3" />
+          <Property Name="Landing" Type="DateTime" Precision="3" />
+          <Property Name="FlightDate" Type="DateTime" Precision="3" />
+          <Property Name="FlightNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RegisterID" Type="Int32" />
+          <Property Name="Register" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TypeId" Type="Int32" />
+          <Property Name="AircraftType" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FromAirportId" Type="Int32" />
+          <Property Name="ToAirportId" Type="Int32" />
+          <Property Name="FromAirport" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ToAirport" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FromAirportIATA" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ToAirportIATA" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FlightStatus" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FlightStatusID" Type="Int32" />
+          <Property Name="STDDay" Type="DateTime" Precision="0" />
+          <Property Name="STADay" Type="DateTime" Precision="0" />
+          <Property Name="DelayBlockOff" Type="Int32" />
+          <Property Name="BlockTime" Type="Int32" />
+          <Property Name="FlightTime" Type="Int32" />
+          <Property Name="FuelDensity" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="CARGO" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="PF" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="PIC" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="PICId" Type="Int32" />
+          <Property Name="SIC" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="SICId" Type="Int32" />
+          <Property Name="ALT1" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ALT2" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ALT3" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="IPName" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="IPId" Type="Int32" />
+          <Property Name="IPScheduleName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="P1Name" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="P1Id" Type="Int32" />
+          <Property Name="P1ScheduleName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="P2Name" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="P2Id" Type="Int32" />
+          <Property Name="P2ScheduleName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Ac_MSN">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AC_ModelID" Type="Int32" />
+          <Property Name="pkAircraftMSN" Type="Guid" />
+          <Property Name="fkFlight_Range" Type="Int32" />
+          <Property Name="AirlineOperatorsID" Type="Int32" Nullable="false" />
+          <Property Name="fkAc_MSN_Status" Type="Int32" />
+          <Property Name="MSN" Type="Int32" />
+          <Property Name="Register" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TFH_Hours" Type="Int32" />
+          <Property Name="TFH_Minutes" Type="Byte" />
+          <Property Name="TFC" Type="Int32" />
+          <Property Name="ManDate" Type="DateTime" Precision="0" />
+          <Property Name="Last_WB" Type="DateTime" Precision="0" />
+          <Property Name="ETOPS" Type="Boolean" />
+          <Property Name="AC_Flag" Type="Boolean" />
+          <Property Name="Cabin_Seat_Ver_F" Type="Int32" />
+          <Property Name="Cabin_Seat_Ver_B" Type="Int32" />
+          <Property Name="Cabin_Seat_Ver_C" Type="Int32" />
+          <Property Name="Cabin_Seat_Ver_R" Type="Int32" />
+          <Property Name="Lav_QTY" Type="Int32" />
+          <Property Name="Galley_QTY" Type="Int32" />
+          <Property Name="Cabin_CrewVer" Type="Int32" />
+          <Property Name="Cockpit_Seat_Ver_Pilot" Type="Int32" />
+          <Property Name="Cockpit_Seat_Ver_FlightEngineer" Type="Int32" />
+          <Property Name="Cockpit_Seat_Ver_Observer" Type="Int32" />
+          <Property Name="Previous_Register" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Fuel_LH_Outer" Type="Int32" />
+          <Property Name="Fuel_LH_Inner" Type="Int32" />
+          <Property Name="Fuel_Center" Type="Int32" />
+          <Property Name="Fuel_RH_Inner" Type="Int32" />
+          <Property Name="Fuel_RH_Outer" Type="Int32" />
+          <Property Name="Fuel_ACT1" Type="Int32" />
+          <Property Name="Fuel_ACT2" Type="Int32" />
+          <Property Name="Fuel_Trim" Type="Int32" />
+          <Property Name="Fuel_Total" Type="Int32" />
+          <Property Name="FuelUnit" Type="Boolean" />
+          <Property Name="CustomerId" Type="Int32" Nullable="false" />
+          <Property Name="IsVirtual" Type="Boolean" />
+          <Property Name="TypeId" Type="Int32" />
+          <Property Name="TotalSeat" Type="Int32" />
+          <Property Name="Color1" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Color2" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="MAXZFW" Type="Int32" />
+          <Property Name="MAXLNW" Type="Int32" />
+          <Property Name="OASecLimit" Type="Int32" />
+          <Property Name="OBSecLimit" Type="Int32" />
+          <Property Name="OCSecLimit" Type="Int32" />
+          <Property Name="ODSecLimit" Type="Int32" />
+          <Property Name="CPT1Limit" Type="Int32" />
+          <Property Name="CPT2Limit" Type="Int32" />
+          <Property Name="CPT3Limit" Type="Int32" />
+          <Property Name="CPT4Limit" Type="Int32" />
+          <Property Name="AircraftType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="deffects_no" Type="Int32" />
+          <Property Name="eng1_remaining" Type="Int32" />
+          <Property Name="eng2_remaining" Type="Int32" />
+          <Property Name="landing_gear_remaining" Type="Int32" />
+          <Property Name="apu_remaining" Type="Int32" />
+          <Property Name="ht1_remaining" Type="Int32" />
+          <Property Name="ht2_remaining" Type="Int32" />
+          <Property Name="ht3_remaining" Type="Int32" />
+          <Property Name="first_due_remaining" Type="Int32" />
+          <Property Name="total_flight_cycle" Type="Int32" />
+          <Property Name="total_flight_minute" Type="Int32" />
+          <Property Name="serial_no" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="date_initial" Type="DateTime" Precision="7" />
+          <Property Name="maintenance_setting_group" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="date_initial_landing_gear" Type="DateTime" Precision="7" />
+          <Property Name="date_initial_apu" Type="DateTime" Precision="7" />
+          <Property Name="date_initial_ht1" Type="DateTime" Precision="7" />
+          <Property Name="date_initial_ht2" Type="DateTime" Precision="7" />
+          <Property Name="date_initial_ht3" Type="DateTime" Precision="7" />
+          <Property Name="date_initial_due" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="mnt_engine" Relationship="ppaModel.fk_eng_ac" FromRole="Ac_MSN" ToRole="mnt_engine" />
+          <NavigationProperty Name="mnt_aircraft_adsb" Relationship="ppaModel.fk_adsb_aircraft" FromRole="Ac_MSN" ToRole="mnt_aircraft_adsb" />
+          <NavigationProperty Name="mnt_aircraft_check" Relationship="ppaModel.fk_check_aircraft" FromRole="Ac_MSN" ToRole="mnt_aircraft_check" />
+        </EntityType>
+        <EntityType Name="mnt_engine">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="engine_no" Type="Int32" />
+          <Property Name="cat" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="model" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="serial_no" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="remaining_cycles" Type="Int32" />
+          <Property Name="remaining_minutes" Type="Int32" />
+          <Property Name="aircraft_id" Type="Int32" />
+          <Property Name="date_initial" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="Ac_MSN" Relationship="ppaModel.fk_eng_ac" FromRole="mnt_engine" ToRole="Ac_MSN" />
+          <NavigationProperty Name="mnt_engine_adsb" Relationship="ppaModel.fk_adsb_eng" FromRole="mnt_engine" ToRole="mnt_engine_adsb" />
+          <NavigationProperty Name="mnt_engine_llp" Relationship="ppaModel.fk_llp_engine" FromRole="mnt_engine" ToRole="mnt_engine_llp" />
+        </EntityType>
+        <EntityType Name="mnt_engine_adsb">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="item_no" Type="Int32" />
+          <Property Name="reference" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="subject" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="remark" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Name="date_due" Type="DateTime" Precision="7" />
+          <Property Name="remaining_cycles" Type="Int32" />
+          <Property Name="engine_id" Type="Int32" />
+          <Property Name="date_initial" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="mnt_engine" Relationship="ppaModel.fk_adsb_eng" FromRole="mnt_engine_adsb" ToRole="mnt_engine" />
+        </EntityType>
+        <EntityType Name="mnt_engine_llp">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="engine_id" Type="Int32" />
+          <Property Name="cat" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="cat_a" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="cat_b" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="cat_c" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="remaining_cycles" Type="Int32" />
+          <Property Name="date_initial" Type="DateTime" Precision="7" />
+          <Property Name="date_due" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="mnt_engine" Relationship="ppaModel.fk_llp_engine" FromRole="mnt_engine_llp" ToRole="mnt_engine" />
+        </EntityType>
+        <Association Name="fk_eng_ac">
+          <End Type="ppaModel.Ac_MSN" Role="Ac_MSN" Multiplicity="0..1" />
+          <End Type="ppaModel.mnt_engine" Role="mnt_engine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ac_MSN">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="mnt_engine">
+              <PropertyRef Name="aircraft_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_adsb_eng">
+          <End Type="ppaModel.mnt_engine" Role="mnt_engine" Multiplicity="0..1" />
+          <End Type="ppaModel.mnt_engine_adsb" Role="mnt_engine_adsb" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mnt_engine">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="mnt_engine_adsb">
+              <PropertyRef Name="engine_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_llp_engine">
+          <End Type="ppaModel.mnt_engine" Role="mnt_engine" Multiplicity="0..1" />
+          <End Type="ppaModel.mnt_engine_llp" Role="mnt_engine_llp" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mnt_engine">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="mnt_engine_llp">
+              <PropertyRef Name="engine_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="mnt_aircraft_adsb">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="reference" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="subject" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="estimated_working_days" Type="Int32" />
+          <Property Name="date_due" Type="DateTime" Precision="7" />
+          <Property Name="aircraft_id" Type="Int32" />
+          <Property Name="remainig_cycles" Type="Int32" />
+          <Property Name="date_initial" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="Ac_MSN" Relationship="ppaModel.fk_adsb_aircraft" FromRole="mnt_aircraft_adsb" ToRole="Ac_MSN" />
+        </EntityType>
+        <EntityType Name="mnt_aircraft_check">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="item_no" Type="Int32" />
+          <Property Name="check" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="remaining_hours" Type="Int32" />
+          <Property Name="remaining_minutes" Type="Int32" />
+          <Property Name="estimated_working_days" Type="Int32" />
+          <Property Name="aircraft_id" Type="Int32" />
+          <Property Name="date_initial" Type="DateTime" Precision="7" />
+          <Property Name="tasks" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Ac_MSN" Relationship="ppaModel.fk_check_aircraft" FromRole="mnt_aircraft_check" ToRole="Ac_MSN" />
+          <NavigationProperty Name="mnt_aircraft_check_task" Relationship="ppaModel.fk_task_check" FromRole="mnt_aircraft_check" ToRole="mnt_aircraft_check_task" />
+        </EntityType>
+        <EntityType Name="mnt_aircraft_check_task">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="description" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="check_id" Type="Int32" />
+          <NavigationProperty Name="mnt_aircraft_check" Relationship="ppaModel.fk_task_check" FromRole="mnt_aircraft_check_task" ToRole="mnt_aircraft_check" />
+        </EntityType>
+        <Association Name="fk_adsb_aircraft">
+          <End Type="ppaModel.Ac_MSN" Role="Ac_MSN" Multiplicity="0..1" />
+          <End Type="ppaModel.mnt_aircraft_adsb" Role="mnt_aircraft_adsb" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ac_MSN">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="mnt_aircraft_adsb">
+              <PropertyRef Name="aircraft_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_check_aircraft">
+          <End Type="ppaModel.Ac_MSN" Role="Ac_MSN" Multiplicity="0..1" />
+          <End Type="ppaModel.mnt_aircraft_check" Role="mnt_aircraft_check" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ac_MSN">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="mnt_aircraft_check">
+              <PropertyRef Name="aircraft_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_task_check">
+          <End Type="ppaModel.mnt_aircraft_check" Role="mnt_aircraft_check" Multiplicity="0..1" />
+          <End Type="ppaModel.mnt_aircraft_check_task" Role="mnt_aircraft_check_task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mnt_aircraft_check">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="mnt_aircraft_check_task">
+              <PropertyRef Name="check_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ppaModelStoreContainer" CdmEntityContainer="ppa_entities">
+          <EntitySetMapping Name="AppFuels">
+            <EntityTypeMapping TypeName="ppaModel.AppFuel">
+              <MappingFragment StoreEntitySet="AppFuel">
+                <ScalarProperty Name="P2ScheduleName" ColumnName="P2ScheduleName" />
+                <ScalarProperty Name="P2Id" ColumnName="P2Id" />
+                <ScalarProperty Name="P2Name" ColumnName="P2Name" />
+                <ScalarProperty Name="P1ScheduleName" ColumnName="P1ScheduleName" />
+                <ScalarProperty Name="P1Id" ColumnName="P1Id" />
+                <ScalarProperty Name="P1Name" ColumnName="P1Name" />
+                <ScalarProperty Name="IPScheduleName" ColumnName="IPScheduleName" />
+                <ScalarProperty Name="IPId" ColumnName="IPId" />
+                <ScalarProperty Name="IPName" ColumnName="IPName" />
+                <ScalarProperty Name="ALT3" ColumnName="ALT3" />
+                <ScalarProperty Name="ALT2" ColumnName="ALT2" />
+                <ScalarProperty Name="ALT1" ColumnName="ALT1" />
+                <ScalarProperty Name="SICId" ColumnName="SICId" />
+                <ScalarProperty Name="SIC" ColumnName="SIC" />
+                <ScalarProperty Name="PICId" ColumnName="PICId" />
+                <ScalarProperty Name="PIC" ColumnName="PIC" />
+                <ScalarProperty Name="PF" ColumnName="PF" />
+                <ScalarProperty Name="CARGO" ColumnName="CARGO" />
+                <ScalarProperty Name="FuelDensity" ColumnName="FuelDensity" />
+                <ScalarProperty Name="FlightTime" ColumnName="FlightTime" />
+                <ScalarProperty Name="BlockTime" ColumnName="BlockTime" />
+                <ScalarProperty Name="DelayBlockOff" ColumnName="DelayBlockOff" />
+                <ScalarProperty Name="STADay" ColumnName="STADay" />
+                <ScalarProperty Name="STDDay" ColumnName="STDDay" />
+                <ScalarProperty Name="FlightStatusID" ColumnName="FlightStatusID" />
+                <ScalarProperty Name="FlightStatus" ColumnName="FlightStatus" />
+                <ScalarProperty Name="ToAirportIATA" ColumnName="ToAirportIATA" />
+                <ScalarProperty Name="FromAirportIATA" ColumnName="FromAirportIATA" />
+                <ScalarProperty Name="ToAirport" ColumnName="ToAirport" />
+                <ScalarProperty Name="FromAirport" ColumnName="FromAirport" />
+                <ScalarProperty Name="ToAirportId" ColumnName="ToAirportId" />
+                <ScalarProperty Name="FromAirportId" ColumnName="FromAirportId" />
+                <ScalarProperty Name="AircraftType" ColumnName="AircraftType" />
+                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+                <ScalarProperty Name="Register" ColumnName="Register" />
+                <ScalarProperty Name="RegisterID" ColumnName="RegisterID" />
+                <ScalarProperty Name="FlightNumber" ColumnName="FlightNumber" />
+                <ScalarProperty Name="FlightDate" ColumnName="FlightDate" />
+                <ScalarProperty Name="Landing" ColumnName="Landing" />
+                <ScalarProperty Name="TakeOff" ColumnName="TakeOff" />
+                <ScalarProperty Name="BlockOff" ColumnName="BlockOff" />
+                <ScalarProperty Name="BlockOn" ColumnName="BlockOn" />
+                <ScalarProperty Name="STA" ColumnName="STA" />
+                <ScalarProperty Name="STD" ColumnName="STD" />
+                <ScalarProperty Name="Freight" ColumnName="Freight" />
+                <ScalarProperty Name="CargoWeight" ColumnName="CargoWeight" />
+                <ScalarProperty Name="BaggageWeight" ColumnName="BaggageWeight" />
+                <ScalarProperty Name="FuelUnit" ColumnName="FuelUnit" />
+                <ScalarProperty Name="FuelUnitID" ColumnName="FuelUnitID" />
+                <ScalarProperty Name="TotalPax" ColumnName="TotalPax" />
+                <ScalarProperty Name="FPVar" ColumnName="FPVar" />
+                <ScalarProperty Name="DifTotalFuelPercent" ColumnName="DifTotalFuelPercent" />
+                <ScalarProperty Name="DifTotalFuel" ColumnName="DifTotalFuel" />
+                <ScalarProperty Name="DifTripFuelPercent" ColumnName="DifTripFuelPercent" />
+                <ScalarProperty Name="DifTripFuel" ColumnName="DifTripFuel" />
+                <ScalarProperty Name="FPFuel" ColumnName="FPFuel" />
+                <ScalarProperty Name="FPTripFuel" ColumnName="FPTripFuel" />
+                <ScalarProperty Name="Taxi" ColumnName="Taxi" />
+                <ScalarProperty Name="UsedFuelAvgReg" ColumnName="UsedFuelAvgReg" />
+                <ScalarProperty Name="UsedFuelAvg" ColumnName="UsedFuelAvg" />
+                <ScalarProperty Name="UsedFuel" ColumnName="UsedFuel" />
+                <ScalarProperty Name="Remaining" ColumnName="Remaining" />
+                <ScalarProperty Name="FuelTotal" ColumnName="FuelTotal" />
+                <ScalarProperty Name="UpLift" ColumnName="UpLift" />
+                <ScalarProperty Name="FlightId" ColumnName="FlightId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ac_MSN">
+            <EntityTypeMapping TypeName="ppaModel.Ac_MSN">
+              <MappingFragment StoreEntitySet="Ac_MSN">
+                <ScalarProperty Name="date_initial_due" ColumnName="date_initial_due" />
+                <ScalarProperty Name="date_initial_ht3" ColumnName="date_initial_ht3" />
+                <ScalarProperty Name="date_initial_ht2" ColumnName="date_initial_ht2" />
+                <ScalarProperty Name="date_initial_ht1" ColumnName="date_initial_ht1" />
+                <ScalarProperty Name="date_initial_apu" ColumnName="date_initial_apu" />
+                <ScalarProperty Name="date_initial_landing_gear" ColumnName="date_initial_landing_gear" />
+                <ScalarProperty Name="maintenance_setting_group" ColumnName="maintenance_setting_group" />
+                <ScalarProperty Name="date_initial" ColumnName="date_initial" />
+                <ScalarProperty Name="serial_no" ColumnName="serial_no" />
+                <ScalarProperty Name="total_flight_minute" ColumnName="total_flight_minute" />
+                <ScalarProperty Name="total_flight_cycle" ColumnName="total_flight_cycle" />
+                <ScalarProperty Name="first_due_remaining" ColumnName="first_due_remaining" />
+                <ScalarProperty Name="ht3_remaining" ColumnName="ht3_remaining" />
+                <ScalarProperty Name="ht2_remaining" ColumnName="ht2_remaining" />
+                <ScalarProperty Name="ht1_remaining" ColumnName="ht1_remaining" />
+                <ScalarProperty Name="apu_remaining" ColumnName="apu_remaining" />
+                <ScalarProperty Name="landing_gear_remaining" ColumnName="landing_gear_remaining" />
+                <ScalarProperty Name="eng2_remaining" ColumnName="eng2_remaining" />
+                <ScalarProperty Name="eng1_remaining" ColumnName="eng1_remaining" />
+                <ScalarProperty Name="deffects_no" ColumnName="deffects_no" />
+                <ScalarProperty Name="AircraftType" ColumnName="AircraftType" />
+                <ScalarProperty Name="CPT4Limit" ColumnName="CPT4Limit" />
+                <ScalarProperty Name="CPT3Limit" ColumnName="CPT3Limit" />
+                <ScalarProperty Name="CPT2Limit" ColumnName="CPT2Limit" />
+                <ScalarProperty Name="CPT1Limit" ColumnName="CPT1Limit" />
+                <ScalarProperty Name="ODSecLimit" ColumnName="ODSecLimit" />
+                <ScalarProperty Name="OCSecLimit" ColumnName="OCSecLimit" />
+                <ScalarProperty Name="OBSecLimit" ColumnName="OBSecLimit" />
+                <ScalarProperty Name="OASecLimit" ColumnName="OASecLimit" />
+                <ScalarProperty Name="MAXLNW" ColumnName="MAXLNW" />
+                <ScalarProperty Name="MAXZFW" ColumnName="MAXZFW" />
+                <ScalarProperty Name="Color2" ColumnName="Color2" />
+                <ScalarProperty Name="Color1" ColumnName="Color1" />
+                <ScalarProperty Name="TotalSeat" ColumnName="TotalSeat" />
+                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+                <ScalarProperty Name="IsVirtual" ColumnName="IsVirtual" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="FuelUnit" ColumnName="FuelUnit" />
+                <ScalarProperty Name="Fuel_Total" ColumnName="Fuel_Total" />
+                <ScalarProperty Name="Fuel_Trim" ColumnName="Fuel_Trim" />
+                <ScalarProperty Name="Fuel_ACT2" ColumnName="Fuel_ACT2" />
+                <ScalarProperty Name="Fuel_ACT1" ColumnName="Fuel_ACT1" />
+                <ScalarProperty Name="Fuel_RH_Outer" ColumnName="Fuel_RH_Outer" />
+                <ScalarProperty Name="Fuel_RH_Inner" ColumnName="Fuel_RH_Inner" />
+                <ScalarProperty Name="Fuel_Center" ColumnName="Fuel_Center" />
+                <ScalarProperty Name="Fuel_LH_Inner" ColumnName="Fuel_LH_Inner" />
+                <ScalarProperty Name="Fuel_LH_Outer" ColumnName="Fuel_LH_Outer" />
+                <ScalarProperty Name="Previous_Register" ColumnName="Previous_Register" />
+                <ScalarProperty Name="Cockpit_Seat_Ver_Observer" ColumnName="Cockpit_Seat_Ver_Observer" />
+                <ScalarProperty Name="Cockpit_Seat_Ver_FlightEngineer" ColumnName="Cockpit_Seat_Ver_FlightEngineer" />
+                <ScalarProperty Name="Cockpit_Seat_Ver_Pilot" ColumnName="Cockpit_Seat_Ver_Pilot" />
+                <ScalarProperty Name="Cabin_CrewVer" ColumnName="Cabin_CrewVer" />
+                <ScalarProperty Name="Galley_QTY" ColumnName="Galley_QTY" />
+                <ScalarProperty Name="Lav_QTY" ColumnName="Lav_QTY" />
+                <ScalarProperty Name="Cabin_Seat_Ver_R" ColumnName="Cabin_Seat_Ver_R" />
+                <ScalarProperty Name="Cabin_Seat_Ver_C" ColumnName="Cabin_Seat_Ver_C" />
+                <ScalarProperty Name="Cabin_Seat_Ver_B" ColumnName="Cabin_Seat_Ver_B" />
+                <ScalarProperty Name="Cabin_Seat_Ver_F" ColumnName="Cabin_Seat_Ver_F" />
+                <ScalarProperty Name="AC_Flag" ColumnName="AC_Flag" />
+                <ScalarProperty Name="ETOPS" ColumnName="ETOPS" />
+                <ScalarProperty Name="Last_WB" ColumnName="Last_WB" />
+                <ScalarProperty Name="ManDate" ColumnName="ManDate" />
+                <ScalarProperty Name="TFC" ColumnName="TFC" />
+                <ScalarProperty Name="TFH_Minutes" ColumnName="TFH_Minutes" />
+                <ScalarProperty Name="TFH_Hours" ColumnName="TFH_Hours" />
+                <ScalarProperty Name="Register" ColumnName="Register" />
+                <ScalarProperty Name="MSN" ColumnName="MSN" />
+                <ScalarProperty Name="fkAc_MSN_Status" ColumnName="fkAc_MSN_Status" />
+                <ScalarProperty Name="AirlineOperatorsID" ColumnName="AirlineOperatorsID" />
+                <ScalarProperty Name="fkFlight_Range" ColumnName="fkFlight_Range" />
+                <ScalarProperty Name="pkAircraftMSN" ColumnName="pkAircraftMSN" />
+                <ScalarProperty Name="AC_ModelID" ColumnName="AC_ModelID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="mnt_engine">
+            <EntityTypeMapping TypeName="ppaModel.mnt_engine">
+              <MappingFragment StoreEntitySet="mnt_engine">
+                <ScalarProperty Name="date_initial" ColumnName="date_initial" />
+                <ScalarProperty Name="aircraft_id" ColumnName="aircraft_id" />
+                <ScalarProperty Name="remaining_minutes" ColumnName="remaining_minutes" />
+                <ScalarProperty Name="remaining_cycles" ColumnName="remaining_cycles" />
+                <ScalarProperty Name="serial_no" ColumnName="serial_no" />
+                <ScalarProperty Name="model" ColumnName="model" />
+                <ScalarProperty Name="cat" ColumnName="cat" />
+                <ScalarProperty Name="engine_no" ColumnName="engine_no" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="mnt_engine_adsb">
+            <EntityTypeMapping TypeName="ppaModel.mnt_engine_adsb">
+              <MappingFragment StoreEntitySet="mnt_engine_adsb">
+                <ScalarProperty Name="date_initial" ColumnName="date_initial" />
+                <ScalarProperty Name="engine_id" ColumnName="engine_id" />
+                <ScalarProperty Name="remaining_cycles" ColumnName="remaining_cycles" />
+                <ScalarProperty Name="date_due" ColumnName="date_due" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="subject" ColumnName="subject" />
+                <ScalarProperty Name="reference" ColumnName="reference" />
+                <ScalarProperty Name="item_no" ColumnName="item_no" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="mnt_engine_llp">
+            <EntityTypeMapping TypeName="ppaModel.mnt_engine_llp">
+              <MappingFragment StoreEntitySet="mnt_engine_llp">
+                <ScalarProperty Name="date_due" ColumnName="date_due" />
+                <ScalarProperty Name="date_initial" ColumnName="date_initial" />
+                <ScalarProperty Name="remaining_cycles" ColumnName="remaining_cycles" />
+                <ScalarProperty Name="cat_c" ColumnName="cat_c" />
+                <ScalarProperty Name="cat_b" ColumnName="cat_b" />
+                <ScalarProperty Name="cat_a" ColumnName="cat_a" />
+                <ScalarProperty Name="cat" ColumnName="cat" />
+                <ScalarProperty Name="engine_id" ColumnName="engine_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="mnt_aircraft_adsb">
+            <EntityTypeMapping TypeName="ppaModel.mnt_aircraft_adsb">
+              <MappingFragment StoreEntitySet="mnt_aircraft_adsb">
+                <ScalarProperty Name="date_initial" ColumnName="date_initial" />
+                <ScalarProperty Name="remainig_cycles" ColumnName="remainig_cycles" />
+                <ScalarProperty Name="aircraft_id" ColumnName="aircraft_id" />
+                <ScalarProperty Name="date_due" ColumnName="date_due" />
+                <ScalarProperty Name="estimated_working_days" ColumnName="estimated_working_days" />
+                <ScalarProperty Name="subject" ColumnName="subject" />
+                <ScalarProperty Name="reference" ColumnName="reference" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="mnt_aircraft_check">
+            <EntityTypeMapping TypeName="ppaModel.mnt_aircraft_check">
+              <MappingFragment StoreEntitySet="mnt_aircraft_check">
+                <ScalarProperty Name="tasks" ColumnName="tasks" />
+                <ScalarProperty Name="date_initial" ColumnName="date_initial" />
+                <ScalarProperty Name="aircraft_id" ColumnName="aircraft_id" />
+                <ScalarProperty Name="estimated_working_days" ColumnName="estimated_working_days" />
+                <ScalarProperty Name="remaining_minutes" ColumnName="remaining_minutes" />
+                <ScalarProperty Name="remaining_hours" ColumnName="remaining_hours" />
+                <ScalarProperty Name="check" ColumnName="check" />
+                <ScalarProperty Name="item_no" ColumnName="item_no" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="mnt_aircraft_check_task">
+            <EntityTypeMapping TypeName="ppaModel.mnt_aircraft_check_task">
+              <MappingFragment StoreEntitySet="mnt_aircraft_check_task">
+                <ScalarProperty Name="check_id" ColumnName="check_id" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

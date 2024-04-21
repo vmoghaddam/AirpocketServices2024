@@ -287,20 +287,61 @@ namespace XAPI.Controllers
             public string plan { get; set; }
             
         }
+        //[Route("api/ofp")]
+        //[AcceptVerbs("POST")]
+        //public IHttpActionResult PostOFP(ofp_dto dto)
+        //{
+        //    var ctx = new PPAEntities();
+        //    var ofp = new OFPSkyPuter();
+        //    ofp.OFP = dto.plan;
+        //    ofp.AIRLINE = "KARUN";
+        //    ctx.OFPSkyPuters.Add(ofp);
+        //    ctx.SaveChanges();
+        //    return Ok(true);
+        //}
+
+
         [Route("api/ofp")]
         [AcceptVerbs("POST")]
-        public IHttpActionResult PostOFP(ofp_dto dto)
+        public async Task<IHttpActionResult> PostOFP()
         {
+            string result = "";
             var ctx = new PPAEntities();
-            var ofp = new OFPSkyPuter();
-            ofp.OFP = dto.plan;
-            ofp.AIRLINE = "KARUN";
-            ctx.OFPSkyPuters.Add(ofp);
-            ctx.SaveChanges();
-            return Ok(true);
+            try
+            {
+                 result = await Request.Content.ReadAsStringAsync();
+
+                result = result.Replace(": +", ": ");
+
+                var qqqq = JsonConvert.DeserializeObject<Root>(result);
+
+
+                
+                var ofp = new OFPSkyPuter();
+                ofp.OFP = result;
+                ofp.AIRLINE = "KARUN";
+                ctx.OFPSkyPuters.Add(ofp);
+                ctx.SaveChanges();
+                return Ok(true);
+            }
+            catch(Exception ex)
+            {
+                var message = ex.Message;
+                if (ex.InnerException != null)
+                    message += ex.InnerException.Message;
+                var ofp = new OFPSkyPuter();
+                ofp.OFP = result;
+                ofp.UploadMessage = message;
+                ofp.AIRLINE = "KARUN";
+                ctx.OFPSkyPuters.Add(ofp);
+                ctx.SaveChanges();
+                return Ok(false);
+            }
+           
         }
-            //https://xpi.sbvaresh.ir/api/skyputer
-            [Route("api/skyputer")]
+
+        //https://xpi.sbvaresh.ir/api/skyputer
+        [Route("api/skyputer")]
         [AcceptVerbs("POST")]
         public IHttpActionResult PostSkyputer(skyputer dto)
         {

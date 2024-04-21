@@ -210,5 +210,11 @@ namespace ApiMSG.Models
         public string Reserved3 { get; set; }
         public string Reserved4 { get; set; }
         public string Reserved5 { get; set; }
+        public string PostRoot { get; set; }
+        public string PostCode { get; set; }
+        public string PostTitle { get; set; }
+        public Nullable<int> RemainSMSL2L3 { get; set; }
+        public Nullable<int> RemainSMSL1L2L3 { get; set; }
+        public Nullable<int> RemainTRG07A { get; set; }
     }
 }

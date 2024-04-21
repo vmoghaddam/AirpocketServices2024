@@ -41,6 +41,44 @@ namespace ApiAPSB.Controllers
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class DispatchController : ApiController
     {
+
+        [Route("api/asr/view/abs/{id}")]
+        [AcceptVerbs("GET")]
+        public async Task<IHttpActionResult> GetASR(int id)
+        {
+            var context = new Models.dbEntities();
+            var view_asr = await context.ViewEFBASRs.Select(q => new
+            {
+                q.Id,
+                q.FlightId,
+                FlightDate = q.STDDayLocal,
+                q.FlightNumber,
+                Route = q.FromAirportIATA + "-" + q.ToAirportIATA,
+                q.Register,
+                q.PIC,
+                q.P1Name,
+                q.IPName,
+                q.SIC,
+                q.P2Name,
+                q.Summary,
+                q.PICId,
+                q.P1Id,
+                q.IPId
+            }).FirstOrDefaultAsync(q => q.Id == id);
+            //var crew = await context.XFlightCrews.Where(q => q.FlightId == fltid).OrderBy(q => q.GroupOrder).ToListAsync();
+
+            //var result = new
+            //{
+            //    //flight,
+            //    crew
+            //};
+
+            return Ok(view_asr);
+
+            // return new DataResponse() { IsSuccess = false };
+        }
+
+
         [Route("api/dr/test/{fltid}")]
         [AcceptVerbs("GET")]
         public async Task<IHttpActionResult> GetDR(int fltid)
@@ -171,7 +209,7 @@ namespace ApiAPSB.Controllers
             {
                 var context = new Models.dbEntities();
                 var ofp = context.OFPImports.FirstOrDefault(q => q.FlightId == flightId);
-                var fuel = context.FlightInformations.Where(q=>q.ID==flightId).Select(q=>new {q.UsedFuel,q.FuelDeparture,q.FuelArrival }).FirstOrDefault();
+                var fuel = context.FlightInformations.Where(q => q.ID == flightId).Select(q => new { q.UsedFuel, q.FuelDeparture, q.FuelArrival }).FirstOrDefault();
                 decimal? onblock_fuel = 0;
                 var arr = fuel.FuelArrival == null ? 0 : fuel.FuelArrival;
                 var dep = fuel.FuelDeparture == null ? 0 : fuel.FuelDeparture;
@@ -1037,7 +1075,7 @@ namespace ApiAPSB.Controllers
                 var fdpitems = context.FDPItems.Where(q => q.FDPId == appcrewflight.FDPId).ToList();
                 var fltIds = fdpitems.Select(q => q.FlightId).ToList();
 
-                foreach(var flt_id in fltIds)
+                foreach (var flt_id in fltIds)
                 {
                     var release = context.EFBDSPReleases.FirstOrDefault(q => q.FlightId == flt_id);
                     if (release == null)
@@ -1149,7 +1187,7 @@ namespace ApiAPSB.Controllers
                     release.VoyageReportDSPRemark = DSPRelease.User;
                 }
 
-              
+
 
 
                 context.SaveChanges();
@@ -1199,7 +1237,7 @@ namespace ApiAPSB.Controllers
 
         //        //if (employee==null)
         //        //   employee=context.ViewEmployees.Where(q=>q.PersonId==userid).
-                 
+
         //        if (do_lic == 1)
         //        {
         //            if (employee != null)
@@ -1231,7 +1269,7 @@ namespace ApiAPSB.Controllers
         //                }
         //            }
         //        }
-                
+
 
 
         //        var appleg = context.XAppLegs.FirstOrDefault(q => q.FlightId == flight_id);
@@ -1318,10 +1356,10 @@ namespace ApiAPSB.Controllers
                 string userid = Convert.ToString(dto.user_id);
 
 
-                
+
                 //try
                 //{
-                var person = context.People.Where(q =>   q.Id.ToString() == userid).FirstOrDefault();
+                var person = context.People.Where(q => q.Id.ToString() == userid).FirstOrDefault();
                 var employee = context.PersonCustomers.Where(q => q.PersonId == person.Id).FirstOrDefault();
                 //}
                 //catch(Exception ex)
@@ -1407,7 +1445,7 @@ namespace ApiAPSB.Controllers
                     dr.JLDSPSignDate = dt;
                     dr.SgnDSPLicNo = lic_no.ToUpper();
                     dr.DispatcherId = employee != null ? employee.Id : -1;
-                    dr.SGNDSPName = employee != null ? person.LastName+" "+person.FirstName : "Dispatch User";
+                    dr.SGNDSPName = employee != null ? person.LastName + " " + person.FirstName : "Dispatch User";
                 }
 
 
@@ -1438,15 +1476,16 @@ namespace ApiAPSB.Controllers
 
         [Route("api/sign/ofps/new")]
         [AcceptVerbs("Post")]
-        public IHttpActionResult PostSIGNOfps (dto_sign dto)
+        public IHttpActionResult PostSIGNOfps(dto_sign dto)
         {
             try
             {
                 var context = new Models.dbEntities();
 
-                var fids = Convert.ToString(dto.flight_id_str).Split('_').Select(q =>(Nullable<int>) Convert.ToInt32(q)).ToList();
+                var fids = Convert.ToString(dto.flight_id_str).Split('_').Select(q => (Nullable<int>)Convert.ToInt32(q)).ToList();
+                var fids2 = Convert.ToString(dto.flight_id_str).Split('_').Select(q =>  Convert.ToInt32(q)).ToList();
 
-                
+
                 string lic_no = Convert.ToString(dto.lic_no);
                 string userid = Convert.ToString(dto.user_id);
 
@@ -1457,7 +1496,7 @@ namespace ApiAPSB.Controllers
                 {
                     if (!employee.NDTNumber.ToLower().Contains(lic_no.ToLower()))
                     {
-                         
+
                         return Ok(new DataResponse() { IsSuccess = false, Messages = new List<string>() { "The license number is wrong." } });
                     }
                 }
@@ -1471,22 +1510,30 @@ namespace ApiAPSB.Controllers
 
                 List<sgn_ofp_result> sgn_result = new List<sgn_ofp_result>();
                 var ofps = context.OFPImports.Where(q => fids.Contains(q.FlightId)).ToList();
-                foreach(var ofp in ofps)
+                foreach (var ofp in ofps)
                 {
-                    ofp.PIC =employee!=null? employee.Name: lic_no;
+                    ofp.PIC = employee != null ? employee.Name : lic_no;
                     ofp.PICId = employee.Id;
                     ofp.JLDatePICApproved = DateTime.UtcNow;
                     ofp.JLSignedBy = lic_no;
 
-                    sgn_result.Add(new sgn_ofp_result() {
-                     FlightId=(int)ofp.FlightId,
-                      Id=ofp.Id,
-                       JLDatePICApproved=(DateTime)ofp.JLDatePICApproved,
-                        JLSignedBy=ofp.JLSignedBy,
-                         PIC=ofp.PIC,
-                          PICId=(int)ofp.PICId
+                    sgn_result.Add(new sgn_ofp_result()
+                    {
+                        FlightId = (int)ofp.FlightId,
+                        Id = ofp.Id,
+                        JLDatePICApproved = (DateTime)ofp.JLDatePICApproved,
+                        JLSignedBy = ofp.JLSignedBy,
+                        PIC = ofp.PIC,
+                        PICId = (int)ofp.PICId
                     });
-                     
+
+                }
+
+                var flights = context.FlightInformations.Where(q => fids2.Contains(q.ID)).ToList();
+                foreach(var flt in flights)
+                {
+                    flt.JLSignedBy = employee != null ? employee.Name : lic_no;
+                    flt.JLDatePICApproved= DateTime.UtcNow;
                 }
 
                 context.SaveChanges();
@@ -1497,7 +1544,7 @@ namespace ApiAPSB.Controllers
                 var msg = ex.Message;
                 if (ex.InnerException != null)
                     msg += "   INNER: " + ex.InnerException.Message;
-                return Ok(new DataResponse() { IsSuccess = false, Messages=new List<string>() {msg } });
+                return Ok(new DataResponse() { IsSuccess = false, Messages = new List<string>() { msg } });
             }
 
         }
@@ -1658,7 +1705,7 @@ namespace ApiAPSB.Controllers
                     dr.JLDatePICApproved = dt;
                     dr.SgnCPTLicNo = lic_no.ToUpper();
                     dr.PICId = employee != null ? employee.Id : -1;
-                    dr.PIC = employee != null ? person.LastName+" "+person.FirstName : "PIC";
+                    dr.PIC = employee != null ? person.LastName + " " + person.FirstName : "PIC";
                     dr.JLSignedBy = employee != null ? person.LastName + " " + person.FirstName : "PIC";
                 }
 
@@ -1738,20 +1785,20 @@ namespace ApiAPSB.Controllers
                 // var fdpitems = context.FDPItems.Where(q => q.FDPId == appcrewflight.FDPId).ToList();
                 //  var fltIds = fdpitems.Select(q => q.FlightId).ToList();
                 var dt = DateTime.UtcNow;
-                var asr = context.EFBASRs.Where(q => q.FlightId==flight_id).FirstOrDefault();
+                var asr = context.EFBASRs.Where(q => q.FlightId == flight_id).FirstOrDefault();
                 asr.JLSignedBy = employee != null ? employee.Name : "PIC";
                 asr.JLDatePICApproved = dt;
                 asr.PICId = employee != null ? employee.Id : -1;
                 asr.PIC = employee != null ? employee.Name : "PIC";
-                
-                
+
+
 
 
 
                 context.SaveChanges();
                 //var rdr = drs.Where(q => q.FlightId == flight_id).FirstOrDefault();
 
-                var result = new { IsSuccess = true, Data = new { asr.Id, asr.FlightId, asr.PICId, asr.JLSignedBy, asr.JLDatePICApproved, asr.PIC  } };
+                var result = new { IsSuccess = true, Data = new { asr.Id, asr.FlightId, asr.PICId, asr.JLSignedBy, asr.JLDatePICApproved, asr.PIC } };
                 return Ok(result);
             }
             catch (Exception ex)
@@ -1912,7 +1959,7 @@ namespace ApiAPSB.Controllers
                 get
                 {
                     return toc || tod || toc_tod || rvsm_flight || rvsm_flight || rvsm_prelevel || takeoff;
-                         
+
                 }
             }
 
@@ -1922,29 +1969,29 @@ namespace ApiAPSB.Controllers
         public IHttpActionResult ValidateOFPs(string fids)
         {
             var rvsm_check = true;
-                List<int?> _fids = fids.Split('_').Select(q => (Nullable<int>)Convert.ToInt32(q)).ToList();
+            List<int?> _fids = fids.Split('_').Select(q => (Nullable<int>)Convert.ToInt32(q)).ToList();
 
             var _context = new Models.dbEntities();
             var _msgs = new List<string>();
             try
             {
-                var ofpImports =   _context.OFPImports.Where(q => _fids.Contains(q.FlightId)).Select(q => new
+                var ofpImports = _context.OFPImports.Where(q => _fids.Contains(q.FlightId)).Select(q => new
                 {
                     q.FlightId,
                     q.FlightNo,
                     q.Origin,
                     q.Destination,
                     q.Id
-                }).ToList ();
+                }).ToList();
 
                 var flight_ids = ofpImports.Select(q => q.FlightId).ToList();
-                var flights =   _context.FlightInformations.Where(q => flight_ids.Contains(q.ID)).ToList ();
+                var flights = _context.FlightInformations.Where(q => flight_ids.Contains(q.ID)).ToList();
 
 
 
                 var ofpImportIds = ofpImports.Select(q => q.Id).ToList();
 
-                var ofpProps =    _context.OFPImportProps.Where(q => (q.PropName.Contains("mpln") || q.PropName.Contains("rvsm")) && ofpImportIds.Contains(q.OFPId)).ToList ();
+                var ofpProps = _context.OFPImportProps.Where(q => (q.PropName.Contains("mpln") || q.PropName.Contains("rvsm")) && ofpImportIds.Contains(q.OFPId)).ToList();
 
                 var groupProps = (from x in ofpProps
                                   group x by new { x.OFPId } into grp
@@ -1952,8 +1999,8 @@ namespace ApiAPSB.Controllers
                                   {
                                       grp.Key.OFPId,
                                       ofp = ofpImports.FirstOrDefault(q => q.Id == grp.Key.OFPId),
-                                     // flight=flights.FirstOrDefault(q=>q.ID== ofpImports.FirstOrDefault(q => q.Id == grp.Key.OFPId).FlightId),
-                                      items = grp.OrderBy(q => q.Id).Select(q => new _h_prop() { name = q.PropName, value = q.PropValue,id=q.Id }).ToList(),
+                                      // flight=flights.FirstOrDefault(q=>q.ID== ofpImports.FirstOrDefault(q => q.Id == grp.Key.OFPId).FlightId),
+                                      items = grp.OrderBy(q => q.Id).Select(q => new _h_prop() { name = q.PropName, value = q.PropValue, id = q.Id }).ToList(),
 
                                   }).ToList();
 
@@ -1963,10 +2010,10 @@ namespace ApiAPSB.Controllers
                     errors.Add(new _h_error()
                     {
                         flight_no = _flt.ofp.FlightNo,
-                         id = _flt.ofp.FlightId,
+                        id = _flt.ofp.FlightId,
 
-                    }) ;
-                     
+                    });
+
                 }
 
 
@@ -2052,7 +2099,7 @@ namespace ApiAPSB.Controllers
                             if (_err != null)
                             {
                                 _err.toc_tod = true;
-                                 
+
                             }
                         }
                     }
@@ -2091,7 +2138,7 @@ namespace ApiAPSB.Controllers
                         //    });
                         //}
 
-                        var rvsm_flt_l= x.items.Where(q => q.name.EndsWith("rvsm_flt_l")).FirstOrDefault().value;
+                        var rvsm_flt_l = x.items.Where(q => q.name.EndsWith("rvsm_flt_l")).FirstOrDefault().value;
                         var rvsm_flt_stby = x.items.Where(q => q.name.EndsWith("rvsm_flt_stby")).FirstOrDefault().value;
                         var rvsm_flt_r = x.items.Where(q => q.name.EndsWith("rvsm_flt_r")).FirstOrDefault().value;
                         var rvsm_flt_time = x.items.Where(q => q.name.EndsWith("rvsm_flt_time")).FirstOrDefault().value;
@@ -2120,7 +2167,7 @@ namespace ApiAPSB.Controllers
 
 
                     }
-                   
+
 
 
 
@@ -2128,7 +2175,7 @@ namespace ApiAPSB.Controllers
 
 
 
-                return Ok( new DataResponse()
+                return Ok(new DataResponse()
                 {
                     Data = errors,
                     IsSuccess = true,
@@ -2302,7 +2349,7 @@ namespace ApiAPSB.Controllers
             public string User { get; set; }*/
         public class DSPReleaseViewModel
         {
-          
+
             public Nullable<int> FlightId { get; set; }
             public Nullable<bool> ActualWXDSP { get; set; }
             public Nullable<bool> ActualWXCPT { get; set; }

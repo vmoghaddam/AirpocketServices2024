@@ -36,5 +36,6 @@ namespace ApiAPSB.Models
         public string PLastName { get; set; }
         public string PName { get; set; }
         public string NID { get; set; }
+        public Nullable<int> flt_position_id { get; set; }
     }
 }

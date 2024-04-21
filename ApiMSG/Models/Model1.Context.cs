@@ -41,5 +41,7 @@ namespace ApiMSG.Models
         public virtual DbSet<Manager> Managers { get; set; }
         public virtual DbSet<ManagerGroup> ManagerGroups { get; set; }
         public virtual DbSet<ViewProfile> ViewProfiles { get; set; }
+        public virtual DbSet<qa_notification_history> qa_notification_history { get; set; }
+        public virtual DbSet<view_qa_notifiction_history> view_qa_notifiction_history { get; set; }
     }
 }

@@ -330,5 +330,7 @@ namespace ApiAPSB.Models
         public virtual ICollection<EFBASR> EFBASRs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EFBVoyageReport> EFBVoyageReports { get; set; }
+        public virtual Airport Airport { get; set; }
+        public virtual Airport Airport1 { get; set; }
     }
 }

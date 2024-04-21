@@ -44,5 +44,16 @@ namespace ApiAPSB.Models
         public virtual DbSet<EFBVoyageReport> EFBVoyageReports { get; set; }
         public virtual DbSet<Person> People { get; set; }
         public virtual DbSet<PersonCustomer> PersonCustomers { get; set; }
+        public virtual DbSet<ViewEFBASR> ViewEFBASRs { get; set; }
+        public virtual DbSet<ViewFlightCrewNew> ViewFlightCrewNews { get; set; }
+        public virtual DbSet<AppCrewFlightJL> AppCrewFlightJLs { get; set; }
+        public virtual DbSet<AppFDPRest> AppFDPRests { get; set; }
+        public virtual DbSet<AppLeg> AppLegs { get; set; }
+        public virtual DbSet<ViewFDPRest> ViewFDPRests { get; set; }
+        public virtual DbSet<AppLegJL> AppLegJLs { get; set; }
+        public virtual DbSet<DayGP> DayGPs { get; set; }
+        public virtual DbSet<journeylog_atl> journeylog_atl { get; set; }
+        public virtual DbSet<Airport> Airports { get; set; }
+        public virtual DbSet<geo_apt_sunrise> geo_apt_sunrise { get; set; }
     }
 }

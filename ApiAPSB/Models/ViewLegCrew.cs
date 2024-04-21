@@ -106,5 +106,9 @@ namespace ApiAPSB.Models
         public Nullable<int> JL_BlockTime { get; set; }
         public Nullable<System.DateTime> Takeoff { get; set; }
         public string PID { get; set; }
+        public Nullable<int> NetFixTime { get; set; }
+        public string ValidTypes { get; set; }
+        public string BaseAirport { get; set; }
+        public Nullable<int> BaseAirportId { get; set; }
     }
 }
