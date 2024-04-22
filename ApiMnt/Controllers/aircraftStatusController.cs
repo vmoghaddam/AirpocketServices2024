@@ -25,6 +25,7 @@ namespace ApiMnt.Controllers
         {
 
             ppa_entities context = new ppa_entities();
+            try { 
             var aircraft = await context.Ac_MSN.Where(q => q.ID == dto.ID).FirstOrDefaultAsync();
 
             aircraft.deffects_no = dto.deffects_no;
@@ -49,6 +50,10 @@ namespace ApiMnt.Controllers
             await context.SaveChangesAsync();
 
             return Ok(dto);
+            } catch(Exception ex)
+            {
+                return Ok(ex);
+            }
         }
 
 
@@ -336,7 +341,14 @@ namespace ApiMnt.Controllers
         }
 
 
-
+        [Route("api/mnt/get/aircraft/llp/{id}")]
+        [AcceptVerbs("Get")]
+        public async Task<IHttpActionResult> GetAircraftLLP(int id)
+        {
+            ppa_entities context = new ppa_entities();
+            var reault = await context.view_mnt_aircraft.FirstOrDefaultAsync(q => q.id == id);
+            return Ok(reault);
+        }
 
 
 
