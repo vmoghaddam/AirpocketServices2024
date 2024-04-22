@@ -161,13 +161,10 @@
           <Property Name="date_due" Type="datetime2" Precision="7" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_ava.dbo.AppFuel' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_varesh.dbo.AppFuel' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="AppFuel">
           <Key>
             <PropertyRef Name="FlightId" />
-            
-            
-            
             
             
             
@@ -234,16 +231,16 @@ warning 6002: The table/view 'ppa_ava.dbo.AppFuel' does not have a primary key d
           <Property Name="ALT3" Type="varchar" MaxLength="255" />
           <Property Name="IPName" Type="nvarchar" MaxLength="1001" />
           <Property Name="IPId" Type="int" />
-          <Property Name="IPScheduleName" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="IPScheduleName" Type="varchar" MaxLength="500" />
           <Property Name="P1Name" Type="nvarchar" MaxLength="1001" />
           <Property Name="P1Id" Type="int" />
-          <Property Name="P1ScheduleName" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="P1ScheduleName" Type="varchar" MaxLength="500" />
           <Property Name="P2Name" Type="nvarchar" MaxLength="1001" />
           <Property Name="P2Id" Type="int" />
-          <Property Name="P2ScheduleName" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="P2ScheduleName" Type="varchar" MaxLength="500" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_ava.dbo.view_mnt_aircraft' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_varesh.dbo.view_mnt_aircraft' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="view_mnt_aircraft">
           <Key>
             <PropertyRef Name="id" />
@@ -271,6 +268,58 @@ warning 6002: The table/view 'ppa_ava.dbo.view_mnt_aircraft' does not have a pri
           <Property Name="first_due_remaining" Type="int" />
           <Property Name="serial_no" Type="varchar" MaxLength="500" />
           <Property Name="maintenance_setting_group" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.view_mnt_aircraft_adsb' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_mnt_aircraft_adsb">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="reference" Type="varchar" MaxLength="500" />
+          <Property Name="subject" Type="varchar" MaxLength="2000" />
+          <Property Name="estimated_working_days" Type="int" />
+          <Property Name="date_due" Type="datetime2" Precision="7" />
+          <Property Name="remaining_days_actual" Type="int" />
+          <Property Name="aircraft_id" Type="int" />
+          <Property Name="remainig_cycles" Type="int" />
+          <Property Name="remaining_cycles_actual" Type="int" />
+          <Property Name="date_initial" Type="datetime2" Precision="7" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.view_mnt_aircraft_check' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_mnt_aircraft_check">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="item_no" Type="int" />
+          <Property Name="check" Type="varchar" MaxLength="500" />
+          <Property Name="remaining_hours" Type="int" />
+          <Property Name="remaining_minutes" Type="int" />
+          <Property Name="remaining_minutes_actual" Type="int" />
+          <Property Name="estimated_working_days" Type="int" />
+          <Property Name="aircraft_id" Type="int" />
+          <Property Name="date_initial" Type="datetime2" Precision="7" />
+          <Property Name="tasks" Type="varchar" MaxLength="4000" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.view_mnt_engine' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_mnt_engine">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="engine_no" Type="int" />
+          <Property Name="cat" Type="varchar" MaxLength="255" />
+          <Property Name="model" Type="varchar" MaxLength="255" />
+          <Property Name="serial_no" Type="varchar" MaxLength="255" />
+          <Property Name="remaining_cycles" Type="int" />
+          <Property Name="remaining_cycles_actual" Type="int" />
+          <Property Name="remaining_minutes" Type="int" />
+          <Property Name="remaining_minutes_actual" Type="int" />
+          <Property Name="aircraft_id" Type="int" />
+          <Property Name="date_initial" Type="datetime2" Precision="7" />
         </EntityType>
         <Association Name="fk_adsb_aircraft">
           <End Role="Ac_MSN" Type="Self.Ac_MSN" Multiplicity="0..1" />
@@ -447,6 +496,49 @@ warning 6002: The table/view 'ppa_ava.dbo.view_mnt_aircraft' does not have a pri
     [view_mnt_aircraft].[maintenance_setting_group] AS [maintenance_setting_group]
     FROM [dbo].[view_mnt_aircraft] AS [view_mnt_aircraft]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="view_mnt_aircraft_adsb" EntityType="Self.view_mnt_aircraft_adsb" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_mnt_aircraft_adsb].[id] AS [id], 
+    [view_mnt_aircraft_adsb].[reference] AS [reference], 
+    [view_mnt_aircraft_adsb].[subject] AS [subject], 
+    [view_mnt_aircraft_adsb].[estimated_working_days] AS [estimated_working_days], 
+    [view_mnt_aircraft_adsb].[date_due] AS [date_due], 
+    [view_mnt_aircraft_adsb].[remaining_days_actual] AS [remaining_days_actual], 
+    [view_mnt_aircraft_adsb].[aircraft_id] AS [aircraft_id], 
+    [view_mnt_aircraft_adsb].[remainig_cycles] AS [remainig_cycles], 
+    [view_mnt_aircraft_adsb].[remaining_cycles_actual] AS [remaining_cycles_actual], 
+    [view_mnt_aircraft_adsb].[date_initial] AS [date_initial]
+    FROM [dbo].[view_mnt_aircraft_adsb] AS [view_mnt_aircraft_adsb]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="view_mnt_aircraft_check" EntityType="Self.view_mnt_aircraft_check" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_mnt_aircraft_check].[id] AS [id], 
+    [view_mnt_aircraft_check].[item_no] AS [item_no], 
+    [view_mnt_aircraft_check].[check] AS [check], 
+    [view_mnt_aircraft_check].[remaining_hours] AS [remaining_hours], 
+    [view_mnt_aircraft_check].[remaining_minutes] AS [remaining_minutes], 
+    [view_mnt_aircraft_check].[remaining_minutes_actual] AS [remaining_minutes_actual], 
+    [view_mnt_aircraft_check].[estimated_working_days] AS [estimated_working_days], 
+    [view_mnt_aircraft_check].[aircraft_id] AS [aircraft_id], 
+    [view_mnt_aircraft_check].[date_initial] AS [date_initial], 
+    [view_mnt_aircraft_check].[tasks] AS [tasks]
+    FROM [dbo].[view_mnt_aircraft_check] AS [view_mnt_aircraft_check]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="view_mnt_engine" EntityType="Self.view_mnt_engine" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_mnt_engine].[id] AS [id], 
+    [view_mnt_engine].[engine_no] AS [engine_no], 
+    [view_mnt_engine].[cat] AS [cat], 
+    [view_mnt_engine].[model] AS [model], 
+    [view_mnt_engine].[serial_no] AS [serial_no], 
+    [view_mnt_engine].[remaining_cycles] AS [remaining_cycles], 
+    [view_mnt_engine].[remaining_cycles_actual] AS [remaining_cycles_actual], 
+    [view_mnt_engine].[remaining_minutes] AS [remaining_minutes], 
+    [view_mnt_engine].[remaining_minutes_actual] AS [remaining_minutes_actual], 
+    [view_mnt_engine].[aircraft_id] AS [aircraft_id], 
+    [view_mnt_engine].[date_initial] AS [date_initial]
+    FROM [dbo].[view_mnt_engine] AS [view_mnt_engine]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="fk_adsb_aircraft" Association="Self.fk_adsb_aircraft">
             <End Role="Ac_MSN" EntitySet="Ac_MSN" />
             <End Role="mnt_aircraft_adsb" EntitySet="mnt_aircraft_adsb" />
@@ -510,6 +602,9 @@ warning 6002: The table/view 'ppa_ava.dbo.view_mnt_aircraft' does not have a pri
             <End Role="mnt_aircraft_check_task" EntitySet="mnt_aircraft_check_task" />
           </AssociationSet>
           <EntitySet Name="view_mnt_aircraft" EntityType="ppaModel.view_mnt_aircraft" />
+          <EntitySet Name="view_mnt_aircraft_check" EntityType="ppaModel.view_mnt_aircraft_check" />
+          <EntitySet Name="view_mnt_engine" EntityType="ppaModel.view_mnt_engine" />
+          <EntitySet Name="view_mnt_aircraft_adsb" EntityType="ppaModel.view_mnt_aircraft_adsb" />
         </EntityContainer>
         <EntityType Name="AppFuel">
           <Key>
@@ -573,13 +668,13 @@ warning 6002: The table/view 'ppa_ava.dbo.view_mnt_aircraft' does not have a pri
           <Property Name="ALT3" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="IPName" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
           <Property Name="IPId" Type="Int32" />
-          <Property Name="IPScheduleName" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IPScheduleName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="P1Name" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
           <Property Name="P1Id" Type="Int32" />
-          <Property Name="P1ScheduleName" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="P1ScheduleName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="P2Name" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
           <Property Name="P2Id" Type="Int32" />
-          <Property Name="P2ScheduleName" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="P2ScheduleName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Ac_MSN">
           <Key>
@@ -848,6 +943,52 @@ warning 6002: The table/view 'ppa_ava.dbo.view_mnt_aircraft' does not have a pri
           <Property Name="serial_no" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="maintenance_setting_group" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="view_mnt_aircraft_check">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="item_no" Type="Int32" />
+          <Property Name="check" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="remaining_hours" Type="Int32" />
+          <Property Name="remaining_minutes" Type="Int32" />
+          <Property Name="remaining_minutes_actual" Type="Int32" />
+          <Property Name="estimated_working_days" Type="Int32" />
+          <Property Name="aircraft_id" Type="Int32" />
+          <Property Name="date_initial" Type="DateTime" Precision="7" />
+          <Property Name="tasks" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="view_mnt_engine">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="engine_no" Type="Int32" />
+          <Property Name="cat" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="model" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="serial_no" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="remaining_cycles" Type="Int32" />
+          <Property Name="remaining_cycles_actual" Type="Int32" />
+          <Property Name="remaining_minutes" Type="Int32" />
+          <Property Name="remaining_minutes_actual" Type="Int32" />
+          <Property Name="aircraft_id" Type="Int32" />
+          <Property Name="date_initial" Type="DateTime" Precision="7" />
+        </EntityType>
+        <EntityType Name="view_mnt_aircraft_adsb">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="reference" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="subject" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="estimated_working_days" Type="Int32" />
+          <Property Name="date_due" Type="DateTime" Precision="7" />
+          <Property Name="remaining_days_actual" Type="Int32" />
+          <Property Name="aircraft_id" Type="Int32" />
+          <Property Name="remainig_cycles" Type="Int32" />
+          <Property Name="remaining_cycles_actual" Type="Int32" />
+          <Property Name="date_initial" Type="DateTime" Precision="7" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1111,6 +1252,55 @@ warning 6002: The table/view 'ppa_ava.dbo.view_mnt_aircraft' does not have a pri
                 <ScalarProperty Name="date_initial_landing_gear" ColumnName="date_initial_landing_gear" />
                 <ScalarProperty Name="date_initial" ColumnName="date_initial" />
                 <ScalarProperty Name="register" ColumnName="register" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_mnt_aircraft_check">
+            <EntityTypeMapping TypeName="ppaModel.view_mnt_aircraft_check">
+              <MappingFragment StoreEntitySet="view_mnt_aircraft_check">
+                <ScalarProperty Name="tasks" ColumnName="tasks" />
+                <ScalarProperty Name="date_initial" ColumnName="date_initial" />
+                <ScalarProperty Name="aircraft_id" ColumnName="aircraft_id" />
+                <ScalarProperty Name="estimated_working_days" ColumnName="estimated_working_days" />
+                <ScalarProperty Name="remaining_minutes_actual" ColumnName="remaining_minutes_actual" />
+                <ScalarProperty Name="remaining_minutes" ColumnName="remaining_minutes" />
+                <ScalarProperty Name="remaining_hours" ColumnName="remaining_hours" />
+                <ScalarProperty Name="check" ColumnName="check" />
+                <ScalarProperty Name="item_no" ColumnName="item_no" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_mnt_engine">
+            <EntityTypeMapping TypeName="ppaModel.view_mnt_engine">
+              <MappingFragment StoreEntitySet="view_mnt_engine">
+                <ScalarProperty Name="date_initial" ColumnName="date_initial" />
+                <ScalarProperty Name="aircraft_id" ColumnName="aircraft_id" />
+                <ScalarProperty Name="remaining_minutes_actual" ColumnName="remaining_minutes_actual" />
+                <ScalarProperty Name="remaining_minutes" ColumnName="remaining_minutes" />
+                <ScalarProperty Name="remaining_cycles_actual" ColumnName="remaining_cycles_actual" />
+                <ScalarProperty Name="remaining_cycles" ColumnName="remaining_cycles" />
+                <ScalarProperty Name="serial_no" ColumnName="serial_no" />
+                <ScalarProperty Name="model" ColumnName="model" />
+                <ScalarProperty Name="cat" ColumnName="cat" />
+                <ScalarProperty Name="engine_no" ColumnName="engine_no" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_mnt_aircraft_adsb">
+            <EntityTypeMapping TypeName="ppaModel.view_mnt_aircraft_adsb">
+              <MappingFragment StoreEntitySet="view_mnt_aircraft_adsb">
+                <ScalarProperty Name="date_initial" ColumnName="date_initial" />
+                <ScalarProperty Name="remaining_cycles_actual" ColumnName="remaining_cycles_actual" />
+                <ScalarProperty Name="remainig_cycles" ColumnName="remainig_cycles" />
+                <ScalarProperty Name="aircraft_id" ColumnName="aircraft_id" />
+                <ScalarProperty Name="remaining_days_actual" ColumnName="remaining_days_actual" />
+                <ScalarProperty Name="date_due" ColumnName="date_due" />
+                <ScalarProperty Name="estimated_working_days" ColumnName="estimated_working_days" />
+                <ScalarProperty Name="subject" ColumnName="subject" />
+                <ScalarProperty Name="reference" ColumnName="reference" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

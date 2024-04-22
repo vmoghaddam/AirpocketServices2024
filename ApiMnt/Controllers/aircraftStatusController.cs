@@ -341,12 +341,85 @@ namespace ApiMnt.Controllers
         }
 
 
+
+      
+
+
+        [Route("api/mnt/get/total")]
+        [AcceptVerbs("Get")]
+        public async Task<IHttpActionResult> GetMntStatusTotal()
+        {
+            ppa_entities context = new ppa_entities();
+
+            var aircrafts = await context.view_mnt_aircraft.OrderBy(q=>q.register).ToListAsync();
+            var engines = await context.view_mnt_engine.ToListAsync();
+            var checks = await context.view_mnt_aircraft_check.OrderBy(q=>q.remaining_minutes_actual) . ToListAsync();
+            var aircraft_adsbs = await context.view_mnt_aircraft_adsb.OrderBy(q=>q.remaining_cycles_actual).ToListAsync();
+
+            foreach (var ac in aircrafts)
+            {
+                ac.engines = engines.Where(q => q.aircraft_id == ac.id).OrderBy(q=>q.engine_no).ToList();
+                ac.checks = checks.Where(q => q.aircraft_id == ac.id).OrderBy(q => q.remaining_minutes_actual).ToList();
+                ac.adsbs = aircraft_adsbs.Where(q => q.aircraft_id == ac.id).OrderBy(q => q.remaining_cycles_actual).ToList();
+                
+            }
+
+            return Ok(aircrafts);
+        }
+
+
         [Route("api/mnt/get/aircraft/llp/{id}")]
         [AcceptVerbs("Get")]
         public async Task<IHttpActionResult> GetAircraftLLP(int id)
         {
             ppa_entities context = new ppa_entities();
             var reault = await context.view_mnt_aircraft.FirstOrDefaultAsync(q => q.id == id);
+            return Ok(reault);
+        }
+
+        [Route("api/mnt/get/engine/{id}")]
+        [AcceptVerbs("Get")]
+        public async Task<IHttpActionResult> GetEngine(int id)
+        {
+            ppa_entities context = new ppa_entities();
+            var reault = await context.view_mnt_engine.FirstOrDefaultAsync(q => q.id == id);
+            return Ok(reault);
+        }
+
+        [Route("api/mnt/get/aircraft/check/{id}")]
+        [AcceptVerbs("Get")]
+        public async Task<IHttpActionResult> GetAcCheck(int id)
+        {
+            ppa_entities context = new ppa_entities();
+            var reault = await context.view_mnt_aircraft_check.FirstOrDefaultAsync(q => q.id == id);
+            return Ok(reault);
+        }
+
+        [Route("api/mnt/get/aircraft/checks/aircraft/{id}")]
+        [AcceptVerbs("Get")]
+        public async Task<IHttpActionResult> GetAcChecks(int id)
+        {
+            ppa_entities context = new ppa_entities();
+            var reault = await context.view_mnt_aircraft_check.FirstOrDefaultAsync(q => q.aircraft_id == id);
+            return Ok(reault);
+        }
+
+
+        [Route("api/mnt/get/aircraft/adsb/{id}")]
+        [AcceptVerbs("Get")]
+        public async Task<IHttpActionResult> GetAcADSB(int id)
+        {
+            ppa_entities context = new ppa_entities();
+            var reault = await context.view_mnt_aircraft_adsb.FirstOrDefaultAsync(q => q.id == id);
+            return Ok(reault);
+        }
+
+        [Route("api/mnt/get/aircraft/adsbs/aircraft/{id}")]
+        [AcceptVerbs("Get")]
+        public async Task<IHttpActionResult> GetAcADSBs(int id)
+        {
+            ppa_entities context = new ppa_entities();
+            var reault = await context.view_mnt_aircraft_adsb.FirstOrDefaultAsync(q => q.aircraft_id == id);
             return Ok(reault);
         }
 
