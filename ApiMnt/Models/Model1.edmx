@@ -159,6 +159,7 @@
           <Property Name="remaining_cycles" Type="int" />
           <Property Name="date_initial" Type="datetime2" Precision="7" />
           <Property Name="date_due" Type="datetime2" Precision="7" />
+          <Property Name="title" Type="varchar" MaxLength="1000" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.AppFuel' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -320,6 +321,43 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_mnt_engine' does not have a pr
           <Property Name="remaining_minutes_actual" Type="int" />
           <Property Name="aircraft_id" Type="int" />
           <Property Name="date_initial" Type="datetime2" Precision="7" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.view_mnt_engine_adsb' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_mnt_engine_adsb">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="date_due" Type="datetime2" Precision="7" />
+          <Property Name="remaining_due_actual" Type="int" />
+          <Property Name="date_initial" Type="datetime2" Precision="7" />
+          <Property Name="remaining_initial_actual" Type="int" />
+          <Property Name="remark" Type="varchar" MaxLength="4000" />
+          <Property Name="subject" Type="varchar" MaxLength="2000" />
+          <Property Name="reference" Type="varchar" MaxLength="255" />
+          <Property Name="engine_id" Type="int" />
+          <Property Name="item_no" Type="int" />
+          <Property Name="remaining_cycles" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.view_mnt_engine_llp' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_mnt_engine_llp">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="cat_a" Type="varchar" MaxLength="255" />
+          <Property Name="cat_b" Type="varchar" MaxLength="255" />
+          <Property Name="cat_c" Type="varchar" MaxLength="255" />
+          <Property Name="cat" Type="varchar" MaxLength="255" />
+          <Property Name="remaining_cycles" Type="int" />
+          <Property Name="date_due" Type="datetime2" Precision="7" />
+          <Property Name="title" Type="varchar" MaxLength="1000" />
+          <Property Name="remaining_due_actual" Type="int" />
+          <Property Name="date_initial" Type="datetime2" Precision="7" />
+          <Property Name="remaining_initial_actual" Type="int" />
+          <Property Name="engine_id" Type="int" />
         </EntityType>
         <Association Name="fk_adsb_aircraft">
           <End Role="Ac_MSN" Type="Self.Ac_MSN" Multiplicity="0..1" />
@@ -539,6 +577,37 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_mnt_engine' does not have a pr
     [view_mnt_engine].[date_initial] AS [date_initial]
     FROM [dbo].[view_mnt_engine] AS [view_mnt_engine]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="view_mnt_engine_adsb" EntityType="Self.view_mnt_engine_adsb" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_mnt_engine_adsb].[id] AS [id], 
+    [view_mnt_engine_adsb].[date_due] AS [date_due], 
+    [view_mnt_engine_adsb].[remaining_due_actual] AS [remaining_due_actual], 
+    [view_mnt_engine_adsb].[date_initial] AS [date_initial], 
+    [view_mnt_engine_adsb].[remaining_initial_actual] AS [remaining_initial_actual], 
+    [view_mnt_engine_adsb].[remark] AS [remark], 
+    [view_mnt_engine_adsb].[subject] AS [subject], 
+    [view_mnt_engine_adsb].[reference] AS [reference], 
+    [view_mnt_engine_adsb].[engine_id] AS [engine_id], 
+    [view_mnt_engine_adsb].[item_no] AS [item_no], 
+    [view_mnt_engine_adsb].[remaining_cycles] AS [remaining_cycles]
+    FROM [dbo].[view_mnt_engine_adsb] AS [view_mnt_engine_adsb]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="view_mnt_engine_llp" EntityType="Self.view_mnt_engine_llp" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_mnt_engine_llp].[id] AS [id], 
+    [view_mnt_engine_llp].[cat_a] AS [cat_a], 
+    [view_mnt_engine_llp].[cat_b] AS [cat_b], 
+    [view_mnt_engine_llp].[cat_c] AS [cat_c], 
+    [view_mnt_engine_llp].[cat] AS [cat], 
+    [view_mnt_engine_llp].[remaining_cycles] AS [remaining_cycles], 
+    [view_mnt_engine_llp].[date_due] AS [date_due], 
+    [view_mnt_engine_llp].[title] AS [title], 
+    [view_mnt_engine_llp].[remaining_due_actual] AS [remaining_due_actual], 
+    [view_mnt_engine_llp].[date_initial] AS [date_initial], 
+    [view_mnt_engine_llp].[remaining_initial_actual] AS [remaining_initial_actual], 
+    [view_mnt_engine_llp].[engine_id] AS [engine_id]
+    FROM [dbo].[view_mnt_engine_llp] AS [view_mnt_engine_llp]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="fk_adsb_aircraft" Association="Self.fk_adsb_aircraft">
             <End Role="Ac_MSN" EntitySet="Ac_MSN" />
             <End Role="mnt_aircraft_adsb" EntitySet="mnt_aircraft_adsb" />
@@ -573,7 +642,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_mnt_engine' does not have a pr
           <EntitySet Name="Ac_MSN" EntityType="ppaModel.Ac_MSN" />
           <EntitySet Name="mnt_engine" EntityType="ppaModel.mnt_engine" />
           <EntitySet Name="mnt_engine_adsb" EntityType="ppaModel.mnt_engine_adsb" />
-          <EntitySet Name="mnt_engine_llp" EntityType="ppaModel.mnt_engine_llp" />
           <AssociationSet Name="fk_eng_ac" Association="ppaModel.fk_eng_ac">
             <End Role="Ac_MSN" EntitySet="Ac_MSN" />
             <End Role="mnt_engine" EntitySet="mnt_engine" />
@@ -581,10 +649,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_mnt_engine' does not have a pr
           <AssociationSet Name="fk_adsb_eng" Association="ppaModel.fk_adsb_eng">
             <End Role="mnt_engine" EntitySet="mnt_engine" />
             <End Role="mnt_engine_adsb" EntitySet="mnt_engine_adsb" />
-          </AssociationSet>
-          <AssociationSet Name="fk_llp_engine" Association="ppaModel.fk_llp_engine">
-            <End Role="mnt_engine" EntitySet="mnt_engine" />
-            <End Role="mnt_engine_llp" EntitySet="mnt_engine_llp" />
           </AssociationSet>
           <EntitySet Name="mnt_aircraft_adsb" EntityType="ppaModel.mnt_aircraft_adsb" />
           <EntitySet Name="mnt_aircraft_check" EntityType="ppaModel.mnt_aircraft_check" />
@@ -605,6 +669,13 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_mnt_engine' does not have a pr
           <EntitySet Name="view_mnt_aircraft_check" EntityType="ppaModel.view_mnt_aircraft_check" />
           <EntitySet Name="view_mnt_engine" EntityType="ppaModel.view_mnt_engine" />
           <EntitySet Name="view_mnt_aircraft_adsb" EntityType="ppaModel.view_mnt_aircraft_adsb" />
+          <EntitySet Name="view_mnt_engine_adsb" EntityType="ppaModel.view_mnt_engine_adsb" />
+          <EntitySet Name="mnt_engine_llp" EntityType="ppaModel.mnt_engine_llp" />
+          <EntitySet Name="view_mnt_engine_llp" EntityType="ppaModel.view_mnt_engine_llp" />
+          <AssociationSet Name="fk_llp_engine" Association="ppaModel.fk_llp_engine">
+            <End Role="mnt_engine" EntitySet="mnt_engine" />
+            <End Role="mnt_engine_llp" EntitySet="mnt_engine_llp" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="AppFuel">
           <Key>
@@ -789,21 +860,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_mnt_engine' does not have a pr
           <Property Name="date_initial" Type="DateTime" Precision="7" />
           <NavigationProperty Name="mnt_engine" Relationship="ppaModel.fk_adsb_eng" FromRole="mnt_engine_adsb" ToRole="mnt_engine" />
         </EntityType>
-        <EntityType Name="mnt_engine_llp">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="engine_id" Type="Int32" />
-          <Property Name="cat" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="cat_a" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="cat_b" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="cat_c" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="remaining_cycles" Type="Int32" />
-          <Property Name="date_initial" Type="DateTime" Precision="7" />
-          <Property Name="date_due" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="mnt_engine" Relationship="ppaModel.fk_llp_engine" FromRole="mnt_engine_llp" ToRole="mnt_engine" />
-        </EntityType>
         <Association Name="fk_eng_ac">
           <End Type="ppaModel.Ac_MSN" Role="Ac_MSN" Multiplicity="0..1" />
           <End Type="ppaModel.mnt_engine" Role="mnt_engine" Multiplicity="*" />
@@ -824,18 +880,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_mnt_engine' does not have a pr
               <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="mnt_engine_adsb">
-              <PropertyRef Name="engine_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="fk_llp_engine">
-          <End Type="ppaModel.mnt_engine" Role="mnt_engine" Multiplicity="0..1" />
-          <End Type="ppaModel.mnt_engine_llp" Role="mnt_engine_llp" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="mnt_engine">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="mnt_engine_llp">
               <PropertyRef Name="engine_id" />
             </Dependent>
           </ReferentialConstraint>
@@ -989,6 +1033,67 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_mnt_engine' does not have a pr
           <Property Name="remaining_cycles_actual" Type="Int32" />
           <Property Name="date_initial" Type="DateTime" Precision="7" />
         </EntityType>
+        <EntityType Name="view_mnt_engine_adsb">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="date_due" Type="DateTime" Precision="7" />
+          <Property Name="remaining_due_actual" Type="Int32" />
+          <Property Name="date_initial" Type="DateTime" Precision="7" />
+          <Property Name="remaining_initial_actual" Type="Int32" />
+          <Property Name="remark" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Name="subject" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="reference" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="engine_id" Type="Int32" />
+          <Property Name="item_no" Type="Int32" />
+          <Property Name="remaining_cycles" Type="Int32" />
+        </EntityType>
+        <EntityType Name="mnt_engine_llp">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="engine_id" Type="Int32" />
+          <Property Name="cat" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="cat_a" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="cat_b" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="cat_c" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="remaining_cycles" Type="Int32" />
+          <Property Name="date_initial" Type="DateTime" Precision="7" />
+          <Property Name="date_due" Type="DateTime" Precision="7" />
+          <Property Name="title" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="mnt_engine" Relationship="ppaModel.fk_llp_engine" FromRole="mnt_engine_llp" ToRole="mnt_engine" />
+        </EntityType>
+        <EntityType Name="view_mnt_engine_llp">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="cat_a" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="cat_b" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="cat_c" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="cat" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="remaining_cycles" Type="Int32" />
+          <Property Name="date_due" Type="DateTime" Precision="7" />
+          <Property Name="title" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="remaining_due_actual" Type="Int32" />
+          <Property Name="date_initial" Type="DateTime" Precision="7" />
+          <Property Name="remaining_initial_actual" Type="Int32" />
+          <Property Name="engine_id" Type="Int32" />
+        </EntityType>
+        <Association Name="fk_llp_engine">
+          <End Type="ppaModel.mnt_engine" Role="mnt_engine" Multiplicity="0..1" />
+          <End Type="ppaModel.mnt_engine_llp" Role="mnt_engine_llp" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mnt_engine">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="mnt_engine_llp">
+              <PropertyRef Name="engine_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1175,21 +1280,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_mnt_engine' does not have a pr
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="mnt_engine_llp">
-            <EntityTypeMapping TypeName="ppaModel.mnt_engine_llp">
-              <MappingFragment StoreEntitySet="mnt_engine_llp">
-                <ScalarProperty Name="date_due" ColumnName="date_due" />
-                <ScalarProperty Name="date_initial" ColumnName="date_initial" />
-                <ScalarProperty Name="remaining_cycles" ColumnName="remaining_cycles" />
-                <ScalarProperty Name="cat_c" ColumnName="cat_c" />
-                <ScalarProperty Name="cat_b" ColumnName="cat_b" />
-                <ScalarProperty Name="cat_a" ColumnName="cat_a" />
-                <ScalarProperty Name="cat" ColumnName="cat" />
-                <ScalarProperty Name="engine_id" ColumnName="engine_id" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="mnt_aircraft_adsb">
             <EntityTypeMapping TypeName="ppaModel.mnt_aircraft_adsb">
               <MappingFragment StoreEntitySet="mnt_aircraft_adsb">
@@ -1301,6 +1391,57 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_mnt_engine' does not have a pr
                 <ScalarProperty Name="estimated_working_days" ColumnName="estimated_working_days" />
                 <ScalarProperty Name="subject" ColumnName="subject" />
                 <ScalarProperty Name="reference" ColumnName="reference" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_mnt_engine_adsb">
+            <EntityTypeMapping TypeName="ppaModel.view_mnt_engine_adsb">
+              <MappingFragment StoreEntitySet="view_mnt_engine_adsb">
+                <ScalarProperty Name="remaining_cycles" ColumnName="remaining_cycles" />
+                <ScalarProperty Name="item_no" ColumnName="item_no" />
+                <ScalarProperty Name="engine_id" ColumnName="engine_id" />
+                <ScalarProperty Name="reference" ColumnName="reference" />
+                <ScalarProperty Name="subject" ColumnName="subject" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="remaining_initial_actual" ColumnName="remaining_initial_actual" />
+                <ScalarProperty Name="date_initial" ColumnName="date_initial" />
+                <ScalarProperty Name="remaining_due_actual" ColumnName="remaining_due_actual" />
+                <ScalarProperty Name="date_due" ColumnName="date_due" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="mnt_engine_llp">
+            <EntityTypeMapping TypeName="ppaModel.mnt_engine_llp">
+              <MappingFragment StoreEntitySet="mnt_engine_llp">
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="date_due" ColumnName="date_due" />
+                <ScalarProperty Name="date_initial" ColumnName="date_initial" />
+                <ScalarProperty Name="remaining_cycles" ColumnName="remaining_cycles" />
+                <ScalarProperty Name="cat_c" ColumnName="cat_c" />
+                <ScalarProperty Name="cat_b" ColumnName="cat_b" />
+                <ScalarProperty Name="cat_a" ColumnName="cat_a" />
+                <ScalarProperty Name="cat" ColumnName="cat" />
+                <ScalarProperty Name="engine_id" ColumnName="engine_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_mnt_engine_llp">
+            <EntityTypeMapping TypeName="ppaModel.view_mnt_engine_llp">
+              <MappingFragment StoreEntitySet="view_mnt_engine_llp">
+                <ScalarProperty Name="engine_id" ColumnName="engine_id" />
+                <ScalarProperty Name="remaining_initial_actual" ColumnName="remaining_initial_actual" />
+                <ScalarProperty Name="date_initial" ColumnName="date_initial" />
+                <ScalarProperty Name="remaining_due_actual" ColumnName="remaining_due_actual" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="date_due" ColumnName="date_due" />
+                <ScalarProperty Name="remaining_cycles" ColumnName="remaining_cycles" />
+                <ScalarProperty Name="cat" ColumnName="cat" />
+                <ScalarProperty Name="cat_c" ColumnName="cat_c" />
+                <ScalarProperty Name="cat_b" ColumnName="cat_b" />
+                <ScalarProperty Name="cat_a" ColumnName="cat_a" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

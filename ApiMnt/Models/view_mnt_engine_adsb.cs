@@ -12,19 +12,18 @@ namespace ApiMnt.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class mnt_engine_llp
+    public partial class view_mnt_engine_adsb
     {
         public int id { get; set; }
-        public Nullable<int> engine_id { get; set; }
-        public string cat { get; set; }
-        public string cat_a { get; set; }
-        public string cat_b { get; set; }
-        public string cat_c { get; set; }
-        public Nullable<int> remaining_cycles { get; set; }
-        public Nullable<System.DateTime> date_initial { get; set; }
         public Nullable<System.DateTime> date_due { get; set; }
-        public string title { get; set; }
-    
-        public virtual mnt_engine mnt_engine { get; set; }
+        public Nullable<int> remaining_due_actual { get; set; }
+        public Nullable<System.DateTime> date_initial { get; set; }
+        public Nullable<int> remaining_initial_actual { get; set; }
+        public string remark { get; set; }
+        public string subject { get; set; }
+        public string reference { get; set; }
+        public Nullable<int> engine_id { get; set; }
+        public Nullable<int> item_no { get; set; }
+        public Nullable<int> remaining_cycles { get; set; }
     }
 }
