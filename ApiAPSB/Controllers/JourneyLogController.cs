@@ -543,7 +543,7 @@ namespace ApiAPSB.Controllers
 
                 sheet.Range[2, 2].Text = ((DateTime)result.Date).ToString("MMMM dd yyyy");
                 sheet.Range[3, 2].Text =string.IsNullOrEmpty(result.AcType) ?"": result.AcType;
-                sheet.Range[4, 2].Text = string.IsNullOrEmpty(result.Reg) ? "" : result.Reg;
+                sheet.Range[4, 2].Text = string.IsNullOrEmpty(result.Reg) ? "" : "EP-"+result.Reg;
                 sheet.Range[5, 2].Text = ""; //ATLNO
                 sheet.Range[6, 2].Text = ((DateTime)result.STD).ToString("HH:mm");
                 var ln_crew = 8;
@@ -582,10 +582,10 @@ namespace ApiAPSB.Controllers
                 ln_leg = 14;
                 foreach (var leg in result.legs)
                 {
-                    sheet.Range[ln_leg, 5].Text = leg.FuelRemaining == null ? "" : leg.FuelRemaining.ToString();
-                    sheet.Range[ln_leg, 6].Text = leg.FuelUplift == null ? "" : leg.FuelUplift.ToString();
-                    sheet.Range[ln_leg, 7].Text = leg.FuelTotal == null ? "" : leg.FuelTotal.ToString();
-                    sheet.Range[ln_leg, 8].Text = leg.FuelUsed == null ? "" : leg.FuelUsed.ToString();
+                    sheet.Range[ln_leg, 5].Text = leg.FuelRemaining == null ? "" :  Convert.ToInt32(leg.FuelRemaining).ToString();
+                    sheet.Range[ln_leg, 6].Text = leg.FuelUplift == null ? "" : Convert.ToInt32(leg.FuelUplift).ToString();
+                    sheet.Range[ln_leg, 7].Text = leg.FuelTotal == null ? "" : Convert.ToInt32(leg.FuelTotal).ToString();
+                    sheet.Range[ln_leg, 8].Text = leg.FuelUsed == null ? "" : Convert.ToInt32(leg.FuelUsed).ToString();
                     sheet.Range[ln_leg, 9].Text = string.IsNullOrEmpty(leg.SerialNo) ? "" : leg.SerialNo;
 
                     sheet.Range[ln_leg, 11].Text = leg.PaxAdult == null ? "" : leg.PaxAdult.ToString();
@@ -633,8 +633,10 @@ namespace ApiAPSB.Controllers
                     forms.Add("ASR");
                 if (result.vr)
                     forms.Add("VOYAGE REPORT");
-                if (forms.Count>0)
-                sheet.Range[24, 7].Text = string.Join(", ", forms);  //attached forms
+                if (forms.Count > 0)
+                    sheet.Range[24, 7].Text = string.Join(", ", forms);  //attached forms
+                else
+                    sheet.Range[24, 7].Text = "NONE";
 
 
 

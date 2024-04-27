@@ -1483,7 +1483,7 @@ namespace ApiAPSB.Controllers
                 var context = new Models.dbEntities();
 
                 var fids = Convert.ToString(dto.flight_id_str).Split('_').Select(q => (Nullable<int>)Convert.ToInt32(q)).ToList();
-                var fids2 = Convert.ToString(dto.flight_id_str).Split('_').Select(q =>  Convert.ToInt32(q)).ToList();
+                var fids2 = Convert.ToString(dto.flight_id_str).Split('_').Select(q => Convert.ToInt32(q)).ToList();
 
 
                 string lic_no = Convert.ToString(dto.lic_no);
@@ -1530,10 +1530,10 @@ namespace ApiAPSB.Controllers
                 }
 
                 var flights = context.FlightInformations.Where(q => fids2.Contains(q.ID)).ToList();
-                foreach(var flt in flights)
+                foreach (var flt in flights)
                 {
                     flt.JLSignedBy = employee != null ? employee.Name : lic_no;
-                    flt.JLDatePICApproved= DateTime.UtcNow;
+                    flt.JLDatePICApproved = DateTime.UtcNow;
                 }
 
                 context.SaveChanges();
@@ -1953,12 +1953,14 @@ namespace ApiAPSB.Controllers
             public bool rvsm_prelevel { get; set; }
             public bool rvsm_flight { get; set; }
             public bool takeoff { get; set; }
+            public bool mvt { get; set; }
+            public bool fuel { get; set; }
             public int? id { get; set; }
             public bool has_error
             {
                 get
                 {
-                    return toc || tod || toc_tod || rvsm_flight || rvsm_flight || rvsm_prelevel || takeoff;
+                    return toc || tod || toc_tod || rvsm_flight || rvsm_flight || rvsm_prelevel || takeoff || fuel || mvt;
 
                 }
             }
@@ -1968,6 +1970,7 @@ namespace ApiAPSB.Controllers
         [AcceptVerbs("GET")]
         public IHttpActionResult ValidateOFPs(string fids)
         {
+            List<_h_error> errors = new List<_h_error>();
             var rvsm_check = true;
             List<int?> _fids = fids.Split('_').Select(q => (Nullable<int>)Convert.ToInt32(q)).ToList();
 
@@ -1986,7 +1989,34 @@ namespace ApiAPSB.Controllers
 
                 var flight_ids = ofpImports.Select(q => q.FlightId).ToList();
                 var flights = _context.FlightInformations.Where(q => flight_ids.Contains(q.ID)).ToList();
+                var flights2 = _context.AppLegs.Where(q => _fids.Contains(q.ID)).ToList();
+                if (ofpImports.Count == 0)
+                {
+                    foreach (var flt in flights2)
+                        errors.Add(new _h_error()
+                        {
+                            flight_no = flt.FlightNumber,
+                            id = flt.ID,
+                            rvsm_flight = true,
+                            rvsm_grnd = true,
+                            rvsm_prelevel = true,
+                            toc = true,
+                            toc_tod = true,
+                            tod = true,
+                            mvt = flt.BlockOff == null || flt.BlockOn == null || flt.TakeOff == null || flt.Landing == null,
+                            fuel=flt.FuelUplift ==null || flt.FuelUsed==null || flt.FuelRemaining==null
 
+
+
+                        });
+                    return Ok(new DataResponse()
+                    {
+                        Data = errors,
+                        IsSuccess = true,
+                        Messages = _msgs
+
+                    });
+                }
 
 
                 var ofpImportIds = ofpImports.Select(q => q.Id).ToList();
@@ -2004,17 +2034,22 @@ namespace ApiAPSB.Controllers
 
                                   }).ToList();
 
-                List<_h_error> errors = new List<_h_error>();
+
                 foreach (var _flt in groupProps)
                 {
+                    var flt2 = flights2.FirstOrDefault(q => q.ID == _flt.ofp.FlightId);
                     errors.Add(new _h_error()
                     {
                         flight_no = _flt.ofp.FlightNo,
                         id = _flt.ofp.FlightId,
+                        mvt = flt2.BlockOff == null || flt2.BlockOn == null || flt2.TakeOff == null || flt2.Landing == null,
+                        fuel = flt2.FuelUplift == null || flt2.FuelUsed == null || flt2.FuelRemaining == null
 
                     });
 
                 }
+
+
 
 
 
