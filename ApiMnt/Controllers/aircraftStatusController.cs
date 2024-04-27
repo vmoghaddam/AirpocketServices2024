@@ -25,32 +25,34 @@ namespace ApiMnt.Controllers
         {
 
             ppa_entities context = new ppa_entities();
-            try { 
-            var aircraft = await context.Ac_MSN.Where(q => q.ID == dto.ID).FirstOrDefaultAsync();
+            try
+            {
+                var aircraft = await context.Ac_MSN.Where(q => q.ID == dto.ID).FirstOrDefaultAsync();
 
-            aircraft.deffects_no = dto.deffects_no;
-            aircraft.landing_gear_remaining = dto.landing_gear_remaining;
-            aircraft.apu_remaining = dto.apu_remaining;
-            aircraft.ht1_remaining = dto.ht1_remaining;
-            aircraft.ht2_remaining = dto.ht2_remaining;
-            aircraft.ht3_remaining = dto.ht3_remaining;
-            aircraft.first_due_remaining = dto.first_due_remaining;
-            aircraft.total_flight_cycle = dto.total_flight_cycle;
-            aircraft.total_flight_minute = dto.total_flight_minute;
-            aircraft.maintenance_setting_group = dto.maintenance_setting_group;
-            aircraft.date_initial = str_to_date(dto.date_initial);
-            aircraft.date_initial_apu = str_to_date(dto.date_initial_apu);
-            aircraft.date_initial_due = str_to_date(dto.date_initial_due);
-            aircraft.date_initial_ht1 = str_to_date(dto.date_initial_ht1);
-            aircraft.date_initial_ht2 = str_to_date(dto.date_initial_ht2);
-            aircraft.date_initial_ht3 = str_to_date(dto.date_initial_ht3);
-            aircraft.date_initial_landing_gear = str_to_date(dto.date_initial_landing_gear);
+                aircraft.deffects_no = dto.deffects_no;
+                aircraft.landing_gear_remaining = dto.landing_gear_remaining;
+                aircraft.apu_remaining = dto.apu_remaining;
+                aircraft.ht1_remaining = dto.ht1_remaining;
+                aircraft.ht2_remaining = dto.ht2_remaining;
+                aircraft.ht3_remaining = dto.ht3_remaining;
+                aircraft.first_due_remaining = dto.first_due_remaining;
+                aircraft.total_flight_cycle = dto.total_flight_cycle;
+                aircraft.total_flight_minute = dto.total_flight_minute;
+                aircraft.maintenance_setting_group = dto.maintenance_setting_group;
+                aircraft.date_initial = str_to_date(dto.date_initial);
+                aircraft.date_initial_apu = str_to_date(dto.date_initial_apu);
+                aircraft.date_initial_due = str_to_date(dto.date_initial_due);
+                aircraft.date_initial_ht1 = str_to_date(dto.date_initial_ht1);
+                aircraft.date_initial_ht2 = str_to_date(dto.date_initial_ht2);
+                aircraft.date_initial_ht3 = str_to_date(dto.date_initial_ht3);
+                aircraft.date_initial_landing_gear = str_to_date(dto.date_initial_landing_gear);
 
 
-            await context.SaveChangesAsync();
+                await context.SaveChangesAsync();
 
-            return Ok(dto);
-            } catch(Exception ex)
+                return Ok(dto);
+            }
+            catch (Exception ex)
             {
                 return Ok(ex);
             }
@@ -65,8 +67,9 @@ namespace ApiMnt.Controllers
             var dt = new DateTime(prts[0], prts[1], prts[2]);
             return dt;
         }
-        public class dto_id { 
-          public int id { get; set; }
+        public class dto_id
+        {
+            public int id { get; set; }
         }
         public class aircraft_status
         {
@@ -243,6 +246,7 @@ namespace ApiMnt.Controllers
             public int remaining_cycles { get; set; }
             public string date_initial { get; set; }
             public string date_due { get; set; }
+            public string title { get; set; }
 
         }
         [Route("api/mnt/engine/llp/save")]
@@ -262,6 +266,7 @@ namespace ApiMnt.Controllers
             engine_llp.cat_a = dto.cat_a;
             engine_llp.cat_b = dto.cat_b;
             engine_llp.cat_c = dto.cat_c;
+            engine_llp.title = dto.title;
             engine_llp.remaining_cycles = dto.remaining_cycles;
             engine_llp.date_initial = str_to_date(dto.date_initial);
             engine_llp.date_due = str_to_date(dto.date_due);
@@ -278,7 +283,7 @@ namespace ApiMnt.Controllers
         {
             ppa_entities context = new ppa_entities();
             var obj = await context.mnt_engine_llp.FirstOrDefaultAsync(q => q.id == dto.id);
-            if (obj!=null)
+            if (obj != null)
             {
                 context.mnt_engine_llp.Remove(obj);
                 await context.SaveChangesAsync();
@@ -342,7 +347,7 @@ namespace ApiMnt.Controllers
 
 
 
-      
+
 
 
         [Route("api/mnt/get/total")]
@@ -351,17 +356,17 @@ namespace ApiMnt.Controllers
         {
             ppa_entities context = new ppa_entities();
 
-            var aircrafts = await context.view_mnt_aircraft.OrderBy(q=>q.register).ToListAsync();
+            var aircrafts = await context.view_mnt_aircraft.OrderBy(q => q.register).ToListAsync();
             var engines = await context.view_mnt_engine.ToListAsync();
-            var checks = await context.view_mnt_aircraft_check.OrderBy(q=>q.remaining_minutes_actual) . ToListAsync();
-            var aircraft_adsbs = await context.view_mnt_aircraft_adsb.OrderBy(q=>q.remaining_cycles_actual).ToListAsync();
+            var checks = await context.view_mnt_aircraft_check.OrderBy(q => q.remaining_minutes_actual).ToListAsync();
+            var aircraft_adsbs = await context.view_mnt_aircraft_adsb.OrderBy(q => q.remaining_cycles_actual).ToListAsync();
 
             foreach (var ac in aircrafts)
             {
-                ac.engines = engines.Where(q => q.aircraft_id == ac.id).OrderBy(q=>q.engine_no).ToList();
+                ac.engines = engines.Where(q => q.aircraft_id == ac.id).OrderBy(q => q.engine_no).ToList();
                 ac.checks = checks.Where(q => q.aircraft_id == ac.id).OrderBy(q => q.remaining_minutes_actual).ToList();
                 ac.adsbs = aircraft_adsbs.Where(q => q.aircraft_id == ac.id).OrderBy(q => q.remaining_cycles_actual).ToList();
-                
+
             }
 
             return Ok(aircrafts);
@@ -400,7 +405,7 @@ namespace ApiMnt.Controllers
         public async Task<IHttpActionResult> GetAcChecks(int id)
         {
             ppa_entities context = new ppa_entities();
-            var reault = await context.view_mnt_aircraft_check.FirstOrDefaultAsync(q => q.aircraft_id == id);
+            var reault =  context.view_mnt_aircraft_check.Where(q => q.aircraft_id == id).ToList();
             return Ok(reault);
         }
 
@@ -419,10 +424,46 @@ namespace ApiMnt.Controllers
         public async Task<IHttpActionResult> GetAcADSBs(int id)
         {
             ppa_entities context = new ppa_entities();
-            var reault = await context.view_mnt_aircraft_adsb.FirstOrDefaultAsync(q => q.aircraft_id == id);
+            var reault = context.view_mnt_aircraft_adsb.Where(q => q.aircraft_id == id).ToList();
             return Ok(reault);
         }
 
+
+        [Route("api/mnt/get/engine/llp/{id}")]
+        [AcceptVerbs("Get")]
+        public async Task<IHttpActionResult> GetEngLlp(int id)
+        {
+            ppa_entities context = new ppa_entities();
+            var reault = await context.view_mnt_engine_llp.FirstOrDefaultAsync(q => q.id == id);
+            return Ok(reault);
+        }
+
+        [Route("api/mnt/get/aircraft/llps/engine/{id}")]
+        [AcceptVerbs("Get")]
+        public async Task<IHttpActionResult> GetEngllps(int id)
+        {
+            ppa_entities context = new ppa_entities();
+            var reault =  context.view_mnt_engine_llp.Where(q => q.engine_id == id).ToList();
+            return Ok(reault);
+        }
+
+        [Route("api/mnt/get/engine/adsb/{id}")]
+        [AcceptVerbs("Get")]
+        public async Task<IHttpActionResult> GetEngADSB(int id)
+        {
+            ppa_entities context = new ppa_entities();
+            var reault = await context.view_mnt_engine_adsb.FirstOrDefaultAsync(q => q.id == id);
+            return Ok(reault);
+        }
+
+        [Route("api/mnt/get/aircraft/adsbs/engine/{id}")]
+        [AcceptVerbs("Get")]
+        public async Task<IHttpActionResult> GetEngAdsb(int id)
+        {
+            ppa_entities context = new ppa_entities();
+            var reault =  context.view_mnt_engine_adsb.Where(q => q.engine_id == id).ToList();
+            return Ok(reault);
+        }
 
 
 
