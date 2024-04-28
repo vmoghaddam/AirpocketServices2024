@@ -128,7 +128,7 @@ namespace ApiMnt.Controllers
             check.remaining_hours = dto.remaining_hours;
             check.estimated_working_days = dto.estimated_working_days;
             check.aircraft_id = dto.aircraft_id;
-            check.date_initial = str_to_date(dto.date_initial);
+            check.date_initial = dto.date_initial == null ? null : str_to_date(dto.date_initial);
             check.tasks = dto.tasks;
 
             await context.SaveChangesAsync();
@@ -180,7 +180,7 @@ namespace ApiMnt.Controllers
             adsb.date_due = str_to_date(dto.date_due);
             adsb.aircraft_id = dto.aircraft_id;
             adsb.remainig_cycles = dto.remainig_cycles;
-            adsb.date_initial = str_to_date(dto.date_initial);
+            adsb.date_initial = dto.date_initial == null ? null : str_to_date(dto.date_initial);
 
             await context.SaveChangesAsync();
 
@@ -229,7 +229,7 @@ namespace ApiMnt.Controllers
             engine.cat = dto.cat;
             engine.model = dto.model;
             engine.serial_no = dto.serial_no;
-            engine.date_initial = str_to_date(dto.date_initial);
+            engine.date_initial = dto.date_initial == null ? null : str_to_date(dto.date_initial);
             engine.remaining_cycles = dto.remaining_cycles;
             engine.remaining_minutes = dto.remaining_minutes;
             await context.SaveChangesAsync();
@@ -268,8 +268,8 @@ namespace ApiMnt.Controllers
             engine_llp.cat_c = dto.cat_c;
             engine_llp.title = dto.title;
             engine_llp.remaining_cycles = dto.remaining_cycles;
-            engine_llp.date_initial = str_to_date(dto.date_initial);
-            engine_llp.date_due = str_to_date(dto.date_due);
+            engine_llp.date_initial = dto.date_initial == null ? null : str_to_date(dto.date_initial);
+            engine_llp.date_due = dto.date_due == null ? null : str_to_date(dto.date_due);
 
 
 
@@ -322,9 +322,9 @@ namespace ApiMnt.Controllers
             engine_adsb.reference = dto.reference;
             engine_adsb.subject = dto.subject;
             engine_adsb.remark = dto.remark;
-            engine_adsb.date_due = str_to_date(dto.date_due);
+            engine_adsb.date_due = dto.date_due == null ? null : str_to_date(dto.date_due);
             engine_adsb.remaining_cycles = dto.remaining_cycles;
-            engine_adsb.date_initial = str_to_date(dto.date_initial);
+            engine_adsb.date_initial = dto.date_initial == null ? null : str_to_date(dto.date_initial);
 
 
 
