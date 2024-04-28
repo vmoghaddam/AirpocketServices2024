@@ -39,13 +39,13 @@ namespace ApiMnt.Controllers
                 aircraft.total_flight_cycle = dto.total_flight_cycle;
                 aircraft.total_flight_minute = dto.total_flight_minute;
                 aircraft.maintenance_setting_group = dto.maintenance_setting_group;
-                aircraft.date_initial = str_to_date(dto.date_initial);
-                aircraft.date_initial_apu = str_to_date(dto.date_initial_apu);
-                aircraft.date_initial_due = str_to_date(dto.date_initial_due);
-                aircraft.date_initial_ht1 = str_to_date(dto.date_initial_ht1);
-                aircraft.date_initial_ht2 = str_to_date(dto.date_initial_ht2);
-                aircraft.date_initial_ht3 = str_to_date(dto.date_initial_ht3);
-                aircraft.date_initial_landing_gear = str_to_date(dto.date_initial_landing_gear);
+                aircraft.date_initial = dto.date_initial == null ? null : str_to_date(dto.date_initial);
+                aircraft.date_initial_apu = dto.date_initial_apu == null ? null : str_to_date(dto.date_initial_apu);
+                aircraft.date_initial_due = dto.date_initial_due == null ? null : str_to_date(dto.date_initial_due);
+                aircraft.date_initial_ht1 = dto.date_initial_ht1 == null ? null : str_to_date(dto.date_initial_ht1);
+                aircraft.date_initial_ht2 = dto.date_initial_ht2 == null ? null : str_to_date(dto.date_initial_ht2);
+                aircraft.date_initial_ht3 = dto.date_initial_ht3 == null ? null : str_to_date(dto.date_initial_ht3);
+                aircraft.date_initial_landing_gear = dto.date_initial_landing_gear == null ? null : str_to_date(dto.date_initial_landing_gear);
 
 
                 await context.SaveChangesAsync();
@@ -405,7 +405,7 @@ namespace ApiMnt.Controllers
         public async Task<IHttpActionResult> GetAcChecks(int id)
         {
             ppa_entities context = new ppa_entities();
-            var reault =  context.view_mnt_aircraft_check.Where(q => q.aircraft_id == id).ToList();
+            var reault = context.view_mnt_aircraft_check.Where(q => q.aircraft_id == id).ToList();
             return Ok(reault);
         }
 
@@ -443,7 +443,7 @@ namespace ApiMnt.Controllers
         public async Task<IHttpActionResult> GetEngllps(int id)
         {
             ppa_entities context = new ppa_entities();
-            var reault =  context.view_mnt_engine_llp.Where(q => q.engine_id == id).ToList();
+            var reault = context.view_mnt_engine_llp.Where(q => q.engine_id == id).ToList();
             return Ok(reault);
         }
 
@@ -461,7 +461,7 @@ namespace ApiMnt.Controllers
         public async Task<IHttpActionResult> GetEngAdsb(int id)
         {
             ppa_entities context = new ppa_entities();
-            var reault =  context.view_mnt_engine_adsb.Where(q => q.engine_id == id).ToList();
+            var reault = context.view_mnt_engine_adsb.Where(q => q.engine_id == id).ToList();
             return Ok(reault);
         }
 
