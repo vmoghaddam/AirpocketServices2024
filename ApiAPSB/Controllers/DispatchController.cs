@@ -1361,6 +1361,8 @@ namespace ApiAPSB.Controllers
                 //{
                 var person = context.People.Where(q => q.Id.ToString() == userid).FirstOrDefault();
                 var employee = context.PersonCustomers.Where(q => q.PersonId == person.Id).FirstOrDefault();
+
+                var person_lic = string.IsNullOrEmpty(person.NDTNumber) ? person.LicenceTitle : person.NDTNumber;
                 //}
                 //catch(Exception ex)
                 //{
@@ -1375,7 +1377,7 @@ namespace ApiAPSB.Controllers
                 {
                     if (employee != null)
                     {
-                        if (!person.LicenceTitle.ToLower().Contains(lic_no.ToLower()))
+                        if (!person_lic.ToLower().Contains(lic_no.ToLower()))
                         {
                             return Ok(
                                 new
@@ -1443,7 +1445,7 @@ namespace ApiAPSB.Controllers
                 foreach (var dr in drs)
                 {
                     dr.JLDSPSignDate = dt;
-                    dr.SgnDSPLicNo = lic_no.ToUpper();
+                    dr.SgnDSPLicNo = person_lic.ToUpper();
                     dr.DispatcherId = employee != null ? employee.Id : -1;
                     dr.SGNDSPName = employee != null ? person.LastName + " " + person.FirstName : "Dispatch User";
                 }

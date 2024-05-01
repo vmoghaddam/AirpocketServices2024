@@ -1021,6 +1021,8 @@ namespace XAPI.Controllers
                 // var mpln = rawText.Split(new string[] { "mpln:|" }, StringSplitOptions.None).ToList()[1];
                 var parts = rawText.Split(new string[] { "||" }, StringSplitOptions.None).ToList();
 
+                var atc= parts.FirstOrDefault(q => q.StartsWith("icatc:|")).Replace("icatc:|", "");
+
                 var info = parts.FirstOrDefault(q => q.StartsWith("binfo:|")).Replace("binfo:|", "");
                 var infoRows = info.Split(';').ToList();
                 //binfo:|OPT=VARESH AIRLINE;FLN=VAR5820;DTE=6/24/2022 12:00:00 AM;ETD=02:35;REG=;MCI=78;FLL=330;DOW=43742
@@ -1048,6 +1050,13 @@ namespace XAPI.Controllers
                 var eta = infoRows.FirstOrDefault(q => q.StartsWith("ETA")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("ETA")).Split('=')[1];
 
                 var fpf = infoRows.FirstOrDefault(q => q.StartsWith("FPF")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("FPF")).Split('=')[1];
+
+
+                var DSP = infoRows.FirstOrDefault(q => q.StartsWith("DSP")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("DSP")).Split('=')[1];
+                var CM1 = infoRows.FirstOrDefault(q => q.StartsWith("CM1")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("CM1")).Split('=')[1];
+                var CM2 = infoRows.FirstOrDefault(q => q.StartsWith("CM2")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("CM2")).Split('=')[1];
+                var MSH = infoRows.FirstOrDefault(q => q.StartsWith("MSH")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("MSH")).Split('=')[1];
+
 
                 // var vdt= infoRows.FirstOrDefault(q => q.StartsWith/av("VDT")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("VDT")).Split('=')[1];
                 string alt1 = "";
@@ -1140,6 +1149,18 @@ namespace XAPI.Controllers
 
                 if (!string.IsNullOrEmpty(fpf))
                     plan.FPF = fpf;
+
+                if (!string.IsNullOrEmpty(MSH))
+                    plan.MSH = MSH;
+                if (!string.IsNullOrEmpty(CM1))
+                    plan.CM1 = CM1;
+                if (!string.IsNullOrEmpty(CM2))
+                    plan.CM2 = CM2;
+                if (!string.IsNullOrEmpty(DSP))
+                    plan.DSPNAME = DSP;
+
+                if (!string.IsNullOrEmpty(atc))
+                    plan.ATC = atc;
 
 
                 plan.Source = "SkyPuter";

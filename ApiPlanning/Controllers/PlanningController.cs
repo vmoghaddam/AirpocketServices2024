@@ -518,6 +518,22 @@ namespace ApiPlanning.Controllers
                 dto.IntervalTo = parseDate(dto.IntervalToRAW);
                 dto.Days = isUtc ? dto.DaysUTC.ToList() : dto.Days;
 
+
+                if (((DateTime)dto.IntervalFrom).Day!=((DateTime)dto.STD).Day)
+                {
+                    dto.IntervalFrom = ((DateTime)dto.IntervalFrom).AddDays(-1);
+                    dto.IntervalTo = ((DateTime)dto.IntervalTo).AddDays(-1);
+                    var _days = dto.Days.ToList();
+                    dto.Days =new List<int>();
+                    foreach (var d in _days)
+                    {
+                        if (d == 6)
+                            dto.Days.Add(5);
+                        else
+                            dto.Days.Add(d-1);
+                    }
+                }
+
                 var intervalDays = GetInvervalDates((int)dto.Interval, (DateTime)dto.IntervalFrom, (DateTime)dto.IntervalTo, dto.Days).Select(q => (Nullable<DateTime>)q).ToList();
                 var i_dates = intervalDays.Select(q => (Nullable<DateTime>)q).ToList();
 

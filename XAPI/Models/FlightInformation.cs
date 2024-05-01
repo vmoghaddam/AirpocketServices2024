@@ -309,6 +309,15 @@ namespace XAPI.Models
         public Nullable<int> FuelUsedEng2 { get; set; }
         public Nullable<int> ACTUALTANKERINGFUEL { get; set; }
         public string LTR2 { get; set; }
+        public Nullable<int> FuelRemaining { get; set; }
+        public Nullable<int> FuelUplift { get; set; }
+        public Nullable<int> FuelTotal { get; set; }
+        public Nullable<int> FuelRemained { get; set; }
+        public Nullable<int> FuelUsed { get; set; }
+        public Nullable<int> FuelUpliftLitr { get; set; }
+        public string CCPreFlightCheckRemark { get; set; }
+        public string FlightTypeOPS { get; set; }
+        public string AttForms { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EFBDSPRelease> EFBDSPReleases { get; set; }

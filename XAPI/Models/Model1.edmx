@@ -136,6 +136,10 @@
           <Property Name="VldRampPassFOORemark" Type="varchar" MaxLength="255" />
           <Property Name="VldRampPassCMDRRemark" Type="varchar" MaxLength="255" />
           <Property Name="Note" Type="varchar(max)" />
+          <Property Name="SgnDSPLicNo" Type="varchar" MaxLength="500" />
+          <Property Name="SgnCPTLicNo" Type="varchar" MaxLength="500" />
+          <Property Name="JLDSPSignDate" Type="datetime" />
+          <Property Name="SGNDSPName" Type="varchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="FlightCard">
           <Key>
@@ -441,6 +445,15 @@
           <Property Name="FuelUsedEng2" Type="int" />
           <Property Name="ACTUALTANKERINGFUEL" Type="int" />
           <Property Name="LTR2" Type="varchar" MaxLength="255" />
+          <Property Name="FuelRemaining" Type="int" />
+          <Property Name="FuelUplift" Type="int" />
+          <Property Name="FuelTotal" Type="int" />
+          <Property Name="FuelRemained" Type="int" />
+          <Property Name="FuelUsed" Type="int" />
+          <Property Name="FuelUpliftLitr" Type="int" />
+          <Property Name="CCPreFlightCheckRemark" Type="varchar" MaxLength="1000" />
+          <Property Name="FlightTypeOPS" Type="varchar" MaxLength="500" />
+          <Property Name="AttForms" Type="varchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="OFPImport">
           <Key>
@@ -516,6 +529,11 @@
           <Property Name="FuelTANKERING" Type="int" />
           <Property Name="FuelTOTALFUEL" Type="int" />
           <Property Name="FuelACTUALTANKERING" Type="int" />
+          <Property Name="DSPNAME" Type="varchar" MaxLength="500" />
+          <Property Name="CM1" Type="varchar" MaxLength="500" />
+          <Property Name="CM2" Type="varchar" MaxLength="500" />
+          <Property Name="MSH" Type="varchar" MaxLength="500" />
+          <Property Name="ATC" Type="varchar" MaxLength="4000" />
         </EntityType>
         <EntityType Name="OFPImportItem">
           <Key>
@@ -1158,6 +1176,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
             <End Role="FlightInformation" EntitySet="FlightInformations" />
             <End Role="EFBDSPRelease" EntitySet="EFBDSPReleases" />
           </AssociationSet>
+          <EntitySet Name="ViewOFPPoints" EntityType="ppa_tabanModel.ViewOFPPoint" />
+          <EntitySet Name="OFPPoints" EntityType="ppa_tabanModel.OFPPoint" />
           <EntitySet Name="OFPImports" EntityType="ppa_tabanModel.OFPImport" />
           <AssociationSet Name="fk_ofp_flt" Association="ppa_tabanModel.fk_ofp_flt">
             <End Role="FlightInformation" EntitySet="FlightInformations" />
@@ -1171,8 +1191,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
             <End Role="OFPImport" EntitySet="OFPImports" />
             <End Role="OFPImportProp" EntitySet="OFPImportProps" />
           </AssociationSet>
-          <EntitySet Name="ViewOFPPoints" EntityType="ppa_tabanModel.ViewOFPPoint" />
-          <EntitySet Name="OFPPoints" EntityType="ppa_tabanModel.OFPPoint" />
           <AssociationSet Name="fk_point_ofp" Association="ppa_tabanModel.fk_point_ofp">
             <End Role="OFPImport" EntitySet="OFPImports" />
             <End Role="OFPPoint" EntitySet="OFPPoints" />
@@ -1325,6 +1343,10 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
           <Property Name="VldRampPassCMDRRemark" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="FlightInformation" Relationship="ppa_tabanModel.fk_EFB_FI" FromRole="EFBDSPRelease" ToRole="FlightInformation" />
+          <Property Name="SgnDSPLicNo" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="SgnCPTLicNo" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="JLDSPSignDate" Type="DateTime" Precision="3" />
+          <Property Name="SGNDSPName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="FlightCard">
           <Key>
@@ -1654,8 +1676,17 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
           <Property Name="FuelUsedEng2" Type="Int32" />
           <Property Name="ACTUALTANKERINGFUEL" Type="Int32" />
           <NavigationProperty Name="EFBDSPReleases" Relationship="ppa_tabanModel.fk_EFB_FI" FromRole="FlightInformation" ToRole="EFBDSPRelease" />
-          <NavigationProperty Name="OFPImports" Relationship="ppa_tabanModel.fk_ofp_flt" FromRole="FlightInformation" ToRole="OFPImport" />
           <Property Name="LTR2" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="FuelRemaining" Type="Int32" />
+          <Property Name="FuelUplift" Type="Int32" />
+          <Property Name="FuelTotal" Type="Int32" />
+          <Property Name="FuelRemained" Type="Int32" />
+          <Property Name="FuelUsed" Type="Int32" />
+          <Property Name="FuelUpliftLitr" Type="Int32" />
+          <Property Name="CCPreFlightCheckRemark" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="FlightTypeOPS" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="AttForms" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="OFPImports" Relationship="ppa_tabanModel.fk_ofp_flt" FromRole="FlightInformation" ToRole="OFPImport" />
         </EntityType>
         <Association Name="fk_EFB_FI">
           <End Type="ppa_tabanModel.FlightInformation" Role="FlightInformation" Multiplicity="0..1" />
@@ -1669,6 +1700,70 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ViewOFPPoint">
+          <Key>
+            <PropertyRef Name="OFPId" />
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="FlightId" />
+          </Key>
+          <Property Name="OFPId" Type="Int32" Nullable="false" />
+          <Property Name="Plan" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Lat" Type="Decimal" Precision="16" Scale="10" />
+          <Property Name="Long" Type="Decimal" Precision="16" Scale="10" />
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="WAP" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="VIA" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ALT" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="WIND" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="TRK" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="TMP" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="BODY" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="FRQ" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="MEA" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="GMR" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="DIS" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="TDS" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="FRE" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="FUS" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="TAS" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="GSP" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="FlightId" Type="Int32" Nullable="false" />
+          <Property Name="Dep" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Arr" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="STD" Type="DateTime" Precision="3" />
+          <Property Name="STA" Type="DateTime" Precision="3" />
+          <Property Name="Register" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FltNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="OFPPoint">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="OFPId" Type="Int32" Nullable="false" />
+          <Property Name="Plan" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Lat" Type="Decimal" Precision="16" Scale="10" />
+          <Property Name="Long" Type="Decimal" Precision="16" Scale="10" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="WAP" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="VIA" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ALT" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="WIND" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="TRK" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="TMP" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="BODY" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="FRQ" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="MEA" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="GMR" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="DIS" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="TDS" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="FRE" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="FUS" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="TAS" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="GSP" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="TME" Type="Int32" />
+          <Property Name="TTM" Type="Int32" />
+          <NavigationProperty Name="OFPImport" Relationship="ppa_tabanModel.fk_point_ofp" FromRole="OFPPoint" ToRole="OFPImport" />
+        </EntityType>
         <EntityType Name="OFPImport">
           <Key>
             <PropertyRef Name="Id" />
@@ -1743,6 +1838,11 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
           <Property Name="FuelTANKERING" Type="Int32" />
           <Property Name="FuelTOTALFUEL" Type="Int32" />
           <Property Name="FuelACTUALTANKERING" Type="Int32" />
+          <Property Name="DSPNAME" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="CM1" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="CM2" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="MSH" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ATC" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="FlightInformation" Relationship="ppa_tabanModel.fk_ofp_flt" FromRole="OFPImport" ToRole="FlightInformation" />
           <NavigationProperty Name="OFPImportItems" Relationship="ppa_tabanModel.fk_ofpl_ofp" FromRole="OFPImport" ToRole="OFPImportItem" />
           <NavigationProperty Name="OFPImportProps" Relationship="ppa_tabanModel.fk_ofpp_ofp" FromRole="OFPImport" ToRole="OFPImportProp" />
@@ -1788,70 +1888,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="ViewOFPPoint">
-          <Key>
-            <PropertyRef Name="OFPId" />
-            <PropertyRef Name="Id" />
-            <PropertyRef Name="FlightId" />
-          </Key>
-          <Property Name="OFPId" Type="Int32" Nullable="false" />
-          <Property Name="Plan" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="Lat" Type="Decimal" Precision="16" Scale="10" />
-          <Property Name="Long" Type="Decimal" Precision="16" Scale="10" />
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="WAP" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="VIA" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="ALT" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="WIND" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="TRK" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="TMP" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="BODY" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
-          <Property Name="FRQ" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="MEA" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="GMR" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="DIS" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="TDS" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="FRE" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="FUS" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="TAS" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="GSP" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="FlightId" Type="Int32" Nullable="false" />
-          <Property Name="Dep" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Arr" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="STD" Type="DateTime" Precision="3" />
-          <Property Name="STA" Type="DateTime" Precision="3" />
-          <Property Name="Register" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="FltNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="OFPPoint">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="OFPId" Type="Int32" Nullable="false" />
-          <Property Name="Plan" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="Lat" Type="Decimal" Precision="16" Scale="10" />
-          <Property Name="Long" Type="Decimal" Precision="16" Scale="10" />
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="WAP" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="VIA" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="ALT" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="WIND" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="TRK" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="TMP" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="BODY" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
-          <Property Name="FRQ" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="MEA" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="GMR" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="DIS" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="TDS" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="FRE" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="FUS" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="TAS" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="GSP" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="TME" Type="Int32" />
-          <Property Name="TTM" Type="Int32" />
-          <NavigationProperty Name="OFPImport" Relationship="ppa_tabanModel.fk_point_ofp" FromRole="OFPPoint" ToRole="OFPImport" />
-        </EntityType>
         <Association Name="fk_point_ofp">
           <End Type="ppa_tabanModel.OFPImport" Role="OFPImport" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -2019,6 +2055,10 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
           <EntitySetMapping Name="EFBDSPReleases">
             <EntityTypeMapping TypeName="ppa_tabanModel.EFBDSPRelease">
               <MappingFragment StoreEntitySet="EFBDSPRelease">
+                <ScalarProperty Name="SGNDSPName" ColumnName="SGNDSPName" />
+                <ScalarProperty Name="JLDSPSignDate" ColumnName="JLDSPSignDate" />
+                <ScalarProperty Name="SgnCPTLicNo" ColumnName="SgnCPTLicNo" />
+                <ScalarProperty Name="SgnDSPLicNo" ColumnName="SgnDSPLicNo" />
                 <ScalarProperty Name="Note" ColumnName="Note" />
                 <ScalarProperty Name="VldRampPassCMDRRemark" ColumnName="VldRampPassCMDRRemark" />
                 <ScalarProperty Name="VldRampPassFOORemark" ColumnName="VldRampPassFOORemark" />
@@ -2189,6 +2229,15 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
           <EntitySetMapping Name="FlightInformations">
             <EntityTypeMapping TypeName="ppa_tabanModel.FlightInformation">
               <MappingFragment StoreEntitySet="FlightInformation">
+                <ScalarProperty Name="AttForms" ColumnName="AttForms" />
+                <ScalarProperty Name="FlightTypeOPS" ColumnName="FlightTypeOPS" />
+                <ScalarProperty Name="CCPreFlightCheckRemark" ColumnName="CCPreFlightCheckRemark" />
+                <ScalarProperty Name="FuelUpliftLitr" ColumnName="FuelUpliftLitr" />
+                <ScalarProperty Name="FuelUsed" ColumnName="FuelUsed" />
+                <ScalarProperty Name="FuelRemained" ColumnName="FuelRemained" />
+                <ScalarProperty Name="FuelTotal" ColumnName="FuelTotal" />
+                <ScalarProperty Name="FuelUplift" ColumnName="FuelUplift" />
+                <ScalarProperty Name="FuelRemaining" ColumnName="FuelRemaining" />
                 <ScalarProperty Name="LTR2" ColumnName="LTR2" />
                 <ScalarProperty Name="ACTUALTANKERINGFUEL" ColumnName="ACTUALTANKERINGFUEL" />
                 <ScalarProperty Name="FuelUsedEng2" ColumnName="FuelUsedEng2" />
@@ -2480,9 +2529,77 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="ViewOFPPoints">
+            <EntityTypeMapping TypeName="ppa_tabanModel.ViewOFPPoint">
+              <MappingFragment StoreEntitySet="ViewOFPPoint">
+                <ScalarProperty Name="FltNo" ColumnName="FltNo" />
+                <ScalarProperty Name="Register" ColumnName="Register" />
+                <ScalarProperty Name="STA" ColumnName="STA" />
+                <ScalarProperty Name="STD" ColumnName="STD" />
+                <ScalarProperty Name="Arr" ColumnName="Arr" />
+                <ScalarProperty Name="Dep" ColumnName="Dep" />
+                <ScalarProperty Name="FlightId" ColumnName="FlightId" />
+                <ScalarProperty Name="GSP" ColumnName="GSP" />
+                <ScalarProperty Name="TAS" ColumnName="TAS" />
+                <ScalarProperty Name="FUS" ColumnName="FUS" />
+                <ScalarProperty Name="FRE" ColumnName="FRE" />
+                <ScalarProperty Name="TDS" ColumnName="TDS" />
+                <ScalarProperty Name="DIS" ColumnName="DIS" />
+                <ScalarProperty Name="GMR" ColumnName="GMR" />
+                <ScalarProperty Name="MEA" ColumnName="MEA" />
+                <ScalarProperty Name="FRQ" ColumnName="FRQ" />
+                <ScalarProperty Name="BODY" ColumnName="BODY" />
+                <ScalarProperty Name="TMP" ColumnName="TMP" />
+                <ScalarProperty Name="TRK" ColumnName="TRK" />
+                <ScalarProperty Name="WIND" ColumnName="WIND" />
+                <ScalarProperty Name="ALT" ColumnName="ALT" />
+                <ScalarProperty Name="VIA" ColumnName="VIA" />
+                <ScalarProperty Name="WAP" ColumnName="WAP" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Long" ColumnName="Long" />
+                <ScalarProperty Name="Lat" ColumnName="Lat" />
+                <ScalarProperty Name="Plan" ColumnName="Plan" />
+                <ScalarProperty Name="OFPId" ColumnName="OFPId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OFPPoints">
+            <EntityTypeMapping TypeName="ppa_tabanModel.OFPPoint">
+              <MappingFragment StoreEntitySet="OFPPoint">
+                <ScalarProperty Name="TTM" ColumnName="TTM" />
+                <ScalarProperty Name="TME" ColumnName="TME" />
+                <ScalarProperty Name="GSP" ColumnName="GSP" />
+                <ScalarProperty Name="TAS" ColumnName="TAS" />
+                <ScalarProperty Name="FUS" ColumnName="FUS" />
+                <ScalarProperty Name="FRE" ColumnName="FRE" />
+                <ScalarProperty Name="TDS" ColumnName="TDS" />
+                <ScalarProperty Name="DIS" ColumnName="DIS" />
+                <ScalarProperty Name="GMR" ColumnName="GMR" />
+                <ScalarProperty Name="MEA" ColumnName="MEA" />
+                <ScalarProperty Name="FRQ" ColumnName="FRQ" />
+                <ScalarProperty Name="BODY" ColumnName="BODY" />
+                <ScalarProperty Name="TMP" ColumnName="TMP" />
+                <ScalarProperty Name="TRK" ColumnName="TRK" />
+                <ScalarProperty Name="WIND" ColumnName="WIND" />
+                <ScalarProperty Name="ALT" ColumnName="ALT" />
+                <ScalarProperty Name="VIA" ColumnName="VIA" />
+                <ScalarProperty Name="WAP" ColumnName="WAP" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Long" ColumnName="Long" />
+                <ScalarProperty Name="Lat" ColumnName="Lat" />
+                <ScalarProperty Name="Plan" ColumnName="Plan" />
+                <ScalarProperty Name="OFPId" ColumnName="OFPId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="OFPImports">
             <EntityTypeMapping TypeName="ppa_tabanModel.OFPImport">
               <MappingFragment StoreEntitySet="OFPImport">
+                <ScalarProperty Name="ATC" ColumnName="ATC" />
+                <ScalarProperty Name="MSH" ColumnName="MSH" />
+                <ScalarProperty Name="CM2" ColumnName="CM2" />
+                <ScalarProperty Name="CM1" ColumnName="CM1" />
+                <ScalarProperty Name="DSPNAME" ColumnName="DSPNAME" />
                 <ScalarProperty Name="FuelACTUALTANKERING" ColumnName="FuelACTUALTANKERING" />
                 <ScalarProperty Name="FuelTOTALFUEL" ColumnName="FuelTOTALFUEL" />
                 <ScalarProperty Name="FuelTANKERING" ColumnName="FuelTANKERING" />
@@ -2553,69 +2670,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
                 <ScalarProperty Name="FlightNo" ColumnName="FlightNo" />
                 <ScalarProperty Name="FileName" ColumnName="FileName" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ViewOFPPoints">
-            <EntityTypeMapping TypeName="ppa_tabanModel.ViewOFPPoint">
-              <MappingFragment StoreEntitySet="ViewOFPPoint">
-                <ScalarProperty Name="FltNo" ColumnName="FltNo" />
-                <ScalarProperty Name="Register" ColumnName="Register" />
-                <ScalarProperty Name="STA" ColumnName="STA" />
-                <ScalarProperty Name="STD" ColumnName="STD" />
-                <ScalarProperty Name="Arr" ColumnName="Arr" />
-                <ScalarProperty Name="Dep" ColumnName="Dep" />
-                <ScalarProperty Name="FlightId" ColumnName="FlightId" />
-                <ScalarProperty Name="GSP" ColumnName="GSP" />
-                <ScalarProperty Name="TAS" ColumnName="TAS" />
-                <ScalarProperty Name="FUS" ColumnName="FUS" />
-                <ScalarProperty Name="FRE" ColumnName="FRE" />
-                <ScalarProperty Name="TDS" ColumnName="TDS" />
-                <ScalarProperty Name="DIS" ColumnName="DIS" />
-                <ScalarProperty Name="GMR" ColumnName="GMR" />
-                <ScalarProperty Name="MEA" ColumnName="MEA" />
-                <ScalarProperty Name="FRQ" ColumnName="FRQ" />
-                <ScalarProperty Name="BODY" ColumnName="BODY" />
-                <ScalarProperty Name="TMP" ColumnName="TMP" />
-                <ScalarProperty Name="TRK" ColumnName="TRK" />
-                <ScalarProperty Name="WIND" ColumnName="WIND" />
-                <ScalarProperty Name="ALT" ColumnName="ALT" />
-                <ScalarProperty Name="VIA" ColumnName="VIA" />
-                <ScalarProperty Name="WAP" ColumnName="WAP" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Long" ColumnName="Long" />
-                <ScalarProperty Name="Lat" ColumnName="Lat" />
-                <ScalarProperty Name="Plan" ColumnName="Plan" />
-                <ScalarProperty Name="OFPId" ColumnName="OFPId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="OFPPoints">
-            <EntityTypeMapping TypeName="ppa_tabanModel.OFPPoint">
-              <MappingFragment StoreEntitySet="OFPPoint">
-                <ScalarProperty Name="TTM" ColumnName="TTM" />
-                <ScalarProperty Name="TME" ColumnName="TME" />
-                <ScalarProperty Name="GSP" ColumnName="GSP" />
-                <ScalarProperty Name="TAS" ColumnName="TAS" />
-                <ScalarProperty Name="FUS" ColumnName="FUS" />
-                <ScalarProperty Name="FRE" ColumnName="FRE" />
-                <ScalarProperty Name="TDS" ColumnName="TDS" />
-                <ScalarProperty Name="DIS" ColumnName="DIS" />
-                <ScalarProperty Name="GMR" ColumnName="GMR" />
-                <ScalarProperty Name="MEA" ColumnName="MEA" />
-                <ScalarProperty Name="FRQ" ColumnName="FRQ" />
-                <ScalarProperty Name="BODY" ColumnName="BODY" />
-                <ScalarProperty Name="TMP" ColumnName="TMP" />
-                <ScalarProperty Name="TRK" ColumnName="TRK" />
-                <ScalarProperty Name="WIND" ColumnName="WIND" />
-                <ScalarProperty Name="ALT" ColumnName="ALT" />
-                <ScalarProperty Name="VIA" ColumnName="VIA" />
-                <ScalarProperty Name="WAP" ColumnName="WAP" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Long" ColumnName="Long" />
-                <ScalarProperty Name="Lat" ColumnName="Lat" />
-                <ScalarProperty Name="Plan" ColumnName="Plan" />
-                <ScalarProperty Name="OFPId" ColumnName="OFPId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

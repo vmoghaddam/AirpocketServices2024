@@ -141,6 +141,10 @@ namespace XAPI.Models
         public string VldRampPassFOORemark { get; set; }
         public string VldRampPassCMDRRemark { get; set; }
         public string Note { get; set; }
+        public string SgnDSPLicNo { get; set; }
+        public string SgnCPTLicNo { get; set; }
+        public Nullable<System.DateTime> JLDSPSignDate { get; set; }
+        public string SGNDSPName { get; set; }
     
         public virtual FlightInformation FlightInformation { get; set; }
     }
