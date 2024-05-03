@@ -465,6 +465,226 @@ namespace ApiMnt.Controllers
             return Ok(reault);
         }
 
+        public string to_hm(int n)
+        {
+            var hh = (n / 60).ToString();
+            var mm = (n % 60).ToString();
+            return hh + ":" + mm.PadLeft(2,'0');
+        }
+        [Route("api/mnt/dashboard/{id}")]
+        [AcceptVerbs("Get")]
+        public async Task<IHttpActionResult> GetMntDashboard(int id)
+        {
+            ppa_entities context = new ppa_entities();
+            var aircrafts = context.view_dashboard_aircraft.Where(q => q.register == "RBC" || q.register == "RBA").OrderBy(q => q.register).ToList();
+
+            var ac_ids = aircrafts.Select(q => q.id).ToList();
+            var _checks = context.view_mnt_aircraft_check.ToList();
+            var _adsbs = context.view_mnt_aircraft_adsb.ToList();
+
+            var _date = DateTime.Now.Date;
+            var flights = context.view_mnt_flt.Where(q => q.STDDayLocal == _date && q.FlightStatusID != 4).ToList();
+
+
+
+            var result = new List<dashboard_aircraft>();
+            foreach (var ac in aircrafts)
+            {
+
+                var item = new dashboard_aircraft()
+                {
+                    id = ac.id,
+                    block = to_hm((int)ac.today_departed_block),
+                    block_num = ac.today_departed_block,
+                    cycle = ac.today_departed_flights,
+                    register = ac.register,
+                    route = "FLIGHTS ROUTE",
+                    tfh_num = ac.total_flight_minute_actual,
+                    tfh = to_hm((int)ac.total_flight_minute_actual),
+                    tfc = ac.total_flight_cycle_actual,
+                    sta = ((DateTime)ac.today_sta).ToString("HH:mm"),
+                    std = ((DateTime)ac.today_std).ToString("HH:mm"),
+                    scheduled_cycle = ac.today_total_flights,
+                    scheduled_block_num = ac.today_total_block,
+                    scheduled_block = to_hm((int)ac.today_total_block),
+                    landing_gear = new dashboard_lg()
+                    {
+                        actual_remaining_days = ac.landing_gear_remaining_actual,
+                        actual_remaining_ldgs = 0,
+                        initial_remaining_days = ac.landing_gear_remaining,
+                        initial_remaining_ldgs = 0,
+                    },
+                    apu = new dashboard_apu()
+                    {
+                        actual_remaining = ac.apu_remaining_actual,
+                        append = "hrs",
+                        initial_remaining = ac.apu_remaining,
+                    },
+                    hts = new List<dashboard_check_adsb>() {
+                      new dashboard_check_adsb()
+                      {
+                            initial_remaining=ac.ht1_remaining,
+                             actual_remaining=ac.ht1_remaining_actual,
+                              append="days",
+                               title="H/T 1",
+                      },
+                       new dashboard_check_adsb()
+                      {
+                            initial_remaining=ac.ht2_remaining,
+                             actual_remaining=ac.ht2_remaining_actual,
+                              append="days",
+                               title="H/T 2",
+                      },
+                        new dashboard_check_adsb()
+                      {
+                            initial_remaining=ac.ht3_remaining,
+                             actual_remaining=ac.ht3_remaining_actual,
+                              append="days",
+                               title="H/T 3",
+                      },
+
+                    },
+                    adsbs = new List<dashboard_check_adsb>(),
+                    checks = new List<dashboard_check_adsb>(),
+                    defects = new dashboard_defect()
+                    {
+                        initial_remaining = ac.first_due_remaining,
+                        actual_remaining = ac.first_due_remaining_actual,
+                        append = "cy",
+                        count = ac.deffects_no,
+                    },
+                    engine1 = new dashboard_engine()
+                    {
+                        append = "cy",
+                        id = -1,
+                        actual_remaining = ac.engine1_remaining_cycles_actual,
+                        initial_remaining = ac.engine1_remaining_cycles,
+                        label = "Engine 1",
+                        sn = ac.engine2_serial_no
+                    },
+                    engine2 = new dashboard_engine()
+                    {
+                        append = "cy",
+                        id = -1,
+                        actual_remaining = ac.engine2_remaining_cycles_actual,
+                        initial_remaining = ac.engine2_remaining_cycles,
+                        label = "Engine 2",
+                        sn = ac.engine2_serial_no
+                    }
+
+
+                };
+                var ac_adsbs = _adsbs.Where(q => q.aircraft_id == ac.id).OrderBy(q => q.remaining_days_actual).ToList();
+                var ac_checks = _checks.Where(q => q.aircraft_id == ac.id).OrderBy(q => q.remaining_minutes_actual).ToList();
+                foreach (var x in ac_adsbs)
+                {
+                    item.adsbs.Add(new dashboard_check_adsb()
+                    {
+                        actual_remaining = x.remaining_days_actual,
+                        initial_remaining = x.remaining_days,
+                        append = "cy",
+                        title = x.reference,
+                    });
+                }
+                foreach (var x in ac_checks)
+                {
+                    item.checks.Add(new dashboard_check_adsb()
+                    {
+                        actual_remaining = x.remaining_minutes_actual,
+                        initial_remaining = x.remaining_minutes,
+                        append = "hrs",
+                        title = x.check,
+                    });
+                }
+
+                var flts = flights.Where(q => q.RegisterID == ac.id).OrderBy(q=>q.STD).ToList();
+                item.route = get_route(flts);
+
+                result.Add(item);
+            }
+
+            return Ok(result);
+        }
+
+        private string get_route(List<view_mnt_flt> flts)
+        {
+            List<string> strs = new List<string>();
+            foreach(var flt in flts)
+            {
+                strs.Add(flt.FromAirportIATA2);
+            }
+            strs.Add(flts.Last().ToAirportIATA2);
+            return string.Join("-", strs);
+
+        }
+
+        public class dashboard_aircraft
+        {
+            public int id { get; set; }
+            public string register { get; set; }
+            public int? tfh_num { get; set; }
+            public int? tfc { get; set; }
+            public string tfh { get; set; }
+
+            public int? cycle { get; set; }
+            public string block { get; set; }
+            public int? block_num { get; set; }
+            public int? scheduled_cycle { get; set; }
+            public string scheduled_block { get; set; }
+            public int? scheduled_block_num { get; set; }
+            public string std { get; set; }
+            public string sta { get; set; }
+            public string route { get; set; }
+            public dashboard_engine engine1 { get; set; }
+            public dashboard_engine engine2 { get; set; }
+            public dashboard_lg landing_gear { get; set; }
+            public dashboard_apu apu { get; set; }
+            public dashboard_defect defects { get; set; }
+            public List<dashboard_check_adsb> checks { get; set; }
+            public List<dashboard_check_adsb> adsbs { get; set; }
+            public List<dashboard_check_adsb> hts { get; set; }
+
+        }
+
+        public class dashboard_engine
+        {
+            public int id { get; set; }
+            public string sn { get; set; }
+            public int? initial_remaining { get; set; }
+            public int? actual_remaining { get; set; }
+            public string append { get; set; }
+            public string label { get; set; }
+        }
+
+        public class dashboard_lg
+        {
+            public int? initial_remaining_days { get; set; }
+            public int? initial_remaining_ldgs { get; set; }
+            public int? actual_remaining_days { get; set; }
+            public int? actual_remaining_ldgs { get; set; }
+        }
+        public class dashboard_apu
+        {
+            public int? initial_remaining { get; set; }
+            public int? actual_remaining { get; set; }
+            public string append { get; set; }
+        }
+        public class dashboard_defect
+        {
+            public int? count { get; set; }
+            public int? actual_remaining { get; set; }
+            public int? initial_remaining { get; set; }
+            public string append { get; set; }
+        }
+        public class dashboard_check_adsb
+        {
+            public int id { get; set; }
+            public string title { get; set; }
+            public int? actual_remaining { get; set; }
+            public int? initial_remaining { get; set; }
+            public string append { get; set; }
+
+        }
 
 
 

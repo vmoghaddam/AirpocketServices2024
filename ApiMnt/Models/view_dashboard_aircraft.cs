@@ -12,7 +12,7 @@ namespace ApiMnt.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class view_mnt_aircraft
+    public partial class view_dashboard_aircraft
     {
         public int id { get; set; }
         public string register { get; set; }
@@ -23,26 +23,42 @@ namespace ApiMnt.Models
         public Nullable<System.DateTime> date_initial_ht2 { get; set; }
         public Nullable<System.DateTime> date_initial_ht3 { get; set; }
         public Nullable<System.DateTime> date_initial_due { get; set; }
+        public Nullable<int> total_flight_cycle_actual { get; set; }
+        public Nullable<int> total_flight_minute_actual { get; set; }
         public Nullable<int> total_flight_cycle { get; set; }
         public Nullable<int> total_flight_minute { get; set; }
         public Nullable<int> deffects_no { get; set; }
         public Nullable<int> eng1_remaining { get; set; }
         public Nullable<int> eng2_remaining { get; set; }
-        public Nullable<int> landing_gear_remaining { get; set; }
-        public Nullable<int> apu_remaining { get; set; }
-        public Nullable<int> ht1_remaining { get; set; }
-        public Nullable<int> ht2_remaining { get; set; }
-        public Nullable<int> ht3_remaining { get; set; }
-        public Nullable<int> first_due_remaining { get; set; }
-        public string serial_no { get; set; }
-        public string maintenance_setting_group { get; set; }
-        public Nullable<int> total_flight_cycle_actual { get; set; }
-        public Nullable<int> total_flight_minute_actual { get; set; }
         public Nullable<int> landing_gear_remaining_actual { get; set; }
         public Nullable<int> apu_remaining_actual { get; set; }
         public Nullable<int> ht1_remaining_actual { get; set; }
         public Nullable<int> ht2_remaining_actual { get; set; }
         public Nullable<int> ht3_remaining_actual { get; set; }
         public Nullable<int> first_due_remaining_actual { get; set; }
+        public Nullable<int> apu_remaining { get; set; }
+        public Nullable<int> landing_gear_remaining { get; set; }
+        public Nullable<int> ht1_remaining { get; set; }
+        public Nullable<int> ht2_remaining { get; set; }
+        public Nullable<int> ht3_remaining { get; set; }
+        public Nullable<int> first_due_remaining { get; set; }
+        public string serial_no { get; set; }
+        public string maintenance_setting_group { get; set; }
+        public Nullable<int> engine1_remaining_cycles { get; set; }
+        public Nullable<int> engine1_remaining_minutes { get; set; }
+        public Nullable<int> engine1_remaining_cycles_actual { get; set; }
+        public Nullable<int> engine1_remaining_minutes_actual { get; set; }
+        public string engine1_serial_no { get; set; }
+        public Nullable<int> engine2_remaining_cycles { get; set; }
+        public Nullable<int> engine2_remaining_minutes { get; set; }
+        public Nullable<int> engine2_remaining_cycles_actual { get; set; }
+        public Nullable<int> engine2_remaining_minutes_actual { get; set; }
+        public string engine2_serial_no { get; set; }
+        public Nullable<System.DateTime> today_std { get; set; }
+        public Nullable<System.DateTime> today_sta { get; set; }
+        public Nullable<int> today_total_flights { get; set; }
+        public Nullable<int> today_departed_flights { get; set; }
+        public Nullable<int> today_total_block { get; set; }
+        public Nullable<int> today_departed_block { get; set; }
     }
 }

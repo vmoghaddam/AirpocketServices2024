@@ -360,12 +360,14 @@ namespace ApiMap.Controllers
             if (search == 1)
             {
                 List<Airline> airlines = new List<Airline>();
-                airlines.Add(new Airline() { name = "MAHAN", code = new Code() { iata = "W5", icao = "IRM" } });
-                airlines.Add(new Airline() { name = "CASPIAN", code = new Code() { iata = "RV", icao = "CPN" } });
+                // airlines.Add(new Airline() { name = "MAHAN", code = new Code() { iata = "W5", icao = "IRM" } });
+                // airlines.Add(new Airline() { name = "CASPIAN", code = new Code() { iata = "RV", icao = "CPN" } });
+                // airlines.Add(new Airline() { name = "VARESH", code = new Code() { iata = "", icao = "VRH" } });
+                //  airlines.Add(new Airline() { name = "ATA", code = new Code() { iata = "I3", icao = "TBZ" } });
+                // airlines.Add(new Airline() { name = "KISHAIR", code = new Code() { iata = "", icao = "KIS" } });
+                //  airlines.Add(new Airline() { name = "KARUN", code = new Code() { iata = "", icao = "KRU" } });
+                airlines.Add(new Airline() { name = "AVA", code = new Code() { iata = "", icao = "AXV" } });
                 airlines.Add(new Airline() { name = "VARESH", code = new Code() { iata = "", icao = "VRH" } });
-                airlines.Add(new Airline() { name = "ATA", code = new Code() { iata = "I3", icao = "TBZ" } });
-                airlines.Add(new Airline() { name = "KISHAIR", code = new Code() { iata = "", icao = "KIS" } });
-                airlines.Add(new Airline() { name = "KARUN", code = new Code() { iata = "", icao = "KRU" } });
                 if (icao != "-1")
                     airlines = airlines.Where(q => q.code.icao == icao).ToList();
                 List<FR_Flight> live_flights = new List<FR_Flight>();

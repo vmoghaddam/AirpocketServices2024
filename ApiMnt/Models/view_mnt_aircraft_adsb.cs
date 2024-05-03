@@ -20,6 +20,7 @@ namespace ApiMnt.Models
         public Nullable<int> estimated_working_days { get; set; }
         public Nullable<System.DateTime> date_due { get; set; }
         public Nullable<int> remaining_days_actual { get; set; }
+        public Nullable<int> remaining_days { get; set; }
         public Nullable<int> aircraft_id { get; set; }
         public Nullable<int> remainig_cycles { get; set; }
         public Nullable<int> remaining_cycles_actual { get; set; }
