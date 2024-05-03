@@ -24,10 +24,10 @@ namespace ApiLibrary.Controllers
         [Route("api/library/paths")]
         public async Task<IHttpActionResult> GetPaths()
         {
-            
+
             ppa_entities context = new ppa_entities();
             var query = from x in context.ViewBookFiles
-                         
+
                         select x;
 
             var result = await query.OrderBy(q => q.FilePath).ToListAsync();
@@ -36,14 +36,14 @@ namespace ApiLibrary.Controllers
             return Ok(result);
         }
         [Route("api/library/search/{str}/{eid}")]
-        public async Task<IHttpActionResult> GetSearch(string str,int eid)
+        public async Task<IHttpActionResult> GetSearch(string str, int eid)
         {
             str = str.ToLower();
             if (str.Length < 2)
                 return Ok(new List<ViewBookFile>());
             ppa_entities context = new ppa_entities();
             var query = from x in context.ViewBookFiles
-                        //where x.FilePath.ToLower().Contains(str)
+                            //where x.FilePath.ToLower().Contains(str)
                         select x;
             var prts = str.Split(' ').ToList();
             foreach (var prt in prts)
@@ -51,9 +51,9 @@ namespace ApiLibrary.Controllers
                 query = query.Where(q => q.FilePath.ToLower().Contains(prt));
             }
 
-            var access = await context.HelperBookApplicableEmployees.Where(q => q.EmployeeId == eid).Select(q=>q.BookId).ToListAsync();
+            var access = await context.HelperBookApplicableEmployees.Where(q => q.EmployeeId == eid).Select(q => q.BookId).ToListAsync();
 
-            var result = await query.Where(q=>access.Contains(q.BookId)).OrderBy(q => q.FilePath).ToListAsync();
+            var result = await query.Where(q => access.Contains(q.BookId)).OrderBy(q => q.FilePath).ToListAsync();
 
 
             return Ok(result);
@@ -61,7 +61,7 @@ namespace ApiLibrary.Controllers
 
 
         [Route("api/library/employee/folder/{eid}/{fid}/{pid}")]
-       
+
         // [Authorize]
         public async Task<IHttpActionResult> GetLibraryEmployeeFolder(int pid, int fid, int eid)
         {
@@ -77,9 +77,9 @@ namespace ApiLibrary.Controllers
                 var items = await context.ViewBookApplicableEmployees.Where(q => q.FolderId == fid && q.EmployeeId == eid).OrderBy(q => q.Title).ToListAsync();
                 var ids = items.Select(q => q.BookId).ToList();
                 //var files = await unitOfWork.BookRepository.GetBookFiles(ids, eid);
-                var files= await  context.ViewBookFileVisiteds.Where(q => q.EmployeeId == eid && ids.Contains(q.BookId)).ToListAsync();
+                var files = await context.ViewBookFileVisiteds.Where(q => q.EmployeeId == eid && ids.Contains(q.BookId)).ToListAsync();
                 var _ids = ids.Select(q => (Nullable<int>)q).ToList();
-                var chapters= await  context.ViewBookChapters.Where(q => _ids.Contains(q.BookId)).ToListAsync();
+                var chapters = await context.ViewBookChapters.Where(q => _ids.Contains(q.BookId)).ToListAsync();
                 //var chapters = await unitOfWork.BookRepository.GetBookChapters(ids);
 
 
@@ -97,6 +97,40 @@ namespace ApiLibrary.Controllers
                 throw new HttpResponseException(HttpStatusCode.Unauthorized);
             }
 
+        }
+
+
+        [HttpGet]
+        [Route("api/library/employee/{eid}")]
+        public async Task<IHttpActionResult> GetLibraryEmployee(int eid)
+        {
+            try
+            {
+
+                ppa_entities context = new ppa_entities();
+                var _folders = await context.ViewFolderApplicables.Where(q => q.EmployeeId == eid).ToListAsync();
+                var query = from x in context.ViewBookApplicableEmployees
+                        where x.EmployeeId == eid
+                        select new
+                        {
+                            x.EmployeeId,
+                            ParentId = x.FolderId,
+                            x.FirstName, 
+                            x.LastName,
+                            x.Title,
+                            x.FileUrl,
+                            x.BookId
+                        };
+                var books = await context.ViewBookApplicableEmployees.Where(q => q.EmployeeId == eid).ToListAsync();
+
+
+                var result = new { _folders, query };
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(HttpStatusCode.Unauthorized);
+            }
         }
 
         public class FileItemModel
@@ -223,11 +257,11 @@ namespace ApiLibrary.Controllers
         //////end of cpntroller
     }
 
-    
 
 
 
-   
+
+
 
 
 

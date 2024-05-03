@@ -372,6 +372,13 @@ namespace ApiMnt.Controllers
             return Ok(aircrafts);
         }
 
+        [Route("api/mnt/get/eng/{engid}/{engno}")]
+        [AcceptVerbs("Get")]
+        public async Task<IHttpActionResult> GetEngine(int engid, int engno) {
+            ppa_entities context = new ppa_entities();
+            var result = context.view_mnt_engine.SingleOrDefault(q =>q.id == engid && q.engine_no == engno);
+            return Ok(result);
+        }
 
         [Route("api/mnt/get/aircraft/llp/{id}")]
         [AcceptVerbs("Get")]
