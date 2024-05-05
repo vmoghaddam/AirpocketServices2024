@@ -30,8 +30,8 @@ namespace ApiMnt.Models
         public Nullable<System.DateTime> date_initial { get; set; }
         public string tasks { get; set; }
     
-        public virtual Ac_MSN Ac_MSN { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<mnt_aircraft_check_task> mnt_aircraft_check_task { get; set; }
+        public virtual Ac_MSN Ac_MSN { get; set; }
     }
 }

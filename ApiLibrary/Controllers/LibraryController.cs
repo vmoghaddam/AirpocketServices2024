@@ -99,6 +99,23 @@ namespace ApiLibrary.Controllers
 
         }
 
+        public class Item
+        {
+            public string Id { get; set; }
+            public string ParentId { get; set; }
+            public string Text { get; set; }
+            public bool IsFile { get; set; }
+            public int FilesCount { get; set; }
+
+
+            public bool FileVisible { get; set; }
+            public string Url { get; set; }
+
+            public int Version { get; set; }
+            public string FileId { get; set; }
+            public string BookId { get; set; }
+
+        }
 
         [HttpGet]
         [Route("api/library/employee/{eid}")]
@@ -108,23 +125,79 @@ namespace ApiLibrary.Controllers
             {
 
                 ppa_entities context = new ppa_entities();
-                var _folders = await context.ViewFolderApplicables.Where(q => q.EmployeeId == eid).ToListAsync();
+                List<Item> result = new List<Item>();
+                //var _folders = await context.ViewFolderApplicables.Where(q => q.EmployeeId == eid).ToListAsync();
+                //var books = await context.ViewBookApplicableEmployees.Where(q => q.EmployeeId == eid).ToListAsync();
+
+                var qu = from x in context.ViewFolderApplicables
+                         where x.EmployeeId == eid
+                         select new
+                         {
+                             x.Id,
+                             //x.EmployeeId,
+                             x.ParentId,
+                             Text = x.Title,
+                             IsFile = false,
+                             Url = "",
+                             Version = -1,
+                             BookId = -1,
+                             FileVisible = false,
+                             FileId = -1,
+                             FilesCount = 2,
+                         };
+
                 var query = from x in context.ViewBookApplicableEmployees
-                        where x.EmployeeId == eid
-                        select new
-                        {
-                            x.EmployeeId,
-                            ParentId = x.FolderId,
-                            x.FirstName, 
-                            x.LastName,
-                            x.Title,
-                            x.FileUrl,
-                            x.BookId
-                        };
-                var books = await context.ViewBookApplicableEmployees.Where(q => q.EmployeeId == eid).ToListAsync();
+                            where x.EmployeeId == eid
+                            select new
+                            {
+                                Id = x.IDNo,
+                                //x.EmployeeId,
+                                ParentId = x.FolderId,
+                                Text = x.Title,
+                                IsFile = true,
+                                Url = x.FileUrl,
+                                x.BookId,
+                                Version = -1,
+                                FileVisible = false,
+                                FileId = -1,
+                                FilesCount = 0,
+                            };
+
+                foreach (var item in query)
+                {
+                    var test = new Item();
+                    test.Id = item.Id;
+                    test.Text = item.Text;
+                    test.Url = item.Url;
+                    test.Version = item.Version;
+                    test.IsFile = item.IsFile;
+                    test.FileVisible = item.FileVisible;
+                    test.ParentId = item.ParentId.ToString();
+                    test.BookId = item.BookId.ToString();
+                    test.FileId = item.FileId.ToString();
+                    test.FilesCount = item.FilesCount;
+                    result.Add(test);
+                }
+
+                  foreach (var item2 in query)
+                {
+                    var test2 = new Item();
+                    test2.Id = item2.Id;
+                    test2.Text = item2.Text;
+                    test2.Url = item2.Url;
+                    test2.Version = item2.Version;
+                    test2.IsFile = item2.IsFile;
+                    test2.FileVisible = item2.FileVisible;
+                    test2.ParentId = item2.ParentId.ToString();
+                    test2.BookId = item2.BookId.ToString();
+                    test2.FileId = item2.FileId.ToString();
+                    test2.FilesCount = item2.FilesCount;
+                    result.Add(test2);
+                }
 
 
-                var result = new { _folders, query };
+
+                //var result = new { _folders, query };
                 return Ok(result);
             }
             catch (Exception ex)

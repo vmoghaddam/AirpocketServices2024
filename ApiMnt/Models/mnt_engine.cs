@@ -30,11 +30,13 @@ namespace ApiMnt.Models
         public Nullable<int> remaining_minutes { get; set; }
         public Nullable<int> aircraft_id { get; set; }
         public Nullable<System.DateTime> date_initial { get; set; }
+        public Nullable<int> total_flight_cycle { get; set; }
+        public Nullable<int> total_flight_hour { get; set; }
     
-        public virtual Ac_MSN Ac_MSN { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<mnt_engine_adsb> mnt_engine_adsb { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<mnt_engine_llp> mnt_engine_llp { get; set; }
+        public virtual Ac_MSN Ac_MSN { get; set; }
     }
 }
