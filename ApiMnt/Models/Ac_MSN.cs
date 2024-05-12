@@ -17,9 +17,9 @@ namespace ApiMnt.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Ac_MSN()
         {
-            this.mnt_engine = new HashSet<mnt_engine>();
             this.mnt_aircraft_adsb = new HashSet<mnt_aircraft_adsb>();
             this.mnt_aircraft_check = new HashSet<mnt_aircraft_check>();
+            this.mnt_engine = new HashSet<mnt_engine>();
         }
     
         public int ID { get; set; }
@@ -95,12 +95,13 @@ namespace ApiMnt.Models
         public Nullable<System.DateTime> date_initial_ht2 { get; set; }
         public Nullable<System.DateTime> date_initial_ht3 { get; set; }
         public Nullable<System.DateTime> date_initial_due { get; set; }
+        public Nullable<int> landing_gear_ldg_remaining { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<mnt_engine> mnt_engine { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<mnt_aircraft_adsb> mnt_aircraft_adsb { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<mnt_aircraft_check> mnt_aircraft_check { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<mnt_engine> mnt_engine { get; set; }
     }
 }

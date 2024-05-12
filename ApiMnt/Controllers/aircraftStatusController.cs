@@ -31,6 +31,7 @@ namespace ApiMnt.Controllers
 
                 aircraft.deffects_no = dto.deffects_no;
                 aircraft.landing_gear_remaining = dto.landing_gear_remaining;
+                aircraft.landing_gear_ldg_remaining = dto.landing_gear_ldg_remaining;
                 aircraft.apu_remaining = dto.apu_remaining;
                 aircraft.ht1_remaining = dto.ht1_remaining;
                 aircraft.ht2_remaining = dto.ht2_remaining;
@@ -78,6 +79,7 @@ namespace ApiMnt.Controllers
             // public int eng1_remaining { get; set; }
             // public int eng2_remaining { get; set; }
             public int landing_gear_remaining { get; set; }
+            public int landing_gear_ldg_remaining { get; set; }
             public int apu_remaining { get; set; }
             public int ht1_remaining { get; set; }
             public int ht2_remaining { get; set; }
@@ -214,14 +216,20 @@ namespace ApiMnt.Controllers
             public string serial_no { get; set; }
             public int remaining_cycles { get; set; }
             public int remaining_minutes { get; set; }
+            public int total_flight_hour { get; set; }
+            public int total_flight_cycle { get; set; }
+            public int remaining_hour { get; set; }
+            public int remaining_min { get; set; }
             public int aircraft_id { get; set; }
             public string date_initial { get; set; }
+
 
         }
         [Route("api/mnt/engine/status")]
         [AcceptVerbs("POST")]
         public async Task<IHttpActionResult> PostEngineStatus(engine_status dto)
         {
+            int t = (dto.remaining_hour * 60) + dto.remaining_min;
             ppa_entities context = new ppa_entities();
             var engine = await context.mnt_engine.Where(q => q.id == dto.id).FirstOrDefaultAsync();
             engine.engine_no = dto.engine_no;
@@ -231,7 +239,10 @@ namespace ApiMnt.Controllers
             engine.serial_no = dto.serial_no;
             engine.date_initial = dto.date_initial == null ? null : str_to_date(dto.date_initial);
             engine.remaining_cycles = dto.remaining_cycles;
-            engine.remaining_minutes = dto.remaining_minutes;
+            engine.remaining_minutes = t;
+            engine.total_flight_hour = dto.total_flight_hour;
+            engine.total_flight_cycle = dto.total_flight_cycle;
+            
             await context.SaveChangesAsync();
             return Ok(dto);
         }

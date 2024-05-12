@@ -25,20 +25,20 @@ namespace ApiMnt.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Ac_MSN> Ac_MSN { get; set; }
         public virtual DbSet<mnt_engine> mnt_engine { get; set; }
         public virtual DbSet<mnt_engine_adsb> mnt_engine_adsb { get; set; }
         public virtual DbSet<mnt_aircraft_adsb> mnt_aircraft_adsb { get; set; }
         public virtual DbSet<mnt_aircraft_check> mnt_aircraft_check { get; set; }
         public virtual DbSet<mnt_aircraft_check_task> mnt_aircraft_check_task { get; set; }
-        public virtual DbSet<view_mnt_aircraft> view_mnt_aircraft { get; set; }
         public virtual DbSet<view_mnt_aircraft_check> view_mnt_aircraft_check { get; set; }
-        public virtual DbSet<view_mnt_engine> view_mnt_engine { get; set; }
         public virtual DbSet<view_mnt_engine_adsb> view_mnt_engine_adsb { get; set; }
         public virtual DbSet<mnt_engine_llp> mnt_engine_llp { get; set; }
         public virtual DbSet<view_mnt_engine_llp> view_mnt_engine_llp { get; set; }
         public virtual DbSet<view_dashboard_aircraft> view_dashboard_aircraft { get; set; }
         public virtual DbSet<view_mnt_aircraft_adsb> view_mnt_aircraft_adsb { get; set; }
         public virtual DbSet<view_mnt_flt> view_mnt_flt { get; set; }
+        public virtual DbSet<Ac_MSN> Ac_MSN { get; set; }
+        public virtual DbSet<view_mnt_engine> view_mnt_engine { get; set; }
+        public virtual DbSet<view_mnt_aircraft> view_mnt_aircraft { get; set; }
     }
 }

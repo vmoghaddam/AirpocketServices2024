@@ -82,6 +82,7 @@
           <Property Name="date_initial_ht2" Type="datetime2" Precision="7" />
           <Property Name="date_initial_ht3" Type="datetime2" Precision="7" />
           <Property Name="date_initial_due" Type="datetime2" Precision="7" />
+          <Property Name="landing_gear_ldg_remaining" Type="int" />
         </EntityType>
         <EntityType Name="mnt_aircraft_adsb">
           <Key>
@@ -131,6 +132,8 @@
           <Property Name="remaining_minutes" Type="int" />
           <Property Name="aircraft_id" Type="int" />
           <Property Name="date_initial" Type="datetime2" Precision="7" />
+          <Property Name="total_flight_cycle" Type="int" />
+          <Property Name="total_flight_hour" Type="int" />
         </EntityType>
         <EntityType Name="mnt_engine_adsb">
           <Key>
@@ -225,6 +228,7 @@ warning 6002: The table/view 'ppa_ava.dbo.view_mnt_aircraft' does not have a pri
           <Property Name="id" Type="int" Nullable="false" />
           <Property Name="register" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="date_initial" Type="datetime2" Precision="7" />
+          <Property Name="landing_gear_ldg_remaining" Type="int" />
           <Property Name="date_initial_landing_gear" Type="datetime2" Precision="7" />
           <Property Name="date_initial_apu" Type="datetime2" Precision="7" />
           <Property Name="date_initial_ht1" Type="datetime2" Precision="7" />
@@ -306,6 +310,8 @@ warning 6002: The table/view 'ppa_ava.dbo.view_mnt_engine' does not have a prima
           <Property Name="aircraft_id" Type="int" />
           <Property Name="date_initial" Type="datetime2" Precision="7" />
           <Property Name="flt_count" Type="int" />
+          <Property Name="total_flight_cycle" Type="int" />
+          <Property Name="total_flight_hour" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_ava.dbo.view_mnt_engine_adsb' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -659,6 +665,7 @@ warning 6002: The table/view 'ppa_ava.dbo.view_mnt_flt' does not have a primary 
     [view_mnt_aircraft].[id] AS [id], 
     [view_mnt_aircraft].[register] AS [register], 
     [view_mnt_aircraft].[date_initial] AS [date_initial], 
+    [view_mnt_aircraft].[landing_gear_ldg_remaining] AS [landing_gear_ldg_remaining], 
     [view_mnt_aircraft].[date_initial_landing_gear] AS [date_initial_landing_gear], 
     [view_mnt_aircraft].[date_initial_apu] AS [date_initial_apu], 
     [view_mnt_aircraft].[date_initial_ht1] AS [date_initial_ht1], 
@@ -730,7 +737,9 @@ warning 6002: The table/view 'ppa_ava.dbo.view_mnt_flt' does not have a primary 
     [view_mnt_engine].[remaining_minutes_actual] AS [remaining_minutes_actual], 
     [view_mnt_engine].[aircraft_id] AS [aircraft_id], 
     [view_mnt_engine].[date_initial] AS [date_initial], 
-    [view_mnt_engine].[flt_count] AS [flt_count]
+    [view_mnt_engine].[flt_count] AS [flt_count], 
+    [view_mnt_engine].[total_flight_cycle] AS [total_flight_cycle], 
+    [view_mnt_engine].[total_flight_hour] AS [total_flight_hour]
     FROM [dbo].[view_mnt_engine] AS [view_mnt_engine]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="view_mnt_engine_adsb" EntityType="Self.view_mnt_engine_adsb" store:Type="Views" store:Schema="dbo">
@@ -959,13 +968,8 @@ warning 6002: The table/view 'ppa_ava.dbo.view_mnt_flt' does not have a primary 
     <edmx:ConceptualModels>
       <Schema Namespace="ppaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="ppa_entities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Ac_MSN" EntityType="ppaModel.Ac_MSN" />
           <EntitySet Name="mnt_engine" EntityType="ppaModel.mnt_engine" />
           <EntitySet Name="mnt_engine_adsb" EntityType="ppaModel.mnt_engine_adsb" />
-          <AssociationSet Name="fk_eng_ac" Association="ppaModel.fk_eng_ac">
-            <End Role="Ac_MSN" EntitySet="Ac_MSN" />
-            <End Role="mnt_engine" EntitySet="mnt_engine" />
-          </AssociationSet>
           <AssociationSet Name="fk_adsb_eng" Association="ppaModel.fk_adsb_eng">
             <End Role="mnt_engine" EntitySet="mnt_engine" />
             <End Role="mnt_engine_adsb" EntitySet="mnt_engine_adsb" />
@@ -973,21 +977,11 @@ warning 6002: The table/view 'ppa_ava.dbo.view_mnt_flt' does not have a primary 
           <EntitySet Name="mnt_aircraft_adsb" EntityType="ppaModel.mnt_aircraft_adsb" />
           <EntitySet Name="mnt_aircraft_check" EntityType="ppaModel.mnt_aircraft_check" />
           <EntitySet Name="mnt_aircraft_check_task" EntityType="ppaModel.mnt_aircraft_check_task" />
-          <AssociationSet Name="fk_adsb_aircraft" Association="ppaModel.fk_adsb_aircraft">
-            <End Role="Ac_MSN" EntitySet="Ac_MSN" />
-            <End Role="mnt_aircraft_adsb" EntitySet="mnt_aircraft_adsb" />
-          </AssociationSet>
-          <AssociationSet Name="fk_check_aircraft" Association="ppaModel.fk_check_aircraft">
-            <End Role="Ac_MSN" EntitySet="Ac_MSN" />
-            <End Role="mnt_aircraft_check" EntitySet="mnt_aircraft_check" />
-          </AssociationSet>
           <AssociationSet Name="fk_task_check" Association="ppaModel.fk_task_check">
             <End Role="mnt_aircraft_check" EntitySet="mnt_aircraft_check" />
             <End Role="mnt_aircraft_check_task" EntitySet="mnt_aircraft_check_task" />
           </AssociationSet>
-          <EntitySet Name="view_mnt_aircraft" EntityType="ppaModel.view_mnt_aircraft" />
           <EntitySet Name="view_mnt_aircraft_check" EntityType="ppaModel.view_mnt_aircraft_check" />
-          <EntitySet Name="view_mnt_engine" EntityType="ppaModel.view_mnt_engine" />
           <EntitySet Name="view_mnt_engine_adsb" EntityType="ppaModel.view_mnt_engine_adsb" />
           <EntitySet Name="mnt_engine_llp" EntityType="ppaModel.mnt_engine_llp" />
           <EntitySet Name="view_mnt_engine_llp" EntityType="ppaModel.view_mnt_engine_llp" />
@@ -998,88 +992,22 @@ warning 6002: The table/view 'ppa_ava.dbo.view_mnt_flt' does not have a primary 
           <EntitySet Name="view_dashboard_aircraft" EntityType="ppaModel.view_dashboard_aircraft" />
           <EntitySet Name="view_mnt_aircraft_adsb" EntityType="ppaModel.view_mnt_aircraft_adsb" />
           <EntitySet Name="view_mnt_flt" EntityType="ppaModel.view_mnt_flt" />
+          <EntitySet Name="Ac_MSN" EntityType="ppaModel.Ac_MSN" />
+          <AssociationSet Name="fk_adsb_aircraft" Association="ppaModel.fk_adsb_aircraft">
+            <End Role="Ac_MSN" EntitySet="Ac_MSN" />
+            <End Role="mnt_aircraft_adsb" EntitySet="mnt_aircraft_adsb" />
+          </AssociationSet>
+          <AssociationSet Name="fk_check_aircraft" Association="ppaModel.fk_check_aircraft">
+            <End Role="Ac_MSN" EntitySet="Ac_MSN" />
+            <End Role="mnt_aircraft_check" EntitySet="mnt_aircraft_check" />
+          </AssociationSet>
+          <AssociationSet Name="fk_eng_ac" Association="ppaModel.fk_eng_ac">
+            <End Role="Ac_MSN" EntitySet="Ac_MSN" />
+            <End Role="mnt_engine" EntitySet="mnt_engine" />
+          </AssociationSet>
+          <EntitySet Name="view_mnt_engine" EntityType="ppaModel.view_mnt_engine" />
+          <EntitySet Name="view_mnt_aircraft" EntityType="ppaModel.view_mnt_aircraft" />
         </EntityContainer>
-        <EntityType Name="Ac_MSN">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="AC_ModelID" Type="Int32" />
-          <Property Name="pkAircraftMSN" Type="Guid" />
-          <Property Name="fkFlight_Range" Type="Int32" />
-          <Property Name="AirlineOperatorsID" Type="Int32" Nullable="false" />
-          <Property Name="fkAc_MSN_Status" Type="Int32" />
-          <Property Name="MSN" Type="Int32" />
-          <Property Name="Register" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="TFH_Hours" Type="Int32" />
-          <Property Name="TFH_Minutes" Type="Byte" />
-          <Property Name="TFC" Type="Int32" />
-          <Property Name="ManDate" Type="DateTime" Precision="0" />
-          <Property Name="Last_WB" Type="DateTime" Precision="0" />
-          <Property Name="ETOPS" Type="Boolean" />
-          <Property Name="AC_Flag" Type="Boolean" />
-          <Property Name="Cabin_Seat_Ver_F" Type="Int32" />
-          <Property Name="Cabin_Seat_Ver_B" Type="Int32" />
-          <Property Name="Cabin_Seat_Ver_C" Type="Int32" />
-          <Property Name="Cabin_Seat_Ver_R" Type="Int32" />
-          <Property Name="Lav_QTY" Type="Int32" />
-          <Property Name="Galley_QTY" Type="Int32" />
-          <Property Name="Cabin_CrewVer" Type="Int32" />
-          <Property Name="Cockpit_Seat_Ver_Pilot" Type="Int32" />
-          <Property Name="Cockpit_Seat_Ver_FlightEngineer" Type="Int32" />
-          <Property Name="Cockpit_Seat_Ver_Observer" Type="Int32" />
-          <Property Name="Previous_Register" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Fuel_LH_Outer" Type="Int32" />
-          <Property Name="Fuel_LH_Inner" Type="Int32" />
-          <Property Name="Fuel_Center" Type="Int32" />
-          <Property Name="Fuel_RH_Inner" Type="Int32" />
-          <Property Name="Fuel_RH_Outer" Type="Int32" />
-          <Property Name="Fuel_ACT1" Type="Int32" />
-          <Property Name="Fuel_ACT2" Type="Int32" />
-          <Property Name="Fuel_Trim" Type="Int32" />
-          <Property Name="Fuel_Total" Type="Int32" />
-          <Property Name="FuelUnit" Type="Boolean" />
-          <Property Name="CustomerId" Type="Int32" Nullable="false" />
-          <Property Name="IsVirtual" Type="Boolean" />
-          <Property Name="TypeId" Type="Int32" />
-          <Property Name="TotalSeat" Type="Int32" />
-          <Property Name="Color1" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="Color2" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="MAXZFW" Type="Int32" />
-          <Property Name="MAXLNW" Type="Int32" />
-          <Property Name="OASecLimit" Type="Int32" />
-          <Property Name="OBSecLimit" Type="Int32" />
-          <Property Name="OCSecLimit" Type="Int32" />
-          <Property Name="ODSecLimit" Type="Int32" />
-          <Property Name="CPT1Limit" Type="Int32" />
-          <Property Name="CPT2Limit" Type="Int32" />
-          <Property Name="CPT3Limit" Type="Int32" />
-          <Property Name="CPT4Limit" Type="Int32" />
-          <Property Name="AircraftType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="deffects_no" Type="Int32" />
-          <Property Name="eng1_remaining" Type="Int32" />
-          <Property Name="eng2_remaining" Type="Int32" />
-          <Property Name="landing_gear_remaining" Type="Int32" />
-          <Property Name="apu_remaining" Type="Int32" />
-          <Property Name="ht1_remaining" Type="Int32" />
-          <Property Name="ht2_remaining" Type="Int32" />
-          <Property Name="ht3_remaining" Type="Int32" />
-          <Property Name="first_due_remaining" Type="Int32" />
-          <Property Name="total_flight_cycle" Type="Int32" />
-          <Property Name="total_flight_minute" Type="Int32" />
-          <Property Name="serial_no" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="date_initial" Type="DateTime" Precision="7" />
-          <Property Name="maintenance_setting_group" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="date_initial_landing_gear" Type="DateTime" Precision="7" />
-          <Property Name="date_initial_apu" Type="DateTime" Precision="7" />
-          <Property Name="date_initial_ht1" Type="DateTime" Precision="7" />
-          <Property Name="date_initial_ht2" Type="DateTime" Precision="7" />
-          <Property Name="date_initial_ht3" Type="DateTime" Precision="7" />
-          <Property Name="date_initial_due" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="mnt_engine" Relationship="ppaModel.fk_eng_ac" FromRole="Ac_MSN" ToRole="mnt_engine" />
-          <NavigationProperty Name="mnt_aircraft_adsb" Relationship="ppaModel.fk_adsb_aircraft" FromRole="Ac_MSN" ToRole="mnt_aircraft_adsb" />
-          <NavigationProperty Name="mnt_aircraft_check" Relationship="ppaModel.fk_check_aircraft" FromRole="Ac_MSN" ToRole="mnt_aircraft_check" />
-        </EntityType>
         <EntityType Name="mnt_engine">
           <Key>
             <PropertyRef Name="id" />
@@ -1093,9 +1021,11 @@ warning 6002: The table/view 'ppa_ava.dbo.view_mnt_flt' does not have a primary 
           <Property Name="remaining_minutes" Type="Int32" />
           <Property Name="aircraft_id" Type="Int32" />
           <Property Name="date_initial" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="Ac_MSN" Relationship="ppaModel.fk_eng_ac" FromRole="mnt_engine" ToRole="Ac_MSN" />
           <NavigationProperty Name="mnt_engine_adsb" Relationship="ppaModel.fk_adsb_eng" FromRole="mnt_engine" ToRole="mnt_engine_adsb" />
           <NavigationProperty Name="mnt_engine_llp" Relationship="ppaModel.fk_llp_engine" FromRole="mnt_engine" ToRole="mnt_engine_llp" />
+          <Property Name="total_flight_cycle" Type="Int32" />
+          <Property Name="total_flight_hour" Type="Int32" />
+          <NavigationProperty Name="Ac_MSN" Relationship="ppaModel.fk_eng_ac" FromRole="mnt_engine" ToRole="Ac_MSN" />
         </EntityType>
         <EntityType Name="mnt_engine_adsb">
           <Key>
@@ -1112,18 +1042,6 @@ warning 6002: The table/view 'ppa_ava.dbo.view_mnt_flt' does not have a primary 
           <Property Name="date_initial" Type="DateTime" Precision="7" />
           <NavigationProperty Name="mnt_engine" Relationship="ppaModel.fk_adsb_eng" FromRole="mnt_engine_adsb" ToRole="mnt_engine" />
         </EntityType>
-        <Association Name="fk_eng_ac">
-          <End Type="ppaModel.Ac_MSN" Role="Ac_MSN" Multiplicity="0..1" />
-          <End Type="ppaModel.mnt_engine" Role="mnt_engine" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Ac_MSN">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="mnt_engine">
-              <PropertyRef Name="aircraft_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="fk_adsb_eng">
           <End Type="ppaModel.mnt_engine" Role="mnt_engine" Multiplicity="0..1" />
           <End Type="ppaModel.mnt_engine_adsb" Role="mnt_engine_adsb" Multiplicity="*" />
@@ -1163,8 +1081,8 @@ warning 6002: The table/view 'ppa_ava.dbo.view_mnt_flt' does not have a primary 
           <Property Name="aircraft_id" Type="Int32" />
           <Property Name="date_initial" Type="DateTime" Precision="7" />
           <Property Name="tasks" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Ac_MSN" Relationship="ppaModel.fk_check_aircraft" FromRole="mnt_aircraft_check" ToRole="Ac_MSN" />
           <NavigationProperty Name="mnt_aircraft_check_task" Relationship="ppaModel.fk_task_check" FromRole="mnt_aircraft_check" ToRole="mnt_aircraft_check_task" />
+          <NavigationProperty Name="Ac_MSN" Relationship="ppaModel.fk_check_aircraft" FromRole="mnt_aircraft_check" ToRole="Ac_MSN" />
         </EntityType>
         <EntityType Name="mnt_aircraft_check_task">
           <Key>
@@ -1175,30 +1093,6 @@ warning 6002: The table/view 'ppa_ava.dbo.view_mnt_flt' does not have a primary 
           <Property Name="check_id" Type="Int32" />
           <NavigationProperty Name="mnt_aircraft_check" Relationship="ppaModel.fk_task_check" FromRole="mnt_aircraft_check_task" ToRole="mnt_aircraft_check" />
         </EntityType>
-        <Association Name="fk_adsb_aircraft">
-          <End Type="ppaModel.Ac_MSN" Role="Ac_MSN" Multiplicity="0..1" />
-          <End Type="ppaModel.mnt_aircraft_adsb" Role="mnt_aircraft_adsb" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Ac_MSN">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="mnt_aircraft_adsb">
-              <PropertyRef Name="aircraft_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="fk_check_aircraft">
-          <End Type="ppaModel.Ac_MSN" Role="Ac_MSN" Multiplicity="0..1" />
-          <End Type="ppaModel.mnt_aircraft_check" Role="mnt_aircraft_check" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Ac_MSN">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="mnt_aircraft_check">
-              <PropertyRef Name="aircraft_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="fk_task_check">
           <End Type="ppaModel.mnt_aircraft_check" Role="mnt_aircraft_check" Multiplicity="0..1" />
           <End Type="ppaModel.mnt_aircraft_check_task" Role="mnt_aircraft_check_task" Multiplicity="*" />
@@ -1211,42 +1105,6 @@ warning 6002: The table/view 'ppa_ava.dbo.view_mnt_flt' does not have a primary 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="view_mnt_aircraft">
-          <Key>
-            <PropertyRef Name="id" />
-            <PropertyRef Name="register" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" />
-          <Property Name="register" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="date_initial" Type="DateTime" Precision="7" />
-          <Property Name="date_initial_landing_gear" Type="DateTime" Precision="7" />
-          <Property Name="date_initial_apu" Type="DateTime" Precision="7" />
-          <Property Name="date_initial_ht1" Type="DateTime" Precision="7" />
-          <Property Name="date_initial_ht2" Type="DateTime" Precision="7" />
-          <Property Name="date_initial_ht3" Type="DateTime" Precision="7" />
-          <Property Name="date_initial_due" Type="DateTime" Precision="7" />
-          <Property Name="total_flight_cycle" Type="Int32" />
-          <Property Name="total_flight_minute" Type="Int32" />
-          <Property Name="deffects_no" Type="Int32" />
-          <Property Name="eng1_remaining" Type="Int32" />
-          <Property Name="eng2_remaining" Type="Int32" />
-          <Property Name="landing_gear_remaining" Type="Int32" />
-          <Property Name="apu_remaining" Type="Int32" />
-          <Property Name="ht1_remaining" Type="Int32" />
-          <Property Name="ht2_remaining" Type="Int32" />
-          <Property Name="ht3_remaining" Type="Int32" />
-          <Property Name="first_due_remaining" Type="Int32" />
-          <Property Name="serial_no" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="maintenance_setting_group" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="total_flight_cycle_actual" Type="Int32" />
-          <Property Name="total_flight_minute_actual" Type="Int32" />
-          <Property Name="landing_gear_remaining_actual" Type="Int32" />
-          <Property Name="apu_remaining_actual" Type="Int32" />
-          <Property Name="ht1_remaining_actual" Type="Int32" />
-          <Property Name="ht2_remaining_actual" Type="Int32" />
-          <Property Name="ht3_remaining_actual" Type="Int32" />
-          <Property Name="first_due_remaining_actual" Type="Int32" />
-        </EntityType>
         <EntityType Name="view_mnt_aircraft_check">
           <Key>
             <PropertyRef Name="id" />
@@ -1261,23 +1119,6 @@ warning 6002: The table/view 'ppa_ava.dbo.view_mnt_flt' does not have a primary 
           <Property Name="aircraft_id" Type="Int32" />
           <Property Name="date_initial" Type="DateTime" Precision="7" />
           <Property Name="tasks" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="view_mnt_engine">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" />
-          <Property Name="engine_no" Type="Int32" />
-          <Property Name="cat" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="model" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="serial_no" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="remaining_cycles" Type="Int32" />
-          <Property Name="remaining_cycles_actual" Type="Int32" />
-          <Property Name="remaining_minutes" Type="Int32" />
-          <Property Name="remaining_minutes_actual" Type="Int32" />
-          <Property Name="aircraft_id" Type="Int32" />
-          <Property Name="date_initial" Type="DateTime" Precision="7" />
-          <Property Name="flt_count" Type="Int32" />
         </EntityType>
         <EntityType Name="view_mnt_engine_adsb">
           <Key>
@@ -1586,94 +1427,191 @@ warning 6002: The table/view 'ppa_ava.dbo.view_mnt_flt' does not have a primary 
           <Property Name="LandingStation" Type="DateTime" Precision="3" />
           <Property Name="TakeoffStation" Type="DateTime" Precision="3" />
         </EntityType>
+        <EntityType Name="Ac_MSN">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AC_ModelID" Type="Int32" />
+          <Property Name="pkAircraftMSN" Type="Guid" />
+          <Property Name="fkFlight_Range" Type="Int32" />
+          <Property Name="AirlineOperatorsID" Type="Int32" Nullable="false" />
+          <Property Name="fkAc_MSN_Status" Type="Int32" />
+          <Property Name="MSN" Type="Int32" />
+          <Property Name="Register" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TFH_Hours" Type="Int32" />
+          <Property Name="TFH_Minutes" Type="Byte" />
+          <Property Name="TFC" Type="Int32" />
+          <Property Name="ManDate" Type="DateTime" Precision="0" />
+          <Property Name="Last_WB" Type="DateTime" Precision="0" />
+          <Property Name="ETOPS" Type="Boolean" />
+          <Property Name="AC_Flag" Type="Boolean" />
+          <Property Name="Cabin_Seat_Ver_F" Type="Int32" />
+          <Property Name="Cabin_Seat_Ver_B" Type="Int32" />
+          <Property Name="Cabin_Seat_Ver_C" Type="Int32" />
+          <Property Name="Cabin_Seat_Ver_R" Type="Int32" />
+          <Property Name="Lav_QTY" Type="Int32" />
+          <Property Name="Galley_QTY" Type="Int32" />
+          <Property Name="Cabin_CrewVer" Type="Int32" />
+          <Property Name="Cockpit_Seat_Ver_Pilot" Type="Int32" />
+          <Property Name="Cockpit_Seat_Ver_FlightEngineer" Type="Int32" />
+          <Property Name="Cockpit_Seat_Ver_Observer" Type="Int32" />
+          <Property Name="Previous_Register" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Fuel_LH_Outer" Type="Int32" />
+          <Property Name="Fuel_LH_Inner" Type="Int32" />
+          <Property Name="Fuel_Center" Type="Int32" />
+          <Property Name="Fuel_RH_Inner" Type="Int32" />
+          <Property Name="Fuel_RH_Outer" Type="Int32" />
+          <Property Name="Fuel_ACT1" Type="Int32" />
+          <Property Name="Fuel_ACT2" Type="Int32" />
+          <Property Name="Fuel_Trim" Type="Int32" />
+          <Property Name="Fuel_Total" Type="Int32" />
+          <Property Name="FuelUnit" Type="Boolean" />
+          <Property Name="CustomerId" Type="Int32" Nullable="false" />
+          <Property Name="IsVirtual" Type="Boolean" />
+          <Property Name="TypeId" Type="Int32" />
+          <Property Name="TotalSeat" Type="Int32" />
+          <Property Name="Color1" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Color2" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="MAXZFW" Type="Int32" />
+          <Property Name="MAXLNW" Type="Int32" />
+          <Property Name="OASecLimit" Type="Int32" />
+          <Property Name="OBSecLimit" Type="Int32" />
+          <Property Name="OCSecLimit" Type="Int32" />
+          <Property Name="ODSecLimit" Type="Int32" />
+          <Property Name="CPT1Limit" Type="Int32" />
+          <Property Name="CPT2Limit" Type="Int32" />
+          <Property Name="CPT3Limit" Type="Int32" />
+          <Property Name="CPT4Limit" Type="Int32" />
+          <Property Name="AircraftType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="deffects_no" Type="Int32" />
+          <Property Name="eng1_remaining" Type="Int32" />
+          <Property Name="eng2_remaining" Type="Int32" />
+          <Property Name="landing_gear_remaining" Type="Int32" />
+          <Property Name="apu_remaining" Type="Int32" />
+          <Property Name="ht1_remaining" Type="Int32" />
+          <Property Name="ht2_remaining" Type="Int32" />
+          <Property Name="ht3_remaining" Type="Int32" />
+          <Property Name="first_due_remaining" Type="Int32" />
+          <Property Name="total_flight_cycle" Type="Int32" />
+          <Property Name="total_flight_minute" Type="Int32" />
+          <Property Name="serial_no" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="date_initial" Type="DateTime" Precision="7" />
+          <Property Name="maintenance_setting_group" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="date_initial_landing_gear" Type="DateTime" Precision="7" />
+          <Property Name="date_initial_apu" Type="DateTime" Precision="7" />
+          <Property Name="date_initial_ht1" Type="DateTime" Precision="7" />
+          <Property Name="date_initial_ht2" Type="DateTime" Precision="7" />
+          <Property Name="date_initial_ht3" Type="DateTime" Precision="7" />
+          <Property Name="date_initial_due" Type="DateTime" Precision="7" />
+          <Property Name="landing_gear_ldg_remaining" Type="Int32" />
+          <NavigationProperty Name="mnt_aircraft_adsb" Relationship="ppaModel.fk_adsb_aircraft" FromRole="Ac_MSN" ToRole="mnt_aircraft_adsb" />
+          <NavigationProperty Name="mnt_aircraft_check" Relationship="ppaModel.fk_check_aircraft" FromRole="Ac_MSN" ToRole="mnt_aircraft_check" />
+          <NavigationProperty Name="mnt_engine" Relationship="ppaModel.fk_eng_ac" FromRole="Ac_MSN" ToRole="mnt_engine" />
+        </EntityType>
+        <Association Name="fk_adsb_aircraft">
+          <End Type="ppaModel.Ac_MSN" Role="Ac_MSN" Multiplicity="0..1" />
+          <End Type="ppaModel.mnt_aircraft_adsb" Role="mnt_aircraft_adsb" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ac_MSN">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="mnt_aircraft_adsb">
+              <PropertyRef Name="aircraft_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_check_aircraft">
+          <End Type="ppaModel.Ac_MSN" Role="Ac_MSN" Multiplicity="0..1" />
+          <End Type="ppaModel.mnt_aircraft_check" Role="mnt_aircraft_check" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ac_MSN">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="mnt_aircraft_check">
+              <PropertyRef Name="aircraft_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_eng_ac">
+          <End Type="ppaModel.Ac_MSN" Role="Ac_MSN" Multiplicity="0..1" />
+          <End Type="ppaModel.mnt_engine" Role="mnt_engine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ac_MSN">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="mnt_engine">
+              <PropertyRef Name="aircraft_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="view_mnt_engine">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="engine_no" Type="Int32" />
+          <Property Name="cat" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="model" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="serial_no" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="remaining_cycles" Type="Int32" />
+          <Property Name="remaining_cycles_actual" Type="Int32" />
+          <Property Name="remaining_minutes" Type="Int32" />
+          <Property Name="remaining_minutes_actual" Type="Int32" />
+          <Property Name="aircraft_id" Type="Int32" />
+          <Property Name="date_initial" Type="DateTime" Precision="7" />
+          <Property Name="flt_count" Type="Int32" />
+          <Property Name="total_flight_cycle" Type="Int32" />
+          <Property Name="total_flight_hour" Type="Int32" />
+        </EntityType>
+        <EntityType Name="view_mnt_aircraft">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="register" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="register" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="date_initial" Type="DateTime" Precision="7" />
+          <Property Name="landing_gear_ldg_remaining" Type="Int32" />
+          <Property Name="date_initial_landing_gear" Type="DateTime" Precision="7" />
+          <Property Name="date_initial_apu" Type="DateTime" Precision="7" />
+          <Property Name="date_initial_ht1" Type="DateTime" Precision="7" />
+          <Property Name="date_initial_ht2" Type="DateTime" Precision="7" />
+          <Property Name="date_initial_ht3" Type="DateTime" Precision="7" />
+          <Property Name="date_initial_due" Type="DateTime" Precision="7" />
+          <Property Name="total_flight_cycle_actual" Type="Int32" />
+          <Property Name="total_flight_minute_actual" Type="Int32" />
+          <Property Name="total_flight_cycle" Type="Int32" />
+          <Property Name="total_flight_minute" Type="Int32" />
+          <Property Name="deffects_no" Type="Int32" />
+          <Property Name="eng1_remaining" Type="Int32" />
+          <Property Name="eng2_remaining" Type="Int32" />
+          <Property Name="landing_gear_remaining_actual" Type="Int32" />
+          <Property Name="apu_remaining_actual" Type="Int32" />
+          <Property Name="ht1_remaining_actual" Type="Int32" />
+          <Property Name="ht2_remaining_actual" Type="Int32" />
+          <Property Name="ht3_remaining_actual" Type="Int32" />
+          <Property Name="first_due_remaining_actual" Type="Int32" />
+          <Property Name="apu_remaining" Type="Int32" />
+          <Property Name="landing_gear_remaining" Type="Int32" />
+          <Property Name="ht1_remaining" Type="Int32" />
+          <Property Name="ht2_remaining" Type="Int32" />
+          <Property Name="ht3_remaining" Type="Int32" />
+          <Property Name="first_due_remaining" Type="Int32" />
+          <Property Name="serial_no" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="maintenance_setting_group" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="ppaModelStoreContainer" CdmEntityContainer="ppa_entities">
-          <EntitySetMapping Name="Ac_MSN">
-            <EntityTypeMapping TypeName="ppaModel.Ac_MSN">
-              <MappingFragment StoreEntitySet="Ac_MSN">
-                <ScalarProperty Name="date_initial_due" ColumnName="date_initial_due" />
-                <ScalarProperty Name="date_initial_ht3" ColumnName="date_initial_ht3" />
-                <ScalarProperty Name="date_initial_ht2" ColumnName="date_initial_ht2" />
-                <ScalarProperty Name="date_initial_ht1" ColumnName="date_initial_ht1" />
-                <ScalarProperty Name="date_initial_apu" ColumnName="date_initial_apu" />
-                <ScalarProperty Name="date_initial_landing_gear" ColumnName="date_initial_landing_gear" />
-                <ScalarProperty Name="maintenance_setting_group" ColumnName="maintenance_setting_group" />
-                <ScalarProperty Name="date_initial" ColumnName="date_initial" />
-                <ScalarProperty Name="serial_no" ColumnName="serial_no" />
-                <ScalarProperty Name="total_flight_minute" ColumnName="total_flight_minute" />
-                <ScalarProperty Name="total_flight_cycle" ColumnName="total_flight_cycle" />
-                <ScalarProperty Name="first_due_remaining" ColumnName="first_due_remaining" />
-                <ScalarProperty Name="ht3_remaining" ColumnName="ht3_remaining" />
-                <ScalarProperty Name="ht2_remaining" ColumnName="ht2_remaining" />
-                <ScalarProperty Name="ht1_remaining" ColumnName="ht1_remaining" />
-                <ScalarProperty Name="apu_remaining" ColumnName="apu_remaining" />
-                <ScalarProperty Name="landing_gear_remaining" ColumnName="landing_gear_remaining" />
-                <ScalarProperty Name="eng2_remaining" ColumnName="eng2_remaining" />
-                <ScalarProperty Name="eng1_remaining" ColumnName="eng1_remaining" />
-                <ScalarProperty Name="deffects_no" ColumnName="deffects_no" />
-                <ScalarProperty Name="AircraftType" ColumnName="AircraftType" />
-                <ScalarProperty Name="CPT4Limit" ColumnName="CPT4Limit" />
-                <ScalarProperty Name="CPT3Limit" ColumnName="CPT3Limit" />
-                <ScalarProperty Name="CPT2Limit" ColumnName="CPT2Limit" />
-                <ScalarProperty Name="CPT1Limit" ColumnName="CPT1Limit" />
-                <ScalarProperty Name="ODSecLimit" ColumnName="ODSecLimit" />
-                <ScalarProperty Name="OCSecLimit" ColumnName="OCSecLimit" />
-                <ScalarProperty Name="OBSecLimit" ColumnName="OBSecLimit" />
-                <ScalarProperty Name="OASecLimit" ColumnName="OASecLimit" />
-                <ScalarProperty Name="MAXLNW" ColumnName="MAXLNW" />
-                <ScalarProperty Name="MAXZFW" ColumnName="MAXZFW" />
-                <ScalarProperty Name="Color2" ColumnName="Color2" />
-                <ScalarProperty Name="Color1" ColumnName="Color1" />
-                <ScalarProperty Name="TotalSeat" ColumnName="TotalSeat" />
-                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
-                <ScalarProperty Name="IsVirtual" ColumnName="IsVirtual" />
-                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
-                <ScalarProperty Name="FuelUnit" ColumnName="FuelUnit" />
-                <ScalarProperty Name="Fuel_Total" ColumnName="Fuel_Total" />
-                <ScalarProperty Name="Fuel_Trim" ColumnName="Fuel_Trim" />
-                <ScalarProperty Name="Fuel_ACT2" ColumnName="Fuel_ACT2" />
-                <ScalarProperty Name="Fuel_ACT1" ColumnName="Fuel_ACT1" />
-                <ScalarProperty Name="Fuel_RH_Outer" ColumnName="Fuel_RH_Outer" />
-                <ScalarProperty Name="Fuel_RH_Inner" ColumnName="Fuel_RH_Inner" />
-                <ScalarProperty Name="Fuel_Center" ColumnName="Fuel_Center" />
-                <ScalarProperty Name="Fuel_LH_Inner" ColumnName="Fuel_LH_Inner" />
-                <ScalarProperty Name="Fuel_LH_Outer" ColumnName="Fuel_LH_Outer" />
-                <ScalarProperty Name="Previous_Register" ColumnName="Previous_Register" />
-                <ScalarProperty Name="Cockpit_Seat_Ver_Observer" ColumnName="Cockpit_Seat_Ver_Observer" />
-                <ScalarProperty Name="Cockpit_Seat_Ver_FlightEngineer" ColumnName="Cockpit_Seat_Ver_FlightEngineer" />
-                <ScalarProperty Name="Cockpit_Seat_Ver_Pilot" ColumnName="Cockpit_Seat_Ver_Pilot" />
-                <ScalarProperty Name="Cabin_CrewVer" ColumnName="Cabin_CrewVer" />
-                <ScalarProperty Name="Galley_QTY" ColumnName="Galley_QTY" />
-                <ScalarProperty Name="Lav_QTY" ColumnName="Lav_QTY" />
-                <ScalarProperty Name="Cabin_Seat_Ver_R" ColumnName="Cabin_Seat_Ver_R" />
-                <ScalarProperty Name="Cabin_Seat_Ver_C" ColumnName="Cabin_Seat_Ver_C" />
-                <ScalarProperty Name="Cabin_Seat_Ver_B" ColumnName="Cabin_Seat_Ver_B" />
-                <ScalarProperty Name="Cabin_Seat_Ver_F" ColumnName="Cabin_Seat_Ver_F" />
-                <ScalarProperty Name="AC_Flag" ColumnName="AC_Flag" />
-                <ScalarProperty Name="ETOPS" ColumnName="ETOPS" />
-                <ScalarProperty Name="Last_WB" ColumnName="Last_WB" />
-                <ScalarProperty Name="ManDate" ColumnName="ManDate" />
-                <ScalarProperty Name="TFC" ColumnName="TFC" />
-                <ScalarProperty Name="TFH_Minutes" ColumnName="TFH_Minutes" />
-                <ScalarProperty Name="TFH_Hours" ColumnName="TFH_Hours" />
-                <ScalarProperty Name="Register" ColumnName="Register" />
-                <ScalarProperty Name="MSN" ColumnName="MSN" />
-                <ScalarProperty Name="fkAc_MSN_Status" ColumnName="fkAc_MSN_Status" />
-                <ScalarProperty Name="AirlineOperatorsID" ColumnName="AirlineOperatorsID" />
-                <ScalarProperty Name="fkFlight_Range" ColumnName="fkFlight_Range" />
-                <ScalarProperty Name="pkAircraftMSN" ColumnName="pkAircraftMSN" />
-                <ScalarProperty Name="AC_ModelID" ColumnName="AC_ModelID" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="mnt_engine">
             <EntityTypeMapping TypeName="ppaModel.mnt_engine">
               <MappingFragment StoreEntitySet="mnt_engine">
+                <ScalarProperty Name="total_flight_hour" ColumnName="total_flight_hour" />
+                <ScalarProperty Name="total_flight_cycle" ColumnName="total_flight_cycle" />
                 <ScalarProperty Name="date_initial" ColumnName="date_initial" />
                 <ScalarProperty Name="aircraft_id" ColumnName="aircraft_id" />
                 <ScalarProperty Name="remaining_minutes" ColumnName="remaining_minutes" />
@@ -1739,42 +1677,6 @@ warning 6002: The table/view 'ppa_ava.dbo.view_mnt_flt' does not have a primary 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="view_mnt_aircraft">
-            <EntityTypeMapping TypeName="ppaModel.view_mnt_aircraft">
-              <MappingFragment StoreEntitySet="view_mnt_aircraft">
-                <ScalarProperty Name="first_due_remaining_actual" ColumnName="first_due_remaining_actual" />
-                <ScalarProperty Name="ht3_remaining_actual" ColumnName="ht3_remaining_actual" />
-                <ScalarProperty Name="ht2_remaining_actual" ColumnName="ht2_remaining_actual" />
-                <ScalarProperty Name="ht1_remaining_actual" ColumnName="ht1_remaining_actual" />
-                <ScalarProperty Name="apu_remaining_actual" ColumnName="apu_remaining_actual" />
-                <ScalarProperty Name="landing_gear_remaining_actual" ColumnName="landing_gear_remaining_actual" />
-                <ScalarProperty Name="total_flight_minute_actual" ColumnName="total_flight_minute_actual" />
-                <ScalarProperty Name="total_flight_cycle_actual" ColumnName="total_flight_cycle_actual" />
-                <ScalarProperty Name="maintenance_setting_group" ColumnName="maintenance_setting_group" />
-                <ScalarProperty Name="serial_no" ColumnName="serial_no" />
-                <ScalarProperty Name="first_due_remaining" ColumnName="first_due_remaining" />
-                <ScalarProperty Name="ht3_remaining" ColumnName="ht3_remaining" />
-                <ScalarProperty Name="ht2_remaining" ColumnName="ht2_remaining" />
-                <ScalarProperty Name="ht1_remaining" ColumnName="ht1_remaining" />
-                <ScalarProperty Name="apu_remaining" ColumnName="apu_remaining" />
-                <ScalarProperty Name="landing_gear_remaining" ColumnName="landing_gear_remaining" />
-                <ScalarProperty Name="eng2_remaining" ColumnName="eng2_remaining" />
-                <ScalarProperty Name="eng1_remaining" ColumnName="eng1_remaining" />
-                <ScalarProperty Name="deffects_no" ColumnName="deffects_no" />
-                <ScalarProperty Name="total_flight_minute" ColumnName="total_flight_minute" />
-                <ScalarProperty Name="total_flight_cycle" ColumnName="total_flight_cycle" />
-                <ScalarProperty Name="date_initial_due" ColumnName="date_initial_due" />
-                <ScalarProperty Name="date_initial_ht3" ColumnName="date_initial_ht3" />
-                <ScalarProperty Name="date_initial_ht2" ColumnName="date_initial_ht2" />
-                <ScalarProperty Name="date_initial_ht1" ColumnName="date_initial_ht1" />
-                <ScalarProperty Name="date_initial_apu" ColumnName="date_initial_apu" />
-                <ScalarProperty Name="date_initial_landing_gear" ColumnName="date_initial_landing_gear" />
-                <ScalarProperty Name="date_initial" ColumnName="date_initial" />
-                <ScalarProperty Name="register" ColumnName="register" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="view_mnt_aircraft_check">
             <EntityTypeMapping TypeName="ppaModel.view_mnt_aircraft_check">
               <MappingFragment StoreEntitySet="view_mnt_aircraft_check">
@@ -1787,24 +1689,6 @@ warning 6002: The table/view 'ppa_ava.dbo.view_mnt_flt' does not have a primary 
                 <ScalarProperty Name="remaining_hours" ColumnName="remaining_hours" />
                 <ScalarProperty Name="check" ColumnName="check" />
                 <ScalarProperty Name="item_no" ColumnName="item_no" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="view_mnt_engine">
-            <EntityTypeMapping TypeName="ppaModel.view_mnt_engine">
-              <MappingFragment StoreEntitySet="view_mnt_engine">
-                <ScalarProperty Name="flt_count" ColumnName="flt_count" />
-                <ScalarProperty Name="date_initial" ColumnName="date_initial" />
-                <ScalarProperty Name="aircraft_id" ColumnName="aircraft_id" />
-                <ScalarProperty Name="remaining_minutes_actual" ColumnName="remaining_minutes_actual" />
-                <ScalarProperty Name="remaining_minutes" ColumnName="remaining_minutes" />
-                <ScalarProperty Name="remaining_cycles_actual" ColumnName="remaining_cycles_actual" />
-                <ScalarProperty Name="remaining_cycles" ColumnName="remaining_cycles" />
-                <ScalarProperty Name="serial_no" ColumnName="serial_no" />
-                <ScalarProperty Name="model" ColumnName="model" />
-                <ScalarProperty Name="cat" ColumnName="cat" />
-                <ScalarProperty Name="engine_no" ColumnName="engine_no" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -2093,6 +1977,143 @@ warning 6002: The table/view 'ppa_ava.dbo.view_mnt_flt' does not have a primary 
                 <ScalarProperty Name="BlockOn" ColumnName="BlockOn" />
                 <ScalarProperty Name="FlightId" ColumnName="FlightId" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ac_MSN">
+            <EntityTypeMapping TypeName="ppaModel.Ac_MSN">
+              <MappingFragment StoreEntitySet="Ac_MSN">
+                <ScalarProperty Name="landing_gear_ldg_remaining" ColumnName="landing_gear_ldg_remaining" />
+                <ScalarProperty Name="date_initial_due" ColumnName="date_initial_due" />
+                <ScalarProperty Name="date_initial_ht3" ColumnName="date_initial_ht3" />
+                <ScalarProperty Name="date_initial_ht2" ColumnName="date_initial_ht2" />
+                <ScalarProperty Name="date_initial_ht1" ColumnName="date_initial_ht1" />
+                <ScalarProperty Name="date_initial_apu" ColumnName="date_initial_apu" />
+                <ScalarProperty Name="date_initial_landing_gear" ColumnName="date_initial_landing_gear" />
+                <ScalarProperty Name="maintenance_setting_group" ColumnName="maintenance_setting_group" />
+                <ScalarProperty Name="date_initial" ColumnName="date_initial" />
+                <ScalarProperty Name="serial_no" ColumnName="serial_no" />
+                <ScalarProperty Name="total_flight_minute" ColumnName="total_flight_minute" />
+                <ScalarProperty Name="total_flight_cycle" ColumnName="total_flight_cycle" />
+                <ScalarProperty Name="first_due_remaining" ColumnName="first_due_remaining" />
+                <ScalarProperty Name="ht3_remaining" ColumnName="ht3_remaining" />
+                <ScalarProperty Name="ht2_remaining" ColumnName="ht2_remaining" />
+                <ScalarProperty Name="ht1_remaining" ColumnName="ht1_remaining" />
+                <ScalarProperty Name="apu_remaining" ColumnName="apu_remaining" />
+                <ScalarProperty Name="landing_gear_remaining" ColumnName="landing_gear_remaining" />
+                <ScalarProperty Name="eng2_remaining" ColumnName="eng2_remaining" />
+                <ScalarProperty Name="eng1_remaining" ColumnName="eng1_remaining" />
+                <ScalarProperty Name="deffects_no" ColumnName="deffects_no" />
+                <ScalarProperty Name="AircraftType" ColumnName="AircraftType" />
+                <ScalarProperty Name="CPT4Limit" ColumnName="CPT4Limit" />
+                <ScalarProperty Name="CPT3Limit" ColumnName="CPT3Limit" />
+                <ScalarProperty Name="CPT2Limit" ColumnName="CPT2Limit" />
+                <ScalarProperty Name="CPT1Limit" ColumnName="CPT1Limit" />
+                <ScalarProperty Name="ODSecLimit" ColumnName="ODSecLimit" />
+                <ScalarProperty Name="OCSecLimit" ColumnName="OCSecLimit" />
+                <ScalarProperty Name="OBSecLimit" ColumnName="OBSecLimit" />
+                <ScalarProperty Name="OASecLimit" ColumnName="OASecLimit" />
+                <ScalarProperty Name="MAXLNW" ColumnName="MAXLNW" />
+                <ScalarProperty Name="MAXZFW" ColumnName="MAXZFW" />
+                <ScalarProperty Name="Color2" ColumnName="Color2" />
+                <ScalarProperty Name="Color1" ColumnName="Color1" />
+                <ScalarProperty Name="TotalSeat" ColumnName="TotalSeat" />
+                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+                <ScalarProperty Name="IsVirtual" ColumnName="IsVirtual" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="FuelUnit" ColumnName="FuelUnit" />
+                <ScalarProperty Name="Fuel_Total" ColumnName="Fuel_Total" />
+                <ScalarProperty Name="Fuel_Trim" ColumnName="Fuel_Trim" />
+                <ScalarProperty Name="Fuel_ACT2" ColumnName="Fuel_ACT2" />
+                <ScalarProperty Name="Fuel_ACT1" ColumnName="Fuel_ACT1" />
+                <ScalarProperty Name="Fuel_RH_Outer" ColumnName="Fuel_RH_Outer" />
+                <ScalarProperty Name="Fuel_RH_Inner" ColumnName="Fuel_RH_Inner" />
+                <ScalarProperty Name="Fuel_Center" ColumnName="Fuel_Center" />
+                <ScalarProperty Name="Fuel_LH_Inner" ColumnName="Fuel_LH_Inner" />
+                <ScalarProperty Name="Fuel_LH_Outer" ColumnName="Fuel_LH_Outer" />
+                <ScalarProperty Name="Previous_Register" ColumnName="Previous_Register" />
+                <ScalarProperty Name="Cockpit_Seat_Ver_Observer" ColumnName="Cockpit_Seat_Ver_Observer" />
+                <ScalarProperty Name="Cockpit_Seat_Ver_FlightEngineer" ColumnName="Cockpit_Seat_Ver_FlightEngineer" />
+                <ScalarProperty Name="Cockpit_Seat_Ver_Pilot" ColumnName="Cockpit_Seat_Ver_Pilot" />
+                <ScalarProperty Name="Cabin_CrewVer" ColumnName="Cabin_CrewVer" />
+                <ScalarProperty Name="Galley_QTY" ColumnName="Galley_QTY" />
+                <ScalarProperty Name="Lav_QTY" ColumnName="Lav_QTY" />
+                <ScalarProperty Name="Cabin_Seat_Ver_R" ColumnName="Cabin_Seat_Ver_R" />
+                <ScalarProperty Name="Cabin_Seat_Ver_C" ColumnName="Cabin_Seat_Ver_C" />
+                <ScalarProperty Name="Cabin_Seat_Ver_B" ColumnName="Cabin_Seat_Ver_B" />
+                <ScalarProperty Name="Cabin_Seat_Ver_F" ColumnName="Cabin_Seat_Ver_F" />
+                <ScalarProperty Name="AC_Flag" ColumnName="AC_Flag" />
+                <ScalarProperty Name="ETOPS" ColumnName="ETOPS" />
+                <ScalarProperty Name="Last_WB" ColumnName="Last_WB" />
+                <ScalarProperty Name="ManDate" ColumnName="ManDate" />
+                <ScalarProperty Name="TFC" ColumnName="TFC" />
+                <ScalarProperty Name="TFH_Minutes" ColumnName="TFH_Minutes" />
+                <ScalarProperty Name="TFH_Hours" ColumnName="TFH_Hours" />
+                <ScalarProperty Name="Register" ColumnName="Register" />
+                <ScalarProperty Name="MSN" ColumnName="MSN" />
+                <ScalarProperty Name="fkAc_MSN_Status" ColumnName="fkAc_MSN_Status" />
+                <ScalarProperty Name="AirlineOperatorsID" ColumnName="AirlineOperatorsID" />
+                <ScalarProperty Name="fkFlight_Range" ColumnName="fkFlight_Range" />
+                <ScalarProperty Name="pkAircraftMSN" ColumnName="pkAircraftMSN" />
+                <ScalarProperty Name="AC_ModelID" ColumnName="AC_ModelID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_mnt_engine">
+            <EntityTypeMapping TypeName="ppaModel.view_mnt_engine">
+              <MappingFragment StoreEntitySet="view_mnt_engine">
+                <ScalarProperty Name="total_flight_hour" ColumnName="total_flight_hour" />
+                <ScalarProperty Name="total_flight_cycle" ColumnName="total_flight_cycle" />
+                <ScalarProperty Name="flt_count" ColumnName="flt_count" />
+                <ScalarProperty Name="date_initial" ColumnName="date_initial" />
+                <ScalarProperty Name="aircraft_id" ColumnName="aircraft_id" />
+                <ScalarProperty Name="remaining_minutes_actual" ColumnName="remaining_minutes_actual" />
+                <ScalarProperty Name="remaining_minutes" ColumnName="remaining_minutes" />
+                <ScalarProperty Name="remaining_cycles_actual" ColumnName="remaining_cycles_actual" />
+                <ScalarProperty Name="remaining_cycles" ColumnName="remaining_cycles" />
+                <ScalarProperty Name="serial_no" ColumnName="serial_no" />
+                <ScalarProperty Name="model" ColumnName="model" />
+                <ScalarProperty Name="cat" ColumnName="cat" />
+                <ScalarProperty Name="engine_no" ColumnName="engine_no" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_mnt_aircraft">
+            <EntityTypeMapping TypeName="ppaModel.view_mnt_aircraft">
+              <MappingFragment StoreEntitySet="view_mnt_aircraft">
+                <ScalarProperty Name="maintenance_setting_group" ColumnName="maintenance_setting_group" />
+                <ScalarProperty Name="serial_no" ColumnName="serial_no" />
+                <ScalarProperty Name="first_due_remaining" ColumnName="first_due_remaining" />
+                <ScalarProperty Name="ht3_remaining" ColumnName="ht3_remaining" />
+                <ScalarProperty Name="ht2_remaining" ColumnName="ht2_remaining" />
+                <ScalarProperty Name="ht1_remaining" ColumnName="ht1_remaining" />
+                <ScalarProperty Name="landing_gear_remaining" ColumnName="landing_gear_remaining" />
+                <ScalarProperty Name="apu_remaining" ColumnName="apu_remaining" />
+                <ScalarProperty Name="first_due_remaining_actual" ColumnName="first_due_remaining_actual" />
+                <ScalarProperty Name="ht3_remaining_actual" ColumnName="ht3_remaining_actual" />
+                <ScalarProperty Name="ht2_remaining_actual" ColumnName="ht2_remaining_actual" />
+                <ScalarProperty Name="ht1_remaining_actual" ColumnName="ht1_remaining_actual" />
+                <ScalarProperty Name="apu_remaining_actual" ColumnName="apu_remaining_actual" />
+                <ScalarProperty Name="landing_gear_remaining_actual" ColumnName="landing_gear_remaining_actual" />
+                <ScalarProperty Name="eng2_remaining" ColumnName="eng2_remaining" />
+                <ScalarProperty Name="eng1_remaining" ColumnName="eng1_remaining" />
+                <ScalarProperty Name="deffects_no" ColumnName="deffects_no" />
+                <ScalarProperty Name="total_flight_minute" ColumnName="total_flight_minute" />
+                <ScalarProperty Name="total_flight_cycle" ColumnName="total_flight_cycle" />
+                <ScalarProperty Name="total_flight_minute_actual" ColumnName="total_flight_minute_actual" />
+                <ScalarProperty Name="total_flight_cycle_actual" ColumnName="total_flight_cycle_actual" />
+                <ScalarProperty Name="date_initial_due" ColumnName="date_initial_due" />
+                <ScalarProperty Name="date_initial_ht3" ColumnName="date_initial_ht3" />
+                <ScalarProperty Name="date_initial_ht2" ColumnName="date_initial_ht2" />
+                <ScalarProperty Name="date_initial_ht1" ColumnName="date_initial_ht1" />
+                <ScalarProperty Name="date_initial_apu" ColumnName="date_initial_apu" />
+                <ScalarProperty Name="date_initial_landing_gear" ColumnName="date_initial_landing_gear" />
+                <ScalarProperty Name="landing_gear_ldg_remaining" ColumnName="landing_gear_ldg_remaining" />
+                <ScalarProperty Name="date_initial" ColumnName="date_initial" />
+                <ScalarProperty Name="register" ColumnName="register" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

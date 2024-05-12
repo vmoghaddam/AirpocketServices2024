@@ -26,5 +26,7 @@ namespace ApiMnt.Models
         public Nullable<int> aircraft_id { get; set; }
         public Nullable<System.DateTime> date_initial { get; set; }
         public Nullable<int> flt_count { get; set; }
+        public Nullable<int> total_flight_cycle { get; set; }
+        public Nullable<int> total_flight_hour { get; set; }
     }
 }
