@@ -116,7 +116,9 @@ namespace AirpocketAPI.Controllers
             var dt = DateTime.Now.Date;
             var context = new AirpocketAPI.Models.FLYEntities();
             var result = await context.ExpFlights.Where(q => (q.FlightStatusId == 2 || q.FlightStatusId == 14 || q.FlightStatusId == 20
-               || q.FlightStatusId == 21 || q.FlightStatusId == 23 || q.FlightStatusId == 24 ||  q.FlightStatusId == 25)  && q.DepartureDayLocal==dt).ToListAsync();
+               || q.FlightStatusId == 21 || q.FlightStatusId == 23 || q.FlightStatusId == 24 ||  q.FlightStatusId == 25
+               || q.FlightStatusId == 22
+               )  && q.DepartureDayLocal==dt).ToListAsync();
                 
              var flights=result.Select(q => new
             {
@@ -135,6 +137,17 @@ namespace AirpocketAPI.Controllers
                 ArrLocal=q.ArrivalLocal,
              }).ToList ();
             return Ok(flights);
+        }
+
+
+
+        [Route("api/metar")]
+        [AcceptVerbs("GET")]
+        public async Task<IHttpActionResult> GetMetar()
+        {
+            WebClient client = new WebClient();
+            string reply = client.DownloadString("https://metar-taf.com/live/OIII?zoom=70");
+            return Ok(reply);
         }
 
 

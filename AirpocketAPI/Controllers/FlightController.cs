@@ -6355,7 +6355,7 @@ namespace AirpocketAPI.Controllers
             // var rest = dutiesQuery.Where(q => q.DutyType == 300009 && q.IsCockpit == 1).ToList();
             // var rest_mhd = rest.Where(q => q.BaseAirportId == 140870).ToList();
             // var rest_thr = rest.Where(q => q.BaseAirportId == 135502).ToList();
-            var rsv = dutiesQuery.Where(q => q.DutyType == 1170 && q.IsCockpit == 1).ToList();
+            var rsv = dutiesQuery.Where(q => q.DutyType == 1170/* && q.IsCockpit == 1*/).ToList();
             // var rsv_mhd = rsv.Where(q => q.BaseAirportId == 140870).ToList();
             // var rsv_thr = rsv.Where(q => q.BaseAirportId == 135502).ToList();
             // var vac = dutiesQuery.Where(q => q.DutyType == 1169 && q.IsCockpit == 1).ToList();

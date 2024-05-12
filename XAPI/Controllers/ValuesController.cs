@@ -504,7 +504,7 @@ namespace XAPI.Controllers
                 {
                     result = "AIR1AIR";
                     var entity = new OFPSkyPuter()
-                    {
+                    { 
                         OFP = dto.plan,
                         DateCreate = DateTime.Now,
                         UploadStatus = 0,
@@ -1795,6 +1795,12 @@ namespace XAPI.Controllers
                 props.Add("prop_pax_child");
                 other.Add(new fuelPrm() { prm = "PAX_INFANT", value = "" });
                 props.Add("prop_pax_infant");
+
+                other.Add(new fuelPrm() { prm = "PAX_MALE", value = "" });
+                props.Add("prop_pax_male");
+
+                other.Add(new fuelPrm() { prm = "PAX_FEMALE", value = "" });
+                props.Add("prop_pax_female");
 
 
 

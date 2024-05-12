@@ -677,7 +677,11 @@ namespace ApiAPSB.Controllers
                 case "IP":
                     return "IP";
                 case "Captain":
-                    return "CPT";
+                    return "PIC";
+                case "SAFETY":
+                case "SO":
+                case "Safety":
+                    return "SP";
                 case "SCCM":
                     return "FP";
                 case "CCM":
@@ -942,7 +946,7 @@ namespace ApiAPSB.Controllers
                     sheet.Range[ln_leg, 4].Text = leg.FromAirportIATA;
                     sheet.Range[ln_leg, 5].Text = leg.ToAirportIATA;
                     sheet.Range[ln_leg, 6].Text = leg.FlightNumber;
-                    sheet.Range[ln_leg, 7].Text = string.IsNullOrEmpty(leg.FlightType) ? "S" : leg.FlightType.ToString().Substring(0, 1).ToUpper();
+                    sheet.Range[ln_leg, 7].Text = string.IsNullOrEmpty(leg.FlightType) ? "S" : (leg.FlightType.StartsWith("S")?"S":"N");
                     sheet.Range[ln_leg, 8].Text = string.IsNullOrEmpty(leg.PF) ? "" : leg.PF;
 
                     sheet.Range[ln_leg, 9].Text = leg.FuelRemaining == null ? "" : Convert.ToInt32(leg.FuelRemaining).ToString();
@@ -951,7 +955,9 @@ namespace ApiAPSB.Controllers
                     sheet.Range[ln_leg, 12].Text = leg.FuelTotal == null ? "" : Convert.ToInt32(leg.FuelTotal).ToString();
                     sheet.Range[ln_leg, 13].Text = leg.FuelUsed == null ? "" : Convert.ToInt32(leg.FuelUsed).ToString();
 
-                    sheet.Range[ln_leg, 14].Text = leg.PaxAdult == null ? "" : leg.PaxAdult.ToString();
+                    //sheet.Range[ln_leg, 14].Text = leg.PaxAdult == null ? "" : leg.PaxAdult.ToString();
+                    sheet.Range[ln_leg, 14].Text = leg.PaxMale == null ? "" : leg.PaxMale.ToString();
+                    sheet.Range[ln_leg, 15].Text = leg.PaxFemale == null ? "" : leg.PaxFemale.ToString();
                     sheet.Range[ln_leg, 16].Text = leg.PaxChild == null ? "" : leg.PaxChild.ToString();
                     sheet.Range[ln_leg, 17].Text = leg.PaxInfant == null ? "" : leg.PaxInfant.ToString();
                     sheet.Range[ln_leg, 18].Text = ((leg.PaxInfant == null ? 0 : leg.PaxInfant)

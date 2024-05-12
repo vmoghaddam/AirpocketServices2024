@@ -25,5 +25,6 @@ namespace AirpocketAPI.Models
         public Nullable<System.DateTime> LocalDate { get; set; }
         public string PeriodFixTime { get; set; }
         public Nullable<int> PDate2 { get; set; }
+        public Nullable<System.DateTime> Night { get; set; }
     }
 }

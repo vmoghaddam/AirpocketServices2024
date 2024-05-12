@@ -48,6 +48,17 @@ namespace ApiMap.Controllers
 
         }
 
+        [Route("api/metar")]
+        [AcceptVerbs("GET")]
+        public async Task<IHttpActionResult> GetMetar()
+        {
+            WebClient client = new WebClient();
+            string reply = client.DownloadString("https://metar-taf.com/live/OIII?zoom=70");
+            return Ok(reply);
+
+
+        }
+
         [Route("api/test2")]
         [AcceptVerbs("GET")]
         public async Task<IHttpActionResult> GetTest2()
@@ -222,6 +233,14 @@ namespace ApiMap.Controllers
             using (HttpClient client = new HttpClient())
             {
                 var url = "https://zapi.apvaresh.com/api/flight/departed";
+                switch (icao)
+                {
+                    case "AXV":
+                        url = "https://ava.api.airpocket.app/api/flight/departed";
+                        break;
+                    default:
+                        break;
+                }
                 var str = await client.GetStringAsync(url);
                 var obj = JsonConvert.DeserializeObject<List<ap_flight>>(str);
                 if (no != "-1")

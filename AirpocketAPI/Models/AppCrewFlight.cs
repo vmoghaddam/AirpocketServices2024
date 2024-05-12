@@ -164,5 +164,11 @@ namespace AirpocketAPI.Models
         public Nullable<int> TANKERINGDIFF { get; set; }
         public Nullable<int> ACTUALTOTALFUEL { get; set; }
         public string LTR2 { get; set; }
+        public Nullable<System.DateTime> dep_dawn { get; set; }
+        public Nullable<System.DateTime> dep_dusk { get; set; }
+        public Nullable<System.DateTime> arr_dawn { get; set; }
+        public Nullable<System.DateTime> arr_dusk { get; set; }
+        public string FlightTypeOPS { get; set; }
+        public string AttForms { get; set; }
     }
 }

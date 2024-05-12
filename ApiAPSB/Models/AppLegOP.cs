@@ -195,5 +195,7 @@ namespace ApiAPSB.Models
         public Nullable<System.DateTime> DateVisitNOTAM { get; set; }
         public Nullable<System.DateTime> DateVisitOTHER { get; set; }
         public Nullable<System.DateTime> DateVisitPACKINGLIST { get; set; }
+        public Nullable<int> PaxMale { get; set; }
+        public Nullable<int> PaxFemale { get; set; }
     }
 }

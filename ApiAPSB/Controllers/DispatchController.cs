@@ -296,6 +296,12 @@ namespace ApiAPSB.Controllers
                         ofp.WDCLB,
                         ofp.WDDES,
                         ofp.WDTMP,
+                        ofp.MSH,
+                        ofp.CM1,
+                        ofp.CM2,
+                        ofp.DSPNAME,
+                        ofp.ATC,
+
 
 
                         props,
@@ -1377,7 +1383,7 @@ namespace ApiAPSB.Controllers
                 {
                     if (employee != null)
                     {
-                        if (!person_lic.ToLower().Contains(lic_no.ToLower()))
+                        if (string.IsNullOrEmpty(person_lic) ||  !person_lic.ToLower().Contains(lic_no.ToLower()))
                         {
                             return Ok(
                                 new

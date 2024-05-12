@@ -64,7 +64,6 @@ namespace AirpocketAPI.Models
         public virtual DbSet<AppCrewTime> AppCrewTimes { get; set; }
         public virtual DbSet<EFBASR> EFBASRs { get; set; }
         public virtual DbSet<EFBVoyageReport> EFBVoyageReports { get; set; }
-        public virtual DbSet<AppLegOP> AppLegOPS { get; set; }
         public virtual DbSet<ViewRosterCrewCount> ViewRosterCrewCounts { get; set; }
         public virtual DbSet<ViewFDRReport> ViewFDRReports { get; set; }
         public virtual DbSet<FTLFlightTime> FTLFlightTimes { get; set; }
@@ -113,5 +112,6 @@ namespace AirpocketAPI.Models
         public virtual DbSet<ViewCrewDutyTimeLineNewGDate> ViewCrewDutyTimeLineNewGDates { get; set; }
         public virtual DbSet<AppCrewFlightJL> AppCrewFlightJLs { get; set; }
         public virtual DbSet<AppLegJL> AppLegJLs { get; set; }
+        public virtual DbSet<AppLegOP> AppLegOPS { get; set; }
     }
 }

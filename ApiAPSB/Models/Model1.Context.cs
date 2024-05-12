@@ -25,7 +25,6 @@ namespace ApiAPSB.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<ViewLegCrew> ViewLegCrews { get; set; }
         public virtual DbSet<AppCrewFlight> AppCrewFlights { get; set; }
         public virtual DbSet<FDPItem> FDPItems { get; set; }
         public virtual DbSet<XAppLeg> XAppLegs { get; set; }
@@ -33,27 +32,29 @@ namespace ApiAPSB.Models
         public virtual DbSet<ViewLegTime> ViewLegTimes { get; set; }
         public virtual DbSet<FlightDocument> FlightDocuments { get; set; }
         public virtual DbSet<FlightInformation> FlightInformations { get; set; }
-        public virtual DbSet<OFPImport> OFPImports { get; set; }
         public virtual DbSet<EFBValue> EFBValues { get; set; }
-        public virtual DbSet<XFlightCrew> XFlightCrews { get; set; }
         public virtual DbSet<AppLegOP> AppLegOPS { get; set; }
         public virtual DbSet<EFBDSPRelease> EFBDSPReleases { get; set; }
         public virtual DbSet<ViewEFBDSPReleas> ViewEFBDSPReleases { get; set; }
-        public virtual DbSet<ViewEmployee> ViewEmployees { get; set; }
-        public virtual DbSet<EFBASR> EFBASRs { get; set; }
-        public virtual DbSet<EFBVoyageReport> EFBVoyageReports { get; set; }
-        public virtual DbSet<Person> People { get; set; }
         public virtual DbSet<PersonCustomer> PersonCustomers { get; set; }
-        public virtual DbSet<ViewEFBASR> ViewEFBASRs { get; set; }
         public virtual DbSet<ViewFlightCrewNew> ViewFlightCrewNews { get; set; }
         public virtual DbSet<AppCrewFlightJL> AppCrewFlightJLs { get; set; }
         public virtual DbSet<AppFDPRest> AppFDPRests { get; set; }
         public virtual DbSet<AppLeg> AppLegs { get; set; }
-        public virtual DbSet<ViewFDPRest> ViewFDPRests { get; set; }
-        public virtual DbSet<AppLegJL> AppLegJLs { get; set; }
-        public virtual DbSet<DayGP> DayGPs { get; set; }
-        public virtual DbSet<journeylog_atl> journeylog_atl { get; set; }
-        public virtual DbSet<Airport> Airports { get; set; }
         public virtual DbSet<geo_apt_sunrise> geo_apt_sunrise { get; set; }
+        public virtual DbSet<OFPImport> OFPImports { get; set; }
+        public virtual DbSet<ViewEFBASR> ViewEFBASRs { get; set; }
+        public virtual DbSet<Person> People { get; set; }
+        public virtual DbSet<ViewEmployee> ViewEmployees { get; set; }
+        public virtual DbSet<DayGP> DayGPs { get; set; }
+        public virtual DbSet<ViewEFBVoyageReport> ViewEFBVoyageReports { get; set; }
+        public virtual DbSet<ViewLegCrew> ViewLegCrews { get; set; }
+        public virtual DbSet<EFBASR> EFBASRs { get; set; }
+        public virtual DbSet<XFlightCrew> XFlightCrews { get; set; }
+        public virtual DbSet<EFBVoyageReport> EFBVoyageReports { get; set; }
+        public virtual DbSet<ViewFDPRest> ViewFDPRests { get; set; }
+        public virtual DbSet<Airport> Airports { get; set; }
+        public virtual DbSet<journeylog_atl> journeylog_atl { get; set; }
+        public virtual DbSet<AppLegJL> AppLegJLs { get; set; }
     }
 }

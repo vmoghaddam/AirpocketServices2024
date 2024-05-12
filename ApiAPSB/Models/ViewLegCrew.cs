@@ -38,7 +38,7 @@ namespace ApiAPSB.Models
         public Nullable<int> Duty { get; set; }
         public Nullable<int> ScheduledFlightTime { get; set; }
         public Nullable<int> SITATime { get; set; }
-        public int FixTime { get; set; }
+        public Nullable<int> FixTime { get; set; }
         public Nullable<int> FlightTimeActual { get; set; }
         public Nullable<System.DateTime> ArrivalLocal { get; set; }
         public Nullable<System.DateTime> DepartureLocal { get; set; }

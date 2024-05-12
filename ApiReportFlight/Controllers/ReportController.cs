@@ -2229,7 +2229,7 @@ namespace ApiReportFlight.Controllers
             var _dt = dt.Date.AddDays(1);
             var _query = (
                            from x in ctx.ViewLegCrews
-                           where x.STDLocal >= df && x.STDLocal < dt && x.FlightStatusID != 4 && x.CrewId == id
+                           where x.STDLocal >= _df && x.STDLocal < _dt && x.FlightStatusID != 4 && x.CrewId == id
                            orderby x.STD
                            select x
 

@@ -52,6 +52,15 @@ namespace ApiAPSB.Models
         public Nullable<int> StatusEmployeeId { get; set; }
         public Nullable<System.DateTime> DateOccurrence { get; set; }
         public string Result { get; set; }
+        public Nullable<bool> AttForm_ASR { get; set; }
+        public Nullable<bool> AttForm_CSR { get; set; }
+        public Nullable<bool> AttForm_CR { get; set; }
+        public Nullable<bool> AttForm_Other { get; set; }
+        public string ActionTaken { get; set; }
+        public Nullable<bool> IsForInformation { get; set; }
+        public Nullable<bool> IsActionRequired { get; set; }
+        public string OtherForm { get; set; }
+        public Nullable<bool> AttForm_ACCIDET { get; set; }
     
         public virtual FlightInformation FlightInformation { get; set; }
     }
