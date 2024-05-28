@@ -54,5 +54,21 @@ namespace ApiLog.Models
         public Nullable<int> Rev_OA { get; set; }
         public Nullable<int> Total_Pax { get; set; }
         public Nullable<int> Total_Rev { get; set; }
+        public string FromAirportIATA { get; set; }
+        public string ToAirportIATA { get; set; }
+        public string FlightNumber { get; set; }
+        public Nullable<System.DateTime> Date { get; set; }
+        public string PDate { get; set; }
+        public Nullable<System.DateTime> STD { get; set; }
+        public Nullable<System.DateTime> STA { get; set; }
+        public Nullable<System.DateTime> STDLocal { get; set; }
+        public Nullable<System.DateTime> STALocal { get; set; }
+        public Nullable<System.DateTime> ChocksOut { get; set; }
+        public Nullable<System.DateTime> Takeoff { get; set; }
+        public Nullable<System.DateTime> Landing { get; set; }
+        public Nullable<System.DateTime> ChocksIn { get; set; }
+        public string Register { get; set; }
+        public string ChrTitle { get; set; }
+        public string FlightStatus { get; set; }
     }
 }

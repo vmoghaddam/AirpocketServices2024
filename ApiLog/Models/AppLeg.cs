@@ -175,5 +175,14 @@ namespace ApiLog.Models
         public Nullable<System.DateTime> BlockOnStation { get; set; }
         public Nullable<System.DateTime> LandingStation { get; set; }
         public Nullable<System.DateTime> TakeoffStation { get; set; }
+        public Nullable<System.DateTime> dep_dawn { get; set; }
+        public Nullable<System.DateTime> dep_dusk { get; set; }
+        public Nullable<System.DateTime> arr_dawn { get; set; }
+        public Nullable<System.DateTime> arr_dusk { get; set; }
+        public string FlightTypeOPS { get; set; }
+        public string AttForms { get; set; }
+        public string RouteCountry { get; set; }
+        public Nullable<int> PaxFemale { get; set; }
+        public Nullable<int> PaxMale { get; set; }
     }
 }
