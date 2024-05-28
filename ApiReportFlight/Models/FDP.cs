@@ -93,6 +93,8 @@ namespace ApiReportFlight.Models
         public Nullable<int> PosFDPId { get; set; }
         public string PosRemark { get; set; }
         public string PosTicketUrl { get; set; }
+        public Nullable<System.DateTime> DutyEndDateLocal { get; set; }
+        public string InitTo { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FDP> FDP1 { get; set; }
