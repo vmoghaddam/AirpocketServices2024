@@ -320,6 +320,10 @@ namespace ApiLog.Models
         public Nullable<int> FuelUsed { get; set; }
         public Nullable<int> FuelUpliftLitr { get; set; }
         public string CCPreFlightCheckRemark { get; set; }
+        public string FlightTypeOPS { get; set; }
+        public string AttForms { get; set; }
+        public Nullable<int> PaxMale { get; set; }
+        public Nullable<int> PaxFemale { get; set; }
     
         public virtual Ac_MSN Ac_MSN { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

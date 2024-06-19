@@ -2071,24 +2071,28 @@ namespace AirpocketAPI.Controllers
 
         [Route("api/xls")]
         [AcceptVerbs("GET")]
-        public HttpResponseMessage GetXLSOLD(DateTime dt1, DateTime dt2, int chr, int time, int cnl, int crew, int sort, int sep)
+        public HttpResponseMessage GetXLSOLD(DateTime dt1, DateTime dt2, int chr, int time, int cnl, int crew, int sort, int sep, bool utcRef)
         {
 
             var _dt1 = dt1.Date;
             var _dt2 = dt2.Date.AddDays(0);
             var context = new AirpocketAPI.Models.FLYEntities();
             var query = (from x in context.ViewTimeTables
-                         where x.STDDay >= _dt1 && x.STDDay <= _dt2
+                         //where x.STDDay >= _dt1 && x.STDDay <= _dt2
                          select x);
+            query = query.Where(q => (utcRef) ? q.STDDay >= _dt1 && q.STDDay <= _dt2 : q.STDDayLocal >= _dt1 && q.STDDayLocal <= _dt2);
             if (cnl == -1)
                 query = query.Where(q => q.FlightStatusID != 4);
 
 
             var totalcnt = query.Count();
+
             var grps = (from x in query
-                        group x by new { x.STDDay } into grp
-                        orderby grp.Key.STDDay
+                        group x by new { refSTD = utcRef ? x.STDDay : x.STDDayLocal } into grp
+                        orderby grp.Key.refSTD
                         select grp).ToList();
+
+            
 
             //var query = from x in context.ViewRosterCrewCounts
             //            where x.DateLocal >= _dt1 && x.DateLocal <= _dt2
@@ -2110,6 +2114,7 @@ namespace AirpocketAPI.Controllers
             var startRow = 4;
             int r = -1;
             var newGrp = startRow + 2;
+            
             foreach (var grp in grps)
             {
                 if (sep == 1)
@@ -2137,7 +2142,7 @@ namespace AirpocketAPI.Controllers
                 if (sep == 1)
                 {
 
-                    DateTime d = ((DateTime)grp.Key.STDDay);
+                    DateTime d = ((DateTime)grp.Key.refSTD);
                     PersianCalendar pc = new PersianCalendar();
                     var sheetName = string.Format("{0}_{1}_{2}", pc.GetYear(d), pc.GetMonth(d).ToString().PadLeft(2, '0'), pc.GetDayOfMonth(d).ToString().PadLeft(2, '0'));
                     //var sheetName = ((DateTime)grp.Key.STDDay).ToString("dddd dd-MMM-yyyy");
@@ -2186,7 +2191,7 @@ namespace AirpocketAPI.Controllers
                 //sheet.Range[1, 3].Style.VerticalAlignment = VerticalAlignType.Center;
                 if (sep == 1)
                 {
-                    sheet.Range[1, 11].Text = ((DateTime)grp.Key.STDDay).ToString("yyyy-MMM-dd");
+                    sheet.Range[1, 11].Text = ((DateTime)grp.Key.refSTD).ToString("yyyy-MMM-dd");
                     sheet.Range[1, 11].Style.Font.FontName = "Times New Roman";
                     sheet.Range[1, 11].Style.Font.Size = 11;
                     sheet.Range[1, 11].Style.Font.IsBold = true;
@@ -2197,7 +2202,7 @@ namespace AirpocketAPI.Controllers
                     sheet.Range[2, 11].Text = pdate[0] + "-" + pdate[1] + "-" + pdate[2];
                     sheet.Range[2, 11].Style.Font.FontName = "Times New Roman";
                     sheet.Range[2, 11].Style.Font.Size = 11;
-                    sheet.Range[2, 9].Text = ((DateTime)grp.Key.STDDay).ToString("ddd");
+                    sheet.Range[2, 9].Text = ((DateTime)grp.Key.refSTD).ToString("ddd");
                     sheet.Range[2, 9].Style.Font.IsBold = true;
                     sheet.Range[2, 9].Style.Font.FontName = "Times New Roman";
                     sheet.Range[2, 9].Style.Font.Size = 11;

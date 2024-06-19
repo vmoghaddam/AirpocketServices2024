@@ -2384,6 +2384,34 @@ namespace ApiReportFlight.Controllers
         }
 
 
+        [Route("api/flightpax/daily")]
+        [AcceptVerbs("GET")]
+        public IHttpActionResult GetFlightsPaxDaily(DateTime df, DateTime dt)
+        {
+            var cmd = "select * from viewflightpax ";
+            try
+            {
+                var context = new ppa_Entities();
+                var dayprm = "Date";
+
+                string whr = "  (" + dayprm + ">= '" + df.ToString("yyyy-MM-dd") + "' and " + dayprm + "<='" + dt.ToString("yyyy-MM-dd") + "')";
+
+                cmd = cmd + " WHERE " + whr + " ORDER BY STD,Register";
+
+                var flts = context.ViewFlightPaxes
+                            .SqlQuery(cmd)
+                            .ToList<ViewFlightPax>();
+
+                return Ok(flts);
+            }
+            catch (Exception ex)
+            {
+                return Ok(cmd);
+            }
+
+        }
+
+
 
 
     }

@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ApiLog.Models
+namespace ApiReportFlight.Models
 {
     using System;
     using System.Collections.Generic;
@@ -42,18 +42,6 @@ namespace ApiLog.Models
         public Nullable<int> MOC { get; set; }
         public Nullable<int> ACM { get; set; }
         public Nullable<int> FlightId2 { get; set; }
-        public Nullable<int> Total_RES { get; set; }
-        public Nullable<int> Total_STN { get; set; }
-        public Nullable<int> Total_CHR { get; set; }
-        public Nullable<int> Total_FOC { get; set; }
-        public Nullable<int> Total_OA { get; set; }
-        public Nullable<int> Rev_RES { get; set; }
-        public Nullable<int> Rev_STN { get; set; }
-        public Nullable<int> Rev_CHR { get; set; }
-        public Nullable<int> Rev_FOC { get; set; }
-        public Nullable<int> Rev_OA { get; set; }
-        public Nullable<int> Total_Pax { get; set; }
-        public Nullable<int> Total_Rev { get; set; }
         public string FromAirportIATA { get; set; }
         public string ToAirportIATA { get; set; }
         public string FlightNumber { get; set; }
@@ -70,5 +58,17 @@ namespace ApiLog.Models
         public string Register { get; set; }
         public string ChrTitle { get; set; }
         public string FlightStatus { get; set; }
+        public Nullable<int> Total_RES { get; set; }
+        public Nullable<int> Total_STN { get; set; }
+        public Nullable<int> Total_CHR { get; set; }
+        public Nullable<int> Total_FOC { get; set; }
+        public Nullable<int> Total_OA { get; set; }
+        public Nullable<int> Rev_RES { get; set; }
+        public Nullable<int> Rev_STN { get; set; }
+        public Nullable<int> Rev_CHR { get; set; }
+        public Nullable<int> Rev_FOC { get; set; }
+        public Nullable<int> Rev_OA { get; set; }
+        public Nullable<int> Total_Pax { get; set; }
+        public Nullable<int> Total_Rev { get; set; }
     }
 }

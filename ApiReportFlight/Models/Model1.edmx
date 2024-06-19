@@ -82,6 +82,8 @@
           <Property Name="PosFDPId" Type="int" />
           <Property Name="PosRemark" Type="varchar" MaxLength="500" />
           <Property Name="PosTicketUrl" Type="varchar" MaxLength="500" />
+          <Property Name="DutyEndDateLocal" Type="datetime2" Precision="7" />
+          <Property Name="InitTo" Type="varchar" MaxLength="500" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.RptFDP2' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1224,6 +1226,71 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewFlightDelay' does not have a pr
           <Property Name="LandingLocal" Type="datetime" />
           <Property Name="MapTitle" Type="nvarchar" MaxLength="500" />
           <Property Name="MapTitle2" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.ViewFlightPax' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ViewFlightPax">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="FlightId" />
+            <PropertyRef Name="FlightStatus" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="FlightId" Type="int" Nullable="false" />
+          <Property Name="RES_Adult" Type="int" />
+          <Property Name="RES_Child" Type="int" />
+          <Property Name="RES_Infant" Type="int" />
+          <Property Name="STN_Adult" Type="int" />
+          <Property Name="STN_Child" Type="int" />
+          <Property Name="STN_Infant" Type="int" />
+          <Property Name="CHR_Adult" Type="int" />
+          <Property Name="CHR_Child" Type="int" />
+          <Property Name="CHR_Infant" Type="int" />
+          <Property Name="FOC_Adult" Type="int" />
+          <Property Name="FOC_Child" Type="int" />
+          <Property Name="FOC_Infant" Type="int" />
+          <Property Name="OA_Adult" Type="int" />
+          <Property Name="OA_Child" Type="int" />
+          <Property Name="OA_Infant" Type="int" />
+          <Property Name="AirportId" Type="int" />
+          <Property Name="Cargo" Type="int" />
+          <Property Name="Baggage" Type="int" />
+          <Property Name="ToAirportId" Type="int" />
+          <Property Name="FM" Type="int" />
+          <Property Name="DSP" Type="int" />
+          <Property Name="FSG" Type="int" />
+          <Property Name="WCR" Type="int" />
+          <Property Name="MOC" Type="int" />
+          <Property Name="ACM" Type="int" />
+          <Property Name="FlightId2" Type="int" />
+          <Property Name="FromAirportIATA" Type="nvarchar" MaxLength="255" />
+          <Property Name="ToAirportIATA" Type="nvarchar" MaxLength="255" />
+          <Property Name="FlightNumber" Type="nvarchar" MaxLength="101" />
+          <Property Name="Date" Type="date" />
+          <Property Name="PDate" Type="nvarchar" MaxLength="500" />
+          <Property Name="STD" Type="datetime" />
+          <Property Name="STA" Type="datetime" />
+          <Property Name="STDLocal" Type="datetime" />
+          <Property Name="STALocal" Type="datetime" />
+          <Property Name="ChocksOut" Type="datetime" />
+          <Property Name="Takeoff" Type="datetime" />
+          <Property Name="Landing" Type="datetime" />
+          <Property Name="ChocksIn" Type="datetime" />
+          <Property Name="Register" Type="nvarchar" MaxLength="50" />
+          <Property Name="ChrTitle" Type="varchar" MaxLength="500" />
+          <Property Name="FlightStatus" Type="nvarchar" MaxLength="60" Nullable="false" />
+          <Property Name="Total_RES" Type="int" />
+          <Property Name="Total_STN" Type="int" />
+          <Property Name="Total_CHR" Type="int" />
+          <Property Name="Total_FOC" Type="int" />
+          <Property Name="Total_OA" Type="int" />
+          <Property Name="Rev_RES" Type="int" />
+          <Property Name="Rev_STN" Type="int" />
+          <Property Name="Rev_CHR" Type="int" />
+          <Property Name="Rev_FOC" Type="int" />
+          <Property Name="Rev_OA" Type="int" />
+          <Property Name="Total_Pax" Type="int" />
+          <Property Name="Total_Rev" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.ViewFormB' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -2386,6 +2453,66 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
     [ViewFlightDelay].[MapTitle2] AS [MapTitle2]
     FROM [dbo].[ViewFlightDelay] AS [ViewFlightDelay]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="ViewFlightPax" EntityType="Self.ViewFlightPax" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ViewFlightPax].[Id] AS [Id], 
+    [ViewFlightPax].[FlightId] AS [FlightId], 
+    [ViewFlightPax].[RES_Adult] AS [RES_Adult], 
+    [ViewFlightPax].[RES_Child] AS [RES_Child], 
+    [ViewFlightPax].[RES_Infant] AS [RES_Infant], 
+    [ViewFlightPax].[STN_Adult] AS [STN_Adult], 
+    [ViewFlightPax].[STN_Child] AS [STN_Child], 
+    [ViewFlightPax].[STN_Infant] AS [STN_Infant], 
+    [ViewFlightPax].[CHR_Adult] AS [CHR_Adult], 
+    [ViewFlightPax].[CHR_Child] AS [CHR_Child], 
+    [ViewFlightPax].[CHR_Infant] AS [CHR_Infant], 
+    [ViewFlightPax].[FOC_Adult] AS [FOC_Adult], 
+    [ViewFlightPax].[FOC_Child] AS [FOC_Child], 
+    [ViewFlightPax].[FOC_Infant] AS [FOC_Infant], 
+    [ViewFlightPax].[OA_Adult] AS [OA_Adult], 
+    [ViewFlightPax].[OA_Child] AS [OA_Child], 
+    [ViewFlightPax].[OA_Infant] AS [OA_Infant], 
+    [ViewFlightPax].[AirportId] AS [AirportId], 
+    [ViewFlightPax].[Cargo] AS [Cargo], 
+    [ViewFlightPax].[Baggage] AS [Baggage], 
+    [ViewFlightPax].[ToAirportId] AS [ToAirportId], 
+    [ViewFlightPax].[FM] AS [FM], 
+    [ViewFlightPax].[DSP] AS [DSP], 
+    [ViewFlightPax].[FSG] AS [FSG], 
+    [ViewFlightPax].[WCR] AS [WCR], 
+    [ViewFlightPax].[MOC] AS [MOC], 
+    [ViewFlightPax].[ACM] AS [ACM], 
+    [ViewFlightPax].[FlightId2] AS [FlightId2], 
+    [ViewFlightPax].[FromAirportIATA] AS [FromAirportIATA], 
+    [ViewFlightPax].[ToAirportIATA] AS [ToAirportIATA], 
+    [ViewFlightPax].[FlightNumber] AS [FlightNumber], 
+    [ViewFlightPax].[Date] AS [Date], 
+    [ViewFlightPax].[PDate] AS [PDate], 
+    [ViewFlightPax].[STD] AS [STD], 
+    [ViewFlightPax].[STA] AS [STA], 
+    [ViewFlightPax].[STDLocal] AS [STDLocal], 
+    [ViewFlightPax].[STALocal] AS [STALocal], 
+    [ViewFlightPax].[ChocksOut] AS [ChocksOut], 
+    [ViewFlightPax].[Takeoff] AS [Takeoff], 
+    [ViewFlightPax].[Landing] AS [Landing], 
+    [ViewFlightPax].[ChocksIn] AS [ChocksIn], 
+    [ViewFlightPax].[Register] AS [Register], 
+    [ViewFlightPax].[ChrTitle] AS [ChrTitle], 
+    [ViewFlightPax].[FlightStatus] AS [FlightStatus], 
+    [ViewFlightPax].[Total_RES] AS [Total_RES], 
+    [ViewFlightPax].[Total_STN] AS [Total_STN], 
+    [ViewFlightPax].[Total_CHR] AS [Total_CHR], 
+    [ViewFlightPax].[Total_FOC] AS [Total_FOC], 
+    [ViewFlightPax].[Total_OA] AS [Total_OA], 
+    [ViewFlightPax].[Rev_RES] AS [Rev_RES], 
+    [ViewFlightPax].[Rev_STN] AS [Rev_STN], 
+    [ViewFlightPax].[Rev_CHR] AS [Rev_CHR], 
+    [ViewFlightPax].[Rev_FOC] AS [Rev_FOC], 
+    [ViewFlightPax].[Rev_OA] AS [Rev_OA], 
+    [ViewFlightPax].[Total_Pax] AS [Total_Pax], 
+    [ViewFlightPax].[Total_Rev] AS [Total_Rev]
+    FROM [dbo].[ViewFlightPax] AS [ViewFlightPax]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="ViewFormB" EntityType="Self.ViewFormB" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [ViewFormB].[Year] AS [Year], 
@@ -2597,6 +2724,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySet Name="ViewFlightCockpits" EntityType="ModelEntities.ViewFlightCockpit" />
           <EntitySet Name="RptFDPItems" EntityType="ModelEntities.RptFDPItem" />
           <EntitySet Name="ViewLegCrews" EntityType="ModelEntities.ViewLegCrew" />
+          <EntitySet Name="ViewFlightPaxes" EntityType="ModelEntities.ViewFlightPax" />
         </EntityContainer>
         <EntityType Name="ViewFinMonthlyRoute">
           <Key>
@@ -3030,6 +3158,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="PosFDPId" Type="Int32" />
           <Property Name="PosRemark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="PosTicketUrl" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="DutyEndDateLocal" Type="DateTime" Precision="7" />
+          <Property Name="InitTo" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="fk_fdp_fdp">
           <End Type="ModelEntities.FDP" Role="FDP" Multiplicity="0..1" />
@@ -3984,6 +4114,69 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="BaseAirport" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="BaseAirportId" Type="Int32" />
         </EntityType>
+        <EntityType Name="ViewFlightPax">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="FlightId" />
+            <PropertyRef Name="FlightStatus" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="FlightId" Type="Int32" Nullable="false" />
+          <Property Name="RES_Adult" Type="Int32" />
+          <Property Name="RES_Child" Type="Int32" />
+          <Property Name="RES_Infant" Type="Int32" />
+          <Property Name="STN_Adult" Type="Int32" />
+          <Property Name="STN_Child" Type="Int32" />
+          <Property Name="STN_Infant" Type="Int32" />
+          <Property Name="CHR_Adult" Type="Int32" />
+          <Property Name="CHR_Child" Type="Int32" />
+          <Property Name="CHR_Infant" Type="Int32" />
+          <Property Name="FOC_Adult" Type="Int32" />
+          <Property Name="FOC_Child" Type="Int32" />
+          <Property Name="FOC_Infant" Type="Int32" />
+          <Property Name="OA_Adult" Type="Int32" />
+          <Property Name="OA_Child" Type="Int32" />
+          <Property Name="OA_Infant" Type="Int32" />
+          <Property Name="AirportId" Type="Int32" />
+          <Property Name="Cargo" Type="Int32" />
+          <Property Name="Baggage" Type="Int32" />
+          <Property Name="ToAirportId" Type="Int32" />
+          <Property Name="FM" Type="Int32" />
+          <Property Name="DSP" Type="Int32" />
+          <Property Name="FSG" Type="Int32" />
+          <Property Name="WCR" Type="Int32" />
+          <Property Name="MOC" Type="Int32" />
+          <Property Name="ACM" Type="Int32" />
+          <Property Name="FlightId2" Type="Int32" />
+          <Property Name="FromAirportIATA" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ToAirportIATA" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FlightNumber" Type="String" MaxLength="101" FixedLength="false" Unicode="true" />
+          <Property Name="Date" Type="DateTime" Precision="0" />
+          <Property Name="PDate" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="STD" Type="DateTime" Precision="3" />
+          <Property Name="STA" Type="DateTime" Precision="3" />
+          <Property Name="STDLocal" Type="DateTime" Precision="3" />
+          <Property Name="STALocal" Type="DateTime" Precision="3" />
+          <Property Name="ChocksOut" Type="DateTime" Precision="3" />
+          <Property Name="Takeoff" Type="DateTime" Precision="3" />
+          <Property Name="Landing" Type="DateTime" Precision="3" />
+          <Property Name="ChocksIn" Type="DateTime" Precision="3" />
+          <Property Name="Register" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ChrTitle" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="FlightStatus" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="Total_RES" Type="Int32" />
+          <Property Name="Total_STN" Type="Int32" />
+          <Property Name="Total_CHR" Type="Int32" />
+          <Property Name="Total_FOC" Type="Int32" />
+          <Property Name="Total_OA" Type="Int32" />
+          <Property Name="Rev_RES" Type="Int32" />
+          <Property Name="Rev_STN" Type="Int32" />
+          <Property Name="Rev_CHR" Type="Int32" />
+          <Property Name="Rev_FOC" Type="Int32" />
+          <Property Name="Rev_OA" Type="Int32" />
+          <Property Name="Total_Pax" Type="Int32" />
+          <Property Name="Total_Rev" Type="Int32" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4295,6 +4488,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySetMapping Name="FDPs">
             <EntityTypeMapping TypeName="ModelEntities.FDP">
               <MappingFragment StoreEntitySet="FDP">
+                <ScalarProperty Name="InitTo" ColumnName="InitTo" />
+                <ScalarProperty Name="DutyEndDateLocal" ColumnName="DutyEndDateLocal" />
                 <ScalarProperty Name="PosTicketUrl" ColumnName="PosTicketUrl" />
                 <ScalarProperty Name="PosRemark" ColumnName="PosRemark" />
                 <ScalarProperty Name="PosFDPId" ColumnName="PosFDPId" />
@@ -5203,6 +5398,68 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
                 <ScalarProperty Name="FDPId" ColumnName="FDPId" />
                 <ScalarProperty Name="FlightId" ColumnName="FlightId" />
                 <ScalarProperty Name="CrewId" ColumnName="CrewId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ViewFlightPaxes">
+            <EntityTypeMapping TypeName="ModelEntities.ViewFlightPax">
+              <MappingFragment StoreEntitySet="ViewFlightPax">
+                <ScalarProperty Name="Total_Rev" ColumnName="Total_Rev" />
+                <ScalarProperty Name="Total_Pax" ColumnName="Total_Pax" />
+                <ScalarProperty Name="Rev_OA" ColumnName="Rev_OA" />
+                <ScalarProperty Name="Rev_FOC" ColumnName="Rev_FOC" />
+                <ScalarProperty Name="Rev_CHR" ColumnName="Rev_CHR" />
+                <ScalarProperty Name="Rev_STN" ColumnName="Rev_STN" />
+                <ScalarProperty Name="Rev_RES" ColumnName="Rev_RES" />
+                <ScalarProperty Name="Total_OA" ColumnName="Total_OA" />
+                <ScalarProperty Name="Total_FOC" ColumnName="Total_FOC" />
+                <ScalarProperty Name="Total_CHR" ColumnName="Total_CHR" />
+                <ScalarProperty Name="Total_STN" ColumnName="Total_STN" />
+                <ScalarProperty Name="Total_RES" ColumnName="Total_RES" />
+                <ScalarProperty Name="FlightStatus" ColumnName="FlightStatus" />
+                <ScalarProperty Name="ChrTitle" ColumnName="ChrTitle" />
+                <ScalarProperty Name="Register" ColumnName="Register" />
+                <ScalarProperty Name="ChocksIn" ColumnName="ChocksIn" />
+                <ScalarProperty Name="Landing" ColumnName="Landing" />
+                <ScalarProperty Name="Takeoff" ColumnName="Takeoff" />
+                <ScalarProperty Name="ChocksOut" ColumnName="ChocksOut" />
+                <ScalarProperty Name="STALocal" ColumnName="STALocal" />
+                <ScalarProperty Name="STDLocal" ColumnName="STDLocal" />
+                <ScalarProperty Name="STA" ColumnName="STA" />
+                <ScalarProperty Name="STD" ColumnName="STD" />
+                <ScalarProperty Name="PDate" ColumnName="PDate" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="FlightNumber" ColumnName="FlightNumber" />
+                <ScalarProperty Name="ToAirportIATA" ColumnName="ToAirportIATA" />
+                <ScalarProperty Name="FromAirportIATA" ColumnName="FromAirportIATA" />
+                <ScalarProperty Name="FlightId2" ColumnName="FlightId2" />
+                <ScalarProperty Name="ACM" ColumnName="ACM" />
+                <ScalarProperty Name="MOC" ColumnName="MOC" />
+                <ScalarProperty Name="WCR" ColumnName="WCR" />
+                <ScalarProperty Name="FSG" ColumnName="FSG" />
+                <ScalarProperty Name="DSP" ColumnName="DSP" />
+                <ScalarProperty Name="FM" ColumnName="FM" />
+                <ScalarProperty Name="ToAirportId" ColumnName="ToAirportId" />
+                <ScalarProperty Name="Baggage" ColumnName="Baggage" />
+                <ScalarProperty Name="Cargo" ColumnName="Cargo" />
+                <ScalarProperty Name="AirportId" ColumnName="AirportId" />
+                <ScalarProperty Name="OA_Infant" ColumnName="OA_Infant" />
+                <ScalarProperty Name="OA_Child" ColumnName="OA_Child" />
+                <ScalarProperty Name="OA_Adult" ColumnName="OA_Adult" />
+                <ScalarProperty Name="FOC_Infant" ColumnName="FOC_Infant" />
+                <ScalarProperty Name="FOC_Child" ColumnName="FOC_Child" />
+                <ScalarProperty Name="FOC_Adult" ColumnName="FOC_Adult" />
+                <ScalarProperty Name="CHR_Infant" ColumnName="CHR_Infant" />
+                <ScalarProperty Name="CHR_Child" ColumnName="CHR_Child" />
+                <ScalarProperty Name="CHR_Adult" ColumnName="CHR_Adult" />
+                <ScalarProperty Name="STN_Infant" ColumnName="STN_Infant" />
+                <ScalarProperty Name="STN_Child" ColumnName="STN_Child" />
+                <ScalarProperty Name="STN_Adult" ColumnName="STN_Adult" />
+                <ScalarProperty Name="RES_Infant" ColumnName="RES_Infant" />
+                <ScalarProperty Name="RES_Child" ColumnName="RES_Child" />
+                <ScalarProperty Name="RES_Adult" ColumnName="RES_Adult" />
+                <ScalarProperty Name="FlightId" ColumnName="FlightId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
