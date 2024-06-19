@@ -131,6 +131,7 @@
           <Property Name="PosFDPId" Type="int" />
           <Property Name="PosRemark" Type="varchar" MaxLength="500" />
           <Property Name="PosTicketUrl" Type="varchar" MaxLength="500" />
+          <Property Name="DutyEndDateLocal" Type="datetime2" Precision="7" />
         </EntityType>
         <EntityType Name="FDPExtra">
           <Key>
@@ -362,7 +363,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.AppCrewFlight' does not have a prim
           <Property Name="P2ScheduleName" Type="nvarchar" MaxLength="1001" Nullable="false" />
           <Property Name="PIC" Type="nvarchar" MaxLength="1001" />
           <Property Name="PICId" Type="int" />
-          <Property Name="SIC" Type="varchar" MaxLength="500" />
+          <Property Name="SIC" Type="nvarchar" MaxLength="2004" />
           <Property Name="SICId" Type="int" />
           <Property Name="JLDatePICApproved" Type="datetime" />
           <Property Name="IStart" Type="datetime" />
@@ -397,6 +398,14 @@ warning 6002: The table/view 'ppa_varesh.dbo.AppCrewFlight' does not have a prim
           <Property Name="TANKERINGDIFF" Type="int" />
           <Property Name="ACTUALTOTALFUEL" Type="int" />
           <Property Name="LTR2" Type="varchar" MaxLength="255" />
+          <Property Name="dep_dawn" Type="datetime" />
+          <Property Name="dep_dusk" Type="datetime" />
+          <Property Name="arr_dawn" Type="datetime" />
+          <Property Name="arr_dusk" Type="datetime" />
+          <Property Name="FlightTypeOPS" Type="varchar" MaxLength="500" />
+          <Property Name="AttForms" Type="varchar" MaxLength="500" />
+          <Property Name="PaxFemale" Type="int" />
+          <Property Name="PaxMale" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.AppFTL' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -459,6 +468,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.AppFTLAbs' does not have a primary 
           <Property Name="CNT" Type="int" />
           <Property Name="ScheduledFlightTime" Type="int" />
           <Property Name="Ratio" Type="float" />
+          <Property Name="LastLocation" Type="varchar" MaxLength="255" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.FTLFlightTimeRatioMonthly' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1605,6 +1615,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
         <EntityType Name="XFlightCrew">
           <Key>
             <PropertyRef Name="Name" />
+            <PropertyRef Name="NID" />
             <PropertyRef Name="JobGroupCode" />
             <PropertyRef Name="JobGroup" />
             <PropertyRef Name="SexId" />
@@ -1615,8 +1626,13 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="FlightId" Type="int" />
           <Property Name="IsPositioning" Type="bit" />
           <Property Name="PositionId" Type="int" />
+          <Property Name="flt_position_id" Type="int" />
           <Property Name="Position" Type="varchar" MaxLength="255" />
           <Property Name="Name" Type="nvarchar" MaxLength="1001" Nullable="false" />
+          <Property Name="PFirstName" Type="nvarchar" MaxLength="500" />
+          <Property Name="PLastName" Type="nvarchar" MaxLength="500" />
+          <Property Name="PName" Type="nvarchar" MaxLength="1001" />
+          <Property Name="NID" Type="nvarchar" MaxLength="500" Nullable="false" />
           <Property Name="Mobile" Type="nvarchar" MaxLength="500" />
           <Property Name="ScheduleName" Type="varchar" MaxLength="500" />
           <Property Name="GroupId" Type="int" />
@@ -1875,7 +1891,15 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
     [AppCrewFlight].[ACTUALTANKERINGFUEL] AS [ACTUALTANKERINGFUEL], 
     [AppCrewFlight].[TANKERINGDIFF] AS [TANKERINGDIFF], 
     [AppCrewFlight].[ACTUALTOTALFUEL] AS [ACTUALTOTALFUEL], 
-    [AppCrewFlight].[LTR2] AS [LTR2]
+    [AppCrewFlight].[LTR2] AS [LTR2], 
+    [AppCrewFlight].[dep_dawn] AS [dep_dawn], 
+    [AppCrewFlight].[dep_dusk] AS [dep_dusk], 
+    [AppCrewFlight].[arr_dawn] AS [arr_dawn], 
+    [AppCrewFlight].[arr_dusk] AS [arr_dusk], 
+    [AppCrewFlight].[FlightTypeOPS] AS [FlightTypeOPS], 
+    [AppCrewFlight].[AttForms] AS [AttForms], 
+    [AppCrewFlight].[PaxFemale] AS [PaxFemale], 
+    [AppCrewFlight].[PaxMale] AS [PaxMale]
     FROM [dbo].[AppCrewFlight] AS [AppCrewFlight]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="AppFTL" EntityType="Self.AppFTL" store:Type="Views" store:Schema="dbo">
@@ -1924,7 +1948,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
     [AppFTLAbs].[FlightCYearRemain] AS [FlightCYearRemain], 
     [AppFTLAbs].[CNT] AS [CNT], 
     [AppFTLAbs].[ScheduledFlightTime] AS [ScheduledFlightTime], 
-    [AppFTLAbs].[Ratio] AS [Ratio]
+    [AppFTLAbs].[Ratio] AS [Ratio], 
+    [AppFTLAbs].[LastLocation] AS [LastLocation]
     FROM [dbo].[AppFTLAbs] AS [AppFTLAbs]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="FTLFlightTimeRatioMonthly" EntityType="Self.FTLFlightTimeRatioMonthly" store:Type="Views" store:Schema="dbo">
@@ -2894,8 +2919,13 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
     [XFlightCrew].[FlightId] AS [FlightId], 
     [XFlightCrew].[IsPositioning] AS [IsPositioning], 
     [XFlightCrew].[PositionId] AS [PositionId], 
+    [XFlightCrew].[flt_position_id] AS [flt_position_id], 
     [XFlightCrew].[Position] AS [Position], 
     [XFlightCrew].[Name] AS [Name], 
+    [XFlightCrew].[PFirstName] AS [PFirstName], 
+    [XFlightCrew].[PLastName] AS [PLastName], 
+    [XFlightCrew].[PName] AS [PName], 
+    [XFlightCrew].[NID] AS [NID], 
     [XFlightCrew].[Mobile] AS [Mobile], 
     [XFlightCrew].[ScheduleName] AS [ScheduleName], 
     [XFlightCrew].[GroupId] AS [GroupId], 
@@ -2957,7 +2987,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySet Name="OffItems" EntityType="dbModel.OffItem" />
           <EntitySet Name="HelperMaxFDPs" EntityType="dbModel.HelperMaxFDP" />
           <EntitySet Name="XFlightCrews" EntityType="dbModel.XFlightCrew" />
-          <EntitySet Name="AppFTLAbs" EntityType="dbModel.AppFTLAb" />
           <EntitySet Name="FTLFlightTimeRatioMonthlies" EntityType="dbModel.FTLFlightTimeRatioMonthly" />
           <EntitySet Name="ViewCrewDutyTimeLineNews" EntityType="dbModel.ViewCrewDutyTimeLineNew" />
           <EntitySet Name="ViewCrewValidFTLs" EntityType="dbModel.ViewCrewValidFTL" />
@@ -2997,6 +3026,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySet Name="recency_route" EntityType="dbModel.recency_route" />
           <EntitySet Name="view_recency_route" EntityType="dbModel.view_recency_route" />
           <EntitySet Name="view_route_count" EntityType="dbModel.view_route_count" />
+          <EntitySet Name="AppFTLAbs" EntityType="dbModel.AppFTLAb" />
           </EntityContainer>
         <EntityType Name="ViewFDPLog">
           <Key>
@@ -3590,6 +3620,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
             <PropertyRef Name="SexId" />
             <PropertyRef Name="GroupOrder" />
             <PropertyRef Name="IsCockpit" />
+            <PropertyRef Name="NID" />
           </Key>
           <Property Name="CrewId" Type="Int32" />
           <Property Name="FlightId" Type="Int32" />
@@ -3609,29 +3640,11 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="Code" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="DateConfirmed" Type="DateTime" Precision="3" />
           <Property Name="IsConfirmed" Type="Boolean" />
-        </EntityType>
-        <EntityType Name="AppFTLAb">
-          <Key>
-            <PropertyRef Name="CDate" />
-            <PropertyRef Name="CrewId" />
-          </Key>
-          <Property Name="CDate" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="CrewId" Type="Int32" Nullable="false" />
-          <Property Name="Duty7" Type="Double" />
-          <Property Name="Duty7Remain" Type="Double" />
-          <Property Name="Duty14" Type="Double" />
-          <Property Name="Duty14Remain" Type="Double" />
-          <Property Name="Duty28" Type="Double" />
-          <Property Name="Duty28Remain" Type="Double" />
-          <Property Name="Flight28" Type="Double" />
-          <Property Name="Flight28Remain" Type="Double" />
-          <Property Name="FlightYear" Type="Double" />
-          <Property Name="FlightYearRemain" Type="Double" />
-          <Property Name="FlightCYear" Type="Double" />
-          <Property Name="FlightCYearRemain" Type="Double" />
-          <Property Name="CNT" Type="Int32" />
-          <Property Name="ScheduledFlightTime" Type="Int32" />
-          <Property Name="Ratio" Type="Double" />
+          <Property Name="flt_position_id" Type="Int32" />
+          <Property Name="PFirstName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="PLastName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="PName" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="NID" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="FTLFlightTimeRatioMonthly">
           <Key>
@@ -4007,6 +4020,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <NavigationProperty Name="FDPExtras" Relationship="dbModel.fk_fdpextra_fdp" FromRole="FDP" ToRole="FDPExtra" />
           <NavigationProperty Name="FDPItems" Relationship="dbModel.fk_fdpitem_fdp" FromRole="FDP" ToRole="FDPItem" />
           <NavigationProperty Name="OffItems" Relationship="dbModel.off_fdp" FromRole="FDP" ToRole="OffItem" />
+          <Property Name="DutyEndDateLocal" Type="DateTime" Precision="7" />
         </EntityType>
         <Association Name="cps_fdp">
           <End Type="dbModel.FDP" Role="FDP" Multiplicity="0..1">
@@ -4518,7 +4532,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="P2ScheduleName" Type="String" Nullable="false" MaxLength="1001" FixedLength="false" Unicode="true" />
           <Property Name="PIC" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
           <Property Name="PICId" Type="Int32" />
-          <Property Name="SIC" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="SIC" Type="String" MaxLength="2004" FixedLength="false" Unicode="true" />
           <Property Name="SICId" Type="Int32" />
           <Property Name="JLDatePICApproved" Type="DateTime" Precision="3" />
           <Property Name="IStart" Type="DateTime" Precision="3" />
@@ -4553,6 +4567,14 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="TANKERINGDIFF" Type="Int32" />
           <Property Name="ACTUALTOTALFUEL" Type="Int32" />
           <Property Name="LTR2" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="dep_dawn" Type="DateTime" Precision="3" />
+          <Property Name="dep_dusk" Type="DateTime" Precision="3" />
+          <Property Name="arr_dawn" Type="DateTime" Precision="3" />
+          <Property Name="arr_dusk" Type="DateTime" Precision="3" />
+          <Property Name="FlightTypeOPS" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="AttForms" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="PaxFemale" Type="Int32" />
+          <Property Name="PaxMale" Type="Int32" />
         </EntityType>
         <EntityType Name="ViewCourseFDP">
           <Key>
@@ -4651,6 +4673,30 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="FromICAO" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="ToICAO" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="FltCount" Type="Int32" />
+        </EntityType>
+        <EntityType Name="AppFTLAb">
+          <Key>
+            <PropertyRef Name="CDate" />
+            <PropertyRef Name="CrewId" />
+          </Key>
+          <Property Name="CDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="CrewId" Type="Int32" Nullable="false" />
+          <Property Name="Duty7" Type="Double" />
+          <Property Name="Duty7Remain" Type="Double" />
+          <Property Name="Duty14" Type="Double" />
+          <Property Name="Duty14Remain" Type="Double" />
+          <Property Name="Duty28" Type="Double" />
+          <Property Name="Duty28Remain" Type="Double" />
+          <Property Name="Flight28" Type="Double" />
+          <Property Name="Flight28Remain" Type="Double" />
+          <Property Name="FlightYear" Type="Double" />
+          <Property Name="FlightYearRemain" Type="Double" />
+          <Property Name="FlightCYear" Type="Double" />
+          <Property Name="FlightCYearRemain" Type="Double" />
+          <Property Name="CNT" Type="Int32" />
+          <Property Name="ScheduledFlightTime" Type="Int32" />
+          <Property Name="Ratio" Type="Double" />
+          <Property Name="LastLocation" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -5204,6 +5250,11 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySetMapping Name="XFlightCrews">
             <EntityTypeMapping TypeName="dbModel.XFlightCrew">
               <MappingFragment StoreEntitySet="XFlightCrew">
+                <ScalarProperty Name="NID" ColumnName="NID" />
+                <ScalarProperty Name="PName" ColumnName="PName" />
+                <ScalarProperty Name="PLastName" ColumnName="PLastName" />
+                <ScalarProperty Name="PFirstName" ColumnName="PFirstName" />
+                <ScalarProperty Name="flt_position_id" ColumnName="flt_position_id" />
                 <ScalarProperty Name="IsConfirmed" ColumnName="IsConfirmed" />
                 <ScalarProperty Name="DateConfirmed" ColumnName="DateConfirmed" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
@@ -5222,29 +5273,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
                 <ScalarProperty Name="IsPositioning" ColumnName="IsPositioning" />
                 <ScalarProperty Name="FlightId" ColumnName="FlightId" />
                 <ScalarProperty Name="CrewId" ColumnName="CrewId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="AppFTLAbs">
-            <EntityTypeMapping TypeName="dbModel.AppFTLAb">
-              <MappingFragment StoreEntitySet="AppFTLAbs">
-                <ScalarProperty Name="Ratio" ColumnName="Ratio" />
-                <ScalarProperty Name="ScheduledFlightTime" ColumnName="ScheduledFlightTime" />
-                <ScalarProperty Name="CNT" ColumnName="CNT" />
-                <ScalarProperty Name="FlightCYearRemain" ColumnName="FlightCYearRemain" />
-                <ScalarProperty Name="FlightCYear" ColumnName="FlightCYear" />
-                <ScalarProperty Name="FlightYearRemain" ColumnName="FlightYearRemain" />
-                <ScalarProperty Name="FlightYear" ColumnName="FlightYear" />
-                <ScalarProperty Name="Flight28Remain" ColumnName="Flight28Remain" />
-                <ScalarProperty Name="Flight28" ColumnName="Flight28" />
-                <ScalarProperty Name="Duty28Remain" ColumnName="Duty28Remain" />
-                <ScalarProperty Name="Duty28" ColumnName="Duty28" />
-                <ScalarProperty Name="Duty14Remain" ColumnName="Duty14Remain" />
-                <ScalarProperty Name="Duty14" ColumnName="Duty14" />
-                <ScalarProperty Name="Duty7Remain" ColumnName="Duty7Remain" />
-                <ScalarProperty Name="Duty7" ColumnName="Duty7" />
-                <ScalarProperty Name="CrewId" ColumnName="CrewId" />
-                <ScalarProperty Name="CDate" ColumnName="CDate" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -5527,6 +5555,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySetMapping Name="FDPs">
             <EntityTypeMapping TypeName="dbModel.FDP">
               <MappingFragment StoreEntitySet="FDP">
+                <ScalarProperty Name="DutyEndDateLocal" ColumnName="DutyEndDateLocal" />
                 <ScalarProperty Name="PosTicketUrl" ColumnName="PosTicketUrl" />
                 <ScalarProperty Name="PosRemark" ColumnName="PosRemark" />
                 <ScalarProperty Name="PosFDPId" ColumnName="PosFDPId" />
@@ -5874,6 +5903,14 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySetMapping Name="AppCrewFlights">
             <EntityTypeMapping TypeName="dbModel.AppCrewFlight">
               <MappingFragment StoreEntitySet="AppCrewFlight">
+                <ScalarProperty Name="PaxMale" ColumnName="PaxMale" />
+                <ScalarProperty Name="PaxFemale" ColumnName="PaxFemale" />
+                <ScalarProperty Name="AttForms" ColumnName="AttForms" />
+                <ScalarProperty Name="FlightTypeOPS" ColumnName="FlightTypeOPS" />
+                <ScalarProperty Name="arr_dusk" ColumnName="arr_dusk" />
+                <ScalarProperty Name="arr_dawn" ColumnName="arr_dawn" />
+                <ScalarProperty Name="dep_dusk" ColumnName="dep_dusk" />
+                <ScalarProperty Name="dep_dawn" ColumnName="dep_dawn" />
                 <ScalarProperty Name="LTR2" ColumnName="LTR2" />
                 <ScalarProperty Name="ACTUALTOTALFUEL" ColumnName="ACTUALTOTALFUEL" />
                 <ScalarProperty Name="TANKERINGDIFF" ColumnName="TANKERINGDIFF" />
@@ -6112,6 +6149,30 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
                 <ScalarProperty Name="FromICAO" ColumnName="FromICAO" />
                 <ScalarProperty Name="ToIATA" ColumnName="ToIATA" />
                 <ScalarProperty Name="FromIATA" ColumnName="FromIATA" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AppFTLAbs">
+            <EntityTypeMapping TypeName="dbModel.AppFTLAb">
+              <MappingFragment StoreEntitySet="AppFTLAbs">
+                <ScalarProperty Name="LastLocation" ColumnName="LastLocation" />
+                <ScalarProperty Name="Ratio" ColumnName="Ratio" />
+                <ScalarProperty Name="ScheduledFlightTime" ColumnName="ScheduledFlightTime" />
+                <ScalarProperty Name="CNT" ColumnName="CNT" />
+                <ScalarProperty Name="FlightCYearRemain" ColumnName="FlightCYearRemain" />
+                <ScalarProperty Name="FlightCYear" ColumnName="FlightCYear" />
+                <ScalarProperty Name="FlightYearRemain" ColumnName="FlightYearRemain" />
+                <ScalarProperty Name="FlightYear" ColumnName="FlightYear" />
+                <ScalarProperty Name="Flight28Remain" ColumnName="Flight28Remain" />
+                <ScalarProperty Name="Flight28" ColumnName="Flight28" />
+                <ScalarProperty Name="Duty28Remain" ColumnName="Duty28Remain" />
+                <ScalarProperty Name="Duty28" ColumnName="Duty28" />
+                <ScalarProperty Name="Duty14Remain" ColumnName="Duty14Remain" />
+                <ScalarProperty Name="Duty14" ColumnName="Duty14" />
+                <ScalarProperty Name="Duty7Remain" ColumnName="Duty7Remain" />
+                <ScalarProperty Name="Duty7" ColumnName="Duty7" />
+                <ScalarProperty Name="CrewId" ColumnName="CrewId" />
+                <ScalarProperty Name="CDate" ColumnName="CDate" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

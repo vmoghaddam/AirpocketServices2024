@@ -1020,8 +1020,8 @@ namespace XAPI.Controllers
                 var rawText = dto.OFP;
                 // var mpln = rawText.Split(new string[] { "mpln:|" }, StringSplitOptions.None).ToList()[1];
                 var parts = rawText.Split(new string[] { "||" }, StringSplitOptions.None).ToList();
-
-                var atc= parts.FirstOrDefault(q => q.StartsWith("icatc:|")).Replace("icatc:|", "");
+                var atc_prt = parts.FirstOrDefault(q => q.StartsWith("icatc:|"));
+                var atc=atc_prt!=null? atc_prt.Replace("icatc:|", ""):"";
 
                 var info = parts.FirstOrDefault(q => q.StartsWith("binfo:|")).Replace("binfo:|", "");
                 var infoRows = info.Split(';').ToList();
@@ -1058,6 +1058,16 @@ namespace XAPI.Controllers
                 var MSH = infoRows.FirstOrDefault(q => q.StartsWith("MSH")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("MSH")).Split('=')[1];
 
 
+                var MTOW = infoRows.FirstOrDefault(q => q.StartsWith("MTOW")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("MTOW")).Split('=')[1];
+                var MLDW = infoRows.FirstOrDefault(q => q.StartsWith("MLDW")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("MLDW")).Split('=')[1];
+
+                var ELDP = infoRows.FirstOrDefault(q => q.StartsWith("ELDP")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("ELDP")).Split('=')[1];
+                var ELDS = infoRows.FirstOrDefault(q => q.StartsWith("ELDS")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("ELDS")).Split('=')[1];
+                var ELAL = infoRows.FirstOrDefault(q => q.StartsWith("ELAL")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("ELAL")).Split('=')[1];
+                var ELBL = infoRows.FirstOrDefault(q => q.StartsWith("ELBL")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("ELBL")).Split('=')[1];
+
+                //ELDP=ELEV: 65;ELDS=ELEV: 3956;ELAL=ELEV: 5058;ELBL=;
+
                 // var vdt= infoRows.FirstOrDefault(q => q.StartsWith/av("VDT")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("VDT")).Split('=')[1];
                 string alt1 = "";
                 string alt2 = "";
@@ -1070,8 +1080,10 @@ namespace XAPI.Controllers
                 if (no.StartsWith("A"))
                     no = no.Replace("A", "");
                 //  var _flt_flt = context.ViewLegTimes.OrderByDescending(q => q.STD).Take(10).ToList();
-                var _ffff = context.ViewLegTimes.OrderByDescending(q => q.ID).FirstOrDefault();
+               // var _ffff = context.ViewLegTimes.OrderByDescending(q => q.ID).FirstOrDefault();
                 var flight = context.ViewLegTimes.Where(q => q.STDDay == flightDate && q.FlightNumber == no && q.FlightStatusID != 4).FirstOrDefault();
+                if (flight==null)
+                    return Ok("Flight Not Found");
                 var fltobj = context.FlightInformations.Where(q => q.ID == flight.ID).FirstOrDefault();
                 var cplan = context.OFPImports.FirstOrDefault(q => q.FlightId == flight.ID);
                 if (cplan != null)
@@ -1161,6 +1173,19 @@ namespace XAPI.Controllers
 
                 if (!string.IsNullOrEmpty(atc))
                     plan.ATC = atc;
+
+                if (!string.IsNullOrEmpty(MTOW))
+                    plan.MTOW = MTOW;
+                if (!string.IsNullOrEmpty(MLDW))
+                    plan.MLDW = MLDW;
+                if (!string.IsNullOrEmpty(ELDP))
+                    plan.ELDP = ELDP;
+                if (!string.IsNullOrEmpty(ELDS))
+                    plan.ELDS = ELDS;
+                if (!string.IsNullOrEmpty(ELAL))
+                    plan.ELAL = ELAL;
+                if (!string.IsNullOrEmpty(ELBL))
+                    plan.ELBL = ELBL;
 
 
                 plan.Source = "SkyPuter";

@@ -53,6 +53,15 @@ namespace ApiMSG.Controllers
 
             return Ok(refids);
         }
+        [Route("api/mail/test/")]
+        [AcceptVerbs("GET")]
+        public IHttpActionResult GetMailTest()
+        {
+            MailHelper xxx = new MailHelper();
+            xxx.SendTestAirpocket();
+            return Ok(true);
+        }
+
         public class response_asr
         {
             public int Id { get; set; }
@@ -134,7 +143,7 @@ namespace ApiMSG.Controllers
                 var url = "https://apiapsb.apvaresh.com/api/asr/view/abs/" + id;
                 using (WebClient webClient = new WebClient())
                 {
-
+                    webClient.Encoding = Encoding.UTF8;
                     var str = webClient.DownloadString(url);
                     response_asr asr = JsonConvert.DeserializeObject<response_asr>(str);
                     var pic = context.ViewProfiles.Where(q => q.Id == asr.PICId).FirstOrDefault();
@@ -147,6 +156,10 @@ namespace ApiMSG.Controllers
 
                     List<string> prts = new List<string>();
                     prts.Add("New ASR Notification");
+                    //prts.Add("Dear ");
+                    prts.Add("Dear " + asr.PIC);
+                    prts.Add("Please click on the below link to see details.");
+                    prts.Add("https://report.apvaresh.com/frmreportview.aspx?type=17&fid=" + asr.FlightId);
                     prts.Add("Date: " + asr.FlightDate.ToString("yyyy-MM-dd"));
                     prts.Add("Route: " + asr.Route);
                     prts.Add("Register: " + asr.Register);
@@ -155,24 +168,91 @@ namespace ApiMSG.Controllers
                     prts.Add("FP: " + asr.SIC);
                     prts.Add("Event Summary:");
                     prts.Add(asr.Summary);
-                    prts.Add("https://report.apvaresh.com/frmreportview.aspx?type=17&fid=" + asr.FlightId);
+                    
 
                     var text = String.Join("\n", prts);
+                    List<qa_notification_history> nots = new List<qa_notification_history>();
 
-                    //4539
-                    var not_history = new qa_notification_history()
+                    var not_receivers = context.qa_notification_receiver.Where(q => q.is_active == true).ToList();
+
+                    Magfa m1 = new Magfa();
+                    foreach (var rec in not_receivers)
                     {
-                        date_send = DateTime.Now,
-                        entity_id = id,
-                        entity_type = 8,
-                        message_text = text,
-                        message_type = 1,
-                        rec_id = 4539,
-                        rec_mobile = "09121246818",
-                        rec_name = "ZAHRA GANJINEH",
-                        counter=0,
+                        List<string> prts2 = new List<string>();
+                        prts2.Add("New ASR Notification");
+                        prts2.Add("Dear " + rec.rec_name);
+                        prts2.Add("Please click on the below link to see details.");
 
-                    };
+                        prts2.Add("https://report.apvaresh.com/frmreportview.aspx?type=17&fid=" + asr.FlightId);
+                        prts2.Add("Date: " + asr.FlightDate.ToString("yyyy-MM-dd"));
+                        prts2.Add("Route: " + asr.Route);
+                        prts2.Add("Register: EP-" + asr.Register);
+                        prts2.Add("PIC: " + asr.PIC);
+                        prts2.Add("FO: " + asr.P2Name);
+                        prts2.Add("FP: " + asr.SIC);
+                        prts2.Add("Event Summary:");
+                        prts2.Add(asr.Summary);
+
+                        var text2 = String.Join("\n", prts2);
+
+
+
+                        List<string> mail_parts = new List<string>();
+
+                        mail_parts.Add("<b>" + "New ASR Notification" + "</b><br/>");
+                        mail_parts.Add("<b>" + "Dear " + rec.rec_name + "</b><br/>");
+                        mail_parts.Add("Please click on the below link to see details.");
+
+                        mail_parts.Add("https://report.apvaresh.com/frmreportview.aspx?type=17&fid=" + asr.FlightId + "<br/>");
+                        mail_parts.Add("Date: " + "<b>" + asr.FlightDate.ToString("yyyy-MM-dd") + "</b><br/>");
+                        mail_parts.Add("Route: " + "<b>" + asr.Route + "</b><br/>");
+                        mail_parts.Add("Register: " + "<b>" + "EP-" + asr.Register + "</b><br/>");
+                        mail_parts.Add("PIC: " + "<b>" + asr.PIC + "</b><br/>");
+                        mail_parts.Add("FO: " + "<b>" + asr.P2Name + "</b><br/>");
+                        mail_parts.Add("FP: " + "<b>" + asr.SIC + "</b><br/>");
+                        mail_parts.Add("<b>" + "Event Summary:" + "</b><br/>");
+                        mail_parts.Add(asr.Summary);
+                        mail_parts.Add("<br/>");
+                        mail_parts.Add("<br/>");
+                        mail_parts.Add("Sent by AIRPOCKET" + "<br/>");
+                        mail_parts.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm"));
+
+
+                        var email_body = String.Join("\n", mail_parts);
+                        if (!string.IsNullOrEmpty(rec.email))
+                        {
+                            MailHelper mail_helper = new MailHelper();
+                            mail_helper.SendMailByAirpocket(rec.email, rec.rec_name, "ASR NOTIFICATION (FLT NO " + asr.FlightNumber + ", ROUTE " + asr.Route + ", DATE: " + asr.FlightDate.ToString("yyyy-MM-dd") + ")", email_body);
+
+                        }
+                        if (!string.IsNullOrEmpty(rec.email2))
+                        {
+                            MailHelper mail_helper = new MailHelper();
+                            mail_helper.SendMailByAirpocket(rec.email2, rec.rec_name, "ASR NOTIFICATION (FLT NO " + asr.FlightNumber + ", ROUTE " + asr.Route + ", DATE: " + asr.FlightDate.ToString("yyyy-MM-dd") + ")", email_body);
+
+                        }
+
+
+                        var not_history = new qa_notification_history()
+                        {
+                            date_send = DateTime.Now,
+                            entity_id = id,
+                            entity_type = 8,
+                            message_text = text2,
+                            message_type = 1,
+                            rec_id = rec.rec_id,
+                            rec_mobile = rec.mobile,
+                            rec_name = rec.rec_name,
+                            counter = 0,
+
+                        };
+                        
+                        var smsResult1 = m1.enqueue(1, not_history.rec_mobile, text2)[0];
+                        not_history.ref_id = smsResult1.ToString();
+                        _result.Add(not_history);
+                        System.Threading.Thread.Sleep(2000);
+
+                    }
                     var not_history_pic = new qa_notification_history()
                     {
                         date_send = DateTime.Now,
@@ -185,7 +265,6 @@ namespace ApiMSG.Controllers
                         rec_name = pic.Name,
                         counter = 0,
                     };
-                   // not_history_pic.rec_mobile = "09124449584";
                     var not_history_pic2 = new qa_notification_history()
                     {
                         date_send = DateTime.Now,
@@ -198,15 +277,6 @@ namespace ApiMSG.Controllers
                         rec_name = pic.Name,
                         counter = 0,
                     };
-                    //not_history_pic2.rec_mobile = "09124449584";
-
-                    Magfa m1 = new Magfa();
-                    var smsResult1 = m1.enqueue(1, "09121246818", text)[0];
-                    //var smsResult1 = m1.enqueue(1, "09333315290", text)[0];
-                    not_history.ref_id = smsResult1.ToString();
-                    Magfa m = new Magfa();
-                    var smsResult = m.enqueue(1, "09124449584", text)[0];
-
 
                     Magfa m1_pic = new Magfa();
                     var m1_pic_result = m1_pic.enqueue(1, not_history_pic.rec_mobile, not_history_pic.message_text)[0];
@@ -216,29 +286,74 @@ namespace ApiMSG.Controllers
                     var m_pic_result = m_pic.enqueue(1, not_history_pic2.rec_mobile, not_history_pic2.message_text)[0];
                     not_history_pic2.ref_id = m_pic_result.ToString();
 
-
+                    _result.Add(not_history_pic);
+                    _result.Add(not_history_pic2);
 
                     System.Threading.Thread.Sleep(20000);
+                    foreach(var x in _result)
+                    {
+                        Magfa m_status = new Magfa();
+                        x.status = m_status.getStatus(Convert.ToInt64(x.ref_id));
 
-                    not_history.status = m1.getStatus(Convert.ToInt64(not_history.ref_id));
+                        context.qa_notification_history.Add(x);
+                    }
+                    //not_history.status = m1.getStatus(Convert.ToInt64(not_history.ref_id));
+
+                    //context.qa_notification_history.Add(not_history);
+
+                    //4539
+                    //var not_history = new qa_notification_history()
+                    //{
+                    //    date_send = DateTime.Now,
+                    //    entity_id = id,
+                    //    entity_type = 8,
+                    //    message_text = text,
+                    //    message_type = 1,
+                    //    rec_id = 4539,
+                    //    rec_mobile = "09121246818",
+                    //    rec_name = "ZAHRA GANJINEH",
+                    //    counter=0,
+
+                    //};
+                    // Magfa m1 = new Magfa();
+                    // var smsResult1 = m1.enqueue(1, "09121246818", text)[0];
+
+                    //not_history.ref_id = smsResult1.ToString();
+                    // Magfa m = new Magfa();
+                    // var smsResult = m.enqueue(1, "09124449584", text)[0];
 
 
-                    not_history_pic.status = m1_pic.getStatus(Convert.ToInt64(not_history_pic.ref_id));
 
-                    not_history_pic2.status = m_pic.getStatus(Convert.ToInt64(not_history_pic2.ref_id));
+                    
+                    // not_history_pic.rec_mobile = "09124449584";
 
-                    context.qa_notification_history.Add(not_history);
-                    context.qa_notification_history.Add(not_history_pic);
-                    context.qa_notification_history.Add(not_history_pic2);
+                    //not_history_pic2.rec_mobile = "09124449584";
+
+                  
+
+
+                    
+
+
+
+                    
+
+                   // not_history_pic.status = m1_pic.getStatus(Convert.ToInt64(not_history_pic.ref_id));
+
+                   // not_history_pic2.status = m_pic.getStatus(Convert.ToInt64(not_history_pic2.ref_id));
+
+                    
+                    //context.qa_notification_history.Add(not_history_pic);
+                    //context.qa_notification_history.Add(not_history_pic2);
 
 
 
 
                     context.SaveChanges();
 
-                    _result.Add(not_history);
-                    _result.Add(not_history_pic);
-                    _result.Add(not_history_pic2);
+                    //_result.Add(not_history);
+                   // _result.Add(not_history_pic);
+                   // _result.Add(not_history_pic2);
 
 
 

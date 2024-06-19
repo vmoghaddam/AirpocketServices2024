@@ -32,5 +32,10 @@ namespace ApiScheduling.Models
         public string Code { get; set; }
         public Nullable<System.DateTime> DateConfirmed { get; set; }
         public Nullable<bool> IsConfirmed { get; set; }
+        public Nullable<int> flt_position_id { get; set; }
+        public string PFirstName { get; set; }
+        public string PLastName { get; set; }
+        public string PName { get; set; }
+        public string NID { get; set; }
     }
 }

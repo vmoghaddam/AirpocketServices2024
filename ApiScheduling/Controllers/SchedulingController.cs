@@ -2057,6 +2057,47 @@ namespace ApiScheduling.Controllers
 
         }
 
+
+        public class rerrp_check_dto
+        {
+            public int crew_id { get; set; }
+            public DateTime dt { get; set; }
+        }
+        [Route("api/roster/rerrp/check")]
+        [AcceptVerbs("POST")]
+        public async Task<IHttpActionResult> GetRerrpCheck(rerrp_check_dto dto)
+        {
+            var context = new Models.dbEntities();
+            int rerrp_check = Convert.ToInt32(ConfigurationManager.AppSettings["rerrp_check"]);
+            if (rerrp_check == 1)
+            {
+                var _dtdate = dto.dt.Date;
+                var _rerrp = await context.AppFTLs.Where(q => q.CrewId == dto.crew_id && q.CDate == _dtdate && q.RERRP > 0).FirstOrDefaultAsync();
+                if (_rerrp == null)
+                {
+                    return new CustomActionResult(HttpStatusCode.OK, new
+                    {
+                        Code = 308,
+                        message = "RERRP Error. "
+
+                    });
+                }
+                else return new CustomActionResult(HttpStatusCode.OK, new
+                {
+                    Code = 0,
+                    message = "RERRP Error. "
+
+                });
+            }
+            else
+                return new CustomActionResult(HttpStatusCode.OK, new
+                {
+                    Code = 0,
+                    message = "RERRP Error. "
+
+                });
+        }
+
         [Route("api/roster/stby/save")]
         [AcceptVerbs("POST")]
         //goh
@@ -2965,10 +3006,31 @@ namespace ApiScheduling.Controllers
                         });
                     }
                 }
+
+                
+
+
                 //4-11
                 //Check interuption/////////////////
-                var exc = new List<int>() { 1166, 1169, /*10000, 10001, 100000, 100002, 100004, 100005, 100006,*/
-                    100007, 100008, 100024, 100025, 100009, 100020, 100021, 100022, 100023, 200000, 200001, 200002, 200003, 200004, 200005
+                var exc = new List<int>() { 
+           //1166
+		   //, 1169
+		    /*10000, 10001, 100000, 100002, 100004, 100005, 100006,*/
+               // 100007
+				//, 100008
+				 100024
+				//, 100025
+				, 100009
+                , 100020
+                , 100021
+                , 100022
+                , 100023
+                , 200000
+                , 200001
+                , 200002
+                , 200003
+                , 200004
+                , 200005
                 ,300000
                 ,300001
                 ,300002
@@ -2977,21 +3039,22 @@ namespace ApiScheduling.Controllers
                 ,300005
                 ,300006
                 ,300007
-                ,300008
+                //,300008
 
-                ,300010
+                //,300010
                 ,300011
                 ,300012
-                ,300013
+               
                // ,300014
 
 
                 ,1167
                 ,1168
                 ,1170
+                ,300013
                // ,5001
                 };
-                var stbys = new List<int>() { 1167, 1168, 1170 };
+                var stbys = new List<int>() { 1167, 1168, 1170, 300013 };
                 //if (!alldh)
                 FDP _interupted = null;
                 {

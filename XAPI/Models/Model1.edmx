@@ -454,6 +454,8 @@
           <Property Name="CCPreFlightCheckRemark" Type="varchar" MaxLength="1000" />
           <Property Name="FlightTypeOPS" Type="varchar" MaxLength="500" />
           <Property Name="AttForms" Type="varchar" MaxLength="500" />
+          <Property Name="PaxMale" Type="int" />
+          <Property Name="PaxFemale" Type="int" />
         </EntityType>
         <EntityType Name="OFPImport">
           <Key>
@@ -534,6 +536,12 @@
           <Property Name="CM2" Type="varchar" MaxLength="500" />
           <Property Name="MSH" Type="varchar" MaxLength="500" />
           <Property Name="ATC" Type="varchar" MaxLength="4000" />
+          <Property Name="MTOW" Type="varchar" MaxLength="255" />
+          <Property Name="MLDW" Type="varchar" MaxLength="255" />
+          <Property Name="ELDP" Type="varchar" MaxLength="255" />
+          <Property Name="ELDS" Type="varchar" MaxLength="255" />
+          <Property Name="ELAL" Type="varchar" MaxLength="255" />
+          <Property Name="ELBL" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="OFPImportItem">
           <Key>
@@ -1686,6 +1694,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
           <Property Name="CCPreFlightCheckRemark" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
           <Property Name="FlightTypeOPS" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="AttForms" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="PaxMale" Type="Int32" />
+          <Property Name="PaxFemale" Type="Int32" />
           <NavigationProperty Name="OFPImports" Relationship="ppa_tabanModel.fk_ofp_flt" FromRole="FlightInformation" ToRole="OFPImport" />
         </EntityType>
         <Association Name="fk_EFB_FI">
@@ -1843,6 +1853,12 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
           <Property Name="CM2" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="MSH" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="ATC" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Name="MTOW" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="MLDW" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ELDP" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ELDS" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ELAL" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ELBL" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="FlightInformation" Relationship="ppa_tabanModel.fk_ofp_flt" FromRole="OFPImport" ToRole="FlightInformation" />
           <NavigationProperty Name="OFPImportItems" Relationship="ppa_tabanModel.fk_ofpl_ofp" FromRole="OFPImport" ToRole="OFPImportItem" />
           <NavigationProperty Name="OFPImportProps" Relationship="ppa_tabanModel.fk_ofpp_ofp" FromRole="OFPImport" ToRole="OFPImportProp" />
@@ -2229,6 +2245,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
           <EntitySetMapping Name="FlightInformations">
             <EntityTypeMapping TypeName="ppa_tabanModel.FlightInformation">
               <MappingFragment StoreEntitySet="FlightInformation">
+                <ScalarProperty Name="PaxFemale" ColumnName="PaxFemale" />
+                <ScalarProperty Name="PaxMale" ColumnName="PaxMale" />
                 <ScalarProperty Name="AttForms" ColumnName="AttForms" />
                 <ScalarProperty Name="FlightTypeOPS" ColumnName="FlightTypeOPS" />
                 <ScalarProperty Name="CCPreFlightCheckRemark" ColumnName="CCPreFlightCheckRemark" />
@@ -2595,6 +2613,12 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
           <EntitySetMapping Name="OFPImports">
             <EntityTypeMapping TypeName="ppa_tabanModel.OFPImport">
               <MappingFragment StoreEntitySet="OFPImport">
+                <ScalarProperty Name="ELBL" ColumnName="ELBL" />
+                <ScalarProperty Name="ELAL" ColumnName="ELAL" />
+                <ScalarProperty Name="ELDS" ColumnName="ELDS" />
+                <ScalarProperty Name="ELDP" ColumnName="ELDP" />
+                <ScalarProperty Name="MLDW" ColumnName="MLDW" />
+                <ScalarProperty Name="MTOW" ColumnName="MTOW" />
                 <ScalarProperty Name="ATC" ColumnName="ATC" />
                 <ScalarProperty Name="MSH" ColumnName="MSH" />
                 <ScalarProperty Name="CM2" ColumnName="CM2" />

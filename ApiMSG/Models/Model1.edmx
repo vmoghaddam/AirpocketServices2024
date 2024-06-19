@@ -157,6 +157,19 @@
           <Property Name="message_text" Type="nvarchar" MaxLength="2000" />
           <Property Name="counter" Type="int" />
         </EntityType>
+        <EntityType Name="qa_notification_receiver">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="rec_id" Type="int" />
+          <Property Name="rec_name" Type="varchar" MaxLength="500" />
+          <Property Name="is_active" Type="bit" />
+          <Property Name="mobile" Type="varchar" MaxLength="255" />
+          <Property Name="email" Type="varchar" MaxLength="255" />
+          <Property Name="mobile2" Type="varchar" MaxLength="255" />
+          <Property Name="email2" Type="varchar" MaxLength="255" />
+        </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.view_qa_notifiction_history' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="view_qa_notifiction_history">
@@ -755,6 +768,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewProfile' does not have a primar
           <EntitySet Name="NiraHistory" EntityType="Self.NiraHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NotificationTrn" EntityType="Self.NotificationTrn" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="qa_notification_history" EntityType="Self.qa_notification_history" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="qa_notification_receiver" EntityType="Self.qa_notification_receiver" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="view_qa_notifiction_history" EntityType="Self.view_qa_notifiction_history" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [view_qa_notifiction_history].[id] AS [id], 
@@ -1477,6 +1491,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewProfile' does not have a primar
           <EntitySet Name="ViewProfiles" EntityType="ppa_vareshModel.ViewProfile" />
           <EntitySet Name="qa_notification_history" EntityType="ppa_vareshModel.qa_notification_history" />
           <EntitySet Name="view_qa_notifiction_history" EntityType="ppa_vareshModel.view_qa_notifiction_history" />
+          <EntitySet Name="qa_notification_receiver" EntityType="ppa_vareshModel.qa_notification_receiver" />
         </EntityContainer>
         <EntityType Name="ViewFlightDelayCode">
           <Key>
@@ -2013,6 +2028,19 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewProfile' does not have a primar
           <Property Name="message_text" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
           <Property Name="counter" Type="Int32" />
           <Property Name="passed_hours" Type="Int32" />
+        </EntityType>
+        <EntityType Name="qa_notification_receiver">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="rec_id" Type="Int32" />
+          <Property Name="rec_name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="is_active" Type="Boolean" />
+          <Property Name="mobile" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="mobile2" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="email2" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -2697,6 +2725,20 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewProfile' does not have a primar
                 <ScalarProperty Name="rec_name" ColumnName="rec_name" />
                 <ScalarProperty Name="entity_type" ColumnName="entity_type" />
                 <ScalarProperty Name="entity_id" ColumnName="entity_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="qa_notification_receiver">
+            <EntityTypeMapping TypeName="ppa_vareshModel.qa_notification_receiver">
+              <MappingFragment StoreEntitySet="qa_notification_receiver">
+                <ScalarProperty Name="email2" ColumnName="email2" />
+                <ScalarProperty Name="mobile2" ColumnName="mobile2" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="mobile" ColumnName="mobile" />
+                <ScalarProperty Name="is_active" ColumnName="is_active" />
+                <ScalarProperty Name="rec_name" ColumnName="rec_name" />
+                <ScalarProperty Name="rec_id" ColumnName="rec_id" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

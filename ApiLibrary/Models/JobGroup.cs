@@ -12,26 +12,33 @@ namespace ApiLibrary.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class BookChapter
+    public partial class JobGroup
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public BookChapter()
+        public JobGroup()
         {
-            this.BookChapter1 = new HashSet<BookChapter>();
+            this.BookRelatedGroups = new HashSet<BookRelatedGroup>();
+            this.JobGroup1 = new HashSet<JobGroup>();
         }
     
         public int Id { get; set; }
-        public string Title { get; set; }
         public Nullable<int> ParentId { get; set; }
-        public string Remark { get; set; }
+        public string Title { get; set; }
         public string Code { get; set; }
         public string FullCode { get; set; }
-        public Nullable<int> BookId { get; set; }
-        public string BookKey { get; set; }
+        public string Remark { get; set; }
+        public int CustomerId { get; set; }
+        public string FullCode2 { get; set; }
+        public Nullable<int> Manager { get; set; }
+        public Nullable<bool> IsSelectable { get; set; }
+        public string FullCode2Temp { get; set; }
+        public string CodeTemp { get; set; }
+        public string ParentTitle { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<BookChapter> BookChapter1 { get; set; }
-        public virtual BookChapter BookChapter2 { get; set; }
-        public virtual Book Book { get; set; }
+        public virtual ICollection<BookRelatedGroup> BookRelatedGroups { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<JobGroup> JobGroup1 { get; set; }
+        public virtual JobGroup JobGroup2 { get; set; }
     }
 }

@@ -42,7 +42,6 @@ namespace ApiScheduling.Models
         public virtual DbSet<OffItem> OffItems { get; set; }
         public virtual DbSet<HelperMaxFDP> HelperMaxFDPs { get; set; }
         public virtual DbSet<XFlightCrew> XFlightCrews { get; set; }
-        public virtual DbSet<AppFTLAb> AppFTLAbs { get; set; }
         public virtual DbSet<FTLFlightTimeRatioMonthly> FTLFlightTimeRatioMonthlies { get; set; }
         public virtual DbSet<ViewCrewDutyTimeLineNew> ViewCrewDutyTimeLineNews { get; set; }
         public virtual DbSet<ViewCrewValidFTL> ViewCrewValidFTLs { get; set; }
@@ -58,5 +57,6 @@ namespace ApiScheduling.Models
         public virtual DbSet<recency_route> recency_route { get; set; }
         public virtual DbSet<view_recency_route> view_recency_route { get; set; }
         public virtual DbSet<view_route_count> view_route_count { get; set; }
+        public virtual DbSet<AppFTLAb> AppFTLAbs { get; set; }
     }
 }

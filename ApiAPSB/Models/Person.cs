@@ -506,6 +506,18 @@ namespace ApiAPSB.Models
         public Nullable<System.DateTime> SMSL3ExpireDate { get; set; }
         public Nullable<System.DateTime> AMPIssueDate { get; set; }
         public Nullable<System.DateTime> AMPExpireDate { get; set; }
+        public Nullable<System.DateTime> ASD_THR_IssueDate { get; set; }
+        public Nullable<System.DateTime> ASD_THR_ExpireDate { get; set; }
+        public Nullable<System.DateTime> ASD_SYZ_IssueDate { get; set; }
+        public Nullable<System.DateTime> ASD_SYZ_ExpireDate { get; set; }
+        public Nullable<System.DateTime> ASD_MHD_IssueDate { get; set; }
+        public Nullable<System.DateTime> ASD_MHD_ExpireDate { get; set; }
+        public Nullable<System.DateTime> ASD_TBZ_IssueDate { get; set; }
+        public Nullable<System.DateTime> ASD_TBZ_ExpireDate { get; set; }
+        public Nullable<System.DateTime> ASD_AWZ_IssueDate { get; set; }
+        public Nullable<System.DateTime> ASD_AWZ_ExpireDate { get; set; }
+        public Nullable<System.DateTime> ASD_SRY_IssueDate { get; set; }
+        public Nullable<System.DateTime> ASD_SRY_ExpireDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PersonCustomer> PersonCustomers { get; set; }

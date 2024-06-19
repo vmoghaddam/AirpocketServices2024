@@ -1132,6 +1132,154 @@ namespace ApiMSG
         }
 
 
+        public string SendTestAirpocket()
+        {
+
+
+
+            try
+            {
+                var fromAddress = new MailAddress("vrh@airpocketmail.click", "VARESH");
+                var toAddress = new MailAddress("v.moghaddam59@gmail.com", "ME 59");
+                var ccAddress = new MailAddress("v.moghaddam60@gmail.com", "ME 60");
+               
+                string fromPassword = "Atrina1359";
+
+
+
+
+                var smtp = new SmtpClient
+                {
+                    //EnableSsl=true,
+                    Host = "mail.airpocketmail.click",
+                    Port = 25, //Convert.ToInt32(dispatchEmailPort),
+                    EnableSsl = false,
+                    // TargetName = "STARTTLS/Mail.flypersia.aero",
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false,
+                    Credentials = new NetworkCredential(fromAddress.Address, fromPassword),
+
+                };
+                smtp.Timeout = 60000;
+
+                using (var message = new MailMessage(fromAddress, toAddress)
+                {
+                    Subject = "TEST AIRPOCKET",
+                    Body = "TEST",
+                    IsBodyHtml = false,
+
+
+                })
+
+                {
+                    //smtp.SendCompleted += (s, e) => {
+                    //    smtp.Dispose();
+
+                    //};
+
+                    smtp.Send(message);
+                    //smtp.Send(new MailMessage(fromAddress, toAddress)
+                    //{
+                    //    Subject = subject,
+                    //    Body = body,
+                    //    IsBodyHtml = false,
+
+
+                    //});
+                    //smtp.Send(new MailMessage(dispatchEmail, caoMSGEmailAlt) {
+                    //    Subject = subject,
+                    //    Body = body,
+                    //    IsBodyHtml = false,
+                    //});
+                    return "OK";
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                var _msg = ex.Message;
+                if (ex.InnerException != null)
+                    _msg += "   INNER:  " + ex.InnerException.Message;
+                return _msg;
+            }
+
+
+
+
+
+
+
+
+        }
+
+
+        public string SendMailByAirpocket(string rec_address,string rec_name,string subject,string body)
+        {
+
+
+
+            try
+            {
+                var fromAddress = new MailAddress("vrh@airpocketmail.click", "VARESH");
+                var toAddress = new MailAddress(rec_address, rec_name);
+                //var ccAddress = new MailAddress("v.moghaddam60@gmail.com", "ME 60");
+
+                string fromPassword = "Atrina1359";
+
+
+
+
+                var smtp = new SmtpClient
+                {
+                    //EnableSsl=true,
+                    Host = "mail.airpocketmail.click",
+                    Port = 25, //Convert.ToInt32(dispatchEmailPort),
+                    EnableSsl = false,
+                    // TargetName = "STARTTLS/Mail.flypersia.aero",
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false,
+                    Credentials = new NetworkCredential(fromAddress.Address, fromPassword),
+
+                };
+                smtp.Timeout = 60000;
+
+                using (var message = new MailMessage(fromAddress, toAddress)
+                {
+                    Subject = subject,
+                    Body = body,
+                    IsBodyHtml = true,
+
+
+                })
+
+                {
+                    
+                    smtp.Send(message);
+                   
+                    return "OK";
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                var _msg = ex.Message;
+                if (ex.InnerException != null)
+                    _msg += "   INNER:  " + ex.InnerException.Message;
+                return _msg;
+            }
+
+
+
+
+
+
+
+
+        }
+
+
 
     }
     public class ippanel
@@ -1141,8 +1289,8 @@ namespace ApiMSG
     public class Magfa
     {
         string username = "varesh_85972"; //"flypersia_48000"; //"atlas_82173";// "varesh_85972"; //ConfigurationManager.AppSettings["magfa_user"];/* "taban";*/ //ConfigurationManager.AppSettings["magfa_user"]; //"caspianline"; //"flypersia_48000";
-        string password = "oJTyaWoLnQycrfdX"; //"YYDWMU5BAJQQHCuG"; //"Ot9V0CWKbH1HUQGK";// "oJTyaWoLnQycrfdX"; //ConfigurationManager.AppSettings["magfa_pass"];/*"ZIECXHgRSJT1QLMy";*/ //ConfigurationManager.AppSettings["magfa_pass"]; // "ZQMihTmdLqCbnbrW"; //"YYDWMU5BAJQQHCuG";
-        string domain = "magfa"; //"http://atlasairplus.com/";// "magfa";// "tabanair"; /*"tabanair";*/
+        string password = "Ux4D3tBnYvOlZGd6";//"oJTyaWoLnQycrfdX"; //"YYDWMU5BAJQQHCuG"; //"Ot9V0CWKbH1HUQGK";// "oJTyaWoLnQycrfdX"; //ConfigurationManager.AppSettings["magfa_pass"];/*"ZIECXHgRSJT1QLMy";*/ //ConfigurationManager.AppSettings["magfa_pass"]; // "ZQMihTmdLqCbnbrW"; //"YYDWMU5BAJQQHCuG";
+        string domain = "varesh"; //"http://atlasairplus.com/";// "magfa";// "tabanair"; /*"tabanair";*/
         string senderNumber = "300085972";//"300048000"; //"300082173";//"300085972";// ConfigurationManager.AppSettings["magfa_no"]; /*"30006327";*/ // ConfigurationManager.AppSettings["magfa_no"]; // "3000748907"; //"300048000";
         public List<string> getStatus(List<Int64> refIds)
         {
@@ -1365,8 +1513,8 @@ namespace ApiMSG
         //string senderNumber = "300048000"; //"300082173";//"300085972";// ConfigurationManager.AppSettings["magfa_no"]; /*"30006327";*/ // ConfigurationManager.AppSettings["magfa_no"]; // "3000748907"; //"300048000";
 
         string username =  "varesh_85972"; //ConfigurationManager.AppSettings["magfa_user"];/* "taban";*/ //ConfigurationManager.AppSettings["magfa_user"]; //"caspianline"; //"flypersia_48000";
-        string password =  "oJTyaWoLnQycrfdX"; //ConfigurationManager.AppSettings["magfa_pass"];/*"ZIECXHgRSJT1QLMy";*/ //ConfigurationManager.AppSettings["magfa_pass"]; // "ZQMihTmdLqCbnbrW"; //"YYDWMU5BAJQQHCuG";
-        string domain =  "magfa";// "tabanair"; /*"tabanair";*/
+        string password = "Ux4D3tBnYvOlZGd6";//"oJTyaWoLnQycrfdX"; //ConfigurationManager.AppSettings["magfa_pass"];/*"ZIECXHgRSJT1QLMy";*/ //ConfigurationManager.AppSettings["magfa_pass"]; // "ZQMihTmdLqCbnbrW"; //"YYDWMU5BAJQQHCuG";
+        string domain =  "varesh";// "tabanair"; /*"tabanair";*/
         string senderNumber = "300085972";// ConfigurationManager.AppSettings["magfa_no"]; /*"30006327";*/ // ConfigurationManager.AppSettings["magfa_no"]; // "3000748907"; //"300048000";
 
         public List<string> getStatus(List<Int64> refIds)

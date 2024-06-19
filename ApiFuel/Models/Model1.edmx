@@ -10,17 +10,28 @@ warning 6002: The table/view 'ppa_varesh.dbo.AppFuel' does not have a primary ke
         <EntityType Name="AppFuel">
           <Key>
             <PropertyRef Name="FlightId" />
+            <PropertyRef Name="UsedFuelAvg" />
+            <PropertyRef Name="UsedFuelAvgReg" />
+            <PropertyRef Name="FuelUnitID" />
+            <PropertyRef Name="FuelUnit" />
+            <PropertyRef Name="BaggageWeight" />
+            <PropertyRef Name="CargoWeight" />
+            <PropertyRef Name="FlightStatus" />
           </Key>
           <Property Name="FlightId" Type="int" Nullable="false" />
           <Property Name="UpLift" Type="decimal" Precision="18" Scale="4" />
           <Property Name="FuelTotal" Type="decimal" Precision="19" Scale="4" />
-          <Property Name="Remaining" Type="decimal" Precision="20" Scale="4" />
+          <Property Name="ExtraFuel" Type="decimal" Precision="20" Scale="4" />
+          <Property Name="Remaining" Type="decimal" Precision="21" Scale="4" />
           <Property Name="UsedFuel" Type="decimal" Precision="18" Scale="4" />
-          <Property Name="UsedFuelAvg" Type="decimal" Precision="38" Scale="6" />
-          <Property Name="UsedFuelAvgReg" Type="decimal" Precision="38" Scale="6" />
+          <Property Name="UsedFuelAvg" Type="numeric" Precision="1" Scale="1" Nullable="false" />
+          <Property Name="UsedFuelAvgReg" Type="numeric" Precision="1" Scale="1" Nullable="false" />
           <Property Name="Taxi" Type="int" />
           <Property Name="FPTripFuel" Type="int" />
           <Property Name="FPFuel" Type="int" />
+          <Property Name="FuelUsedEng1" Type="int" />
+          <Property Name="FuelUsedEng2" Type="int" />
+          <Property Name="FuelUsedEng" Type="int" />
           <Property Name="DifTripFuel" Type="decimal" Precision="19" Scale="4" />
           <Property Name="DifTripFuelPercent" Type="numeric" Precision="37" Scale="16" />
           <Property Name="DifTotalFuel" Type="decimal" Precision="20" Scale="4" />
@@ -62,20 +73,20 @@ warning 6002: The table/view 'ppa_varesh.dbo.AppFuel' does not have a primary ke
           <Property Name="PF" Type="varchar" MaxLength="255" />
           <Property Name="PIC" Type="nvarchar" MaxLength="1001" />
           <Property Name="PICId" Type="int" />
-          <Property Name="SIC" Type="varchar" MaxLength="500" />
+          <Property Name="SIC" Type="nvarchar" MaxLength="2004" />
           <Property Name="SICId" Type="int" />
           <Property Name="ALT1" Type="varchar" MaxLength="255" />
           <Property Name="ALT2" Type="varchar" MaxLength="255" />
           <Property Name="ALT3" Type="varchar" MaxLength="255" />
           <Property Name="IPName" Type="nvarchar" MaxLength="1001" />
           <Property Name="IPId" Type="int" />
-          <Property Name="IPScheduleName" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="IPScheduleName" Type="varchar" MaxLength="500" />
           <Property Name="P1Name" Type="nvarchar" MaxLength="1001" />
           <Property Name="P1Id" Type="int" />
-          <Property Name="P1ScheduleName" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="P1ScheduleName" Type="varchar" MaxLength="500" />
           <Property Name="P2Name" Type="nvarchar" MaxLength="1001" />
           <Property Name="P2Id" Type="int" />
-          <Property Name="P2ScheduleName" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="P2ScheduleName" Type="varchar" MaxLength="500" />
         </EntityType>
         <EntityContainer Name="ppaModelStoreContainer">
           <EntitySet Name="AppFuel" EntityType="Self.AppFuel" store:Type="Views" store:Schema="dbo">
@@ -83,6 +94,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.AppFuel' does not have a primary ke
     [AppFuel].[FlightId] AS [FlightId], 
     [AppFuel].[UpLift] AS [UpLift], 
     [AppFuel].[FuelTotal] AS [FuelTotal], 
+    [AppFuel].[ExtraFuel] AS [ExtraFuel], 
     [AppFuel].[Remaining] AS [Remaining], 
     [AppFuel].[UsedFuel] AS [UsedFuel], 
     [AppFuel].[UsedFuelAvg] AS [UsedFuelAvg], 
@@ -90,6 +102,9 @@ warning 6002: The table/view 'ppa_varesh.dbo.AppFuel' does not have a primary ke
     [AppFuel].[Taxi] AS [Taxi], 
     [AppFuel].[FPTripFuel] AS [FPTripFuel], 
     [AppFuel].[FPFuel] AS [FPFuel], 
+    [AppFuel].[FuelUsedEng1] AS [FuelUsedEng1], 
+    [AppFuel].[FuelUsedEng2] AS [FuelUsedEng2], 
+    [AppFuel].[FuelUsedEng] AS [FuelUsedEng], 
     [AppFuel].[DifTripFuel] AS [DifTripFuel], 
     [AppFuel].[DifTripFuelPercent] AS [DifTripFuelPercent], 
     [AppFuel].[DifTotalFuel] AS [DifTotalFuel], 
@@ -158,17 +173,28 @@ warning 6002: The table/view 'ppa_varesh.dbo.AppFuel' does not have a primary ke
         <EntityType Name="AppFuel">
           <Key>
             <PropertyRef Name="FlightId" />
+            <PropertyRef Name="UsedFuelAvg" />
+            <PropertyRef Name="UsedFuelAvgReg" />
+            <PropertyRef Name="FuelUnitID" />
+            <PropertyRef Name="FuelUnit" />
+            <PropertyRef Name="BaggageWeight" />
+            <PropertyRef Name="CargoWeight" />
+            <PropertyRef Name="FlightStatus" />
           </Key>
           <Property Name="FlightId" Type="Int32" Nullable="false" />
           <Property Name="UpLift" Type="Decimal" Precision="18" Scale="4" />
           <Property Name="FuelTotal" Type="Decimal" Precision="19" Scale="4" />
-          <Property Name="Remaining" Type="Decimal" Precision="20" Scale="4" />
+          <Property Name="ExtraFuel" Type="Decimal" Precision="20" Scale="4" />
+          <Property Name="Remaining" Type="Decimal" Precision="21" Scale="4" />
           <Property Name="UsedFuel" Type="Decimal" Precision="18" Scale="4" />
-          <Property Name="UsedFuelAvg" Type="Decimal" Precision="38" Scale="6" />
-          <Property Name="UsedFuelAvgReg" Type="Decimal" Precision="38" Scale="6" />
+          <Property Name="UsedFuelAvg" Type="Decimal" Nullable="false" Precision="1" Scale="1" />
+          <Property Name="UsedFuelAvgReg" Type="Decimal" Nullable="false" Precision="1" Scale="1" />
           <Property Name="Taxi" Type="Int32" />
           <Property Name="FPTripFuel" Type="Int32" />
           <Property Name="FPFuel" Type="Int32" />
+          <Property Name="FuelUsedEng1" Type="Int32" />
+          <Property Name="FuelUsedEng2" Type="Int32" />
+          <Property Name="FuelUsedEng" Type="Int32" />
           <Property Name="DifTripFuel" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="DifTripFuelPercent" Type="Decimal" Precision="37" Scale="16" />
           <Property Name="DifTotalFuel" Type="Decimal" Precision="20" Scale="4" />
@@ -210,20 +236,20 @@ warning 6002: The table/view 'ppa_varesh.dbo.AppFuel' does not have a primary ke
           <Property Name="PF" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="PIC" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
           <Property Name="PICId" Type="Int32" />
-          <Property Name="SIC" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="SIC" Type="String" MaxLength="2004" FixedLength="false" Unicode="true" />
           <Property Name="SICId" Type="Int32" />
           <Property Name="ALT1" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="ALT2" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="ALT3" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="IPName" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
           <Property Name="IPId" Type="Int32" />
-          <Property Name="IPScheduleName" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="IPScheduleName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="P1Name" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
           <Property Name="P1Id" Type="Int32" />
-          <Property Name="P1ScheduleName" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="P1ScheduleName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="P2Name" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
           <Property Name="P2Id" Type="Int32" />
-          <Property Name="P2ScheduleName" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="P2ScheduleName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -289,6 +315,9 @@ warning 6002: The table/view 'ppa_varesh.dbo.AppFuel' does not have a primary ke
                 <ScalarProperty Name="DifTotalFuel" ColumnName="DifTotalFuel" />
                 <ScalarProperty Name="DifTripFuelPercent" ColumnName="DifTripFuelPercent" />
                 <ScalarProperty Name="DifTripFuel" ColumnName="DifTripFuel" />
+                <ScalarProperty Name="FuelUsedEng" ColumnName="FuelUsedEng" />
+                <ScalarProperty Name="FuelUsedEng2" ColumnName="FuelUsedEng2" />
+                <ScalarProperty Name="FuelUsedEng1" ColumnName="FuelUsedEng1" />
                 <ScalarProperty Name="FPFuel" ColumnName="FPFuel" />
                 <ScalarProperty Name="FPTripFuel" ColumnName="FPTripFuel" />
                 <ScalarProperty Name="Taxi" ColumnName="Taxi" />
@@ -296,6 +325,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.AppFuel' does not have a primary ke
                 <ScalarProperty Name="UsedFuelAvg" ColumnName="UsedFuelAvg" />
                 <ScalarProperty Name="UsedFuel" ColumnName="UsedFuel" />
                 <ScalarProperty Name="Remaining" ColumnName="Remaining" />
+                <ScalarProperty Name="ExtraFuel" ColumnName="ExtraFuel" />
                 <ScalarProperty Name="FuelTotal" ColumnName="FuelTotal" />
                 <ScalarProperty Name="UpLift" ColumnName="UpLift" />
                 <ScalarProperty Name="FlightId" ColumnName="FlightId" />

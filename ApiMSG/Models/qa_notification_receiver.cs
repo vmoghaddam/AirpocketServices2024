@@ -7,19 +7,20 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ApiLibrary.Models
+namespace ApiMSG.Models
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class BookFile
+    public partial class qa_notification_receiver
     {
-        public int Id { get; set; }
-        public int BookId { get; set; }
-        public int DocumentId { get; set; }
-        public string Remark { get; set; }
-        public Nullable<int> ChapterId { get; set; }
-    
-        public virtual Book Book { get; set; }
+        public int id { get; set; }
+        public Nullable<int> rec_id { get; set; }
+        public string rec_name { get; set; }
+        public Nullable<bool> is_active { get; set; }
+        public string mobile { get; set; }
+        public string email { get; set; }
+        public string mobile2 { get; set; }
+        public string email2 { get; set; }
     }
 }

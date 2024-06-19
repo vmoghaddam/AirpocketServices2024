@@ -1383,7 +1383,7 @@ namespace ApiAPSB.Controllers
                 {
                     if (employee != null)
                     {
-                        if (string.IsNullOrEmpty(person_lic) ||  !person_lic.ToLower().Contains(lic_no.ToLower()))
+                        if (string.IsNullOrEmpty(person_lic) || !person_lic.ToLower().Contains(lic_no.ToLower()))
                         {
                             return Ok(
                                 new
@@ -2012,7 +2012,7 @@ namespace ApiAPSB.Controllers
                             toc_tod = true,
                             tod = true,
                             mvt = flt.BlockOff == null || flt.BlockOn == null || flt.TakeOff == null || flt.Landing == null,
-                            fuel=flt.FuelUplift ==null || flt.FuelUsed==null || flt.FuelRemaining==null
+                            fuel = flt.FuelUplift == null || flt.FuelUsed == null || flt.FuelRemaining == null
 
 
 
@@ -2239,6 +2239,227 @@ namespace ApiAPSB.Controllers
 
                 });
             }
+        }
+
+        [Route("api/efb/discretion/save")]
+        [AcceptVerbs("POST")]
+        public async Task<IHttpActionResult> SaveDiscretion(discretion_form dto)
+        {
+            try
+            {
+                var context = new Models.dbEntities();
+                var exist = await context.discretion_form.Where(q => q.flight_id == dto.flight_id).FirstOrDefaultAsync();
+                if (exist != null)
+                {
+                    context.discretion_form.Remove(exist);
+                }
+                var entity = new discretion_form()
+                {
+                    flight_id = dto.flight_id,
+                    comment = dto.comment,
+                    create_date = DateTime.Now,
+                    current_duty_id = dto.current_duty_id,
+                    discretion_value = dto.discretion_value,
+                    extended_fdp_inflight_rest_value = dto.extended_fdp_inflight_rest_value,
+                    extended_fdp_split_value = dto.extended_fdp_split_value,
+                    extended_fdp_value = dto.extended_fdp_value,
+                    last_duty_ended = dto.last_duty_ended,
+                    last_duty_id = dto.last_duty_id,
+                    last_duty_started = dto.last_duty_started,
+                    max_legal_fdp_value = dto.max_legal_fdp_value,
+                    next_duty_actual = dto.next_duty_actual,
+                    next_duty_id = dto.next_duty_id,
+                    next_duty_planned = dto.next_duty_planned,
+                    pic_id = dto.pic_id,
+                    pre_flight_reduced_rest = dto.pre_flight_reduced_rest,
+                    rest_earned = dto.rest_earned,
+                    pic_sign_date = DateTime.Now,
+                    fleet_manager_sign_date = dto.fleet_manager_sign_date,
+                    fdp_id = dto.fdp_id,
+                    max_fdp = dto.max_fdp,
+                    planned_flt_duty_time = dto.planned_flt_duty_time,
+                    actual_flt_duty_time = dto.actual_flt_duty_time,
+                      
+                };
+
+                context.discretion_form.Add(entity);
+                await context.SaveChangesAsync();
+                return Ok(entity);
+            }
+            catch (Exception ex)
+            {
+                return Ok(ex.Message + "   IN    " + (ex.InnerException != null ? ex.InnerException.Message : ""));
+            }
+
+        }
+
+
+        public class discretion_flight_row
+        {
+            public string title { get; set; }
+            public string place { get; set; }
+
+
+            public DateTime? utc { get; set; }
+            public DateTime? lcl { get; set; }
+
+
+
+            public DateTime? utc_actual { get; set; }
+            public DateTime? lcl_actual { get; set; }
+        }
+
+        [Route("api/efb/discretion/{fid}")]
+        [AcceptVerbs("GET")]
+        public IHttpActionResult GetDiscretion(int fid)
+        {
+            var context = new Models.dbEntities();
+
+            var app_leg = context.AppLegs.Where(q => q.ID == fid).FirstOrDefault();
+            var view = context.view_discretion_form.Where(q => q.flight_id == fid).FirstOrDefault();
+            //if (view == null)
+            //{
+            //    view = new view_discretion_form()
+            //    {
+            //        flight_id = fid,
+            //    };
+            //}
+            // var crews = context.XFlightCrews.Where(q => q.FlightId == fid).OrderBy(q => q.GroupOrder).ToList();
+
+            var flight_fdp_item = context.FDPItems.Where(q => q.FlightId == fid).Select(q => q.FDPId).ToList();
+
+            var pic_fdp = context.FDPs.Where(q => q.CrewId == app_leg.PICId && flight_fdp_item.Contains(q.Id)).FirstOrDefault();
+
+            var fdp_items = context.FDPItems.Where(q => q.FDPId == pic_fdp.Id).ToList();
+            var flight_ids = fdp_items.Select(q => q.FlightId).ToList();
+
+            var crews = context.XFlightCrews.Where(q => q.FlightId == fid).OrderBy(q => q.GroupOrder).ToList();
+
+            var flights = context.AppLegs.Where(q => flight_ids.Contains(q.ID)).OrderBy(q => q.BlockOffStation).Select(
+                  q => new
+                  {
+                      dep = q.FromAirportIATA,
+                      arr = q.ToAirportIATA,
+                      q.BlockOffLocal,
+                      q.BlockOff,
+                      q.BlockOnLocal,
+                      q.BlockOn,
+                      q.STD,
+                      q.STDLocal,
+                      q.STA,
+                      q.STALocal,
+                      q.FlightNumber,
+
+                  }
+                ).ToList();
+
+            var duty_start_planned = ((DateTime)flights.First().STD).AddMinutes(-60);
+            var fdp_end_planned = ((DateTime)flights.Last().STA).AddMinutes(0);
+            var duty_end_planned = ((DateTime)flights.Last().STA).AddMinutes(30);
+
+            var duty_start_planned_lcl = ((DateTime)flights.First().STD).AddMinutes(-60).AddMinutes(210);
+            var fdp_end_planned_lcl = ((DateTime)flights.Last().STA).AddMinutes(0).AddMinutes(210);
+            var duty_end_planned_lcl = ((DateTime)flights.Last().STA).AddMinutes(30).AddMinutes(210);
+
+
+            var duty_start_actual = ((DateTime)flights.First().BlockOff).AddMinutes(-60);
+            var fdp_end_actual = ((DateTime)flights.Last().BlockOn).AddMinutes(0);
+            var duty_end_actual = ((DateTime)flights.Last().BlockOn).AddMinutes(30);
+
+            var duty_start_actual_lcl = ((DateTime)flights.First().BlockOff).AddMinutes(-60).AddMinutes(210);
+            var fdp_end_actual_lcl = ((DateTime)flights.Last().BlockOn).AddMinutes(0).AddMinutes(210);
+            var duty_end_actual_lcl = ((DateTime)flights.Last().BlockOn).AddMinutes(30).AddMinutes(210);
+
+
+            var flights_details = new List<discretion_flight_row>();
+            flights_details.Add(new discretion_flight_row()
+            {
+                title = "duty start",
+                place = flights.First().dep,
+                lcl = duty_start_planned_lcl,
+                utc = duty_start_planned,
+
+                lcl_actual = duty_start_actual_lcl,
+                utc_actual = duty_start_actual,
+
+
+            });
+            List<string> stns = new List<string>();
+            foreach (var flt in flights)
+            {
+                stns.Add(flt.dep);
+                if (flt == flights.Last())
+                    stns.Add(flt.arr);
+                flights_details.Add(new discretion_flight_row()
+                {
+                    title = "Depart",
+                    place = flt.dep,
+                    lcl = flt.STDLocal,
+                    utc = flt.STD,
+
+                    lcl_actual = flt.BlockOffLocal,
+                    utc_actual = flt.BlockOff,
+
+
+                });
+                flights_details.Add(new discretion_flight_row()
+                {
+                    title = "Arrive",
+                    place = flt.arr,
+                    lcl = flt.STALocal,
+                    utc = flt.STA,
+
+                    lcl_actual = flt.BlockOnLocal,
+                    utc_actual = flt.BlockOn,
+
+
+                });
+            }
+
+            flights_details.Add(new discretion_flight_row()
+            {
+                title = "FDP ended",
+                place = flights.Last().dep,
+                lcl = fdp_end_planned_lcl,
+                utc = fdp_end_planned,
+
+                lcl_actual = fdp_end_actual_lcl,
+                utc_actual = fdp_end_actual,
+
+
+            });
+
+
+            view.planned_flt_duty_time = Convert.ToInt32(Math.Round((((DateTime)flights.Last().STA) - ((DateTime)flights.First().STD).AddMinutes(-60)).TotalMinutes));
+            view.actual_flt_duty_time = Convert.ToInt32(Math.Round((((DateTime)flights.Last().BlockOn) - ((DateTime)flights.First().BlockOff).AddMinutes(-60)).TotalMinutes));
+
+            view.max_fdp = Convert.ToInt32(Math.Round((decimal)pic_fdp.MaxFDP));
+
+            return Ok(new
+            {
+                view,
+                crews,
+                flights,
+                flights_details,
+                route = string.Join("-", stns),
+                date = ((DateTime)flights.First().STD).ToString("yyyy-MM-dd")
+            });
+
+            //var flight_ids=from x in context.FDPItems
+            //               join y in context.FDPs on x.FDPId equals y.Id
+            //               where y.CrewId==view.pic_id
+
+
+
+
+            //return Ok(new DataResponse()
+            //{
+            //    Data = errors,
+            //    IsSuccess = true,
+            //    Messages = _msgs
+
+            //});
+
         }
 
 

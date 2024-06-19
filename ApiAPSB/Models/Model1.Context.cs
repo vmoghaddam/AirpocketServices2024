@@ -56,5 +56,8 @@ namespace ApiAPSB.Models
         public virtual DbSet<Airport> Airports { get; set; }
         public virtual DbSet<journeylog_atl> journeylog_atl { get; set; }
         public virtual DbSet<AppLegJL> AppLegJLs { get; set; }
+        public virtual DbSet<FDP> FDPs { get; set; }
+        public virtual DbSet<discretion_form> discretion_form { get; set; }
+        public virtual DbSet<view_discretion_form> view_discretion_form { get; set; }
     }
 }

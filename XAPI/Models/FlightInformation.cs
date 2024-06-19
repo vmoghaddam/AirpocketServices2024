@@ -318,6 +318,8 @@ namespace XAPI.Models
         public string CCPreFlightCheckRemark { get; set; }
         public string FlightTypeOPS { get; set; }
         public string AttForms { get; set; }
+        public Nullable<int> PaxMale { get; set; }
+        public Nullable<int> PaxFemale { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EFBDSPRelease> EFBDSPReleases { get; set; }

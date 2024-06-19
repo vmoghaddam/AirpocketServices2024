@@ -5,6 +5,50 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="ppaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Book">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="ISBN" Type="nvarchar" MaxLength="500" />
+          <Property Name="DateRelease" Type="date" />
+          <Property Name="PublisherId" Type="int" />
+          <Property Name="ISSNPrint" Type="nvarchar" MaxLength="200" />
+          <Property Name="ISSNElectronic" Type="nvarchar" MaxLength="200" />
+          <Property Name="DOI" Type="nvarchar" MaxLength="200" />
+          <Property Name="Pages" Type="nvarchar" MaxLength="50" />
+          <Property Name="CategoryId" Type="int" Nullable="false" />
+          <Property Name="CustomerId" Type="int" />
+          <Property Name="Abstract" Type="nvarchar" MaxLength="4000" />
+          <Property Name="DateCreate" Type="datetime" />
+          <Property Name="DatePublished" Type="datetime" />
+          <Property Name="ImageUrl" Type="varchar" MaxLength="500" />
+          <Property Name="DateDeadline" Type="datetime" />
+          <Property Name="Duration" Type="nvarchar" MaxLength="100" />
+          <Property Name="LanguageId" Type="int" />
+          <Property Name="ExternalUrl" Type="nvarchar" MaxLength="1000" />
+          <Property Name="NumberOfLessens" Type="int" />
+          <Property Name="TypeId" Type="int" Nullable="false" />
+          <Property Name="JournalId" Type="int" />
+          <Property Name="Conference" Type="nvarchar" MaxLength="500" />
+          <Property Name="ConferenceLocationId" Type="int" />
+          <Property Name="DateConference" Type="nvarchar" MaxLength="200" />
+          <Property Name="Sender" Type="nvarchar" MaxLength="1000" />
+          <Property Name="No" Type="nvarchar" MaxLength="500" />
+          <Property Name="PublishedIn" Type="nvarchar" MaxLength="500" />
+          <Property Name="INSPECAccessionNumber" Type="nvarchar" MaxLength="200" />
+          <Property Name="Edition" Type="nvarchar" MaxLength="500" />
+          <Property Name="DateEffective" Type="nvarchar" MaxLength="500" />
+          <Property Name="FolderId" Type="int" />
+          <Property Name="Issue" Type="int" />
+          <Property Name="DeadLine" Type="datetime" />
+          <Property Name="DateValidUntil" Type="datetime" />
+          <Property Name="BookKey" Type="varchar" MaxLength="500" />
+          <Property Name="CourseId" Type="int" />
+          <Property Name="FileUrlX" Type="nvarchar" MaxLength="2000" />
+          <Property Name="SysUrlX" Type="nvarchar" MaxLength="2000" />
+        </EntityType>
         <EntityType Name="BookChapter">
           <Key>
             <PropertyRef Name="Id" />
@@ -27,6 +71,34 @@
           <Property Name="DocumentId" Type="int" Nullable="false" />
           <Property Name="Remark" Type="nvarchar" MaxLength="500" />
           <Property Name="ChapterId" Type="int" />
+        </EntityType>
+        <EntityType Name="BookRelatedGroup">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GroupId" Type="int" Nullable="false" />
+          <Property Name="Remark" Type="varchar" MaxLength="200" />
+          <Property Name="BookId" Type="int" Nullable="false" />
+          <Property Name="TypeId" Type="int" />
+        </EntityType>
+        <EntityType Name="JobGroup">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ParentId" Type="int" />
+          <Property Name="Title" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Code" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="FullCode" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="500" />
+          <Property Name="CustomerId" Type="int" Nullable="false" />
+          <Property Name="FullCode2" Type="varchar" MaxLength="500" />
+          <Property Name="Manager" Type="int" />
+          <Property Name="IsSelectable" Type="bit" />
+          <Property Name="FullCode2Temp" Type="varchar" MaxLength="255" />
+          <Property Name="CodeTemp" Type="varchar" MaxLength="255" />
+          <Property Name="ParentTitle" Type="varchar" MaxLength="500" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.HelperBookApplicableEmployee' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -258,6 +330,20 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewFolderApplicable' does not have
           <Property Name="CustomerId" Type="int" />
           <Property Name="EmployeeCustomerId" Type="int" />
         </EntityType>
+        <Association Name="fk_bc_b">
+          <End Role="Book" Type="Self.Book" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="BookChapter" Type="Self.BookChapter" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BookChapter">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_bf_bf">
           <End Role="BookChapter" Type="Self.BookChapter" Multiplicity="0..1" />
           <End Role="BookChapter1" Type="Self.BookChapter" Multiplicity="*" />
@@ -270,9 +356,66 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewFolderApplicable' does not have
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_BookFile_Book_Id">
+          <End Role="Book" Type="Self.Book" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="BookFile" Type="Self.BookFile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BookFile">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BookRelatedGroup_Book_Id">
+          <End Role="Book" Type="Self.Book" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="BookRelatedGroup" Type="Self.BookRelatedGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BookRelatedGroup">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BookRelatedGroup_JobGroup_Id">
+          <End Role="JobGroup" Type="Self.JobGroup" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="BookRelatedGroup" Type="Self.BookRelatedGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="JobGroup">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BookRelatedGroup">
+              <PropertyRef Name="GroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_JOBGROUP_PARENT">
+          <End Role="JobGroup" Type="Self.JobGroup" Multiplicity="0..1" />
+          <End Role="JobGroup1" Type="Self.JobGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="JobGroup">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="JobGroup1">
+              <PropertyRef Name="ParentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="ppaModelStoreContainer">
+          <EntitySet Name="Book" EntityType="Self.Book" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BookChapter" EntityType="Self.BookChapter" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BookFile" EntityType="Self.BookFile" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BookRelatedGroup" EntityType="Self.BookRelatedGroup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="JobGroup" EntityType="Self.JobGroup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HelperBookApplicableEmployee" EntityType="Self.HelperBookApplicableEmployee" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [HelperBookApplicableEmployee].[EmployeeId] AS [EmployeeId], 
@@ -457,9 +600,29 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewFolderApplicable' does not have
     [ViewFolderApplicable].[EmployeeCustomerId] AS [EmployeeCustomerId]
     FROM [dbo].[ViewFolderApplicable] AS [ViewFolderApplicable]</DefiningQuery>
           </EntitySet>
+          <AssociationSet Name="fk_bc_b" Association="Self.fk_bc_b">
+            <End Role="Book" EntitySet="Book" />
+            <End Role="BookChapter" EntitySet="BookChapter" />
+          </AssociationSet>
           <AssociationSet Name="fk_bf_bf" Association="Self.fk_bf_bf">
             <End Role="BookChapter" EntitySet="BookChapter" />
             <End Role="BookChapter1" EntitySet="BookChapter" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BookFile_Book_Id" Association="Self.FK_BookFile_Book_Id">
+            <End Role="Book" EntitySet="Book" />
+            <End Role="BookFile" EntitySet="BookFile" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BookRelatedGroup_Book_Id" Association="Self.FK_BookRelatedGroup_Book_Id">
+            <End Role="Book" EntitySet="Book" />
+            <End Role="BookRelatedGroup" EntitySet="BookRelatedGroup" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BookRelatedGroup_JobGroup_Id" Association="Self.FK_BookRelatedGroup_JobGroup_Id">
+            <End Role="JobGroup" EntitySet="JobGroup" />
+            <End Role="BookRelatedGroup" EntitySet="BookRelatedGroup" />
+          </AssociationSet>
+          <AssociationSet Name="FK_JOBGROUP_PARENT" Association="Self.FK_JOBGROUP_PARENT">
+            <End Role="JobGroup" EntitySet="JobGroup" />
+            <End Role="JobGroup1" EntitySet="JobGroup" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -479,7 +642,30 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewFolderApplicable' does not have
           </AssociationSet>
           <EntitySet Name="ViewBookChapters" EntityType="ppaModel.ViewBookChapter" />
           <EntitySet Name="ViewBookFileVisiteds" EntityType="ppaModel.ViewBookFileVisited" />
-        </EntityContainer>
+          <EntitySet Name="Books" EntityType="ppaModel.Book" />
+          <EntitySet Name="BookRelatedGroups" EntityType="ppaModel.BookRelatedGroup" />
+          <AssociationSet Name="fk_bc_b" Association="ppaModel.fk_bc_b">
+            <End Role="Book" EntitySet="Books" />
+            <End Role="BookChapter" EntitySet="BookChapters" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BookFile_Book_Id" Association="ppaModel.FK_BookFile_Book_Id">
+            <End Role="Book" EntitySet="Books" />
+            <End Role="BookFile" EntitySet="BookFiles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BookRelatedGroup_Book_Id" Association="ppaModel.FK_BookRelatedGroup_Book_Id">
+            <End Role="Book" EntitySet="Books" />
+            <End Role="BookRelatedGroup" EntitySet="BookRelatedGroups" />
+          </AssociationSet>
+          <EntitySet Name="JobGroups" EntityType="ppaModel.JobGroup" />
+          <AssociationSet Name="FK_BookRelatedGroup_JobGroup_Id" Association="ppaModel.FK_BookRelatedGroup_JobGroup_Id">
+            <End Role="JobGroup" EntitySet="JobGroups" />
+            <End Role="BookRelatedGroup" EntitySet="BookRelatedGroups" />
+          </AssociationSet>
+          <AssociationSet Name="FK_JOBGROUP_PARENT" Association="ppaModel.FK_JOBGROUP_PARENT">
+            <End Role="JobGroup" EntitySet="JobGroups" />
+            <End Role="JobGroup1" EntitySet="JobGroups" />
+          </AssociationSet>
+          </EntityContainer>
         <EntityType Name="ViewBookFile">
           <Key>
             <PropertyRef Name="Title" />
@@ -667,6 +853,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewFolderApplicable' does not have
           <Property Name="BookKey" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="BookChapter1" Relationship="ppaModel.fk_bf_bf" FromRole="BookChapter" ToRole="BookChapter1" />
           <NavigationProperty Name="BookChapter2" Relationship="ppaModel.fk_bf_bf" FromRole="BookChapter1" ToRole="BookChapter" />
+          <NavigationProperty Name="Book" Relationship="ppaModel.fk_bc_b" FromRole="BookChapter" ToRole="Book" />
         </EntityType>
         <EntityType Name="BookFile">
           <Key>
@@ -677,6 +864,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewFolderApplicable' does not have
           <Property Name="DocumentId" Type="Int32" Nullable="false" />
           <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="ChapterId" Type="Int32" />
+          <NavigationProperty Name="Book" Relationship="ppaModel.FK_BookFile_Book_Id" FromRole="BookFile" ToRole="Book" />
         </EntityType>
         <Association Name="fk_bf_bf">
           <End Type="ppaModel.BookChapter" Role="BookChapter" Multiplicity="0..1" />
@@ -735,6 +923,154 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewFolderApplicable' does not have
           <Property Name="ChapterId" Type="Int32" />
           <Property Name="ChapterParentId" Type="Int32" />
         </EntityType>
+        <EntityType Name="Book">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ISBN" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="DateRelease" Type="DateTime" Precision="0" />
+          <Property Name="PublisherId" Type="Int32" />
+          <Property Name="ISSNPrint" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ISSNElectronic" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="DOI" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Pages" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CategoryId" Type="Int32" Nullable="false" />
+          <Property Name="CustomerId" Type="Int32" />
+          <Property Name="Abstract" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="DateCreate" Type="DateTime" Precision="3" />
+          <Property Name="DatePublished" Type="DateTime" Precision="3" />
+          <Property Name="ImageUrl" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="DateDeadline" Type="DateTime" Precision="3" />
+          <Property Name="Duration" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LanguageId" Type="Int32" />
+          <Property Name="ExternalUrl" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="NumberOfLessens" Type="Int32" />
+          <Property Name="TypeId" Type="Int32" Nullable="false" />
+          <Property Name="JournalId" Type="Int32" />
+          <Property Name="Conference" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ConferenceLocationId" Type="Int32" />
+          <Property Name="DateConference" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Sender" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="No" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="PublishedIn" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="INSPECAccessionNumber" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Edition" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="DateEffective" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="FolderId" Type="Int32" />
+          <Property Name="Issue" Type="Int32" />
+          <Property Name="DeadLine" Type="DateTime" Precision="3" />
+          <Property Name="DateValidUntil" Type="DateTime" Precision="3" />
+          <Property Name="BookKey" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="CourseId" Type="Int32" />
+          <Property Name="FileUrlX" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="SysUrlX" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="BookChapters" Relationship="ppaModel.fk_bc_b" FromRole="Book" ToRole="BookChapter" />
+          <NavigationProperty Name="BookFiles" Relationship="ppaModel.FK_BookFile_Book_Id" FromRole="Book" ToRole="BookFile" />
+          <NavigationProperty Name="BookRelatedGroups" Relationship="ppaModel.FK_BookRelatedGroup_Book_Id" FromRole="Book" ToRole="BookRelatedGroup" />
+        </EntityType>
+        <EntityType Name="BookRelatedGroup">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GroupId" Type="Int32" Nullable="false" />
+          <Property Name="Remark" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="BookId" Type="Int32" Nullable="false" />
+          <Property Name="TypeId" Type="Int32" />
+          <NavigationProperty Name="Book" Relationship="ppaModel.FK_BookRelatedGroup_Book_Id" FromRole="BookRelatedGroup" ToRole="Book" />
+          <NavigationProperty Name="JobGroup" Relationship="ppaModel.FK_BookRelatedGroup_JobGroup_Id" FromRole="BookRelatedGroup" ToRole="JobGroup" />
+        </EntityType>
+        <Association Name="fk_bc_b">
+          <End Type="ppaModel.Book" Role="Book" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ppaModel.BookChapter" Role="BookChapter" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BookChapter">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BookFile_Book_Id">
+          <End Type="ppaModel.Book" Role="Book" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ppaModel.BookFile" Role="BookFile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BookFile">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BookRelatedGroup_Book_Id">
+          <End Type="ppaModel.Book" Role="Book" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ppaModel.BookRelatedGroup" Role="BookRelatedGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BookRelatedGroup">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="JobGroup">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ParentId" Type="Int32" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="FullCode" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerId" Type="Int32" Nullable="false" />
+          <Property Name="FullCode2" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Manager" Type="Int32" />
+          <Property Name="IsSelectable" Type="Boolean" />
+          <Property Name="FullCode2Temp" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="CodeTemp" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ParentTitle" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="BookRelatedGroups" Relationship="ppaModel.FK_BookRelatedGroup_JobGroup_Id" FromRole="JobGroup" ToRole="BookRelatedGroup" />
+          <NavigationProperty Name="JobGroup1" Relationship="ppaModel.FK_JOBGROUP_PARENT" FromRole="JobGroup" ToRole="JobGroup1" />
+          <NavigationProperty Name="JobGroup2" Relationship="ppaModel.FK_JOBGROUP_PARENT" FromRole="JobGroup1" ToRole="JobGroup" />
+        </EntityType>
+        <Association Name="FK_BookRelatedGroup_JobGroup_Id">
+          <End Type="ppaModel.JobGroup" Role="JobGroup" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ppaModel.BookRelatedGroup" Role="BookRelatedGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="JobGroup">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BookRelatedGroup">
+              <PropertyRef Name="GroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_JOBGROUP_PARENT">
+          <End Type="ppaModel.JobGroup" Role="JobGroup" Multiplicity="0..1" />
+          <End Type="ppaModel.JobGroup" Role="JobGroup1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="JobGroup">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="JobGroup1">
+              <PropertyRef Name="ParentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -959,6 +1295,81 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewFolderApplicable' does not have
                 <ScalarProperty Name="Remark" ColumnName="Remark" />
                 <ScalarProperty Name="FileUrl" ColumnName="FileUrl" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Books">
+            <EntityTypeMapping TypeName="ppaModel.Book">
+              <MappingFragment StoreEntitySet="Book">
+                <ScalarProperty Name="SysUrlX" ColumnName="SysUrlX" />
+                <ScalarProperty Name="FileUrlX" ColumnName="FileUrlX" />
+                <ScalarProperty Name="CourseId" ColumnName="CourseId" />
+                <ScalarProperty Name="BookKey" ColumnName="BookKey" />
+                <ScalarProperty Name="DateValidUntil" ColumnName="DateValidUntil" />
+                <ScalarProperty Name="DeadLine" ColumnName="DeadLine" />
+                <ScalarProperty Name="Issue" ColumnName="Issue" />
+                <ScalarProperty Name="FolderId" ColumnName="FolderId" />
+                <ScalarProperty Name="DateEffective" ColumnName="DateEffective" />
+                <ScalarProperty Name="Edition" ColumnName="Edition" />
+                <ScalarProperty Name="INSPECAccessionNumber" ColumnName="INSPECAccessionNumber" />
+                <ScalarProperty Name="PublishedIn" ColumnName="PublishedIn" />
+                <ScalarProperty Name="No" ColumnName="No" />
+                <ScalarProperty Name="Sender" ColumnName="Sender" />
+                <ScalarProperty Name="DateConference" ColumnName="DateConference" />
+                <ScalarProperty Name="ConferenceLocationId" ColumnName="ConferenceLocationId" />
+                <ScalarProperty Name="Conference" ColumnName="Conference" />
+                <ScalarProperty Name="JournalId" ColumnName="JournalId" />
+                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+                <ScalarProperty Name="NumberOfLessens" ColumnName="NumberOfLessens" />
+                <ScalarProperty Name="ExternalUrl" ColumnName="ExternalUrl" />
+                <ScalarProperty Name="LanguageId" ColumnName="LanguageId" />
+                <ScalarProperty Name="Duration" ColumnName="Duration" />
+                <ScalarProperty Name="DateDeadline" ColumnName="DateDeadline" />
+                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+                <ScalarProperty Name="DatePublished" ColumnName="DatePublished" />
+                <ScalarProperty Name="DateCreate" ColumnName="DateCreate" />
+                <ScalarProperty Name="Abstract" ColumnName="Abstract" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="Pages" ColumnName="Pages" />
+                <ScalarProperty Name="DOI" ColumnName="DOI" />
+                <ScalarProperty Name="ISSNElectronic" ColumnName="ISSNElectronic" />
+                <ScalarProperty Name="ISSNPrint" ColumnName="ISSNPrint" />
+                <ScalarProperty Name="PublisherId" ColumnName="PublisherId" />
+                <ScalarProperty Name="DateRelease" ColumnName="DateRelease" />
+                <ScalarProperty Name="ISBN" ColumnName="ISBN" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BookRelatedGroups">
+            <EntityTypeMapping TypeName="ppaModel.BookRelatedGroup">
+              <MappingFragment StoreEntitySet="BookRelatedGroup">
+                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+                <ScalarProperty Name="BookId" ColumnName="BookId" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="JobGroups">
+            <EntityTypeMapping TypeName="ppaModel.JobGroup">
+              <MappingFragment StoreEntitySet="JobGroup">
+                <ScalarProperty Name="ParentTitle" ColumnName="ParentTitle" />
+                <ScalarProperty Name="CodeTemp" ColumnName="CodeTemp" />
+                <ScalarProperty Name="FullCode2Temp" ColumnName="FullCode2Temp" />
+                <ScalarProperty Name="IsSelectable" ColumnName="IsSelectable" />
+                <ScalarProperty Name="Manager" ColumnName="Manager" />
+                <ScalarProperty Name="FullCode2" ColumnName="FullCode2" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="FullCode" ColumnName="FullCode" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

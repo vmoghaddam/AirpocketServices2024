@@ -179,7 +179,7 @@ namespace ApiLibrary.Controllers
                     result.Add(test);
                 }
 
-                  foreach (var item2 in query)
+                foreach (var item2 in query)
                 {
                     var test2 = new Item();
                     test2.Id = item2.Id;
@@ -324,6 +324,193 @@ namespace ApiLibrary.Controllers
             // HttpContext.Response.Headers.Add("Access-Control-Allow-Origin", "*");
             // return Json(result, JsonRequestBehavior.AllowGet);
             return Ok(result);
+        }
+
+        public class _bookgrp
+        {
+            public string title { get; set; }
+            public string code { get; set; }
+            public string code2 { get; set; }
+            public string code3 { get; set; }
+            public bool selected { get; set; }
+        }
+        public class dto_pif
+        {
+            public int Id { get; set; }
+            public string Title { get; set; }
+            public string ISBN { get; set; }
+            public DateTime? DateRelease { get; set; }
+            public DateTime? DateExposure { get; set; }
+            public DateTime? DateCreate { get; set; }
+            public DateTime? DatePublished { get; set; }
+            public int? PublisherId { get; set; }
+            public int? FolderId { get; set; }
+            public string ISSNPrint { get; set; }
+            public string ISSNElectronic { get; set; }
+            public string DOI { get; set; }
+            public string Pages { get; set; }
+            public int CategoryId { get; set; }
+            public int? CustomerId { get; set; }
+            public string Abstract { get; set; }
+            public string ImageUrl { get; set; }
+            public bool? IsExposed { get; set; }
+            public Nullable<System.DateTime> DateDeadline { get; set; }
+            public string Duration { get; set; }
+            public Nullable<int> LanguageId { get; set; }
+            public string Language { get; private set; }
+            public string ExternalUrl { get; set; }
+            public Nullable<int> NumberOfLessens { get; set; }
+            public int TypeId { get; set; }
+            public int? Issue { get; set; }
+            public Nullable<int> JournalId { get; set; }
+            public string Journal { get; private set; }
+            public string Conference { get; set; }
+            public Nullable<int> ConferenceLocationId { get; set; }
+            public string DateConference { get; set; }
+            public string Sender { get; set; }
+            public string No { get; set; }
+            public string PublishedIn { get; set; }
+            public string INSPECAccessionNumber { get; set; }
+            public string Edition { get; set; }
+            public string DateEffective { get; set; }
+
+            public bool? IsVisited { get; set; }
+            public bool? IsDownloaded { get; set; }
+
+            public DateTime? DateVisit { get; set; }
+
+            public DateTime? DateDownload { get; set; }
+
+            public string Authors { get; set; }
+            public string Keywords { get; set; }
+            public string Publisher { get; set; }
+            public string Category { get; private set; }
+            public string BookKey { get; set; }
+            public Nullable<int> CourseId { get; set; }
+
+            public DateTime? DateValidUntil { get; set; }
+            public DateTime? DeadLine { get; set; }
+
+            public string SysUrlX { get; set; }
+            public string FileUrlX { get; set; }
+
+            public List<string> BookGrps { get; set; }
+            //List<EmployeeView> bookRelatedEmployees = null;
+            //public List<EmployeeView> BookRelatedEmployees
+            //{
+            //    get
+            //    {
+            //        if (bookRelatedEmployees == null)
+            //            bookRelatedEmployees = new List<EmployeeView>();
+            //        return bookRelatedEmployees;
+
+            //    }
+            //    set { bookRelatedEmployees = value; }
+            //}
+            List<_bookgrp> bookGroups = null;
+            public List<_bookgrp> BookGroups
+            {
+                get
+                {
+                    if (bookGroups == null)
+                        bookGroups = new List<_bookgrp>();
+                    return bookGroups;
+
+                }
+                set { bookGroups = value; }
+            }
+
+        }
+        [HttpPost]
+        [Route("api/dc/pif/save")]
+        public async Task<IHttpActionResult> PostPIFSave(dto_pif dto)
+        {
+
+            ppa_entities context = new ppa_entities();
+
+            var book = await context.Books.FirstOrDefaultAsync(q => q.Id == dto.Id);
+            if (book == null)
+            {
+                book = new Book()
+                {
+                    DateCreate = DateTime.Now
+                };
+                context.Books.Add(book);
+            }
+
+            book.Title = dto.Title;
+            book.Abstract = dto.Abstract;
+            book.Sender = dto.Sender;
+            book.CategoryId = dto.CategoryId;
+            book.No = dto.No;
+            book.DateRelease = dto.DateRelease;
+            book.DateDeadline = dto.DateDeadline;
+            book.DateEffective = dto.DateEffective;
+            book.DatePublished = dto.DatePublished;
+            book.DateValidUntil = dto.DateValidUntil;
+            book.FileUrlX = dto.FileUrlX;
+            book.SysUrlX = dto.SysUrlX;
+
+            if (dto.Id != -1)
+            {
+                var existing_grps = await context.BookRelatedGroups.Where(q => q.BookId == dto.Id).ToListAsync();
+                if (existing_grps != null && existing_grps.Count > 0)
+                    context.BookRelatedGroups.RemoveRange(existing_grps);
+            }
+            var _grps = new List<Models.JobGroup>();
+            var qry = from q in context.JobGroups
+                      select q;
+            if (dto.CategoryId == 10007)
+            { qry = qry.Where(q => q.FullCode.StartsWith("00101")); _grps = qry.ToList(); }
+            //10008
+            else if (dto.CategoryId == 10008)
+            { qry = qry.Where(q => q.FullCode.StartsWith("00102")); _grps = qry.ToList(); }
+            //dif
+            //95
+            else if (dto.CategoryId == 95)
+            { qry = qry.Where(q => q.FullCode.StartsWith("00103")); _grps = qry.ToList(); }
+
+            else
+            {
+                
+                foreach (var x in dto.BookGroups)
+                {
+                    var qry2 = from q in context.JobGroups
+                               select q;
+                    if (x.code == "-1")
+                    {
+                        //var grps = this.context.JobGroups.Where(q => q.FullCode.StartsWith(x)).ToList();
+                        var grps =  context.JobGroups.ToList();
+                        _grps = _grps.Concat(grps).ToList();
+                    }
+                    else
+                    {
+                        qry = qry.Where(q => q.FullCode.StartsWith(x.code));
+                        var grps = qry.ToList();
+                        _grps = _grps.Concat(grps).ToList();
+
+                        if (!string.IsNullOrEmpty(x.code2))
+                        {
+                            _grps = _grps.Concat(this.context.JobGroups.Where(w => w.FullCode == x.code2)).ToList();
+                        }
+
+                    }
+                }
+            }
+
+            foreach (var x in _grps)
+                this.context.BookRelatedGroups.Add(new Models.BookRelatedGroup()
+                {
+                    Book = entity,
+                    GroupId = x.Id,
+                    TypeId = null,// x.TypeId,
+
+                });
+
+            await context.SaveChangesAsync();
+
+            dto.Id = entity.Id;
+            return Ok(dto);
         }
 
 

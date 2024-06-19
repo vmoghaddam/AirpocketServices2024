@@ -12,14 +12,15 @@ namespace ApiLibrary.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class BookFile
+    public partial class BookRelatedGroup
     {
         public int Id { get; set; }
-        public int BookId { get; set; }
-        public int DocumentId { get; set; }
+        public int GroupId { get; set; }
         public string Remark { get; set; }
-        public Nullable<int> ChapterId { get; set; }
+        public int BookId { get; set; }
+        public Nullable<int> TypeId { get; set; }
     
         public virtual Book Book { get; set; }
+        public virtual JobGroup JobGroup { get; set; }
     }
 }

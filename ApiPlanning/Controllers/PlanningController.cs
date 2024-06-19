@@ -315,7 +315,7 @@ namespace ApiPlanning.Controllers
                 dto.STA = parseDate(dto.STARAW);
                 if (time_mode == "lcb")
                 {
-                    var _offset = TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).TotalMinutes;
+                    var _offset = -210; //TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).TotalMinutes;
                     dto.STD = ((DateTime)dto.STD).AddMinutes(_offset);
                     dto.STA = ((DateTime)dto.STA).AddMinutes(_offset);
                 }

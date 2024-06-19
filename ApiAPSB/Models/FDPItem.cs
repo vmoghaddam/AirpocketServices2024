@@ -28,5 +28,6 @@ namespace ApiAPSB.Models
         public string Remark { get; set; }
     
         public virtual FlightInformation FlightInformation { get; set; }
+        public virtual FDP FDP { get; set; }
     }
 }

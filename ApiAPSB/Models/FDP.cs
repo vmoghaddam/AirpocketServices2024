@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ApiScheduling.Models
+namespace ApiAPSB.Models
 {
     using System;
     using System.Collections.Generic;
@@ -17,12 +17,8 @@ namespace ApiScheduling.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public FDP()
         {
-            this.CrewPickupSMS = new HashSet<CrewPickupSM>();
-            this.ExtensionHistories = new HashSet<ExtensionHistory>();
             this.FDP1 = new HashSet<FDP>();
-            this.FDPExtras = new HashSet<FDPExtra>();
             this.FDPItems = new HashSet<FDPItem>();
-            this.OffItems = new HashSet<OffItem>();
         }
     
         public int Id { get; set; }
@@ -99,19 +95,12 @@ namespace ApiScheduling.Models
         public string PosRemark { get; set; }
         public string PosTicketUrl { get; set; }
         public Nullable<System.DateTime> DutyEndDateLocal { get; set; }
+        public string InitTo { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CrewPickupSM> CrewPickupSMS { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ExtensionHistory> ExtensionHistories { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FDP> FDP1 { get; set; }
         public virtual FDP FDP2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<FDPExtra> FDPExtras { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FDPItem> FDPItems { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<OffItem> OffItems { get; set; }
     }
 }
