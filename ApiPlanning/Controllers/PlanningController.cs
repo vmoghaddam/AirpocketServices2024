@@ -310,14 +310,18 @@ namespace ApiPlanning.Controllers
                 //if (validate.Code != HttpStatusCode.OK)
                 //    return validate;
                 var nowOffset = isUtc ? 0 : TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).TotalMinutes;
+                
 
                 dto.STD = parseDate(dto.STDRAW);
                 dto.STA = parseDate(dto.STARAW);
+                DateTime dto_std =(DateTime) dto.STD;
                 if (time_mode == "lcb")
                 {
                     var _offset = -210; //TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).TotalMinutes;
                     dto.STD = ((DateTime)dto.STD).AddMinutes(_offset);
                     dto.STA = ((DateTime)dto.STA).AddMinutes(_offset);
+                    dto_std = (DateTime)dto.STD;
+
                 }
                 else if (time_mode == "lcl")
                 {
@@ -325,6 +329,7 @@ namespace ApiPlanning.Controllers
                     var to_offset = apt_to == null ? -210 : -1 * apt_to.UTC;
                     dto.STD = ((DateTime)dto.STD).AddMinutes(from_offset);
                     dto.STA = ((DateTime)dto.STA).AddMinutes(to_offset);
+                    dto_std = (DateTime)dto.STD;
                 }
 
 
@@ -396,10 +401,16 @@ namespace ApiPlanning.Controllers
 
 
                     // entity.STD = _std;
+                  //  var temp_std = new DateTime(dt.Year, dt.Month, dt.Day, stdHours, stdMinutes, 0);
+                  //  if ((stdHours >= 0 && stdHours <= 3) && staMinutes < 30)
+                  //      temp_std = temp_std.AddDays(-1);
 
                     entity.STD = new DateTime(dt.Year, dt.Month, dt.Day, stdHours, stdMinutes, 0);
+                    if (dto_std.Day != ((DateTime)entity.STD).Day)
+                        entity.STD = ((DateTime)entity.STD).AddDays(-1);
 
-                    entity.STA = ((DateTime)entity.STD).AddMinutes(duration);
+
+                   entity.STA = ((DateTime)entity.STD).AddMinutes(duration);
                     entity.ChocksOut = entity.STD;
                     entity.ChocksIn = entity.STA;
                     entity.Takeoff = entity.STD;

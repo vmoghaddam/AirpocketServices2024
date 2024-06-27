@@ -21,17 +21,28 @@ namespace ApiFuel.Controllers
         [Route("api/fuel/report")]
         public async Task<IHttpActionResult> GetFuelReport(DateTime dfrom, DateTime dto)
         {
-            dfrom = dfrom.Date;
-            dto = dto.Date.AddDays(1);
-            ppa_entities context = new ppa_entities();
-            var query = from x in context.AppFuels
-                        where x.STDDay>=dfrom && x.STDDay<=dto
-                        select x;
+            try
+            {
+                dfrom = dfrom.Date;
+                dto = dto.Date.AddDays(1);
+                ppa_entities context = new ppa_entities();
+                var query = from x in context.AppFuels
+                            where x.STDDay >= dfrom && x.STDDay <= dto
+                            select x;
 
-            var result = await query.OrderBy(q=>q.STD).ToListAsync();
+                var result = await query.OrderBy(q => q.STD).ToListAsync();
 
 
-            return Ok(result);
+                return Ok(result);
+            }
+            catch(Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += "   " + ex.InnerException.Message;
+                return Ok(msg);
+            }
+           
         }
 
     }

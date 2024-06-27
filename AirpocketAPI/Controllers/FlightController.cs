@@ -2071,7 +2071,7 @@ namespace AirpocketAPI.Controllers
 
         [Route("api/xls")]
         [AcceptVerbs("GET")]
-        public HttpResponseMessage GetXLSOLD(DateTime dt1, DateTime dt2, int chr, int time, int cnl, int crew, int sort, int sep, bool utcRef)
+        public HttpResponseMessage GetXLSOLD(DateTime dt1, DateTime dt2, int chr, int time, int cnl, int crew, int sort, int sep, bool utcRef=false)
         {
 
             var _dt1 = dt1.Date;
