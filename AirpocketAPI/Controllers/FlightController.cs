@@ -2973,6 +2973,8 @@ namespace AirpocketAPI.Controllers
                                PID = x.PID,
                                Mobile = x.Mobile,
                                Address = x.Address,
+                               PassportNo=x.Sex
+
 
 
                            }).ToList();
@@ -2991,7 +2993,8 @@ namespace AirpocketAPI.Controllers
                                x.IsCockpit,
                                x.PID,
                                x.Mobile,
-                               x.Address
+                               x.Address,
+                               x.PassportNo
                            } into grp
                            select grp).ToList();
             var query = (from x in _gcrews
@@ -3011,6 +3014,7 @@ namespace AirpocketAPI.Controllers
                              Mobile = x.Key.Mobile,
                              Address = x.Key.Address,
                              IsCockpit = x.Key.IsCockpit,
+                             PassportNo=x.Key.PassportNo,
                              Legs = vflights.Where(q => xfids.Contains((int)q.ID)).OrderBy(q => q.DepartureLocal).Select(q => q.FlightNumber).Distinct().ToList(),
                              LegsStr = string.Join("-", vflights.Where(q => xfids.Contains((int)q.ID)).OrderBy(q => q.DepartureLocal).Select(q => q.FlightNumber).Distinct().ToList()),
 
@@ -3061,14 +3065,14 @@ namespace AirpocketAPI.Controllers
             workbook.LoadFromFile(mappedPathSource);
             Worksheet sheet = workbook.Worksheets[0];
 
-            sheet.Range[2, 6].Text = result.no2;
+            sheet.Range[2, 7].Text = result.no2;
             if (result.flights.Count > 1)
-                sheet.Range[2, 6].Text = result.no2 + " (" + result.route + ")";
-            sheet.Range[2, 8].Text = ((DateTime)result.stdLocal).ToString("yyyy-MM-dd");
+                sheet.Range[2, 7].Text = result.no2 + " (" + result.route + ")";
+            sheet.Range[2, 10].Text = ((DateTime)result.std).ToString("yyyy-MM-dd");
             sheet.Range[3, 1].Value = "Marks of Nationality and Registration:" + result.regs;
 
-            sheet.Range[3, 6].Text = result.flights.First().FromAirportIATA + " - " + ((DateTime)result.flights.First().DepartureLocal).ToString("HH:mm");
-            sheet.Range[3, 8].Text = result.flights.Last().ToAirportIATA + " - " + ((DateTime)result.flights.Last().ArrivalLocal).ToString("HH:mm");
+            sheet.Range[3, 7].Text = result.flights.First().FromAirportIATA + " - " + ((DateTime)result.flights.First().STD).ToString("HH:mm");
+            sheet.Range[3, 10].Text = result.flights.Last().ToAirportIATA + " - " + ((DateTime)result.flights.Last().STA).ToString("HH:mm");
 
             var r = 5;
             foreach (var cr in result.crew)
@@ -3076,6 +3080,8 @@ namespace AirpocketAPI.Controllers
 
                 sheet.Range[r, 2].Text = cr.Position;
                 sheet.Range[r, 3].Text = cr.Name;
+                sheet.Range[r, 4].Text = cr.PassportNo;
+
                 r++;
             }
 
@@ -9147,6 +9153,7 @@ new JsonSerializerSettings
             {
                 q.FlightNumber,
                 q.Register,
+                q.AircraftType,
                 q.FromAirportIATA,
                 q.ToAirportIATA,
                 DepLocal = q.STDLOC,

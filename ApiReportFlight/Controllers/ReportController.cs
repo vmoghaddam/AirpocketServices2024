@@ -711,7 +711,18 @@ namespace ApiReportFlight.Controllers
                         query = query.Where(q => q.Delay >= 181);
                         break;
                     case 8:
+                        // query = query.Where(q => q.Delay <= 15);
+                        query = query.Where(q => q.Delay <=0);
+                        break;
+                    case 9:
                         query = query.Where(q => q.Delay <= 15);
+                        break;
+                    case 10:
+                        query = query.Where(q => q.Delay > 15);
+                        break;
+                    case 11:
+                        // query = query.Where(q => q.Delay <= 15);
+                        query = query.Where(q => q.Delay > 0);
                         break;
                     default: break;
                 }
@@ -1809,6 +1820,7 @@ namespace ApiReportFlight.Controllers
             public int? JLBlockTime { get; set; }
             public int? FixTime { get; set; }
             public string PID { get; set; }
+            public string ValidTypes { get; set; }
         }
 
         public class CrewSummaryDto
@@ -1946,9 +1958,9 @@ namespace ApiReportFlight.Controllers
 
 
 
-        [Route("api/crew/flights/{grp}")]
+        [Route("api/crew/flights/{grp}/{type}")]
         [AcceptVerbs("GET")]
-        public IHttpActionResult GetCrewFlightTimes(string grp, DateTime df, DateTime dt)
+        public IHttpActionResult GetCrewFlightTimes(string grp,string type, DateTime df, DateTime dt)
         {
             try
             {
@@ -1969,10 +1981,56 @@ namespace ApiReportFlight.Controllers
                 var ctx = new ppa_Entities();
                 var _df = df.Date;
                 var _dt = dt.Date.AddDays(1);
-                var _query = (
-                               from x in ctx.ViewLegCrews
+                var _query_x = from x in ctx.ViewLegCrews
                                where x.STDLocal >= df && x.STDLocal < dt && x.FlightStatusID != 4
-                               group x by new { x.CrewId, x.ScheduleName, x.JobGroup, x.JobGroupCode, x.Name, x.PID, x.ValidTypes,x.BaseAirport,x.BaseAirportId } into _grp
+                               select x;
+                if (grp != "ALL")
+                {
+                    var ds_cockpit = new List<string>() { "TRE", "TRI", "LTC", "P1", "P2" };
+                    var ds_ip = new List<string>() { "TRE", "TRI", "LTC" };
+                    var ds_cabin = new List<string>() { "ISCCM","SCCM","CCM","CC","CCE","CCI" };
+                    switch (grp)
+                    {
+                        case "COCKPIT":
+                            _query_x = _query_x.Where(q => ds_cockpit.Contains(q.JobGroup) );
+                            break;
+                        case "IP":
+                            _query_x = _query_x.Where(q => ds_ip.Contains(q.JobGroup) );
+                            break;
+                        case "P1":
+                            _query_x = _query_x.Where(q => q.JobGroup=="P1");
+                            break;
+                        case "P2":
+                            _query_x = _query_x.Where(q => q.JobGroup == "P2");
+                            break;
+                        case "ISCCM":
+                            _query_x = _query_x.Where(q => q.JobGroup == "ISCCM");
+                            break;
+                        case "SCCM":
+                            _query_x = _query_x.Where(q => q.JobGroup == "SCCM");
+                            break;
+                        case "CCM":
+                            _query_x = _query_x.Where(q => q.JobGroup == "CCM");
+                            break;
+                        case "CABIN":
+                            _query_x = _query_x.Where(q => ds_cabin.IndexOf(q.JobGroup) != -1);
+                            break;
+                        case "ALL":
+                            //_query_x = _query_x.Where(q => ds_cockpit.IndexOf(q.JobGroup) != -1);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                if (type!="ALL")
+                {
+                    _query_x = _query_x.Where(q => q.ValidTypes.Contains(type));
+                }
+                var _query = (
+                               //from x in ctx.ViewLegCrews
+                               //where x.STDLocal >= df && x.STDLocal < dt && x.FlightStatusID != 4
+                               from x in _query_x
+                               group x by new { x.CrewId, x.ScheduleName, x.JobGroup, x.JobGroupCode, x.Name, x.PID, x.ValidTypes,x.BaseAirport,x.BaseAirportId  } into _grp
                                select new FlightTimeDto()
                                {
                                    CrewId = _grp.Key.CrewId,
@@ -1983,6 +2041,7 @@ namespace ApiReportFlight.Controllers
                                    PID = _grp.Key.PID,
                                    Type=_grp.Key.ValidTypes,
                                    HomeBase=_grp.Key.BaseAirport,
+                                   ValidTypes=_grp.Key.ValidTypes,
 
                                    Legs = _grp.Where(q => q.IsPositioning == false).Count(),
                                    DH = _grp.Where(q => q.IsPositioning == true).Count(),

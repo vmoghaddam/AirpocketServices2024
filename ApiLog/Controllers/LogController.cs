@@ -1173,17 +1173,17 @@ namespace ApiLog.Controllers
 
 
 
-                //var grounds = (from x in context.ViewRegisterGrounds
-                //               where x.CustomerId == cid &&
-                //               (
-                //                (dateFrom >= x.DateFrom && dateTo <= x.DateEnd) ||
-                //                (x.DateFrom >= dateFrom && x.DateEnd <= dateTo) ||
+                var grounds = (from x in context.ViewRegisterGrounds
+                               where x.CustomerId == cid &&
+                               (
+                                (dateFrom >= x.DateFrom && dateTo <= x.DateEnd) ||
+                                (x.DateFrom >= dateFrom && x.DateEnd <= dateTo) ||
 
-                //                (x.DateFrom >= dateFrom && x.DateFrom <= dateTo) ||
-                //                (x.DateEnd >= dateFrom && x.DateEnd <= dateTo)
-                //               )
-                //               select x).ToList();
-                var grounds = new List<ViewRegisterGround>();
+                                (x.DateFrom >= dateFrom && x.DateFrom <= dateTo) ||
+                                (x.DateEnd >= dateFrom && x.DateEnd <= dateTo)
+                               )
+                               select x).ToList();
+                // var grounds = new List<ViewRegisterGround>();
 
                 flights = flights.OrderBy(q => q.STD).ToList();
 

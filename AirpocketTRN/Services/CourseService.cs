@@ -1602,19 +1602,19 @@ namespace AirpocketTRN.Services
                 });
 
                 //comment for fucking karun
-                //ds.Add(new ViewCoursePeoplePassedRanked()
-                //{
-                //    FirstName = person.FirstName,
-                //    LastName = person.LastName,
-                //    JobGroup = employee.JobGroup,
-                //    NID = person.NID,
-                //    Title = "CCRM",
-                //    DateIssue = person.CCRMIssueDate,
-                //    DateExpire = person.CCRMExpireDate,
-                //    Interval = 36,
-                //    ImageUrl = (result == null || result.Count == 0) ? "" : result.First().ImageUrl,
-                //    PersonId = employee.PersonId,
-                //});
+                ds.Add(new ViewCoursePeoplePassedRanked()
+                {
+                    FirstName = person.FirstName,
+                    LastName = person.LastName,
+                    JobGroup = employee.JobGroup,
+                    NID = person.NID,
+                    Title = "CCRM",
+                    DateIssue = person.CCRMIssueDate,
+                    DateExpire = person.CCRMExpireDate,
+                    Interval = 36,
+                    ImageUrl = (result == null || result.Count == 0) ? "" : result.First().ImageUrl,
+                    PersonId = employee.PersonId,
+                });
 
                 ds.Add(new ViewCoursePeoplePassedRanked()
                 {
@@ -1658,19 +1658,19 @@ namespace AirpocketTRN.Services
                     PersonId = employee.PersonId,
                 });
                 //comment for fucking karun
-                //ds.Add(new ViewCoursePeoplePassedRanked()
-                //{
-                //    FirstName = person.FirstName,
-                //    LastName = person.LastName,
-                //    JobGroup = employee.JobGroup,
-                //    NID = person.NID,
-                //    Title = "GRT",
-                //    DateIssue = person.DateCaoCardIssue,
-                //    DateExpire = person.DateCaoCardExpire,
-                //    Interval = 12,
-                //    ImageUrl = (result == null || result.Count == 0) ? "" : result.First().ImageUrl,
-                //    PersonId = employee.PersonId,
-                //});
+                ds.Add(new ViewCoursePeoplePassedRanked()
+                {
+                    FirstName = person.FirstName,
+                    LastName = person.LastName,
+                    JobGroup = employee.JobGroup,
+                    NID = person.NID,
+                    Title = "GRT",
+                    DateIssue = person.DateCaoCardIssue,
+                    DateExpire = person.DateCaoCardExpire,
+                    Interval = 12,
+                    ImageUrl = (result == null || result.Count == 0) ? "" : result.First().ImageUrl,
+                    PersonId = employee.PersonId,
+                });
 
                 ds.Add(new ViewCoursePeoplePassedRanked()
                 {
@@ -1777,19 +1777,19 @@ namespace AirpocketTRN.Services
 
 
                 //comment for fucking karun
-                //ds.Add(new ViewCoursePeoplePassedRanked()
-                //{
-                //    FirstName = person.FirstName,
-                //    LastName = person.LastName,
-                //    JobGroup = employee.JobGroup,
-                //    NID = person.NID,
-                //    Title = "CCRM",
-                //    DateIssue = person.CCRMIssueDate,
-                //    DateExpire = person.CCRMExpireDate,
-                //    Interval = 36,
-                //    ImageUrl = (result == null || result.Count == 0) ? "" : result.First().ImageUrl,
-                //    PersonId = employee.PersonId,
-                //});
+                ds.Add(new ViewCoursePeoplePassedRanked()
+                {
+                    FirstName = person.FirstName,
+                    LastName = person.LastName,
+                    JobGroup = employee.JobGroup,
+                    NID = person.NID,
+                    Title = "CCRM",
+                    DateIssue = person.CCRMIssueDate,
+                    DateExpire = person.CCRMExpireDate,
+                    Interval = 36,
+                    ImageUrl = (result == null || result.Count == 0) ? "" : result.First().ImageUrl,
+                    PersonId = employee.PersonId,
+                });
 
                 ds.Add(new ViewCoursePeoplePassedRanked()
                 {
@@ -1826,7 +1826,7 @@ namespace AirpocketTRN.Services
                     NID = person.NID,
                     Title = "TYPE RECURRENT",
                     DateIssue = person.RecurrentIssueDate,
-                    DateExpire = person.RecurrentIssueDate == null ? null : (Nullable<DateTime>)((DateTime)person.RecurrentIssueDate).AddYears(1),
+                    DateExpire = person.RecurrentIssueDate == null ? null : person.RecurrentExpireDate,//(Nullable<DateTime>)((DateTime)person.RecurrentIssueDate).AddYears(1),
                     Interval = 12,
                     ImageUrl = (result == null || result.Count == 0) ? "" : result.First().ImageUrl,
                     PersonId = employee.PersonId,
@@ -1841,7 +1841,7 @@ namespace AirpocketTRN.Services
                     //DateIssue = person.DateIssueNDT,
                     // DateExpire = person.DateIssueNDT == null ? null : (Nullable<DateTime>)((DateTime)person.DateIssueNDT).AddYears(1),
                     DateIssue = person.LineIssueDate,
-                    DateExpire = person.LineIssueDate == null ? null : (Nullable<DateTime>)((DateTime)person.LineIssueDate).AddYears(1),
+                    DateExpire = person.LineIssueDate == null ? null : person.LineExpireDate, //(Nullable<DateTime>)((DateTime)person.LineIssueDate).AddYears(1),
 
                     Interval = 12,
                     ImageUrl = (result == null || result.Count == 0) ? "" : result.First().ImageUrl,
