@@ -84,17 +84,17 @@ namespace XAPI
         public int? GroundSpeed { get; set; }
     }
 
-    public class BurnOffAdjustment
-    {
-        public string Value { get; set; }
-        public string Fuel { get; set; }
-    }
+   
 
     public class Distances
     {
+     
         public int? Trip { get; set; }
         public int? Alternate1 { get; set; }
         public int? Alternate2 { get; set; }
+        public int? TakeOffAlternate { get; set; }
+        public int? GroundDistance { get; set; }
+        public int? AirDistance { get; set; }
     }
 
     public class Fuels
@@ -110,6 +110,11 @@ namespace XAPI
         public int? Extra { get; set; }
         public int? Total { get; set; }
         public int? Landing { get; set; }
+        public int? Holding { get; set; }
+
+        public int? MODAlternate1 { get; set; }
+        public int? MODAlternate2 { get; set; }
+
     }
 
     public class HeightChange
@@ -117,8 +122,12 @@ namespace XAPI
         public object Value { get; set; }
         public object Fuel { get; set; }
     }
+    public class BurnOffAdjustment
+    {
+        public object Value { get; set; }
+        public object Fuel { get; set; }
+    }
 
-    
 
     public class Root
     {
@@ -169,6 +178,10 @@ namespace XAPI
         public string Alternate1Route { get; set; }
         public string Alternate2Route { get; set; }
         public string TakeoffAlternateRoute { get; set; }
+        public string MaxWindShearLevel { get; set; }
+        public string MaxWindShearPointName { get; set; }
+        public string FlightRule { get; set; }
+        public string ICAOFlightPlan { get; set; }
         public DateTime? PlanValidity { get; set; }
         public Fuels Fuels { get; set; }
         public Times Times { get; set; }
@@ -180,16 +193,27 @@ namespace XAPI
         public  HeightChange  HeightChange { get; set; }
         //public List<BurnOffAdjustment> BurnOffAdjustment { get; set; }
         public  BurnOffAdjustment  BurnOffAdjustment { get; set; }
-        public List<WindTemperature> WindTemperatureClimb { get; set; }
-        public List<WindTemperature> WindTemperatureCruise { get; set; }
-        public List<WindTemperature> WindTemperatureDescent { get; set; }
+        //public List<WindTemperature> WindTemperatureClimb { get; set; }
+        // public List<WindTemperature> WindTemperatureCruise { get; set; }
+        // public List<WindTemperature> WindTemperatureDescent { get; set; }
+        //List<List<KeyValuePair<string,string>>>
+
+        public List<object> MainWindTemperature { get; set; }
+        public List<object> Alternate1WindTemperature { get; set; }
+        public List<object> Alternate2WindTemperature { get; set; }
+        public List<object> TakeOffAlternateWindTemperature { get; set; }
     }
 
     public class Times
     {
+     
         public string Trip { get; set; }
         public string Alternate { get; set; }
+        public string Alternate1 { get; set; }
+        public string Alternate2 { get; set; }
+        public string TakeOffAlternate { get; set; }
         public string FinalReserve { get; set; }
+        public string Holding { get; set; }
         public string Contingency { get; set; }
         public string MinimumRequired { get; set; }
         public string Additional { get; set; }

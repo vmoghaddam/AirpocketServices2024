@@ -86,6 +86,17 @@
           <Property Name="InitTo" Type="varchar" MaxLength="500" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.rpt_pax_total' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="rpt_pax_total">
+          <Key>
+            <PropertyRef Name="Route" />
+            <PropertyRef Name="TotalPax" />
+          </Key>
+          <Property Name="Route" Type="nvarchar" MaxLength="511" Nullable="false" />
+          <Property Name="Flights" Type="int" />
+          <Property Name="TotalPax" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.RptFDP2' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="RptFDP2">
           <Key>
@@ -636,6 +647,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewCrew' does not have a primary k
           <Property Name="IsTREExpired" Type="int" Nullable="false" />
           <Property Name="Type737Expired" Type="datetime2" Precision="7" />
           <Property Name="TypeMDExpired" Type="datetime2" Precision="7" />
+          <Property Name="LicenceTitle" Type="nvarchar" MaxLength="500" />
+          <Property Name="LicenceNo" Type="nvarchar" MaxLength="200" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.ViewCrewFlightApp' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1481,6 +1494,51 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewLegCrew' does not have a primar
           <Property Name="BaseAirportId" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.ViewRegHistoryYearly' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ViewRegHistoryYearly">
+          <Key>
+            <PropertyRef Name="Year" />
+            <PropertyRef Name="Month" />
+            <PropertyRef Name="Child" />
+            <PropertyRef Name="Infant" />
+            <PropertyRef Name="Adult" />
+            <PropertyRef Name="TotalPax" />
+            <PropertyRef Name="TotalPaxAll" />
+            <PropertyRef Name="TotalSeat" />
+            <PropertyRef Name="BlockTime" />
+            <PropertyRef Name="FlightTime" />
+          </Key>
+          <Property Name="Year" Type="int" Nullable="false" />
+          <Property Name="Month" Type="int" Nullable="false" />
+          <Property Name="YearName" Type="nvarchar" MaxLength="255" />
+          <Property Name="MonthName" Type="nvarchar" MaxLength="255" />
+          <Property Name="YearMonth" Type="nvarchar" MaxLength="513" />
+          <Property Name="Legs" Type="int" />
+          <Property Name="Child" Type="int" Nullable="false" />
+          <Property Name="Infant" Type="int" Nullable="false" />
+          <Property Name="Adult" Type="int" Nullable="false" />
+          <Property Name="TotalPax" Type="int" Nullable="false" />
+          <Property Name="TotalPaxAll" Type="int" Nullable="false" />
+          <Property Name="TotalSeat" Type="int" Nullable="false" />
+          <Property Name="LoadFactor" Type="int" />
+          <Property Name="BlockTime" Type="int" Nullable="false" />
+          <Property Name="FlightTime" Type="int" Nullable="false" />
+          <Property Name="FtLeg" Type="numeric" Precision="24" Scale="12" />
+          <Property Name="BtLeg" Type="numeric" Precision="24" Scale="12" />
+          <Property Name="PaxLeg" Type="numeric" Precision="24" Scale="12" />
+          <Property Name="Res1" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="Res2" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="Res3" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="Res4" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="Res5" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="ResInt1" Type="int" />
+          <Property Name="ResInt2" Type="int" />
+          <Property Name="ResInt3" Type="int" />
+          <Property Name="ResInt4" Type="int" />
+          <Property Name="ResInt5" Type="int" />
+          <Property Name="ResInt6" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="XFlightCrew">
           <Key>
@@ -1530,6 +1588,13 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
         </Association>
         <EntityContainer Name="ModelEntitiesStoreContainer">
           <EntitySet Name="FDP" EntityType="Self.FDP" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="rpt_pax_total" EntityType="Self.rpt_pax_total" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [rpt_pax_total].[Route] AS [Route], 
+    [rpt_pax_total].[Flights] AS [Flights], 
+    [rpt_pax_total].[TotalPax] AS [TotalPax]
+    FROM [dbo].[rpt_pax_total] AS [rpt_pax_total]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="RptFDP2" EntityType="Self.RptFDP2" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [RptFDP2].[FDPId] AS [FDPId], 
@@ -1967,7 +2032,9 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
     [ViewCrew].[IsTRIExpired] AS [IsTRIExpired], 
     [ViewCrew].[IsTREExpired] AS [IsTREExpired], 
     [ViewCrew].[Type737Expired] AS [Type737Expired], 
-    [ViewCrew].[TypeMDExpired] AS [TypeMDExpired]
+    [ViewCrew].[TypeMDExpired] AS [TypeMDExpired], 
+    [ViewCrew].[LicenceTitle] AS [LicenceTitle], 
+    [ViewCrew].[LicenceNo] AS [LicenceNo]
     FROM [dbo].[ViewCrew] AS [ViewCrew]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ViewCrewFlightApp" EntityType="Self.ViewCrewFlightApp" store:Type="Views" store:Schema="dbo">
@@ -2664,6 +2731,39 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
     [ViewLegCrew].[BaseAirportId] AS [BaseAirportId]
     FROM [dbo].[ViewLegCrew] AS [ViewLegCrew]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="ViewRegHistoryYearly" EntityType="Self.ViewRegHistoryYearly" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ViewRegHistoryYearly].[Year] AS [Year], 
+    [ViewRegHistoryYearly].[Month] AS [Month], 
+    [ViewRegHistoryYearly].[YearName] AS [YearName], 
+    [ViewRegHistoryYearly].[MonthName] AS [MonthName], 
+    [ViewRegHistoryYearly].[YearMonth] AS [YearMonth], 
+    [ViewRegHistoryYearly].[Legs] AS [Legs], 
+    [ViewRegHistoryYearly].[Child] AS [Child], 
+    [ViewRegHistoryYearly].[Infant] AS [Infant], 
+    [ViewRegHistoryYearly].[Adult] AS [Adult], 
+    [ViewRegHistoryYearly].[TotalPax] AS [TotalPax], 
+    [ViewRegHistoryYearly].[TotalPaxAll] AS [TotalPaxAll], 
+    [ViewRegHistoryYearly].[TotalSeat] AS [TotalSeat], 
+    [ViewRegHistoryYearly].[LoadFactor] AS [LoadFactor], 
+    [ViewRegHistoryYearly].[BlockTime] AS [BlockTime], 
+    [ViewRegHistoryYearly].[FlightTime] AS [FlightTime], 
+    [ViewRegHistoryYearly].[FtLeg] AS [FtLeg], 
+    [ViewRegHistoryYearly].[BtLeg] AS [BtLeg], 
+    [ViewRegHistoryYearly].[PaxLeg] AS [PaxLeg], 
+    [ViewRegHistoryYearly].[Res1] AS [Res1], 
+    [ViewRegHistoryYearly].[Res2] AS [Res2], 
+    [ViewRegHistoryYearly].[Res3] AS [Res3], 
+    [ViewRegHistoryYearly].[Res4] AS [Res4], 
+    [ViewRegHistoryYearly].[Res5] AS [Res5], 
+    [ViewRegHistoryYearly].[ResInt1] AS [ResInt1], 
+    [ViewRegHistoryYearly].[ResInt2] AS [ResInt2], 
+    [ViewRegHistoryYearly].[ResInt3] AS [ResInt3], 
+    [ViewRegHistoryYearly].[ResInt4] AS [ResInt4], 
+    [ViewRegHistoryYearly].[ResInt5] AS [ResInt5], 
+    [ViewRegHistoryYearly].[ResInt6] AS [ResInt6]
+    FROM [dbo].[ViewRegHistoryYearly] AS [ViewRegHistoryYearly]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="XFlightCrew" EntityType="Self.XFlightCrew" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [XFlightCrew].[CrewId] AS [CrewId], 
@@ -2725,6 +2825,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySet Name="RptFDPItems" EntityType="ModelEntities.RptFDPItem" />
           <EntitySet Name="ViewLegCrews" EntityType="ModelEntities.ViewLegCrew" />
           <EntitySet Name="ViewFlightPaxes" EntityType="ModelEntities.ViewFlightPax" />
+          <EntitySet Name="ViewRegHistoryYearlies" EntityType="ModelEntities.ViewRegHistoryYearly" />
+          <EntitySet Name="rpt_pax_total" EntityType="ModelEntities.rpt_pax_total" />
         </EntityContainer>
         <EntityType Name="ViewFinMonthlyRoute">
           <Key>
@@ -3046,6 +3148,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="IsTREExpired" Type="Int32" Nullable="false" />
           <Property Name="Type737Expired" Type="DateTime" Precision="7" />
           <Property Name="TypeMDExpired" Type="DateTime" Precision="7" />
+          <Property Name="LicenceTitle" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="LicenceNo" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="RptNoFDP">
           <Key>
@@ -4177,6 +4281,58 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="Total_Pax" Type="Int32" />
           <Property Name="Total_Rev" Type="Int32" />
         </EntityType>
+        <EntityType Name="ViewRegHistoryYearly">
+          <Key>
+            <PropertyRef Name="Year" />
+            <PropertyRef Name="Month" />
+            <PropertyRef Name="Child" />
+            <PropertyRef Name="Infant" />
+            <PropertyRef Name="Adult" />
+            <PropertyRef Name="TotalPax" />
+            <PropertyRef Name="TotalPaxAll" />
+            <PropertyRef Name="TotalSeat" />
+            <PropertyRef Name="BlockTime" />
+            <PropertyRef Name="FlightTime" />
+          </Key>
+          <Property Name="Year" Type="Int32" Nullable="false" />
+          <Property Name="Month" Type="Int32" Nullable="false" />
+          <Property Name="YearName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="MonthName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="YearMonth" Type="String" MaxLength="513" FixedLength="false" Unicode="true" />
+          <Property Name="Legs" Type="Int32" />
+          <Property Name="Child" Type="Int32" Nullable="false" />
+          <Property Name="Infant" Type="Int32" Nullable="false" />
+          <Property Name="Adult" Type="Int32" Nullable="false" />
+          <Property Name="TotalPax" Type="Int32" Nullable="false" />
+          <Property Name="TotalPaxAll" Type="Int32" Nullable="false" />
+          <Property Name="TotalSeat" Type="Int32" Nullable="false" />
+          <Property Name="LoadFactor" Type="Int32" />
+          <Property Name="BlockTime" Type="Int32" Nullable="false" />
+          <Property Name="FlightTime" Type="Int32" Nullable="false" />
+          <Property Name="FtLeg" Type="Decimal" Precision="24" Scale="12" />
+          <Property Name="BtLeg" Type="Decimal" Precision="24" Scale="12" />
+          <Property Name="PaxLeg" Type="Decimal" Precision="24" Scale="12" />
+          <Property Name="Res1" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="Res2" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="Res3" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="Res4" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="Res5" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="ResInt1" Type="Int32" />
+          <Property Name="ResInt2" Type="Int32" />
+          <Property Name="ResInt3" Type="Int32" />
+          <Property Name="ResInt4" Type="Int32" />
+          <Property Name="ResInt5" Type="Int32" />
+          <Property Name="ResInt6" Type="Int32" />
+        </EntityType>
+        <EntityType Name="rpt_pax_total">
+          <Key>
+            <PropertyRef Name="Route" />
+            <PropertyRef Name="TotalPax" />
+          </Key>
+          <Property Name="Route" Type="String" Nullable="false" MaxLength="511" FixedLength="false" Unicode="true" />
+          <Property Name="Flights" Type="Int32" />
+          <Property Name="TotalPax" Type="Int32" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4304,6 +4460,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySetMapping Name="ViewCrews">
             <EntityTypeMapping TypeName="ModelEntities.ViewCrew">
               <MappingFragment StoreEntitySet="ViewCrew">
+                <ScalarProperty Name="LicenceNo" ColumnName="LicenceNo" />
+                <ScalarProperty Name="LicenceTitle" ColumnName="LicenceTitle" />
                 <ScalarProperty Name="TypeMDExpired" ColumnName="TypeMDExpired" />
                 <ScalarProperty Name="Type737Expired" ColumnName="Type737Expired" />
                 <ScalarProperty Name="IsTREExpired" ColumnName="IsTREExpired" />
@@ -5460,6 +5618,50 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
                 <ScalarProperty Name="RES_Adult" ColumnName="RES_Adult" />
                 <ScalarProperty Name="FlightId" ColumnName="FlightId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ViewRegHistoryYearlies">
+            <EntityTypeMapping TypeName="ModelEntities.ViewRegHistoryYearly">
+              <MappingFragment StoreEntitySet="ViewRegHistoryYearly">
+                <ScalarProperty Name="ResInt6" ColumnName="ResInt6" />
+                <ScalarProperty Name="ResInt5" ColumnName="ResInt5" />
+                <ScalarProperty Name="ResInt4" ColumnName="ResInt4" />
+                <ScalarProperty Name="ResInt3" ColumnName="ResInt3" />
+                <ScalarProperty Name="ResInt2" ColumnName="ResInt2" />
+                <ScalarProperty Name="ResInt1" ColumnName="ResInt1" />
+                <ScalarProperty Name="Res5" ColumnName="Res5" />
+                <ScalarProperty Name="Res4" ColumnName="Res4" />
+                <ScalarProperty Name="Res3" ColumnName="Res3" />
+                <ScalarProperty Name="Res2" ColumnName="Res2" />
+                <ScalarProperty Name="Res1" ColumnName="Res1" />
+                <ScalarProperty Name="PaxLeg" ColumnName="PaxLeg" />
+                <ScalarProperty Name="BtLeg" ColumnName="BtLeg" />
+                <ScalarProperty Name="FtLeg" ColumnName="FtLeg" />
+                <ScalarProperty Name="FlightTime" ColumnName="FlightTime" />
+                <ScalarProperty Name="BlockTime" ColumnName="BlockTime" />
+                <ScalarProperty Name="LoadFactor" ColumnName="LoadFactor" />
+                <ScalarProperty Name="TotalSeat" ColumnName="TotalSeat" />
+                <ScalarProperty Name="TotalPaxAll" ColumnName="TotalPaxAll" />
+                <ScalarProperty Name="TotalPax" ColumnName="TotalPax" />
+                <ScalarProperty Name="Adult" ColumnName="Adult" />
+                <ScalarProperty Name="Infant" ColumnName="Infant" />
+                <ScalarProperty Name="Child" ColumnName="Child" />
+                <ScalarProperty Name="Legs" ColumnName="Legs" />
+                <ScalarProperty Name="YearMonth" ColumnName="YearMonth" />
+                <ScalarProperty Name="MonthName" ColumnName="MonthName" />
+                <ScalarProperty Name="YearName" ColumnName="YearName" />
+                <ScalarProperty Name="Month" ColumnName="Month" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="rpt_pax_total">
+            <EntityTypeMapping TypeName="ModelEntities.rpt_pax_total">
+              <MappingFragment StoreEntitySet="rpt_pax_total">
+                <ScalarProperty Name="TotalPax" ColumnName="TotalPax" />
+                <ScalarProperty Name="Flights" ColumnName="Flights" />
+                <ScalarProperty Name="Route" ColumnName="Route" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

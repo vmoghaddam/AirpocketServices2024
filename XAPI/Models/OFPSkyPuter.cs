@@ -14,6 +14,12 @@ namespace XAPI.Models
     
     public partial class OFPSkyPuter
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public OFPSkyPuter()
+        {
+            this.OFPB_Root = new HashSet<OFPB_Root>();
+        }
+    
         public int Id { get; set; }
         public Nullable<int> FlightId { get; set; }
         public string FlightNumber { get; set; }
@@ -24,5 +30,8 @@ namespace XAPI.Models
         public Nullable<System.DateTime> DateUpload { get; set; }
         public Nullable<int> UploadStatus { get; set; }
         public string UploadMessage { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<OFPB_Root> OFPB_Root { get; set; }
     }
 }

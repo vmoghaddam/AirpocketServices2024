@@ -285,7 +285,7 @@ namespace XAPI.Controllers
         public class ofp_dto
         {
             public string plan { get; set; }
-            
+
         }
         //[Route("api/ofp")]
         //[AcceptVerbs("POST")]
@@ -309,22 +309,42 @@ namespace XAPI.Controllers
             var ctx = new PPAEntities();
             try
             {
-                 result = await Request.Content.ReadAsStringAsync();
+                result = await Request.Content.ReadAsStringAsync();
 
                 result = result.Replace(": +", ": ");
 
                 var qqqq = JsonConvert.DeserializeObject<Root>(result);
 
 
-                
+
                 var ofp = new OFPSkyPuter();
                 ofp.OFP = result;
                 ofp.AIRLINE = "KARUN";
                 ctx.OFPSkyPuters.Add(ofp);
                 ctx.SaveChanges();
+
+
+
+                string responsebody = "NO";
+                using (WebClient client = new WebClient())
+                {
+                    var reqparm = new System.Collections.Specialized.NameValueCollection();
+                    
+                   // reqparm.Add("key", dto.key);
+                    reqparm.Add("plan", result);
+                    byte[] responsebytes = client.UploadValues("https://airpocket.karunair.ir/xapi/api/ofp/karun", "POST", reqparm);
+                    responsebody = Encoding.UTF8.GetString(responsebytes);
+
+                }
+
+
+
+
+
+
                 return Ok(true);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 var message = ex.Message;
                 if (ex.InnerException != null)
@@ -337,7 +357,584 @@ namespace XAPI.Controllers
                 ctx.SaveChanges();
                 return Ok(false);
             }
+
+        }
+
+        [Route("api/ofp/karun")]
+        [AcceptVerbs("POST")]
+        public IHttpActionResult PostOFPBKARUN(skyputer dto)
+        {
+            try
+            {
+                
+                if (string.IsNullOrEmpty(dto.plan))
+                    return Ok("Plan cannot be empty.");
+               
+
+
+
+                var entity = new OFPSkyPuter()
+                {
+                    OFP = dto.plan,
+                    DateCreate = DateTime.Now,
+                    UploadStatus = 0,
+
+
+                };
+                var ctx = new PPAEntities();
+                ctx.Database.CommandTimeout = 1000;
+                ctx.OFPSkyPuters.Add(entity);
+                ctx.SaveChanges();
+                new Thread(async () =>
+                {
+                    GetOFPBImport(entity.Id);
+
+                }).Start();
+                return Ok(true);
+
+
+
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += " Inner: " + ex.InnerException.Message;
+                return Ok(msg);
+            }
+
+        }
+
+
+        [Route("api/ofp/b/import/{id}")]
+        [AcceptVerbs("GET")]
+        public IHttpActionResult GetOFPBImport(int id)
+        {
+
+            var context = new PPAEntities();
+            context.Database.CommandTimeout = 5000;
+            var dto = context.OFPSkyPuters.Where(q => q.Id == id).FirstOrDefault();
+            if (dto == null)
+                return BadRequest("not found");
+
            
+            try
+            {
+                var rawText = dto.OFP;
+                var json_obj = JsonConvert.DeserializeObject<Root>(rawText);
+
+                var _date = ((DateTime)json_obj.ScheduledTimeDeparture).Date;
+                var _register = json_obj.TailNo.Replace("EP-", "");
+                var _flight = context.ViewLegTimes.Where(q => q.STDDay == _date && q.FlightNumber == json_obj.FlightNo
+                && q.Register == _register && q.FromAirportICAO == json_obj.Origin && q.ToAirportICAO == json_obj.Destination).FirstOrDefault();
+                if (_flight == null)
+                {
+                   // _flight = context.ViewLegTimes.FirstOrDefault(q => q.ID == 575286);
+                   dto.UploadStatus = -1;
+                    dto.UploadMessage = "flight not found";
+                   context.SaveChanges();
+                    return BadRequest("flight not found");
+                }
+                var exist = context.OFPB_Root.FirstOrDefault(q => q.FlightID == _flight.ID);
+                if (exist != null)
+                {
+                    context.OFPB_Root.Remove(exist);
+                    context.SaveChanges();
+                }
+                var fltobj = context.FlightInformations.Where(q => q.ID == _flight.ID).FirstOrDefault();
+                OFPB_Root root = new OFPB_Root();
+                root.RawOFPId = dto.Id;
+
+                root.ReferenceNo = json_obj.ReferenceNo;
+                root.AirlineName = json_obj.AirlineName;
+                root.WeightUnit = json_obj.WeightUnit;
+                root.CruisePerformanceFactor = json_obj.CruisePerformanceFactor;
+                root.ContingencyPercent = json_obj.ContingencyPercent;
+                root.FlightNo = json_obj.FlightNo;
+                root.GenerationDate = json_obj.GenerationDate;
+                root.ScheduledTimeDeparture = json_obj.ScheduledTimeDeparture;
+                root.ScheduledTimeArrival = json_obj.ScheduledTimeArrival;
+                root.TailNo = json_obj.TailNo;
+                root.CruiseSpeed = json_obj.CruiseSpeed;
+                root.CostIndex = json_obj.CostIndex;
+                root.MainFlightLevel = json_obj.MainFlightLevel;
+                root.DryOperatingWeight = json_obj.DryOperatingWeight;
+                root.Payload = json_obj.Payload;
+                root.GroundDistance = json_obj.GroundDistance;
+                root.AirDistance = json_obj.AirDistance;
+                root.Origin = json_obj.Origin;
+                root.Destination = json_obj.Destination;
+                root.Alternate1 = json_obj.Alternate1;
+                root.Alternate2 = json_obj.Alternate2;
+                fltobj.ALT1 = root.Alternate1;
+                fltobj.ALT2 = root.Alternate2;
+                root.TakeoffAlternate = json_obj.TakeoffAlternate;
+                root.MODAlernate1 = json_obj.MODAlernate1;
+                root.MODAlternate2 = json_obj.MODAlternate2;
+                root.Cockpit = json_obj.Cockpit;
+                root.Cabin = json_obj.Cabin;
+                root.Extra = json_obj.Extra;
+                root.Pantry = json_obj.Pantry;
+                root.Pilot1 = json_obj.Pilot1;
+                root.Pilot2 = json_obj.Pilot2;
+                root.Dispatcher = json_obj.Dispatcher;
+                root.OriginElevation = json_obj.OriginElevation;
+                root.DestinationElevation = json_obj.DestinationElevation;
+                root.Alternate1Elevation = json_obj.Alternate1Elevation;
+                root.Alternate2Elevation = json_obj.Alternate2Elevation;
+                root.TakeoffAlternateElevation = json_obj.TakeoffAlternateElevation;
+                root.MaxShear = json_obj.MaxShear;
+                root.MaximumZeroFuelWeight = json_obj.MaximumZeroFuelWeight;
+                root.MaximumTakeoffWeight = json_obj.MaximumTakeoffWeight;
+                root.MaximumLandingWeight = json_obj.MaximumLandingWeight;
+                root.EstimatedZeroFuelWeight = json_obj.EstimatedZeroFuelWeight;
+                root.EstimatedTakeoffWeight = json_obj.EstimatedTakeoffWeight;
+                root.EstimatedLandingWeight = json_obj.EstimatedLandingWeight;
+                root.MainRoute = json_obj.MainRoute;
+                root.Alternate1Route = json_obj.Alternate1Route;
+                root.Alternate2Route = json_obj.Alternate2Route;
+                root.TakeoffAlternateRoute = json_obj.TakeoffAlternateRoute;
+                root.PlanValidity = json_obj.PlanValidity;
+
+                root.MaxWindShearLevel = json_obj.MaxWindShearLevel;
+                root.MaxWindShearPointName = json_obj.MaxWindShearPointName;
+                root.FlightRule = json_obj.FlightRule;
+                root.FlightRule = json_obj.FlightRule;
+                root.FlightID = fltobj.ID;
+                //root.FlightID
+                root.DateCreate = DateTime.Now;
+
+
+                //              "Fuels": {
+                //                  "Trip": 2389,
+                //  "Alternate": 1724,
+                //  "Holding": 1050,
+                //  "Contingency": 225,
+                //  "TaxiOut": 100,
+                //  "TaxiIn": 0,
+                //  "MinimumRequired": 5489,
+                //  "Additional": 0,
+                //  "Extra": 0,
+                //  "Total": 5489,
+                //  "Landing": 2999,
+                //  "MODAlternate1": 2774,
+                //  "MODAlternate2": 0
+                //},
+                var fuels = json_obj.Fuels;
+                root.fuel_additional = fuels.Additional;
+                root.fuel_alt = fuels.Alternate;
+                root.fuel_contigency = fuels.Contingency;
+                root.fuel_extra = fuels.Extra;
+                root.fuel_holding = fuels.Holding;
+                root.fuel_landing = fuels.Landing;
+                root.fuel_min_required = fuels.MinimumRequired;
+                root.fuel_mod_alt1 = fuels.MODAlternate1;
+                root.fuel_mod_alt2 = fuels.MODAlternate2;
+                root.fuel_taxiin = fuels.TaxiIn;
+                root.fuel_taxiout = fuels.TaxiOut;
+                root.fuel_trip = fuels.Trip;
+                root.fuel_total = fuels.Total;
+
+
+
+                ////////////////////////////////////////
+                ///
+                fltobj.OFPTRIPFUEL = root.fuel_trip;
+                fltobj.OFPCONTFUEL = Convert.ToInt32(root.fuel_contigency);
+                fltobj.OFPALT1FUEL = root.fuel_mod_alt1;
+                fltobj.OFPALT2FUEL = root.fuel_mod_alt2;
+                fltobj.OFPFINALRESFUEL = root.fuel_holding;
+                fltobj.OFPETOPSADDNLFUEL = root.fuel_additional;
+                //fltobj.OFPOPSEXTRAFUEL = Convert.ToInt32(val);
+                fltobj.OFPMINTOFFUEL = root.fuel_min_required;
+
+                //fltobj.OFPTANKERINGFUEL = Convert.ToInt32(val);
+
+               // fltobj.ACTUALTANKERINGFUEL = Convert.ToInt32(val);
+                fltobj.OFPTAXIFUEL = root.fuel_taxiout;
+                fltobj.OFPTOTALFUEL = root.fuel_total;
+               // fltobj.OFPOFFBLOCKFUEL = root.fuel_total;
+                fltobj.OFPExtra = root.fuel_extra;
+
+                //////////////////////////////////////////
+
+
+                var tms = json_obj.Times;
+                root.time_additional = ofpb_time_to_int(tms.Additional);
+                root.time_alt = ofpb_time_to_int(tms.Alternate);
+                root.time_alt1 = ofpb_time_to_int(tms.Alternate1);
+                root.time_alt2 = ofpb_time_to_int(tms.Alternate2);
+                root.time_alt_takeof = ofpb_time_to_int(tms.TakeOffAlternate);
+                root.time_contigency = ofpb_time_to_int(tms.Contingency);
+                root.time_extra = ofpb_time_to_int(tms.Extra);
+                root.time_holding = ofpb_time_to_int(tms.Holding);
+                root.time_min_required = ofpb_time_to_int(tms.MinimumRequired);
+                root.time_total = ofpb_time_to_int(tms.Total);
+                root.time_trip = ofpb_time_to_int(tms.Trip);
+
+
+                var dis = json_obj.Distances;
+                root.dis_air = dis.AirDistance;
+                root.dis_alt1 = dis.Alternate1;
+                root.dis_alt2 = dis.Alternate2;
+                root.dis_alt_takeoff = dis.TakeOffAlternate;
+                root.dis_ground = dis.GroundDistance;
+                root.dis_air = dis.AirDistance;
+                root.dis_trip = dis.Trip;
+
+
+
+                root.burnoffadj_fuel = Convert.ToString(json_obj.BurnOffAdjustment.Fuel);
+                root.burnoffadj_value = Convert.ToString(json_obj.BurnOffAdjustment.Value);
+
+                root.heightchange_fuel = Convert.ToString(json_obj.HeightChange.Fuel);
+                root.heightchange_value = Convert.ToString(json_obj.HeightChange.Value);
+
+
+
+
+
+
+                var main_route = json_obj.MainNavLog;
+                foreach (var pt in main_route)
+                {
+                    root.OFPB_MainNavLog.Add(new OFPB_MainNavLog()
+                    {
+                        NavType = "MAIN",
+
+                        WayPoint = pt.WayPoint,
+                        FlightLevel = pt.FlightLevel,
+                        Latitude = pt.Latitude,
+                        Longitude = pt.Longitude,
+                        Frequency = pt.Frequency,
+                        Airway = pt.Airway,
+                        MEA = pt.MEA,
+                        MORA = pt.MORA,
+                        ZoneDistance = pt.ZoneDistance,
+                        CumulativeDistance = pt.CumulativeDistance,
+                        Wind = pt.Wind,
+                        MagneticTrack = pt.MagneticTrack,
+                        Temperature = pt.Temperature,
+                        ZoneTime = pt.ZoneTime,
+                        CumulativeTime = pt.CumulativeTime,
+                        FuelRemained = pt.FuelRemained,
+                        FuelUsed = pt.FuelUsed,
+                        MachNo = pt.MachNo,
+                        TrueAirSpeed = pt.TrueAirSpeed,
+                        GroundSpeed = pt.GroundSpeed,
+
+
+
+
+                    });
+                }
+
+
+                var alt1_route = json_obj.Alternate1NavLog;
+                if (alt1_route != null && alt1_route.Count > 0)
+                {
+                    foreach (var pt in alt1_route)
+                    {
+                        root.OFPB_MainNavLog.Add(new OFPB_MainNavLog()
+                        {
+                            NavType = "ALT1",
+
+                            WayPoint = pt.WayPoint,
+                            FlightLevel = pt.FlightLevel,
+                            Latitude = pt.Latitude,
+                            Longitude = pt.Longitude,
+                            Frequency = pt.Frequency,
+                            Airway = pt.Airway,
+                            MEA = pt.MEA,
+                            MORA = pt.MORA,
+                            ZoneDistance = pt.ZoneDistance,
+                            CumulativeDistance = pt.CumulativeDistance,
+                            Wind = pt.Wind,
+                            MagneticTrack = pt.MagneticTrack,
+                            Temperature = pt.Temperature,
+                            ZoneTime = pt.ZoneTime,
+                            CumulativeTime = pt.CumulativeTime,
+                            FuelRemained = pt.FuelRemained,
+                            FuelUsed = pt.FuelUsed,
+                            MachNo = pt.MachNo,
+                            TrueAirSpeed = pt.TrueAirSpeed,
+                            GroundSpeed = pt.GroundSpeed,
+                        });
+                    }
+
+                }
+
+                var alt2_route = json_obj.Alternate2NavLog;
+                if (alt2_route != null && alt2_route.Count > 0)
+                {
+                    foreach (var pt in alt2_route)
+                    {
+                        root.OFPB_MainNavLog.Add(new OFPB_MainNavLog()
+                        {
+                            NavType = "ALT2",
+
+                            WayPoint = pt.WayPoint,
+                            FlightLevel = pt.FlightLevel,
+                            Latitude = pt.Latitude,
+                            Longitude = pt.Longitude,
+                            Frequency = pt.Frequency,
+                            Airway = pt.Airway,
+                            MEA = pt.MEA,
+                            MORA = pt.MORA,
+                            ZoneDistance = pt.ZoneDistance,
+                            CumulativeDistance = pt.CumulativeDistance,
+                            Wind = pt.Wind,
+                            MagneticTrack = pt.MagneticTrack,
+                            Temperature = pt.Temperature,
+                            ZoneTime = pt.ZoneTime,
+                            CumulativeTime = pt.CumulativeTime,
+                            FuelRemained = pt.FuelRemained,
+                            FuelUsed = pt.FuelUsed,
+                            MachNo = pt.MachNo,
+                            TrueAirSpeed = pt.TrueAirSpeed,
+                            GroundSpeed = pt.GroundSpeed,
+                        });
+                    }
+                }
+
+                var _name = "";
+                if (json_obj.MainWindTemperature != null)
+                    foreach (var x in json_obj.MainWindTemperature)
+                    {
+                        var _str = x.ToString();
+                        Dictionary<string, string> rows = JsonConvert.DeserializeObject<Dictionary<string, string>>(_str);
+                          _name = rows["Name"];
+                        foreach (var kvp in rows)
+                        {
+                            if (kvp.Key == "Name")
+                                root.OFPB_WindTemperature.Add(new OFPB_WindTemperature()
+                                {
+                                    Type = "MAIN",
+                                    WayPoint = _name,
+
+                                });
+                            else
+                                root.OFPB_WindTemperature.Add(new OFPB_WindTemperature()
+                                {
+                                    Type = "MAIN",
+                                    WayPoint = _name,
+                                    FlightLevel = kvp.Key,
+                                    WindTemprature = kvp.Value,
+                                });
+
+                        }
+
+                        if (rows.Count < 5 )
+                        {
+                            var n = 5 - rows.Count;
+                            for (int y = 1; y <= n; y++)
+                                root.OFPB_WindTemperature.Add(new OFPB_WindTemperature()
+                                {
+                                    Type = "MAIN",
+                                    WayPoint = _name,
+
+                                });
+
+                        }
+
+
+
+                    }
+                
+
+
+                _name = "";
+                if (json_obj.Alternate1WindTemperature != null)
+                    foreach (var x in json_obj.Alternate1WindTemperature)
+                    {
+                        var _str = x.ToString();
+                        Dictionary<string, string> rows = JsonConvert.DeserializeObject<Dictionary<string, string>>(_str);
+                          _name = rows["Name"];
+                        foreach (var kvp in rows)
+                        {
+                            if (kvp.Key == "Name")
+                                root.OFPB_WindTemperature.Add(new OFPB_WindTemperature()
+                                {
+                                    Type = "ALT1",
+                                    WayPoint = _name,
+
+                                });
+                            else
+                                root.OFPB_WindTemperature.Add(new OFPB_WindTemperature()
+                                {
+                                    Type = "ALT1",
+                                    WayPoint = _name,
+                                    FlightLevel = kvp.Key,
+                                    WindTemprature = kvp.Value,
+                                });
+
+                        }
+                        if (rows.Count < 5)
+                        {
+                            var n = 5 - rows.Count;
+                            for (int y = 1; y <= n; y++)
+                                root.OFPB_WindTemperature.Add(new OFPB_WindTemperature()
+                                {
+                                    Type = "ALT1",
+                                    WayPoint = _name,
+
+                                });
+
+                        }
+
+                    }
+                //if (json_obj.Alternate1WindTemperature != null && json_obj.Alternate1WindTemperature.Count < 5 && !string.IsNullOrEmpty(_name))
+                //{
+                //    var n = 5 - json_obj.Alternate1WindTemperature.Count;
+                //    for (int y = 1; y <= n; y++)
+                //        root.OFPB_WindTemperature.Add(new OFPB_WindTemperature()
+                //        {
+                //            Type = "ALT1",
+                //            WayPoint = _name,
+
+                //        });
+
+                //}
+
+
+                _name = "";
+                if (json_obj.Alternate2WindTemperature != null)
+                    foreach (var x in json_obj.Alternate2WindTemperature)
+                    {
+                        var _str = x.ToString();
+                        Dictionary<string, string> rows = JsonConvert.DeserializeObject<Dictionary<string, string>>(_str);
+                          _name = rows["Name"];
+                        foreach (var kvp in rows)
+                        {
+                            if (kvp.Key == "Name")
+                                root.OFPB_WindTemperature.Add(new OFPB_WindTemperature()
+                                {
+                                    Type = "ALT2",
+                                    WayPoint = _name,
+
+                                });
+                            else
+                                root.OFPB_WindTemperature.Add(new OFPB_WindTemperature()
+                                {
+                                    Type = "ALT2",
+                                    WayPoint = _name,
+                                    FlightLevel = kvp.Key,
+                                    WindTemprature = kvp.Value,
+                                });
+
+                        }
+                        if (rows.Count < 5)
+                        {
+                            var n = 5 - rows.Count;
+                            for (int y = 1; y <= n; y++)
+                                root.OFPB_WindTemperature.Add(new OFPB_WindTemperature()
+                                {
+                                    Type = "ALT2",
+                                    WayPoint = _name,
+
+                                });
+
+                        }
+
+                    }
+                //if (json_obj.Alternate2WindTemperature != null && json_obj.Alternate2WindTemperature.Count < 5 && !string.IsNullOrEmpty(_name))
+                //{
+                //    var n = 5 - json_obj.Alternate2WindTemperature.Count;
+                //    for (int y = 1; y <= n; y++)
+                //        root.OFPB_WindTemperature.Add(new OFPB_WindTemperature()
+                //        {
+                //            Type = "ALT2",
+                //            WayPoint = _name,
+
+                //        });
+
+                //}
+
+                _name = "";
+                if (json_obj.TakeOffAlternateWindTemperature != null)
+                    foreach (var x in json_obj.TakeOffAlternateWindTemperature)
+                    {
+                        var _str = x.ToString();
+                        Dictionary<string, string> rows = JsonConvert.DeserializeObject<Dictionary<string, string>>(_str);
+                          _name = rows["Name"];
+                        foreach (var kvp in rows)
+                        {
+                            if (kvp.Key == "Name")
+                                root.OFPB_WindTemperature.Add(new OFPB_WindTemperature()
+                                {
+                                    Type = "ALTTO",
+                                    WayPoint = _name,
+
+                                });
+                            else
+                                root.OFPB_WindTemperature.Add(new OFPB_WindTemperature()
+                                {
+                                    Type = "ALTTO",
+                                    WayPoint = _name,
+                                    FlightLevel = kvp.Key,
+                                    WindTemprature = kvp.Value,
+                                });
+
+                        }
+                        if (rows.Count < 5)
+                        {
+                            var n = 5 - rows.Count;
+                            for (int y = 1; y <= n; y++)
+                                root.OFPB_WindTemperature.Add(new OFPB_WindTemperature()
+                                {
+                                    Type = "ALTTO",
+                                    WayPoint = _name,
+
+                                });
+
+                        }
+
+                    }
+                //if (json_obj.TakeOffAlternateWindTemperature != null && json_obj.TakeOffAlternateWindTemperature.Count < 5 && !string.IsNullOrEmpty(_name))
+                //{
+                //    var n = 5 - json_obj.TakeOffAlternateWindTemperature.Count;
+                //    for (int y = 1; y <= n; y++)
+                //        root.OFPB_WindTemperature.Add(new OFPB_WindTemperature()
+                //        {
+                //            Type = "ALTTO",
+                //            WayPoint = _name,
+
+                //        });
+
+                //}
+
+
+                dto.DateUpload = DateTime.Now;
+                dto.UploadStatus = 1;
+                dto.UploadMessage = "OK";
+                context.OFPB_Root.Add(root);
+                context.SaveChanges();
+                return Ok(true);
+
+
+
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += ex.InnerException.Message;
+                dto.UploadStatus = -1;
+                dto.UploadMessage = msg;
+                context.SaveChanges();
+                return Ok("Not Uploaded ");
+            }
+        }
+
+        public int? ofpb_time_to_int(string str)
+        {
+            //00.49
+            if (string.IsNullOrEmpty(str))
+                return 0;
+            var prts = str.Split('.');
+            var hh = Convert.ToInt32(prts[0]) * 60;
+            var mm = Convert.ToInt32(prts[1]);
+            return hh + mm;
         }
 
         //https://xpi.sbvaresh.ir/api/skyputer
@@ -504,7 +1101,7 @@ namespace XAPI.Controllers
                 {
                     result = "AIR1AIR";
                     var entity = new OFPSkyPuter()
-                    { 
+                    {
                         OFP = dto.plan,
                         DateCreate = DateTime.Now,
                         UploadStatus = 0,
@@ -553,6 +1150,36 @@ namespace XAPI.Controllers
                         reqparm.Add("key", dto.key);
                         reqparm.Add("plan", dto.plan);
                         byte[] responsebytes = client.UploadValues("https://xpiava.skybag.app/api/skyputer/ava", "POST", reqparm);
+                        responsebody = Encoding.UTF8.GetString(responsebytes);
+
+                    }
+                    return Ok(true);
+                }
+                //Karun
+                else if (dto.plan.Contains("Karun"))
+                {
+                    result = "Karun";
+                    var entity = new OFPSkyPuter()
+                    {
+                        OFP = dto.plan,
+                        DateCreate = DateTime.Now,
+                        UploadStatus = 0,
+
+
+                    };
+                    var ctx = new PPAEntities();
+                    ctx.Database.CommandTimeout = 1000;
+                    ctx.OFPSkyPuters.Add(entity);
+                    ctx.SaveChanges();
+
+
+                    string responsebody = "NO";
+                    using (WebClient client = new WebClient())
+                    {
+                        var reqparm = new System.Collections.Specialized.NameValueCollection();
+                        reqparm.Add("key", dto.key);
+                        reqparm.Add("plan", dto.plan);
+                        byte[] responsebytes = client.UploadValues("https://airpocket.karunair.ir/xapi/api/skyputer/karun", "POST", reqparm);
                         responsebody = Encoding.UTF8.GetString(responsebytes);
 
                     }
@@ -866,6 +1493,53 @@ namespace XAPI.Controllers
 
         }
 
+        [Route("api/skyputer/karun")]
+        [AcceptVerbs("POST")]
+        public IHttpActionResult PostSkyputerKARUN(skyputer dto)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(dto.key))
+                    return Ok("Authorization key not found.");
+                if (string.IsNullOrEmpty(dto.plan))
+                    return Ok("Plan cannot be empty.");
+                if (dto.key != "Skyputer@1359#")
+                    return Ok("Authorization key is wrong.");
+
+
+
+                var entity = new OFPSkyPuter()
+                {
+                    OFP = dto.plan,
+                    DateCreate = DateTime.Now,
+                    UploadStatus = 0,
+
+
+                };
+                var ctx = new PPAEntities();
+                ctx.Database.CommandTimeout = 1000;
+                ctx.OFPSkyPuters.Add(entity);
+                ctx.SaveChanges();
+                new Thread(async () =>
+                {
+                    GetOFPBImport(entity.Id);
+                   
+                }).Start();
+                return Ok(true);
+
+
+
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += " Inner: " + ex.InnerException.Message;
+                return Ok(msg);
+            }
+
+        }
+
 
         [Route("api/skyputer/atlas")]
         [AcceptVerbs("POST")]
@@ -1021,7 +1695,7 @@ namespace XAPI.Controllers
                 // var mpln = rawText.Split(new string[] { "mpln:|" }, StringSplitOptions.None).ToList()[1];
                 var parts = rawText.Split(new string[] { "||" }, StringSplitOptions.None).ToList();
                 var atc_prt = parts.FirstOrDefault(q => q.StartsWith("icatc:|"));
-                var atc=atc_prt!=null? atc_prt.Replace("icatc:|", ""):"";
+                var atc = atc_prt != null ? atc_prt.Replace("icatc:|", "") : "";
 
                 var info = parts.FirstOrDefault(q => q.StartsWith("binfo:|")).Replace("binfo:|", "");
                 var infoRows = info.Split(';').ToList();
@@ -1080,9 +1754,9 @@ namespace XAPI.Controllers
                 if (no.StartsWith("A"))
                     no = no.Replace("A", "");
                 //  var _flt_flt = context.ViewLegTimes.OrderByDescending(q => q.STD).Take(10).ToList();
-               // var _ffff = context.ViewLegTimes.OrderByDescending(q => q.ID).FirstOrDefault();
+                // var _ffff = context.ViewLegTimes.OrderByDescending(q => q.ID).FirstOrDefault();
                 var flight = context.ViewLegTimes.Where(q => q.STDDay == flightDate && q.FlightNumber == no && q.FlightStatusID != 4).FirstOrDefault();
-                if (flight==null)
+                if (flight == null)
                     return Ok("Flight Not Found");
                 var fltobj = context.FlightInformations.Where(q => q.ID == flight.ID).FirstOrDefault();
                 var cplan = context.OFPImports.FirstOrDefault(q => q.FlightId == flight.ID);
@@ -1253,10 +1927,10 @@ namespace XAPI.Controllers
                         var _gsp = prts.FirstOrDefault(q => q.StartsWith("GSP"));
                         _pnt.GSP = _gsp == null ? "" : _gsp.Split('=')[1];
 
-                        var _tme= prts.FirstOrDefault(q => q.StartsWith("TME"));
+                        var _tme = prts.FirstOrDefault(q => q.StartsWith("TME"));
                         if (_tme != null)
                         {
-                            var _tme_p = _tme.Split('=')[1].Substring(0, 5).Split(':').Select(q=>Convert.ToInt32(q)).ToList();
+                            var _tme_p = _tme.Split('=')[1].Substring(0, 5).Split(':').Select(q => Convert.ToInt32(q)).ToList();
                             _pnt.TME = _tme_p[0] * 60 + _tme_p[1];
                         }
                         else
@@ -2219,8 +2893,8 @@ namespace XAPI.Controllers
                         VIA = p.VIA,
                         WAP = p.WAP,
                         WIND = p.WIND,
-                        TME=p.TME,
-                        TTM=p.TTM
+                        TME = p.TME,
+                        TTM = p.TTM
 
                     });
                 }
@@ -2399,7 +3073,7 @@ namespace XAPI.Controllers
 
                 return Ok(true);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 var msg = ex.Message;
                 if (ex.InnerException != null)

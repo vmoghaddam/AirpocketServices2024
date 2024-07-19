@@ -44,5 +44,6 @@ namespace ApiAPSB.Models
         public Nullable<int> PICId { get; set; }
         public string PIC { get; set; }
         public string AircraftType { get; set; }
+        public Nullable<System.DateTime> STDDay { get; set; }
     }
 }

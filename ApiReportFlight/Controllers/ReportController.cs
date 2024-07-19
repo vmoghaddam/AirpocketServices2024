@@ -95,7 +95,7 @@ namespace ApiReportFlight.Controllers
                                  group x by new { x.CrewId, x.Name, x.ScheduleName, x.FirstName, x.LastName, x.JobGroup, x.JobGroupCode, x.JobGroupRoot } into grp
                                  select new RptFDPGRP()
                                  {
-                                      
+
                                      CrewId = grp.Key.CrewId,
                                      ScheduleName = grp.Key.ScheduleName,
                                      Name = grp.Key.Name,
@@ -105,7 +105,7 @@ namespace ApiReportFlight.Controllers
                                      JobGroupCode = grp.Key.JobGroupCode,
                                      JobGroupRoot = grp.Key.JobGroupRoot,
                                      BlockTime = grp.Sum(q => q.BlockTime) ?? 0,
-                                     IndexF=Math.Round(  (grp.Sum(q => q.BlockTime*1.0/60) ?? 0.0) /total_days,2),
+                                     IndexF = Math.Round((grp.Sum(q => q.BlockTime * 1.0 / 60) ?? 0.0) / total_days, 2),
                                      FlightTime = grp.Sum(q => q.FlightTime) ?? 0,
                                      FixedFlightTime = grp.Sum(q => q.FixedFlightTime) ?? 0,
                                      ScheduledTime = grp.Sum(q => q.ScheduledTime) ?? 0,
@@ -118,13 +118,13 @@ namespace ApiReportFlight.Controllers
                                      Leg6 = grp.Sum(q => q.Leg6),
                                      Leg7 = grp.Sum(q => q.Leg7),
                                      Leg8 = grp.Sum(q => q.Leg8),
-                                     Leg2X= (grp.Sum(q => q.Leg1)  ) + (grp.Sum(q => q.Leg2)  ) + (grp.Sum(q => q.Leg3) ),
-                                     Leg4X = grp.Sum(q => q.Leg4)+ grp.Sum(q => q.Leg5)+ grp.Sum(q => q.Leg6)+ grp.Sum(q => q.Leg7)+ grp.Sum(q => q.Leg8),
-                                     Positioning =0, //grp.Sum(q => q.Positioning) ?? 0,
-                                     Canceled =0, //grp.Sum(q => q.Canceled) ?? 0,
-                                     PositioningFixTime =0, //grp.Sum(q => q.PositioningFixTime) ?? 0,
-                                     CanceledFixTime =0, //grp.Sum(q => q.CanceledFixTime) ?? 0,
-                                     
+                                     Leg2X = (grp.Sum(q => q.Leg1)) + (grp.Sum(q => q.Leg2)) + (grp.Sum(q => q.Leg3)),
+                                     Leg4X = grp.Sum(q => q.Leg4) + grp.Sum(q => q.Leg5) + grp.Sum(q => q.Leg6) + grp.Sum(q => q.Leg7) + grp.Sum(q => q.Leg8),
+                                     Positioning = 0, //grp.Sum(q => q.Positioning) ?? 0,
+                                     Canceled = 0, //grp.Sum(q => q.Canceled) ?? 0,
+                                     PositioningFixTime = 0, //grp.Sum(q => q.PositioningFixTime) ?? 0,
+                                     CanceledFixTime = 0, //grp.Sum(q => q.CanceledFixTime) ?? 0,
+
 
                                      //DeadHead=grp.Sum(q=>q.)
                                      EarlyDeparture = grp.Sum(q => q.EarlyDeparture),
@@ -159,7 +159,7 @@ namespace ApiReportFlight.Controllers
 
 
             var qry_refuse = from x in context.RptRefuses
-                             where x.Date >= df && x.Date < dt && crew_ids.Contains(x.CrewId) && (x.Sick==null || x.Sick==0)
+                             where x.Date >= df && x.Date < dt && crew_ids.Contains(x.CrewId) && (x.Sick == null || x.Sick == 0)
                              select x;
             var ds_refuse = qry_refuse.ToList();
 
@@ -180,7 +180,7 @@ namespace ApiReportFlight.Controllers
             {
                 crew.GroupOrder = getOrder(crew.JobGroup);
                 var nofdps = ds_nofdp_total.Where(q => q.CrewId == crew.CrewId).ToList();
-                var refs= ds_refuse_total.Where(q => q.CrewId == crew.CrewId).ToList();
+                var refs = ds_refuse_total.Where(q => q.CrewId == crew.CrewId).ToList();
                 foreach (var rec in refs)
                 {
                     crew.Refuse += rec.Count;
@@ -236,7 +236,7 @@ namespace ApiReportFlight.Controllers
                     crew.WOCLLND = fdp.WOCLLND;
                     crew.WOCLTO = fdp.WOCLTO;
                     crew.XAirportLND = fdp.XAirportLND;
-                    crew.XAirportTO = fdp.XAirportTO+ fdp.XAirportLND;
+                    crew.XAirportTO = fdp.XAirportTO + fdp.XAirportLND;
                     crew.FDPs = fdp.FDPs.ToList();
                     //crew.FixTimeTotal += fdp.FixedFlightTime;
                 }
@@ -435,7 +435,7 @@ namespace ApiReportFlight.Controllers
                         var _whr = "(" + string.Join(" OR ", col) + ")";
                         whr += " AND " + _whr;
                     }
-                   
+
                 }
                 if (!string.IsNullOrEmpty(type2) && type2 != "-1")
                 {
@@ -539,12 +539,12 @@ namespace ApiReportFlight.Controllers
                     //all
                     if (status == "-2")
                     {
-                        
+
                     }
                     //all excludes cnl
-                    else if (status =="-3")
+                    else if (status == "-3")
                     {
-                        
+
                         var _whr = "status <> 4";
                         whr += " AND " + _whr;
                     }
@@ -555,7 +555,7 @@ namespace ApiReportFlight.Controllers
                         var _whr = "(" + string.Join(" OR ", col) + ")";
                         whr += " AND " + _whr;
                     }
-                   
+
                 }
                 if (!string.IsNullOrEmpty(type2) && type2 != "-1")
                 {
@@ -712,7 +712,7 @@ namespace ApiReportFlight.Controllers
                         break;
                     case 8:
                         // query = query.Where(q => q.Delay <= 15);
-                        query = query.Where(q => q.Delay <=0);
+                        query = query.Where(q => q.Delay <= 0);
                         break;
                     case 9:
                         query = query.Where(q => q.Delay <= 15);
@@ -737,7 +737,7 @@ namespace ApiReportFlight.Controllers
 
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 var msg = ex.Message;
                 if (ex.InnerException != null)
@@ -1960,7 +1960,7 @@ namespace ApiReportFlight.Controllers
 
         [Route("api/crew/flights/{grp}/{type}")]
         [AcceptVerbs("GET")]
-        public IHttpActionResult GetCrewFlightTimes(string grp,string type, DateTime df, DateTime dt)
+        public IHttpActionResult GetCrewFlightTimes(string grp, string type, DateTime df, DateTime dt)
         {
             try
             {
@@ -1988,17 +1988,17 @@ namespace ApiReportFlight.Controllers
                 {
                     var ds_cockpit = new List<string>() { "TRE", "TRI", "LTC", "P1", "P2" };
                     var ds_ip = new List<string>() { "TRE", "TRI", "LTC" };
-                    var ds_cabin = new List<string>() { "ISCCM","SCCM","CCM","CC","CCE","CCI" };
+                    var ds_cabin = new List<string>() { "ISCCM", "SCCM", "CCM", "CC", "CCE", "CCI" };
                     switch (grp)
                     {
                         case "COCKPIT":
-                            _query_x = _query_x.Where(q => ds_cockpit.Contains(q.JobGroup) );
+                            _query_x = _query_x.Where(q => ds_cockpit.Contains(q.JobGroup));
                             break;
                         case "IP":
-                            _query_x = _query_x.Where(q => ds_ip.Contains(q.JobGroup) );
+                            _query_x = _query_x.Where(q => ds_ip.Contains(q.JobGroup));
                             break;
                         case "P1":
-                            _query_x = _query_x.Where(q => q.JobGroup=="P1");
+                            _query_x = _query_x.Where(q => q.JobGroup == "P1");
                             break;
                         case "P2":
                             _query_x = _query_x.Where(q => q.JobGroup == "P2");
@@ -2022,7 +2022,7 @@ namespace ApiReportFlight.Controllers
                             break;
                     }
                 }
-                if (type!="ALL")
+                if (type != "ALL")
                 {
                     _query_x = _query_x.Where(q => q.ValidTypes.Contains(type));
                 }
@@ -2030,7 +2030,7 @@ namespace ApiReportFlight.Controllers
                                //from x in ctx.ViewLegCrews
                                //where x.STDLocal >= df && x.STDLocal < dt && x.FlightStatusID != 4
                                from x in _query_x
-                               group x by new { x.CrewId, x.ScheduleName, x.JobGroup, x.JobGroupCode, x.Name, x.PID, x.ValidTypes,x.BaseAirport,x.BaseAirportId  } into _grp
+                               group x by new { x.CrewId, x.ScheduleName, x.JobGroup, x.JobGroupCode, x.Name, x.PID, x.ValidTypes, x.BaseAirport, x.BaseAirportId } into _grp
                                select new FlightTimeDto()
                                {
                                    CrewId = _grp.Key.CrewId,
@@ -2039,9 +2039,9 @@ namespace ApiReportFlight.Controllers
                                    JobGropCode = _grp.Key.JobGroupCode,
                                    Name = _grp.Key.Name,
                                    PID = _grp.Key.PID,
-                                   Type=_grp.Key.ValidTypes,
-                                   HomeBase=_grp.Key.BaseAirport,
-                                   ValidTypes=_grp.Key.ValidTypes,
+                                   Type = _grp.Key.ValidTypes,
+                                   HomeBase = _grp.Key.BaseAirport,
+                                   ValidTypes = _grp.Key.ValidTypes,
 
                                    Legs = _grp.Where(q => q.IsPositioning == false).Count(),
                                    DH = _grp.Where(q => q.IsPositioning == true).Count(),
@@ -2060,7 +2060,7 @@ namespace ApiReportFlight.Controllers
                 _query = _query.OrderBy(q => q.GroupOrder).ThenByDescending(q => q.FixTime).ToList();
                 return Ok(_query);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 var msg = ex.Message;
                 if (ex.InnerException != null)
@@ -2068,7 +2068,7 @@ namespace ApiReportFlight.Controllers
                 return Ok(msg);
             }
 
-          
+
         }
 
 
@@ -2080,7 +2080,7 @@ namespace ApiReportFlight.Controllers
             try
             {
                 List<FlightTimeDto> external_list = new List<FlightTimeDto>();
-                 
+
 
                 var ctx = new ppa_Entities();
                 var _df = df.Date;
@@ -2137,7 +2137,7 @@ namespace ApiReportFlight.Controllers
 
                 var _query = (
                                from x in _baseQ
-                               
+
                                group x by new { x.CrewId, x.ScheduleName, x.JobGroup, x.JobGroupCode, x.Name, x.PID } into _grp
                                select new FlightTimeDto()
                                {
@@ -2202,7 +2202,7 @@ namespace ApiReportFlight.Controllers
                 var _dt = dt.Date.AddDays(1);
                 var _query = (
                                from x in ctx.ViewLegCrews
-                               where x.CrewId==id &&  x.STDLocal >= df && x.STDLocal < dt && x.FlightStatusID != 4
+                               where x.CrewId == id && x.STDLocal >= df && x.STDLocal < dt && x.FlightStatusID != 4
                                group x by new { x.CrewId, x.ScheduleName, x.JobGroup, x.JobGroupCode, x.Name, x.PID } into _grp
                                select new FlightTimeDto()
                                {
@@ -2222,12 +2222,12 @@ namespace ApiReportFlight.Controllers
                                    FixTime = _grp.Sum(q => q.FixTime),
                                }
                               ).ToList();
-               // foreach (var x in _query)
-               //     x.GroupOrder = getOrder(x.JobGroup);
-               // if (external_list.Count > 0)
-               //     _query = _query.Concat(external_list).ToList();
+                // foreach (var x in _query)
+                //     x.GroupOrder = getOrder(x.JobGroup);
+                // if (external_list.Count > 0)
+                //     _query = _query.Concat(external_list).ToList();
 
-               // _query = _query.OrderBy(q => q.GroupOrder).ThenByDescending(q => q.FixTime);
+                // _query = _query.OrderBy(q => q.GroupOrder).ThenByDescending(q => q.FixTime);
                 var result = _query.FirstOrDefault();
                 return Ok(result);
             }
@@ -2319,13 +2319,13 @@ namespace ApiReportFlight.Controllers
         }
 
 
-        
+
         public string getDutyAbbr(int t)
         {
             switch (t)
             {
                 case 100002:
-                   return "SCK";
+                    return "SCK";
                     break;
                 case 1167:
                     return "STBP";
@@ -2337,7 +2337,7 @@ namespace ApiReportFlight.Controllers
                     return "OFC";
                     break;
                 case 5000:
-                    return  "TRN";
+                    return "TRN";
                     break;
                 case 300008:
                     return "DTY";
@@ -2349,7 +2349,7 @@ namespace ApiReportFlight.Controllers
                     return "VAC";
                     break;
                 case 1170:
-                    return  "RES";
+                    return "RES";
                     break;
                 default:
                     return "DTY";
@@ -2359,7 +2359,7 @@ namespace ApiReportFlight.Controllers
 
         [Route("api/crew/calendar/{id}/{year}/{month}")]
         [AcceptVerbs("GET")]
-        public IHttpActionResult GetCrewCalendar(int id,int year,int month)
+        public IHttpActionResult GetCrewCalendar(int id, int year, int month)
         {
             var ctx = new ppa_Entities();
 
@@ -2373,12 +2373,12 @@ namespace ApiReportFlight.Controllers
                        group x by new { Date = ((DateTime)x.DateStart).AddMinutes(210).Date, x.DutyType } into grp
                        select new
                        {
-                           Start=grp.Key.Date,
-                           End=grp.Key.Date.AddHours(23).AddMinutes(59),
-                           Type=grp.Key.DutyType,
-                           Total= grp.Key.DutyType!=1165?0:grp.Sum(q=>string.IsNullOrEmpty( q.InitNo)?0:q.InitNo.Split('_').Count()),
-                           TypeStr=getDutyAbbr(grp.Key.DutyType),
-                           ItemIds=grp.OrderBy(q=>q.DateStart).Select(q=>q.Id).ToList()
+                           Start = grp.Key.Date,
+                           End = grp.Key.Date.AddHours(23).AddMinutes(59),
+                           Type = grp.Key.DutyType,
+                           Total = grp.Key.DutyType != 1165 ? 0 : grp.Sum(q => string.IsNullOrEmpty(q.InitNo) ? 0 : q.InitNo.Split('_').Count()),
+                           TypeStr = getDutyAbbr(grp.Key.DutyType),
+                           ItemIds = grp.OrderBy(q => q.DateStart).Select(q => q.Id).ToList()
 
                        };
             var grps_result = grps.ToList();
@@ -2396,40 +2396,42 @@ namespace ApiReportFlight.Controllers
 
             //if (year)
             var query = from x in ctx.FDPs
-                        where x.CrewId == id && x.DateStart>=dt && x.DateStart<=dt2
+                        where x.CrewId == id && x.DateStart >= dt && x.DateStart <= dt2
                         select x;
             var query_result = query.ToList();
 
             var flights = (from x in ctx.ViewCrewFlightApps
-                         where x.CrewId == id && x.STD >= dt && x.STD <= dt2
-                         orderby x.STD
-                         select x).ToList();
-            var trnIds =( from x in query_result
-                       where x.DutyType == 5000
-                       select x.Id).ToList();
+                           where x.CrewId == id && x.STD >= dt && x.STD <= dt2
+                           orderby x.STD
+                           select x).ToList();
+            var trnIds = (from x in query_result
+                          where x.DutyType == 5000
+                          select x.Id).ToList();
             var trns = (from x in ctx.ViewCourseFDPs
-                       where trnIds.Contains(x.FDPId)
-                       group x by new { x.CourseId, x.Title, x.Organization, x.Location, x.HoldingType, x.Instructor, x.No, x.DateEnd, x.DateStart } into grp
-                       select new {
-                           grp.Key.CourseId,
-                           grp.Key.Title,
-                           grp.Key.Organization,
-                           grp.Key.Location,
-                           grp.Key.HoldingType,
-                           grp.Key.Instructor,
-                           grp.Key.No,
-                           grp.Key.DateEnd,
-                           grp.Key.DateStart,
-                           Sessions = grp.OrderBy(q => q.SessionStart).ToList()
-                       }).OrderBy(q=>q.DateStart).ToList();
-            
+                        where trnIds.Contains(x.FDPId)
+                        group x by new { x.CourseId, x.Title, x.Organization, x.Location, x.HoldingType, x.Instructor, x.No, x.DateEnd, x.DateStart } into grp
+                        select new
+                        {
+                            grp.Key.CourseId,
+                            grp.Key.Title,
+                            grp.Key.Organization,
+                            grp.Key.Location,
+                            grp.Key.HoldingType,
+                            grp.Key.Instructor,
+                            grp.Key.No,
+                            grp.Key.DateEnd,
+                            grp.Key.DateStart,
+                            Sessions = grp.OrderBy(q => q.SessionStart).ToList()
+                        }).OrderBy(q => q.DateStart).ToList();
 
-            var others = query_result.Where(q => q.DutyType != 5000 && q.DutyType != 1165).Select(q => new { 
-               Id=q.Id,
-               Start=((DateTime) q.DateStart).AddMinutes(210),
-               End = ((DateTime)q.DateEnd).AddMinutes(210),
-               TypeStr=getDutyAbbr(q.DutyType),
-               RestTo= ((DateTime)q.InitRestTo).AddMinutes(210),
+
+            var others = query_result.Where(q => q.DutyType != 5000 && q.DutyType != 1165).Select(q => new
+            {
+                Id = q.Id,
+                Start = ((DateTime)q.DateStart).AddMinutes(210),
+                End = ((DateTime)q.DateEnd).AddMinutes(210),
+                TypeStr = getDutyAbbr(q.DutyType),
+                RestTo = ((DateTime)q.InitRestTo).AddMinutes(210),
             }).ToList();
             var total_result = new
             {
@@ -2438,7 +2440,7 @@ namespace ApiReportFlight.Controllers
                 others
             };
 
-             
+
             return Ok(total_result);
         }
 
@@ -2468,6 +2470,31 @@ namespace ApiReportFlight.Controllers
                 return Ok(cmd);
             }
 
+        }
+
+
+        [Route("api/stat/flight/{year}")]
+        [AcceptVerbs("GET")]
+        public IHttpActionResult GetStatFlight(int year)
+        {
+            var ctx = new ppa_Entities();
+
+            var totalQuery = ctx.ViewRegHistoryYearlies;
+            var total = totalQuery.OrderBy(q => q.Year)
+                .ThenBy(q => q.Month)
+
+                .ToList();
+
+
+            var pax_route_total = ctx.rpt_pax_total.OrderByDescending(q => q.TotalPax).ToList();
+
+            var result = new
+            {
+                total
+              ,
+                pax_route_total
+            };
+            return Ok(result);
         }
 
 

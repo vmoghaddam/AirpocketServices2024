@@ -45,5 +45,7 @@ namespace ApiReportFlight.Models
         public virtual DbSet<RptFDPItem> RptFDPItems { get; set; }
         public virtual DbSet<ViewLegCrew> ViewLegCrews { get; set; }
         public virtual DbSet<ViewFlightPax> ViewFlightPaxes { get; set; }
+        public virtual DbSet<ViewRegHistoryYearly> ViewRegHistoryYearlies { get; set; }
+        public virtual DbSet<rpt_pax_total> rpt_pax_total { get; set; }
     }
 }

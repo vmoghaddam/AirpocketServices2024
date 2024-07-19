@@ -836,6 +836,152 @@
           <Property Name="fdpid" Type="int" Nullable="false" />
           <Property Name="atlno" Type="varchar" MaxLength="255" />
         </EntityType>
+        <EntityType Name="OFPB_MainNavLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="WayPoint" Type="nvarchar" MaxLength="255" />
+          <Property Name="FlightLevel" Type="nvarchar" MaxLength="255" />
+          <Property Name="Latitude" Type="float" />
+          <Property Name="Longitude" Type="float" />
+          <Property Name="Frequency" Type="nvarchar" MaxLength="255" />
+          <Property Name="Airway" Type="nvarchar" MaxLength="255" />
+          <Property Name="MEA" Type="nvarchar" MaxLength="255" />
+          <Property Name="MORA" Type="nvarchar" MaxLength="255" />
+          <Property Name="ZoneDistance" Type="int" />
+          <Property Name="CumulativeDistance" Type="int" />
+          <Property Name="Wind" Type="nvarchar" MaxLength="255" />
+          <Property Name="MagneticTrack" Type="nvarchar" MaxLength="255" />
+          <Property Name="Temperature" Type="nvarchar" MaxLength="255" />
+          <Property Name="ZoneTime" Type="nvarchar" MaxLength="255" />
+          <Property Name="CumulativeTime" Type="nvarchar" MaxLength="255" />
+          <Property Name="FuelRemained" Type="int" />
+          <Property Name="FuelUsed" Type="int" />
+          <Property Name="MachNo" Type="nvarchar" MaxLength="255" />
+          <Property Name="TrueAirSpeed" Type="int" />
+          <Property Name="GroundSpeed" Type="int" />
+          <Property Name="RootId" Type="int" />
+          <Property Name="NavType" Type="nvarchar" MaxLength="300" />
+          <Property Name="ATA" Type="nvarchar" MaxLength="300" />
+          <Property Name="ETA" Type="nvarchar" MaxLength="300" />
+          <Property Name="FuelRemainedActual" Type="int" />
+          <Property Name="FuelUsedActual" Type="int" />
+        </EntityType>
+        <EntityType Name="OFPB_Root">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ReferenceNo" Type="nvarchar" MaxLength="255" />
+          <Property Name="AirlineName" Type="nvarchar" MaxLength="255" />
+          <Property Name="WeightUnit" Type="nvarchar" MaxLength="255" />
+          <Property Name="CruisePerformanceFactor" Type="int" />
+          <Property Name="ContingencyPercent" Type="int" />
+          <Property Name="FlightNo" Type="nvarchar" MaxLength="255" />
+          <Property Name="GenerationDate" Type="datetime" />
+          <Property Name="ScheduledTimeDeparture" Type="datetime" />
+          <Property Name="ScheduledTimeArrival" Type="datetime" />
+          <Property Name="TailNo" Type="nvarchar" MaxLength="255" />
+          <Property Name="CruiseSpeed" Type="nvarchar" MaxLength="255" />
+          <Property Name="CostIndex" Type="int" />
+          <Property Name="MainFlightLevel" Type="int" />
+          <Property Name="DryOperatingWeight" Type="int" />
+          <Property Name="Payload" Type="int" />
+          <Property Name="GroundDistance" Type="int" />
+          <Property Name="AirDistance" Type="int" />
+          <Property Name="Origin" Type="nvarchar" MaxLength="255" />
+          <Property Name="Destination" Type="nvarchar" MaxLength="255" />
+          <Property Name="Alternate1" Type="nvarchar" MaxLength="255" />
+          <Property Name="Alternate2" Type="nvarchar" MaxLength="255" />
+          <Property Name="TakeoffAlternate" Type="nvarchar" MaxLength="255" />
+          <Property Name="MODAlernate1" Type="int" />
+          <Property Name="MODAlternate2" Type="int" />
+          <Property Name="Cockpit" Type="int" />
+          <Property Name="Cabin" Type="int" />
+          <Property Name="Extra" Type="int" />
+          <Property Name="Pantry" Type="int" />
+          <Property Name="Pilot1" Type="nvarchar" MaxLength="255" />
+          <Property Name="Pilot2" Type="nvarchar" MaxLength="255" />
+          <Property Name="Dispatcher" Type="nvarchar" MaxLength="255" />
+          <Property Name="OriginElevation" Type="int" />
+          <Property Name="DestinationElevation" Type="int" />
+          <Property Name="Alternate1Elevation" Type="int" />
+          <Property Name="Alternate2Elevation" Type="int" />
+          <Property Name="TakeoffAlternateElevation" Type="int" />
+          <Property Name="MaxShear" Type="nvarchar" MaxLength="255" />
+          <Property Name="MaximumZeroFuelWeight" Type="int" />
+          <Property Name="MaximumTakeoffWeight" Type="int" />
+          <Property Name="MaximumLandingWeight" Type="int" />
+          <Property Name="EstimatedZeroFuelWeight" Type="int" />
+          <Property Name="EstimatedTakeoffWeight" Type="int" />
+          <Property Name="EstimatedLandingWeight" Type="int" />
+          <Property Name="MainRoute" Type="nvarchar" MaxLength="255" />
+          <Property Name="Alternate1Route" Type="nvarchar" MaxLength="255" />
+          <Property Name="Alternate2Route" Type="nvarchar" MaxLength="255" />
+          <Property Name="TakeoffAlternateRoute" Type="nvarchar" MaxLength="255" />
+          <Property Name="PlanValidity" Type="datetime" />
+          <Property Name="FlightID" Type="int" />
+          <Property Name="DateCreate" Type="datetime" />
+          <Property Name="DateSign" Type="datetime" />
+          <Property Name="SignedbyId" Type="int" />
+          <Property Name="SignedbyLICL" Type="varchar" MaxLength="500" />
+          <Property Name="RawOFPId" Type="int" />
+          <Property Name="MaxWindShearLevel" Type="nvarchar" MaxLength="500" />
+          <Property Name="MaxWindShearPointName" Type="nvarchar" MaxLength="500" />
+          <Property Name="FlightRule" Type="nvarchar" MaxLength="500" />
+          <Property Name="ICAOFlightPlan" Type="nvarchar" MaxLength="2000" />
+          <Property Name="fuel_trip" Type="int" />
+          <Property Name="fuel_alt1" Type="int" />
+          <Property Name="fuel_alt2" Type="int" />
+          <Property Name="fuel_alt" Type="int" />
+          <Property Name="fuel_holding" Type="int" />
+          <Property Name="fuel_contigency" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="fuel_taxiout" Type="int" />
+          <Property Name="fuel_taxiin" Type="int" />
+          <Property Name="fuel_min_required" Type="int" />
+          <Property Name="fuel_additional" Type="int" />
+          <Property Name="fuel_extra" Type="int" />
+          <Property Name="fuel_total" Type="int" />
+          <Property Name="fuel_landing" Type="int" />
+          <Property Name="fuel_mod_alt1" Type="int" />
+          <Property Name="fuel_mod_alt2" Type="int" />
+          <Property Name="time_trip" Type="int" />
+          <Property Name="time_holding" Type="int" />
+          <Property Name="time_alt" Type="int" />
+          <Property Name="time_alt1" Type="int" />
+          <Property Name="time_alt2" Type="int" />
+          <Property Name="time_alt_takeof" Type="int" />
+          <Property Name="time_contigency" Type="int" />
+          <Property Name="time_min_required" Type="int" />
+          <Property Name="time_additional" Type="int" />
+          <Property Name="time_extra" Type="int" />
+          <Property Name="time_total" Type="int" />
+          <Property Name="fuel_extra_due" Type="nvarchar" MaxLength="1000" />
+          <Property Name="dis_trip" Type="int" />
+          <Property Name="dis_alt1" Type="int" />
+          <Property Name="dis_alt2" Type="int" />
+          <Property Name="dis_alt_takeoff" Type="int" />
+          <Property Name="dis_ground" Type="int" />
+          <Property Name="dis_air" Type="int" />
+          <Property Name="burnoffadj_value" Type="varchar" MaxLength="255" />
+          <Property Name="burnoffadj_fuel" Type="varchar" MaxLength="255" />
+          <Property Name="heightchange_value" Type="varchar" MaxLength="255" />
+          <Property Name="heightchange_fuel" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="OFPB_WindTemperature">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FlightLevel" Type="nvarchar" MaxLength="500" />
+          <Property Name="Wind" Type="nvarchar" MaxLength="255" />
+          <Property Name="Temperature" Type="nvarchar" MaxLength="255" />
+          <Property Name="WayPoint" Type="varchar" MaxLength="500" />
+          <Property Name="WindTemprature" Type="varchar" MaxLength="500" />
+          <Property Name="OFPId" Type="int" />
+          <Property Name="Type" Type="varchar" MaxLength="255" />
+        </EntityType>
         <EntityType Name="OFPImport">
           <Key>
             <PropertyRef Name="Id" />
@@ -2534,6 +2680,159 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_discretion_form' does not have
           <Property Name="PICId" Type="int" />
           <Property Name="PIC" Type="nvarchar" MaxLength="1001" />
           <Property Name="AircraftType" Type="nvarchar" MaxLength="255" />
+          <Property Name="STDDay" Type="date" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.view_ofpb_navlog' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_ofpb_navlog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="WayPoint" Type="nvarchar" MaxLength="255" />
+          <Property Name="FlightLevel" Type="nvarchar" MaxLength="255" />
+          <Property Name="Latitude" Type="float" />
+          <Property Name="Longitude" Type="float" />
+          <Property Name="Frequency" Type="nvarchar" MaxLength="255" />
+          <Property Name="Airway" Type="nvarchar" MaxLength="255" />
+          <Property Name="MEA" Type="nvarchar" MaxLength="255" />
+          <Property Name="MORA" Type="nvarchar" MaxLength="255" />
+          <Property Name="ZoneDistance" Type="int" />
+          <Property Name="CumulativeDistance" Type="int" />
+          <Property Name="Wind" Type="nvarchar" MaxLength="255" />
+          <Property Name="MagneticTrack" Type="nvarchar" MaxLength="255" />
+          <Property Name="Temperature" Type="nvarchar" MaxLength="255" />
+          <Property Name="ZoneTime" Type="nvarchar" MaxLength="255" />
+          <Property Name="CumulativeTime" Type="nvarchar" MaxLength="255" />
+          <Property Name="FuelRemained" Type="int" />
+          <Property Name="FuelUsed" Type="int" />
+          <Property Name="MachNo" Type="nvarchar" MaxLength="255" />
+          <Property Name="TrueAirSpeed" Type="int" />
+          <Property Name="GroundSpeed" Type="int" />
+          <Property Name="RootId" Type="int" />
+          <Property Name="NavType" Type="nvarchar" MaxLength="300" />
+          <Property Name="ATA" Type="nvarchar" MaxLength="300" />
+          <Property Name="ETA" Type="nvarchar" MaxLength="300" />
+          <Property Name="FuelRemainedActual" Type="int" />
+          <Property Name="FuelUsedActual" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.view_ofpb_root' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_ofpb_root">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ReferenceNo" Type="nvarchar" MaxLength="255" />
+          <Property Name="AirlineName" Type="nvarchar" MaxLength="255" />
+          <Property Name="WeightUnit" Type="nvarchar" MaxLength="255" />
+          <Property Name="CruisePerformanceFactor" Type="int" />
+          <Property Name="ContingencyPercent" Type="int" />
+          <Property Name="FlightNo" Type="nvarchar" MaxLength="255" />
+          <Property Name="GenerationDate" Type="datetime" />
+          <Property Name="ScheduledTimeDeparture" Type="datetime" />
+          <Property Name="ScheduledTimeArrival" Type="datetime" />
+          <Property Name="TailNo" Type="nvarchar" MaxLength="255" />
+          <Property Name="CruiseSpeed" Type="nvarchar" MaxLength="255" />
+          <Property Name="CostIndex" Type="int" />
+          <Property Name="MainFlightLevel" Type="int" />
+          <Property Name="DryOperatingWeight" Type="int" />
+          <Property Name="Payload" Type="int" />
+          <Property Name="GroundDistance" Type="int" />
+          <Property Name="AirDistance" Type="int" />
+          <Property Name="Origin" Type="nvarchar" MaxLength="255" />
+          <Property Name="Destination" Type="nvarchar" MaxLength="255" />
+          <Property Name="Alternate1" Type="nvarchar" MaxLength="255" />
+          <Property Name="Alternate2" Type="nvarchar" MaxLength="255" />
+          <Property Name="TakeoffAlternate" Type="nvarchar" MaxLength="255" />
+          <Property Name="MODAlernate1" Type="int" />
+          <Property Name="MODAlternate2" Type="int" />
+          <Property Name="Cockpit" Type="int" />
+          <Property Name="Cabin" Type="int" />
+          <Property Name="Extra" Type="int" />
+          <Property Name="Pantry" Type="int" />
+          <Property Name="Pilot1" Type="nvarchar" MaxLength="255" />
+          <Property Name="Pilot2" Type="nvarchar" MaxLength="255" />
+          <Property Name="Dispatcher" Type="nvarchar" MaxLength="255" />
+          <Property Name="OriginElevation" Type="int" />
+          <Property Name="DestinationElevation" Type="int" />
+          <Property Name="Alternate1Elevation" Type="int" />
+          <Property Name="Alternate2Elevation" Type="int" />
+          <Property Name="TakeoffAlternateElevation" Type="int" />
+          <Property Name="MaxShear" Type="nvarchar" MaxLength="255" />
+          <Property Name="MaximumZeroFuelWeight" Type="int" />
+          <Property Name="MaximumTakeoffWeight" Type="int" />
+          <Property Name="MaximumLandingWeight" Type="int" />
+          <Property Name="EstimatedZeroFuelWeight" Type="int" />
+          <Property Name="EstimatedTakeoffWeight" Type="int" />
+          <Property Name="EstimatedLandingWeight" Type="int" />
+          <Property Name="MainRoute" Type="nvarchar" MaxLength="255" />
+          <Property Name="Alternate1Route" Type="nvarchar" MaxLength="255" />
+          <Property Name="Alternate2Route" Type="nvarchar" MaxLength="255" />
+          <Property Name="TakeoffAlternateRoute" Type="nvarchar" MaxLength="255" />
+          <Property Name="PlanValidity" Type="datetime" />
+          <Property Name="FlightID" Type="int" />
+          <Property Name="DateCreate" Type="datetime" />
+          <Property Name="DateSign" Type="datetime" />
+          <Property Name="SignedbyId" Type="int" />
+          <Property Name="SignedbyLICL" Type="varchar" MaxLength="500" />
+          <Property Name="RawOFPId" Type="int" />
+          <Property Name="MaxWindShearLevel" Type="nvarchar" MaxLength="500" />
+          <Property Name="MaxWindShearPointName" Type="nvarchar" MaxLength="500" />
+          <Property Name="FlightRule" Type="nvarchar" MaxLength="500" />
+          <Property Name="ICAOFlightPlan" Type="nvarchar" MaxLength="2000" />
+          <Property Name="fuel_trip" Type="int" />
+          <Property Name="fuel_alt1" Type="int" />
+          <Property Name="fuel_alt2" Type="int" />
+          <Property Name="fuel_alt" Type="int" />
+          <Property Name="fuel_holding" Type="int" />
+          <Property Name="fuel_contigency" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="fuel_taxiout" Type="int" />
+          <Property Name="fuel_taxiin" Type="int" />
+          <Property Name="fuel_min_required" Type="int" />
+          <Property Name="fuel_additional" Type="int" />
+          <Property Name="fuel_extra" Type="int" />
+          <Property Name="fuel_total" Type="int" />
+          <Property Name="fuel_landing" Type="int" />
+          <Property Name="fuel_mod_alt1" Type="int" />
+          <Property Name="fuel_mod_alt2" Type="int" />
+          <Property Name="time_trip" Type="int" />
+          <Property Name="time_holding" Type="int" />
+          <Property Name="time_alt" Type="int" />
+          <Property Name="time_alt1" Type="int" />
+          <Property Name="time_alt2" Type="int" />
+          <Property Name="time_alt_takeof" Type="int" />
+          <Property Name="time_contigency" Type="int" />
+          <Property Name="time_min_required" Type="int" />
+          <Property Name="time_additional" Type="int" />
+          <Property Name="time_extra" Type="int" />
+          <Property Name="time_total" Type="int" />
+          <Property Name="fuel_extra_due" Type="nvarchar" MaxLength="1000" />
+          <Property Name="dis_trip" Type="int" />
+          <Property Name="dis_alt1" Type="int" />
+          <Property Name="dis_alt2" Type="int" />
+          <Property Name="dis_alt_takeoff" Type="int" />
+          <Property Name="dis_ground" Type="int" />
+          <Property Name="dis_air" Type="int" />
+          <Property Name="burnoffadj_value" Type="varchar" MaxLength="255" />
+          <Property Name="burnoffadj_fuel" Type="varchar" MaxLength="255" />
+          <Property Name="heightchange_value" Type="varchar" MaxLength="255" />
+          <Property Name="heightchange_fuel" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.view_ofpb_wt' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_ofpb_wt">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FlightLevel" Type="nvarchar" MaxLength="500" />
+          <Property Name="Wind" Type="nvarchar" MaxLength="255" />
+          <Property Name="Temperature" Type="nvarchar" MaxLength="255" />
+          <Property Name="WayPoint" Type="varchar" MaxLength="500" />
+          <Property Name="WindTemprature" Type="varchar" MaxLength="500" />
+          <Property Name="OFPId" Type="int" />
+          <Property Name="Type" Type="varchar" MaxLength="255" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.ViewEFBASR' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -3891,6 +4190,32 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="DateConfirmed" Type="datetime" />
           <Property Name="IsConfirmed" Type="bit" />
         </EntityType>
+        <Association Name="FK__OFPB_Main__RootI__3DC8FF7D">
+          <End Role="OFPB_Root" Type="Self.OFPB_Root" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="OFPB_MainNavLog" Type="Self.OFPB_MainNavLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OFPB_Root">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OFPB_MainNavLog">
+              <PropertyRef Name="RootId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OFPB_Root__Fligh__343F9543">
+          <End Role="FlightInformation" Type="Self.FlightInformation" Multiplicity="0..1" />
+          <End Role="OFPB_Root" Type="Self.OFPB_Root" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FlightInformation">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="OFPB_Root">
+              <PropertyRef Name="FlightID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_asr_flt">
           <End Role="FlightInformation" Type="Self.FlightInformation" Multiplicity="1" />
           <End Role="EFBASR" Type="Self.EFBASR" Multiplicity="*" />
@@ -4005,6 +4330,20 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_ofpwt_ofp">
+          <End Role="OFPB_Root" Type="Self.OFPB_Root" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="OFPB_WindTemperature" Type="Self.OFPB_WindTemperature" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OFPB_Root">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OFPB_WindTemperature">
+              <PropertyRef Name="OFPId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PERSONCUSTOMER_PERSON">
           <End Role="Person" Type="Self.Person" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -4045,6 +4384,9 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySet Name="FlightInformation" EntityType="Self.FlightInformation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="geo_apt_sunrise" EntityType="Self.geo_apt_sunrise" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="journeylog_atl" EntityType="Self.journeylog_atl" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OFPB_MainNavLog" EntityType="Self.OFPB_MainNavLog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OFPB_Root" EntityType="Self.OFPB_Root" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OFPB_WindTemperature" EntityType="Self.OFPB_WindTemperature" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OFPImport" EntityType="Self.OFPImport" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OFPImportProp" EntityType="Self.OFPImportProp" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Person" EntityType="Self.Person" Schema="dbo" store:Type="Tables" />
@@ -5010,8 +5352,152 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
     [view_discretion_form].[RegisterID] AS [RegisterID], 
     [view_discretion_form].[PICId] AS [PICId], 
     [view_discretion_form].[PIC] AS [PIC], 
-    [view_discretion_form].[AircraftType] AS [AircraftType]
+    [view_discretion_form].[AircraftType] AS [AircraftType], 
+    [view_discretion_form].[STDDay] AS [STDDay]
     FROM [dbo].[view_discretion_form] AS [view_discretion_form]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="view_ofpb_navlog" EntityType="Self.view_ofpb_navlog" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_ofpb_navlog].[Id] AS [Id], 
+    [view_ofpb_navlog].[WayPoint] AS [WayPoint], 
+    [view_ofpb_navlog].[FlightLevel] AS [FlightLevel], 
+    [view_ofpb_navlog].[Latitude] AS [Latitude], 
+    [view_ofpb_navlog].[Longitude] AS [Longitude], 
+    [view_ofpb_navlog].[Frequency] AS [Frequency], 
+    [view_ofpb_navlog].[Airway] AS [Airway], 
+    [view_ofpb_navlog].[MEA] AS [MEA], 
+    [view_ofpb_navlog].[MORA] AS [MORA], 
+    [view_ofpb_navlog].[ZoneDistance] AS [ZoneDistance], 
+    [view_ofpb_navlog].[CumulativeDistance] AS [CumulativeDistance], 
+    [view_ofpb_navlog].[Wind] AS [Wind], 
+    [view_ofpb_navlog].[MagneticTrack] AS [MagneticTrack], 
+    [view_ofpb_navlog].[Temperature] AS [Temperature], 
+    [view_ofpb_navlog].[ZoneTime] AS [ZoneTime], 
+    [view_ofpb_navlog].[CumulativeTime] AS [CumulativeTime], 
+    [view_ofpb_navlog].[FuelRemained] AS [FuelRemained], 
+    [view_ofpb_navlog].[FuelUsed] AS [FuelUsed], 
+    [view_ofpb_navlog].[MachNo] AS [MachNo], 
+    [view_ofpb_navlog].[TrueAirSpeed] AS [TrueAirSpeed], 
+    [view_ofpb_navlog].[GroundSpeed] AS [GroundSpeed], 
+    [view_ofpb_navlog].[RootId] AS [RootId], 
+    [view_ofpb_navlog].[NavType] AS [NavType], 
+    [view_ofpb_navlog].[ATA] AS [ATA], 
+    [view_ofpb_navlog].[ETA] AS [ETA], 
+    [view_ofpb_navlog].[FuelRemainedActual] AS [FuelRemainedActual], 
+    [view_ofpb_navlog].[FuelUsedActual] AS [FuelUsedActual]
+    FROM [dbo].[view_ofpb_navlog] AS [view_ofpb_navlog]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="view_ofpb_root" EntityType="Self.view_ofpb_root" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_ofpb_root].[Id] AS [Id], 
+    [view_ofpb_root].[ReferenceNo] AS [ReferenceNo], 
+    [view_ofpb_root].[AirlineName] AS [AirlineName], 
+    [view_ofpb_root].[WeightUnit] AS [WeightUnit], 
+    [view_ofpb_root].[CruisePerformanceFactor] AS [CruisePerformanceFactor], 
+    [view_ofpb_root].[ContingencyPercent] AS [ContingencyPercent], 
+    [view_ofpb_root].[FlightNo] AS [FlightNo], 
+    [view_ofpb_root].[GenerationDate] AS [GenerationDate], 
+    [view_ofpb_root].[ScheduledTimeDeparture] AS [ScheduledTimeDeparture], 
+    [view_ofpb_root].[ScheduledTimeArrival] AS [ScheduledTimeArrival], 
+    [view_ofpb_root].[TailNo] AS [TailNo], 
+    [view_ofpb_root].[CruiseSpeed] AS [CruiseSpeed], 
+    [view_ofpb_root].[CostIndex] AS [CostIndex], 
+    [view_ofpb_root].[MainFlightLevel] AS [MainFlightLevel], 
+    [view_ofpb_root].[DryOperatingWeight] AS [DryOperatingWeight], 
+    [view_ofpb_root].[Payload] AS [Payload], 
+    [view_ofpb_root].[GroundDistance] AS [GroundDistance], 
+    [view_ofpb_root].[AirDistance] AS [AirDistance], 
+    [view_ofpb_root].[Origin] AS [Origin], 
+    [view_ofpb_root].[Destination] AS [Destination], 
+    [view_ofpb_root].[Alternate1] AS [Alternate1], 
+    [view_ofpb_root].[Alternate2] AS [Alternate2], 
+    [view_ofpb_root].[TakeoffAlternate] AS [TakeoffAlternate], 
+    [view_ofpb_root].[MODAlernate1] AS [MODAlernate1], 
+    [view_ofpb_root].[MODAlternate2] AS [MODAlternate2], 
+    [view_ofpb_root].[Cockpit] AS [Cockpit], 
+    [view_ofpb_root].[Cabin] AS [Cabin], 
+    [view_ofpb_root].[Extra] AS [Extra], 
+    [view_ofpb_root].[Pantry] AS [Pantry], 
+    [view_ofpb_root].[Pilot1] AS [Pilot1], 
+    [view_ofpb_root].[Pilot2] AS [Pilot2], 
+    [view_ofpb_root].[Dispatcher] AS [Dispatcher], 
+    [view_ofpb_root].[OriginElevation] AS [OriginElevation], 
+    [view_ofpb_root].[DestinationElevation] AS [DestinationElevation], 
+    [view_ofpb_root].[Alternate1Elevation] AS [Alternate1Elevation], 
+    [view_ofpb_root].[Alternate2Elevation] AS [Alternate2Elevation], 
+    [view_ofpb_root].[TakeoffAlternateElevation] AS [TakeoffAlternateElevation], 
+    [view_ofpb_root].[MaxShear] AS [MaxShear], 
+    [view_ofpb_root].[MaximumZeroFuelWeight] AS [MaximumZeroFuelWeight], 
+    [view_ofpb_root].[MaximumTakeoffWeight] AS [MaximumTakeoffWeight], 
+    [view_ofpb_root].[MaximumLandingWeight] AS [MaximumLandingWeight], 
+    [view_ofpb_root].[EstimatedZeroFuelWeight] AS [EstimatedZeroFuelWeight], 
+    [view_ofpb_root].[EstimatedTakeoffWeight] AS [EstimatedTakeoffWeight], 
+    [view_ofpb_root].[EstimatedLandingWeight] AS [EstimatedLandingWeight], 
+    [view_ofpb_root].[MainRoute] AS [MainRoute], 
+    [view_ofpb_root].[Alternate1Route] AS [Alternate1Route], 
+    [view_ofpb_root].[Alternate2Route] AS [Alternate2Route], 
+    [view_ofpb_root].[TakeoffAlternateRoute] AS [TakeoffAlternateRoute], 
+    [view_ofpb_root].[PlanValidity] AS [PlanValidity], 
+    [view_ofpb_root].[FlightID] AS [FlightID], 
+    [view_ofpb_root].[DateCreate] AS [DateCreate], 
+    [view_ofpb_root].[DateSign] AS [DateSign], 
+    [view_ofpb_root].[SignedbyId] AS [SignedbyId], 
+    [view_ofpb_root].[SignedbyLICL] AS [SignedbyLICL], 
+    [view_ofpb_root].[RawOFPId] AS [RawOFPId], 
+    [view_ofpb_root].[MaxWindShearLevel] AS [MaxWindShearLevel], 
+    [view_ofpb_root].[MaxWindShearPointName] AS [MaxWindShearPointName], 
+    [view_ofpb_root].[FlightRule] AS [FlightRule], 
+    [view_ofpb_root].[ICAOFlightPlan] AS [ICAOFlightPlan], 
+    [view_ofpb_root].[fuel_trip] AS [fuel_trip], 
+    [view_ofpb_root].[fuel_alt1] AS [fuel_alt1], 
+    [view_ofpb_root].[fuel_alt2] AS [fuel_alt2], 
+    [view_ofpb_root].[fuel_alt] AS [fuel_alt], 
+    [view_ofpb_root].[fuel_holding] AS [fuel_holding], 
+    [view_ofpb_root].[fuel_contigency] AS [fuel_contigency], 
+    [view_ofpb_root].[fuel_taxiout] AS [fuel_taxiout], 
+    [view_ofpb_root].[fuel_taxiin] AS [fuel_taxiin], 
+    [view_ofpb_root].[fuel_min_required] AS [fuel_min_required], 
+    [view_ofpb_root].[fuel_additional] AS [fuel_additional], 
+    [view_ofpb_root].[fuel_extra] AS [fuel_extra], 
+    [view_ofpb_root].[fuel_total] AS [fuel_total], 
+    [view_ofpb_root].[fuel_landing] AS [fuel_landing], 
+    [view_ofpb_root].[fuel_mod_alt1] AS [fuel_mod_alt1], 
+    [view_ofpb_root].[fuel_mod_alt2] AS [fuel_mod_alt2], 
+    [view_ofpb_root].[time_trip] AS [time_trip], 
+    [view_ofpb_root].[time_holding] AS [time_holding], 
+    [view_ofpb_root].[time_alt] AS [time_alt], 
+    [view_ofpb_root].[time_alt1] AS [time_alt1], 
+    [view_ofpb_root].[time_alt2] AS [time_alt2], 
+    [view_ofpb_root].[time_alt_takeof] AS [time_alt_takeof], 
+    [view_ofpb_root].[time_contigency] AS [time_contigency], 
+    [view_ofpb_root].[time_min_required] AS [time_min_required], 
+    [view_ofpb_root].[time_additional] AS [time_additional], 
+    [view_ofpb_root].[time_extra] AS [time_extra], 
+    [view_ofpb_root].[time_total] AS [time_total], 
+    [view_ofpb_root].[fuel_extra_due] AS [fuel_extra_due], 
+    [view_ofpb_root].[dis_trip] AS [dis_trip], 
+    [view_ofpb_root].[dis_alt1] AS [dis_alt1], 
+    [view_ofpb_root].[dis_alt2] AS [dis_alt2], 
+    [view_ofpb_root].[dis_alt_takeoff] AS [dis_alt_takeoff], 
+    [view_ofpb_root].[dis_ground] AS [dis_ground], 
+    [view_ofpb_root].[dis_air] AS [dis_air], 
+    [view_ofpb_root].[burnoffadj_value] AS [burnoffadj_value], 
+    [view_ofpb_root].[burnoffadj_fuel] AS [burnoffadj_fuel], 
+    [view_ofpb_root].[heightchange_value] AS [heightchange_value], 
+    [view_ofpb_root].[heightchange_fuel] AS [heightchange_fuel]
+    FROM [dbo].[view_ofpb_root] AS [view_ofpb_root]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="view_ofpb_wt" EntityType="Self.view_ofpb_wt" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_ofpb_wt].[Id] AS [Id], 
+    [view_ofpb_wt].[FlightLevel] AS [FlightLevel], 
+    [view_ofpb_wt].[Wind] AS [Wind], 
+    [view_ofpb_wt].[Temperature] AS [Temperature], 
+    [view_ofpb_wt].[WayPoint] AS [WayPoint], 
+    [view_ofpb_wt].[WindTemprature] AS [WindTemprature], 
+    [view_ofpb_wt].[OFPId] AS [OFPId], 
+    [view_ofpb_wt].[Type] AS [Type]
+    FROM [dbo].[view_ofpb_wt] AS [view_ofpb_wt]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ViewEFBASR" EntityType="Self.ViewEFBASR" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -6219,6 +6705,14 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
     [XFlightCrew].[IsConfirmed] AS [IsConfirmed]
     FROM [dbo].[XFlightCrew] AS [XFlightCrew]</DefiningQuery>
           </EntitySet>
+          <AssociationSet Name="FK__OFPB_Main__RootI__3DC8FF7D" Association="Self.FK__OFPB_Main__RootI__3DC8FF7D">
+            <End Role="OFPB_Root" EntitySet="OFPB_Root" />
+            <End Role="OFPB_MainNavLog" EntitySet="OFPB_MainNavLog" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OFPB_Root__Fligh__343F9543" Association="Self.FK__OFPB_Root__Fligh__343F9543">
+            <End Role="FlightInformation" EntitySet="FlightInformation" />
+            <End Role="OFPB_Root" EntitySet="OFPB_Root" />
+          </AssociationSet>
           <AssociationSet Name="fk_asr_flt" Association="Self.fk_asr_flt">
             <End Role="FlightInformation" EntitySet="FlightInformation" />
             <End Role="EFBASR" EntitySet="EFBASR" />
@@ -6254,6 +6748,10 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <AssociationSet Name="fk_ofpp_ofp" Association="Self.fk_ofpp_ofp">
             <End Role="OFPImport" EntitySet="OFPImport" />
             <End Role="OFPImportProp" EntitySet="OFPImportProp" />
+          </AssociationSet>
+          <AssociationSet Name="fk_ofpwt_ofp" Association="Self.fk_ofpwt_ofp">
+            <End Role="OFPB_Root" EntitySet="OFPB_Root" />
+            <End Role="OFPB_WindTemperature" EntitySet="OFPB_WindTemperature" />
           </AssociationSet>
           <AssociationSet Name="FK_PERSONCUSTOMER_PERSON" Association="Self.FK_PERSONCUSTOMER_PERSON">
             <End Role="Person" EntitySet="Person" />
@@ -6347,6 +6845,24 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           </AssociationSet>
           <EntitySet Name="discretion_form" EntityType="dbModel.discretion_form" />
           <EntitySet Name="view_discretion_form" EntityType="dbModel.view_discretion_form" />
+          <EntitySet Name="OFPB_MainNavLog" EntityType="dbModel.OFPB_MainNavLog" />
+          <EntitySet Name="OFPB_Root" EntityType="dbModel.OFPB_Root" />
+          <EntitySet Name="OFPB_WindTemperature" EntityType="dbModel.OFPB_WindTemperature" />
+          <EntitySet Name="view_ofpb_navlog" EntityType="dbModel.view_ofpb_navlog" />
+          <EntitySet Name="view_ofpb_root" EntityType="dbModel.view_ofpb_root" />
+          <EntitySet Name="view_ofpb_wt" EntityType="dbModel.view_ofpb_wt" />
+          <AssociationSet Name="FK__OFPB_Root__Fligh__343F9543" Association="dbModel.FK__OFPB_Root__Fligh__343F9543">
+            <End Role="FlightInformation" EntitySet="FlightInformations" />
+            <End Role="OFPB_Root" EntitySet="OFPB_Root" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OFPB_Main__RootI__3DC8FF7D" Association="dbModel.FK__OFPB_Main__RootI__3DC8FF7D">
+            <End Role="OFPB_Root" EntitySet="OFPB_Root" />
+            <End Role="OFPB_MainNavLog" EntitySet="OFPB_MainNavLog" />
+          </AssociationSet>
+          <AssociationSet Name="fk_ofpwt_ofp" Association="dbModel.fk_ofpwt_ofp">
+            <End Role="OFPB_Root" EntitySet="OFPB_Root" />
+            <End Role="OFPB_WindTemperature" EntitySet="OFPB_WindTemperature" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="AppCrewFlight">
           <Key>
@@ -7013,6 +7529,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <NavigationProperty Name="EFBVoyageReports" Relationship="dbModel.fk_vr_flt" FromRole="FlightInformation" ToRole="EFBVoyageReport" />
           <NavigationProperty Name="Airport" Relationship="dbModel.fk_flightinformation_fromairport" FromRole="FlightInformation" ToRole="Airport" />
           <NavigationProperty Name="Airport1" Relationship="dbModel.fk_flightinformation_toairport" FromRole="FlightInformation" ToRole="Airport" />
+          <NavigationProperty Name="OFPB_Root" Relationship="dbModel.FK__OFPB_Root__Fligh__343F9543" FromRole="FlightInformation" ToRole="OFPB_Root" />
         </EntityType>
         <Association Name="fk_fdpitem_flight">
           <End Type="dbModel.FlightInformation" Role="FlightInformation" Multiplicity="0..1">
@@ -10343,7 +10860,345 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="PICId" Type="Int32" />
           <Property Name="PIC" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
           <Property Name="AircraftType" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="STDDay" Type="DateTime" Precision="0" />
         </EntityType>
+        <EntityType Name="OFPB_MainNavLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="WayPoint" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FlightLevel" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Latitude" Type="Double" />
+          <Property Name="Longitude" Type="Double" />
+          <Property Name="Frequency" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Airway" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="MEA" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="MORA" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ZoneDistance" Type="Int32" />
+          <Property Name="CumulativeDistance" Type="Int32" />
+          <Property Name="Wind" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="MagneticTrack" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Temperature" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ZoneTime" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CumulativeTime" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FuelRemained" Type="Int32" />
+          <Property Name="FuelUsed" Type="Int32" />
+          <Property Name="MachNo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="TrueAirSpeed" Type="Int32" />
+          <Property Name="GroundSpeed" Type="Int32" />
+          <Property Name="RootId" Type="Int32" />
+          <Property Name="NavType" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="ATA" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="ETA" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="FuelRemainedActual" Type="Int32" />
+          <Property Name="FuelUsedActual" Type="Int32" />
+          <NavigationProperty Name="OFPB_Root" Relationship="dbModel.FK__OFPB_Main__RootI__3DC8FF7D" FromRole="OFPB_MainNavLog" ToRole="OFPB_Root" />
+        </EntityType>
+        <EntityType Name="OFPB_Root">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ReferenceNo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="AirlineName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="WeightUnit" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CruisePerformanceFactor" Type="Int32" />
+          <Property Name="ContingencyPercent" Type="Int32" />
+          <Property Name="FlightNo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="GenerationDate" Type="DateTime" Precision="3" />
+          <Property Name="ScheduledTimeDeparture" Type="DateTime" Precision="3" />
+          <Property Name="ScheduledTimeArrival" Type="DateTime" Precision="3" />
+          <Property Name="TailNo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CruiseSpeed" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CostIndex" Type="Int32" />
+          <Property Name="MainFlightLevel" Type="Int32" />
+          <Property Name="DryOperatingWeight" Type="Int32" />
+          <Property Name="Payload" Type="Int32" />
+          <Property Name="GroundDistance" Type="Int32" />
+          <Property Name="AirDistance" Type="Int32" />
+          <Property Name="Origin" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Destination" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Alternate1" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Alternate2" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="TakeoffAlternate" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="MODAlernate1" Type="Int32" />
+          <Property Name="MODAlternate2" Type="Int32" />
+          <Property Name="Cockpit" Type="Int32" />
+          <Property Name="Cabin" Type="Int32" />
+          <Property Name="Extra" Type="Int32" />
+          <Property Name="Pantry" Type="Int32" />
+          <Property Name="Pilot1" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Pilot2" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Dispatcher" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="OriginElevation" Type="Int32" />
+          <Property Name="DestinationElevation" Type="Int32" />
+          <Property Name="Alternate1Elevation" Type="Int32" />
+          <Property Name="Alternate2Elevation" Type="Int32" />
+          <Property Name="TakeoffAlternateElevation" Type="Int32" />
+          <Property Name="MaxShear" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="MaximumZeroFuelWeight" Type="Int32" />
+          <Property Name="MaximumTakeoffWeight" Type="Int32" />
+          <Property Name="MaximumLandingWeight" Type="Int32" />
+          <Property Name="EstimatedZeroFuelWeight" Type="Int32" />
+          <Property Name="EstimatedTakeoffWeight" Type="Int32" />
+          <Property Name="EstimatedLandingWeight" Type="Int32" />
+          <Property Name="MainRoute" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Alternate1Route" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Alternate2Route" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="TakeoffAlternateRoute" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PlanValidity" Type="DateTime" Precision="3" />
+          <Property Name="FlightID" Type="Int32" />
+          <Property Name="DateCreate" Type="DateTime" Precision="3" />
+          <Property Name="DateSign" Type="DateTime" Precision="3" />
+          <Property Name="SignedbyId" Type="Int32" />
+          <Property Name="SignedbyLICL" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="RawOFPId" Type="Int32" />
+          <Property Name="MaxWindShearLevel" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="MaxWindShearPointName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="FlightRule" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ICAOFlightPlan" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="fuel_trip" Type="Int32" />
+          <Property Name="fuel_alt1" Type="Int32" />
+          <Property Name="fuel_alt2" Type="Int32" />
+          <Property Name="fuel_alt" Type="Int32" />
+          <Property Name="fuel_holding" Type="Int32" />
+          <Property Name="fuel_contigency" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="fuel_taxiout" Type="Int32" />
+          <Property Name="fuel_taxiin" Type="Int32" />
+          <Property Name="fuel_min_required" Type="Int32" />
+          <Property Name="fuel_additional" Type="Int32" />
+          <Property Name="fuel_extra" Type="Int32" />
+          <Property Name="fuel_total" Type="Int32" />
+          <Property Name="fuel_landing" Type="Int32" />
+          <Property Name="fuel_mod_alt1" Type="Int32" />
+          <Property Name="fuel_mod_alt2" Type="Int32" />
+          <Property Name="time_trip" Type="Int32" />
+          <Property Name="time_holding" Type="Int32" />
+          <Property Name="time_alt" Type="Int32" />
+          <Property Name="time_alt1" Type="Int32" />
+          <Property Name="time_alt2" Type="Int32" />
+          <Property Name="time_alt_takeof" Type="Int32" />
+          <Property Name="time_contigency" Type="Int32" />
+          <Property Name="time_min_required" Type="Int32" />
+          <Property Name="time_additional" Type="Int32" />
+          <Property Name="time_extra" Type="Int32" />
+          <Property Name="time_total" Type="Int32" />
+          <Property Name="fuel_extra_due" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="dis_trip" Type="Int32" />
+          <Property Name="dis_alt1" Type="Int32" />
+          <Property Name="dis_alt2" Type="Int32" />
+          <Property Name="dis_alt_takeoff" Type="Int32" />
+          <Property Name="dis_ground" Type="Int32" />
+          <Property Name="dis_air" Type="Int32" />
+          <Property Name="burnoffadj_value" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="burnoffadj_fuel" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="heightchange_value" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="heightchange_fuel" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="FlightInformation" Relationship="dbModel.FK__OFPB_Root__Fligh__343F9543" FromRole="OFPB_Root" ToRole="FlightInformation" />
+          <NavigationProperty Name="OFPB_MainNavLog" Relationship="dbModel.FK__OFPB_Main__RootI__3DC8FF7D" FromRole="OFPB_Root" ToRole="OFPB_MainNavLog" />
+          <NavigationProperty Name="OFPB_WindTemperature" Relationship="dbModel.fk_ofpwt_ofp" FromRole="OFPB_Root" ToRole="OFPB_WindTemperature" />
+        </EntityType>
+        <EntityType Name="OFPB_WindTemperature">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FlightLevel" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Wind" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Temperature" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="WayPoint" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="WindTemprature" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="OFPId" Type="Int32" />
+          <Property Name="Type" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="OFPB_Root" Relationship="dbModel.fk_ofpwt_ofp" FromRole="OFPB_WindTemperature" ToRole="OFPB_Root" />
+        </EntityType>
+        <EntityType Name="view_ofpb_navlog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="WayPoint" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FlightLevel" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Latitude" Type="Double" />
+          <Property Name="Longitude" Type="Double" />
+          <Property Name="Frequency" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Airway" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="MEA" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="MORA" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ZoneDistance" Type="Int32" />
+          <Property Name="CumulativeDistance" Type="Int32" />
+          <Property Name="Wind" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="MagneticTrack" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Temperature" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ZoneTime" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CumulativeTime" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FuelRemained" Type="Int32" />
+          <Property Name="FuelUsed" Type="Int32" />
+          <Property Name="MachNo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="TrueAirSpeed" Type="Int32" />
+          <Property Name="GroundSpeed" Type="Int32" />
+          <Property Name="RootId" Type="Int32" />
+          <Property Name="NavType" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="ATA" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="ETA" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="FuelRemainedActual" Type="Int32" />
+          <Property Name="FuelUsedActual" Type="Int32" />
+        </EntityType>
+        <EntityType Name="view_ofpb_root">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ReferenceNo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="AirlineName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="WeightUnit" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CruisePerformanceFactor" Type="Int32" />
+          <Property Name="ContingencyPercent" Type="Int32" />
+          <Property Name="FlightNo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="GenerationDate" Type="DateTime" Precision="3" />
+          <Property Name="ScheduledTimeDeparture" Type="DateTime" Precision="3" />
+          <Property Name="ScheduledTimeArrival" Type="DateTime" Precision="3" />
+          <Property Name="TailNo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CruiseSpeed" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CostIndex" Type="Int32" />
+          <Property Name="MainFlightLevel" Type="Int32" />
+          <Property Name="DryOperatingWeight" Type="Int32" />
+          <Property Name="Payload" Type="Int32" />
+          <Property Name="GroundDistance" Type="Int32" />
+          <Property Name="AirDistance" Type="Int32" />
+          <Property Name="Origin" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Destination" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Alternate1" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Alternate2" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="TakeoffAlternate" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="MODAlernate1" Type="Int32" />
+          <Property Name="MODAlternate2" Type="Int32" />
+          <Property Name="Cockpit" Type="Int32" />
+          <Property Name="Cabin" Type="Int32" />
+          <Property Name="Extra" Type="Int32" />
+          <Property Name="Pantry" Type="Int32" />
+          <Property Name="Pilot1" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Pilot2" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Dispatcher" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="OriginElevation" Type="Int32" />
+          <Property Name="DestinationElevation" Type="Int32" />
+          <Property Name="Alternate1Elevation" Type="Int32" />
+          <Property Name="Alternate2Elevation" Type="Int32" />
+          <Property Name="TakeoffAlternateElevation" Type="Int32" />
+          <Property Name="MaxShear" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="MaximumZeroFuelWeight" Type="Int32" />
+          <Property Name="MaximumTakeoffWeight" Type="Int32" />
+          <Property Name="MaximumLandingWeight" Type="Int32" />
+          <Property Name="EstimatedZeroFuelWeight" Type="Int32" />
+          <Property Name="EstimatedTakeoffWeight" Type="Int32" />
+          <Property Name="EstimatedLandingWeight" Type="Int32" />
+          <Property Name="MainRoute" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Alternate1Route" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Alternate2Route" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="TakeoffAlternateRoute" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PlanValidity" Type="DateTime" Precision="3" />
+          <Property Name="FlightID" Type="Int32" />
+          <Property Name="DateCreate" Type="DateTime" Precision="3" />
+          <Property Name="DateSign" Type="DateTime" Precision="3" />
+          <Property Name="SignedbyId" Type="Int32" />
+          <Property Name="SignedbyLICL" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="RawOFPId" Type="Int32" />
+          <Property Name="MaxWindShearLevel" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="MaxWindShearPointName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="FlightRule" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ICAOFlightPlan" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="fuel_trip" Type="Int32" />
+          <Property Name="fuel_alt1" Type="Int32" />
+          <Property Name="fuel_alt2" Type="Int32" />
+          <Property Name="fuel_alt" Type="Int32" />
+          <Property Name="fuel_holding" Type="Int32" />
+          <Property Name="fuel_contigency" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="fuel_taxiout" Type="Int32" />
+          <Property Name="fuel_taxiin" Type="Int32" />
+          <Property Name="fuel_min_required" Type="Int32" />
+          <Property Name="fuel_additional" Type="Int32" />
+          <Property Name="fuel_extra" Type="Int32" />
+          <Property Name="fuel_total" Type="Int32" />
+          <Property Name="fuel_landing" Type="Int32" />
+          <Property Name="fuel_mod_alt1" Type="Int32" />
+          <Property Name="fuel_mod_alt2" Type="Int32" />
+          <Property Name="time_trip" Type="Int32" />
+          <Property Name="time_holding" Type="Int32" />
+          <Property Name="time_alt" Type="Int32" />
+          <Property Name="time_alt1" Type="Int32" />
+          <Property Name="time_alt2" Type="Int32" />
+          <Property Name="time_alt_takeof" Type="Int32" />
+          <Property Name="time_contigency" Type="Int32" />
+          <Property Name="time_min_required" Type="Int32" />
+          <Property Name="time_additional" Type="Int32" />
+          <Property Name="time_extra" Type="Int32" />
+          <Property Name="time_total" Type="Int32" />
+          <Property Name="fuel_extra_due" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="dis_trip" Type="Int32" />
+          <Property Name="dis_alt1" Type="Int32" />
+          <Property Name="dis_alt2" Type="Int32" />
+          <Property Name="dis_alt_takeoff" Type="Int32" />
+          <Property Name="dis_ground" Type="Int32" />
+          <Property Name="dis_air" Type="Int32" />
+          <Property Name="burnoffadj_value" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="burnoffadj_fuel" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="heightchange_value" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="heightchange_fuel" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="view_ofpb_wt">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FlightLevel" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Wind" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Temperature" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="WayPoint" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="WindTemprature" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="OFPId" Type="Int32" />
+          <Property Name="Type" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK__OFPB_Root__Fligh__343F9543">
+          <End Type="dbModel.FlightInformation" Role="FlightInformation" Multiplicity="0..1" />
+          <End Type="dbModel.OFPB_Root" Role="OFPB_Root" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FlightInformation">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="OFPB_Root">
+              <PropertyRef Name="FlightID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OFPB_Main__RootI__3DC8FF7D">
+          <End Type="dbModel.OFPB_Root" Role="OFPB_Root" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="dbModel.OFPB_MainNavLog" Role="OFPB_MainNavLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OFPB_Root">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OFPB_MainNavLog">
+              <PropertyRef Name="RootId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_ofpwt_ofp">
+          <End Type="dbModel.OFPB_Root" Role="OFPB_Root" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="dbModel.OFPB_WindTemperature" Role="OFPB_WindTemperature" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OFPB_Root">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OFPB_WindTemperature">
+              <PropertyRef Name="OFPId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -13998,6 +14853,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySetMapping Name="view_discretion_form">
             <EntityTypeMapping TypeName="dbModel.view_discretion_form">
               <MappingFragment StoreEntitySet="view_discretion_form">
+                <ScalarProperty Name="STDDay" ColumnName="STDDay" />
                 <ScalarProperty Name="AircraftType" ColumnName="AircraftType" />
                 <ScalarProperty Name="PIC" ColumnName="PIC" />
                 <ScalarProperty Name="PICId" ColumnName="PICId" />
@@ -14028,6 +14884,304 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
                 <ScalarProperty Name="last_duty_started" ColumnName="last_duty_started" />
                 <ScalarProperty Name="flight_id" ColumnName="flight_id" />
                 <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OFPB_MainNavLog">
+            <EntityTypeMapping TypeName="dbModel.OFPB_MainNavLog">
+              <MappingFragment StoreEntitySet="OFPB_MainNavLog">
+                <ScalarProperty Name="FuelUsedActual" ColumnName="FuelUsedActual" />
+                <ScalarProperty Name="FuelRemainedActual" ColumnName="FuelRemainedActual" />
+                <ScalarProperty Name="ETA" ColumnName="ETA" />
+                <ScalarProperty Name="ATA" ColumnName="ATA" />
+                <ScalarProperty Name="NavType" ColumnName="NavType" />
+                <ScalarProperty Name="RootId" ColumnName="RootId" />
+                <ScalarProperty Name="GroundSpeed" ColumnName="GroundSpeed" />
+                <ScalarProperty Name="TrueAirSpeed" ColumnName="TrueAirSpeed" />
+                <ScalarProperty Name="MachNo" ColumnName="MachNo" />
+                <ScalarProperty Name="FuelUsed" ColumnName="FuelUsed" />
+                <ScalarProperty Name="FuelRemained" ColumnName="FuelRemained" />
+                <ScalarProperty Name="CumulativeTime" ColumnName="CumulativeTime" />
+                <ScalarProperty Name="ZoneTime" ColumnName="ZoneTime" />
+                <ScalarProperty Name="Temperature" ColumnName="Temperature" />
+                <ScalarProperty Name="MagneticTrack" ColumnName="MagneticTrack" />
+                <ScalarProperty Name="Wind" ColumnName="Wind" />
+                <ScalarProperty Name="CumulativeDistance" ColumnName="CumulativeDistance" />
+                <ScalarProperty Name="ZoneDistance" ColumnName="ZoneDistance" />
+                <ScalarProperty Name="MORA" ColumnName="MORA" />
+                <ScalarProperty Name="MEA" ColumnName="MEA" />
+                <ScalarProperty Name="Airway" ColumnName="Airway" />
+                <ScalarProperty Name="Frequency" ColumnName="Frequency" />
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+                <ScalarProperty Name="FlightLevel" ColumnName="FlightLevel" />
+                <ScalarProperty Name="WayPoint" ColumnName="WayPoint" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OFPB_Root">
+            <EntityTypeMapping TypeName="dbModel.OFPB_Root">
+              <MappingFragment StoreEntitySet="OFPB_Root">
+                <ScalarProperty Name="heightchange_fuel" ColumnName="heightchange_fuel" />
+                <ScalarProperty Name="heightchange_value" ColumnName="heightchange_value" />
+                <ScalarProperty Name="burnoffadj_fuel" ColumnName="burnoffadj_fuel" />
+                <ScalarProperty Name="burnoffadj_value" ColumnName="burnoffadj_value" />
+                <ScalarProperty Name="dis_air" ColumnName="dis_air" />
+                <ScalarProperty Name="dis_ground" ColumnName="dis_ground" />
+                <ScalarProperty Name="dis_alt_takeoff" ColumnName="dis_alt_takeoff" />
+                <ScalarProperty Name="dis_alt2" ColumnName="dis_alt2" />
+                <ScalarProperty Name="dis_alt1" ColumnName="dis_alt1" />
+                <ScalarProperty Name="dis_trip" ColumnName="dis_trip" />
+                <ScalarProperty Name="fuel_extra_due" ColumnName="fuel_extra_due" />
+                <ScalarProperty Name="time_total" ColumnName="time_total" />
+                <ScalarProperty Name="time_extra" ColumnName="time_extra" />
+                <ScalarProperty Name="time_additional" ColumnName="time_additional" />
+                <ScalarProperty Name="time_min_required" ColumnName="time_min_required" />
+                <ScalarProperty Name="time_contigency" ColumnName="time_contigency" />
+                <ScalarProperty Name="time_alt_takeof" ColumnName="time_alt_takeof" />
+                <ScalarProperty Name="time_alt2" ColumnName="time_alt2" />
+                <ScalarProperty Name="time_alt1" ColumnName="time_alt1" />
+                <ScalarProperty Name="time_alt" ColumnName="time_alt" />
+                <ScalarProperty Name="time_holding" ColumnName="time_holding" />
+                <ScalarProperty Name="time_trip" ColumnName="time_trip" />
+                <ScalarProperty Name="fuel_mod_alt2" ColumnName="fuel_mod_alt2" />
+                <ScalarProperty Name="fuel_mod_alt1" ColumnName="fuel_mod_alt1" />
+                <ScalarProperty Name="fuel_landing" ColumnName="fuel_landing" />
+                <ScalarProperty Name="fuel_total" ColumnName="fuel_total" />
+                <ScalarProperty Name="fuel_extra" ColumnName="fuel_extra" />
+                <ScalarProperty Name="fuel_additional" ColumnName="fuel_additional" />
+                <ScalarProperty Name="fuel_min_required" ColumnName="fuel_min_required" />
+                <ScalarProperty Name="fuel_taxiin" ColumnName="fuel_taxiin" />
+                <ScalarProperty Name="fuel_taxiout" ColumnName="fuel_taxiout" />
+                <ScalarProperty Name="fuel_contigency" ColumnName="fuel_contigency" />
+                <ScalarProperty Name="fuel_holding" ColumnName="fuel_holding" />
+                <ScalarProperty Name="fuel_alt" ColumnName="fuel_alt" />
+                <ScalarProperty Name="fuel_alt2" ColumnName="fuel_alt2" />
+                <ScalarProperty Name="fuel_alt1" ColumnName="fuel_alt1" />
+                <ScalarProperty Name="fuel_trip" ColumnName="fuel_trip" />
+                <ScalarProperty Name="ICAOFlightPlan" ColumnName="ICAOFlightPlan" />
+                <ScalarProperty Name="FlightRule" ColumnName="FlightRule" />
+                <ScalarProperty Name="MaxWindShearPointName" ColumnName="MaxWindShearPointName" />
+                <ScalarProperty Name="MaxWindShearLevel" ColumnName="MaxWindShearLevel" />
+                <ScalarProperty Name="RawOFPId" ColumnName="RawOFPId" />
+                <ScalarProperty Name="SignedbyLICL" ColumnName="SignedbyLICL" />
+                <ScalarProperty Name="SignedbyId" ColumnName="SignedbyId" />
+                <ScalarProperty Name="DateSign" ColumnName="DateSign" />
+                <ScalarProperty Name="DateCreate" ColumnName="DateCreate" />
+                <ScalarProperty Name="FlightID" ColumnName="FlightID" />
+                <ScalarProperty Name="PlanValidity" ColumnName="PlanValidity" />
+                <ScalarProperty Name="TakeoffAlternateRoute" ColumnName="TakeoffAlternateRoute" />
+                <ScalarProperty Name="Alternate2Route" ColumnName="Alternate2Route" />
+                <ScalarProperty Name="Alternate1Route" ColumnName="Alternate1Route" />
+                <ScalarProperty Name="MainRoute" ColumnName="MainRoute" />
+                <ScalarProperty Name="EstimatedLandingWeight" ColumnName="EstimatedLandingWeight" />
+                <ScalarProperty Name="EstimatedTakeoffWeight" ColumnName="EstimatedTakeoffWeight" />
+                <ScalarProperty Name="EstimatedZeroFuelWeight" ColumnName="EstimatedZeroFuelWeight" />
+                <ScalarProperty Name="MaximumLandingWeight" ColumnName="MaximumLandingWeight" />
+                <ScalarProperty Name="MaximumTakeoffWeight" ColumnName="MaximumTakeoffWeight" />
+                <ScalarProperty Name="MaximumZeroFuelWeight" ColumnName="MaximumZeroFuelWeight" />
+                <ScalarProperty Name="MaxShear" ColumnName="MaxShear" />
+                <ScalarProperty Name="TakeoffAlternateElevation" ColumnName="TakeoffAlternateElevation" />
+                <ScalarProperty Name="Alternate2Elevation" ColumnName="Alternate2Elevation" />
+                <ScalarProperty Name="Alternate1Elevation" ColumnName="Alternate1Elevation" />
+                <ScalarProperty Name="DestinationElevation" ColumnName="DestinationElevation" />
+                <ScalarProperty Name="OriginElevation" ColumnName="OriginElevation" />
+                <ScalarProperty Name="Dispatcher" ColumnName="Dispatcher" />
+                <ScalarProperty Name="Pilot2" ColumnName="Pilot2" />
+                <ScalarProperty Name="Pilot1" ColumnName="Pilot1" />
+                <ScalarProperty Name="Pantry" ColumnName="Pantry" />
+                <ScalarProperty Name="Extra" ColumnName="Extra" />
+                <ScalarProperty Name="Cabin" ColumnName="Cabin" />
+                <ScalarProperty Name="Cockpit" ColumnName="Cockpit" />
+                <ScalarProperty Name="MODAlternate2" ColumnName="MODAlternate2" />
+                <ScalarProperty Name="MODAlernate1" ColumnName="MODAlernate1" />
+                <ScalarProperty Name="TakeoffAlternate" ColumnName="TakeoffAlternate" />
+                <ScalarProperty Name="Alternate2" ColumnName="Alternate2" />
+                <ScalarProperty Name="Alternate1" ColumnName="Alternate1" />
+                <ScalarProperty Name="Destination" ColumnName="Destination" />
+                <ScalarProperty Name="Origin" ColumnName="Origin" />
+                <ScalarProperty Name="AirDistance" ColumnName="AirDistance" />
+                <ScalarProperty Name="GroundDistance" ColumnName="GroundDistance" />
+                <ScalarProperty Name="Payload" ColumnName="Payload" />
+                <ScalarProperty Name="DryOperatingWeight" ColumnName="DryOperatingWeight" />
+                <ScalarProperty Name="MainFlightLevel" ColumnName="MainFlightLevel" />
+                <ScalarProperty Name="CostIndex" ColumnName="CostIndex" />
+                <ScalarProperty Name="CruiseSpeed" ColumnName="CruiseSpeed" />
+                <ScalarProperty Name="TailNo" ColumnName="TailNo" />
+                <ScalarProperty Name="ScheduledTimeArrival" ColumnName="ScheduledTimeArrival" />
+                <ScalarProperty Name="ScheduledTimeDeparture" ColumnName="ScheduledTimeDeparture" />
+                <ScalarProperty Name="GenerationDate" ColumnName="GenerationDate" />
+                <ScalarProperty Name="FlightNo" ColumnName="FlightNo" />
+                <ScalarProperty Name="ContingencyPercent" ColumnName="ContingencyPercent" />
+                <ScalarProperty Name="CruisePerformanceFactor" ColumnName="CruisePerformanceFactor" />
+                <ScalarProperty Name="WeightUnit" ColumnName="WeightUnit" />
+                <ScalarProperty Name="AirlineName" ColumnName="AirlineName" />
+                <ScalarProperty Name="ReferenceNo" ColumnName="ReferenceNo" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OFPB_WindTemperature">
+            <EntityTypeMapping TypeName="dbModel.OFPB_WindTemperature">
+              <MappingFragment StoreEntitySet="OFPB_WindTemperature">
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="OFPId" ColumnName="OFPId" />
+                <ScalarProperty Name="WindTemprature" ColumnName="WindTemprature" />
+                <ScalarProperty Name="WayPoint" ColumnName="WayPoint" />
+                <ScalarProperty Name="Temperature" ColumnName="Temperature" />
+                <ScalarProperty Name="Wind" ColumnName="Wind" />
+                <ScalarProperty Name="FlightLevel" ColumnName="FlightLevel" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_ofpb_navlog">
+            <EntityTypeMapping TypeName="dbModel.view_ofpb_navlog">
+              <MappingFragment StoreEntitySet="view_ofpb_navlog">
+                <ScalarProperty Name="FuelUsedActual" ColumnName="FuelUsedActual" />
+                <ScalarProperty Name="FuelRemainedActual" ColumnName="FuelRemainedActual" />
+                <ScalarProperty Name="ETA" ColumnName="ETA" />
+                <ScalarProperty Name="ATA" ColumnName="ATA" />
+                <ScalarProperty Name="NavType" ColumnName="NavType" />
+                <ScalarProperty Name="RootId" ColumnName="RootId" />
+                <ScalarProperty Name="GroundSpeed" ColumnName="GroundSpeed" />
+                <ScalarProperty Name="TrueAirSpeed" ColumnName="TrueAirSpeed" />
+                <ScalarProperty Name="MachNo" ColumnName="MachNo" />
+                <ScalarProperty Name="FuelUsed" ColumnName="FuelUsed" />
+                <ScalarProperty Name="FuelRemained" ColumnName="FuelRemained" />
+                <ScalarProperty Name="CumulativeTime" ColumnName="CumulativeTime" />
+                <ScalarProperty Name="ZoneTime" ColumnName="ZoneTime" />
+                <ScalarProperty Name="Temperature" ColumnName="Temperature" />
+                <ScalarProperty Name="MagneticTrack" ColumnName="MagneticTrack" />
+                <ScalarProperty Name="Wind" ColumnName="Wind" />
+                <ScalarProperty Name="CumulativeDistance" ColumnName="CumulativeDistance" />
+                <ScalarProperty Name="ZoneDistance" ColumnName="ZoneDistance" />
+                <ScalarProperty Name="MORA" ColumnName="MORA" />
+                <ScalarProperty Name="MEA" ColumnName="MEA" />
+                <ScalarProperty Name="Airway" ColumnName="Airway" />
+                <ScalarProperty Name="Frequency" ColumnName="Frequency" />
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+                <ScalarProperty Name="FlightLevel" ColumnName="FlightLevel" />
+                <ScalarProperty Name="WayPoint" ColumnName="WayPoint" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_ofpb_root">
+            <EntityTypeMapping TypeName="dbModel.view_ofpb_root">
+              <MappingFragment StoreEntitySet="view_ofpb_root">
+                <ScalarProperty Name="heightchange_fuel" ColumnName="heightchange_fuel" />
+                <ScalarProperty Name="heightchange_value" ColumnName="heightchange_value" />
+                <ScalarProperty Name="burnoffadj_fuel" ColumnName="burnoffadj_fuel" />
+                <ScalarProperty Name="burnoffadj_value" ColumnName="burnoffadj_value" />
+                <ScalarProperty Name="dis_air" ColumnName="dis_air" />
+                <ScalarProperty Name="dis_ground" ColumnName="dis_ground" />
+                <ScalarProperty Name="dis_alt_takeoff" ColumnName="dis_alt_takeoff" />
+                <ScalarProperty Name="dis_alt2" ColumnName="dis_alt2" />
+                <ScalarProperty Name="dis_alt1" ColumnName="dis_alt1" />
+                <ScalarProperty Name="dis_trip" ColumnName="dis_trip" />
+                <ScalarProperty Name="fuel_extra_due" ColumnName="fuel_extra_due" />
+                <ScalarProperty Name="time_total" ColumnName="time_total" />
+                <ScalarProperty Name="time_extra" ColumnName="time_extra" />
+                <ScalarProperty Name="time_additional" ColumnName="time_additional" />
+                <ScalarProperty Name="time_min_required" ColumnName="time_min_required" />
+                <ScalarProperty Name="time_contigency" ColumnName="time_contigency" />
+                <ScalarProperty Name="time_alt_takeof" ColumnName="time_alt_takeof" />
+                <ScalarProperty Name="time_alt2" ColumnName="time_alt2" />
+                <ScalarProperty Name="time_alt1" ColumnName="time_alt1" />
+                <ScalarProperty Name="time_alt" ColumnName="time_alt" />
+                <ScalarProperty Name="time_holding" ColumnName="time_holding" />
+                <ScalarProperty Name="time_trip" ColumnName="time_trip" />
+                <ScalarProperty Name="fuel_mod_alt2" ColumnName="fuel_mod_alt2" />
+                <ScalarProperty Name="fuel_mod_alt1" ColumnName="fuel_mod_alt1" />
+                <ScalarProperty Name="fuel_landing" ColumnName="fuel_landing" />
+                <ScalarProperty Name="fuel_total" ColumnName="fuel_total" />
+                <ScalarProperty Name="fuel_extra" ColumnName="fuel_extra" />
+                <ScalarProperty Name="fuel_additional" ColumnName="fuel_additional" />
+                <ScalarProperty Name="fuel_min_required" ColumnName="fuel_min_required" />
+                <ScalarProperty Name="fuel_taxiin" ColumnName="fuel_taxiin" />
+                <ScalarProperty Name="fuel_taxiout" ColumnName="fuel_taxiout" />
+                <ScalarProperty Name="fuel_contigency" ColumnName="fuel_contigency" />
+                <ScalarProperty Name="fuel_holding" ColumnName="fuel_holding" />
+                <ScalarProperty Name="fuel_alt" ColumnName="fuel_alt" />
+                <ScalarProperty Name="fuel_alt2" ColumnName="fuel_alt2" />
+                <ScalarProperty Name="fuel_alt1" ColumnName="fuel_alt1" />
+                <ScalarProperty Name="fuel_trip" ColumnName="fuel_trip" />
+                <ScalarProperty Name="ICAOFlightPlan" ColumnName="ICAOFlightPlan" />
+                <ScalarProperty Name="FlightRule" ColumnName="FlightRule" />
+                <ScalarProperty Name="MaxWindShearPointName" ColumnName="MaxWindShearPointName" />
+                <ScalarProperty Name="MaxWindShearLevel" ColumnName="MaxWindShearLevel" />
+                <ScalarProperty Name="RawOFPId" ColumnName="RawOFPId" />
+                <ScalarProperty Name="SignedbyLICL" ColumnName="SignedbyLICL" />
+                <ScalarProperty Name="SignedbyId" ColumnName="SignedbyId" />
+                <ScalarProperty Name="DateSign" ColumnName="DateSign" />
+                <ScalarProperty Name="DateCreate" ColumnName="DateCreate" />
+                <ScalarProperty Name="FlightID" ColumnName="FlightID" />
+                <ScalarProperty Name="PlanValidity" ColumnName="PlanValidity" />
+                <ScalarProperty Name="TakeoffAlternateRoute" ColumnName="TakeoffAlternateRoute" />
+                <ScalarProperty Name="Alternate2Route" ColumnName="Alternate2Route" />
+                <ScalarProperty Name="Alternate1Route" ColumnName="Alternate1Route" />
+                <ScalarProperty Name="MainRoute" ColumnName="MainRoute" />
+                <ScalarProperty Name="EstimatedLandingWeight" ColumnName="EstimatedLandingWeight" />
+                <ScalarProperty Name="EstimatedTakeoffWeight" ColumnName="EstimatedTakeoffWeight" />
+                <ScalarProperty Name="EstimatedZeroFuelWeight" ColumnName="EstimatedZeroFuelWeight" />
+                <ScalarProperty Name="MaximumLandingWeight" ColumnName="MaximumLandingWeight" />
+                <ScalarProperty Name="MaximumTakeoffWeight" ColumnName="MaximumTakeoffWeight" />
+                <ScalarProperty Name="MaximumZeroFuelWeight" ColumnName="MaximumZeroFuelWeight" />
+                <ScalarProperty Name="MaxShear" ColumnName="MaxShear" />
+                <ScalarProperty Name="TakeoffAlternateElevation" ColumnName="TakeoffAlternateElevation" />
+                <ScalarProperty Name="Alternate2Elevation" ColumnName="Alternate2Elevation" />
+                <ScalarProperty Name="Alternate1Elevation" ColumnName="Alternate1Elevation" />
+                <ScalarProperty Name="DestinationElevation" ColumnName="DestinationElevation" />
+                <ScalarProperty Name="OriginElevation" ColumnName="OriginElevation" />
+                <ScalarProperty Name="Dispatcher" ColumnName="Dispatcher" />
+                <ScalarProperty Name="Pilot2" ColumnName="Pilot2" />
+                <ScalarProperty Name="Pilot1" ColumnName="Pilot1" />
+                <ScalarProperty Name="Pantry" ColumnName="Pantry" />
+                <ScalarProperty Name="Extra" ColumnName="Extra" />
+                <ScalarProperty Name="Cabin" ColumnName="Cabin" />
+                <ScalarProperty Name="Cockpit" ColumnName="Cockpit" />
+                <ScalarProperty Name="MODAlternate2" ColumnName="MODAlternate2" />
+                <ScalarProperty Name="MODAlernate1" ColumnName="MODAlernate1" />
+                <ScalarProperty Name="TakeoffAlternate" ColumnName="TakeoffAlternate" />
+                <ScalarProperty Name="Alternate2" ColumnName="Alternate2" />
+                <ScalarProperty Name="Alternate1" ColumnName="Alternate1" />
+                <ScalarProperty Name="Destination" ColumnName="Destination" />
+                <ScalarProperty Name="Origin" ColumnName="Origin" />
+                <ScalarProperty Name="AirDistance" ColumnName="AirDistance" />
+                <ScalarProperty Name="GroundDistance" ColumnName="GroundDistance" />
+                <ScalarProperty Name="Payload" ColumnName="Payload" />
+                <ScalarProperty Name="DryOperatingWeight" ColumnName="DryOperatingWeight" />
+                <ScalarProperty Name="MainFlightLevel" ColumnName="MainFlightLevel" />
+                <ScalarProperty Name="CostIndex" ColumnName="CostIndex" />
+                <ScalarProperty Name="CruiseSpeed" ColumnName="CruiseSpeed" />
+                <ScalarProperty Name="TailNo" ColumnName="TailNo" />
+                <ScalarProperty Name="ScheduledTimeArrival" ColumnName="ScheduledTimeArrival" />
+                <ScalarProperty Name="ScheduledTimeDeparture" ColumnName="ScheduledTimeDeparture" />
+                <ScalarProperty Name="GenerationDate" ColumnName="GenerationDate" />
+                <ScalarProperty Name="FlightNo" ColumnName="FlightNo" />
+                <ScalarProperty Name="ContingencyPercent" ColumnName="ContingencyPercent" />
+                <ScalarProperty Name="CruisePerformanceFactor" ColumnName="CruisePerformanceFactor" />
+                <ScalarProperty Name="WeightUnit" ColumnName="WeightUnit" />
+                <ScalarProperty Name="AirlineName" ColumnName="AirlineName" />
+                <ScalarProperty Name="ReferenceNo" ColumnName="ReferenceNo" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_ofpb_wt">
+            <EntityTypeMapping TypeName="dbModel.view_ofpb_wt">
+              <MappingFragment StoreEntitySet="view_ofpb_wt">
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="OFPId" ColumnName="OFPId" />
+                <ScalarProperty Name="WindTemprature" ColumnName="WindTemprature" />
+                <ScalarProperty Name="WayPoint" ColumnName="WayPoint" />
+                <ScalarProperty Name="Temperature" ColumnName="Temperature" />
+                <ScalarProperty Name="Wind" ColumnName="Wind" />
+                <ScalarProperty Name="FlightLevel" ColumnName="FlightLevel" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

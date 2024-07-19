@@ -35,5 +35,13 @@ namespace XAPI.Models
         public virtual DbSet<ViewOFPPoint> ViewOFPPoints { get; set; }
         public virtual DbSet<OFPPoint> OFPPoints { get; set; }
         public virtual DbSet<OFPImport> OFPImports { get; set; }
+        public virtual DbSet<OFPB_Root> OFPB_Root { get; set; }
+        public virtual DbSet<OFPB_BurnOffAdjustment> OFPB_BurnOffAdjustment { get; set; }
+        public virtual DbSet<OFPB_Distances> OFPB_Distances { get; set; }
+        public virtual DbSet<OFPB_Fuels> OFPB_Fuels { get; set; }
+        public virtual DbSet<OFPB_HeightChange> OFPB_HeightChange { get; set; }
+        public virtual DbSet<OFPB_Times> OFPB_Times { get; set; }
+        public virtual DbSet<OFPB_WindTemperature> OFPB_WindTemperature { get; set; }
+        public virtual DbSet<OFPB_MainNavLog> OFPB_MainNavLog { get; set; }
     }
 }

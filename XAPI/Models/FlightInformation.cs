@@ -19,6 +19,7 @@ namespace XAPI.Models
         {
             this.EFBDSPReleases = new HashSet<EFBDSPRelease>();
             this.OFPImports = new HashSet<OFPImport>();
+            this.OFPB_Root = new HashSet<OFPB_Root>();
         }
     
         public int ID { get; set; }
@@ -325,5 +326,7 @@ namespace XAPI.Models
         public virtual ICollection<EFBDSPRelease> EFBDSPReleases { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OFPImport> OFPImports { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<OFPB_Root> OFPB_Root { get; set; }
     }
 }
