@@ -60,5 +60,6 @@ namespace ApiMnt.Models
         public Nullable<int> today_departed_flights { get; set; }
         public Nullable<int> today_total_block { get; set; }
         public Nullable<int> today_departed_block { get; set; }
+        public Nullable<int> landing_gear_ldg_remaining { get; set; }
     }
 }

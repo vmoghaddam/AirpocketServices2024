@@ -3,7 +3,9 @@ using ApiMnt.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.Common;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
@@ -242,7 +244,7 @@ namespace ApiMnt.Controllers
             engine.remaining_minutes = t;
             engine.total_flight_hour = dto.total_flight_hour;
             engine.total_flight_cycle = dto.total_flight_cycle;
-            
+
             await context.SaveChangesAsync();
             return Ok(dto);
         }
@@ -385,9 +387,10 @@ namespace ApiMnt.Controllers
 
         [Route("api/mnt/get/eng/{engid}/{engno}")]
         [AcceptVerbs("Get")]
-        public async Task<IHttpActionResult> GetEngine(int engid, int engno) {
+        public async Task<IHttpActionResult> GetEngine(int engid, int engno)
+        {
             ppa_entities context = new ppa_entities();
-            var result = context.view_mnt_engine.SingleOrDefault(q =>q.id == engid && q.engine_no == engno);
+            var result = context.view_mnt_engine.SingleOrDefault(q => q.id == engid && q.engine_no == engno);
             return Ok(result);
         }
 
@@ -487,7 +490,7 @@ namespace ApiMnt.Controllers
         {
             var hh = (n / 60).ToString();
             var mm = (n % 60).ToString();
-            return hh + ":" + mm.PadLeft(2,'0');
+            return hh + ":" + mm.PadLeft(2, '0');
         }
         [Route("api/mnt/dashboard/{id}")]
         [AcceptVerbs("Get")]
@@ -615,7 +618,7 @@ namespace ApiMnt.Controllers
                     });
                 }
 
-                var flts = flights.Where(q => q.RegisterID == ac.id).OrderBy(q=>q.STD).ToList();
+                var flts = flights.Where(q => q.RegisterID == ac.id).OrderBy(q => q.STD).ToList();
                 item.route = get_route(flts);
 
                 result.Add(item);
@@ -627,7 +630,7 @@ namespace ApiMnt.Controllers
         private string get_route(List<view_mnt_flt> flts)
         {
             List<string> strs = new List<string>();
-            foreach(var flt in flts)
+            foreach (var flt in flts)
             {
                 strs.Add(flt.FromAirportIATA2);
             }
@@ -635,6 +638,105 @@ namespace ApiMnt.Controllers
             return string.Join("-", strs);
 
         }
+
+        public class vira_document_dto
+        {
+            public int id { get; set; }
+            public int requestId { get; set; }
+            public int receiptType { get; set; }
+            public string acfT_TypeId { get; set; }
+            public List<string> acfT_TypeIds { get; set; }
+            public List<int> acfT_MSNId { get; set; }
+            public int companyId { get; set; }
+            public int priorityId { get; set; }
+            public DateTime? deadline { get; set; }
+            public int sender_LocationId { get; set; }
+            public int sender_UserId { get; set; }
+            public int receiver_LocationId { get; set; }
+            public int receiver_UserId { get; set; }
+            public string receivedPaperNo { get; set; }
+            public DateTime? receivedPaperDate { get; set; }
+            public string receivedInvoiveNo { get; set; }
+            public DateTime? receivedInvoiveDate { get; set; }
+            public string remark { get; set; }
+            public string paper_no { get; set; }
+            public int vira_id { get; set; }
+
+            public List<vira_document_item> items { get; set; }
+        }
+
+        [Route("api/mnt/document/save")]
+        [AcceptVerbs("Post")]
+        public async Task<IHttpActionResult> SaveDocument(vira_document_dto dto)
+        {
+
+            ppa_entities context = new ppa_entities();
+            var document = await context.vira_document.Where(q => q.vira_id == dto.id).FirstOrDefaultAsync();
+            if (document == null)
+            {
+                document = new vira_document();
+                context.vira_document.Add(document);
+            }
+            document.remark = dto.remark;
+            //document.acfT_MSNId = dto.acfT_MSNId;
+            document.requestId = dto.requestId;
+            document.companyId = dto.companyId;
+            document.priorityId = dto.priorityId;
+            document.deadline = dto.deadline;
+            //document.acfT_TypeId = dto.acfT_TypeId;
+            document.paper_no = dto.paper_no;
+            document.receiptType = dto.receiptType;
+            document.receivedInvoiveDate = dto.receivedInvoiveDate;
+            document.receivedInvoiveNo = dto.receivedInvoiveNo;
+            document.receivedPaperDate = dto.receivedPaperDate;
+            document.receivedPaperNo = dto.receivedPaperNo;
+            document.receiver_LocationId = dto.receiver_LocationId;
+            document.receiver_UserId = dto.receiver_UserId;
+            document.sender_LocationId = dto.sender_LocationId;
+            document.sender_UserId = dto.sender_UserId;
+            document.vira_id = dto.id;
+
+            foreach (var item in dto.items)
+            {
+                item.vira_id = dto.id;
+                document.vira_document_item.Add(item);
+
+            }
+
+            foreach (var msn in dto.acfT_MSNId)
+            {
+                var register = new vira_document_msn();
+                register.register = msn;
+                document.vira_document_msn.Add(register);
+
+            }
+
+            foreach (var type in dto.acfT_TypeIds)
+            {
+                var actype = new vira_document_type();
+                actype.type = type;
+                document.vira_document_type.Add(actype);
+
+            }
+
+            await context.SaveChangesAsync();
+
+            return Ok(document);
+        }
+
+        [Route("api/mnt/document/delete/{id}")]
+        [AcceptVerbs("get")]
+        public async Task<IHttpActionResult> DeleteDocument(int id)
+        {
+            ppa_entities context = new ppa_entities();
+            var document = context.vira_document.FirstOrDefault(q => q.id == id);
+
+            context.vira_document.Remove(document);
+            await context.SaveChangesAsync();
+
+            return Ok(document);
+        }
+
 
         public class dashboard_aircraft
         {

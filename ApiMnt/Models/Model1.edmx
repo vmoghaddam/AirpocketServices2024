@@ -164,6 +164,76 @@
           <Property Name="date_due" Type="datetime2" Precision="7" />
           <Property Name="title" Type="varchar" MaxLength="1000" />
         </EntityType>
+        <EntityType Name="vira_document">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="requestId" Type="int" />
+          <Property Name="receiptType" Type="int" />
+          <Property Name="acfT_TypeId" Type="varchar" MaxLength="255" />
+          <Property Name="acfT_MSNId" Type="int" />
+          <Property Name="companyId" Type="int" />
+          <Property Name="priorityId" Type="int" />
+          <Property Name="deadline" Type="datetime" />
+          <Property Name="sender_LocationId" Type="int" />
+          <Property Name="sender_UserId" Type="int" />
+          <Property Name="receiver_LocationId" Type="int" />
+          <Property Name="receiver_UserId" Type="int" />
+          <Property Name="receivedPaperNo" Type="varchar" MaxLength="255" />
+          <Property Name="receivedPaperDate" Type="datetime" />
+          <Property Name="receivedInvoiveNo" Type="varchar" MaxLength="255" />
+          <Property Name="receivedInvoiveDate" Type="datetime" />
+          <Property Name="remark" Type="varchar" MaxLength="255" />
+          <Property Name="paper_no" Type="varchar" MaxLength="500" />
+          <Property Name="vira_id" Type="int" />
+        </EntityType>
+        <EntityType Name="vira_document_item">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="paperId" Type="int" />
+          <Property Name="paperItemId" Type="int" />
+          <Property Name="cmP_PartNumberId" Type="int" />
+          <Property Name="partNumber_TypeId" Type="int" />
+          <Property Name="cmP_ComponentId" Type="int" />
+          <Property Name="cmP_PositionId" Type="int" />
+          <Property Name="conditionId" Type="int" />
+          <Property Name="measurementUnitId" Type="int" />
+          <Property Name="currencyId" Type="int" />
+          <Property Name="documentTypeId" Type="int" />
+          <Property Name="documentNo" Type="varchar" MaxLength="255" />
+          <Property Name="sN_BN" Type="varchar" MaxLength="255" />
+          <Property Name="shelfFromId" Type="int" />
+          <Property Name="shelfToId" Type="int" />
+          <Property Name="itemNo" Type="int" />
+          <Property Name="quantity" Type="int" />
+          <Property Name="price" Type="int" />
+          <Property Name="ataChapter" Type="int" />
+          <Property Name="reference" Type="int" />
+          <Property Name="expireDate" Type="datetime" />
+          <Property Name="manufactureDate" Type="datetime" />
+          <Property Name="remark" Type="varchar" MaxLength="255" />
+          <Property Name="document_id" Type="int" />
+          <Property Name="vira_id" Type="int" />
+        </EntityType>
+        <EntityType Name="vira_document_msn">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="document_id" Type="int" />
+          <Property Name="register" Type="int" />
+        </EntityType>
+        <EntityType Name="vira_document_type">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="document_id" Type="int" />
+          <Property Name="type" Type="varchar" MaxLength="255" />
+        </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_ava.dbo.view_dashboard_aircraft' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="view_dashboard_aircraft">
@@ -195,6 +265,7 @@ warning 6002: The table/view 'ppa_ava.dbo.view_dashboard_aircraft' does not have
           <Property Name="first_due_remaining_actual" Type="int" />
           <Property Name="apu_remaining" Type="int" />
           <Property Name="landing_gear_remaining" Type="int" />
+          <Property Name="landing_gear_ldg_remaining" Type="int" />
           <Property Name="ht1_remaining" Type="int" />
           <Property Name="ht2_remaining" Type="int" />
           <Property Name="ht3_remaining" Type="int" />
@@ -566,6 +637,48 @@ warning 6002: The table/view 'ppa_ava.dbo.view_mnt_flt' does not have a primary 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_doc">
+          <End Role="vira_document" Type="Self.vira_document" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="vira_document_item" Type="Self.vira_document_item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="vira_document">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="vira_document_item">
+              <PropertyRef Name="document_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_doc_msn">
+          <End Role="vira_document" Type="Self.vira_document" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="vira_document_msn" Type="Self.vira_document_msn" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="vira_document">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="vira_document_msn">
+              <PropertyRef Name="document_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_doc_type">
+          <End Role="vira_document" Type="Self.vira_document" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="vira_document_type" Type="Self.vira_document_type" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="vira_document">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="vira_document_type">
+              <PropertyRef Name="document_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_eng_ac">
           <End Role="Ac_MSN" Type="Self.Ac_MSN" Multiplicity="0..1" />
           <End Role="mnt_engine" Type="Self.mnt_engine" Multiplicity="*" />
@@ -610,6 +723,10 @@ warning 6002: The table/view 'ppa_ava.dbo.view_mnt_flt' does not have a primary 
           <EntitySet Name="mnt_engine" EntityType="Self.mnt_engine" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="mnt_engine_adsb" EntityType="Self.mnt_engine_adsb" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="mnt_engine_llp" EntityType="Self.mnt_engine_llp" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="vira_document" EntityType="Self.vira_document" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="vira_document_item" EntityType="Self.vira_document_item" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="vira_document_msn" EntityType="Self.vira_document_msn" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="vira_document_type" EntityType="Self.vira_document_type" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="view_dashboard_aircraft" EntityType="Self.view_dashboard_aircraft" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [view_dashboard_aircraft].[id] AS [id], 
@@ -636,6 +753,7 @@ warning 6002: The table/view 'ppa_ava.dbo.view_mnt_flt' does not have a primary 
     [view_dashboard_aircraft].[first_due_remaining_actual] AS [first_due_remaining_actual], 
     [view_dashboard_aircraft].[apu_remaining] AS [apu_remaining], 
     [view_dashboard_aircraft].[landing_gear_remaining] AS [landing_gear_remaining], 
+    [view_dashboard_aircraft].[landing_gear_ldg_remaining] AS [landing_gear_ldg_remaining], 
     [view_dashboard_aircraft].[ht1_remaining] AS [ht1_remaining], 
     [view_dashboard_aircraft].[ht2_remaining] AS [ht2_remaining], 
     [view_dashboard_aircraft].[ht3_remaining] AS [ht3_remaining], 
@@ -950,6 +1068,18 @@ warning 6002: The table/view 'ppa_ava.dbo.view_mnt_flt' does not have a primary 
             <End Role="Ac_MSN" EntitySet="Ac_MSN" />
             <End Role="mnt_aircraft_check" EntitySet="mnt_aircraft_check" />
           </AssociationSet>
+          <AssociationSet Name="fk_doc" Association="Self.fk_doc">
+            <End Role="vira_document" EntitySet="vira_document" />
+            <End Role="vira_document_item" EntitySet="vira_document_item" />
+          </AssociationSet>
+          <AssociationSet Name="fk_doc_msn" Association="Self.fk_doc_msn">
+            <End Role="vira_document" EntitySet="vira_document" />
+            <End Role="vira_document_msn" EntitySet="vira_document_msn" />
+          </AssociationSet>
+          <AssociationSet Name="fk_doc_type" Association="Self.fk_doc_type">
+            <End Role="vira_document" EntitySet="vira_document" />
+            <End Role="vira_document_type" EntitySet="vira_document_type" />
+          </AssociationSet>
           <AssociationSet Name="fk_eng_ac" Association="Self.fk_eng_ac">
             <End Role="Ac_MSN" EntitySet="Ac_MSN" />
             <End Role="mnt_engine" EntitySet="mnt_engine" />
@@ -1007,6 +1137,22 @@ warning 6002: The table/view 'ppa_ava.dbo.view_mnt_flt' does not have a primary 
           </AssociationSet>
           <EntitySet Name="view_mnt_engine" EntityType="ppaModel.view_mnt_engine" />
           <EntitySet Name="view_mnt_aircraft" EntityType="ppaModel.view_mnt_aircraft" />
+          <EntitySet Name="vira_document" EntityType="ppaModel.vira_document" />
+          <EntitySet Name="vira_document_item" EntityType="ppaModel.vira_document_item" />
+          <AssociationSet Name="fk_doc" Association="ppaModel.fk_doc">
+            <End Role="vira_document" EntitySet="vira_document" />
+            <End Role="vira_document_item" EntitySet="vira_document_item" />
+          </AssociationSet>
+          <EntitySet Name="vira_document_msn" EntityType="ppaModel.vira_document_msn" />
+          <EntitySet Name="vira_document_type" EntityType="ppaModel.vira_document_type" />
+          <AssociationSet Name="fk_doc_msn" Association="ppaModel.fk_doc_msn">
+            <End Role="vira_document" EntitySet="vira_document" />
+            <End Role="vira_document_msn" EntitySet="vira_document_msn" />
+          </AssociationSet>
+          <AssociationSet Name="fk_doc_type" Association="ppaModel.fk_doc_type">
+            <End Role="vira_document" EntitySet="vira_document" />
+            <End Role="vira_document_type" EntitySet="vira_document_type" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="mnt_engine">
           <Key>
@@ -1232,6 +1378,7 @@ warning 6002: The table/view 'ppa_ava.dbo.view_mnt_flt' does not have a primary 
           <Property Name="today_departed_flights" Type="Int32" />
           <Property Name="today_total_block" Type="Int32" />
           <Property Name="today_departed_block" Type="Int32" />
+          <Property Name="landing_gear_ldg_remaining" Type="Int32" />
         </EntityType>
         <EntityType Name="view_mnt_aircraft_adsb">
           <Key>
@@ -1601,6 +1748,124 @@ warning 6002: The table/view 'ppa_ava.dbo.view_mnt_flt' does not have a primary 
           <Property Name="serial_no" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="maintenance_setting_group" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="vira_document">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="requestId" Type="Int32" />
+          <Property Name="receiptType" Type="Int32" />
+          <Property Name="acfT_TypeId" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="acfT_MSNId" Type="Int32" />
+          <Property Name="companyId" Type="Int32" />
+          <Property Name="priorityId" Type="Int32" />
+          <Property Name="deadline" Type="DateTime" Precision="3" />
+          <Property Name="sender_LocationId" Type="Int32" />
+          <Property Name="sender_UserId" Type="Int32" />
+          <Property Name="receiver_LocationId" Type="Int32" />
+          <Property Name="receiver_UserId" Type="Int32" />
+          <Property Name="receivedPaperNo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="receivedPaperDate" Type="DateTime" Precision="3" />
+          <Property Name="receivedInvoiveNo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="receivedInvoiveDate" Type="DateTime" Precision="3" />
+          <Property Name="remark" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="paper_no" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="vira_id" Type="Int32" />
+          <NavigationProperty Name="vira_document_item" Relationship="ppaModel.fk_doc" FromRole="vira_document" ToRole="vira_document_item" />
+          <NavigationProperty Name="vira_document_msn" Relationship="ppaModel.fk_doc_msn" FromRole="vira_document" ToRole="vira_document_msn" />
+          <NavigationProperty Name="vira_document_type" Relationship="ppaModel.fk_doc_type" FromRole="vira_document" ToRole="vira_document_type" />
+        </EntityType>
+        <EntityType Name="vira_document_item">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="paperId" Type="Int32" />
+          <Property Name="paperItemId" Type="Int32" />
+          <Property Name="cmP_PartNumberId" Type="Int32" />
+          <Property Name="partNumber_TypeId" Type="Int32" />
+          <Property Name="cmP_ComponentId" Type="Int32" />
+          <Property Name="cmP_PositionId" Type="Int32" />
+          <Property Name="conditionId" Type="Int32" />
+          <Property Name="measurementUnitId" Type="Int32" />
+          <Property Name="currencyId" Type="Int32" />
+          <Property Name="documentTypeId" Type="Int32" />
+          <Property Name="documentNo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="sN_BN" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="shelfFromId" Type="Int32" />
+          <Property Name="shelfToId" Type="Int32" />
+          <Property Name="itemNo" Type="Int32" />
+          <Property Name="quantity" Type="Int32" />
+          <Property Name="price" Type="Int32" />
+          <Property Name="ataChapter" Type="Int32" />
+          <Property Name="reference" Type="Int32" />
+          <Property Name="expireDate" Type="DateTime" Precision="3" />
+          <Property Name="manufactureDate" Type="DateTime" Precision="3" />
+          <Property Name="remark" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="document_id" Type="Int32" />
+          <Property Name="vira_id" Type="Int32" />
+          <NavigationProperty Name="vira_document" Relationship="ppaModel.fk_doc" FromRole="vira_document_item" ToRole="vira_document" />
+        </EntityType>
+        <Association Name="fk_doc">
+          <End Type="ppaModel.vira_document" Role="vira_document" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ppaModel.vira_document_item" Role="vira_document_item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="vira_document">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="vira_document_item">
+              <PropertyRef Name="document_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="vira_document_msn">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="document_id" Type="Int32" />
+          <Property Name="register" Type="Int32" />
+          <NavigationProperty Name="vira_document" Relationship="ppaModel.fk_doc_msn" FromRole="vira_document_msn" ToRole="vira_document" />
+        </EntityType>
+        <EntityType Name="vira_document_type">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="document_id" Type="Int32" />
+          <Property Name="type" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="vira_document" Relationship="ppaModel.fk_doc_type" FromRole="vira_document_type" ToRole="vira_document" />
+        </EntityType>
+        <Association Name="fk_doc_msn">
+          <End Type="ppaModel.vira_document" Role="vira_document" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ppaModel.vira_document_msn" Role="vira_document_msn" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="vira_document">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="vira_document_msn">
+              <PropertyRef Name="document_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_doc_type">
+          <End Type="ppaModel.vira_document" Role="vira_document" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ppaModel.vira_document_type" Role="vira_document_type" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="vira_document">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="vira_document_type">
+              <PropertyRef Name="document_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1747,6 +2012,7 @@ warning 6002: The table/view 'ppa_ava.dbo.view_mnt_flt' does not have a primary 
           <EntitySetMapping Name="view_dashboard_aircraft">
             <EntityTypeMapping TypeName="ppaModel.view_dashboard_aircraft">
               <MappingFragment StoreEntitySet="view_dashboard_aircraft">
+                <ScalarProperty Name="landing_gear_ldg_remaining" ColumnName="landing_gear_ldg_remaining" />
                 <ScalarProperty Name="today_departed_block" ColumnName="today_departed_block" />
                 <ScalarProperty Name="today_total_block" ColumnName="today_total_block" />
                 <ScalarProperty Name="today_departed_flights" ColumnName="today_departed_flights" />
@@ -2113,6 +2379,80 @@ warning 6002: The table/view 'ppa_ava.dbo.view_mnt_flt' does not have a primary 
                 <ScalarProperty Name="landing_gear_ldg_remaining" ColumnName="landing_gear_ldg_remaining" />
                 <ScalarProperty Name="date_initial" ColumnName="date_initial" />
                 <ScalarProperty Name="register" ColumnName="register" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vira_document">
+            <EntityTypeMapping TypeName="ppaModel.vira_document">
+              <MappingFragment StoreEntitySet="vira_document">
+                <ScalarProperty Name="vira_id" ColumnName="vira_id" />
+                <ScalarProperty Name="paper_no" ColumnName="paper_no" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="receivedInvoiveDate" ColumnName="receivedInvoiveDate" />
+                <ScalarProperty Name="receivedInvoiveNo" ColumnName="receivedInvoiveNo" />
+                <ScalarProperty Name="receivedPaperDate" ColumnName="receivedPaperDate" />
+                <ScalarProperty Name="receivedPaperNo" ColumnName="receivedPaperNo" />
+                <ScalarProperty Name="receiver_UserId" ColumnName="receiver_UserId" />
+                <ScalarProperty Name="receiver_LocationId" ColumnName="receiver_LocationId" />
+                <ScalarProperty Name="sender_UserId" ColumnName="sender_UserId" />
+                <ScalarProperty Name="sender_LocationId" ColumnName="sender_LocationId" />
+                <ScalarProperty Name="deadline" ColumnName="deadline" />
+                <ScalarProperty Name="priorityId" ColumnName="priorityId" />
+                <ScalarProperty Name="companyId" ColumnName="companyId" />
+                <ScalarProperty Name="acfT_MSNId" ColumnName="acfT_MSNId" />
+                <ScalarProperty Name="acfT_TypeId" ColumnName="acfT_TypeId" />
+                <ScalarProperty Name="receiptType" ColumnName="receiptType" />
+                <ScalarProperty Name="requestId" ColumnName="requestId" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vira_document_item">
+            <EntityTypeMapping TypeName="ppaModel.vira_document_item">
+              <MappingFragment StoreEntitySet="vira_document_item">
+                <ScalarProperty Name="vira_id" ColumnName="vira_id" />
+                <ScalarProperty Name="document_id" ColumnName="document_id" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="manufactureDate" ColumnName="manufactureDate" />
+                <ScalarProperty Name="expireDate" ColumnName="expireDate" />
+                <ScalarProperty Name="reference" ColumnName="reference" />
+                <ScalarProperty Name="ataChapter" ColumnName="ataChapter" />
+                <ScalarProperty Name="price" ColumnName="price" />
+                <ScalarProperty Name="quantity" ColumnName="quantity" />
+                <ScalarProperty Name="itemNo" ColumnName="itemNo" />
+                <ScalarProperty Name="shelfToId" ColumnName="shelfToId" />
+                <ScalarProperty Name="shelfFromId" ColumnName="shelfFromId" />
+                <ScalarProperty Name="sN_BN" ColumnName="sN_BN" />
+                <ScalarProperty Name="documentNo" ColumnName="documentNo" />
+                <ScalarProperty Name="documentTypeId" ColumnName="documentTypeId" />
+                <ScalarProperty Name="currencyId" ColumnName="currencyId" />
+                <ScalarProperty Name="measurementUnitId" ColumnName="measurementUnitId" />
+                <ScalarProperty Name="conditionId" ColumnName="conditionId" />
+                <ScalarProperty Name="cmP_PositionId" ColumnName="cmP_PositionId" />
+                <ScalarProperty Name="cmP_ComponentId" ColumnName="cmP_ComponentId" />
+                <ScalarProperty Name="partNumber_TypeId" ColumnName="partNumber_TypeId" />
+                <ScalarProperty Name="cmP_PartNumberId" ColumnName="cmP_PartNumberId" />
+                <ScalarProperty Name="paperItemId" ColumnName="paperItemId" />
+                <ScalarProperty Name="paperId" ColumnName="paperId" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vira_document_msn">
+            <EntityTypeMapping TypeName="ppaModel.vira_document_msn">
+              <MappingFragment StoreEntitySet="vira_document_msn">
+                <ScalarProperty Name="register" ColumnName="register" />
+                <ScalarProperty Name="document_id" ColumnName="document_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vira_document_type">
+            <EntityTypeMapping TypeName="ppaModel.vira_document_type">
+              <MappingFragment StoreEntitySet="vira_document_type">
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="document_id" ColumnName="document_id" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
