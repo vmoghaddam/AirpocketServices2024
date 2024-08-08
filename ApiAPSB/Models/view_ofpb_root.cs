@@ -110,5 +110,65 @@ namespace ApiAPSB.Models
         public string burnoffadj_fuel { get; set; }
         public string heightchange_value { get; set; }
         public string heightchange_fuel { get; set; }
+        public Nullable<int> Alternate1FlightLevel { get; set; }
+        public Nullable<int> Alternate2FlightLevel { get; set; }
+        public string Alternate1WC { get; set; }
+        public string Alternate2WC { get; set; }
+        public string crew_cockpit { get; set; }
+        public string crew_cabin { get; set; }
+        public string crew_fsg { get; set; }
+        public string crew_fm { get; set; }
+        public string crew_dh { get; set; }
+        public string fuel_total_corr { get; set; }
+        public string fuel_total_actual { get; set; }
+        public string fuel_used_actual { get; set; }
+        public string fuel_remail_actual { get; set; }
+        public string zfw_actual { get; set; }
+        public string tow_actual { get; set; }
+        public string lgw_actual { get; set; }
+        public string clear { get; set; }
+        public string atis_dep1 { get; set; }
+        public string atis_dep2 { get; set; }
+        public string atis_arr { get; set; }
+        public string rvsm_gnd_time { get; set; }
+        public string rvsm_gnd_lalt { get; set; }
+        public string rvsm_gnd_ralt { get; set; }
+        public string rvsm_gnd_stby { get; set; }
+        public string rvsm_flt1_time { get; set; }
+        public string rvsm_flt1_lalt { get; set; }
+        public string rvsm_flt1_ralt { get; set; }
+        public string rvsm_flt1_stby { get; set; }
+        public string rvsm_flt1_fl { get; set; }
+        public string rvsm_flt2_time { get; set; }
+        public string rvsm_flt2_lalt { get; set; }
+        public string rvsm_flt2_ralt { get; set; }
+        public string rvsm_flt2_stby { get; set; }
+        public string rvsm_flt2_fl { get; set; }
+        public string rvsm_flt3_time { get; set; }
+        public string rvsm_flt3_lalt { get; set; }
+        public string rvsm_flt3_ralt { get; set; }
+        public string rvsm_flt3_stby { get; set; }
+        public string rvsm_flt3_fl { get; set; }
+        public string rvsm_flt4_time { get; set; }
+        public string rvsm_flt4_lalt { get; set; }
+        public string rvsm_flt4_ralt { get; set; }
+        public string rvsm_flt4_stby { get; set; }
+        public string rvsm_flt4_fl { get; set; }
+        public string atis1 { get; set; }
+        public string atis2 { get; set; }
+        public string atis3 { get; set; }
+        public string atis4 { get; set; }
+        public string fuel_trip_corr { get; set; }
+        public string fuel_alt1_corr { get; set; }
+        public string fuel_alt2_corr { get; set; }
+        public string fuel_hld_corr { get; set; }
+        public string fuel_res_corr { get; set; }
+        public string fuel_cont_corr { get; set; }
+        public string fuel_taxi_corr { get; set; }
+        public string fuel_req_corr { get; set; }
+        public string fuel_xtra_corr { get; set; }
+        public string fuel_add_corr { get; set; }
+        public Nullable<long> date_update { get; set; }
+        public string user_update { get; set; }
     }
 }

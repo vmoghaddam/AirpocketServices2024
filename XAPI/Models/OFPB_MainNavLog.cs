@@ -41,6 +41,8 @@ namespace XAPI.Models
         public string ETA { get; set; }
         public Nullable<int> FuelRemainedActual { get; set; }
         public Nullable<int> FuelUsedActual { get; set; }
+        public string LongitudeStr { get; set; }
+        public string LatitudeStr { get; set; }
     
         public virtual OFPB_Root OFPB_Root { get; set; }
     }

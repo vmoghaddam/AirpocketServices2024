@@ -182,5 +182,7 @@ namespace AirpocketAPI.Models
         public string FlightTypeOPS { get; set; }
         public string AttForms { get; set; }
         public string RouteCountry { get; set; }
+        public Nullable<int> PaxFemale { get; set; }
+        public Nullable<int> PaxMale { get; set; }
     }
 }

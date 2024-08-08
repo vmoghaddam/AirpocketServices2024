@@ -170,5 +170,7 @@ namespace AirpocketAPI.Models
         public Nullable<System.DateTime> arr_dusk { get; set; }
         public string FlightTypeOPS { get; set; }
         public string AttForms { get; set; }
+        public Nullable<int> PaxFemale { get; set; }
+        public Nullable<int> PaxMale { get; set; }
     }
 }

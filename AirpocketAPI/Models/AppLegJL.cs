@@ -167,5 +167,7 @@ namespace AirpocketAPI.Models
         public string DelayCode { get; set; }
         public Nullable<int> RemDuty { get; set; }
         public Nullable<int> ElapsedDuty { get; set; }
+        public Nullable<int> PaxFemale { get; set; }
+        public Nullable<int> PaxMale { get; set; }
     }
 }

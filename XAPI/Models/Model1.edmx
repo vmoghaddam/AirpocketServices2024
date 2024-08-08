@@ -534,6 +534,8 @@
           <Property Name="ETA" Type="nvarchar" MaxLength="300" />
           <Property Name="FuelRemainedActual" Type="int" />
           <Property Name="FuelUsedActual" Type="int" />
+          <Property Name="LongitudeStr" Type="varchar" MaxLength="255" />
+          <Property Name="LatitudeStr" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="OFPB_Root">
           <Key>
@@ -635,6 +637,10 @@
           <Property Name="burnoffadj_fuel" Type="varchar" MaxLength="255" />
           <Property Name="heightchange_value" Type="varchar" MaxLength="255" />
           <Property Name="heightchange_fuel" Type="varchar" MaxLength="255" />
+          <Property Name="Alternate1FlightLevel" Type="int" />
+          <Property Name="Alternate2FlightLevel" Type="int" />
+          <Property Name="Alternate1WC" Type="varchar" MaxLength="255" />
+          <Property Name="Alternate2WC" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="OFPB_Times">
           <Key>
@@ -1576,21 +1582,17 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
             <End Role="OFPImport" EntitySet="OFPImports" />
             <End Role="OFPPoint" EntitySet="OFPPoints" />
           </AssociationSet>
-          <EntitySet Name="OFPB_Root" EntityType="ppa_tabanModel.OFPB_Root" />
-          <AssociationSet Name="FK__OFPB_Root__Fligh__343F9543" Association="ppa_tabanModel.FK__OFPB_Root__Fligh__343F9543">
-            <End Role="FlightInformation" EntitySet="FlightInformations" />
-            <End Role="OFPB_Root" EntitySet="OFPB_Root" />
-          </AssociationSet>
-          <AssociationSet Name="fk_ofproot_ofp" Association="ppa_tabanModel.fk_ofproot_ofp">
-            <End Role="OFPSkyPuter" EntitySet="OFPSkyPuters" />
-            <End Role="OFPB_Root" EntitySet="OFPB_Root" />
-          </AssociationSet>
           <EntitySet Name="OFPB_BurnOffAdjustment" EntityType="ppa_tabanModel.OFPB_BurnOffAdjustment" />
           <EntitySet Name="OFPB_Distances" EntityType="ppa_tabanModel.OFPB_Distances" />
           <EntitySet Name="OFPB_Fuels" EntityType="ppa_tabanModel.OFPB_Fuels" />
           <EntitySet Name="OFPB_HeightChange" EntityType="ppa_tabanModel.OFPB_HeightChange" />
           <EntitySet Name="OFPB_Times" EntityType="ppa_tabanModel.OFPB_Times" />
           <EntitySet Name="OFPB_WindTemperature" EntityType="ppa_tabanModel.OFPB_WindTemperature" />
+          <EntitySet Name="OFPB_Root" EntityType="ppa_tabanModel.OFPB_Root" />
+          <AssociationSet Name="FK__OFPB_Root__Fligh__343F9543" Association="ppa_tabanModel.FK__OFPB_Root__Fligh__343F9543">
+            <End Role="FlightInformation" EntitySet="FlightInformations" />
+            <End Role="OFPB_Root" EntitySet="OFPB_Root" />
+          </AssociationSet>
           <AssociationSet Name="FK__OFPB_Burn__RootI__41999061" Association="ppa_tabanModel.FK__OFPB_Burn__RootI__41999061">
             <End Role="OFPB_Root" EntitySet="OFPB_Root" />
             <End Role="OFPB_BurnOffAdjustment" EntitySet="OFPB_BurnOffAdjustment" />
@@ -1610,6 +1612,10 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
           <AssociationSet Name="FK__OFPB_Time__RootI__3BE0B70B" Association="ppa_tabanModel.FK__OFPB_Time__RootI__3BE0B70B">
             <End Role="OFPB_Root" EntitySet="OFPB_Root" />
             <End Role="OFPB_Times" EntitySet="OFPB_Times" />
+          </AssociationSet>
+          <AssociationSet Name="fk_ofproot_ofp" Association="ppa_tabanModel.fk_ofproot_ofp">
+            <End Role="OFPSkyPuter" EntitySet="OFPSkyPuters" />
+            <End Role="OFPB_Root" EntitySet="OFPB_Root" />
           </AssociationSet>
           <AssociationSet Name="fk_ofpwt_ofp" Association="ppa_tabanModel.fk_ofpwt_ofp">
             <End Role="OFPB_Root" EntitySet="OFPB_Root" />
@@ -2337,6 +2343,86 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="OFPB_BurnOffAdjustment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Value" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Fuel" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="RootId" Type="Int32" />
+          <NavigationProperty Name="OFPB_Root" Relationship="ppa_tabanModel.FK__OFPB_Burn__RootI__41999061" FromRole="OFPB_BurnOffAdjustment" ToRole="OFPB_Root" />
+        </EntityType>
+        <EntityType Name="OFPB_Distances">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Trip" Type="Int32" />
+          <Property Name="Alternate1" Type="Int32" />
+          <Property Name="Alternate2" Type="Int32" />
+          <Property Name="RootId" Type="Int32" />
+          <NavigationProperty Name="OFPB_Root" Relationship="ppa_tabanModel.FK__OFPB_Dist__RootI__3CD4DB44" FromRole="OFPB_Distances" ToRole="OFPB_Root" />
+        </EntityType>
+        <EntityType Name="OFPB_Fuels">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Trip" Type="Int32" />
+          <Property Name="Alternate" Type="Int32" />
+          <Property Name="FinalReserve" Type="Int32" />
+          <Property Name="Contingency" Type="Int32" />
+          <Property Name="TaxiOut" Type="Int32" />
+          <Property Name="TaxiIn" Type="Int32" />
+          <Property Name="MinimumRequired" Type="Int32" />
+          <Property Name="Additional" Type="Int32" />
+          <Property Name="Extra" Type="Int32" />
+          <Property Name="Total" Type="Int32" />
+          <Property Name="Landing" Type="Int32" />
+          <Property Name="RootId" Type="Int32" />
+          <NavigationProperty Name="OFPB_Root" Relationship="ppa_tabanModel.FK__OFPB_Fuel__RootI__3AEC92D2" FromRole="OFPB_Fuels" ToRole="OFPB_Root" />
+        </EntityType>
+        <EntityType Name="OFPB_HeightChange">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Value" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Fuel" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="RootId" Type="Int32" />
+          <NavigationProperty Name="OFPB_Root" Relationship="ppa_tabanModel.FK__OFPB_Heig__RootI__40A56C28" FromRole="OFPB_HeightChange" ToRole="OFPB_Root" />
+        </EntityType>
+        <EntityType Name="OFPB_Times">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Trip" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Alternate" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FinalReserve" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Contingency" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="MinimumRequired" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Additional" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Extra" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Total" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="RootId" Type="Int32" />
+          <NavigationProperty Name="OFPB_Root" Relationship="ppa_tabanModel.FK__OFPB_Time__RootI__3BE0B70B" FromRole="OFPB_Times" ToRole="OFPB_Root" />
+        </EntityType>
+        <EntityType Name="OFPB_WindTemperature">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FlightLevel" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Wind" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Temperature" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="WayPoint" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="WindTemprature" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="OFPId" Type="Int32" />
+          <Property Name="Type" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="OFPB_Root" Relationship="ppa_tabanModel.fk_ofpwt_ofp" FromRole="OFPB_WindTemperature" ToRole="OFPB_Root" />
+        </EntityType>
         <EntityType Name="OFPB_Root">
           <Key>
             <PropertyRef Name="Id" />
@@ -2437,13 +2523,17 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
           <Property Name="burnoffadj_fuel" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="heightchange_value" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="heightchange_fuel" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Alternate1FlightLevel" Type="Int32" />
+          <Property Name="Alternate2FlightLevel" Type="Int32" />
+          <Property Name="Alternate1WC" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Alternate2WC" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="FlightInformation" Relationship="ppa_tabanModel.FK__OFPB_Root__Fligh__343F9543" FromRole="OFPB_Root" ToRole="FlightInformation" />
-          <NavigationProperty Name="OFPSkyPuter" Relationship="ppa_tabanModel.fk_ofproot_ofp" FromRole="OFPB_Root" ToRole="OFPSkyPuter" />
           <NavigationProperty Name="OFPB_BurnOffAdjustment" Relationship="ppa_tabanModel.FK__OFPB_Burn__RootI__41999061" FromRole="OFPB_Root" ToRole="OFPB_BurnOffAdjustment" />
           <NavigationProperty Name="OFPB_Distances" Relationship="ppa_tabanModel.FK__OFPB_Dist__RootI__3CD4DB44" FromRole="OFPB_Root" ToRole="OFPB_Distances" />
           <NavigationProperty Name="OFPB_Fuels" Relationship="ppa_tabanModel.FK__OFPB_Fuel__RootI__3AEC92D2" FromRole="OFPB_Root" ToRole="OFPB_Fuels" />
           <NavigationProperty Name="OFPB_HeightChange" Relationship="ppa_tabanModel.FK__OFPB_Heig__RootI__40A56C28" FromRole="OFPB_Root" ToRole="OFPB_HeightChange" />
           <NavigationProperty Name="OFPB_Times" Relationship="ppa_tabanModel.FK__OFPB_Time__RootI__3BE0B70B" FromRole="OFPB_Root" ToRole="OFPB_Times" />
+          <NavigationProperty Name="OFPSkyPuter" Relationship="ppa_tabanModel.fk_ofproot_ofp" FromRole="OFPB_Root" ToRole="OFPSkyPuter" />
           <NavigationProperty Name="OFPB_WindTemperature" Relationship="ppa_tabanModel.fk_ofpwt_ofp" FromRole="OFPB_Root" ToRole="OFPB_WindTemperature" />
           <NavigationProperty Name="OFPB_MainNavLog" Relationship="ppa_tabanModel.FK__OFPB_Main__RootI__3DC8FF7D" FromRole="OFPB_Root" ToRole="OFPB_MainNavLog" />
         </EntityType>
@@ -2459,100 +2549,10 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="fk_ofproot_ofp">
-          <End Type="ppa_tabanModel.OFPSkyPuter" Role="OFPSkyPuter" Multiplicity="0..1" />
-          <End Type="ppa_tabanModel.OFPB_Root" Role="OFPB_Root" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="OFPSkyPuter">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="OFPB_Root">
-              <PropertyRef Name="RawOFPId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="OFPB_BurnOffAdjustment">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Value" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Fuel" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="RootId" Type="Int32" />
-          <NavigationProperty Name="OFPB_Root" Relationship="ppa_tabanModel.FK__OFPB_Burn__RootI__41999061" FromRole="OFPB_BurnOffAdjustment" ToRole="OFPB_Root" />
-        </EntityType>
-        <EntityType Name="OFPB_Distances">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Trip" Type="Int32" />
-          <Property Name="Alternate1" Type="Int32" />
-          <Property Name="Alternate2" Type="Int32" />
-          <Property Name="RootId" Type="Int32" />
-          <NavigationProperty Name="OFPB_Root" Relationship="ppa_tabanModel.FK__OFPB_Dist__RootI__3CD4DB44" FromRole="OFPB_Distances" ToRole="OFPB_Root" />
-        </EntityType>
-        <EntityType Name="OFPB_Fuels">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Trip" Type="Int32" />
-          <Property Name="Alternate" Type="Int32" />
-          <Property Name="FinalReserve" Type="Int32" />
-          <Property Name="Contingency" Type="Int32" />
-          <Property Name="TaxiOut" Type="Int32" />
-          <Property Name="TaxiIn" Type="Int32" />
-          <Property Name="MinimumRequired" Type="Int32" />
-          <Property Name="Additional" Type="Int32" />
-          <Property Name="Extra" Type="Int32" />
-          <Property Name="Total" Type="Int32" />
-          <Property Name="Landing" Type="Int32" />
-          <Property Name="RootId" Type="Int32" />
-          <NavigationProperty Name="OFPB_Root" Relationship="ppa_tabanModel.FK__OFPB_Fuel__RootI__3AEC92D2" FromRole="OFPB_Fuels" ToRole="OFPB_Root" />
-        </EntityType>
-        <EntityType Name="OFPB_HeightChange">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Value" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Fuel" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="RootId" Type="Int32" />
-          <NavigationProperty Name="OFPB_Root" Relationship="ppa_tabanModel.FK__OFPB_Heig__RootI__40A56C28" FromRole="OFPB_HeightChange" ToRole="OFPB_Root" />
-        </EntityType>
-        <EntityType Name="OFPB_Times">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Trip" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Alternate" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="FinalReserve" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Contingency" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="MinimumRequired" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Additional" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Extra" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Total" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="RootId" Type="Int32" />
-          <NavigationProperty Name="OFPB_Root" Relationship="ppa_tabanModel.FK__OFPB_Time__RootI__3BE0B70B" FromRole="OFPB_Times" ToRole="OFPB_Root" />
-        </EntityType>
-        <EntityType Name="OFPB_WindTemperature">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FlightLevel" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="Wind" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Temperature" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="WayPoint" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="WindTemprature" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="OFPId" Type="Int32" />
-          <Property Name="Type" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="OFPB_Root" Relationship="ppa_tabanModel.fk_ofpwt_ofp" FromRole="OFPB_WindTemperature" ToRole="OFPB_Root" />
-        </EntityType>
         <Association Name="FK__OFPB_Burn__RootI__41999061">
-          <End Type="ppa_tabanModel.OFPB_Root" Role="OFPB_Root" Multiplicity="0..1" />
+          <End Type="ppa_tabanModel.OFPB_Root" Role="OFPB_Root" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="ppa_tabanModel.OFPB_BurnOffAdjustment" Role="OFPB_BurnOffAdjustment" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="OFPB_Root">
@@ -2564,7 +2564,9 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__OFPB_Dist__RootI__3CD4DB44">
-          <End Type="ppa_tabanModel.OFPB_Root" Role="OFPB_Root" Multiplicity="0..1" />
+          <End Type="ppa_tabanModel.OFPB_Root" Role="OFPB_Root" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="ppa_tabanModel.OFPB_Distances" Role="OFPB_Distances" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="OFPB_Root">
@@ -2576,7 +2578,9 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__OFPB_Fuel__RootI__3AEC92D2">
-          <End Type="ppa_tabanModel.OFPB_Root" Role="OFPB_Root" Multiplicity="0..1" />
+          <End Type="ppa_tabanModel.OFPB_Root" Role="OFPB_Root" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="ppa_tabanModel.OFPB_Fuels" Role="OFPB_Fuels" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="OFPB_Root">
@@ -2588,7 +2592,9 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__OFPB_Heig__RootI__40A56C28">
-          <End Type="ppa_tabanModel.OFPB_Root" Role="OFPB_Root" Multiplicity="0..1" />
+          <End Type="ppa_tabanModel.OFPB_Root" Role="OFPB_Root" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="ppa_tabanModel.OFPB_HeightChange" Role="OFPB_HeightChange" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="OFPB_Root">
@@ -2600,7 +2606,9 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__OFPB_Time__RootI__3BE0B70B">
-          <End Type="ppa_tabanModel.OFPB_Root" Role="OFPB_Root" Multiplicity="0..1" />
+          <End Type="ppa_tabanModel.OFPB_Root" Role="OFPB_Root" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="ppa_tabanModel.OFPB_Times" Role="OFPB_Times" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="OFPB_Root">
@@ -2608,6 +2616,18 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
             </Principal>
             <Dependent Role="OFPB_Times">
               <PropertyRef Name="RootId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_ofproot_ofp">
+          <End Type="ppa_tabanModel.OFPSkyPuter" Role="OFPSkyPuter" Multiplicity="0..1" />
+          <End Type="ppa_tabanModel.OFPB_Root" Role="OFPB_Root" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OFPSkyPuter">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OFPB_Root">
+              <PropertyRef Name="RawOFPId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2656,6 +2676,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
           <Property Name="ETA" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="FuelRemainedActual" Type="Int32" />
           <Property Name="FuelUsedActual" Type="Int32" />
+          <Property Name="LongitudeStr" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="LatitudeStr" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="OFPB_Root" Relationship="ppa_tabanModel.FK__OFPB_Main__RootI__3DC8FF7D" FromRole="OFPB_MainNavLog" ToRole="OFPB_Root" />
         </EntityType>
         <Association Name="FK__OFPB_Main__RootI__3DC8FF7D">
@@ -3451,9 +3473,93 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="OFPB_BurnOffAdjustment">
+            <EntityTypeMapping TypeName="ppa_tabanModel.OFPB_BurnOffAdjustment">
+              <MappingFragment StoreEntitySet="OFPB_BurnOffAdjustment">
+                <ScalarProperty Name="RootId" ColumnName="RootId" />
+                <ScalarProperty Name="Fuel" ColumnName="Fuel" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OFPB_Distances">
+            <EntityTypeMapping TypeName="ppa_tabanModel.OFPB_Distances">
+              <MappingFragment StoreEntitySet="OFPB_Distances">
+                <ScalarProperty Name="RootId" ColumnName="RootId" />
+                <ScalarProperty Name="Alternate2" ColumnName="Alternate2" />
+                <ScalarProperty Name="Alternate1" ColumnName="Alternate1" />
+                <ScalarProperty Name="Trip" ColumnName="Trip" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OFPB_Fuels">
+            <EntityTypeMapping TypeName="ppa_tabanModel.OFPB_Fuels">
+              <MappingFragment StoreEntitySet="OFPB_Fuels">
+                <ScalarProperty Name="RootId" ColumnName="RootId" />
+                <ScalarProperty Name="Landing" ColumnName="Landing" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+                <ScalarProperty Name="Extra" ColumnName="Extra" />
+                <ScalarProperty Name="Additional" ColumnName="Additional" />
+                <ScalarProperty Name="MinimumRequired" ColumnName="MinimumRequired" />
+                <ScalarProperty Name="TaxiIn" ColumnName="TaxiIn" />
+                <ScalarProperty Name="TaxiOut" ColumnName="TaxiOut" />
+                <ScalarProperty Name="Contingency" ColumnName="Contingency" />
+                <ScalarProperty Name="FinalReserve" ColumnName="FinalReserve" />
+                <ScalarProperty Name="Alternate" ColumnName="Alternate" />
+                <ScalarProperty Name="Trip" ColumnName="Trip" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OFPB_HeightChange">
+            <EntityTypeMapping TypeName="ppa_tabanModel.OFPB_HeightChange">
+              <MappingFragment StoreEntitySet="OFPB_HeightChange">
+                <ScalarProperty Name="RootId" ColumnName="RootId" />
+                <ScalarProperty Name="Fuel" ColumnName="Fuel" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OFPB_Times">
+            <EntityTypeMapping TypeName="ppa_tabanModel.OFPB_Times">
+              <MappingFragment StoreEntitySet="OFPB_Times">
+                <ScalarProperty Name="RootId" ColumnName="RootId" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+                <ScalarProperty Name="Extra" ColumnName="Extra" />
+                <ScalarProperty Name="Additional" ColumnName="Additional" />
+                <ScalarProperty Name="MinimumRequired" ColumnName="MinimumRequired" />
+                <ScalarProperty Name="Contingency" ColumnName="Contingency" />
+                <ScalarProperty Name="FinalReserve" ColumnName="FinalReserve" />
+                <ScalarProperty Name="Alternate" ColumnName="Alternate" />
+                <ScalarProperty Name="Trip" ColumnName="Trip" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OFPB_WindTemperature">
+            <EntityTypeMapping TypeName="ppa_tabanModel.OFPB_WindTemperature">
+              <MappingFragment StoreEntitySet="OFPB_WindTemperature">
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="OFPId" ColumnName="OFPId" />
+                <ScalarProperty Name="WindTemprature" ColumnName="WindTemprature" />
+                <ScalarProperty Name="WayPoint" ColumnName="WayPoint" />
+                <ScalarProperty Name="Temperature" ColumnName="Temperature" />
+                <ScalarProperty Name="Wind" ColumnName="Wind" />
+                <ScalarProperty Name="FlightLevel" ColumnName="FlightLevel" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="OFPB_Root">
             <EntityTypeMapping TypeName="ppa_tabanModel.OFPB_Root">
               <MappingFragment StoreEntitySet="OFPB_Root">
+                <ScalarProperty Name="Alternate2WC" ColumnName="Alternate2WC" />
+                <ScalarProperty Name="Alternate1WC" ColumnName="Alternate1WC" />
+                <ScalarProperty Name="Alternate2FlightLevel" ColumnName="Alternate2FlightLevel" />
+                <ScalarProperty Name="Alternate1FlightLevel" ColumnName="Alternate1FlightLevel" />
                 <ScalarProperty Name="heightchange_fuel" ColumnName="heightchange_fuel" />
                 <ScalarProperty Name="heightchange_value" ColumnName="heightchange_value" />
                 <ScalarProperty Name="burnoffadj_fuel" ColumnName="burnoffadj_fuel" />
@@ -3553,89 +3659,11 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="OFPB_BurnOffAdjustment">
-            <EntityTypeMapping TypeName="ppa_tabanModel.OFPB_BurnOffAdjustment">
-              <MappingFragment StoreEntitySet="OFPB_BurnOffAdjustment">
-                <ScalarProperty Name="RootId" ColumnName="RootId" />
-                <ScalarProperty Name="Fuel" ColumnName="Fuel" />
-                <ScalarProperty Name="Value" ColumnName="Value" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="OFPB_Distances">
-            <EntityTypeMapping TypeName="ppa_tabanModel.OFPB_Distances">
-              <MappingFragment StoreEntitySet="OFPB_Distances">
-                <ScalarProperty Name="RootId" ColumnName="RootId" />
-                <ScalarProperty Name="Alternate2" ColumnName="Alternate2" />
-                <ScalarProperty Name="Alternate1" ColumnName="Alternate1" />
-                <ScalarProperty Name="Trip" ColumnName="Trip" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="OFPB_Fuels">
-            <EntityTypeMapping TypeName="ppa_tabanModel.OFPB_Fuels">
-              <MappingFragment StoreEntitySet="OFPB_Fuels">
-                <ScalarProperty Name="RootId" ColumnName="RootId" />
-                <ScalarProperty Name="Landing" ColumnName="Landing" />
-                <ScalarProperty Name="Total" ColumnName="Total" />
-                <ScalarProperty Name="Extra" ColumnName="Extra" />
-                <ScalarProperty Name="Additional" ColumnName="Additional" />
-                <ScalarProperty Name="MinimumRequired" ColumnName="MinimumRequired" />
-                <ScalarProperty Name="TaxiIn" ColumnName="TaxiIn" />
-                <ScalarProperty Name="TaxiOut" ColumnName="TaxiOut" />
-                <ScalarProperty Name="Contingency" ColumnName="Contingency" />
-                <ScalarProperty Name="FinalReserve" ColumnName="FinalReserve" />
-                <ScalarProperty Name="Alternate" ColumnName="Alternate" />
-                <ScalarProperty Name="Trip" ColumnName="Trip" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="OFPB_HeightChange">
-            <EntityTypeMapping TypeName="ppa_tabanModel.OFPB_HeightChange">
-              <MappingFragment StoreEntitySet="OFPB_HeightChange">
-                <ScalarProperty Name="RootId" ColumnName="RootId" />
-                <ScalarProperty Name="Fuel" ColumnName="Fuel" />
-                <ScalarProperty Name="Value" ColumnName="Value" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="OFPB_Times">
-            <EntityTypeMapping TypeName="ppa_tabanModel.OFPB_Times">
-              <MappingFragment StoreEntitySet="OFPB_Times">
-                <ScalarProperty Name="RootId" ColumnName="RootId" />
-                <ScalarProperty Name="Total" ColumnName="Total" />
-                <ScalarProperty Name="Extra" ColumnName="Extra" />
-                <ScalarProperty Name="Additional" ColumnName="Additional" />
-                <ScalarProperty Name="MinimumRequired" ColumnName="MinimumRequired" />
-                <ScalarProperty Name="Contingency" ColumnName="Contingency" />
-                <ScalarProperty Name="FinalReserve" ColumnName="FinalReserve" />
-                <ScalarProperty Name="Alternate" ColumnName="Alternate" />
-                <ScalarProperty Name="Trip" ColumnName="Trip" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="OFPB_WindTemperature">
-            <EntityTypeMapping TypeName="ppa_tabanModel.OFPB_WindTemperature">
-              <MappingFragment StoreEntitySet="OFPB_WindTemperature">
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="OFPId" ColumnName="OFPId" />
-                <ScalarProperty Name="WindTemprature" ColumnName="WindTemprature" />
-                <ScalarProperty Name="WayPoint" ColumnName="WayPoint" />
-                <ScalarProperty Name="Temperature" ColumnName="Temperature" />
-                <ScalarProperty Name="Wind" ColumnName="Wind" />
-                <ScalarProperty Name="FlightLevel" ColumnName="FlightLevel" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="OFPB_MainNavLog">
             <EntityTypeMapping TypeName="ppa_tabanModel.OFPB_MainNavLog">
               <MappingFragment StoreEntitySet="OFPB_MainNavLog">
+                <ScalarProperty Name="LatitudeStr" ColumnName="LatitudeStr" />
+                <ScalarProperty Name="LongitudeStr" ColumnName="LongitudeStr" />
                 <ScalarProperty Name="FuelUsedActual" ColumnName="FuelUsedActual" />
                 <ScalarProperty Name="FuelRemainedActual" ColumnName="FuelRemainedActual" />
                 <ScalarProperty Name="ETA" ColumnName="ETA" />

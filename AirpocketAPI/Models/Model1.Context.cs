@@ -78,7 +78,6 @@ namespace AirpocketAPI.Models
         public virtual DbSet<RptAirportDaily> RptAirportDailies { get; set; }
         public virtual DbSet<Charterer> Charterers { get; set; }
         public virtual DbSet<ViewTimeTable> ViewTimeTables { get; set; }
-        public virtual DbSet<ViewCrewList> ViewCrewLists { get; set; }
         public virtual DbSet<ViewCrewDuty> ViewCrewDuties { get; set; }
         public virtual DbSet<NiraHistory> NiraHistories { get; set; }
         public virtual DbSet<ViewFlightDelay> ViewFlightDelays { get; set; }
@@ -113,5 +112,6 @@ namespace AirpocketAPI.Models
         public virtual DbSet<AppCrewFlightJL> AppCrewFlightJLs { get; set; }
         public virtual DbSet<AppLegJL> AppLegJLs { get; set; }
         public virtual DbSet<AppLegOP> AppLegOPS { get; set; }
+        public virtual DbSet<ViewCrewList> ViewCrewLists { get; set; }
     }
 }

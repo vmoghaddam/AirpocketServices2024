@@ -34,6 +34,7 @@ using System.Drawing;
 using Newtonsoft.Json.Linq;
 using System.Data.SqlClient;
 using System.Threading;
+using System.Reflection;
 
 namespace ApiAPSB.Controllers
 {
@@ -65,8 +66,8 @@ namespace ApiAPSB.Controllers
                                 alt1_wts = wts.Where(q => q.OFPId == grp.Key.ofp_id && q.Type == "ALT1").ToList(),
                                 alt2_wts = wts.Where(q => q.OFPId == grp.Key.ofp_id && q.Type == "ALT2").ToList(),
                                 to_wts = wts.Where(q => q.OFPId == grp.Key.ofp_id && q.Type == "ALTTO").ToList(),
-                                routes= nav_logs.Where(q => q.RootId == grp.Key.ofp_id ).ToList(),
-                                wts = wts.Where(q => q.OFPId == grp.Key.ofp_id  ).ToList(),
+                                routes = nav_logs.Where(q => q.RootId == grp.Key.ofp_id).ToList(),
+                                wts = wts.Where(q => q.OFPId == grp.Key.ofp_id).ToList(),
 
                             }).ToList();
 
@@ -78,7 +79,7 @@ namespace ApiAPSB.Controllers
                 IsSuccess = true,
             });
 
-            
+
         }
 
         [HttpGet]
@@ -116,8 +117,8 @@ namespace ApiAPSB.Controllers
                 alt1_wts = wts.Where(q => q.Type == "ALT1").ToList(),
                 alt2_wts = wts.Where(q => q.Type == "ALT2").ToList(),
                 to_wts = wts.Where(q => q.Type == "ALTTO").ToList(),
-                routes= nav_logs.ToList(),
-                wts = wts. ToList(),
+                routes = nav_logs.ToList(),
+                wts = wts.ToList(),
             };
 
 
@@ -130,42 +131,287 @@ namespace ApiAPSB.Controllers
 
 
         }
+        public static object ChangeType(object value, Type conversion)
+        {
+            var t = conversion;
 
+            if (t.IsGenericType && t.GetGenericTypeDefinition().Equals(typeof(Nullable<>)))
+            {
+                if (value == null)
+                {
+                    return null;
+                }
+
+                t = Nullable.GetUnderlyingType(t);
+            }
+
+            return Convert.ChangeType(value, t);
+        }
+
+        [HttpPost]
+        [Route("api/ofp/prop/save/test")]
+        public async Task<DataResponse> SaveOFPPropTest(/*int ofpId, string propName, string propValue, string user*/dynamic dto)
+        {
+            try
+            {
+                int ofpId = Convert.ToInt32(dto.OFPId);
+                string propName = Convert.ToString(dto.PropName);
+                string propValue = Convert.ToString(dto.PropValue);
+                string user = Convert.ToString(dto.User);
+
+                var property = propName.Split('-')[2];
+
+                var tbl_part = propName.Split('-')[1];
+                string table = "";
+                switch (tbl_part)
+                {
+                    case "root":
+                        table = "OFPB_Root";
+                        break;
+                    default:
+                        break;
+                }
+
+
+
+                if (table == "OFPB_Root")
+                {
+                    //var ofp_root = await context.OFPB_Root.FirstOrDefaultAsync(q => q.Id == ofpId);
+                    var ofp_root = new OFPB_Root();
+                    if (ofp_root != null)
+                    {
+                        Type type = ofp_root.GetType();
+
+                        PropertyInfo propinfo = type.GetProperty(property);
+                        if (string.IsNullOrEmpty(propValue))
+                        {
+                            propinfo.SetValue(ofp_root, null, null);
+                        }
+                        else
+                        {
+                            var val = ChangeType(propValue, propinfo.PropertyType);
+
+                            propinfo.SetValue(ofp_root, val, null);
+                        }
+
+
+                    }
+                }
+
+
+                return new DataResponse() { IsSuccess = true };
+
+            }
+            catch (Exception ex)
+            {
+                return new DataResponse() { IsSuccess = false };
+            }
+
+
+
+
+        }
+
+        [HttpPost]
+        [Route("api/ofp/prop/save")]
+        public async Task<DataResponse> SaveOFPProp(/*int ofpId, string propName, string propValue, string user*/dynamic dto)
+        {
+            try
+            {
+                int ofpId = Convert.ToInt32(dto.OFPId);
+                string propName = Convert.ToString(dto.PropName);
+                string propValue = Convert.ToString(dto.PropValue);
+                string user = Convert.ToString(dto.User);
+                var context = new Models.dbEntities();
+                var prop = await context.OFPB_Prop.Where(q => q.OFPId == ofpId && q.PropName == propName).FirstOrDefaultAsync();
+                //prop-root-crew_cockpit
+                var property = propName.Split('-')[2];
+
+                var tbl_part = propName.Split('-')[1];
+                string table = "";
+                switch (tbl_part)
+                {
+                    case "root":
+                        table = "OFPB_Root";
+                        break;
+                    default:
+                        break;
+                }
+                if (prop == null)
+                {
+                    prop = new OFPB_Prop()
+                    {
+                        OFPId = ofpId,
+
+                        PropName = propName,
+                        TableName = table,
+                        PropertyName = property,
+
+
+                    };
+                    context.OFPB_Prop.Add(prop);
+                }
+                prop.DateUpdate = DateTime.UtcNow.ToString("yyyyMMddHHmmss");
+                if (!string.IsNullOrEmpty(propValue.Trim().Replace(" ", "")))
+                    prop.PropValue = propValue;
+                prop.User = user;
+
+
+                if (table == "OFPB_Root")
+                {
+                    var ofp_root = await context.OFPB_Root.FirstOrDefaultAsync(q => q.Id == ofpId);
+                    if (ofp_root != null)
+                    {
+                        Type type = ofp_root.GetType();
+
+                        PropertyInfo propinfo = type.GetProperty(property);
+                        if (string.IsNullOrEmpty(propValue))
+                        {
+                            propinfo.SetValue(ofp_root, null, null);
+                        }
+                        else
+                        {
+                            var val = ChangeType(propValue, propinfo.PropertyType);
+
+                            propinfo.SetValue(ofp_root, val, null);
+                        }
+                    }
+                }
+
+
+                var saveResult = await context.SaveChangesAsync();
+                return new DataResponse() { IsSuccess = true, Data = new { prop.Id, prop.OFPId, prop.PropName, prop.PropValue, prop.DateUpdate, prop.User, prop.PropType } };
+
+            }
+            catch (Exception ex)
+            {
+                return new DataResponse() { IsSuccess = false };
+            }
+
+
+
+
+        }
+
+
+        [HttpPost]
+        [Route("api/ofp/update")]
+        public async Task<DataResponse> UpdateOFP(/*int ofpId, string propName, string propValue, string user*/dynamic dto)
+        {
+            try
+            {
+                int ofpId = Convert.ToInt32(dto.OFPId);
+                string propName = Convert.ToString(dto.PropName);
+                string propValue = Convert.ToString(dto.PropValue);
+                string user = Convert.ToString(dto.User);
+                var context = new Models.dbEntities();
+                
+                var property = propName.Split('-')[2];
+
+                var tbl_part = propName.Split('-')[1];
+                string table = "";
+                switch (tbl_part)
+                {
+                    case "root":
+                        table = "OFPB_Root";
+                        break;
+                    default:
+                        break;
+                }
+
+                
+                var    prop = new OFPB_Prop()
+                    {
+                        OFPId = ofpId,
+
+                        PropName = propName,
+                        TableName = table,
+                        PropertyName = property,
+
+
+                    };
+                  
+                
+                prop.DateUpdate = DateTime.UtcNow.ToString("yyyyMMddHHmmss");
+                if (!string.IsNullOrEmpty(propValue.Trim().Replace(" ", "")))
+                    prop.PropValue = propValue;
+                prop.User = user;
+                context.OFPB_Prop.Add(prop);
+
+                if (table == "OFPB_Root")
+                {
+                    var ofp_root = await context.OFPB_Root.FirstOrDefaultAsync(q => q.Id == ofpId);
+                    if (ofp_root != null)
+                    {
+                        Type type = ofp_root.GetType();
+
+                        PropertyInfo propinfo = type.GetProperty(property);
+                        if (string.IsNullOrEmpty(propValue))
+                        {
+                            propinfo.SetValue(ofp_root, null, null);
+                        }
+                        else
+                        {
+                            var val = ChangeType(propValue, propinfo.PropertyType);
+
+                            propinfo.SetValue(ofp_root, val, null);
+                        }
+                        ofp_root.date_update = Convert.ToInt64(prop.DateUpdate);
+                        ofp_root.user_update= user;
+                    }
+                    var saveResult = await context.SaveChangesAsync();
+                    return new DataResponse() { IsSuccess = true, Data =new { ofp_root.date_update } };
+
+                }
+
+                return new DataResponse() { IsSuccess = false, Messages=new List<string>() { "table not found" } };
+
+
+            }
+            catch (Exception ex)
+            {
+                return new DataResponse() { IsSuccess = false };
+            }
+
+
+
+
+        }
 
 
 
     }
 
-  
+
 }
 
 public class ofpb
-    {
-        public int? flight_id { get; set; }
-        public int? ofp_id { get; set; }
-        public view_ofpb_root root { get; set; }
-        public List<view_ofpb_navlog> main_route { get; set; }
-        public List<view_ofpb_navlog> alt1_route { get; set; }
-        public List<view_ofpb_navlog> alt2_route { get; set; }
-        public List<view_ofpb_wt> main_wts { get; set; }
-        public List<view_ofpb_wt> alt1_wts { get; set; }
-        public List<view_ofpb_wt> alt2_wts { get; set; }
-        public List<view_ofpb_wt> to_wts { get; set; }
-      public List<view_ofpb_navlog> routes { get; set; }
+{
+    public int? flight_id { get; set; }
+    public int? ofp_id { get; set; }
+    public view_ofpb_root root { get; set; }
+    public List<view_ofpb_navlog> main_route { get; set; }
+    public List<view_ofpb_navlog> alt1_route { get; set; }
+    public List<view_ofpb_navlog> alt2_route { get; set; }
+    public List<view_ofpb_wt> main_wts { get; set; }
+    public List<view_ofpb_wt> alt1_wts { get; set; }
+    public List<view_ofpb_wt> alt2_wts { get; set; }
+    public List<view_ofpb_wt> to_wts { get; set; }
+    public List<view_ofpb_navlog> routes { get; set; }
     public List<view_ofpb_wt> wts { get; set; }
 
 }
-    public class DataResponse
-    {
-        public bool IsSuccess { get; set; }
-        public object Data { get; set; }
-        public List<string> Errors { get; set; }
-        public List<string> Messages { get; set; }
-    }
+public class DataResponse
+{
+    public bool IsSuccess { get; set; }
+    public object Data { get; set; }
+    public List<string> Errors { get; set; }
+    public List<string> Messages { get; set; }
+}
 
-    public class SimpleDto
-    {
-        public List<int?> ids { get; set; }
-        public string type { get; set; }
-    }
- 
+public class SimpleDto
+{
+    public List<int?> ids { get; set; }
+    public string type { get; set; }
+}
+

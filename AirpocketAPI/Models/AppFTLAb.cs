@@ -31,5 +31,6 @@ namespace AirpocketAPI.Models
         public Nullable<int> CNT { get; set; }
         public Nullable<int> ScheduledFlightTime { get; set; }
         public Nullable<double> Ratio { get; set; }
+        public string LastLocation { get; set; }
     }
 }

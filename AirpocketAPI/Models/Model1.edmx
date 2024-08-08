@@ -571,6 +571,8 @@
           <Property Name="PosFDPId" Type="int" />
           <Property Name="PosRemark" Type="varchar" MaxLength="500" />
           <Property Name="PosTicketUrl" Type="varchar" MaxLength="500" />
+          <Property Name="DutyEndDateLocal" Type="datetime2" Precision="7" />
+          <Property Name="InitTo" Type="varchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="FDPItem">
           <Key>
@@ -1222,6 +1224,12 @@
           <Property Name="CM2" Type="varchar" MaxLength="500" />
           <Property Name="MSH" Type="varchar" MaxLength="500" />
           <Property Name="ATC" Type="varchar" MaxLength="4000" />
+          <Property Name="MTOW" Type="varchar" MaxLength="255" />
+          <Property Name="MLDW" Type="varchar" MaxLength="255" />
+          <Property Name="ELDP" Type="varchar" MaxLength="255" />
+          <Property Name="ELDS" Type="varchar" MaxLength="255" />
+          <Property Name="ELAL" Type="varchar" MaxLength="255" />
+          <Property Name="ELBL" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="OFPImportItem">
           <Key>
@@ -1750,6 +1758,18 @@
           <Property Name="SMSL3ExpireDate" Type="datetime2" Precision="7" />
           <Property Name="AMPIssueDate" Type="datetime2" Precision="7" />
           <Property Name="AMPExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="ASD_THR_IssueDate" Type="datetime2" Precision="7" />
+          <Property Name="ASD_THR_ExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="ASD_SYZ_IssueDate" Type="datetime2" Precision="7" />
+          <Property Name="ASD_SYZ_ExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="ASD_MHD_IssueDate" Type="datetime2" Precision="7" />
+          <Property Name="ASD_MHD_ExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="ASD_TBZ_IssueDate" Type="datetime2" Precision="7" />
+          <Property Name="ASD_TBZ_ExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="ASD_AWZ_IssueDate" Type="datetime2" Precision="7" />
+          <Property Name="ASD_AWZ_ExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="ASD_SRY_IssueDate" Type="datetime2" Precision="7" />
+          <Property Name="ASD_SRY_ExpireDate" Type="datetime2" Precision="7" />
         </EntityType>
         <EntityType Name="PersonHistory">
           <Key>
@@ -1985,6 +2005,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.AppCrewFlight' does not have a prim
           <Property Name="arr_dusk" Type="datetime" />
           <Property Name="FlightTypeOPS" Type="varchar" MaxLength="500" />
           <Property Name="AttForms" Type="varchar" MaxLength="500" />
+          <Property Name="PaxFemale" Type="int" />
+          <Property Name="PaxMale" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.AppCrewFlightJL' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -2229,6 +2251,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.AppFTLAbs' does not have a primary 
           <Property Name="CNT" Type="int" />
           <Property Name="ScheduledFlightTime" Type="int" />
           <Property Name="Ratio" Type="float" />
+          <Property Name="LastLocation" Type="varchar" MaxLength="255" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.AppLeg' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -2413,6 +2436,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.AppLeg' does not have a primary key
           <Property Name="FlightTypeOPS" Type="varchar" MaxLength="500" />
           <Property Name="AttForms" Type="varchar" MaxLength="500" />
           <Property Name="RouteCountry" Type="nvarchar" MaxLength="500" />
+          <Property Name="PaxFemale" Type="int" />
+          <Property Name="PaxMale" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.AppLegJL' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -2584,6 +2609,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.AppLegJL' does not have a primary k
           <Property Name="DelayCode" Type="varchar" MaxLength="1" Nullable="false" />
           <Property Name="RemDuty" Type="int" />
           <Property Name="ElapsedDuty" Type="int" />
+          <Property Name="PaxFemale" Type="int" />
+          <Property Name="PaxMale" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.AppLegOPS' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -3500,6 +3527,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewCrewList' does not have a prima
           <Property Name="Rank" Type="bigint" />
           <Property Name="Mobile" Type="nvarchar" MaxLength="500" />
           <Property Name="Address" Type="nvarchar" MaxLength="2000" />
+          <Property Name="DefaultReportingTime" Type="datetime" />
+          <Property Name="MaxFDPExtended" Type="float" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.ViewCrewTimeDetail' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -4396,6 +4425,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewFDRReport' does not have a prim
           <Key>
             <PropertyRef Name="Id" />
             <PropertyRef Name="FlightStatus" />
+            
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="STDDay" Type="date" />
@@ -4436,7 +4466,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewFDRReport' does not have a prim
           <Property Name="FuelUnitID" Type="int" />
           <Property Name="FuelUnit" Type="nvarchar" MaxLength="1000" />
           <Property Name="PFLR" Type="int" />
-          <Property Name="FPFuel" Type="decimal" Precision="19" Scale="4" />
           <Property Name="PFLRTitle" Type="varchar" MaxLength="255" />
           <Property Name="DepartureLocal" Type="datetime" />
           <Property Name="ArrivalLocal" Type="datetime" />
@@ -4444,11 +4473,12 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewFDRReport' does not have a prim
           <Property Name="Arrival" Type="datetime" />
           <Property Name="BlockTime" Type="int" />
           <Property Name="FlightTime" Type="int" />
-          <Property Name="Freight" Type="int" />
-          <Property Name="FPTripFuel" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="Freight" Type="int" Nullable="false" />
           <Property Name="MaxWeightTO" Type="int" />
           <Property Name="MaxWeightLND" Type="int" />
           <Property Name="MaxWeighUnit" Type="varchar" MaxLength="3" />
+          <Property Name="FPTripFuel" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="FPFuel" Type="decimal" Precision="5" Scale="2" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.ViewFlightCharterer' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -6141,7 +6171,9 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
     [AppCrewFlight].[arr_dawn] AS [arr_dawn], 
     [AppCrewFlight].[arr_dusk] AS [arr_dusk], 
     [AppCrewFlight].[FlightTypeOPS] AS [FlightTypeOPS], 
-    [AppCrewFlight].[AttForms] AS [AttForms]
+    [AppCrewFlight].[AttForms] AS [AttForms], 
+    [AppCrewFlight].[PaxFemale] AS [PaxFemale], 
+    [AppCrewFlight].[PaxMale] AS [PaxMale]
     FROM [dbo].[AppCrewFlight] AS [AppCrewFlight]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="AppCrewFlightJL" EntityType="Self.AppCrewFlightJL" store:Type="Views" store:Schema="dbo">
@@ -6346,7 +6378,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
     [AppFTLAbs].[FlightCYearRemain] AS [FlightCYearRemain], 
     [AppFTLAbs].[CNT] AS [CNT], 
     [AppFTLAbs].[ScheduledFlightTime] AS [ScheduledFlightTime], 
-    [AppFTLAbs].[Ratio] AS [Ratio]
+    [AppFTLAbs].[Ratio] AS [Ratio], 
+    [AppFTLAbs].[LastLocation] AS [LastLocation]
     FROM [dbo].[AppFTLAbs] AS [AppFTLAbs]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="AppLeg" EntityType="Self.AppLeg" store:Type="Views" store:Schema="dbo">
@@ -6518,7 +6551,9 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
     [AppLeg].[arr_dusk] AS [arr_dusk], 
     [AppLeg].[FlightTypeOPS] AS [FlightTypeOPS], 
     [AppLeg].[AttForms] AS [AttForms], 
-    [AppLeg].[RouteCountry] AS [RouteCountry]
+    [AppLeg].[RouteCountry] AS [RouteCountry], 
+    [AppLeg].[PaxFemale] AS [PaxFemale], 
+    [AppLeg].[PaxMale] AS [PaxMale]
     FROM [dbo].[AppLeg] AS [AppLeg]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="AppLegJL" EntityType="Self.AppLegJL" store:Type="Views" store:Schema="dbo">
@@ -6675,7 +6710,9 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
     [AppLegJL].[ATLNO] AS [ATLNO], 
     [AppLegJL].[DelayCode] AS [DelayCode], 
     [AppLegJL].[RemDuty] AS [RemDuty], 
-    [AppLegJL].[ElapsedDuty] AS [ElapsedDuty]
+    [AppLegJL].[ElapsedDuty] AS [ElapsedDuty], 
+    [AppLegJL].[PaxFemale] AS [PaxFemale], 
+    [AppLegJL].[PaxMale] AS [PaxMale]
     FROM [dbo].[AppLegJL] AS [AppLegJL]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="AppLegOPS" EntityType="Self.AppLegOPS" store:Type="Views" store:Schema="dbo">
@@ -7464,7 +7501,9 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
     [ViewCrewList].[PID] AS [PID], 
     [ViewCrewList].[Rank] AS [Rank], 
     [ViewCrewList].[Mobile] AS [Mobile], 
-    [ViewCrewList].[Address] AS [Address]
+    [ViewCrewList].[Address] AS [Address], 
+    [ViewCrewList].[DefaultReportingTime] AS [DefaultReportingTime], 
+    [ViewCrewList].[MaxFDPExtended] AS [MaxFDPExtended]
     FROM [dbo].[ViewCrewList] AS [ViewCrewList]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ViewCrewTimeDetail" EntityType="Self.ViewCrewTimeDetail" store:Type="Views" store:Schema="dbo">
@@ -8269,7 +8308,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
     [ViewFDRReport].[FuelUnitID] AS [FuelUnitID], 
     [ViewFDRReport].[FuelUnit] AS [FuelUnit], 
     [ViewFDRReport].[PFLR] AS [PFLR], 
-    [ViewFDRReport].[FPFuel] AS [FPFuel], 
     [ViewFDRReport].[PFLRTitle] AS [PFLRTitle], 
     [ViewFDRReport].[DepartureLocal] AS [DepartureLocal], 
     [ViewFDRReport].[ArrivalLocal] AS [ArrivalLocal], 
@@ -8278,10 +8316,11 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
     [ViewFDRReport].[BlockTime] AS [BlockTime], 
     [ViewFDRReport].[FlightTime] AS [FlightTime], 
     [ViewFDRReport].[Freight] AS [Freight], 
-    [ViewFDRReport].[FPTripFuel] AS [FPTripFuel], 
     [ViewFDRReport].[MaxWeightTO] AS [MaxWeightTO], 
     [ViewFDRReport].[MaxWeightLND] AS [MaxWeightLND], 
-    [ViewFDRReport].[MaxWeighUnit] AS [MaxWeighUnit]
+    [ViewFDRReport].[MaxWeighUnit] AS [MaxWeighUnit], 
+    [ViewFDRReport].[FPTripFuel] AS [FPTripFuel], 
+    [ViewFDRReport].[FPFuel] AS [FPFuel]
     FROM [dbo].[ViewFDRReport] AS [ViewFDRReport]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ViewFlightCharterer" EntityType="Self.ViewFlightCharterer" store:Type="Views" store:Schema="dbo">
@@ -9482,7 +9521,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
           <EntitySet Name="RptAirportDailies" EntityType="FLYModel.RptAirportDaily" />
           <EntitySet Name="Charterers" EntityType="FLYModel.Charterer" />
           <EntitySet Name="ViewTimeTables" EntityType="FLYModel.ViewTimeTable" />
-          <EntitySet Name="ViewCrewLists" EntityType="FLYModel.ViewCrewList" />
           <EntitySet Name="ViewCrewDuties" EntityType="FLYModel.ViewCrewDuty" />
           <EntitySet Name="NiraHistories" EntityType="FLYModel.NiraHistory" />
           <EntitySet Name="ViewFlightDelays" EntityType="FLYModel.ViewFlightDelay" />
@@ -9585,6 +9623,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
           <EntitySet Name="AppCrewFlightJLs" EntityType="FLYModel.AppCrewFlightJL" />
           <EntitySet Name="AppLegJLs" EntityType="FLYModel.AppLegJL" />
           <EntitySet Name="AppLegOPS" EntityType="FLYModel.AppLegOP" />
+          <EntitySet Name="ViewCrewLists" EntityType="FLYModel.ViewCrewList" />
           </EntityContainer>
         <EntityType Name="DlyGrpFlight">
           <Key>
@@ -9954,6 +9993,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
           <Property Name="PosFDPId" Type="Int32" />
           <Property Name="PosRemark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="PosTicketUrl" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="DutyEndDateLocal" Type="DateTime" Precision="7" />
+          <Property Name="InitTo" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="IdeaSessionItem">
           <Key>
@@ -10976,7 +11017,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
           <Property Name="FuelUnitID" Type="Int32" />
           <Property Name="FuelUnit" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="PFLR" Type="Int32" />
-          <Property Name="FPFuel" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="FPFuel" Type="Decimal" Precision="5" Scale="2" />
           <Property Name="PFLRTitle" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="DepartureLocal" Type="DateTime" Precision="3" />
           <Property Name="ArrivalLocal" Type="DateTime" Precision="3" />
@@ -10984,8 +11025,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
           <Property Name="Arrival" Type="DateTime" Precision="3" />
           <Property Name="BlockTime" Type="Int32" />
           <Property Name="FlightTime" Type="Int32" />
-          <Property Name="Freight" Type="Int32" />
-          <Property Name="FPTripFuel" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="Freight" Type="Int32" Nullable="false" />
+          <Property Name="FPTripFuel" Type="Decimal" Precision="5" Scale="2" />
           <Property Name="MaxWeightTO" Type="Int32" />
           <Property Name="MaxWeightLND" Type="Int32" />
           <Property Name="MaxWeighUnit" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
@@ -11024,6 +11065,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
           <Property Name="CNT" Type="Int32" />
           <Property Name="ScheduledFlightTime" Type="Int32" />
           <Property Name="Ratio" Type="Double" />
+          <Property Name="LastLocation" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="FTLFlightTimeRatioMonthly">
           <Key>
@@ -11770,42 +11812,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
           <Property Name="ChrAdult" Type="Int32" />
           <Property Name="ChrChild" Type="Int32" />
           <Property Name="ChrInfant" Type="Int32" />
-        </EntityType>
-        <EntityType Name="ViewCrewList">
-          <Key>
-            <PropertyRef Name="FDPId" />
-            <PropertyRef Name="FDPItemId" />
-            <PropertyRef Name="PositionId" />
-            <PropertyRef Name="RosterPositionId" />
-            <PropertyRef Name="Name" />
-            <PropertyRef Name="SexId" />
-            <PropertyRef Name="FDPTitle" />
-            <PropertyRef Name="IsCockpit" />
-            <PropertyRef Name="PID" />
-          </Key>
-          <Property Name="FDPId" Type="Int32" Nullable="false" />
-          <Property Name="FDPItemId" Type="Int32" Nullable="false" />
-          <Property Name="CrewId" Type="Int32" />
-          <Property Name="FlightId" Type="Int32" />
-          <Property Name="IsPositioning" Type="Boolean" />
-          <Property Name="PositionId" Type="Int32" Nullable="false" />
-          <Property Name="RosterPositionId" Type="Int32" Nullable="false" />
-          <Property Name="Position" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="1003" FixedLength="false" Unicode="true" />
-          <Property Name="ScheduleName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="Seniority" Type="Int32" />
-          <Property Name="GroupId" Type="Int32" />
-          <Property Name="JobGroup" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="JobGroupCode" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="SexId" Type="Int32" Nullable="false" />
-          <Property Name="Sex" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="GroupOrder" Type="Int32" />
-          <Property Name="FDPTitle" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="IsCockpit" Type="Int32" Nullable="false" />
-          <Property Name="PID" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="Rank" Type="Int64" />
-          <Property Name="Mobile" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="Address" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="ViewCrewDuty">
           <Key>
@@ -12625,6 +12631,18 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
           <Property Name="SMSL3ExpireDate" Type="DateTime" Precision="7" />
           <Property Name="AMPIssueDate" Type="DateTime" Precision="7" />
           <Property Name="AMPExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="ASD_THR_IssueDate" Type="DateTime" Precision="7" />
+          <Property Name="ASD_THR_ExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="ASD_SYZ_IssueDate" Type="DateTime" Precision="7" />
+          <Property Name="ASD_SYZ_ExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="ASD_MHD_IssueDate" Type="DateTime" Precision="7" />
+          <Property Name="ASD_MHD_ExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="ASD_TBZ_IssueDate" Type="DateTime" Precision="7" />
+          <Property Name="ASD_TBZ_ExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="ASD_AWZ_IssueDate" Type="DateTime" Precision="7" />
+          <Property Name="ASD_AWZ_ExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="ASD_SRY_IssueDate" Type="DateTime" Precision="7" />
+          <Property Name="ASD_SRY_ExpireDate" Type="DateTime" Precision="7" />
         </EntityType>
         <EntityType Name="OFPImportProp">
           <Key>
@@ -12723,6 +12741,12 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
           <Property Name="CM2" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="MSH" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="ATC" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Name="MTOW" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="MLDW" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ELDP" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ELDS" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ELAL" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ELBL" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="fk_ofpl_ofp">
           <End Type="FLYModel.OFPImport" Role="OFPImport" Multiplicity="1">
@@ -14103,6 +14127,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
           <Property Name="FlightTypeOPS" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="AttForms" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="RouteCountry" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="PaxFemale" Type="Int32" />
+          <Property Name="PaxMale" Type="Int32" />
         </EntityType>
         <EntityType Name="AppCertificate">
           <Key>
@@ -14504,6 +14530,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
           <Property Name="arr_dusk" Type="DateTime" Precision="3" />
           <Property Name="FlightTypeOPS" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="AttForms" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="PaxFemale" Type="Int32" />
+          <Property Name="PaxMale" Type="Int32" />
         </EntityType>
         <EntityType Name="ReportRoster">
           <Key>
@@ -15194,6 +15222,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
           <Property Name="DelayCode" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
           <Property Name="RemDuty" Type="Int32" />
           <Property Name="ElapsedDuty" Type="Int32" />
+          <Property Name="PaxFemale" Type="Int32" />
+          <Property Name="PaxMale" Type="Int32" />
         </EntityType>
         <EntityType Name="AppLegOP">
           <Key>
@@ -15399,6 +15429,44 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
           <Property Name="DateVisitPACKINGLIST" Type="DateTime" Precision="7" />
           <Property Name="PaxMale" Type="Int32" />
           <Property Name="PaxFemale" Type="Int32" />
+        </EntityType>
+        <EntityType Name="ViewCrewList">
+          <Key>
+            <PropertyRef Name="FDPId" />
+            <PropertyRef Name="FDPItemId" />
+            <PropertyRef Name="PositionId" />
+            <PropertyRef Name="RosterPositionId" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="SexId" />
+            <PropertyRef Name="FDPTitle" />
+            <PropertyRef Name="IsCockpit" />
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="FDPId" Type="Int32" Nullable="false" />
+          <Property Name="FDPItemId" Type="Int32" Nullable="false" />
+          <Property Name="CrewId" Type="Int32" />
+          <Property Name="FlightId" Type="Int32" />
+          <Property Name="IsPositioning" Type="Boolean" />
+          <Property Name="PositionId" Type="Int32" Nullable="false" />
+          <Property Name="RosterPositionId" Type="Int32" Nullable="false" />
+          <Property Name="Position" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="1003" FixedLength="false" Unicode="true" />
+          <Property Name="ScheduleName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Seniority" Type="Int32" />
+          <Property Name="GroupId" Type="Int32" />
+          <Property Name="JobGroup" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="JobGroupCode" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="SexId" Type="Int32" Nullable="false" />
+          <Property Name="Sex" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="GroupOrder" Type="Int32" />
+          <Property Name="FDPTitle" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="IsCockpit" Type="Int32" Nullable="false" />
+          <Property Name="PID" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Rank" Type="Int64" />
+          <Property Name="Mobile" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="DefaultReportingTime" Type="DateTime" Precision="3" />
+          <Property Name="MaxFDPExtended" Type="Double" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -15724,6 +15792,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
           <EntitySetMapping Name="FDPs">
             <EntityTypeMapping TypeName="FLYModel.FDP">
               <MappingFragment StoreEntitySet="FDP">
+                <ScalarProperty Name="InitTo" ColumnName="InitTo" />
+                <ScalarProperty Name="DutyEndDateLocal" ColumnName="DutyEndDateLocal" />
                 <ScalarProperty Name="PosTicketUrl" ColumnName="PosTicketUrl" />
                 <ScalarProperty Name="PosRemark" ColumnName="PosRemark" />
                 <ScalarProperty Name="PosFDPId" ColumnName="PosFDPId" />
@@ -16680,6 +16750,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
           <EntitySetMapping Name="AppFTLAbs">
             <EntityTypeMapping TypeName="FLYModel.AppFTLAb">
               <MappingFragment StoreEntitySet="AppFTLAbs">
+                <ScalarProperty Name="LastLocation" ColumnName="LastLocation" />
                 <ScalarProperty Name="Ratio" ColumnName="Ratio" />
                 <ScalarProperty Name="ScheduledFlightTime" ColumnName="ScheduledFlightTime" />
                 <ScalarProperty Name="CNT" ColumnName="CNT" />
@@ -17362,35 +17433,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ViewCrewLists">
-            <EntityTypeMapping TypeName="FLYModel.ViewCrewList">
-              <MappingFragment StoreEntitySet="ViewCrewList">
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
-                <ScalarProperty Name="Rank" ColumnName="Rank" />
-                <ScalarProperty Name="PID" ColumnName="PID" />
-                <ScalarProperty Name="IsCockpit" ColumnName="IsCockpit" />
-                <ScalarProperty Name="FDPTitle" ColumnName="FDPTitle" />
-                <ScalarProperty Name="GroupOrder" ColumnName="GroupOrder" />
-                <ScalarProperty Name="Sex" ColumnName="Sex" />
-                <ScalarProperty Name="SexId" ColumnName="SexId" />
-                <ScalarProperty Name="JobGroupCode" ColumnName="JobGroupCode" />
-                <ScalarProperty Name="JobGroup" ColumnName="JobGroup" />
-                <ScalarProperty Name="GroupId" ColumnName="GroupId" />
-                <ScalarProperty Name="Seniority" ColumnName="Seniority" />
-                <ScalarProperty Name="ScheduleName" ColumnName="ScheduleName" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Position" ColumnName="Position" />
-                <ScalarProperty Name="RosterPositionId" ColumnName="RosterPositionId" />
-                <ScalarProperty Name="PositionId" ColumnName="PositionId" />
-                <ScalarProperty Name="IsPositioning" ColumnName="IsPositioning" />
-                <ScalarProperty Name="FlightId" ColumnName="FlightId" />
-                <ScalarProperty Name="CrewId" ColumnName="CrewId" />
-                <ScalarProperty Name="FDPItemId" ColumnName="FDPItemId" />
-                <ScalarProperty Name="FDPId" ColumnName="FDPId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ViewCrewDuties">
             <EntityTypeMapping TypeName="FLYModel.ViewCrewDuty">
               <MappingFragment StoreEntitySet="ViewCrewDuty">
@@ -17670,6 +17712,18 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
           <EntitySetMapping Name="People">
             <EntityTypeMapping TypeName="FLYModel.Person">
               <MappingFragment StoreEntitySet="Person">
+                <ScalarProperty Name="ASD_SRY_ExpireDate" ColumnName="ASD_SRY_ExpireDate" />
+                <ScalarProperty Name="ASD_SRY_IssueDate" ColumnName="ASD_SRY_IssueDate" />
+                <ScalarProperty Name="ASD_AWZ_ExpireDate" ColumnName="ASD_AWZ_ExpireDate" />
+                <ScalarProperty Name="ASD_AWZ_IssueDate" ColumnName="ASD_AWZ_IssueDate" />
+                <ScalarProperty Name="ASD_TBZ_ExpireDate" ColumnName="ASD_TBZ_ExpireDate" />
+                <ScalarProperty Name="ASD_TBZ_IssueDate" ColumnName="ASD_TBZ_IssueDate" />
+                <ScalarProperty Name="ASD_MHD_ExpireDate" ColumnName="ASD_MHD_ExpireDate" />
+                <ScalarProperty Name="ASD_MHD_IssueDate" ColumnName="ASD_MHD_IssueDate" />
+                <ScalarProperty Name="ASD_SYZ_ExpireDate" ColumnName="ASD_SYZ_ExpireDate" />
+                <ScalarProperty Name="ASD_SYZ_IssueDate" ColumnName="ASD_SYZ_IssueDate" />
+                <ScalarProperty Name="ASD_THR_ExpireDate" ColumnName="ASD_THR_ExpireDate" />
+                <ScalarProperty Name="ASD_THR_IssueDate" ColumnName="ASD_THR_IssueDate" />
                 <ScalarProperty Name="AMPExpireDate" ColumnName="AMPExpireDate" />
                 <ScalarProperty Name="AMPIssueDate" ColumnName="AMPIssueDate" />
                 <ScalarProperty Name="SMSL3ExpireDate" ColumnName="SMSL3ExpireDate" />
@@ -18177,6 +18231,12 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
           <EntitySetMapping Name="OFPImports">
             <EntityTypeMapping TypeName="FLYModel.OFPImport">
               <MappingFragment StoreEntitySet="OFPImport">
+                <ScalarProperty Name="ELBL" ColumnName="ELBL" />
+                <ScalarProperty Name="ELAL" ColumnName="ELAL" />
+                <ScalarProperty Name="ELDS" ColumnName="ELDS" />
+                <ScalarProperty Name="ELDP" ColumnName="ELDP" />
+                <ScalarProperty Name="MLDW" ColumnName="MLDW" />
+                <ScalarProperty Name="MTOW" ColumnName="MTOW" />
                 <ScalarProperty Name="ATC" ColumnName="ATC" />
                 <ScalarProperty Name="MSH" ColumnName="MSH" />
                 <ScalarProperty Name="CM2" ColumnName="CM2" />
@@ -19243,6 +19303,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
           <EntitySetMapping Name="AppLegs">
             <EntityTypeMapping TypeName="FLYModel.AppLeg">
               <MappingFragment StoreEntitySet="AppLeg">
+                <ScalarProperty Name="PaxMale" ColumnName="PaxMale" />
+                <ScalarProperty Name="PaxFemale" ColumnName="PaxFemale" />
                 <ScalarProperty Name="RouteCountry" ColumnName="RouteCountry" />
                 <ScalarProperty Name="AttForms" ColumnName="AttForms" />
                 <ScalarProperty Name="FlightTypeOPS" ColumnName="FlightTypeOPS" />
@@ -19626,6 +19688,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
           <EntitySetMapping Name="AppCrewFlights">
             <EntityTypeMapping TypeName="FLYModel.AppCrewFlight">
               <MappingFragment StoreEntitySet="AppCrewFlight">
+                <ScalarProperty Name="PaxMale" ColumnName="PaxMale" />
+                <ScalarProperty Name="PaxFemale" ColumnName="PaxFemale" />
                 <ScalarProperty Name="AttForms" ColumnName="AttForms" />
                 <ScalarProperty Name="FlightTypeOPS" ColumnName="FlightTypeOPS" />
                 <ScalarProperty Name="arr_dusk" ColumnName="arr_dusk" />
@@ -20255,6 +20319,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
           <EntitySetMapping Name="AppLegJLs">
             <EntityTypeMapping TypeName="FLYModel.AppLegJL">
               <MappingFragment StoreEntitySet="AppLegJL">
+                <ScalarProperty Name="PaxMale" ColumnName="PaxMale" />
+                <ScalarProperty Name="PaxFemale" ColumnName="PaxFemale" />
                 <ScalarProperty Name="ElapsedDuty" ColumnName="ElapsedDuty" />
                 <ScalarProperty Name="RemDuty" ColumnName="RemDuty" />
                 <ScalarProperty Name="DelayCode" ColumnName="DelayCode" />
@@ -20597,6 +20663,37 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
                 <ScalarProperty Name="BlockOn" ColumnName="BlockOn" />
                 <ScalarProperty Name="FlightId" ColumnName="FlightId" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ViewCrewLists">
+            <EntityTypeMapping TypeName="FLYModel.ViewCrewList">
+              <MappingFragment StoreEntitySet="ViewCrewList">
+                <ScalarProperty Name="MaxFDPExtended" ColumnName="MaxFDPExtended" />
+                <ScalarProperty Name="DefaultReportingTime" ColumnName="DefaultReportingTime" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="Rank" ColumnName="Rank" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="IsCockpit" ColumnName="IsCockpit" />
+                <ScalarProperty Name="FDPTitle" ColumnName="FDPTitle" />
+                <ScalarProperty Name="GroupOrder" ColumnName="GroupOrder" />
+                <ScalarProperty Name="Sex" ColumnName="Sex" />
+                <ScalarProperty Name="SexId" ColumnName="SexId" />
+                <ScalarProperty Name="JobGroupCode" ColumnName="JobGroupCode" />
+                <ScalarProperty Name="JobGroup" ColumnName="JobGroup" />
+                <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+                <ScalarProperty Name="Seniority" ColumnName="Seniority" />
+                <ScalarProperty Name="ScheduleName" ColumnName="ScheduleName" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="RosterPositionId" ColumnName="RosterPositionId" />
+                <ScalarProperty Name="PositionId" ColumnName="PositionId" />
+                <ScalarProperty Name="IsPositioning" ColumnName="IsPositioning" />
+                <ScalarProperty Name="FlightId" ColumnName="FlightId" />
+                <ScalarProperty Name="CrewId" ColumnName="CrewId" />
+                <ScalarProperty Name="FDPItemId" ColumnName="FDPItemId" />
+                <ScalarProperty Name="FDPId" ColumnName="FDPId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -122,9 +122,12 @@ namespace XAPI.Models
         public string burnoffadj_fuel { get; set; }
         public string heightchange_value { get; set; }
         public string heightchange_fuel { get; set; }
+        public Nullable<int> Alternate1FlightLevel { get; set; }
+        public Nullable<int> Alternate2FlightLevel { get; set; }
+        public string Alternate1WC { get; set; }
+        public string Alternate2WC { get; set; }
     
         public virtual FlightInformation FlightInformation { get; set; }
-        public virtual OFPSkyPuter OFPSkyPuter { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OFPB_BurnOffAdjustment> OFPB_BurnOffAdjustment { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -135,6 +138,7 @@ namespace XAPI.Models
         public virtual ICollection<OFPB_HeightChange> OFPB_HeightChange { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OFPB_Times> OFPB_Times { get; set; }
+        public virtual OFPSkyPuter OFPSkyPuter { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OFPB_WindTemperature> OFPB_WindTemperature { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

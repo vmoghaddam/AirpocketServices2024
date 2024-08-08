@@ -96,6 +96,12 @@ namespace AirpocketAPI.Models
         public string CM2 { get; set; }
         public string MSH { get; set; }
         public string ATC { get; set; }
+        public string MTOW { get; set; }
+        public string MLDW { get; set; }
+        public string ELDP { get; set; }
+        public string ELDS { get; set; }
+        public string ELAL { get; set; }
+        public string ELBL { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OFPImportItem> OFPImportItems { get; set; }

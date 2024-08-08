@@ -38,6 +38,8 @@ namespace XAPI
         public string FlightLevel { get; set; }
         public double? Latitude { get; set; }
         public double? Longitude { get; set; }
+        public string LatitudeStr { get; set; }
+        public string LongitudeStr { get; set; }
         public string Frequency { get; set; }
         public string Airway { get; set; }
         public string MEA { get; set; }
@@ -48,7 +50,7 @@ namespace XAPI
         public string MagneticTrack { get; set; }
         public string Temperature { get; set; }
 
-        [JsonProperty("Zone Time")]
+         
         public string ZoneTime { get; set; }
         public string CumulativeTime { get; set; }
         public int? FuelRemained { get; set; }
@@ -144,6 +146,8 @@ namespace XAPI
         public string CruiseSpeed { get; set; }
         public int? CostIndex { get; set; }
         public int? MainFlightLevel { get; set; }
+        public int? Alternate1FlightLevel { get; set; }
+        public int? Alternate2FlightLevel { get; set; }
         public int? DryOperatingWeight { get; set; }
         public int? Payload { get; set; }
         public int? GroundDistance { get; set; }

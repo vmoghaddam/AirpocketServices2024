@@ -22,7 +22,6 @@ namespace ApiAPSB.Models
             this.OFPImports = new HashSet<OFPImport>();
             this.EFBASRs = new HashSet<EFBASR>();
             this.EFBVoyageReports = new HashSet<EFBVoyageReport>();
-            this.OFPB_Root = new HashSet<OFPB_Root>();
         }
     
         public int ID { get; set; }
@@ -337,7 +336,5 @@ namespace ApiAPSB.Models
         public virtual ICollection<EFBVoyageReport> EFBVoyageReports { get; set; }
         public virtual Airport Airport { get; set; }
         public virtual Airport Airport1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<OFPB_Root> OFPB_Root { get; set; }
     }
 }

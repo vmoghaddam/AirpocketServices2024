@@ -458,14 +458,19 @@ namespace XAPI.Controllers
                 root.CruiseSpeed = json_obj.CruiseSpeed;
                 root.CostIndex = json_obj.CostIndex;
                 root.MainFlightLevel = json_obj.MainFlightLevel;
+                root.Alternate1 = json_obj.Alternate1;
+                root.Alternate2 = json_obj.Alternate2;
+                root.Alternate1FlightLevel = json_obj.Alternate1FlightLevel;
+                root.Alternate2FlightLevel = json_obj.Alternate2FlightLevel;
+                root.Alternate1WC = "P001";
+                root.Alternate2WC = string.IsNullOrEmpty(json_obj.Alternate2) ? "" : "P001";
                 root.DryOperatingWeight = json_obj.DryOperatingWeight;
                 root.Payload = json_obj.Payload;
                 root.GroundDistance = json_obj.GroundDistance;
                 root.AirDistance = json_obj.AirDistance;
                 root.Origin = json_obj.Origin;
                 root.Destination = json_obj.Destination;
-                root.Alternate1 = json_obj.Alternate1;
-                root.Alternate2 = json_obj.Alternate2;
+               
                 fltobj.ALT1 = root.Alternate1;
                 fltobj.ALT2 = root.Alternate2;
                 root.TakeoffAlternate = json_obj.TakeoffAlternate;
@@ -622,6 +627,8 @@ namespace XAPI.Controllers
                         MachNo = pt.MachNo,
                         TrueAirSpeed = pt.TrueAirSpeed,
                         GroundSpeed = pt.GroundSpeed,
+                        LatitudeStr=pt.LatitudeStr,
+                        LongitudeStr=pt.LongitudeStr
 
 
 
@@ -659,6 +666,8 @@ namespace XAPI.Controllers
                             MachNo = pt.MachNo,
                             TrueAirSpeed = pt.TrueAirSpeed,
                             GroundSpeed = pt.GroundSpeed,
+                            LatitudeStr = pt.LatitudeStr,
+                            LongitudeStr = pt.LongitudeStr
                         });
                     }
 
@@ -693,6 +702,8 @@ namespace XAPI.Controllers
                             MachNo = pt.MachNo,
                             TrueAirSpeed = pt.TrueAirSpeed,
                             GroundSpeed = pt.GroundSpeed,
+                            LatitudeStr = pt.LatitudeStr,
+                            LongitudeStr = pt.LongitudeStr
                         });
                     }
                 }
