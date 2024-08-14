@@ -171,8 +171,6 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="requestId" Type="int" />
           <Property Name="receiptType" Type="int" />
-          <Property Name="acfT_TypeId" Type="varchar" MaxLength="255" />
-          <Property Name="acfT_MSNId" Type="int" />
           <Property Name="companyId" Type="int" />
           <Property Name="priorityId" Type="int" />
           <Property Name="deadline" Type="datetime" />
@@ -187,6 +185,46 @@
           <Property Name="remark" Type="varchar" MaxLength="255" />
           <Property Name="paper_no" Type="varchar" MaxLength="500" />
           <Property Name="vira_id" Type="int" />
+          <Property Name="status" Type="int" />
+          <Property Name="date_status" Type="datetime2" Precision="7" />
+          <Property Name="vira_type" Type="varchar" MaxLength="255" />
+          <Property Name="acfT_TypeId" Type="varchar" MaxLength="255" />
+          <Property Name="acfT_MSNIds" Type="int" />
+          <Property Name="acfT_MSNId" Type="int" />
+          <Property Name="paper_date" Type="datetime2" Precision="7" />
+          <Property Name="fullNo" Type="varchar" MaxLength="255" />
+          <Property Name="paperYear" Type="int" />
+          <Property Name="paperType" Type="int" />
+          <Property Name="senderLocation_Title" Type="varchar" MaxLength="255" />
+          <Property Name="receiverLocation_Title" Type="varchar" MaxLength="255" />
+          <Property Name="senderUser_FullName" Type="varchar" MaxLength="255" />
+          <Property Name="receiverUser_FullName" Type="varchar" MaxLength="255" />
+          <Property Name="acfT_Type" Type="varchar" MaxLength="255" />
+          <Property Name="register" Type="varchar" MaxLength="255" />
+          <Property Name="NisNo" Type="nvarchar" MaxLength="255" />
+          <Property Name="CmP_PartNumberId" Type="int" />
+          <Property Name="Priority" Type="nvarchar" MaxLength="50" />
+          <Property Name="ApproverLocation_Title" Type="nvarchar" MaxLength="255" />
+          <Property Name="ApproverUser_FullName" Type="nvarchar" MaxLength="255" />
+          <Property Name="CancellerLocation_Title" Type="nvarchar" MaxLength="255" />
+          <Property Name="CancellerUser_FullName" Type="nvarchar" MaxLength="255" />
+          <Property Name="VerifiedDate" Type="datetime" />
+          <Property Name="LastStatusId" Type="int" />
+          <Property Name="Quantity" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Uom" Type="nvarchar" MaxLength="50" />
+          <Property Name="PartNumber" Type="nvarchar" MaxLength="255" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="PartNumberStatus_Int" Type="int" />
+          <Property Name="IpC_Reference" Type="nvarchar" MaxLength="255" />
+          <Property Name="Request_FullNo" Type="nvarchar" MaxLength="255" />
+          <Property Name="Request_ACFTType" Type="nvarchar" MaxLength="50" />
+          <Property Name="Request_Register" Type="nvarchar" MaxLength="50" />
+          <Property Name="Request_Priority" Type="nvarchar" MaxLength="50" />
+          <Property Name="Stock_Title" Type="nvarchar" MaxLength="255" />
+          <Property Name="Request_SenderUser_FullName" Type="nvarchar" MaxLength="255" />
+          <Property Name="Request_ApproverUser_FullName" Type="nvarchar" MaxLength="255" />
+          <Property Name="Request_PartNumber" Type="nvarchar" MaxLength="255" />
+          <Property Name="Request_PartDescription" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="vira_document_item">
           <Key>
@@ -208,15 +246,43 @@
           <Property Name="shelfFromId" Type="int" />
           <Property Name="shelfToId" Type="int" />
           <Property Name="itemNo" Type="int" />
-          <Property Name="quantity" Type="int" />
+          <Property Name="quantity" Type="decimal" Precision="18" Scale="0" />
           <Property Name="price" Type="int" />
-          <Property Name="ataChapter" Type="int" />
-          <Property Name="reference" Type="int" />
+          <Property Name="ataChapter" Type="varchar" MaxLength="255" />
+          <Property Name="reference" Type="varchar" MaxLength="255" />
           <Property Name="expireDate" Type="datetime" />
           <Property Name="manufactureDate" Type="datetime" />
           <Property Name="remark" Type="varchar" MaxLength="255" />
           <Property Name="document_id" Type="int" />
           <Property Name="vira_id" Type="int" />
+          <Property Name="paperDate" Type="datetime2" Precision="7" />
+          <Property Name="fullNo" Type="varchar" MaxLength="255" />
+          <Property Name="paperYear" Type="int" />
+          <Property Name="paperType" Type="int" />
+          <Property Name="sender_LocationId" Type="int" />
+          <Property Name="receiver_LocationId" Type="int" />
+          <Property Name="financialAccount" Type="varchar" MaxLength="255" />
+          <Property Name="description" Type="varchar" MaxLength="255" />
+          <Property Name="partNumber" Type="varchar" MaxLength="255" />
+          <Property Name="uom" Type="varchar" MaxLength="255" />
+          <Property Name="currency" Type="varchar" MaxLength="255" />
+          <Property Name="condition" Type="varchar" MaxLength="255" />
+          <Property Name="senderLocation_Title" Type="varchar" MaxLength="255" />
+          <Property Name="receiverLocation_Title" Type="varchar" MaxLength="255" />
+          <Property Name="senderUser_FullName" Type="varchar" MaxLength="255" />
+          <Property Name="receiverUser_FullName" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="vira_document_item_result">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="document_item_id" Type="int" />
+          <Property Name="vira_paper_id" Type="int" />
+          <Property Name="vira_paper_item_id" Type="int" />
+          <Property Name="qty" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="vira_paper_type" Type="varchar" MaxLength="255" />
+          <Property Name="vira_paper_no" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="vira_document_msn">
           <Key>
@@ -233,6 +299,34 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="document_id" Type="int" />
           <Property Name="type" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="vira_log">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="paper_no" Type="varchar" MaxLength="255" />
+          <Property Name="paper_id" Type="int" />
+          <Property Name="paper_item_id" Type="int" />
+          <Property Name="paper_type" Type="varchar" MaxLength="255" />
+          <Property Name="date_create" Type="datetime2" Precision="7" />
+          <Property Name="error_message" Type="varchar(max)" />
+          <Property Name="request_payload" Type="varchar(max)" />
+          <Property Name="request_url" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="vira_requestlog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="paperNo" Type="varchar" MaxLength="255" />
+          <Property Name="paperId" Type="int" />
+          <Property Name="paperItemId" Type="int" />
+          <Property Name="paperType" Type="varchar" MaxLength="255" />
+          <Property Name="dateCreate" Type="datetime2" Precision="7" />
+          <Property Name="errorMessage" Type="varchar(max)" />
+          <Property Name="requestPayload" Type="varchar(max)" />
+          <Property Name="requestUrl" Type="varchar" MaxLength="255" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_ava.dbo.view_dashboard_aircraft' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -725,8 +819,11 @@ warning 6002: The table/view 'ppa_ava.dbo.view_mnt_flt' does not have a primary 
           <EntitySet Name="mnt_engine_llp" EntityType="Self.mnt_engine_llp" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="vira_document" EntityType="Self.vira_document" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="vira_document_item" EntityType="Self.vira_document_item" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="vira_document_item_result" EntityType="Self.vira_document_item_result" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="vira_document_msn" EntityType="Self.vira_document_msn" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="vira_document_type" EntityType="Self.vira_document_type" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="vira_log" EntityType="Self.vira_log" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="vira_requestlog" EntityType="Self.vira_requestlog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="view_dashboard_aircraft" EntityType="Self.view_dashboard_aircraft" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [view_dashboard_aircraft].[id] AS [id], 
@@ -1137,14 +1234,17 @@ warning 6002: The table/view 'ppa_ava.dbo.view_mnt_flt' does not have a primary 
           </AssociationSet>
           <EntitySet Name="view_mnt_engine" EntityType="ppaModel.view_mnt_engine" />
           <EntitySet Name="view_mnt_aircraft" EntityType="ppaModel.view_mnt_aircraft" />
-          <EntitySet Name="vira_document" EntityType="ppaModel.vira_document" />
+          <EntitySet Name="vira_document_msn" EntityType="ppaModel.vira_document_msn" />
+          <EntitySet Name="vira_document_type" EntityType="ppaModel.vira_document_type" />
+          <EntitySet Name="vira_document_item_result" EntityType="ppaModel.vira_document_item_result" />
           <EntitySet Name="vira_document_item" EntityType="ppaModel.vira_document_item" />
+          <EntitySet Name="vira_requestlog" EntityType="ppaModel.vira_requestlog" />
+          <EntitySet Name="vira_log" EntityType="ppaModel.vira_log" />
+          <EntitySet Name="vira_document" EntityType="ppaModel.vira_document" />
           <AssociationSet Name="fk_doc" Association="ppaModel.fk_doc">
             <End Role="vira_document" EntitySet="vira_document" />
             <End Role="vira_document_item" EntitySet="vira_document_item" />
           </AssociationSet>
-          <EntitySet Name="vira_document_msn" EntityType="ppaModel.vira_document_msn" />
-          <EntitySet Name="vira_document_type" EntityType="ppaModel.vira_document_type" />
           <AssociationSet Name="fk_doc_msn" Association="ppaModel.fk_doc_msn">
             <End Role="vira_document" EntitySet="vira_document" />
             <End Role="vira_document_msn" EntitySet="vira_document_msn" />
@@ -1153,7 +1253,7 @@ warning 6002: The table/view 'ppa_ava.dbo.view_mnt_flt' does not have a primary 
             <End Role="vira_document" EntitySet="vira_document" />
             <End Role="vira_document_type" EntitySet="vira_document_type" />
           </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
         <EntityType Name="mnt_engine">
           <Key>
             <PropertyRef Name="id" />
@@ -1748,32 +1848,35 @@ warning 6002: The table/view 'ppa_ava.dbo.view_mnt_flt' does not have a primary 
           <Property Name="serial_no" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="maintenance_setting_group" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="vira_document">
+        <EntityType Name="vira_document_msn">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="requestId" Type="Int32" />
-          <Property Name="receiptType" Type="Int32" />
-          <Property Name="acfT_TypeId" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="acfT_MSNId" Type="Int32" />
-          <Property Name="companyId" Type="Int32" />
-          <Property Name="priorityId" Type="Int32" />
-          <Property Name="deadline" Type="DateTime" Precision="3" />
-          <Property Name="sender_LocationId" Type="Int32" />
-          <Property Name="sender_UserId" Type="Int32" />
-          <Property Name="receiver_LocationId" Type="Int32" />
-          <Property Name="receiver_UserId" Type="Int32" />
-          <Property Name="receivedPaperNo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="receivedPaperDate" Type="DateTime" Precision="3" />
-          <Property Name="receivedInvoiveNo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="receivedInvoiveDate" Type="DateTime" Precision="3" />
-          <Property Name="remark" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="paper_no" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="vira_id" Type="Int32" />
-          <NavigationProperty Name="vira_document_item" Relationship="ppaModel.fk_doc" FromRole="vira_document" ToRole="vira_document_item" />
-          <NavigationProperty Name="vira_document_msn" Relationship="ppaModel.fk_doc_msn" FromRole="vira_document" ToRole="vira_document_msn" />
-          <NavigationProperty Name="vira_document_type" Relationship="ppaModel.fk_doc_type" FromRole="vira_document" ToRole="vira_document_type" />
+          <Property Name="document_id" Type="Int32" />
+          <Property Name="register" Type="Int32" />
+          <NavigationProperty Name="vira_document" Relationship="ppaModel.fk_doc_msn" FromRole="vira_document_msn" ToRole="vira_document" />
+        </EntityType>
+        <EntityType Name="vira_document_type">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="document_id" Type="Int32" />
+          <Property Name="type" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="vira_document" Relationship="ppaModel.fk_doc_type" FromRole="vira_document_type" ToRole="vira_document" />
+        </EntityType>
+        <EntityType Name="vira_document_item_result">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="document_item_id" Type="Int32" />
+          <Property Name="vira_paper_id" Type="Int32" />
+          <Property Name="vira_paper_item_id" Type="Int32" />
+          <Property Name="qty" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="vira_paper_type" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="vira_paper_no" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="vira_document_item">
           <Key>
@@ -1795,16 +1898,125 @@ warning 6002: The table/view 'ppa_ava.dbo.view_mnt_flt' does not have a primary 
           <Property Name="shelfFromId" Type="Int32" />
           <Property Name="shelfToId" Type="Int32" />
           <Property Name="itemNo" Type="Int32" />
-          <Property Name="quantity" Type="Int32" />
+          <Property Name="quantity" Type="Decimal" Precision="18" Scale="0" />
           <Property Name="price" Type="Int32" />
-          <Property Name="ataChapter" Type="Int32" />
-          <Property Name="reference" Type="Int32" />
+          <Property Name="ataChapter" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="reference" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="expireDate" Type="DateTime" Precision="3" />
           <Property Name="manufactureDate" Type="DateTime" Precision="3" />
           <Property Name="remark" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="document_id" Type="Int32" />
           <Property Name="vira_id" Type="Int32" />
+          <Property Name="paperDate" Type="DateTime" Precision="7" />
+          <Property Name="fullNo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="paperYear" Type="Int32" />
+          <Property Name="paperType" Type="Int32" />
+          <Property Name="sender_LocationId" Type="Int32" />
+          <Property Name="receiver_LocationId" Type="Int32" />
+          <Property Name="financialAccount" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="partNumber" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="uom" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="currency" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="condition" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="senderLocation_Title" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="receiverLocation_Title" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="senderUser_FullName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="receiverUser_FullName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="vira_document" Relationship="ppaModel.fk_doc" FromRole="vira_document_item" ToRole="vira_document" />
+        </EntityType>
+        <EntityType Name="vira_requestlog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="paperNo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="paperId" Type="Int32" />
+          <Property Name="paperItemId" Type="Int32" />
+          <Property Name="paperType" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="dateCreate" Type="DateTime" Precision="7" />
+          <Property Name="errorMessage" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="requestPayload" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="requestUrl" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="vira_log">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="paper_no" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="paper_id" Type="Int32" />
+          <Property Name="paper_item_id" Type="Int32" />
+          <Property Name="paper_type" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="date_create" Type="DateTime" Precision="7" />
+          <Property Name="error_message" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="request_payload" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="request_url" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="vira_document">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="requestId" Type="Int32" />
+          <Property Name="receiptType" Type="Int32" />
+          <Property Name="companyId" Type="Int32" />
+          <Property Name="priorityId" Type="Int32" />
+          <Property Name="deadline" Type="DateTime" Precision="3" />
+          <Property Name="sender_LocationId" Type="Int32" />
+          <Property Name="sender_UserId" Type="Int32" />
+          <Property Name="receiver_LocationId" Type="Int32" />
+          <Property Name="receiver_UserId" Type="Int32" />
+          <Property Name="receivedPaperNo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="receivedPaperDate" Type="DateTime" Precision="3" />
+          <Property Name="receivedInvoiveNo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="receivedInvoiveDate" Type="DateTime" Precision="3" />
+          <Property Name="remark" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="paper_no" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="vira_id" Type="Int32" />
+          <Property Name="status" Type="Int32" />
+          <Property Name="date_status" Type="DateTime" Precision="7" />
+          <Property Name="vira_type" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="acfT_TypeId" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="acfT_MSNIds" Type="Int32" />
+          <Property Name="acfT_MSNId" Type="Int32" />
+          <Property Name="paper_date" Type="DateTime" Precision="7" />
+          <Property Name="fullNo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="paperYear" Type="Int32" />
+          <Property Name="paperType" Type="Int32" />
+          <Property Name="senderLocation_Title" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="receiverLocation_Title" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="senderUser_FullName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="receiverUser_FullName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="acfT_Type" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="register" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="NisNo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CmP_PartNumberId" Type="Int32" />
+          <Property Name="Priority" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ApproverLocation_Title" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ApproverUser_FullName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CancellerLocation_Title" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CancellerUser_FullName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="VerifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="LastStatusId" Type="Int32" />
+          <Property Name="Quantity" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Uom" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PartNumber" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PartNumberStatus_Int" Type="Int32" />
+          <Property Name="IpC_Reference" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Request_FullNo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Request_ACFTType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Request_Register" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Request_Priority" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Stock_Title" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Request_SenderUser_FullName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Request_ApproverUser_FullName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Request_PartNumber" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Request_PartDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="vira_document_item" Relationship="ppaModel.fk_doc" FromRole="vira_document" ToRole="vira_document_item" />
+          <NavigationProperty Name="vira_document_msn" Relationship="ppaModel.fk_doc_msn" FromRole="vira_document" ToRole="vira_document_msn" />
+          <NavigationProperty Name="vira_document_type" Relationship="ppaModel.fk_doc_type" FromRole="vira_document" ToRole="vira_document_type" />
         </EntityType>
         <Association Name="fk_doc">
           <End Type="ppaModel.vira_document" Role="vira_document" Multiplicity="0..1">
@@ -1820,24 +2032,6 @@ warning 6002: The table/view 'ppa_ava.dbo.view_mnt_flt' does not have a primary 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="vira_document_msn">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="document_id" Type="Int32" />
-          <Property Name="register" Type="Int32" />
-          <NavigationProperty Name="vira_document" Relationship="ppaModel.fk_doc_msn" FromRole="vira_document_msn" ToRole="vira_document" />
-        </EntityType>
-        <EntityType Name="vira_document_type">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="document_id" Type="Int32" />
-          <Property Name="type" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="vira_document" Relationship="ppaModel.fk_doc_type" FromRole="vira_document_type" ToRole="vira_document" />
-        </EntityType>
         <Association Name="fk_doc_msn">
           <End Type="ppaModel.vira_document" Role="vira_document" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -2383,27 +2577,33 @@ warning 6002: The table/view 'ppa_ava.dbo.view_mnt_flt' does not have a primary 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="vira_document">
-            <EntityTypeMapping TypeName="ppaModel.vira_document">
-              <MappingFragment StoreEntitySet="vira_document">
-                <ScalarProperty Name="vira_id" ColumnName="vira_id" />
-                <ScalarProperty Name="paper_no" ColumnName="paper_no" />
-                <ScalarProperty Name="remark" ColumnName="remark" />
-                <ScalarProperty Name="receivedInvoiveDate" ColumnName="receivedInvoiveDate" />
-                <ScalarProperty Name="receivedInvoiveNo" ColumnName="receivedInvoiveNo" />
-                <ScalarProperty Name="receivedPaperDate" ColumnName="receivedPaperDate" />
-                <ScalarProperty Name="receivedPaperNo" ColumnName="receivedPaperNo" />
-                <ScalarProperty Name="receiver_UserId" ColumnName="receiver_UserId" />
-                <ScalarProperty Name="receiver_LocationId" ColumnName="receiver_LocationId" />
-                <ScalarProperty Name="sender_UserId" ColumnName="sender_UserId" />
-                <ScalarProperty Name="sender_LocationId" ColumnName="sender_LocationId" />
-                <ScalarProperty Name="deadline" ColumnName="deadline" />
-                <ScalarProperty Name="priorityId" ColumnName="priorityId" />
-                <ScalarProperty Name="companyId" ColumnName="companyId" />
-                <ScalarProperty Name="acfT_MSNId" ColumnName="acfT_MSNId" />
-                <ScalarProperty Name="acfT_TypeId" ColumnName="acfT_TypeId" />
-                <ScalarProperty Name="receiptType" ColumnName="receiptType" />
-                <ScalarProperty Name="requestId" ColumnName="requestId" />
+          <EntitySetMapping Name="vira_document_msn">
+            <EntityTypeMapping TypeName="ppaModel.vira_document_msn">
+              <MappingFragment StoreEntitySet="vira_document_msn">
+                <ScalarProperty Name="register" ColumnName="register" />
+                <ScalarProperty Name="document_id" ColumnName="document_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vira_document_type">
+            <EntityTypeMapping TypeName="ppaModel.vira_document_type">
+              <MappingFragment StoreEntitySet="vira_document_type">
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="document_id" ColumnName="document_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vira_document_item_result">
+            <EntityTypeMapping TypeName="ppaModel.vira_document_item_result">
+              <MappingFragment StoreEntitySet="vira_document_item_result">
+                <ScalarProperty Name="vira_paper_no" ColumnName="vira_paper_no" />
+                <ScalarProperty Name="vira_paper_type" ColumnName="vira_paper_type" />
+                <ScalarProperty Name="qty" ColumnName="qty" />
+                <ScalarProperty Name="vira_paper_item_id" ColumnName="vira_paper_item_id" />
+                <ScalarProperty Name="vira_paper_id" ColumnName="vira_paper_id" />
+                <ScalarProperty Name="document_item_id" ColumnName="document_item_id" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -2411,6 +2611,22 @@ warning 6002: The table/view 'ppa_ava.dbo.view_mnt_flt' does not have a primary 
           <EntitySetMapping Name="vira_document_item">
             <EntityTypeMapping TypeName="ppaModel.vira_document_item">
               <MappingFragment StoreEntitySet="vira_document_item">
+                <ScalarProperty Name="receiverUser_FullName" ColumnName="receiverUser_FullName" />
+                <ScalarProperty Name="senderUser_FullName" ColumnName="senderUser_FullName" />
+                <ScalarProperty Name="receiverLocation_Title" ColumnName="receiverLocation_Title" />
+                <ScalarProperty Name="senderLocation_Title" ColumnName="senderLocation_Title" />
+                <ScalarProperty Name="condition" ColumnName="condition" />
+                <ScalarProperty Name="currency" ColumnName="currency" />
+                <ScalarProperty Name="uom" ColumnName="uom" />
+                <ScalarProperty Name="partNumber" ColumnName="partNumber" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="financialAccount" ColumnName="financialAccount" />
+                <ScalarProperty Name="receiver_LocationId" ColumnName="receiver_LocationId" />
+                <ScalarProperty Name="sender_LocationId" ColumnName="sender_LocationId" />
+                <ScalarProperty Name="paperType" ColumnName="paperType" />
+                <ScalarProperty Name="paperYear" ColumnName="paperYear" />
+                <ScalarProperty Name="fullNo" ColumnName="fullNo" />
+                <ScalarProperty Name="paperDate" ColumnName="paperDate" />
                 <ScalarProperty Name="vira_id" ColumnName="vira_id" />
                 <ScalarProperty Name="document_id" ColumnName="document_id" />
                 <ScalarProperty Name="remark" ColumnName="remark" />
@@ -2439,20 +2655,95 @@ warning 6002: The table/view 'ppa_ava.dbo.view_mnt_flt' does not have a primary 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="vira_document_msn">
-            <EntityTypeMapping TypeName="ppaModel.vira_document_msn">
-              <MappingFragment StoreEntitySet="vira_document_msn">
-                <ScalarProperty Name="register" ColumnName="register" />
-                <ScalarProperty Name="document_id" ColumnName="document_id" />
+          <EntitySetMapping Name="vira_requestlog">
+            <EntityTypeMapping TypeName="ppaModel.vira_requestlog">
+              <MappingFragment StoreEntitySet="vira_requestlog">
+                <ScalarProperty Name="requestUrl" ColumnName="requestUrl" />
+                <ScalarProperty Name="requestPayload" ColumnName="requestPayload" />
+                <ScalarProperty Name="errorMessage" ColumnName="errorMessage" />
+                <ScalarProperty Name="dateCreate" ColumnName="dateCreate" />
+                <ScalarProperty Name="paperType" ColumnName="paperType" />
+                <ScalarProperty Name="paperItemId" ColumnName="paperItemId" />
+                <ScalarProperty Name="paperId" ColumnName="paperId" />
+                <ScalarProperty Name="paperNo" ColumnName="paperNo" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vira_log">
+            <EntityTypeMapping TypeName="ppaModel.vira_log">
+              <MappingFragment StoreEntitySet="vira_log">
+                <ScalarProperty Name="request_url" ColumnName="request_url" />
+                <ScalarProperty Name="request_payload" ColumnName="request_payload" />
+                <ScalarProperty Name="error_message" ColumnName="error_message" />
+                <ScalarProperty Name="date_create" ColumnName="date_create" />
+                <ScalarProperty Name="paper_type" ColumnName="paper_type" />
+                <ScalarProperty Name="paper_item_id" ColumnName="paper_item_id" />
+                <ScalarProperty Name="paper_id" ColumnName="paper_id" />
+                <ScalarProperty Name="paper_no" ColumnName="paper_no" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="vira_document_type">
-            <EntityTypeMapping TypeName="ppaModel.vira_document_type">
-              <MappingFragment StoreEntitySet="vira_document_type">
-                <ScalarProperty Name="type" ColumnName="type" />
-                <ScalarProperty Name="document_id" ColumnName="document_id" />
+          <EntitySetMapping Name="vira_document">
+            <EntityTypeMapping TypeName="ppaModel.vira_document">
+              <MappingFragment StoreEntitySet="vira_document">
+                <ScalarProperty Name="Request_PartDescription" ColumnName="Request_PartDescription" />
+                <ScalarProperty Name="Request_PartNumber" ColumnName="Request_PartNumber" />
+                <ScalarProperty Name="Request_ApproverUser_FullName" ColumnName="Request_ApproverUser_FullName" />
+                <ScalarProperty Name="Request_SenderUser_FullName" ColumnName="Request_SenderUser_FullName" />
+                <ScalarProperty Name="Stock_Title" ColumnName="Stock_Title" />
+                <ScalarProperty Name="Request_Priority" ColumnName="Request_Priority" />
+                <ScalarProperty Name="Request_Register" ColumnName="Request_Register" />
+                <ScalarProperty Name="Request_ACFTType" ColumnName="Request_ACFTType" />
+                <ScalarProperty Name="Request_FullNo" ColumnName="Request_FullNo" />
+                <ScalarProperty Name="IpC_Reference" ColumnName="IpC_Reference" />
+                <ScalarProperty Name="PartNumberStatus_Int" ColumnName="PartNumberStatus_Int" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="PartNumber" ColumnName="PartNumber" />
+                <ScalarProperty Name="Uom" ColumnName="Uom" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="LastStatusId" ColumnName="LastStatusId" />
+                <ScalarProperty Name="VerifiedDate" ColumnName="VerifiedDate" />
+                <ScalarProperty Name="CancellerUser_FullName" ColumnName="CancellerUser_FullName" />
+                <ScalarProperty Name="CancellerLocation_Title" ColumnName="CancellerLocation_Title" />
+                <ScalarProperty Name="ApproverUser_FullName" ColumnName="ApproverUser_FullName" />
+                <ScalarProperty Name="ApproverLocation_Title" ColumnName="ApproverLocation_Title" />
+                <ScalarProperty Name="Priority" ColumnName="Priority" />
+                <ScalarProperty Name="CmP_PartNumberId" ColumnName="CmP_PartNumberId" />
+                <ScalarProperty Name="NisNo" ColumnName="NisNo" />
+                <ScalarProperty Name="register" ColumnName="register" />
+                <ScalarProperty Name="acfT_Type" ColumnName="acfT_Type" />
+                <ScalarProperty Name="receiverUser_FullName" ColumnName="receiverUser_FullName" />
+                <ScalarProperty Name="senderUser_FullName" ColumnName="senderUser_FullName" />
+                <ScalarProperty Name="receiverLocation_Title" ColumnName="receiverLocation_Title" />
+                <ScalarProperty Name="senderLocation_Title" ColumnName="senderLocation_Title" />
+                <ScalarProperty Name="paperType" ColumnName="paperType" />
+                <ScalarProperty Name="paperYear" ColumnName="paperYear" />
+                <ScalarProperty Name="fullNo" ColumnName="fullNo" />
+                <ScalarProperty Name="paper_date" ColumnName="paper_date" />
+                <ScalarProperty Name="acfT_MSNId" ColumnName="acfT_MSNId" />
+                <ScalarProperty Name="acfT_MSNIds" ColumnName="acfT_MSNIds" />
+                <ScalarProperty Name="acfT_TypeId" ColumnName="acfT_TypeId" />
+                <ScalarProperty Name="vira_type" ColumnName="vira_type" />
+                <ScalarProperty Name="date_status" ColumnName="date_status" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="vira_id" ColumnName="vira_id" />
+                <ScalarProperty Name="paper_no" ColumnName="paper_no" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="receivedInvoiveDate" ColumnName="receivedInvoiveDate" />
+                <ScalarProperty Name="receivedInvoiveNo" ColumnName="receivedInvoiveNo" />
+                <ScalarProperty Name="receivedPaperDate" ColumnName="receivedPaperDate" />
+                <ScalarProperty Name="receivedPaperNo" ColumnName="receivedPaperNo" />
+                <ScalarProperty Name="receiver_UserId" ColumnName="receiver_UserId" />
+                <ScalarProperty Name="receiver_LocationId" ColumnName="receiver_LocationId" />
+                <ScalarProperty Name="sender_UserId" ColumnName="sender_UserId" />
+                <ScalarProperty Name="sender_LocationId" ColumnName="sender_LocationId" />
+                <ScalarProperty Name="deadline" ColumnName="deadline" />
+                <ScalarProperty Name="priorityId" ColumnName="priorityId" />
+                <ScalarProperty Name="companyId" ColumnName="companyId" />
+                <ScalarProperty Name="receiptType" ColumnName="receiptType" />
+                <ScalarProperty Name="requestId" ColumnName="requestId" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
