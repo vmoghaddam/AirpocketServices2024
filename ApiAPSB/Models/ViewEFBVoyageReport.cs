@@ -50,7 +50,7 @@ namespace ApiAPSB.Models
         public string FromAirportIATA { get; set; }
         public string ToAirportIATA { get; set; }
         public string Register { get; set; }
-        public Nullable<int> MSN { get; set; }
+        public int MSN { get; set; }
         public string FlightStatus { get; set; }
         public Nullable<System.DateTime> STDDay { get; set; }
         public Nullable<System.DateTime> STADay { get; set; }
