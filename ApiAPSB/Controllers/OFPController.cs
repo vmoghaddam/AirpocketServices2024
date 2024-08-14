@@ -293,7 +293,677 @@ namespace ApiAPSB.Controllers
 
         }
 
+        public class _fuel_changes
+        {
+            public int? FuelUsed2 { get; set; }
 
+            public int? FuelRemained2 { get; set; }
+
+
+            public int? FuelUsedActual { get; set; }
+
+            public bool IsFuelUsed2 { get; set; }
+            public bool IsFuelRemained2 { get; set; }
+            public bool IsFuelUsedActual { get; set; }
+        }
+        public class _fuel_bulk
+        {
+            public _fuel_changes changes { get; set; }
+            public int key { get; set; }
+        }
+        public class __fuel_bulk_dto
+        {
+            public List<_fuel_bulk> items { get; set; }
+            public string user { get; set; }
+        }
+        public class _eta_changes
+        {
+            public string ETA { get; set; }
+
+           
+        }
+        public class _eta_bulk
+        {
+            public _eta_changes changes { get; set; }
+            public int key { get; set; }
+        }
+        public class _eta_bulk_dto
+        {
+            public List<_eta_bulk> items { get; set; }
+            public string user { get; set; }
+        }
+
+        //{ id: _d.Id, eta: _d.ETA, ata: _d.ata, remained: _d.FuelRemainedActual, used: _d.FuelUsedActual}
+        public class _sync_navlog_item
+        {
+            public int id { get; set; }
+            public string eta { get; set; }
+            public string ata { get; set; }
+            public int? remained { get; set; }
+            public int? used { get; set; }
+
+            public int? remained2 { get; set; }
+            public int? used2 { get; set; }
+
+        }
+        public class _sync_navlog
+        {
+            public string user { get; set; }
+            public List<_sync_navlog_item> items { get; set; }
+
+        }
+
+
+        public class _sync_root
+        {
+            public string user { get; set; }
+            public List<_sync_root_item> items { get; set; }
+
+        }
+        public class _sync_root_item
+        {
+            public int Id { get; set; }
+            public string ReferenceNo { get; set; }
+            public string AirlineName { get; set; }
+            public string WeightUnit { get; set; }
+            public Nullable<int> CruisePerformanceFactor { get; set; }
+            public Nullable<int> ContingencyPercent { get; set; }
+            public string FlightNo { get; set; }
+            public Nullable<System.DateTime> GenerationDate { get; set; }
+            public Nullable<System.DateTime> ScheduledTimeDeparture { get; set; }
+            public Nullable<System.DateTime> ScheduledTimeArrival { get; set; }
+            public string TailNo { get; set; }
+            public string CruiseSpeed { get; set; }
+            public Nullable<int> CostIndex { get; set; }
+            public Nullable<int> MainFlightLevel { get; set; }
+            public Nullable<int> DryOperatingWeight { get; set; }
+            public Nullable<int> Payload { get; set; }
+            public Nullable<int> GroundDistance { get; set; }
+            public Nullable<int> AirDistance { get; set; }
+            public string Origin { get; set; }
+            public string Destination { get; set; }
+            public string Alternate1 { get; set; }
+            public string Alternate2 { get; set; }
+            public string TakeoffAlternate { get; set; }
+            public Nullable<int> MODAlernate1 { get; set; }
+            public Nullable<int> MODAlternate2 { get; set; }
+            public Nullable<int> Cockpit { get; set; }
+            public Nullable<int> Cabin { get; set; }
+            public Nullable<int> Extra { get; set; }
+            public Nullable<int> Pantry { get; set; }
+            public string Pilot1 { get; set; }
+            public string Pilot2 { get; set; }
+            public string Dispatcher { get; set; }
+            public Nullable<int> OriginElevation { get; set; }
+            public Nullable<int> DestinationElevation { get; set; }
+            public Nullable<int> Alternate1Elevation { get; set; }
+            public Nullable<int> Alternate2Elevation { get; set; }
+            public Nullable<int> TakeoffAlternateElevation { get; set; }
+            public string MaxShear { get; set; }
+            public Nullable<int> MaximumZeroFuelWeight { get; set; }
+            public Nullable<int> MaximumTakeoffWeight { get; set; }
+            public Nullable<int> MaximumLandingWeight { get; set; }
+            public Nullable<int> EstimatedZeroFuelWeight { get; set; }
+            public Nullable<int> EstimatedTakeoffWeight { get; set; }
+            public Nullable<int> EstimatedLandingWeight { get; set; }
+            public string MainRoute { get; set; }
+            public string Alternate1Route { get; set; }
+            public string Alternate2Route { get; set; }
+            public string TakeoffAlternateRoute { get; set; }
+            public Nullable<System.DateTime> PlanValidity { get; set; }
+            public Nullable<int> FlightID { get; set; }
+            public Nullable<System.DateTime> DateCreate { get; set; }
+            public Nullable<System.DateTime> DateSign { get; set; }
+            public Nullable<int> SignedbyId { get; set; }
+            public string SignedbyLICL { get; set; }
+            public Nullable<int> RawOFPId { get; set; }
+            public string MaxWindShearLevel { get; set; }
+            public string MaxWindShearPointName { get; set; }
+            public string FlightRule { get; set; }
+            public string ICAOFlightPlan { get; set; }
+            public Nullable<int> fuel_trip { get; set; }
+            public Nullable<int> fuel_alt1 { get; set; }
+            public Nullable<int> fuel_alt2 { get; set; }
+            public Nullable<int> fuel_alt { get; set; }
+            public Nullable<int> fuel_holding { get; set; }
+            public Nullable<decimal> fuel_contigency { get; set; }
+            public Nullable<int> fuel_taxiout { get; set; }
+            public Nullable<int> fuel_taxiin { get; set; }
+            public Nullable<int> fuel_min_required { get; set; }
+            public Nullable<int> fuel_additional { get; set; }
+            public Nullable<int> fuel_extra { get; set; }
+            public Nullable<int> fuel_total { get; set; }
+            public Nullable<int> fuel_landing { get; set; }
+            public Nullable<int> fuel_mod_alt1 { get; set; }
+            public Nullable<int> fuel_mod_alt2 { get; set; }
+            public Nullable<int> time_trip { get; set; }
+            public Nullable<int> time_holding { get; set; }
+            public Nullable<int> time_alt { get; set; }
+            public Nullable<int> time_alt1 { get; set; }
+            public Nullable<int> time_alt2 { get; set; }
+            public Nullable<int> time_alt_takeof { get; set; }
+            public Nullable<int> time_contigency { get; set; }
+            public Nullable<int> time_min_required { get; set; }
+            public Nullable<int> time_additional { get; set; }
+            public Nullable<int> time_extra { get; set; }
+            public Nullable<int> time_total { get; set; }
+            public string fuel_extra_due { get; set; }
+            public Nullable<int> dis_trip { get; set; }
+            public Nullable<int> dis_alt1 { get; set; }
+            public Nullable<int> dis_alt2 { get; set; }
+            public Nullable<int> dis_alt_takeoff { get; set; }
+            public Nullable<int> dis_ground { get; set; }
+            public Nullable<int> dis_air { get; set; }
+            public string burnoffadj_value { get; set; }
+            public string burnoffadj_fuel { get; set; }
+            public string heightchange_value { get; set; }
+            public string heightchange_fuel { get; set; }
+            public Nullable<int> Alternate1FlightLevel { get; set; }
+            public Nullable<int> Alternate2FlightLevel { get; set; }
+            public string Alternate1WC { get; set; }
+            public string Alternate2WC { get; set; }
+            public string crew_cockpit { get; set; }
+            public string crew_cabin { get; set; }
+            public string crew_fsg { get; set; }
+            public string crew_fm { get; set; }
+            public string crew_dh { get; set; }
+            public string fuel_total_corr { get; set; }
+            public string fuel_total_actual { get; set; }
+            public string fuel_used_actual { get; set; }
+            public string fuel_remain_actual { get; set; }
+            public string zfw_actual { get; set; }
+            public string tow_actual { get; set; }
+            public string lgw_actual { get; set; }
+            public string dow_actual { get; set; }
+            public string clear { get; set; }
+            public string atis_dep1 { get; set; }
+            public string atis_dep2 { get; set; }
+            public string atis_arr { get; set; }
+            public string rvsm_gnd_time { get; set; }
+            public string rvsm_gnd_lalt { get; set; }
+            public string rvsm_gnd_ralt { get; set; }
+            public string rvsm_gnd_stby { get; set; }
+            public string rvsm_flt1_time { get; set; }
+            public string rvsm_flt1_lalt { get; set; }
+            public string rvsm_flt1_ralt { get; set; }
+            public string rvsm_flt1_stby { get; set; }
+            public string rvsm_flt1_fl { get; set; }
+            public string rvsm_flt2_time { get; set; }
+            public string rvsm_flt2_lalt { get; set; }
+            public string rvsm_flt2_ralt { get; set; }
+            public string rvsm_flt2_stby { get; set; }
+            public string rvsm_flt2_fl { get; set; }
+            public string rvsm_flt3_time { get; set; }
+            public string rvsm_flt3_lalt { get; set; }
+            public string rvsm_flt3_ralt { get; set; }
+            public string rvsm_flt3_stby { get; set; }
+            public string rvsm_flt3_fl { get; set; }
+            public string rvsm_flt4_time { get; set; }
+            public string rvsm_flt4_lalt { get; set; }
+            public string rvsm_flt4_ralt { get; set; }
+            public string rvsm_flt4_stby { get; set; }
+            public string rvsm_flt4_fl { get; set; }
+            public string atis1 { get; set; }
+            public string atis2 { get; set; }
+            public string atis3 { get; set; }
+            public string atis4 { get; set; }
+            public string fuel_trip_corr { get; set; }
+            public string fuel_alt1_corr { get; set; }
+            public string fuel_alt2_corr { get; set; }
+            public string fuel_hld_corr { get; set; }
+            public string fuel_res_corr { get; set; }
+            public string fuel_cont_corr { get; set; }
+            public string fuel_taxi_corr { get; set; }
+            public string fuel_req_corr { get; set; }
+            public string fuel_xtra_corr { get; set; }
+            public string fuel_add_corr { get; set; }
+            public Nullable<long> date_update { get; set; }
+            public string user_update { get; set; }
+            public string pax_male { get; set; }
+            public string pax_female { get; set; }
+            public string pax_adult { get; set; }
+            public string pax_child { get; set; }
+            public string pax_infant { get; set; }
+            public string sob { get; set; }
+            public string cargo { get; set; }
+            public Nullable<int> fuel_saved_actual { get; set; }
+            public Nullable<int> payload_actual { get; set; }
+
+
+        }
+
+
+        [HttpPost]
+        [Route("api/ofp/sync/root")]
+        public async Task<DataResponse> SyncRoot(/*int ofpId, string propName, string propValue, string user*/_sync_root dto)
+        {
+            var context = new Models.dbEntities();
+            var keys = dto.items.Select(q => q.Id).ToList();
+            var ofp_roots = await context.OFPB_Root.Where(q => keys.Contains(q.Id)).ToListAsync();
+            var dtupd = DateTime.UtcNow.ToString("yyyyMMddHHmmss");
+            foreach (var x in dto.items)
+            {
+                var item = ofp_roots.FirstOrDefault(q => q.Id == x.Id);
+               
+                if (item != null)
+                {
+
+                    item.date_update = Convert.ToInt64(dtupd);
+                    item.user_update = dto.user;
+
+
+                    
+                  
+                    item.fuel_extra_due = x.fuel_extra_due;
+                     
+                    item.crew_cockpit = x.crew_cockpit;
+                    item.crew_cabin = x.crew_cabin;
+                    item.crew_fsg = x.crew_fsg;
+                    item.crew_fm = x.crew_fm;
+                    item.crew_dh = x.crew_dh;
+                    item.fuel_total_corr = x.fuel_total_corr;
+                    item.fuel_total_actual = x.fuel_total_actual;
+                    item.fuel_used_actual = x.fuel_used_actual;
+                    item.fuel_remain_actual = x.fuel_remain_actual;
+                    item.zfw_actual = x.zfw_actual;
+                    item.tow_actual = x.tow_actual;
+                    item.lgw_actual = x.lgw_actual;
+                    item.clear = x.clear;
+                    item.atis_dep1 = x.atis_dep1;
+                    item.atis_dep2 = x.atis_dep2;
+                    item.atis_arr = x.atis_arr;
+                    item.rvsm_gnd_time = x.rvsm_gnd_time;
+                    item.rvsm_gnd_lalt = x.rvsm_gnd_lalt;
+                    item.rvsm_gnd_ralt = x.rvsm_gnd_ralt;
+                    item.rvsm_gnd_stby = x.rvsm_gnd_stby;
+                    item.rvsm_flt1_time = x.rvsm_flt1_time;
+                    item.rvsm_flt1_lalt = x.rvsm_flt1_lalt;
+                    item.rvsm_flt1_ralt = x.rvsm_flt1_ralt;
+                    item.rvsm_flt1_stby = x.rvsm_flt1_stby;
+                    item.rvsm_flt1_fl = x.rvsm_flt1_fl;
+                    item.rvsm_flt2_time = x.rvsm_flt2_time;
+                    item.rvsm_flt2_lalt = x.rvsm_flt2_lalt;
+                    item.rvsm_flt2_ralt = x.rvsm_flt2_ralt;
+                    item.rvsm_flt2_stby = x.rvsm_flt2_stby;
+                    item.rvsm_flt2_fl = x.rvsm_flt2_fl;
+                    item.rvsm_flt3_time = x.rvsm_flt3_time;
+                    item.rvsm_flt3_lalt = x.rvsm_flt3_lalt;
+                    item.rvsm_flt3_ralt = x.rvsm_flt3_ralt;
+                    item.rvsm_flt3_stby = x.rvsm_flt3_stby;
+                    item.rvsm_flt3_fl = x.rvsm_flt3_fl;
+                    item.rvsm_flt4_time = x.rvsm_flt4_time;
+                    item.rvsm_flt4_lalt = x.rvsm_flt4_lalt;
+                    item.rvsm_flt4_ralt = x.rvsm_flt4_ralt;
+                    item.rvsm_flt4_stby = x.rvsm_flt4_stby;
+                    item.rvsm_flt4_fl = x.rvsm_flt4_fl;
+                    item.atis1 = x.atis1;
+                    item.atis2 = x.atis2;
+                    item.atis3 = x.atis3;
+                    item.atis4 = x.atis4;
+                    item.fuel_trip_corr = x.fuel_trip_corr;
+                    item.fuel_alt1_corr = x.fuel_alt1_corr;
+                    item.fuel_alt2_corr = x.fuel_alt2_corr;
+                    item.fuel_hld_corr = x.fuel_hld_corr;
+                    item.fuel_res_corr = x.fuel_res_corr;
+                    item.fuel_cont_corr = x.fuel_cont_corr;
+                    item.fuel_taxi_corr = x.fuel_taxi_corr;
+                    item.fuel_req_corr = x.fuel_req_corr;
+                    item.fuel_xtra_corr = x.fuel_xtra_corr;
+                    item.fuel_add_corr = x.fuel_add_corr;
+                  
+                    item.pax_male = x.pax_male;
+                    item.pax_female = x.pax_female;
+                    item.pax_adult = x.pax_adult;
+                    item.pax_child = x.pax_child;
+                    item.pax_infant = x.pax_infant;
+                    item.sob = x.sob;
+                    item.cargo = x.cargo;
+                    item.fuel_saved_actual = x.fuel_saved_actual;
+                    item.payload_actual = x.payload_actual;
+                    item.dow_actual = x.dow_actual;
+
+
+
+
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-crew_cockpit", PropertyName = "crew_cockpit", PropValue = item.crew_cockpit != null ? item.crew_cockpit.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-crew_cabin", PropertyName = "crew_cabin", PropValue = item.crew_cabin != null ? item.crew_cabin.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-crew_fsg", PropertyName = "crew_fsg", PropValue = item.crew_fsg != null ? item.crew_fsg.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-crew_fm", PropertyName = "crew_fm", PropValue = item.crew_fm != null ? item.crew_fm.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-crew_dh", PropertyName = "crew_dh", PropValue = item.crew_dh != null ? item.crew_dh.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-fuel_total_corr", PropertyName = "fuel_total_corr", PropValue = item.fuel_total_corr != null ? item.fuel_total_corr.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-fuel_total_actual", PropertyName = "fuel_total_actual", PropValue = item.fuel_total_actual != null ? item.fuel_total_actual.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-fuel_used_actual", PropertyName = "fuel_used_actual", PropValue = item.fuel_used_actual != null ? item.fuel_used_actual.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-fuel_remain_actual", PropertyName = "fuel_remain_actual", PropValue = item.fuel_remain_actual != null ? item.fuel_remain_actual.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-zfw_actual", PropertyName = "zfw_actual", PropValue = item.zfw_actual != null ? item.zfw_actual.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-tow_actual", PropertyName = "tow_actual", PropValue = item.tow_actual != null ? item.tow_actual.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-lgw_actual", PropertyName = "lgw_actual", PropValue = item.lgw_actual != null ? item.lgw_actual.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-clear", PropertyName = "clear", PropValue = item.clear != null ? item.clear.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-atis_dep1", PropertyName = "atis_dep1", PropValue = item.atis_dep1 != null ? item.atis_dep1.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-atis_dep2", PropertyName = "atis_dep2", PropValue = item.atis_dep2 != null ? item.atis_dep2.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-atis_arr", PropertyName = "atis_arr", PropValue = item.atis_arr != null ? item.atis_arr.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-rvsm_gnd_time", PropertyName = "rvsm_gnd_time", PropValue = item.rvsm_gnd_time != null ? item.rvsm_gnd_time.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-rvsm_gnd_lalt", PropertyName = "rvsm_gnd_lalt", PropValue = item.rvsm_gnd_lalt != null ? item.rvsm_gnd_lalt.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-rvsm_gnd_ralt", PropertyName = "rvsm_gnd_ralt", PropValue = item.rvsm_gnd_ralt != null ? item.rvsm_gnd_ralt.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-rvsm_gnd_stby", PropertyName = "rvsm_gnd_stby", PropValue = item.rvsm_gnd_stby != null ? item.rvsm_gnd_stby.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-rvsm_flt1_time", PropertyName = "rvsm_flt1_time", PropValue = item.rvsm_flt1_time != null ? item.rvsm_flt1_time.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-rvsm_flt1_lalt", PropertyName = "rvsm_flt1_lalt", PropValue = item.rvsm_flt1_lalt != null ? item.rvsm_flt1_lalt.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-rvsm_flt1_ralt", PropertyName = "rvsm_flt1_ralt", PropValue = item.rvsm_flt1_ralt != null ? item.rvsm_flt1_ralt.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-rvsm_flt1_stby", PropertyName = "rvsm_flt1_stby", PropValue = item.rvsm_flt1_stby != null ? item.rvsm_flt1_stby.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-rvsm_flt1_fl", PropertyName = "rvsm_flt1_fl", PropValue = item.rvsm_flt1_fl != null ? item.rvsm_flt1_fl.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-rvsm_flt2_time", PropertyName = "rvsm_flt2_time", PropValue = item.rvsm_flt2_time != null ? item.rvsm_flt2_time.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-rvsm_flt2_lalt", PropertyName = "rvsm_flt2_lalt", PropValue = item.rvsm_flt2_lalt != null ? item.rvsm_flt2_lalt.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-rvsm_flt2_ralt", PropertyName = "rvsm_flt2_ralt", PropValue = item.rvsm_flt2_ralt != null ? item.rvsm_flt2_ralt.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-rvsm_flt2_stby", PropertyName = "rvsm_flt2_stby", PropValue = item.rvsm_flt2_stby != null ? item.rvsm_flt2_stby.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-rvsm_flt2_fl", PropertyName = "rvsm_flt2_fl", PropValue = item.rvsm_flt2_fl != null ? item.rvsm_flt2_fl.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-rvsm_flt3_time", PropertyName = "rvsm_flt3_time", PropValue = item.rvsm_flt3_time != null ? item.rvsm_flt3_time.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-rvsm_flt3_lalt", PropertyName = "rvsm_flt3_lalt", PropValue = item.rvsm_flt3_lalt != null ? item.rvsm_flt3_lalt.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-rvsm_flt3_ralt", PropertyName = "rvsm_flt3_ralt", PropValue = item.rvsm_flt3_ralt != null ? item.rvsm_flt3_ralt.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-rvsm_flt3_stby", PropertyName = "rvsm_flt3_stby", PropValue = item.rvsm_flt3_stby != null ? item.rvsm_flt3_stby.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-rvsm_flt3_fl", PropertyName = "rvsm_flt3_fl", PropValue = item.rvsm_flt3_fl != null ? item.rvsm_flt3_fl.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-rvsm_flt4_time", PropertyName = "rvsm_flt4_time", PropValue = item.rvsm_flt4_time != null ? item.rvsm_flt4_time.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-rvsm_flt4_lalt", PropertyName = "rvsm_flt4_lalt", PropValue = item.rvsm_flt4_lalt != null ? item.rvsm_flt4_lalt.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-rvsm_flt4_ralt", PropertyName = "rvsm_flt4_ralt", PropValue = item.rvsm_flt4_ralt != null ? item.rvsm_flt4_ralt.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-rvsm_flt4_stby", PropertyName = "rvsm_flt4_stby", PropValue = item.rvsm_flt4_stby != null ? item.rvsm_flt4_stby.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-rvsm_flt4_fl", PropertyName = "rvsm_flt4_fl", PropValue = item.rvsm_flt4_fl != null ? item.rvsm_flt4_fl.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-atis1", PropertyName = "atis1", PropValue = item.atis1 != null ? item.atis1.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-atis2", PropertyName = "atis2", PropValue = item.atis2 != null ? item.atis2.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-atis3", PropertyName = "atis3", PropValue = item.atis3 != null ? item.atis3.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-atis4", PropertyName = "atis4", PropValue = item.atis4 != null ? item.atis4.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-fuel_trip_corr", PropertyName = "fuel_trip_corr", PropValue = item.fuel_trip_corr != null ? item.fuel_trip_corr.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-fuel_alt1_corr", PropertyName = "fuel_alt1_corr", PropValue = item.fuel_alt1_corr != null ? item.fuel_alt1_corr.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-fuel_alt2_corr", PropertyName = "fuel_alt2_corr", PropValue = item.fuel_alt2_corr != null ? item.fuel_alt2_corr.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-fuel_hld_corr", PropertyName = "fuel_hld_corr", PropValue = item.fuel_hld_corr != null ? item.fuel_hld_corr.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-fuel_res_corr", PropertyName = "fuel_res_corr", PropValue = item.fuel_res_corr != null ? item.fuel_res_corr.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-fuel_cont_corr", PropertyName = "fuel_cont_corr", PropValue = item.fuel_cont_corr != null ? item.fuel_cont_corr.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-fuel_taxi_corr", PropertyName = "fuel_taxi_corr", PropValue = item.fuel_taxi_corr != null ? item.fuel_taxi_corr.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-fuel_req_corr", PropertyName = "fuel_req_corr", PropValue = item.fuel_req_corr != null ? item.fuel_req_corr.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-fuel_xtra_corr", PropertyName = "fuel_xtra_corr", PropValue = item.fuel_xtra_corr != null ? item.fuel_xtra_corr.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-fuel_add_corr", PropertyName = "fuel_add_corr", PropValue = item.fuel_add_corr != null ? item.fuel_add_corr.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                     context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-pax_male", PropertyName = "pax_male", PropValue = item.pax_male != null ? item.pax_male.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-pax_female", PropertyName = "pax_female", PropValue = item.pax_female != null ? item.pax_female.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-pax_adult", PropertyName = "pax_adult", PropValue = item.pax_adult != null ? item.pax_adult.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-pax_child", PropertyName = "pax_child", PropValue = item.pax_child != null ? item.pax_child.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-pax_infant", PropertyName = "pax_infant", PropValue = item.pax_infant != null ? item.pax_infant.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-sob", PropertyName = "sob", PropValue = item.sob != null ? item.sob.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-cargo", PropertyName = "cargo", PropValue = item.cargo != null ? item.cargo.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-fuel_saved_actual", PropertyName = "fuel_saved_actual", PropValue = item.fuel_saved_actual != null ? item.fuel_saved_actual.ToString() : null, DateUpdate = dtupd, User = dto.user });
+
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-payload_actual", PropertyName = "payload_actual", PropValue = item.fuel_saved_actual != null ? item.payload_actual.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-dow_actual", PropertyName = "dow_actual", PropValue = item.fuel_saved_actual != null ? item.payload_actual.ToString() : null, DateUpdate = dtupd, User = dto.user });
+
+
+
+                }
+
+
+            }
+
+            var saveResult = await context.SaveChangesAsync();
+            return new DataResponse() { IsSuccess = true, Data = new { date_update = dtupd } };
+
+
+
+        }
+
+
+        [HttpPost]
+        [Route("api/ofp/sync/nav")]
+        public async Task<DataResponse> SyncNavLog(/*int ofpId, string propName, string propValue, string user*/_sync_navlog dto)
+        {
+            var context = new Models.dbEntities();
+            var keys = dto.items.Select(q => q.id).ToList();
+            var ofp_navs = await context.OFPB_MainNavLog.Where(q => keys.Contains(q.Id)).ToListAsync();
+            var dtupd = DateTime.UtcNow.ToString("yyyyMMddHHmmss");
+            foreach (var x in dto.items)
+            {
+                var item = ofp_navs.FirstOrDefault(q => q.Id == x.id);
+                if (item != null)
+                {
+                    
+                    item.date_update = Convert.ToInt64(dtupd);
+                    item.user_update = dto.user;
+
+                    item.ETA = x.eta;
+                    var prop1 = new OFPB_Prop()
+                    {
+                        OFPId = (int)item.RootId,
+
+                        PropName = "prop-nav-ETA_" + item.Id,
+                        TableName = "OFPB_MainNavLog",
+                        PropertyName = "ETA",
+                        PropValue = x.eta,
+                        DateUpdate = dtupd,
+                        User = dto.user
+
+
+                    };
+                    context.OFPB_Prop.Add(prop1);
+
+                    item.ATA = x.ata;
+                    var prop2 = new OFPB_Prop()
+                    {
+                        OFPId = (int)item.RootId,
+
+                        PropName = "prop-nav-ATA_" + item.Id,
+                        TableName = "OFPB_MainNavLog",
+                        PropertyName = "ATA",
+                        PropValue = x.ata,
+                        DateUpdate = dtupd,
+                        User = dto.user
+
+
+                    };
+                    context.OFPB_Prop.Add(prop2);
+
+
+                    item.FuelRemainedActual = x.remained;
+                    var prop3 = new OFPB_Prop()
+                    {
+                        OFPId = (int)item.RootId,
+
+                        PropName = "prop-nav-FuelRemainedActual_" + item.Id,
+                        TableName = "OFPB_MainNavLog",
+                        PropertyName = "FuelRemainedActual",
+                        PropValue = x.remained==null?"": x.remained.ToString(),
+                        DateUpdate = dtupd,
+                        User = dto.user
+
+
+                    };
+                    context.OFPB_Prop.Add(prop3);
+
+                    item.FuelUsedActual = x.used;
+                    var prop4 = new OFPB_Prop()
+                    {
+                        OFPId = (int)item.RootId,
+
+                        PropName = "prop-nav-FuelUsedActual_" + item.Id,
+                        TableName = "OFPB_MainNavLog",
+                        PropertyName = "FuelUsedActual",
+                        PropValue = x.used == null ? "" : x.used.ToString(),
+                        DateUpdate = dtupd,
+                        User = dto.user
+
+
+                    };
+                    context.OFPB_Prop.Add(prop4);
+
+
+
+
+
+
+                    item.FuelRemained2 = x.remained2;
+                    var prop5 = new OFPB_Prop()
+                    {
+                        OFPId = (int)item.RootId,
+
+                        PropName = "prop-nav-FuelRemained2_" + item.Id,
+                        TableName = "OFPB_MainNavLog",
+                        PropertyName = "FuelRemained2",
+                        PropValue = x.remained2 == null ? "" : x.remained2.ToString(),
+                        DateUpdate = dtupd,
+                        User = dto.user
+
+
+                    };
+                    context.OFPB_Prop.Add(prop5);
+
+                    item.FuelUsed2 = x.used2;
+                    var prop6 = new OFPB_Prop()
+                    {
+                        OFPId = (int)item.RootId,
+
+                        PropName = "prop-nav-FuelUsed2_" + item.Id,
+                        TableName = "OFPB_MainNavLog",
+                        PropertyName = "FuelUsed2",
+                        PropValue = x.used2 == null ? "" : x.used2.ToString(),
+                        DateUpdate = dtupd,
+                        User = dto.user
+
+
+                    };
+                    context.OFPB_Prop.Add(prop6);
+
+                }
+
+
+            }
+
+            var saveResult = await context.SaveChangesAsync();
+            return new DataResponse() { IsSuccess = true, Data = new { date_update = dtupd } };
+
+
+
+        }
+        [HttpPost]
+        [Route("api/ofp/update/eta/bulk")]
+        public async Task<DataResponse> UpdateOFPETABULK(/*int ofpId, string propName, string propValue, string user*/_eta_bulk_dto dto)
+        {
+            var context = new Models.dbEntities();
+            var keys = dto.items.Select(q => q.key).ToList();
+            var dtupd = DateTime.UtcNow.ToString("yyyyMMddHHmmss");
+            var ofp_navs = await context.OFPB_MainNavLog.Where(q => keys.Contains(q.Id)).ToListAsync();
+            foreach (var x in dto.items)
+            {
+                var item = ofp_navs.FirstOrDefault(q => q.Id == x.key);
+                if (item != null)
+                {
+                    item.ETA = x.changes.ETA;
+                    item.date_update = Convert.ToInt64(dtupd);
+                    item.user_update = dto.user;
+
+                    var prop = new OFPB_Prop()
+                    {
+                        OFPId = (int)item.RootId,
+
+                        PropName = "prop-nav-ETA_" + item.Id,
+                        TableName = "OFPB_MainNavLog",
+                        PropertyName = "ETA",
+                        PropValue = x.changes.ETA,
+                        DateUpdate = dtupd,
+                        User = dto.user
+
+
+                    };
+                    context.OFPB_Prop.Add(prop);
+
+
+                }
+            }
+
+            var saveResult = await context.SaveChangesAsync();
+            return new DataResponse() { IsSuccess = true, Data = new { date_update = dtupd } };
+
+
+        }
+
+
+
+
+        [Route("api/ofp/update/fuel/bulk")]
+        public async Task<DataResponse> UpdateOFPFUELBULK(/*int ofpId, string propName, string propValue, string user*/__fuel_bulk_dto dto)
+        {
+            var context = new Models.dbEntities();
+            var keys = dto.items.Select(q => q.key).ToList();
+            var dtupd = DateTime.UtcNow.ToString("yyyyMMddHHmmss");
+            var ofp_navs = await context.OFPB_MainNavLog.Where(q => keys.Contains(q.Id)).ToListAsync();
+            foreach (var x in dto.items)
+            {
+                var item = ofp_navs.FirstOrDefault(q => q.Id == x.key);
+                if (item != null)
+                {
+                    
+                    if (x.changes.IsFuelUsed2)
+                    {
+                        item.FuelUsed2 = x.changes.FuelUsed2;
+                        var prop = new OFPB_Prop()
+                        {
+                            OFPId = (int)item.RootId,
+
+                            PropName = "prop-nav-FuelUsed2_" + item.Id,
+                            TableName = "OFPB_MainNavLog",
+                            PropertyName = "FuelUsed2",
+                            PropValue = x.changes.FuelUsed2!=null? x.changes.FuelUsed2.ToString():null,
+                            DateUpdate = dtupd,
+                            User = dto.user
+
+
+                        };
+                        context.OFPB_Prop.Add(prop);
+
+                    }
+                    if (x.changes.IsFuelRemained2)
+                    {
+                        item.FuelRemained2 = x.changes.FuelRemained2;
+                        var prop = new OFPB_Prop()
+                        {
+                            OFPId = (int)item.RootId,
+
+                            PropName = "prop-nav-FuelRemained2_" + item.Id,
+                            TableName = "OFPB_MainNavLog",
+                            PropertyName = "FuelRemained2",
+                            PropValue = x.changes.FuelRemained2 != null ? x.changes.FuelRemained2.ToString() : null,
+                            DateUpdate = dtupd,
+                            User = dto.user
+
+
+                        };
+                        context.OFPB_Prop.Add(prop);
+                    }
+                    if (x.changes.IsFuelUsedActual)
+                    {
+                        item.FuelUsed2 = x.changes.FuelUsedActual;
+                        var prop = new OFPB_Prop()
+                        {
+                            OFPId = (int)item.RootId,
+
+                            PropName = "prop-nav-FuelUsedActual_" + item.Id,
+                            TableName = "OFPB_MainNavLog",
+                            PropertyName = "FuelUsedActual",
+                            PropValue = x.changes.FuelUsedActual != null ? x.changes.FuelUsedActual.ToString() : null,
+                            DateUpdate = dtupd,
+                            User = dto.user
+
+
+                        };
+                        context.OFPB_Prop.Add(prop);
+                    }
+                    item.date_update = Convert.ToInt64(dtupd);
+                    item.user_update = dto.user;
+
+                    
+                   
+
+
+                }
+            }
+
+            var saveResult = await context.SaveChangesAsync();
+            return new DataResponse() { IsSuccess = true, Data = new { date_update = dtupd } };
+
+
+        }
         [HttpPost]
         [Route("api/ofp/update")]
         public async Task<DataResponse> UpdateOFP(/*int ofpId, string propName, string propValue, string user*/dynamic dto)
@@ -305,7 +975,7 @@ namespace ApiAPSB.Controllers
                 string propValue = Convert.ToString(dto.PropValue);
                 string user = Convert.ToString(dto.User);
                 var context = new Models.dbEntities();
-                
+
                 var property = propName.Split('-')[2];
 
                 var tbl_part = propName.Split('-')[1];
@@ -315,29 +985,59 @@ namespace ApiAPSB.Controllers
                     case "root":
                         table = "OFPB_Root";
                         break;
+                    case "nav":
+                        table = "OFPB_MainNavLog";
+                        break;
                     default:
                         break;
                 }
 
-                
-                var    prop = new OFPB_Prop()
-                    {
-                        OFPId = ofpId,
 
-                        PropName = propName,
-                        TableName = table,
-                        PropertyName = property,
+                var prop = new OFPB_Prop()
+                {
+                    OFPId = ofpId,
+
+                    PropName = propName,
+                    TableName = table,
+                    PropertyName = property,
 
 
-                    };
-                  
-                
+                };
+
+
                 prop.DateUpdate = DateTime.UtcNow.ToString("yyyyMMddHHmmss");
                 if (!string.IsNullOrEmpty(propValue.Trim().Replace(" ", "")))
                     prop.PropValue = propValue;
                 prop.User = user;
                 context.OFPB_Prop.Add(prop);
 
+                if (table == "OFPB_MainNavLog")
+                {
+                    int propId = Convert.ToInt32(property.Split('_').Last());
+                    property = property.Split('_')[0];
+                    var ofp_nav = await context.OFPB_MainNavLog.FirstOrDefaultAsync(q => q.Id == propId);
+                    if (ofp_nav != null)
+                    {
+                        Type type = ofp_nav.GetType();
+
+                        PropertyInfo propinfo = type.GetProperty(property);
+                        if (string.IsNullOrEmpty(propValue))
+                        {
+                            propinfo.SetValue(ofp_nav, null, null);
+                        }
+                        else
+                        {
+                            var val = ChangeType(propValue, propinfo.PropertyType);
+
+                            propinfo.SetValue(ofp_nav, val, null);
+                        }
+                        ofp_nav.date_update = Convert.ToInt64(prop.DateUpdate);
+                        ofp_nav.user_update = user;
+                    }
+                    var saveResult = await context.SaveChangesAsync();
+                    return new DataResponse() { IsSuccess = true, Data = new { ofp_nav.date_update } };
+
+                }
                 if (table == "OFPB_Root")
                 {
                     var ofp_root = await context.OFPB_Root.FirstOrDefaultAsync(q => q.Id == ofpId);
@@ -357,20 +1057,23 @@ namespace ApiAPSB.Controllers
                             propinfo.SetValue(ofp_root, val, null);
                         }
                         ofp_root.date_update = Convert.ToInt64(prop.DateUpdate);
-                        ofp_root.user_update= user;
+                        ofp_root.user_update = user;
                     }
                     var saveResult = await context.SaveChangesAsync();
-                    return new DataResponse() { IsSuccess = true, Data =new { ofp_root.date_update } };
+                    return new DataResponse() { IsSuccess = true, Data = new { ofp_root.date_update } };
 
                 }
 
-                return new DataResponse() { IsSuccess = false, Messages=new List<string>() { "table not found" } };
+                return new DataResponse() { IsSuccess = false, Messages = new List<string>() { "table not found" } };
 
 
             }
             catch (Exception ex)
             {
-                return new DataResponse() { IsSuccess = false };
+                var mes = ex.Message;
+                if (ex.InnerException != null)
+                    mes += "    " + ex.InnerException.Message;
+                return new DataResponse() { IsSuccess = false, Errors = new List<string>() { mes } };
             }
 
 

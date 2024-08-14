@@ -79,6 +79,30 @@ namespace ApiAPSB.Controllers
         }
 
 
+        [Route("api/vr/view/{flightid}")]
+        [AcceptVerbs("GET")]
+        public async Task<IHttpActionResult> GetVR(int flightid)
+        {
+            var context = new Models.dbEntities();
+
+            var vr = await context.ViewEFBVoyageReports.Where(q => q.FlightId == flightid).FirstOrDefaultAsync();
+            var reasons = await context.ViewEFBVoyageReasonAlls.Where(q => q.VoyageReportId == vr.Id).ToListAsync();
+            var irrs = await context.ViewEFBVoyageIrrAlls.Where(q => q.VoyageReportId == vr.Id).ToListAsync();
+            var result = new
+            {
+                vr,
+                reasons,
+                irrs
+            };
+
+
+            
+            return Ok(result);
+
+            // return new DataResponse() { IsSuccess = false };
+        }
+
+
         [Route("api/dr/test/{fltid}")]
         [AcceptVerbs("GET")]
         public async Task<IHttpActionResult> GetDR(int fltid)

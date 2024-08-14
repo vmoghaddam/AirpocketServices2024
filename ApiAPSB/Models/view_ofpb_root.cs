@@ -122,7 +122,7 @@ namespace ApiAPSB.Models
         public string fuel_total_corr { get; set; }
         public string fuel_total_actual { get; set; }
         public string fuel_used_actual { get; set; }
-        public string fuel_remail_actual { get; set; }
+        public string fuel_remain_actual { get; set; }
         public string zfw_actual { get; set; }
         public string tow_actual { get; set; }
         public string lgw_actual { get; set; }
@@ -170,5 +170,15 @@ namespace ApiAPSB.Models
         public string fuel_add_corr { get; set; }
         public Nullable<long> date_update { get; set; }
         public string user_update { get; set; }
+        public string pax_male { get; set; }
+        public string pax_female { get; set; }
+        public string pax_adult { get; set; }
+        public string pax_child { get; set; }
+        public string pax_infant { get; set; }
+        public string sob { get; set; }
+        public string cargo { get; set; }
+        public Nullable<int> fuel_saved_actual { get; set; }
+        public Nullable<int> payload_actual { get; set; }
+        public string dow_actual { get; set; }
     }
 }

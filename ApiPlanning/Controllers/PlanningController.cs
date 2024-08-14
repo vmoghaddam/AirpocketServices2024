@@ -614,12 +614,12 @@ namespace ApiPlanning.Controllers
                         messages.Add(((DateTime)entity.STD).ToString("yyyy-MMM-dd HH:mm") + "(utc) " + entity.FlightNumber + ": Duplicated Flight Number Error.");
                         continue;
                     }
-                    //var fdpitem = fdpitems.FirstOrDefault(q => q == entity.ID);
-                    //if (fdpitem != null)
-                    //{
-                    //    messages.Add(((DateTime)entity.STD).ToString("yyyy-MMM-dd HH:mm") + "(utc) " + entity.FlightNumber + ": Flight Crew(s) Error.");
-                    //    continue;
-                    //}
+                    var fdpitem = fdpitems.FirstOrDefault(q => q == entity.ID);
+                    if (fdpitem != null)
+                    {
+                        messages.Add(((DateTime)entity.STD).ToString("yyyy-MMM-dd HH:mm") + "(utc) " + entity.FlightNumber + ": Flight Crew(s) Error.");
+                        continue;
+                    }
 
                     var flt_stdHours = ((DateTime)entity.STD).Hour;
                     var flt_stdMinutes = ((DateTime)entity.STD).Minute;

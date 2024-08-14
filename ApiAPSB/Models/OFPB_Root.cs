@@ -17,9 +17,9 @@ namespace ApiAPSB.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public OFPB_Root()
         {
-            this.OFPB_MainNavLog = new HashSet<OFPB_MainNavLog>();
             this.OFPB_Prop = new HashSet<OFPB_Prop>();
             this.OFPB_WindTemperature = new HashSet<OFPB_WindTemperature>();
+            this.OFPB_MainNavLog = new HashSet<OFPB_MainNavLog>();
         }
     
         public int Id { get; set; }
@@ -130,7 +130,7 @@ namespace ApiAPSB.Models
         public string fuel_total_corr { get; set; }
         public string fuel_total_actual { get; set; }
         public string fuel_used_actual { get; set; }
-        public string fuel_remail_actual { get; set; }
+        public string fuel_remain_actual { get; set; }
         public string zfw_actual { get; set; }
         public string tow_actual { get; set; }
         public string lgw_actual { get; set; }
@@ -178,12 +178,22 @@ namespace ApiAPSB.Models
         public string fuel_add_corr { get; set; }
         public Nullable<long> date_update { get; set; }
         public string user_update { get; set; }
+        public string pax_male { get; set; }
+        public string pax_female { get; set; }
+        public string pax_adult { get; set; }
+        public string pax_child { get; set; }
+        public string pax_infant { get; set; }
+        public string sob { get; set; }
+        public string cargo { get; set; }
+        public Nullable<int> fuel_saved_actual { get; set; }
+        public Nullable<int> payload_actual { get; set; }
+        public string dow_actual { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<OFPB_MainNavLog> OFPB_MainNavLog { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OFPB_Prop> OFPB_Prop { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OFPB_WindTemperature> OFPB_WindTemperature { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<OFPB_MainNavLog> OFPB_MainNavLog { get; set; }
     }
 }
