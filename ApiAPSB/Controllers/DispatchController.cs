@@ -96,7 +96,7 @@ namespace ApiAPSB.Controllers
             };
 
 
-            
+
             return Ok(result);
 
             // return new DataResponse() { IsSuccess = false };
@@ -696,6 +696,9 @@ namespace ApiAPSB.Controllers
                 var fltIds = fdpitems.Select(q => q.FlightId).ToList();
                 step = "1";
                 var drs = await _context.EFBDSPReleases.Where(q => fltIds.Contains(q.FlightId)).ToListAsync();
+                var signed = drs.FirstOrDefault(q => q.JLDatePICApproved != null);
+                DateTime? pic_signed = signed != null ? signed.JLDatePICApproved : null;
+                string pic_signedby = signed != null ? signed.JLSignedBy : null;
                 step = "2";
                 _context.EFBDSPReleases.RemoveRange(drs);
                 await _context.SaveChangesAsync();
@@ -712,7 +715,8 @@ namespace ApiAPSB.Controllers
 
                     release.User = DSPRelease.User;
                     release.DateUpdate = DateTime.UtcNow.ToString("yyyyMMddHHmm");
-
+                    release.JLDatePICApproved = pic_signed;
+                    release.JLSignedBy = pic_signedby;
 
                     release.FlightId = flightId; //DSPRelease.FlightId;
                     release.ActualWXDSP = DSPRelease.ActualWXDSP;
@@ -960,7 +964,147 @@ namespace ApiAPSB.Controllers
             {
                 var context = new Models.dbEntities();
                 var result = context.ViewEFBDSPReleases.FirstOrDefault(q => q.FlightId == fltid);
-                return Ok(result);
+                var result2 = new
+                {
+                    result.Id,
+                    result.FlightId,
+                    result.ActualWXDSP,
+                    result.ActualWXCPT,
+                    result.ActualWXDSPRemark,
+                    result.ActualWXCPTRemark,
+                    result.WXForcastDSP,
+                    result.WXForcastCPT,
+                    result.WXForcastDSPRemark,
+                    result.WXForcastCPTRemark,
+                    result.SigxWXDSP,
+                    result.SigxWXCPT,
+                    result.SigxWXDSPRemark,
+                    result.SigxWXCPTRemark,
+                    result.WindChartDSP,
+                    result.WindChartCPT,
+                    result.WindChartDSPRemark,
+                    result.WindChartCPTRemark,
+                    result.NotamDSP,
+                    result.NotamCPT,
+                    result.NotamDSPRemark,
+                    result.NotamCPTRemark,
+                    result.ComputedFligthPlanDSP,
+                    result.ComputedFligthPlanCPT,
+                    result.ComputedFligthPlanDSPRemark,
+                    result.ComputedFligthPlanCPTRemark,
+                    result.ATCFlightPlanDSP,
+                    result.ATCFlightPlanCPT,
+                    result.ATCFlightPlanDSPRemark,
+                    result.ATCFlightPlanCPTRemark,
+                    result.PermissionsDSP,
+                    result.PermissionsCPT,
+                    result.PermissionsDSPRemark,
+                    result.PermissionsCPTRemark,
+                    result.JeppesenAirwayManualDSP,
+                    result.JeppesenAirwayManualCPT,
+                    result.JeppesenAirwayManualDSPRemark,
+                    result.JeppesenAirwayManualCPTRemark,
+                    result.MinFuelRequiredDSP,
+                    result.MinFuelRequiredCPT,
+                    result.MinFuelRequiredPilotReq,
+                    result.GeneralDeclarationDSP,
+                    result.GeneralDeclarationCPT,
+                    result.GeneralDeclarationDSPRemark,
+                    result.GeneralDeclarationCPTRemark,
+                    result.FlightReportDSP,
+                    result.FlightReportCPT,
+                    result.FlightReportDSPRemark,
+                    result.FlightReportCPTRemark,
+                    result.TOLndCardsDSP,
+                    result.TOLndCardsCPT,
+                    result.TOLndCardsDSPRemark,
+                    result.TOLndCardsCPTRemark,
+                    result.LoadSheetDSP,
+                    result.LoadSheetCPT,
+                    result.LoadSheetDSPRemark,
+                    result.LoadSheetCPTRemark,
+                    result.FlightSafetyReportDSP,
+                    result.FlightSafetyReportCPT,
+                    result.FlightSafetyReportDSPRemark,
+                    result.FlightSafetyReportCPTRemark,
+                    result.AVSECIncidentReportDSP,
+                    result.AVSECIncidentReportCPT,
+                    result.AVSECIncidentReportDSPRemark,
+                    result.AVSECIncidentReportCPTRemark,
+                    result.OperationEngineeringDSP,
+                    result.OperationEngineeringCPT,
+                    result.OperationEngineeringDSPRemark,
+                    result.OperationEngineeringCPTRemark,
+                    result.VoyageReportDSP,
+                    result.VoyageReportCPT,
+                    result.VoyageReportDSPRemark,
+                    result.VoyageReportCPTRemark,
+                    result.PIFDSP,
+                    result.PIFCPT,
+                    result.PIFDSPRemark,
+                    result.PIFCPTRemark,
+                    result.GoodDeclarationDSP,
+                    result.GoodDeclarationCPT,
+                    result.GoodDeclarationDSPRemark,
+                    result.GoodDeclarationCPTRemark,
+                    result.IPADDSP,
+                    result.IPADCPT,
+                    result.IPADDSPRemark,
+                    result.IPADCPTRemark,
+                    result.DateConfirmed,
+                    result.DispatcherId,
+                    result.DSPName,
+                    result.DSPPID,
+                    result.DSPNID,
+                    result.DSPMobile,
+                    result.JLSignedBy,
+                    result.JLDatePICApproved,
+                    result.PICId,
+                    result.PIC,
+                    result.OperationalFlightPlanFOO,
+                    result.OperationalFlightPlanCMDR,
+                    result.OperationalFlightPlanFOORemark,
+                    result.OperationalFlightPlanCMDRRemark,
+                    result.ATSFlightPlanFOO,
+                    result.ATSFlightPlanCMDR,
+                    result.ATSFlightPlanFOORemark,
+                    result.ATSFlightPlanCMDRRemark,
+                    result.VldEFBFOO,
+                    result.VldEFBCMDR,
+                    result.VldEFBFOORemark,
+                    result.VldEFBCMDRRemark,
+                    result.VldFlightCrewFOO,
+                    result.VldFlightCrewCMDR,
+                    result.VldFlightCrewFOORemark,
+                    result.VldFlightCrewCMDRRemark,
+                    result.VldMedicalFOO,
+                    result.VldMedicalCMDR,
+                    result.VldMedicalFOORemark,
+                    result.VldMedicalCMDRRemark,
+                    result.VldPassportFOO,
+                    result.VldPassportCMDR,
+                    result.VldPassportFOORemark,
+                    result.VldPassportCMDRRemark,
+                    result.VldCMCFOO,
+                    result.VldCMCCMDR,
+                    result.VldCMCFOORemark,
+                    result.VldCMCCMDRRemark,
+                    result.VldRampPassFOO,
+                    result.VldRampPassCMDR,
+                    result.VldRampPassFOORemark,
+                    result.VldRampPassCMDRRemark,
+                    result.Note,
+                    result.MinFuelRequiredCFP,
+                    result.OFPTOTALFUEL,
+                    result.SgnDSPLicNo,
+                    result.SgnCPTLicNo,
+                    result.JLDSPSignDate,
+                    result.SGNDSPName,
+                    //Data = result,
+                    //Errors = new List<string>(),
+                    IsSuccess = true,
+                };
+                return Ok(result2);
             }
             catch (Exception ex)
             {
@@ -2303,7 +2447,7 @@ namespace ApiAPSB.Controllers
                     max_fdp = dto.max_fdp,
                     planned_flt_duty_time = dto.planned_flt_duty_time,
                     actual_flt_duty_time = dto.actual_flt_duty_time,
-                      
+
                 };
 
                 context.discretion_form.Add(entity);

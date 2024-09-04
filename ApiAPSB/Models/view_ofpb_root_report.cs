@@ -12,7 +12,7 @@ namespace ApiAPSB.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class view_ofpb_root
+    public partial class view_ofpb_root_report
     {
         public int Id { get; set; }
         public string ReferenceNo { get; set; }
@@ -120,9 +120,6 @@ namespace ApiAPSB.Models
         public string crew_fm { get; set; }
         public string crew_dh { get; set; }
         public string fuel_total_corr { get; set; }
-        public string fuel_total_actual { get; set; }
-        public string fuel_used_actual { get; set; }
-        public string fuel_remain_actual { get; set; }
         public string zfw_actual { get; set; }
         public string tow_actual { get; set; }
         public string lgw_actual { get; set; }
@@ -177,9 +174,32 @@ namespace ApiAPSB.Models
         public string pax_infant { get; set; }
         public string sob { get; set; }
         public string cargo { get; set; }
-        public Nullable<int> fuel_saved_actual { get; set; }
         public Nullable<int> payload_actual { get; set; }
         public string dow_actual { get; set; }
+        public string fuel_total_actual { get; set; }
+        public string fuel_used_actual { get; set; }
+        public string fuel_remain_actual { get; set; }
+        public string fuel_saved_actual { get; set; }
+        public Nullable<int> time_saved { get; set; }
+        public Nullable<System.DateTime> STDDay { get; set; }
+        public Nullable<System.DateTime> STD { get; set; }
+        public Nullable<System.DateTime> STA { get; set; }
+        public Nullable<System.DateTime> BlockOn { get; set; }
+        public Nullable<System.DateTime> BlockOff { get; set; }
+        public Nullable<System.DateTime> TakeOff { get; set; }
+        public Nullable<System.DateTime> Landing { get; set; }
+        public Nullable<int> FlightTime { get; set; }
+        public Nullable<int> BlockTime { get; set; }
+        public string FromAirportIATA { get; set; }
+        public string ToAirportIATA { get; set; }
+        public string Register { get; set; }
+        public string AircraftType { get; set; }
+        public Nullable<int> Freight { get; set; }
+        public Nullable<int> PaxAdult { get; set; }
+        public Nullable<int> PaxChild { get; set; }
+        public Nullable<int> PaxInfant { get; set; }
+        public Nullable<int> PaxMale { get; set; }
+        public Nullable<int> PaxFemale { get; set; }
         public string to_v1 { get; set; }
         public string to_vr { get; set; }
         public string to_v2 { get; set; }
@@ -203,8 +223,7 @@ namespace ApiAPSB.Models
         public string ldg_vref15 { get; set; }
         public string ldg_ga_n1 { get; set; }
         public string ldg_ga_alt { get; set; }
-        public string MSN { get; set; }
-        public string AircraftType { get; set; }
+        public int MSN { get; set; }
         public string AircraftSubType { get; set; }
         public string ManeuveringTime { get; set; }
         public string ManeuveringFuel { get; set; }

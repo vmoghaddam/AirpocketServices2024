@@ -1464,7 +1464,175 @@ namespace AirpocketTRN.Services
             };
         }
         //09-11
+
+
+        public C_view_trncard get_max_sms(C_view_trncard l1, C_view_trncard l2, C_view_trncard l3)
+        {
+            if (l1 == null)
+                l1 = new C_view_trncard() { Remain = -10000, trncard_title = "SMS-L1" };
+            if (l2 == null)
+                l2 = new C_view_trncard() { Remain = -10000, trncard_title = "SMS-L2" };
+            if (l3 == null)
+                l3 = new C_view_trncard() { Remain = -10000, trncard_title = "SMS-L3" };
+
+            C_view_trncard sms = l3;
+            if (l2.Remain > sms.Remain)
+                sms = l2;
+            if (l1.Remain > sms.Remain)
+                sms = l1;
+
+            if (sms.ExpireDate == null)
+                return null;
+            else return sms;
+           
+
+
+        }
+
         public async Task<DataResponse> GetTrainingCard(int pid)
+        {
+            pid = (pid - 1237) / 2;
+            var employee = await context.ViewEmployees.Where(q => q.PersonId == pid).FirstOrDefaultAsync();
+            var profile = await context.ViewProfiles.Where(q => q.PersonId == pid).FirstOrDefaultAsync();
+            var person = await context.People.Where(q => q.Id == pid).FirstOrDefaultAsync();
+            
+            var result = new List<ViewCoursePeoplePassedRanked>();
+            var trn_ds = await context.C_view_trncard.Where(q => q.person_id == pid).OrderBy(q => q.trncard_title).ToListAsync();
+            var trn_ds_no_sms_l2_l3 = trn_ds.Where(q => q.trncard_title != "SMS-L2" && q.trncard_title != "SMS-L3" && q.trncard_title != "SMS-L1" && q.trncard_title != "SMS").ToList();
+            var sms_l1 = trn_ds.FirstOrDefault(q => q.trncard_title == "SMS-L1");
+            if (sms_l1==null )
+                sms_l1 = trn_ds.FirstOrDefault(q => q.trncard_title == "SMS");
+            var sms_l2 = trn_ds.FirstOrDefault(q => q.trncard_title == "SMS-L2");
+            var sms_l3 = trn_ds.FirstOrDefault(q => q.trncard_title == "SMS-L3");
+            foreach (var x in trn_ds_no_sms_l2_l3)
+            {
+                result.Add(new ViewCoursePeoplePassedRanked()
+                {
+                    FirstName =x.first_name,
+                    LastName = x.last_name,
+                    JobGroup = x.jobgroup,
+                     JobGroupRoot=x.jobgroup_root,
+                    NID =x.nid,
+                    Title = x.trncard_title,
+                    DateIssue = x.IssueDate,
+                    DateExpire =x.ExpireDate,
+                    Interval = x.interval_month,
+                    ImageUrl = x.imageurl,
+
+                    PersonId = x.person_id,
+                     Remaining=x.Remain,
+                });
+            }
+            
+            if (employee.JobGroupRoot== "Cockpit" || employee.JobGroupRoot == "Cabin")
+            {
+                //  result = result.Where(q =>q.Remaining>=0 || ( q.Remaining < 0 && (q.Title == "SMS-L2" || q.Title == "SMS-L3"))).ToList();
+                //  var sms = new List<string>() { "SMS-L2", "SMS-L3" };
+                //   var sms_rows = result.Where(q => sms.IndexOf(q.Title) != -1 && (q.Remaining < 0)).Select(q => q.Title).ToList();
+                //  result = result.Where(q => sms_rows.IndexOf(q.Title) == -1).ToList();
+                result.Add(new ViewCoursePeoplePassedRanked()
+                {
+                    FirstName = employee.FirstName,
+                    LastName = employee.LastName,
+                    JobGroup = employee.JobGroup,
+                    JobGroupRoot = employee.JobGroupRoot,
+                    NID = employee.NID,
+                    Title = "SMS",
+                    DateIssue = sms_l1 != null ? sms_l1.IssueDate : null,
+                    DateExpire = sms_l1 != null ? sms_l1.ExpireDate : null,
+                    Interval = sms_l1 != null ? sms_l1.interval_month : null,
+                    ImageUrl = employee.ImageUrl,
+
+                    PersonId = employee.PersonId,
+                    Remaining = sms_l1 != null ? sms_l1.Remain : null,
+                });
+
+                if (profile.PostRoot== "MANAGEMENT")
+                {
+                    var _sms = get_max_sms(null, sms_l2, sms_l3);
+
+                    if (_sms == null)
+                        _sms = new C_view_trncard() { title = "SMS-L2", trncard_title="SMS-L2", interval_month = 24 };
+                    
+                    result.Add(new ViewCoursePeoplePassedRanked()
+                    {
+                        FirstName = employee.FirstName,
+                        LastName = employee.LastName,
+                        JobGroup = employee.JobGroup,
+                        JobGroupRoot = employee.JobGroupRoot,
+                        NID = employee.NID,
+                        Title = _sms.trncard_title,
+                        DateIssue = _sms.IssueDate != null ? _sms.IssueDate : null,
+                        DateExpire = _sms.ExpireDate != null ? _sms.ExpireDate : null,
+                        Interval = _sms.interval_month != null ? _sms.interval_month : null,
+                        ImageUrl = employee.ImageUrl,
+
+                        PersonId = employee.PersonId,
+                        Remaining = _sms.Remain != null ? _sms.Remain : null,
+                    });
+                }
+
+            }
+            else 
+            if (employee.JobGroupRoot == "QA")
+            {
+
+                result.Add(new ViewCoursePeoplePassedRanked()
+                {
+                    FirstName = employee.FirstName,
+                    LastName = employee.LastName,
+                    JobGroup = employee.JobGroup,
+                    JobGroupRoot = employee.JobGroupRoot,
+                    NID = employee.NID,
+                    Title = "SMS-L3", 
+                    DateIssue = sms_l3!=null? sms_l3.IssueDate :null,
+                    DateExpire = sms_l3 != null ? sms_l3.ExpireDate : null,
+                    Interval = sms_l3 != null ? sms_l3.interval_month : null,
+                    ImageUrl =employee.ImageUrl,
+
+                    PersonId = employee.PersonId,
+                    Remaining = sms_l3 != null ? sms_l3.Remain:null,
+                });
+
+
+
+            }
+            
+            else
+            {
+                var _sms = get_max_sms(sms_l1,sms_l2,sms_l3);
+
+                if (_sms == null)
+                {
+                    _sms = new C_view_trncard() { title = "SMS-L1", interval_month = 24, trncard_title = "SMS-L1" };
+                    if (profile.PostRoot == "MANAGEMENT")
+                        _sms = new C_view_trncard() { title = "SMS-L2", interval_month = 24, trncard_title = "SMS-L2" };
+                }
+                result.Add(new ViewCoursePeoplePassedRanked()
+                {
+                    FirstName = employee.FirstName,
+                    LastName = employee.LastName,
+                    JobGroup = employee.JobGroup,
+                    JobGroupRoot = employee.JobGroupRoot,
+                    NID = employee.NID,
+                    Title = _sms.trncard_title,
+                    DateIssue = _sms.IssueDate != null ? _sms.IssueDate : null,
+                    DateExpire = _sms.ExpireDate != null ? _sms.ExpireDate : null,
+                    Interval = _sms.interval_month != null ? _sms.interval_month : null,
+                    ImageUrl = employee.ImageUrl,
+
+                    PersonId = employee.PersonId,
+                    Remaining = _sms.Remain != null ? _sms.Remain : null,
+                });
+            }
+            return new DataResponse()
+            {
+                Data =  result,
+                IsSuccess = true,
+            };
+
+        }
+            public async Task<DataResponse> GetTrainingCard_OLD(int pid)
         {
             pid = (pid - 1237) / 2;
             var person = await context.People.Where(q => q.Id == pid).FirstOrDefaultAsync();

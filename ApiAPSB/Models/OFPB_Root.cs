@@ -17,9 +17,9 @@ namespace ApiAPSB.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public OFPB_Root()
         {
+            this.OFPB_MainNavLog = new HashSet<OFPB_MainNavLog>();
             this.OFPB_Prop = new HashSet<OFPB_Prop>();
             this.OFPB_WindTemperature = new HashSet<OFPB_WindTemperature>();
-            this.OFPB_MainNavLog = new HashSet<OFPB_MainNavLog>();
         }
     
         public int Id { get; set; }
@@ -188,12 +188,80 @@ namespace ApiAPSB.Models
         public Nullable<int> fuel_saved_actual { get; set; }
         public Nullable<int> payload_actual { get; set; }
         public string dow_actual { get; set; }
+        public string to_v1 { get; set; }
+        public string to_vr { get; set; }
+        public string to_v2 { get; set; }
+        public string to_temp { get; set; }
+        public string to_epr { get; set; }
+        public string to_flaps { get; set; }
+        public string to_stab { get; set; }
+        public string to_atis { get; set; }
+        public string ldg_vref { get; set; }
+        public string ldg_fas { get; set; }
+        public string ldg_vf { get; set; }
+        public string ldg_flaps { get; set; }
+        public string ldg_epr { get; set; }
+        public string ldg_atis { get; set; }
+        public string to_vf { get; set; }
+        public string to_tq { get; set; }
+        public string to_n1_redu { get; set; }
+        public string to_packs { get; set; }
+        public string to_n1_toga { get; set; }
+        public string ldg_vapp { get; set; }
+        public string ldg_vref15 { get; set; }
+        public string ldg_ga_n1 { get; set; }
+        public string ldg_ga_alt { get; set; }
+        public string MSN { get; set; }
+        public string AircraftType { get; set; }
+        public string AircraftSubType { get; set; }
+        public string ManeuveringTime { get; set; }
+        public string ManeuveringFuel { get; set; }
+        public string WeatherCycle { get; set; }
+        public string Warning1 { get; set; }
+        public string Warning2 { get; set; }
+        public string Warning3 { get; set; }
+        public string TripAverageWindComponent { get; set; }
+        public string TripAverageTempISA { get; set; }
+        public string TripLevel { get; set; }
+        public string Alternate1AverageWindComponent { get; set; }
+        public string Alternate1AverageTempISA { get; set; }
+        public string Alternate2AverageWindComponent { get; set; }
+        public string Alternate2AverageTempISA { get; set; }
+        public string firs_main { get; set; }
+        public Nullable<int> dis_maingcd { get; set; }
+        public string Alternate { get; set; }
+        public string AlternateEnroute { get; set; }
+        public string DestinationIATA { get; set; }
+        public string OriginIATA { get; set; }
+        public Nullable<int> TakeoffAlternateFlightLevel { get; set; }
+        public Nullable<int> time_final_reserve { get; set; }
+        public Nullable<int> time_taxi_in { get; set; }
+        public Nullable<int> time_taxi_out { get; set; }
+        public string AdditionalStr { get; set; }
+        public string AlternateStr { get; set; }
+        public string Alternate1Str { get; set; }
+        public string Alternate2Str { get; set; }
+        public string ContingencyStr { get; set; }
+        public string ExtraStr { get; set; }
+        public string HoldingStr { get; set; }
+        public string MinimumRequiredStr { get; set; }
+        public string TakeOffAlternateStr { get; set; }
+        public string TaxiInStr { get; set; }
+        public string TaxiOutStr { get; set; }
+        public string TotalStr { get; set; }
+        public string TripStr { get; set; }
+        public string Pilot1_FPFM { get; set; }
+        public string Pilot2_FPFM { get; set; }
+        public Nullable<int> fuel_remain_offblock { get; set; }
+        public Nullable<int> fuel_remain_takeoff { get; set; }
+        public Nullable<int> fuel_remain_landing { get; set; }
+        public Nullable<int> fuel_remain_onblock { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<OFPB_MainNavLog> OFPB_MainNavLog { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OFPB_Prop> OFPB_Prop { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OFPB_WindTemperature> OFPB_WindTemperature { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<OFPB_MainNavLog> OFPB_MainNavLog { get; set; }
     }
 }

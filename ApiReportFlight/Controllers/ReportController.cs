@@ -1983,7 +1983,7 @@ namespace ApiReportFlight.Controllers
                 var _df = df.Date;
                 var _dt = dt.Date.AddDays(1);
                 var _query_x = from x in ctx.ViewLegCrews
-                               where x.STDLocal >= df && x.STDLocal < dt && x.FlightStatusID != 4
+                               where x.STDLocal >= _df && x.STDLocal < _dt && x.FlightStatusID != 4
                                select x;
                 if (grp != "ALL")
                 {
@@ -2089,7 +2089,7 @@ namespace ApiReportFlight.Controllers
                 var _dt = dt.Date.AddDays(1);
 
                 var _baseQ = from x in ctx.ViewLegCrews
-                             where x.STDLocal >= df && x.STDLocal < dt && x.FlightStatusID != 4
+                             where x.STDLocal >= _df && x.STDLocal < _dt && x.FlightStatusID != 4
                              select x;
 
                 if (rank != "-1")
@@ -2204,7 +2204,7 @@ namespace ApiReportFlight.Controllers
                 var _dt = dt.Date.AddDays(1);
                 var _query = (
                                from x in ctx.ViewLegCrews
-                               where x.CrewId == id && x.STDLocal >= df && x.STDLocal < dt && x.FlightStatusID != 4
+                               where x.CrewId == id && x.STDLocal >= _df && x.STDLocal < _dt && x.FlightStatusID != 4
                                group x by new { x.CrewId, x.ScheduleName, x.JobGroup, x.JobGroupCode, x.Name, x.PID } into _grp
                                select new FlightTimeDto()
                                {
@@ -2256,7 +2256,7 @@ namespace ApiReportFlight.Controllers
             var _dt = dt.Date.AddDays(1);
             var _query = (
                            from x in ctx.ViewLegCrews
-                           where x.STDLocal >= df && x.STDLocal < dt && x.FlightStatusID != 4 && _ids.Contains(x.CrewId)
+                           where x.STDLocal >= _df && x.STDLocal < _dt && x.FlightStatusID != 4 && _ids.Contains(x.CrewId)
                            group x by new { x.CrewId, x.ScheduleName, x.JobGroup, x.JobGroupCode, x.Name } into _grp
                            select new FlightTimeDto()
                            {

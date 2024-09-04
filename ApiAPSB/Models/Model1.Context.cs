@@ -64,9 +64,13 @@ namespace ApiAPSB.Models
         public virtual DbSet<OFPB_Prop> OFPB_Prop { get; set; }
         public virtual DbSet<ViewEFBVoyageIrrAll> ViewEFBVoyageIrrAlls { get; set; }
         public virtual DbSet<ViewEFBVoyageReasonAll> ViewEFBVoyageReasonAlls { get; set; }
-        public virtual DbSet<OFPB_Root> OFPB_Root { get; set; }
-        public virtual DbSet<view_ofpb_root> view_ofpb_root { get; set; }
+        public virtual DbSet<ViewQACSREvent> ViewQACSREvents { get; set; }
+        public virtual DbSet<ViewQAMaintenance> ViewQAMaintenances { get; set; }
+        public virtual DbSet<ViewQACSR> ViewQACSRs { get; set; }
         public virtual DbSet<OFPB_MainNavLog> OFPB_MainNavLog { get; set; }
         public virtual DbSet<view_ofpb_navlog> view_ofpb_navlog { get; set; }
+        public virtual DbSet<OFPB_Root> OFPB_Root { get; set; }
+        public virtual DbSet<view_ofpb_root> view_ofpb_root { get; set; }
+        public virtual DbSet<view_ofpb_root_report> view_ofpb_root_report { get; set; }
     }
 }

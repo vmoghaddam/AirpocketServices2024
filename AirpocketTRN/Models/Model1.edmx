@@ -381,6 +381,8 @@
           <Property Name="PosFDPId" Type="int" />
           <Property Name="PosRemark" Type="varchar" MaxLength="500" />
           <Property Name="PosTicketUrl" Type="varchar" MaxLength="500" />
+          <Property Name="DutyEndDateLocal" Type="datetime2" Precision="7" />
+          <Property Name="InitTo" Type="varchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="FDPItem">
           <Key>
@@ -937,6 +939,8 @@
           <Property Name="ASD_AWZ_ExpireDate" Type="datetime2" Precision="7" />
           <Property Name="ASD_SRY_IssueDate" Type="datetime2" Precision="7" />
           <Property Name="ASD_SRY_ExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="FTSL1IssueDate" Type="datetime2" Precision="7" />
+          <Property Name="FTSL1ExpireDate" Type="datetime2" Precision="7" />
         </EntityType>
         <EntityType Name="Teacher">
           <Key>
@@ -970,6 +974,42 @@
           <Property Name="IntervalMonth" Type="int" />
           <Property Name="Identifier" Type="varchar" MaxLength="500" />
           <Property Name="Remark" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo._view_trncard' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="_view_trncard">
+          <Key>
+            <PropertyRef Name="profile_id" />
+            <PropertyRef Name="name" />
+            <PropertyRef Name="first_name" />
+            <PropertyRef Name="last_name" />
+            <PropertyRef Name="person_id" />
+            <PropertyRef Name="nid" />
+            <PropertyRef Name="jobgroup" />
+            <PropertyRef Name="jobgroup_root" />
+            <PropertyRef Name="column_name" />
+            <PropertyRef Name="trncard_title" />
+          </Key>
+          <Property Name="profile_id" Type="int" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="1003" Nullable="false" />
+          <Property Name="first_name" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="last_name" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="person_id" Type="int" Nullable="false" />
+          <Property Name="nid" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="jobgroup" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="imageurl" Type="nvarchar" MaxLength="1000" />
+          <Property Name="jobgroup_root" Type="varchar" MaxLength="16" Nullable="false" />
+          <Property Name="clmn_caption" Type="nvarchar" MaxLength="255" />
+          <Property Name="clmn_name" Type="nvarchar" MaxLength="255" />
+          <Property Name="title" Type="varchar" MaxLength="255" />
+          <Property Name="column_name" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="trncard_title" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="IssueField" Type="varchar" MaxLength="500" />
+          <Property Name="ExpireField" Type="varchar" MaxLength="500" />
+          <Property Name="IssueDate" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="interval_month" Type="int" />
+          <Property Name="Remain" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.AppCertificate' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -2755,6 +2795,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewFDPRest' does not have a primar
           <Property Name="PosFDPId" Type="int" />
           <Property Name="PosRemark" Type="varchar" MaxLength="500" />
           <Property Name="PosTicketUrl" Type="varchar" MaxLength="500" />
+          <Property Name="Key" Type="varchar" MaxLength="500" />
+          <Property Name="OutOfHomeBase" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.ViewJobGroup' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -3274,6 +3316,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewProfile' does not have a primar
           <Property Name="RemainSMS" Type="int" />
           <Property Name="RemainSMSL1L2L3" Type="int" />
           <Property Name="RemainTRG07A" Type="int" />
+          <Property Name="ImageUrl" Type="nvarchar" MaxLength="1000" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.ViewSyllabus' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -3795,6 +3838,30 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <EntitySet Name="Teacher" EntityType="Self.Teacher" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TeacherDocument" EntityType="Self.TeacherDocument" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TrnDbAppFieldMapping" EntityType="Self.TrnDbAppFieldMapping" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="_view_trncard" EntityType="Self._view_trncard" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [_view_trncard].[profile_id] AS [profile_id], 
+    [_view_trncard].[name] AS [name], 
+    [_view_trncard].[first_name] AS [first_name], 
+    [_view_trncard].[last_name] AS [last_name], 
+    [_view_trncard].[person_id] AS [person_id], 
+    [_view_trncard].[nid] AS [nid], 
+    [_view_trncard].[jobgroup] AS [jobgroup], 
+    [_view_trncard].[imageurl] AS [imageurl], 
+    [_view_trncard].[jobgroup_root] AS [jobgroup_root], 
+    [_view_trncard].[clmn_caption] AS [clmn_caption], 
+    [_view_trncard].[clmn_name] AS [clmn_name], 
+    [_view_trncard].[title] AS [title], 
+    [_view_trncard].[column_name] AS [column_name], 
+    [_view_trncard].[trncard_title] AS [trncard_title], 
+    [_view_trncard].[IssueField] AS [IssueField], 
+    [_view_trncard].[ExpireField] AS [ExpireField], 
+    [_view_trncard].[IssueDate] AS [IssueDate], 
+    [_view_trncard].[ExpireDate] AS [ExpireDate], 
+    [_view_trncard].[interval_month] AS [interval_month], 
+    [_view_trncard].[Remain] AS [Remain]
+    FROM [dbo].[_view_trncard] AS [_view_trncard]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="AppCertificate" EntityType="Self.AppCertificate" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [AppCertificate].[CrewId] AS [CrewId], 
@@ -5207,7 +5274,9 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
     [ViewFDPRest].[PosAirline] AS [PosAirline], 
     [ViewFDPRest].[PosFDPId] AS [PosFDPId], 
     [ViewFDPRest].[PosRemark] AS [PosRemark], 
-    [ViewFDPRest].[PosTicketUrl] AS [PosTicketUrl]
+    [ViewFDPRest].[PosTicketUrl] AS [PosTicketUrl], 
+    [ViewFDPRest].[Key] AS [Key], 
+    [ViewFDPRest].[OutOfHomeBase] AS [OutOfHomeBase]
     FROM [dbo].[ViewFDPRest] AS [ViewFDPRest]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ViewJobGroup" EntityType="Self.ViewJobGroup" store:Type="Views" store:Schema="dbo">
@@ -5657,7 +5726,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
     [ViewProfile].[RemainSMSL2L3] AS [RemainSMSL2L3], 
     [ViewProfile].[RemainSMS] AS [RemainSMS], 
     [ViewProfile].[RemainSMSL1L2L3] AS [RemainSMSL1L2L3], 
-    [ViewProfile].[RemainTRG07A] AS [RemainTRG07A]
+    [ViewProfile].[RemainTRG07A] AS [RemainTRG07A], 
+    [ViewProfile].[ImageUrl] AS [ImageUrl]
     FROM [dbo].[ViewProfile] AS [ViewProfile]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ViewSyllabus" EntityType="Self.ViewSyllabus" store:Type="Views" store:Schema="dbo">
@@ -6057,6 +6127,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
             <End Role="Person" EntitySet="People" />
             <End Role="Teacher" EntitySet="Teachers" />
           </AssociationSet>
+          <EntitySet Name="C_view_trncard" EntityType="FLYModel.C_view_trncard" />
           </EntityContainer>
         <EntityType Name="ViewLegTime">
           <Key>
@@ -6312,6 +6383,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <Property Name="PosFDPId" Type="Int32" />
           <Property Name="PosRemark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="PosTicketUrl" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="DutyEndDateLocal" Type="DateTime" Precision="7" />
+          <Property Name="InitTo" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="FDPItem">
           <Key>
@@ -6595,6 +6668,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <Property Name="PosFDPId" Type="Int32" />
           <Property Name="PosRemark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="PosTicketUrl" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Key" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="OutOfHomeBase" Type="Boolean" />
         </EntityType>
         <EntityType Name="CourseSession">
           <Key>
@@ -8799,6 +8874,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <Property Name="RemainSMSL2L3" Type="Int32" />
           <Property Name="RemainTRG07A" Type="Int32" />
           <Property Name="RemainSMSL1L2L3" Type="Int32" />
+          <Property Name="ImageUrl" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="ViewCertificateHistoryRanked">
           <Key>
@@ -9699,6 +9775,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <NavigationProperty Name="CourseSessionPresences" Relationship="FLYModel.fk_psco_person" FromRole="Person" ToRole="CourseSessionPresence" />
           <NavigationProperty Name="CourseSessionPresenceDetails" Relationship="FLYModel.fk_pscod_person" FromRole="Person" ToRole="CourseSessionPresenceDetail" />
           <NavigationProperty Name="Teacher" Relationship="FLYModel.fk_teacher_person" FromRole="Person" ToRole="Teacher" />
+          <Property Name="FTSL1IssueDate" Type="DateTime" Precision="7" />
+          <Property Name="FTSL1ExpireDate" Type="DateTime" Precision="7" />
         </EntityType>
         <Association Name="FK_CH_PERSON">
           <End Type="FLYModel.Person" Role="Person" Multiplicity="1" />
@@ -9766,6 +9844,40 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="C_view_trncard">
+          <Key>
+            <PropertyRef Name="profile_id" />
+            <PropertyRef Name="name" />
+            <PropertyRef Name="first_name" />
+            <PropertyRef Name="last_name" />
+            <PropertyRef Name="person_id" />
+            <PropertyRef Name="nid" />
+            <PropertyRef Name="jobgroup" />
+            <PropertyRef Name="jobgroup_root" />
+            <PropertyRef Name="column_name" />
+            <PropertyRef Name="trncard_title" />
+          </Key>
+          <Property Name="profile_id" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="1003" FixedLength="false" Unicode="true" />
+          <Property Name="first_name" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="last_name" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="person_id" Type="Int32" Nullable="false" />
+          <Property Name="nid" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="jobgroup" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="imageurl" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="jobgroup_root" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="false" />
+          <Property Name="clmn_caption" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="clmn_name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="title" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="column_name" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="trncard_title" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="IssueField" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ExpireField" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="IssueDate" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="interval_month" Type="Int32" />
+          <Property Name="Remain" Type="Int32" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -9943,6 +10055,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <EntitySetMapping Name="FDPs">
             <EntityTypeMapping TypeName="FLYModel.FDP">
               <MappingFragment StoreEntitySet="FDP">
+                <ScalarProperty Name="InitTo" ColumnName="InitTo" />
+                <ScalarProperty Name="DutyEndDateLocal" ColumnName="DutyEndDateLocal" />
                 <ScalarProperty Name="PosTicketUrl" ColumnName="PosTicketUrl" />
                 <ScalarProperty Name="PosRemark" ColumnName="PosRemark" />
                 <ScalarProperty Name="PosFDPId" ColumnName="PosFDPId" />
@@ -10142,6 +10256,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <EntitySetMapping Name="ViewFDPRests">
             <EntityTypeMapping TypeName="FLYModel.ViewFDPRest">
               <MappingFragment StoreEntitySet="ViewFDPRest">
+                <ScalarProperty Name="OutOfHomeBase" ColumnName="OutOfHomeBase" />
+                <ScalarProperty Name="Key" ColumnName="Key" />
                 <ScalarProperty Name="PosTicketUrl" ColumnName="PosTicketUrl" />
                 <ScalarProperty Name="PosRemark" ColumnName="PosRemark" />
                 <ScalarProperty Name="PosFDPId" ColumnName="PosFDPId" />
@@ -11788,6 +11904,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <EntitySetMapping Name="ViewProfiles">
             <EntityTypeMapping TypeName="FLYModel.ViewProfile">
               <MappingFragment StoreEntitySet="ViewProfile">
+                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
                 <ScalarProperty Name="RemainSMSL1L2L3" ColumnName="RemainSMSL1L2L3" />
                 <ScalarProperty Name="RemainTRG07A" ColumnName="RemainTRG07A" />
                 <ScalarProperty Name="RemainSMSL2L3" ColumnName="RemainSMSL2L3" />
@@ -12318,6 +12435,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <EntitySetMapping Name="People">
             <EntityTypeMapping TypeName="FLYModel.Person">
               <MappingFragment StoreEntitySet="Person">
+                <ScalarProperty Name="FTSL1ExpireDate" ColumnName="FTSL1ExpireDate" />
+                <ScalarProperty Name="FTSL1IssueDate" ColumnName="FTSL1IssueDate" />
                 <ScalarProperty Name="ASD_SRY_ExpireDate" ColumnName="ASD_SRY_ExpireDate" />
                 <ScalarProperty Name="ASD_SRY_IssueDate" ColumnName="ASD_SRY_IssueDate" />
                 <ScalarProperty Name="ASD_AWZ_ExpireDate" ColumnName="ASD_AWZ_ExpireDate" />
@@ -12816,6 +12935,32 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
                 <ScalarProperty Name="MarriageId" ColumnName="MarriageId" />
                 <ScalarProperty Name="DateCreate" ColumnName="DateCreate" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="C_view_trncard">
+            <EntityTypeMapping TypeName="FLYModel.C_view_trncard">
+              <MappingFragment StoreEntitySet="_view_trncard">
+                <ScalarProperty Name="Remain" ColumnName="Remain" />
+                <ScalarProperty Name="interval_month" ColumnName="interval_month" />
+                <ScalarProperty Name="ExpireDate" ColumnName="ExpireDate" />
+                <ScalarProperty Name="IssueDate" ColumnName="IssueDate" />
+                <ScalarProperty Name="ExpireField" ColumnName="ExpireField" />
+                <ScalarProperty Name="IssueField" ColumnName="IssueField" />
+                <ScalarProperty Name="trncard_title" ColumnName="trncard_title" />
+                <ScalarProperty Name="column_name" ColumnName="column_name" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="clmn_name" ColumnName="clmn_name" />
+                <ScalarProperty Name="clmn_caption" ColumnName="clmn_caption" />
+                <ScalarProperty Name="jobgroup_root" ColumnName="jobgroup_root" />
+                <ScalarProperty Name="imageurl" ColumnName="imageurl" />
+                <ScalarProperty Name="jobgroup" ColumnName="jobgroup" />
+                <ScalarProperty Name="nid" ColumnName="nid" />
+                <ScalarProperty Name="person_id" ColumnName="person_id" />
+                <ScalarProperty Name="last_name" ColumnName="last_name" />
+                <ScalarProperty Name="first_name" ColumnName="first_name" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="profile_id" ColumnName="profile_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

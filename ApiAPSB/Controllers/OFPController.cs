@@ -131,6 +131,57 @@ namespace ApiAPSB.Controllers
 
 
         }
+
+
+        [HttpGet]
+        [Route("api/ofp/flight/report/{flightId}")]
+        public async Task<IHttpActionResult> GetOFPByFlightReport(int flightId)
+        {
+            var context = new Models.dbEntities();
+
+            var ofp = await context.view_ofpb_root_report.Where(q => q.FlightID == flightId).FirstOrDefaultAsync();
+
+            if (ofp == null)
+            {
+                return Ok(new DataResponse()
+                {
+                    Data = new ofpb() { ofp_id = -1, flight_id = flightId },
+                    Errors = null,
+                    IsSuccess = true,
+                });
+            }
+
+            var nav_logs = await context.view_ofpb_navlog.Where(q => q.RootId == ofp.Id).OrderBy(q => q.RootId).ThenBy(q => q.NavType).ThenBy(q => q.Id).ToListAsync();
+            var wts = await context.view_ofpb_wt.Where(q => q.OFPId == ofp.Id).OrderBy(q => q.OFPId).ThenBy(q => q.Type).ThenBy(q => q.Id).ToListAsync();
+
+
+
+            var ofp_obj = new  
+            {
+                ofp_id = ofp.Id,
+                flight_id = flightId,
+                root = ofp,
+                main_route = nav_logs.Where(q => q.NavType == "MAIN").ToList(),
+                alt1_route = nav_logs.Where(q => q.NavType == "ALT1").ToList(),
+                alt2_route = nav_logs.Where(q => q.NavType == "ALT2").ToList(),
+                main_wts = wts.Where(q => q.Type == "MAIN").ToList(),
+                alt1_wts = wts.Where(q => q.Type == "ALT1").ToList(),
+                alt2_wts = wts.Where(q => q.Type == "ALT2").ToList(),
+                to_wts = wts.Where(q => q.Type == "ALTTO").ToList(),
+                routes = nav_logs.ToList(),
+                wts = wts.ToList(),
+            };
+
+
+            return Ok(new DataResponse()
+            {
+                Data = ofp_obj,
+                Errors = null,
+                IsSuccess = true,
+            });
+
+
+        }
         public static object ChangeType(object value, Type conversion)
         {
             var t = conversion;
@@ -353,6 +404,22 @@ namespace ApiAPSB.Controllers
 
         }
 
+        public class _sync_navlog_item2
+        {
+            public int id { get; set; }
+            public string key { get; set; }
+            public string value { get; set; }
+            public string date_update { get; set; }
+             
+
+        }
+        public class _sync_navlog2
+        {
+            public string user { get; set; }
+            public List<_sync_navlog_item2> items { get; set; }
+
+        }
+
 
         public class _sync_root
         {
@@ -528,7 +595,79 @@ namespace ApiAPSB.Controllers
             public string cargo { get; set; }
             public Nullable<int> fuel_saved_actual { get; set; }
             public Nullable<int> payload_actual { get; set; }
+            
+            public string to_v1 { get; set; }
+            public string to_vr { get; set; }
+            public string to_v2 { get; set; }
+            public string to_temp { get; set; }
+            public string to_epr { get; set; }
+            public string to_flaps { get; set; }
+            public string to_stab { get; set; }
+            public string to_atis { get; set; }
+            public string ldg_vref { get; set; }
+            public string ldg_fas { get; set; }
+            public string ldg_vf { get; set; }
+            public string ldg_flaps { get; set; }
+            public string ldg_epr { get; set; }
+            public string ldg_atis { get; set; }
+            public string to_vf { get; set; }
+            public string to_tq { get; set; }
+            public string to_n1_redu { get; set; }
+            public string to_packs { get; set; }
+            public string to_n1_toga { get; set; }
+            public string ldg_vapp { get; set; }
+            public string ldg_vref15 { get; set; }
+            public string ldg_ga_n1 { get; set; }
+            public string ldg_ga_alt { get; set; }
 
+            public string MSN { get; set; }
+            public string AircraftType { get; set; }
+            public string AircraftSubType { get; set; }
+            public string ManeuveringTime { get; set; }
+            public string ManeuveringFuel { get; set; }
+            public string WeatherCycle { get; set; }
+            public string Warning1 { get; set; }
+            public string Warning2 { get; set; }
+            public string Warning3 { get; set; }
+            public string TripAverageWindComponent { get; set; }
+            public string TripAverageTempISA { get; set; }
+            public string TripLevel { get; set; }
+            public string Alternate1AverageWindComponent { get; set; }
+            public string Alternate1AverageTempISA { get; set; }
+            public string Alternate2AverageWindComponent { get; set; }
+            public string Alternate2AverageTempISA { get; set; }
+            public string firs_main { get; set; }
+            public Nullable<int> dis_maingcd { get; set; }
+
+
+            public string Alternate { get; set; }
+            public string AlternateEnroute { get; set; }
+            public string DestinationIATA { get; set; }
+            public string OriginIATA { get; set; }
+            public Nullable<int> TakeoffAlternateFlightLevel { get; set; }
+            public Nullable<int> time_final_reserve { get; set; }
+            public Nullable<int> time_taxi_in { get; set; }
+            public Nullable<int> time_taxi_out { get; set; }
+            public string AdditionalStr { get; set; }
+            public string AlternateStr { get; set; }
+            public string Alternate1Str { get; set; }
+            public string Alternate2Str { get; set; }
+            public string ContingencyStr { get; set; }
+            public string ExtraStr { get; set; }
+            public string HoldingStr { get; set; }
+            public string MinimumRequiredStr { get; set; }
+            public string TakeOffAlternateStr { get; set; }
+            public string TaxiInStr { get; set; }
+            public string TaxiOutStr { get; set; }
+            public string TotalStr { get; set; }
+            public string TripStr { get; set; }
+
+            public string Pilot1_FPFM { get; set; }
+            public string Pilot2_FPFM { get; set; }
+            public Nullable<int> fuel_remain_offblock { get; set; }
+            public Nullable<int> fuel_remain_takeoff { get; set; }
+            public Nullable<int> fuel_remain_landing { get; set; }
+            public Nullable<int> fuel_remain_onblock { get; set; }
 
         }
 
@@ -623,6 +762,31 @@ namespace ApiAPSB.Controllers
                     item.dow_actual = x.dow_actual;
 
 
+                    item.to_v1 = x.to_v1;
+                    item.to_vr = x.to_vr;
+                    item.to_v2 = x.to_v2;
+                    item.to_temp = x.to_temp;
+                    item.to_epr = x.to_epr;
+                    item.to_flaps = x.to_flaps;
+                    item.to_stab = x.to_stab;
+                    item.to_atis = x.to_atis;
+                    item.ldg_vref = x.ldg_vref;
+                    item.ldg_fas = x.ldg_fas;
+                    item.ldg_vf = x.ldg_vf;
+                    item.ldg_flaps = x.ldg_flaps;
+                    item.ldg_epr = x.ldg_epr;
+                    item.ldg_atis = x.ldg_atis;
+                    item.to_vf = x.to_vf;
+                    item.to_tq = x.to_tq;
+                    item.to_n1_redu = x.to_n1_redu;
+                    item.to_packs = x.to_packs;
+                    item.to_n1_toga = x.to_n1_toga;
+                    item.ldg_vapp = x.ldg_vapp;
+                    item.ldg_vref15 = x.ldg_vref15;
+                    item.ldg_ga_n1 = x.ldg_ga_n1;
+                    item.ldg_ga_alt = x.ldg_ga_alt;
+
+
 
 
                     context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-crew_cockpit", PropertyName = "crew_cockpit", PropValue = item.crew_cockpit != null ? item.crew_cockpit.ToString() : null, DateUpdate = dtupd, User = dto.user });
@@ -688,9 +852,32 @@ namespace ApiAPSB.Controllers
                     context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-cargo", PropertyName = "cargo", PropValue = item.cargo != null ? item.cargo.ToString() : null, DateUpdate = dtupd, User = dto.user });
                     context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-fuel_saved_actual", PropertyName = "fuel_saved_actual", PropValue = item.fuel_saved_actual != null ? item.fuel_saved_actual.ToString() : null, DateUpdate = dtupd, User = dto.user });
 
-                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-payload_actual", PropertyName = "payload_actual", PropValue = item.fuel_saved_actual != null ? item.payload_actual.ToString() : null, DateUpdate = dtupd, User = dto.user });
-                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-dow_actual", PropertyName = "dow_actual", PropValue = item.fuel_saved_actual != null ? item.payload_actual.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-payload_actual", PropertyName = "payload_actual", PropValue = item.payload_actual != null ? item.payload_actual.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-dow_actual", PropertyName = "dow_actual", PropValue = item.dow_actual != null ? item.dow_actual.ToString() : null, DateUpdate = dtupd, User = dto.user });
 
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-to_v1", PropertyName = "to_v1", PropValue = item.to_v1 != null ? item.to_v1.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-to_vr", PropertyName = "to_vr", PropValue = item.to_vr != null ? item.to_vr.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-to_v2", PropertyName = "to_v2", PropValue = item.to_v2 != null ? item.to_v2.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-to_temp", PropertyName = "to_temp", PropValue = item.to_temp != null ? item.to_temp.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-to_epr", PropertyName = "to_epr", PropValue = item.to_epr != null ? item.to_epr.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-to_flaps", PropertyName = "to_flaps", PropValue = item.to_flaps != null ? item.to_flaps.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-to_stab", PropertyName = "to_stab", PropValue = item.to_stab != null ? item.to_stab.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-to_atis", PropertyName = "to_atis", PropValue = item.to_atis != null ? item.to_atis.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-ldg_vref", PropertyName = "ldg_vref", PropValue = item.ldg_vref != null ? item.ldg_vref.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-ldg_fas", PropertyName = "ldg_fas", PropValue = item.ldg_fas != null ? item.ldg_fas.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-ldg_vf", PropertyName = "ldg_vf", PropValue = item.ldg_vf != null ? item.ldg_vf.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-ldg_flaps", PropertyName = "ldg_flaps", PropValue = item.ldg_flaps != null ? item.ldg_flaps.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-ldg_epr", PropertyName = "ldg_epr", PropValue = item.ldg_epr != null ? item.ldg_epr.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-ldg_atis", PropertyName = "ldg_atis", PropValue = item.ldg_atis != null ? item.ldg_atis.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-to_vf", PropertyName = "to_vf", PropValue = item.to_vf != null ? item.to_vf.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-to_tq", PropertyName = "to_tq", PropValue = item.to_tq != null ? item.to_tq.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-to_n1_redu", PropertyName = "to_n1_redu", PropValue = item.to_n1_redu != null ? item.to_n1_redu.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-to_packs", PropertyName = "to_packs", PropValue = item.to_packs != null ? item.to_packs.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-to_n1_toga", PropertyName = "to_n1_toga", PropValue = item.to_n1_toga != null ? item.to_n1_toga.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-ldg_vapp", PropertyName = "ldg_vapp", PropValue = item.ldg_vapp != null ? item.ldg_vapp.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-ldg_vref15", PropertyName = "ldg_vref15", PropValue = item.ldg_vref15 != null ? item.ldg_vref15.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-ldg_ga_n1", PropertyName = "ldg_ga_n1", PropValue = item.ldg_ga_n1 != null ? item.ldg_ga_n1.ToString() : null, DateUpdate = dtupd, User = dto.user });
+                    context.OFPB_Prop.Add(new OFPB_Prop() { OFPId = item.Id, PropName = "prop-root-ldg_ga_alt", PropertyName = "ldg_ga_alt", PropValue = item.ldg_ga_alt != null ? item.ldg_ga_alt.ToString() : null, DateUpdate = dtupd, User = dto.user });
 
 
                 }
@@ -705,10 +892,191 @@ namespace ApiAPSB.Controllers
 
         }
 
-
         [HttpPost]
         [Route("api/ofp/sync/nav")]
-        public async Task<DataResponse> SyncNavLog(/*int ofpId, string propName, string propValue, string user*/_sync_navlog dto)
+        public async Task<DataResponse> SyncNavLog(/*int ofpId, string propName, string propValue, string user*/_sync_navlog2 dto)
+        {
+            var context = new Models.dbEntities();
+            var keys = dto.items.Select(q => q.id).ToList();
+            var ofp_navs = await context.OFPB_MainNavLog.Where(q => keys.Contains(q.Id)).ToListAsync();
+            var dtupd = DateTime.UtcNow.ToString("yyyyMMddHHmmss");
+            foreach (var x in dto.items)
+            {
+                var item = ofp_navs.FirstOrDefault(q => q.Id == x.id);
+                if (item != null)
+                {
+                    switch (x.key)
+                    {
+                        case "ATA":
+                            item.ATA = x.value;
+                            context.OFPB_Prop.Add(new OFPB_Prop()
+                            {
+                                OFPId = (int)item.RootId,
+
+                                PropName = "prop-nav-ATA_" + item.Id,
+                                TableName = "OFPB_MainNavLog",
+                                PropertyName = "ATA",
+                                PropValue = x.value,
+                                DateUpdate = x.date_update,
+                                User = dto.user
+
+
+                            });
+                            break;
+                        case "FuelRemainedActual":
+                            item.FuelRemainedActual =string.IsNullOrEmpty(x.value)?null:(Nullable<int>) Convert.ToInt32( x.value);
+                            context.OFPB_Prop.Add(new OFPB_Prop()
+                            {
+                                OFPId = (int)item.RootId,
+
+                                PropName = "prop-nav-FuelRemainedActual_" + item.Id,
+                                TableName = "OFPB_MainNavLog",
+                                PropertyName = "FuelRemainedActual",
+                                PropValue = x.value,
+                                DateUpdate = x.date_update,
+                                User = dto.user
+
+
+                            });
+                            break;
+                        case "FuelUsedActual":
+                            item.FuelUsedActual = string.IsNullOrEmpty(x.value) ? null : (Nullable<int>)Convert.ToInt32(x.value);
+                            context.OFPB_Prop.Add(new OFPB_Prop()
+                            {
+                                OFPId = (int)item.RootId,
+
+                                PropName = "prop-nav-FuelUsedActual_" + item.Id,
+                                TableName = "OFPB_MainNavLog",
+                                PropertyName = "FuelUsedActual",
+                                PropValue = x.value,
+                                DateUpdate = x.date_update,
+                                User = dto.user
+
+
+                            });
+                            break;
+                        default:
+                            break;
+                    }
+                    //item.date_update = Convert.ToInt64(dtupd);
+                    //item.user_update = dto.user;
+
+                    //item.ETA = x.eta;
+                    //var prop1 = new OFPB_Prop()
+                    //{
+                    //    OFPId = (int)item.RootId,
+
+                    //    PropName = "prop-nav-ETA_" + item.Id,
+                    //    TableName = "OFPB_MainNavLog",
+                    //    PropertyName = "ETA",
+                    //    PropValue = x.eta,
+                    //    DateUpdate = dtupd,
+                    //    User = dto.user
+
+
+                    //};
+                    //context.OFPB_Prop.Add(prop1);
+
+                    //item.ATA = x.ata;
+                    //var prop2 = new OFPB_Prop()
+                    //{
+                    //    OFPId = (int)item.RootId,
+
+                    //    PropName = "prop-nav-ATA_" + item.Id,
+                    //    TableName = "OFPB_MainNavLog",
+                    //    PropertyName = "ATA",
+                    //    PropValue = x.ata,
+                    //    DateUpdate = dtupd,
+                    //    User = dto.user
+
+
+                    //};
+                    //context.OFPB_Prop.Add(prop2);
+
+
+                    //item.FuelRemainedActual = x.remained;
+                    //var prop3 = new OFPB_Prop()
+                    //{
+                    //    OFPId = (int)item.RootId,
+
+                    //    PropName = "prop-nav-FuelRemainedActual_" + item.Id,
+                    //    TableName = "OFPB_MainNavLog",
+                    //    PropertyName = "FuelRemainedActual",
+                    //    PropValue = x.remained == null ? "" : x.remained.ToString(),
+                    //    DateUpdate = dtupd,
+                    //    User = dto.user
+
+
+                    //};
+                    //context.OFPB_Prop.Add(prop3);
+
+                    //item.FuelUsedActual = x.used;
+                    //var prop4 = new OFPB_Prop()
+                    //{
+                    //    OFPId = (int)item.RootId,
+
+                    //    PropName = "prop-nav-FuelUsedActual_" + item.Id,
+                    //    TableName = "OFPB_MainNavLog",
+                    //    PropertyName = "FuelUsedActual",
+                    //    PropValue = x.used == null ? "" : x.used.ToString(),
+                    //    DateUpdate = dtupd,
+                    //    User = dto.user
+
+
+                    //};
+                    //context.OFPB_Prop.Add(prop4);
+
+
+
+
+
+
+                    //item.FuelRemained2 = x.remained2;
+                    //var prop5 = new OFPB_Prop()
+                    //{
+                    //    OFPId = (int)item.RootId,
+
+                    //    PropName = "prop-nav-FuelRemained2_" + item.Id,
+                    //    TableName = "OFPB_MainNavLog",
+                    //    PropertyName = "FuelRemained2",
+                    //    PropValue = x.remained2 == null ? "" : x.remained2.ToString(),
+                    //    DateUpdate = dtupd,
+                    //    User = dto.user
+
+
+                    //};
+                    //context.OFPB_Prop.Add(prop5);
+
+                    //item.FuelUsed2 = x.used2;
+                    //var prop6 = new OFPB_Prop()
+                    //{
+                    //    OFPId = (int)item.RootId,
+
+                    //    PropName = "prop-nav-FuelUsed2_" + item.Id,
+                    //    TableName = "OFPB_MainNavLog",
+                    //    PropertyName = "FuelUsed2",
+                    //    PropValue = x.used2 == null ? "" : x.used2.ToString(),
+                    //    DateUpdate = dtupd,
+                    //    User = dto.user
+
+
+                    //};
+                    //context.OFPB_Prop.Add(prop6);
+
+                }
+
+
+            }
+
+            var saveResult = await context.SaveChangesAsync();
+            return new DataResponse() { IsSuccess = true, Data = new { date_update = dtupd } };
+
+
+
+        }
+        [HttpPost]
+        [Route("api/ofp/sync/nav/old")]
+        public async Task<DataResponse> SyncNavLogOLD(/*int ofpId, string propName, string propValue, string user*/_sync_navlog dto)
         {
             var context = new Models.dbEntities();
             var keys = dto.items.Select(q => q.id).ToList();
@@ -964,6 +1332,100 @@ namespace ApiAPSB.Controllers
 
 
         }
+
+        public class ofp_update_dto
+        {
+            public int? OFPId { get; set; }
+            public string PropName { get; set; }
+            public string PropValue { get; set; }
+            public string User { get; set; }
+            public string date_update { get; set; }
+
+        }
+        [HttpPost]
+        [Route("api/ofp/update/sync")]
+        public async Task<DataResponse> UpdateOFPSync(/*int ofpId, string propName, string propValue, string user*/List<ofp_update_dto> dtos)
+        {
+            try
+            {
+                var context = new Models.dbEntities();
+                var ofpids = dtos.Select(q => (int)q.OFPId).ToList();
+                var ofp_roots = await context.OFPB_Root.Where(q => ofpids.Contains(q.Id)).ToListAsync();
+
+                foreach (var dto in  dtos)
+                {
+                    var ofp_root = ofp_roots.FirstOrDefault(q => q.Id == dto.OFPId);
+                    if (ofp_root != null)
+                    {
+                        int ofpId = Convert.ToInt32(dto.OFPId);
+                        string propName = Convert.ToString(dto.PropName);
+                        string propValue = Convert.ToString(dto.PropValue);
+                        string user = Convert.ToString(dto.User);
+                        Int64 date_update = Convert.ToInt64(dto.date_update);
+
+
+                        var property = propName.Split('-')[2];
+
+
+                        var prop = new OFPB_Prop()
+                        {
+                            OFPId = ofpId,
+
+                            PropName = propName,
+                            TableName = "OFPB_Root",
+                            PropertyName = property,
+                            DateUpdate = date_update.ToString()
+
+
+                        };
+
+
+                        //prop.DateUpdate = DateTime.UtcNow.ToString("yyyyMMddHHmmss");
+                        if (!string.IsNullOrEmpty(propValue.Trim().Replace(" ", "")))
+                            prop.PropValue = propValue;
+                        prop.User = user;
+                        context.OFPB_Prop.Add(prop);
+
+
+                        Type type = ofp_root.GetType();
+
+                        PropertyInfo propinfo = type.GetProperty(property);
+                        if (string.IsNullOrEmpty(propValue))
+                        {
+                            propinfo.SetValue(ofp_root, null, null);
+                        }
+                        else
+                        {
+                            var val = ChangeType(propValue, propinfo.PropertyType);
+
+                            propinfo.SetValue(ofp_root, val, null);
+                        }
+                        ofp_root.date_update = date_update;//Convert.ToInt64(prop.DateUpdate);
+                        ofp_root.user_update = user;
+                    }
+
+                }
+
+                var saveResult = await context.SaveChangesAsync();
+                return new DataResponse() { IsSuccess = true, Data = new { date_update=0 } };
+
+ 
+
+
+            }
+            catch (Exception ex)
+            {
+                var mes = ex.Message;
+                if (ex.InnerException != null)
+                    mes += "    " + ex.InnerException.Message;
+                return new DataResponse() { IsSuccess = false, Errors = new List<string>() { mes } };
+            }
+
+
+
+
+        }
+
         [HttpPost]
         [Route("api/ofp/update")]
         public async Task<DataResponse> UpdateOFP(/*int ofpId, string propName, string propValue, string user*/dynamic dto)
@@ -974,6 +1436,7 @@ namespace ApiAPSB.Controllers
                 string propName = Convert.ToString(dto.PropName);
                 string propValue = Convert.ToString(dto.PropValue);
                 string user = Convert.ToString(dto.User);
+                Int64 date_update = Convert.ToInt64(dto.date_update);
                 var context = new Models.dbEntities();
 
                 var property = propName.Split('-')[2];
@@ -1000,12 +1463,13 @@ namespace ApiAPSB.Controllers
                     PropName = propName,
                     TableName = table,
                     PropertyName = property,
+                     DateUpdate= date_update.ToString()
 
 
                 };
 
 
-                prop.DateUpdate = DateTime.UtcNow.ToString("yyyyMMddHHmmss");
+                //prop.DateUpdate = DateTime.UtcNow.ToString("yyyyMMddHHmmss");
                 if (!string.IsNullOrEmpty(propValue.Trim().Replace(" ", "")))
                     prop.PropValue = propValue;
                 prop.User = user;
@@ -1031,7 +1495,7 @@ namespace ApiAPSB.Controllers
 
                             propinfo.SetValue(ofp_nav, val, null);
                         }
-                        ofp_nav.date_update = Convert.ToInt64(prop.DateUpdate);
+                        ofp_nav.date_update = date_update; //Convert.ToInt64(prop.DateUpdate);
                         ofp_nav.user_update = user;
                     }
                     var saveResult = await context.SaveChangesAsync();
@@ -1056,7 +1520,7 @@ namespace ApiAPSB.Controllers
 
                             propinfo.SetValue(ofp_root, val, null);
                         }
-                        ofp_root.date_update = Convert.ToInt64(prop.DateUpdate);
+                        ofp_root.date_update = date_update;//Convert.ToInt64(prop.DateUpdate);
                         ofp_root.user_update = user;
                     }
                     var saveResult = await context.SaveChangesAsync();

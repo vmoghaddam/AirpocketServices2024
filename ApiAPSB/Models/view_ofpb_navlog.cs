@@ -49,5 +49,9 @@ namespace ApiAPSB.Models
         public string user_update { get; set; }
         public Nullable<int> FuelRemained2 { get; set; }
         public Nullable<int> FuelUsed2 { get; set; }
+        public Nullable<int> CumulativeFuel { get; set; }
+        public string Direction { get; set; }
+        public string WindComponent { get; set; }
+        public Nullable<int> ZoneFuel { get; set; }
     }
 }
