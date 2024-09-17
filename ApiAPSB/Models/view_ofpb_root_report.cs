@@ -66,8 +66,13 @@ namespace ApiAPSB.Models
         public Nullable<int> FlightID { get; set; }
         public Nullable<System.DateTime> DateCreate { get; set; }
         public Nullable<System.DateTime> DateSign { get; set; }
+        public Nullable<System.DateTime> JLDatePICApproved { get; set; }
         public Nullable<int> SignedbyId { get; set; }
         public string SignedbyLICL { get; set; }
+        public string JLSignedBy { get; set; }
+        public string PIC { get; set; }
+        public Nullable<int> PICId { get; set; }
+        public string LicNo { get; set; }
         public Nullable<int> RawOFPId { get; set; }
         public string MaxWindShearLevel { get; set; }
         public string MaxWindShearPointName { get; set; }

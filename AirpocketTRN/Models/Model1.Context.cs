@@ -97,5 +97,6 @@ namespace AirpocketTRN.Models
         public virtual DbSet<ViewCourseTypeApplicable> ViewCourseTypeApplicables { get; set; }
         public virtual DbSet<Person> People { get; set; }
         public virtual DbSet<C_view_trncard> C_view_trncard { get; set; }
+        public virtual DbSet<view_trn_expiring> view_trn_expiring { get; set; }
     }
 }

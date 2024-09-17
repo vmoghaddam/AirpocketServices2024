@@ -188,7 +188,11 @@ namespace ApiReportFlight.Controllers
                 foreach (var rec in nofdps)
                 {
                     if (rec.DutyTypeTitle == "StandBy")
+                    {
                         crew.Standby += rec.Count;
+                        crew.StandbyFixTime += rec.Count * 120;
+                       
+                    }
                     if (rec.DutyTypeTitle == "STBY-PM")
                         crew.StandbyPM += rec.Count;
                     if (rec.DutyTypeTitle == "STBY-AM")
@@ -2014,7 +2018,7 @@ namespace ApiReportFlight.Controllers
                             _query_x = _query_x.Where(q => q.JobGroup == "CCM");
                             break;
                         case "CABIN":
-                            _query_x = _query_x.Where(q => ds_cabin.Contains(q.JobGroup)  );
+                            _query_x = _query_x.Where(q => ds_cabin.Contains(q.JobGroup));
                             break;
                         case "ALL":
                             //_query_x = _query_x.Where(q => ds_cockpit.IndexOf(q.JobGroup) != -1);
@@ -2031,7 +2035,7 @@ namespace ApiReportFlight.Controllers
                                //from x in ctx.ViewLegCrews
                                //where x.STDLocal >= df && x.STDLocal < dt && x.FlightStatusID != 4
                                from x in _query_x
-                               group x by new { x.CrewId, x.ScheduleName, x.JobGroup, x.JobGroupCode, x.Name, x.PID, x.ValidTypes, x.BaseAirport, x.BaseAirportId,x.FlightPlanId } into _grp
+                               group x by new { x.CrewId, x.ScheduleName, x.JobGroup, x.JobGroupCode, x.Name, x.PID, x.ValidTypes, x.BaseAirport, x.BaseAirportId, x.FlightPlanId } into _grp
                                select new FlightTimeDto()
                                {
                                    CrewId = _grp.Key.CrewId,
@@ -2051,7 +2055,7 @@ namespace ApiReportFlight.Controllers
                                    JLFlightTime = _grp.Sum(q => q.JL_FlightTime),
                                    JLBlockTime = _grp.Sum(q => q.JL_BlockTime),
                                    FixTime = _grp.Sum(q => q.FixTime),
-                                    OA=_grp.Key.FlightPlanId
+                                   OA = _grp.Key.FlightPlanId
                                }
                               ).ToList();
                 foreach (var x in _query)

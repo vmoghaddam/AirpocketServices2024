@@ -8,10 +8,24 @@ namespace AirpocketTRN
 {
     public class Magfa
     {
-        public string username = "varesh_85972"; // "flypersia_48000";
-        public  string password = "oJTyaWoLnQycrfdX"; //"YYDWMU5BAJQQHCuG";
-        public string domain = "magfa";
-        public string senderNumber = "300085972"; //"300048000";
+
+        //      <add key = "magfa_user" value="airone_74086!!!" />
+        //<add key = "magfa_pass" value="LWHK4STALDCG3tSU" />
+        //<add key = "magfa_no" value="300074086" />
+
+
+        //public string username = "varesh_85972"; // "flypersia_48000";
+        //public  string password = "oJTyaWoLnQycrfdX"; //"YYDWMU5BAJQQHCuG";
+        //public string domain = "magfa";
+        //public string senderNumber = "300085972"; //"300048000";
+
+
+        public string username = "airone_74086"; // "flypersia_48000";
+        public string password = "12345678@"; //"YYDWMU5BAJQQHCuG";
+        public string domain = "massaging.magfa.com";
+        public string senderNumber = "300074086"; //"300048000";
+
+
         public long[] enqueue(int count, String recipientNumber, String text)
         {
             try

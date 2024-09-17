@@ -1218,6 +1218,38 @@ warning 6002: The table/view 'ppa_varesh.dbo.SumMandatoryCourseExpired' does not
           <Property Name="CNT" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.view_trn_expiring' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_trn_expiring">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="PersonId" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="500" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="500" />
+          <Property Name="JobGroup" Type="nvarchar" MaxLength="500" />
+          <Property Name="JobGroupRoot" Type="nvarchar" MaxLength="500" />
+          <Property Name="Identifier" Type="varchar" MaxLength="255" />
+          <Property Name="ODateIssue" Type="datetime2" Precision="7" />
+          <Property Name="ODateExpire" Type="datetime2" Precision="7" />
+          <Property Name="ORemain" Type="int" />
+          <Property Name="DateExpire" Type="datetime2" Precision="7" />
+          <Property Name="Remain" Type="int" />
+          <Property Name="PersonId" Type="int" Nullable="false" />
+          <Property Name="CertificateType" Type="varchar" MaxLength="255" />
+          <Property Name="TypeId" Type="int" />
+          <Property Name="TypeIdL2" Type="int" />
+          <Property Name="TypeIdL3" Type="int" />
+          <Property Name="Mobile" Type="nvarchar" MaxLength="500" />
+          <Property Name="JobGroupId" Type="int" />
+          <Property Name="JobGroupParentId" Type="int" />
+          <Property Name="JobGroupCode" Type="varchar" MaxLength="500" />
+          <Property Name="JobGroupCode2" Type="varchar" MaxLength="500" />
+          <Property Name="JobGroupMainCode" Type="varchar" MaxLength="500" />
+          <Property Name="JobGroupMain" Type="nvarchar" MaxLength="500" />
+          <Property Name="JobGroupMainId" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.ViewCertificateHistory' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewCertificateHistory">
           <Key>
@@ -2412,6 +2444,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewEmployee' does not have a prima
           <Property Name="JobGroupParentId" Type="int" />
           <Property Name="Type737ExpireDate" Type="datetime2" Precision="7" />
           <Property Name="TypeMDExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="LicNo" Type="nvarchar" MaxLength="200" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.ViewEmployeeAbs' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -4018,6 +4051,34 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
     [SumMandatoryCourseExpired].[CNT] AS [CNT]
     FROM [dbo].[SumMandatoryCourseExpired] AS [SumMandatoryCourseExpired]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="view_trn_expiring" EntityType="Self.view_trn_expiring" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_trn_expiring].[Id] AS [Id], 
+    [view_trn_expiring].[LastName] AS [LastName], 
+    [view_trn_expiring].[FirstName] AS [FirstName], 
+    [view_trn_expiring].[JobGroup] AS [JobGroup], 
+    [view_trn_expiring].[JobGroupRoot] AS [JobGroupRoot], 
+    [view_trn_expiring].[Identifier] AS [Identifier], 
+    [view_trn_expiring].[ODateIssue] AS [ODateIssue], 
+    [view_trn_expiring].[ODateExpire] AS [ODateExpire], 
+    [view_trn_expiring].[ORemain] AS [ORemain], 
+    [view_trn_expiring].[DateExpire] AS [DateExpire], 
+    [view_trn_expiring].[Remain] AS [Remain], 
+    [view_trn_expiring].[PersonId] AS [PersonId], 
+    [view_trn_expiring].[CertificateType] AS [CertificateType], 
+    [view_trn_expiring].[TypeId] AS [TypeId], 
+    [view_trn_expiring].[TypeIdL2] AS [TypeIdL2], 
+    [view_trn_expiring].[TypeIdL3] AS [TypeIdL3], 
+    [view_trn_expiring].[Mobile] AS [Mobile], 
+    [view_trn_expiring].[JobGroupId] AS [JobGroupId], 
+    [view_trn_expiring].[JobGroupParentId] AS [JobGroupParentId], 
+    [view_trn_expiring].[JobGroupCode] AS [JobGroupCode], 
+    [view_trn_expiring].[JobGroupCode2] AS [JobGroupCode2], 
+    [view_trn_expiring].[JobGroupMainCode] AS [JobGroupMainCode], 
+    [view_trn_expiring].[JobGroupMain] AS [JobGroupMain], 
+    [view_trn_expiring].[JobGroupMainId] AS [JobGroupMainId]
+    FROM [dbo].[view_trn_expiring] AS [view_trn_expiring]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="ViewCertificateHistory" EntityType="Self.ViewCertificateHistory" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [ViewCertificateHistory].[Id] AS [Id], 
@@ -4967,7 +5028,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
     [ViewEmployee].[JobGroupId] AS [JobGroupId], 
     [ViewEmployee].[JobGroupParentId] AS [JobGroupParentId], 
     [ViewEmployee].[Type737ExpireDate] AS [Type737ExpireDate], 
-    [ViewEmployee].[TypeMDExpireDate] AS [TypeMDExpireDate]
+    [ViewEmployee].[TypeMDExpireDate] AS [TypeMDExpireDate], 
+    [ViewEmployee].[LicNo] AS [LicNo]
     FROM [dbo].[ViewEmployee] AS [ViewEmployee]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ViewEmployeeAbs" EntityType="Self.ViewEmployeeAbs" store:Type="Views" store:Schema="dbo">
@@ -6128,6 +6190,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
             <End Role="Teacher" EntitySet="Teachers" />
           </AssociationSet>
           <EntitySet Name="C_view_trncard" EntityType="FLYModel.C_view_trncard" />
+          <EntitySet Name="view_trn_expiring" EntityType="FLYModel.view_trn_expiring" />
           </EntityContainer>
         <EntityType Name="ViewLegTime">
           <Key>
@@ -7476,6 +7539,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <Property Name="JobGroupParentId" Type="Int32" />
           <Property Name="Type737ExpireDate" Type="DateTime" Precision="7" />
           <Property Name="TypeMDExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="LicNo" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="GRPGroupsCourseTypeExpiring">
           <Key>
@@ -9878,6 +9942,36 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <Property Name="interval_month" Type="Int32" />
           <Property Name="Remain" Type="Int32" />
         </EntityType>
+        <EntityType Name="view_trn_expiring">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="PersonId" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="JobGroup" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="JobGroupRoot" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Identifier" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ODateIssue" Type="DateTime" Precision="7" />
+          <Property Name="ODateExpire" Type="DateTime" Precision="7" />
+          <Property Name="ORemain" Type="Int32" />
+          <Property Name="DateExpire" Type="DateTime" Precision="7" />
+          <Property Name="Remain" Type="Int32" />
+          <Property Name="PersonId" Type="Int32" Nullable="false" />
+          <Property Name="CertificateType" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="TypeId" Type="Int32" />
+          <Property Name="TypeIdL2" Type="Int32" />
+          <Property Name="TypeIdL3" Type="Int32" />
+          <Property Name="Mobile" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="JobGroupId" Type="Int32" />
+          <Property Name="JobGroupParentId" Type="Int32" />
+          <Property Name="JobGroupCode" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="JobGroupCode2" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="JobGroupMainCode" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="JobGroupMain" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="JobGroupMainId" Type="Int32" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -10711,6 +10805,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <EntitySetMapping Name="ViewEmployees">
             <EntityTypeMapping TypeName="FLYModel.ViewEmployee">
               <MappingFragment StoreEntitySet="ViewEmployee">
+                <ScalarProperty Name="LicNo" ColumnName="LicNo" />
                 <ScalarProperty Name="TypeMDExpireDate" ColumnName="TypeMDExpireDate" />
                 <ScalarProperty Name="Type737ExpireDate" ColumnName="Type737ExpireDate" />
                 <ScalarProperty Name="JobGroupParentId" ColumnName="JobGroupParentId" />
@@ -12961,6 +13056,36 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
                 <ScalarProperty Name="first_name" ColumnName="first_name" />
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="profile_id" ColumnName="profile_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_trn_expiring">
+            <EntityTypeMapping TypeName="FLYModel.view_trn_expiring">
+              <MappingFragment StoreEntitySet="view_trn_expiring">
+                <ScalarProperty Name="JobGroupMainId" ColumnName="JobGroupMainId" />
+                <ScalarProperty Name="JobGroupMain" ColumnName="JobGroupMain" />
+                <ScalarProperty Name="JobGroupMainCode" ColumnName="JobGroupMainCode" />
+                <ScalarProperty Name="JobGroupCode2" ColumnName="JobGroupCode2" />
+                <ScalarProperty Name="JobGroupCode" ColumnName="JobGroupCode" />
+                <ScalarProperty Name="JobGroupParentId" ColumnName="JobGroupParentId" />
+                <ScalarProperty Name="JobGroupId" ColumnName="JobGroupId" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="TypeIdL3" ColumnName="TypeIdL3" />
+                <ScalarProperty Name="TypeIdL2" ColumnName="TypeIdL2" />
+                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+                <ScalarProperty Name="CertificateType" ColumnName="CertificateType" />
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="Remain" ColumnName="Remain" />
+                <ScalarProperty Name="DateExpire" ColumnName="DateExpire" />
+                <ScalarProperty Name="ORemain" ColumnName="ORemain" />
+                <ScalarProperty Name="ODateExpire" ColumnName="ODateExpire" />
+                <ScalarProperty Name="ODateIssue" ColumnName="ODateIssue" />
+                <ScalarProperty Name="Identifier" ColumnName="Identifier" />
+                <ScalarProperty Name="JobGroupRoot" ColumnName="JobGroupRoot" />
+                <ScalarProperty Name="JobGroup" ColumnName="JobGroup" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

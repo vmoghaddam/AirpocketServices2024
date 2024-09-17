@@ -12,7 +12,7 @@ namespace ApiAPSB.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class view_ofpb_root
+    public partial class view_ofbb_root_actual
     {
         public int Id { get; set; }
         public string ReferenceNo { get; set; }
@@ -73,6 +73,12 @@ namespace ApiAPSB.Models
         public string PIC { get; set; }
         public Nullable<int> PICId { get; set; }
         public string LicNo { get; set; }
+        public Nullable<int> zfw_actual { get; set; }
+        public string actual_fob { get; set; }
+        public string actual_burn { get; set; }
+        public Nullable<int> tow_actual { get; set; }
+        public Nullable<int> txw_actual { get; set; }
+        public Nullable<int> lgw_actual { get; set; }
         public Nullable<int> RawOFPId { get; set; }
         public string MaxWindShearLevel { get; set; }
         public string MaxWindShearPointName { get; set; }
@@ -125,12 +131,6 @@ namespace ApiAPSB.Models
         public string crew_fm { get; set; }
         public string crew_dh { get; set; }
         public string fuel_total_corr { get; set; }
-        public string fuel_total_actual { get; set; }
-        public string fuel_used_actual { get; set; }
-        public string fuel_remain_actual { get; set; }
-        public string zfw_actual { get; set; }
-        public string tow_actual { get; set; }
-        public string lgw_actual { get; set; }
         public string clear { get; set; }
         public string atis_dep1 { get; set; }
         public string atis_dep2 { get; set; }
@@ -182,9 +182,32 @@ namespace ApiAPSB.Models
         public string pax_infant { get; set; }
         public string sob { get; set; }
         public string cargo { get; set; }
-        public Nullable<int> fuel_saved_actual { get; set; }
         public Nullable<int> payload_actual { get; set; }
         public string dow_actual { get; set; }
+        public string fuel_total_actual { get; set; }
+        public string fuel_used_actual { get; set; }
+        public string fuel_remain_actual { get; set; }
+        public string fuel_saved_actual { get; set; }
+        public Nullable<int> time_saved { get; set; }
+        public Nullable<System.DateTime> STDDay { get; set; }
+        public Nullable<System.DateTime> STD { get; set; }
+        public Nullable<System.DateTime> STA { get; set; }
+        public Nullable<System.DateTime> BlockOn { get; set; }
+        public Nullable<System.DateTime> BlockOff { get; set; }
+        public Nullable<System.DateTime> TakeOff { get; set; }
+        public Nullable<System.DateTime> Landing { get; set; }
+        public Nullable<int> FlightTime { get; set; }
+        public Nullable<int> BlockTime { get; set; }
+        public string FromAirportIATA { get; set; }
+        public string ToAirportIATA { get; set; }
+        public string Register { get; set; }
+        public string AircraftType { get; set; }
+        public Nullable<int> Freight { get; set; }
+        public Nullable<int> PaxAdult { get; set; }
+        public Nullable<int> PaxChild { get; set; }
+        public Nullable<int> PaxInfant { get; set; }
+        public Nullable<int> PaxMale { get; set; }
+        public Nullable<int> PaxFemale { get; set; }
         public string to_v1 { get; set; }
         public string to_vr { get; set; }
         public string to_v2 { get; set; }
@@ -208,11 +231,8 @@ namespace ApiAPSB.Models
         public string ldg_vref15 { get; set; }
         public string ldg_ga_n1 { get; set; }
         public string ldg_ga_alt { get; set; }
-        public string MSN { get; set; }
-        public string AircraftType { get; set; }
+        public int MSN { get; set; }
         public string AircraftSubType { get; set; }
-        public string ManeuveringTime { get; set; }
-        public string ManeuveringFuel { get; set; }
         public string WeatherCycle { get; set; }
         public string Warning1 { get; set; }
         public string Warning2 { get; set; }
@@ -249,9 +269,29 @@ namespace ApiAPSB.Models
         public string TripStr { get; set; }
         public string Pilot1_FPFM { get; set; }
         public string Pilot2_FPFM { get; set; }
+        public string Pilot_PM { get; set; }
+        public string Pilot_PF { get; set; }
         public Nullable<int> fuel_remain_offblock { get; set; }
         public Nullable<int> fuel_remain_takeoff { get; set; }
         public Nullable<int> fuel_remain_landing { get; set; }
         public Nullable<int> fuel_remain_onblock { get; set; }
+        public string ManeuveringTime { get; set; }
+        public string ManeuveringFuel { get; set; }
+        public string ATA { get; set; }
+        public string ETA { get; set; }
+        public string main_log_final_arr_time { get; set; }
+        public Nullable<int> pln_fuel_offblock { get; set; }
+        public string act_fuel_offblock { get; set; }
+        public Nullable<int> pln_fuel_takeoff { get; set; }
+        public Nullable<int> act_fuel_takeoff { get; set; }
+        public Nullable<int> pln_fuel_landing { get; set; }
+        public Nullable<int> act_fuel_landing { get; set; }
+        public Nullable<decimal> act_fuel_onblock { get; set; }
+        public Nullable<int> pln_fuel_used_flight { get; set; }
+        public Nullable<int> act_fuel_used_flight { get; set; }
+        public Nullable<int> pln_fuel_used_block { get; set; }
+        public Nullable<decimal> act_fuel_used_block { get; set; }
+        public Nullable<decimal> FuelTotal { get; set; }
+        public Nullable<decimal> FuelUsed { get; set; }
     }
 }

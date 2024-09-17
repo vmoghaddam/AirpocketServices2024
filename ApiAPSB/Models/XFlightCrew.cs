@@ -37,5 +37,6 @@ namespace ApiAPSB.Models
         public string Code { get; set; }
         public Nullable<System.DateTime> DateConfirmed { get; set; }
         public Nullable<bool> IsConfirmed { get; set; }
+        public string MainGroup { get; set; }
     }
 }

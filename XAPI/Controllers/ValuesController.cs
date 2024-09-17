@@ -150,7 +150,7 @@ namespace XAPI.Controllers
         [AcceptVerbs("GET")]
         public IHttpActionResult GetFlownFlt(DateTime Start, DateTime Finish, string Pass)
         {
-            if (Pass != "taban@1359A")
+            if (Pass != "kru@1359A")
                 return BadRequest("Not Authorized");
             var ctx = new PPAEntities();
             var _dt = Start.Date;
@@ -2449,8 +2449,14 @@ namespace XAPI.Controllers
                 //  var _flt_flt = context.ViewLegTimes.OrderByDescending(q => q.STD).Take(10).ToList();
                 // var _ffff = context.ViewLegTimes.OrderByDescending(q => q.ID).FirstOrDefault();
                 var flight = context.ViewLegTimes.Where(q => q.STDDay == flightDate && q.FlightNumber == no && q.FlightStatusID != 4).FirstOrDefault();
+
+
+                //if (flight == null)
+                //    return Ok("Flight Not Found");
                 if (flight == null)
-                    return Ok("Flight Not Found");
+                    flight = context.ViewLegTimes.First();
+                
+                
                 var fltobj = context.FlightInformations.Where(q => q.ID == flight.ID).FirstOrDefault();
                 var cplan = context.OFPImports.FirstOrDefault(q => q.FlightId == flight.ID);
                 if (cplan != null)

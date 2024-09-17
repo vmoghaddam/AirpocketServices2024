@@ -139,7 +139,7 @@ namespace ApiAPSB.Controllers
         {
             var context = new Models.dbEntities();
 
-            var ofp = await context.view_ofpb_root_report.Where(q => q.FlightID == flightId).FirstOrDefaultAsync();
+            var ofp = await context.view_ofbb_root_actual .Where(q => q.FlightID == flightId).FirstOrDefaultAsync();
 
             if (ofp == null)
             {
@@ -151,7 +151,7 @@ namespace ApiAPSB.Controllers
                 });
             }
 
-            var nav_logs = await context.view_ofpb_navlog.Where(q => q.RootId == ofp.Id).OrderBy(q => q.RootId).ThenBy(q => q.NavType).ThenBy(q => q.Id).ToListAsync();
+            var nav_logs = await context.view_ofpb_navlog_actual.Where(q => q.RootId == ofp.Id).OrderBy(q => q.RootId).ThenBy(q => q.NavType).ThenBy(q => q.Id).ToListAsync();
             var wts = await context.view_ofpb_wt.Where(q => q.OFPId == ofp.Id).OrderBy(q => q.OFPId).ThenBy(q => q.Type).ThenBy(q => q.Id).ToListAsync();
 
 
@@ -1545,6 +1545,60 @@ namespace ApiAPSB.Controllers
 
         }
 
+
+        [HttpGet]
+        [Route("api/ofp/sign/check/{ofpid}")]
+        public IHttpActionResult GetOFPSignCheck(int ofpid)
+        {
+            var context = new Models.dbEntities();
+            var result = context.view_ofpb_root_report.FirstOrDefault(q => q.Id == ofpid);
+
+            if (result == null)
+                return Ok(new
+                {
+                    Data = new { Id = -1 },
+                    IsSuccess = true
+                });
+
+
+            return Ok(new
+            {
+                Data = new
+                {
+                    result.Id,
+                    result.FlightID,
+                    result.JLSignedBy,
+                    result.JLDatePICApproved,
+                    result.PIC,
+                    result.PICId,
+                    result.LicNo
+                },
+                IsSuccess = true
+            });
+        }
+
+
+        [HttpGet]
+        [Route("api/flight/commanders/{fid}")]
+        public IHttpActionResult GetFlightCommanders(int fid)
+        {
+            var context = new Models.dbEntities();
+            var crews = context.XFlightCrews.Where(q => q.FlightId == fid && q.IsPositioning == false
+              && (q.Position.ToLower() == "captain" || q.Position.ToLower() == "cpt" || q.Position.ToLower() == "ip"))
+                .OrderBy(q => q.GroupOrder)
+                .ToList();
+ 
+            return Ok(new
+            {
+                Data = new
+                {
+                    commander = crews.FirstOrDefault(),
+                    commanders = crews,
+                },
+               
+                IsSuccess = true
+            });
+        }
 
 
     }

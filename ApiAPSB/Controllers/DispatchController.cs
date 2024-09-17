@@ -1648,11 +1648,9 @@ namespace ApiAPSB.Controllers
             }
 
         }
-
-
-        [Route("api/sign/ofps/new")]
+        [Route("api/sign/ofps/new/old")]
         [AcceptVerbs("Post")]
-        public IHttpActionResult PostSIGNOfps(dto_sign dto)
+        public IHttpActionResult PostSIGNOfps_old(dto_sign dto)
         {
             try
             {
@@ -1701,6 +1699,86 @@ namespace ApiAPSB.Controllers
                         JLSignedBy = ofp.JLSignedBy,
                         PIC = ofp.PIC,
                         PICId = (int)ofp.PICId
+                    });
+
+                }
+
+                var flights = context.FlightInformations.Where(q => fids2.Contains(q.ID)).ToList();
+                foreach (var flt in flights)
+                {
+                    flt.JLSignedBy = employee != null ? employee.Name : lic_no;
+                    flt.JLDatePICApproved = DateTime.UtcNow;
+                }
+
+                context.SaveChanges();
+                return Ok(new DataResponse() { IsSuccess = true, Data = sgn_result });
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += "   INNER: " + ex.InnerException.Message;
+                return Ok(new DataResponse() { IsSuccess = false, Messages = new List<string>() { msg } });
+            }
+
+        }
+
+        [Route("api/sign/ofps/new")]
+        [AcceptVerbs("Post")]
+        public IHttpActionResult PostSIGNOfps(dto_sign dto)
+        {
+            try
+            {
+                var context = new Models.dbEntities();
+
+                var fids = Convert.ToString(dto.flight_id_str).Split('_').Select(q => (Nullable<int>)Convert.ToInt32(q)).ToList();
+                var fids2 = Convert.ToString(dto.flight_id_str).Split('_').Select(q => Convert.ToInt32(q)).ToList();
+
+
+                string lic_no = Convert.ToString(dto.lic_no);
+                string userid = Convert.ToString(dto.user_id);
+
+
+
+                var employee = context.ViewEmployees.Where(q => q.UserId == userid).FirstOrDefault();
+                if (employee != null)
+                {
+                    if (!employee.NDTNumber.ToLower().Contains(lic_no.ToLower()))
+                    {
+
+                        return Ok(new DataResponse() { IsSuccess = false, Messages = new List<string>() { "The license number is wrong." } });
+                    }
+                }
+                else
+                {
+                    if (lic_no.ToLower() != "lic4806")
+                    {
+                        return Ok(new DataResponse() { IsSuccess = false, Messages = new List<string>() { "The license number is wrong." } });
+                    }
+                }
+
+                List<sgn_ofp_result> sgn_result = new List<sgn_ofp_result>();
+                //var ofps = context.OFPImports.Where(q => fids.Contains(q.FlightId)).ToList();
+                var ofps = context.OFPB_Root.Where(q => fids.Contains(q.FlightID)).ToList();
+                foreach (var ofp in ofps)
+                {
+                    ofp.DateSign= DateTime.UtcNow;
+                    ofp.SignedbyId= employee != null? (Nullable<int>) employee.Id :null;
+
+
+                    //ofp.PIC = employee != null ? employee.Name : lic_no;
+                    //ofp.PICId = employee.Id;
+                    //ofp.JLDatePICApproved = DateTime.UtcNow;
+                    //ofp.JLSignedBy = lic_no;
+
+                    sgn_result.Add(new sgn_ofp_result()
+                    {
+                        FlightId = (int)ofp.FlightID,
+                        Id = ofp.Id,
+                        JLDatePICApproved = (DateTime)ofp.DateSign, //ofp.JLDatePICApproved,
+                        JLSignedBy =employee.Name, //ofp.JLSignedBy,
+                        PIC = employee.Name, //ofp.PIC,
+                        PICId = (int)ofp.SignedbyId, //ofp.PICId
                     });
 
                 }
@@ -1993,7 +2071,7 @@ namespace ApiAPSB.Controllers
 
         }
 
-
+        //09-09
         [Route("api/pic/vr/sign/new")]
         [AcceptVerbs("Post")]
         public IHttpActionResult PostVRPICSIGNNew(dto_sign dto)
@@ -2142,9 +2220,9 @@ namespace ApiAPSB.Controllers
             }
 
         }
-        [Route("api/ofps/validate/{fids}")]
+        [Route("api/ofps/validate/old/{fids}")]
         [AcceptVerbs("GET")]
-        public IHttpActionResult ValidateOFPs(string fids)
+        public IHttpActionResult ValidateOFPs_OLD(string fids)
         {
             List<_h_error> errors = new List<_h_error>();
             var rvsm_check = true;
@@ -2383,6 +2461,138 @@ namespace ApiAPSB.Controllers
 
 
                 }
+
+
+
+                return Ok(new DataResponse()
+                {
+                    Data = errors,
+                    IsSuccess = true,
+                    Messages = _msgs
+
+                });
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += " INNER:" + ex.InnerException.Message;
+
+                return Ok(new DataResponse()
+                {
+                    Data = new List<_h_error>() { new _h_error() { other = msg, flight_no = "-", } },
+                    IsSuccess = true
+
+                });
+            }
+        }
+
+
+
+        [Route("api/ofps/validate/{fids}")]
+        [AcceptVerbs("GET")]
+        public IHttpActionResult ValidateOFPs(string fids)
+        {
+            List<_h_error> errors = new List<_h_error>();
+            var rvsm_check = true;
+            List<int?> _fids = fids.Split('_').Select(q => (Nullable<int>)Convert.ToInt32(q)).ToList();
+
+            var _context = new Models.dbEntities();
+            var _msgs = new List<string>();
+            try
+            {
+                var ofp_roots = _context.view_ofpb_root_report.Where(q => _fids.Contains(q.FlightID)).ToList();
+                List<int?> ofp_ids = ofp_roots.Select(q => (Nullable<int>)q.Id).ToList();
+                var ofp_navs = _context.OFPB_MainNavLog.Where(q => ofp_ids.Contains(q.RootId) && q.NavType== "MAIN").ToList();
+
+
+                //var ofpImports = _context.OFPImports.Where(q => _fids.Contains(q.FlightId)).Select(q => new
+                //{
+                //    q.FlightId,
+                //    q.FlightNo,
+                //    q.Origin,
+                //    q.Destination,
+                //    q.Id
+                //}).ToList();
+
+                var flight_ids = ofp_roots.Select(q => q.FlightID).ToList();
+                var flights = _context.FlightInformations.Where(q => flight_ids.Contains(q.ID)).ToList();
+                var flights2 = _context.AppLegs.Where(q => _fids.Contains(q.ID)).ToList();
+                if (ofp_roots.Count == 0)
+                {
+                    foreach (var flt in flights2)
+                        errors.Add(new _h_error()
+                        {
+                            flight_no = flt.FlightNumber,
+                            id = flt.ID,
+                            rvsm_flight = true,
+                            rvsm_grnd = true,
+                            rvsm_prelevel = true,
+                            toc = true,
+                            toc_tod = true,
+                            tod = true,
+                            mvt = flt.BlockOff == null || flt.BlockOn == null || flt.TakeOff == null || flt.Landing == null,
+                            fuel = flt.FuelUplift == null || flt.FuelUsed == null || flt.FuelRemaining == null
+
+
+
+                        });
+                    return Ok(new DataResponse()
+                    {
+                        Data = errors,
+                        IsSuccess = true,
+                        Messages = _msgs
+
+                    });
+                }
+
+                foreach (var ofp in ofp_roots)
+                {
+                    var flt2 = flights2.FirstOrDefault(q => q.ID == ofp.FlightID);
+
+                    var error = new _h_error()
+                    {
+                        flight_no = flt2.FlightNumber,
+                        id = flt2.ID,
+                        mvt = flt2.BlockOff == null || flt2.BlockOn == null || flt2.TakeOff == null || flt2.Landing == null,
+                        fuel = flt2.FuelUplift == null || flt2.FuelUsed == null || flt2.FuelRemaining == null
+
+                    };
+                    errors.Add(error);
+                    var nav = ofp_navs.Where(q => q.RootId == ofp.Id).ToList();
+                    if (nav == null || nav.Count==0)
+                    {
+                        error.toc = true;
+                        error.tod = true;
+                    }
+                    else
+                    {
+                        var toc = nav.Where(q => q.WayPoint == "-TOC-").FirstOrDefault();
+                        if (toc == null || toc.FuelRemainedActual == null)
+                            error.toc = true;
+
+                        var tod = nav.Where(q => q.WayPoint == "-TOD-").FirstOrDefault();
+                        if (tod == null || tod.FuelRemainedActual == null)
+                            error.tod = true;
+                    }
+                    if (rvsm_check)
+                    {
+                        error.rvsm_grnd = string.IsNullOrEmpty(ofp.rvsm_gnd_lalt) || string.IsNullOrEmpty(ofp.rvsm_gnd_ralt) || string.IsNullOrEmpty(ofp.rvsm_gnd_stby)
+                           || string.IsNullOrEmpty(ofp.rvsm_gnd_time);
+                        error.rvsm_flight = string.IsNullOrEmpty(ofp.rvsm_flt1_fl) || string.IsNullOrEmpty(ofp.rvsm_flt1_lalt) || string.IsNullOrEmpty(ofp.rvsm_flt1_ralt)
+                            || string.IsNullOrEmpty(ofp.rvsm_flt1_stby) || string.IsNullOrEmpty(ofp.rvsm_flt1_time);
+ 
+
+                    }
+
+
+                }
+
+               
+
+               
+
+               
 
 
 
