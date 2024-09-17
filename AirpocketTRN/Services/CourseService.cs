@@ -707,7 +707,7 @@ namespace AirpocketTRN.Services
                 mng = await context.Managers.FirstOrDefaultAsync(q => q.EmployeeId == mng_id);
                 mng_grps = await context.ManagerGroups.Where(q => q.ManagerId == mng_id).Select(q => q.ProfileGroup).ToListAsync();
 
-                
+
                 filter_employee_ids = await context.ViewProfiles.Where(q => mng_grps.Contains(q.JobGroupRoot)).Select(q => q.PersonId).ToListAsync();
             }
 
@@ -752,7 +752,7 @@ namespace AirpocketTRN.Services
         }
 
 
-        public async Task<DataResponse> GetTrainingExpiredCertificateTypes(int year, int month, int certificate_type_id,int mng_id)
+        public async Task<DataResponse> GetTrainingExpiredCertificateTypes(int year, int month, int certificate_type_id, int mng_id)
         {
             //var expiring_employees = await context.ViewCertificateHistoryRankeds.Where(q => /*q.InActive == false &&*/  q.ExpireYear == year && q.ExpireMonth == month).ToListAsync();
             var query = from x in context.ViewCertificateHistoryRankeds
@@ -891,7 +891,7 @@ namespace AirpocketTRN.Services
         }
 
 
-        public async Task<DataResponse> GetTrainingSchedule(int year, int month,int mng_id)
+        public async Task<DataResponse> GetTrainingSchedule(int year, int month, int mng_id)
         {
             Manager mng = null;
             List<string> mng_grps = null;
@@ -903,10 +903,10 @@ namespace AirpocketTRN.Services
                 mng_grps = await context.ManagerGroups.Where(q => q.ManagerId == mng_id).Select(q => q.ProfileGroup).ToListAsync();
 
                 var course_people_query = from x in context.ViewCoursePeoples
-                                          where mng_grps.Contains(x.JobGroupRoot) && x.Year==year
+                                          where mng_grps.Contains(x.JobGroupRoot) && x.Year == year
                                           select x;
-                 
-                filter_course_ids =await course_people_query.Select(q => q.CourseId).Distinct().ToListAsync();
+
+                filter_course_ids = await course_people_query.Select(q => q.CourseId).Distinct().ToListAsync();
                 filter_employee_ids = await context.ViewProfiles.Where(q => mng_grps.Contains(q.JobGroupRoot)).Select(q => q.PersonId).ToListAsync();
             }
 
@@ -962,7 +962,7 @@ namespace AirpocketTRN.Services
         }
 
 
-        public async Task<DataResponse> GetTrainingSchedule(int year,int mng_id)
+        public async Task<DataResponse> GetTrainingSchedule(int year, int mng_id)
         {
             List<ViewCoursePeople> course_people = new List<ViewCoursePeople>();
             Manager mng = null;
@@ -972,14 +972,14 @@ namespace AirpocketTRN.Services
             if (mng_id != -1)
             {
                 mng = await context.Managers.FirstOrDefaultAsync(q => q.EmployeeId == mng_id);
-                mng_grps = await context.ManagerGroups.Where(q => q.ManagerId == mng_id).Select(q=>q.ProfileGroup).ToListAsync();
+                mng_grps = await context.ManagerGroups.Where(q => q.ManagerId == mng_id).Select(q => q.ProfileGroup).ToListAsync();
 
                 var course_people_query = from x in context.ViewCoursePeoples
-                                          where mng_grps.Contains(x.JobGroupRoot) && x.Year==year
+                                          where mng_grps.Contains(x.JobGroupRoot) && x.Year == year
                                           select x;
                 course_people = await course_people_query.ToListAsync();
                 filter_course_ids = course_people.Select(q => q.CourseId).Distinct().ToList();
-                filter_employee_ids = await context.ViewProfiles.Where(q=>mng_grps.Contains(q.JobGroupRoot)).Select(q => q.PersonId).ToListAsync();
+                filter_employee_ids = await context.ViewProfiles.Where(q => mng_grps.Contains(q.JobGroupRoot)).Select(q => q.PersonId).ToListAsync();
             }
 
             var course_query = (from x in context.ViewCourseNews
@@ -1022,9 +1022,9 @@ namespace AirpocketTRN.Services
                                            select x;
             if (filter_employee_ids != null)
                 expiring_employees_query = expiring_employees_query.Where(q => filter_employee_ids.Contains(q.PersonId));
-             
+
             var expiring_employees = await expiring_employees_query.ToListAsync();
-             
+
             var dates = getCalendarExpired(expiring_employees, null);
 
 
@@ -1048,35 +1048,35 @@ namespace AirpocketTRN.Services
             df = df.Date;
             dt = dt.Date.AddDays(1).Date;
 
-            var courses =await (from x in context.ViewCourseNews
+            var courses = await (from x in context.ViewCourseNews
 
-                           where x.DateStart >= df && x.DateStart < dt  
-                           group x by new { x.CourseType } into grp
-                           select new
-                           {
+                                 where x.DateStart >= df && x.DateStart < dt
+                                 group x by new { x.CourseType } into grp
+                                 select new
+                                 {
 
-                               Type = grp.Key.CourseType,
-                               Scheduled = grp.Where(q => q.StatusId == 1).Count(),
-                               InProgress = grp.Where(q => q.StatusId == 2).Count(),
-                               Done = grp.Where(q => q.StatusId == 3).Count(),
-                               Canceled = grp.Where(q => q.StatusId == 4).Count(),
-                               Duration=grp.Where(q=>q.StatusId!=4 ).Sum(q=>q.Duration),
+                                     Type = grp.Key.CourseType,
+                                     Scheduled = grp.Where(q => q.StatusId == 1).Count(),
+                                     InProgress = grp.Where(q => q.StatusId == 2).Count(),
+                                     Done = grp.Where(q => q.StatusId == 3).Count(),
+                                     Canceled = grp.Where(q => q.StatusId == 4).Count(),
+                                     Duration = grp.Where(q => q.StatusId != 4).Sum(q => q.Duration),
 
 
-                               Items = grp.Select(q => new
-                               {
-                                   q.Id,
-                                   q.DateStart,
-                                   q.DateEnd,
-                                   q.Instructor,
-                                   q.No,
-                                   q.Organization,
-                                   q.Title,
-                                   q.Location,
-                                   q.Status,
-                                   q.StatusId
-                               }).OrderBy(w => w.DateStart).ThenBy(w => w.Title).ToList()
-                           }).ToListAsync();
+                                     Items = grp.Select(q => new
+                                     {
+                                         q.Id,
+                                         q.DateStart,
+                                         q.DateEnd,
+                                         q.Instructor,
+                                         q.No,
+                                         q.Organization,
+                                         q.Title,
+                                         q.Location,
+                                         q.Status,
+                                         q.StatusId
+                                     }).OrderBy(w => w.DateStart).ThenBy(w => w.Title).ToList()
+                                 }).ToListAsync();
 
 
 
@@ -1107,7 +1107,7 @@ namespace AirpocketTRN.Services
                 n = 3;
 
             var query_people = from x in context.ViewCoursePeoples
-                               where x.JobGroupCode2.StartsWith(jg) && x.StatusId !=4 && x.DateStart >= df && x.DateStart < dt
+                               where x.JobGroupCode2.StartsWith(jg) && x.StatusId != 4 && x.DateStart >= df && x.DateStart < dt
                                group x by new { Group = x.JobGroupCode2.Substring(0, jg.Length + n), x.CourseType, x.CourseTypeId } into grp
                                join y in context.ViewJobGroups on grp.Key.Group equals y.FullCode2
                                select new
@@ -1233,10 +1233,10 @@ namespace AirpocketTRN.Services
                                group x by new { x.CoursePeopleStatus } into grp
                                select new
                                {
-                                   Status=grp.Key.CoursePeopleStatus,
+                                   Status = grp.Key.CoursePeopleStatus,
                                    Count = grp.Count(),
                                };
-            var passed =await query_passed.OrderBy(q => q.Count).ToListAsync();
+            var passed = await query_passed.OrderBy(q => q.Count).ToListAsync();
 
             var query_status = from x in context.ViewCourseNews
                                where x.DateStart >= df && x.DateStart < dt
@@ -1268,7 +1268,7 @@ namespace AirpocketTRN.Services
                               where x.DateStart >= df && x.DateStart < dt && x.StatusId != 4
                               //group x by new { Group = x.JobGroupCode2.Substring(0, 3) } into grp
                               //FLY
-                              group x by new { Group = x.JobGroupCode2.Substring(0,7) } into grp
+                              group x by new { Group = x.JobGroupCode2.Substring(0, 7) } into grp
                               join y in context.ViewJobGroups on grp.Key.Group equals y.FullCode2
                               select new
                               {
@@ -1377,11 +1377,108 @@ namespace AirpocketTRN.Services
                 IsSuccess = true,
             };
         }
+        //2024-09-15
         public async Task<DataResponse> GetCertificateHistoryByTypeGroup(int type, int group)
         {
             //var result = await context.ViewMandatoryCourseEmployees.Where(q => q.CourseTypeId == type && q.GroupId == group).OrderBy(q => q.ValidStatus).ThenBy(q => q.Remains).ThenBy(q => q.Name).ToListAsync();
             var result = await context.ViewCertificateHistories.Where(q => q.RankOrder == 1 && q.InActive == false && q.CertificateTypeId == type && q.JobGroupId == group)
                 .OrderBy(q => q.Remain).ThenBy(q => q.LastName).ToListAsync();
+            return new DataResponse()
+            {
+                Data = result,
+                IsSuccess = true,
+            };
+        }
+
+        public async Task<DataResponse> GetCertificateHistoryByType(int type)
+        {
+            //var result = await context.ViewMandatoryCourseEmployees.Where(q => q.CourseTypeId == type && q.GroupId == group).OrderBy(q => q.ValidStatus).ThenBy(q => q.Remains).ThenBy(q => q.Name).ToListAsync();
+            var course_type = await context.CourseTypes.FirstOrDefaultAsync(q => q.Id == type);
+            if (course_type == null || course_type.CertificateTypeId == null)
+                return new DataResponse()
+                {
+                    Data = null,
+                    IsSuccess = true,
+                };
+            var result = await context.ViewCertificateHistories.Where(q => q.RankOrder == 1 && q.InActive == false && q.CertificateTypeId == course_type.CertificateTypeId)
+                .OrderBy(q => q.Remain).ThenBy(q => q.LastName).ToListAsync();
+            return new DataResponse()
+            {
+                Data = result,
+                IsSuccess = true,
+            };
+        }
+
+
+        public class expiring_grp
+        {
+            public string title { get; set; }
+            public int? id { get; set; }
+            public int expired { get; set; }
+            public int expiring { get; set; }
+        }
+        public async Task<DataResponse> GetCertificateHistory_Expiring_People(string  type )
+        {
+            var query = from x in context.view_trn_expiring
+                        where x.CertificateType == type
+                           &&  x.Remain <= 45  
+                        orderby x.Remain
+                        select x;
+            var result = await query.ToListAsync();
+            return new DataResponse()
+            {
+                Data = result,
+                IsSuccess = true,
+            };
+
+        }
+        public async Task<DataResponse> GetCertificateHistory_Expiring()
+        {
+
+            var query_expiring = await (from x in context.view_trn_expiring
+                                  where x.Remain > 0 && x.Remain <= 45 /*&& x.InActive == false && x.RankOrder == 1*/
+                                  group x by new { x.CertificateType  } into grp
+                                  select new
+                                  {
+                                      
+                                      grp.Key.CertificateType,
+                                      cnt = grp.Count(),
+                                  }).ToListAsync();
+            var query_expired = await (from x in context.view_trn_expiring
+                                       where x.Remain <= 0  
+                                 group x by new { x.CertificateType  } into grp
+                                 select new
+                                 {
+                                     
+                                     grp.Key.CertificateType,
+                                     cnt = grp.Count(),
+                                 }).ToListAsync();
+            var cts = query_expired.Select(q => q.CertificateType).Concat(query_expiring.Select(q => q.CertificateType)).Distinct().ToList();
+            var result = new List<expiring_grp>();
+            foreach (var x in cts)
+            {
+                var _expired = query_expired.Where(q => q.CertificateType == x).FirstOrDefault();
+                var _expiring = query_expiring.Where(q => q.CertificateType == x).FirstOrDefault();
+                result.Add(new expiring_grp()
+                {
+                    id = -1,
+                    title = _expired == null ? _expiring.CertificateType : _expired.CertificateType,
+                    expired = _expired == null ? 0 : _expired.cnt,
+                    expiring = _expiring == null ? 0 : _expiring.cnt
+                });
+            }
+
+
+            //var result = await context.ViewMandatoryCourseEmployees.Where(q => q.CourseTypeId == type && q.GroupId == group).OrderBy(q => q.ValidStatus).ThenBy(q => q.Remains).ThenBy(q => q.Name).ToListAsync();
+            //var course_type = await context.CourseTypes.FirstOrDefaultAsync(q => q.Id == type);
+            //if (course_type == null || course_type.CertificateTypeId == null)
+            //    return new DataResponse()
+            //    {
+            //        Data = null,
+            //        IsSuccess = true,
+            //    };
+            //var result = await context.ViewCertificateHistories.Where(q => q.RankOrder == 1 && q.InActive == false && q.CertificateTypeId == course_type.CertificateTypeId)
+            //    .OrderBy(q => q.Remain).ThenBy(q => q.LastName).ToListAsync();
             return new DataResponse()
             {
                 Data = result,
@@ -1464,7 +1561,175 @@ namespace AirpocketTRN.Services
             };
         }
         //09-11
+
+
+        public C_view_trncard get_max_sms(C_view_trncard l1, C_view_trncard l2, C_view_trncard l3)
+        {
+            if (l1 == null)
+                l1 = new C_view_trncard() { Remain = -10000, trncard_title = "SMS-L1" };
+            if (l2 == null)
+                l2 = new C_view_trncard() { Remain = -10000, trncard_title = "SMS-L2" };
+            if (l3 == null)
+                l3 = new C_view_trncard() { Remain = -10000, trncard_title = "SMS-L3" };
+
+            C_view_trncard sms = l3;
+            if (l2.Remain > sms.Remain)
+                sms = l2;
+            if (l1.Remain > sms.Remain)
+                sms = l1;
+
+            if (sms.ExpireDate == null)
+                return null;
+            else return sms;
+
+
+
+        }
+
         public async Task<DataResponse> GetTrainingCard(int pid)
+        {
+            pid = (pid - 1237) / 2;
+            var employee = await context.ViewEmployees.Where(q => q.PersonId == pid).FirstOrDefaultAsync();
+            var profile = await context.ViewProfiles.Where(q => q.PersonId == pid).FirstOrDefaultAsync();
+            var person = await context.People.Where(q => q.Id == pid).FirstOrDefaultAsync();
+
+            var result = new List<ViewCoursePeoplePassedRanked>();
+            var trn_ds = await context.C_view_trncard.Where(q => q.person_id == pid).OrderBy(q => q.trncard_title).ToListAsync();
+            var trn_ds_no_sms_l2_l3 = trn_ds.Where(q => q.trncard_title != "SMS-L2" && q.trncard_title != "SMS-L3" && q.trncard_title != "SMS-L1" && q.trncard_title != "SMS").ToList();
+            var sms_l1 = trn_ds.FirstOrDefault(q => q.trncard_title == "SMS-L1");
+            if (sms_l1 == null)
+                sms_l1 = trn_ds.FirstOrDefault(q => q.trncard_title == "SMS");
+            var sms_l2 = trn_ds.FirstOrDefault(q => q.trncard_title == "SMS-L2");
+            var sms_l3 = trn_ds.FirstOrDefault(q => q.trncard_title == "SMS-L3");
+            foreach (var x in trn_ds_no_sms_l2_l3)
+            {
+                result.Add(new ViewCoursePeoplePassedRanked()
+                {
+                    FirstName = x.first_name,
+                    LastName = x.last_name,
+                    JobGroup = x.jobgroup,
+                    JobGroupRoot = x.jobgroup_root,
+                    NID = x.nid,
+                    Title = x.trncard_title,
+                    DateIssue = x.IssueDate,
+                    DateExpire = x.ExpireDate,
+                    Interval = x.interval_month,
+                    ImageUrl = x.imageurl,
+
+                    PersonId = x.person_id,
+                    Remaining = x.Remain,
+                });
+            }
+
+            if (employee.JobGroupRoot == "Cockpit" || employee.JobGroupRoot == "Cabin")
+            {
+                //  result = result.Where(q =>q.Remaining>=0 || ( q.Remaining < 0 && (q.Title == "SMS-L2" || q.Title == "SMS-L3"))).ToList();
+                //  var sms = new List<string>() { "SMS-L2", "SMS-L3" };
+                //   var sms_rows = result.Where(q => sms.IndexOf(q.Title) != -1 && (q.Remaining < 0)).Select(q => q.Title).ToList();
+                //  result = result.Where(q => sms_rows.IndexOf(q.Title) == -1).ToList();
+                result.Add(new ViewCoursePeoplePassedRanked()
+                {
+                    FirstName = employee.FirstName,
+                    LastName = employee.LastName,
+                    JobGroup = employee.JobGroup,
+                    JobGroupRoot = employee.JobGroupRoot,
+                    NID = employee.NID,
+                    Title = "SMS",
+                    DateIssue = sms_l1 != null ? sms_l1.IssueDate : null,
+                    DateExpire = sms_l1 != null ? sms_l1.ExpireDate : null,
+                    Interval = sms_l1 != null ? sms_l1.interval_month : null,
+                    ImageUrl = employee.ImageUrl,
+
+                    PersonId = employee.PersonId,
+                    Remaining = sms_l1 != null ? sms_l1.Remain : null,
+                });
+
+                if (profile.PostRoot == "MANAGEMENT")
+                {
+                    var _sms = get_max_sms(null, sms_l2, sms_l3);
+
+                    if (_sms == null)
+                        _sms = new C_view_trncard() { title = "SMS-L2", trncard_title = "SMS-L2", interval_month = 24 };
+
+                    result.Add(new ViewCoursePeoplePassedRanked()
+                    {
+                        FirstName = employee.FirstName,
+                        LastName = employee.LastName,
+                        JobGroup = employee.JobGroup,
+                        JobGroupRoot = employee.JobGroupRoot,
+                        NID = employee.NID,
+                        Title = _sms.trncard_title,
+                        DateIssue = _sms.IssueDate != null ? _sms.IssueDate : null,
+                        DateExpire = _sms.ExpireDate != null ? _sms.ExpireDate : null,
+                        Interval = _sms.interval_month != null ? _sms.interval_month : null,
+                        ImageUrl = employee.ImageUrl,
+
+                        PersonId = employee.PersonId,
+                        Remaining = _sms.Remain != null ? _sms.Remain : null,
+                    });
+                }
+
+            }
+            else
+            if (employee.JobGroupRoot == "QA")
+            {
+
+                result.Add(new ViewCoursePeoplePassedRanked()
+                {
+                    FirstName = employee.FirstName,
+                    LastName = employee.LastName,
+                    JobGroup = employee.JobGroup,
+                    JobGroupRoot = employee.JobGroupRoot,
+                    NID = employee.NID,
+                    Title = "SMS-L3",
+                    DateIssue = sms_l3 != null ? sms_l3.IssueDate : null,
+                    DateExpire = sms_l3 != null ? sms_l3.ExpireDate : null,
+                    Interval = sms_l3 != null ? sms_l3.interval_month : null,
+                    ImageUrl = employee.ImageUrl,
+
+                    PersonId = employee.PersonId,
+                    Remaining = sms_l3 != null ? sms_l3.Remain : null,
+                });
+
+
+
+            }
+
+            else
+            {
+                var _sms = get_max_sms(sms_l1, sms_l2, sms_l3);
+
+                if (_sms == null)
+                {
+                    _sms = new C_view_trncard() { title = "SMS-L1", interval_month = 24, trncard_title = "SMS-L1" };
+                    if (profile.PostRoot == "MANAGEMENT")
+                        _sms = new C_view_trncard() { title = "SMS-L2", interval_month = 24, trncard_title = "SMS-L2" };
+                }
+                result.Add(new ViewCoursePeoplePassedRanked()
+                {
+                    FirstName = employee.FirstName,
+                    LastName = employee.LastName,
+                    JobGroup = employee.JobGroup,
+                    JobGroupRoot = employee.JobGroupRoot,
+                    NID = employee.NID,
+                    Title = _sms.trncard_title,
+                    DateIssue = _sms.IssueDate != null ? _sms.IssueDate : null,
+                    DateExpire = _sms.ExpireDate != null ? _sms.ExpireDate : null,
+                    Interval = _sms.interval_month != null ? _sms.interval_month : null,
+                    ImageUrl = employee.ImageUrl,
+
+                    PersonId = employee.PersonId,
+                    Remaining = _sms.Remain != null ? _sms.Remain : null,
+                });
+            }
+            return new DataResponse()
+            {
+                Data = result,
+                IsSuccess = true,
+            };
+
+        }
+        public async Task<DataResponse> GetTrainingCard_OLD(int pid)
         {
             pid = (pid - 1237) / 2;
             var person = await context.People.Where(q => q.Id == pid).FirstOrDefaultAsync();
@@ -1484,8 +1749,8 @@ namespace AirpocketTRN.Services
                     DateIssue = person.ProficiencyCheckDate,
                     DateExpire = person.ProficiencyValidUntil,
                     Interval = 12,
-                    ImageUrl =(result ==null || result.Count==0) ? "" : result.First().ImageUrl,
-                    
+                    ImageUrl = (result == null || result.Count == 0) ? "" : result.First().ImageUrl,
+
                     PersonId = employee.PersonId,
                 });
                 ds.Add(new ViewCoursePeoplePassedRanked()
@@ -1682,9 +1947,9 @@ namespace AirpocketTRN.Services
                     //DateIssue = person.DateIssueNDT,
                     //DateExpire = person.DateIssueNDT == null ? null : (Nullable<DateTime>)((DateTime)person.DateIssueNDT).AddYears(1),
 
-                     DateIssue = person.LineIssueDate,
+                    DateIssue = person.LineIssueDate,
                     //  DateExpire = person.LineIssueDate == null ? null : (Nullable<DateTime>)((DateTime)person.LineIssueDate).AddYears(1),
-                    DateExpire = person.LineExpireDate == null ? null : (Nullable<DateTime>)((DateTime)person.LineExpireDate) ,
+                    DateExpire = person.LineExpireDate == null ? null : (Nullable<DateTime>)((DateTime)person.LineExpireDate),
                     Interval = 12,
                     ImageUrl = (result == null || result.Count == 0) ? "" : result.First().ImageUrl,
                     PersonId = employee.PersonId,
@@ -2049,9 +2314,10 @@ namespace AirpocketTRN.Services
             await context.SaveChangesAsync();
             dto.Id = entity.Id;
 
-            await SaveCourseTypeNotApplicable(new course_type_notapplicable_viewmodel() { 
-              groups=dto.not_applicables,
-               type_id=dto.Id
+            await SaveCourseTypeNotApplicable(new course_type_notapplicable_viewmodel()
+            {
+                groups = dto.not_applicables,
+                type_id = dto.Id
             });
 
             return new DataResponse()
@@ -2066,10 +2332,10 @@ namespace AirpocketTRN.Services
         {
             public int type_id { get; set; }
             public List<string> groups { get; set; }
-            
+
         }
 
-        public async Task<DataResponse> SaveCourseTypeNotApplicable( course_type_notapplicable_viewmodel  dto)
+        public async Task<DataResponse> SaveCourseTypeNotApplicable(course_type_notapplicable_viewmodel dto)
         {
             var type_id = dto.type_id;
             var exist = context.CourseTypeApplicables.Where(q => q.CourseTypeId == type_id).ToList();
@@ -2088,14 +2354,14 @@ namespace AirpocketTRN.Services
             {
                 context.CourseTypeApplicables.Add(new CourseTypeApplicable()
                 {
-                    CourseTypeId =type_id,
-                    TrainingGroup = item  ,
+                    CourseTypeId = type_id,
+                    TrainingGroup = item,
                     IsApplicable = false
                 });
             }
 
-           // var not_applicables = dto.Where(q => q.applicable == false).ToList();
-           
+            // var not_applicables = dto.Where(q => q.applicable == false).ToList();
+
             var certificate_type = (from ct in context.CourseTypes
                                     join c in context.CertificateTypes on ct.CertificateTypeId equals c.Id
                                     where ct.Id == type_id
@@ -2103,7 +2369,7 @@ namespace AirpocketTRN.Services
             var dto_groups = dto.groups;
             var profiles = context.ViewProfiles.Where(q => dto_groups.Contains(q.JobGroupRoot) || dto_groups.Contains(q.PostRoot)).ToList();
             var profile_ids = profiles.Select(q => q.PersonId).ToList();
-            var last_history = context.ViewCertificateHistoryRankeds.Where(q => q.RankOrder == 1 && profile_ids.Contains(q.PersonId) && q.CertificateTypeId == certificate_type.Id).Select(q=>q.Id).ToList();
+            var last_history = context.ViewCertificateHistoryRankeds.Where(q => q.RankOrder == 1 && profile_ids.Contains(q.PersonId) && q.CertificateTypeId == certificate_type.Id).Select(q => q.Id).ToList();
             var history_whr = string.Join(",", last_history);
             context.Database.ExecuteSqlCommand(
                       "UPDATE CertificateHistory SET DateExpire = null WHERE Id in (" + history_whr + ")");
@@ -2928,7 +3194,7 @@ namespace AirpocketTRN.Services
         {
             CoursePeople cp = null;
 
-           
+
 
 
             if (dto.Id != -1)
@@ -2976,7 +3242,7 @@ namespace AirpocketTRN.Services
                     CourseId = dto.CourseId,
                     CertificateType = certificate_type != null ? (!string.IsNullOrEmpty(certificate_type.IssueField) ? certificate_type.IssueField : certificate_type.ExpireField) : "", //field_map.Identifier,
                     DateCreate = DateTime.Now,
-                    DateExpire = not_applicable ==null? cp.DateExpire:null,
+                    DateExpire = not_applicable == null ? cp.DateExpire : null,
                     DateIssue = cp.DateIssue,
                     PersonId = (int)cp.PersonId,
                     Remark = "Update Course Result"
@@ -2997,7 +3263,7 @@ namespace AirpocketTRN.Services
                     cmd_upd_part.Add(/*field_map.DbFieldIssue*/certificate_type.IssueField + "='" + ((DateTime)cp.DateIssue).ToString("yyyy-MM-dd") + "' ");
                 if (cp.DateExpire != null && !string.IsNullOrEmpty(certificate_type.IssueField))
                     cmd_upd_part.Add(/*field_map.DbFieldExpire*/certificate_type.ExpireField + "='" + ((DateTime)cp.DateExpire).ToString("yyyy-MM-dd") + "' ");
-                if (cp.DateExpire == null  && !string.IsNullOrEmpty(certificate_type.IssueField))
+                if (cp.DateExpire == null && !string.IsNullOrEmpty(certificate_type.IssueField))
                     cmd_upd_part.Add(/*field_map.DbFieldExpire*/certificate_type.ExpireField + "=null ");
 
                 var cmd_upd = "Update Person set "
@@ -4450,7 +4716,7 @@ namespace AirpocketTRN.Services
 
         public async Task<DataResponse> GetCoursePeopleAndSessions(int cid)
         {
-            
+
             var sessions = await context.CourseSessions.Where(q => q.CourseId == cid).OrderBy(q => q.DateStart).ToListAsync();
             var people = await context.ViewCoursePeoples.Where(q => q.CourseId == cid).OrderBy(q => q.DateStart).ToListAsync();
             //var press = await context.CourseSessionPresences.Where(q => q.CourseId == cid).ToListAsync();
@@ -4470,27 +4736,27 @@ namespace AirpocketTRN.Services
                 IsSuccess = true,
             };
         }
-        public async Task<DataResponse> GetCoursePeopleAndSessionsByDate(DateTime dt,int pid)
+        public async Task<DataResponse> GetCoursePeopleAndSessionsByDate(DateTime dt, int pid)
         {
             dt = dt.Date;
             var d2 = dt.AddDays(1);
             var query = await (from x in context.CourseSessions
-                        join y in context.ViewCoursePeoples on x.CourseId equals y.CourseId
-                        where x.DateStart >= dt && x.DateEnd <= d2 && y.PersonId == pid
-                        select new
-                        {
-                            y.CourseId,
-                            y.Title,
-                            y.No,
-                            y.Status,
-                            y.Location,
-                            y.Instructor1,
-                            y.Instructor2,
-                            y.CoursePeopleStatus,
-                            x.DateStart,
-                            x.DateEnd,
+                               join y in context.ViewCoursePeoples on x.CourseId equals y.CourseId
+                               where x.DateStart >= dt && x.DateEnd <= d2 && y.PersonId == pid
+                               select new
+                               {
+                                   y.CourseId,
+                                   y.Title,
+                                   y.No,
+                                   y.Status,
+                                   y.Location,
+                                   y.Instructor1,
+                                   y.Instructor2,
+                                   y.CoursePeopleStatus,
+                                   x.DateStart,
+                                   x.DateEnd,
 
-                        }).ToListAsync();
+                               }).ToListAsync();
             var grps = (from y in query
                         group y by new
                         {
@@ -4514,7 +4780,7 @@ namespace AirpocketTRN.Services
                             grp.Key.Instructor1,
                             grp.Key.Instructor2,
                             grp.Key.CoursePeopleStatus,
-                            Sessions = grp.OrderBy(q=>q.DateStart).Select(q => new { q.DateStart, q.DateEnd }).ToList()
+                            Sessions = grp.OrderBy(q => q.DateStart).Select(q => new { q.DateStart, q.DateEnd }).ToList()
                         }).ToList();
             return new DataResponse()
             {
@@ -5196,9 +5462,9 @@ namespace AirpocketTRN.Services
                 fileUrl = pdoc.Url;
 
             //SMSL2L3
-            if (tid ==  -1000 )
+            if (tid == -1000)
             {
-                var cp_l2=await context.ViewCoursePeoplePassedRankeds.Where(q => q.PersonId == pid && q.CertificateTypeId == 197 && q.RankLast == 1).FirstOrDefaultAsync();
+                var cp_l2 = await context.ViewCoursePeoplePassedRankeds.Where(q => q.PersonId == pid && q.CertificateTypeId == 197 && q.RankLast == 1).FirstOrDefaultAsync();
                 var cp_l3 = await context.ViewCoursePeoplePassedRankeds.Where(q => q.PersonId == pid && q.CertificateTypeId == 198 && q.RankLast == 1).FirstOrDefaultAsync();
                 var emp = await context.ViewEmployees.Where(q => q.PersonId == pid).FirstOrDefaultAsync();
                 ViewCoursePeoplePassedRanked cp = cp_l2;
@@ -5206,7 +5472,7 @@ namespace AirpocketTRN.Services
                     cp = cp_l3;
                 else
                 {
-                    if (cp_l3 != null && cp_l3.DateExpire>=cp_l2.DateExpire)
+                    if (cp_l3 != null && cp_l3.DateExpire >= cp_l2.DateExpire)
                     {
                         cp = cp_l3;
                     }
@@ -5223,15 +5489,15 @@ namespace AirpocketTRN.Services
                 var cp_l2 = await context.ViewCoursePeoplePassedRankeds.Where(q => q.PersonId == pid && q.CertificateTypeId == 197 && q.RankLast == 1).FirstOrDefaultAsync();
                 var cp_l3 = await context.ViewCoursePeoplePassedRankeds.Where(q => q.PersonId == pid && q.CertificateTypeId == 198 && q.RankLast == 1).FirstOrDefaultAsync();
 
-                var cp_l1_exp = cp_l1 == null || cp_l1.DateExpire==null ? new DateTime(1900, 1, 1) : cp_l1.DateExpire;
-                
-                var cp_l2_exp= cp_l2 == null || cp_l2.DateExpire == null ? new DateTime(1900, 1, 1) : cp_l2.DateExpire;
+                var cp_l1_exp = cp_l1 == null || cp_l1.DateExpire == null ? new DateTime(1900, 1, 1) : cp_l1.DateExpire;
+
+                var cp_l2_exp = cp_l2 == null || cp_l2.DateExpire == null ? new DateTime(1900, 1, 1) : cp_l2.DateExpire;
                 var cp_l3_exp = cp_l3 == null || cp_l3.DateExpire == null ? new DateTime(1900, 1, 1) : cp_l3.DateExpire;
 
                 var emp = await context.ViewEmployees.Where(q => q.PersonId == pid).FirstOrDefaultAsync();
 
                 DateTime? cp_date = cp_l1_exp;
-                
+
 
                 ViewCoursePeoplePassedRanked cp = cp_l1;
 
@@ -5239,7 +5505,7 @@ namespace AirpocketTRN.Services
                 {
                     cp = cp_l2;
                     cp_date = cp_l2_exp;
-                        
+
                 }
                 if (cp_l3_exp >= cp_date)
                 {
@@ -5247,7 +5513,7 @@ namespace AirpocketTRN.Services
                     cp_date = cp_l3_exp;
                 }
 
-               
+
                 return new DataResponse()
                 {
                     Data = new { certificate = cp, document = new { FileUrl = fileUrl }, employee = emp },
@@ -5264,12 +5530,12 @@ namespace AirpocketTRN.Services
                     IsSuccess = true,
                 };
             }
-            
+
 
         }
 
 
-        public async Task<DataResponse> GetTrnStatCoursePeople(DateTime df, DateTime dt, int? ct, int? status, int? cstatus, string cls, int? pid, int? inst1, int? inst2, int? rank, int? active, string grp,string dep)
+        public async Task<DataResponse> GetTrnStatCoursePeople(DateTime df, DateTime dt, int? ct, int? status, int? cstatus, string cls, int? pid, int? inst1, int? inst2, int? rank, int? active, string grp, string dep)
         {
             var _df = df.Date;
             var _dt = dt.Date.AddDays(1);
@@ -5384,9 +5650,9 @@ namespace AirpocketTRN.Services
         {
 
 
-            var query =await context.ManagerGroups.Where(q => q.ManagerId == mng_id).Select(q=>q.ProfileGroup).ToListAsync();
+            var query = await context.ManagerGroups.Where(q => q.ManagerId == mng_id).Select(q => q.ProfileGroup).ToListAsync();
 
-             
+
 
             return new DataResponse()
             {

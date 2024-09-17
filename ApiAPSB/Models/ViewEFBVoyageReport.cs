@@ -140,5 +140,18 @@ namespace ApiAPSB.Models
         public Nullable<int> DepDelay { get; set; }
         public string DateUpdate { get; set; }
         public string User { get; set; }
+        public Nullable<int> ReporterId { get; set; }
+        public Nullable<int> FormNo { get; set; }
+        public Nullable<System.DateTime> DateOccurrence { get; set; }
+        public string Result { get; set; }
+        public Nullable<bool> AttForm_ASR { get; set; }
+        public Nullable<bool> AttForm_CSR { get; set; }
+        public Nullable<bool> AttForm_CR { get; set; }
+        public Nullable<bool> AttForm_Other { get; set; }
+        public string ActionTaken { get; set; }
+        public Nullable<bool> IsForInformation { get; set; }
+        public Nullable<bool> IsActionRequired { get; set; }
+        public string OtherForm { get; set; }
+        public Nullable<bool> AttForm_ACCIDET { get; set; }
     }
 }

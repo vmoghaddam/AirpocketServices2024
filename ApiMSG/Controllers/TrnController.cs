@@ -87,7 +87,7 @@ namespace ApiMSG.Controllers
                 List<manager_mail> managers = new List<manager_mail>() {
                      new manager_mail(){ Email="v.moghaddam59@gmail.com",AllGroups=true, Name="AMIN DAVARI", NID="1"},
                       new manager_mail(){ Email="v.moghaddam59@gmail.com",   Name="MARYAM KAKO", NID="2", JobGroupRoot=new List<string>(){ "QA" } },
-                    new manager_mail(){ Email="v.moghaddam59@gmail.com",   Name="FARZAD TOOFAN", NID="2", JobGroupRoot=new List<string>(){"Cockpit","Cabin","F/D","GRND","Flight Control"} },
+                    new manager_mail(){ Email="v.moghaddam59@gmail.com",   Name="KIYOUMARS ESRAFILI", NID="2", JobGroupRoot=new List<string>(){"Cockpit","Cabin","F/D","GRND","Flight Control"} },
                     new manager_mail(){ Email="v.moghaddam59@gmail.com",   Name="MASOUD KHAMSEH", NID="2", JobGroupRoot=new List<string>(){ "Cabin" } },
                    new manager_mail(){ Email="v.moghaddam59@gmail.com",   Name="H. ASHRAF OGHALAEI ", NID="2", JobGroupRoot=new List<string>(){ "F/D" } },
                    new manager_mail(){ Email="v.moghaddam59@gmail.com",   Name="HOMAYOUN SALIMI NOURI ", NID="2", JobGroupRoot=new List<string>(){ "MAINTENANCE","CAMO" } },

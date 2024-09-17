@@ -72,7 +72,7 @@ namespace ApiXLS.Controllers
                          //flypersia
                          //&& x.FlightStatusID != 1 
                          && x.FlightStatusID != 4
-                         && cids.Contains(x.CrewId)
+                        // && cids.Contains(x.CrewId)
                          //orderby x.STDLocal
                          select x);
             if (grp != "-1")

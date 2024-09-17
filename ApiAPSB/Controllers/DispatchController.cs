@@ -96,7 +96,7 @@ namespace ApiAPSB.Controllers
             };
 
 
-            
+
             return Ok(result);
 
             // return new DataResponse() { IsSuccess = false };
@@ -696,6 +696,9 @@ namespace ApiAPSB.Controllers
                 var fltIds = fdpitems.Select(q => q.FlightId).ToList();
                 step = "1";
                 var drs = await _context.EFBDSPReleases.Where(q => fltIds.Contains(q.FlightId)).ToListAsync();
+                var signed = drs.FirstOrDefault(q => q.JLDatePICApproved != null);
+                DateTime? pic_signed = signed != null ? signed.JLDatePICApproved : null;
+                string pic_signedby = signed != null ? signed.JLSignedBy : null;
                 step = "2";
                 _context.EFBDSPReleases.RemoveRange(drs);
                 await _context.SaveChangesAsync();
@@ -712,7 +715,8 @@ namespace ApiAPSB.Controllers
 
                     release.User = DSPRelease.User;
                     release.DateUpdate = DateTime.UtcNow.ToString("yyyyMMddHHmm");
-
+                    release.JLDatePICApproved = pic_signed;
+                    release.JLSignedBy = pic_signedby;
 
                     release.FlightId = flightId; //DSPRelease.FlightId;
                     release.ActualWXDSP = DSPRelease.ActualWXDSP;
@@ -960,7 +964,147 @@ namespace ApiAPSB.Controllers
             {
                 var context = new Models.dbEntities();
                 var result = context.ViewEFBDSPReleases.FirstOrDefault(q => q.FlightId == fltid);
-                return Ok(result);
+                var result2 = new
+                {
+                    result.Id,
+                    result.FlightId,
+                    result.ActualWXDSP,
+                    result.ActualWXCPT,
+                    result.ActualWXDSPRemark,
+                    result.ActualWXCPTRemark,
+                    result.WXForcastDSP,
+                    result.WXForcastCPT,
+                    result.WXForcastDSPRemark,
+                    result.WXForcastCPTRemark,
+                    result.SigxWXDSP,
+                    result.SigxWXCPT,
+                    result.SigxWXDSPRemark,
+                    result.SigxWXCPTRemark,
+                    result.WindChartDSP,
+                    result.WindChartCPT,
+                    result.WindChartDSPRemark,
+                    result.WindChartCPTRemark,
+                    result.NotamDSP,
+                    result.NotamCPT,
+                    result.NotamDSPRemark,
+                    result.NotamCPTRemark,
+                    result.ComputedFligthPlanDSP,
+                    result.ComputedFligthPlanCPT,
+                    result.ComputedFligthPlanDSPRemark,
+                    result.ComputedFligthPlanCPTRemark,
+                    result.ATCFlightPlanDSP,
+                    result.ATCFlightPlanCPT,
+                    result.ATCFlightPlanDSPRemark,
+                    result.ATCFlightPlanCPTRemark,
+                    result.PermissionsDSP,
+                    result.PermissionsCPT,
+                    result.PermissionsDSPRemark,
+                    result.PermissionsCPTRemark,
+                    result.JeppesenAirwayManualDSP,
+                    result.JeppesenAirwayManualCPT,
+                    result.JeppesenAirwayManualDSPRemark,
+                    result.JeppesenAirwayManualCPTRemark,
+                    result.MinFuelRequiredDSP,
+                    result.MinFuelRequiredCPT,
+                    result.MinFuelRequiredPilotReq,
+                    result.GeneralDeclarationDSP,
+                    result.GeneralDeclarationCPT,
+                    result.GeneralDeclarationDSPRemark,
+                    result.GeneralDeclarationCPTRemark,
+                    result.FlightReportDSP,
+                    result.FlightReportCPT,
+                    result.FlightReportDSPRemark,
+                    result.FlightReportCPTRemark,
+                    result.TOLndCardsDSP,
+                    result.TOLndCardsCPT,
+                    result.TOLndCardsDSPRemark,
+                    result.TOLndCardsCPTRemark,
+                    result.LoadSheetDSP,
+                    result.LoadSheetCPT,
+                    result.LoadSheetDSPRemark,
+                    result.LoadSheetCPTRemark,
+                    result.FlightSafetyReportDSP,
+                    result.FlightSafetyReportCPT,
+                    result.FlightSafetyReportDSPRemark,
+                    result.FlightSafetyReportCPTRemark,
+                    result.AVSECIncidentReportDSP,
+                    result.AVSECIncidentReportCPT,
+                    result.AVSECIncidentReportDSPRemark,
+                    result.AVSECIncidentReportCPTRemark,
+                    result.OperationEngineeringDSP,
+                    result.OperationEngineeringCPT,
+                    result.OperationEngineeringDSPRemark,
+                    result.OperationEngineeringCPTRemark,
+                    result.VoyageReportDSP,
+                    result.VoyageReportCPT,
+                    result.VoyageReportDSPRemark,
+                    result.VoyageReportCPTRemark,
+                    result.PIFDSP,
+                    result.PIFCPT,
+                    result.PIFDSPRemark,
+                    result.PIFCPTRemark,
+                    result.GoodDeclarationDSP,
+                    result.GoodDeclarationCPT,
+                    result.GoodDeclarationDSPRemark,
+                    result.GoodDeclarationCPTRemark,
+                    result.IPADDSP,
+                    result.IPADCPT,
+                    result.IPADDSPRemark,
+                    result.IPADCPTRemark,
+                    result.DateConfirmed,
+                    result.DispatcherId,
+                    result.DSPName,
+                    result.DSPPID,
+                    result.DSPNID,
+                    result.DSPMobile,
+                    result.JLSignedBy,
+                    result.JLDatePICApproved,
+                    result.PICId,
+                    result.PIC,
+                    result.OperationalFlightPlanFOO,
+                    result.OperationalFlightPlanCMDR,
+                    result.OperationalFlightPlanFOORemark,
+                    result.OperationalFlightPlanCMDRRemark,
+                    result.ATSFlightPlanFOO,
+                    result.ATSFlightPlanCMDR,
+                    result.ATSFlightPlanFOORemark,
+                    result.ATSFlightPlanCMDRRemark,
+                    result.VldEFBFOO,
+                    result.VldEFBCMDR,
+                    result.VldEFBFOORemark,
+                    result.VldEFBCMDRRemark,
+                    result.VldFlightCrewFOO,
+                    result.VldFlightCrewCMDR,
+                    result.VldFlightCrewFOORemark,
+                    result.VldFlightCrewCMDRRemark,
+                    result.VldMedicalFOO,
+                    result.VldMedicalCMDR,
+                    result.VldMedicalFOORemark,
+                    result.VldMedicalCMDRRemark,
+                    result.VldPassportFOO,
+                    result.VldPassportCMDR,
+                    result.VldPassportFOORemark,
+                    result.VldPassportCMDRRemark,
+                    result.VldCMCFOO,
+                    result.VldCMCCMDR,
+                    result.VldCMCFOORemark,
+                    result.VldCMCCMDRRemark,
+                    result.VldRampPassFOO,
+                    result.VldRampPassCMDR,
+                    result.VldRampPassFOORemark,
+                    result.VldRampPassCMDRRemark,
+                    result.Note,
+                    result.MinFuelRequiredCFP,
+                    result.OFPTOTALFUEL,
+                    result.SgnDSPLicNo,
+                    result.SgnCPTLicNo,
+                    result.JLDSPSignDate,
+                    result.SGNDSPName,
+                    //Data = result,
+                    //Errors = new List<string>(),
+                    IsSuccess = true,
+                };
+                return Ok(result2);
             }
             catch (Exception ex)
             {
@@ -1504,11 +1648,9 @@ namespace ApiAPSB.Controllers
             }
 
         }
-
-
-        [Route("api/sign/ofps/new")]
+        [Route("api/sign/ofps/new/old")]
         [AcceptVerbs("Post")]
-        public IHttpActionResult PostSIGNOfps(dto_sign dto)
+        public IHttpActionResult PostSIGNOfps_old(dto_sign dto)
         {
             try
             {
@@ -1557,6 +1699,86 @@ namespace ApiAPSB.Controllers
                         JLSignedBy = ofp.JLSignedBy,
                         PIC = ofp.PIC,
                         PICId = (int)ofp.PICId
+                    });
+
+                }
+
+                var flights = context.FlightInformations.Where(q => fids2.Contains(q.ID)).ToList();
+                foreach (var flt in flights)
+                {
+                    flt.JLSignedBy = employee != null ? employee.Name : lic_no;
+                    flt.JLDatePICApproved = DateTime.UtcNow;
+                }
+
+                context.SaveChanges();
+                return Ok(new DataResponse() { IsSuccess = true, Data = sgn_result });
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += "   INNER: " + ex.InnerException.Message;
+                return Ok(new DataResponse() { IsSuccess = false, Messages = new List<string>() { msg } });
+            }
+
+        }
+
+        [Route("api/sign/ofps/new")]
+        [AcceptVerbs("Post")]
+        public IHttpActionResult PostSIGNOfps(dto_sign dto)
+        {
+            try
+            {
+                var context = new Models.dbEntities();
+
+                var fids = Convert.ToString(dto.flight_id_str).Split('_').Select(q => (Nullable<int>)Convert.ToInt32(q)).ToList();
+                var fids2 = Convert.ToString(dto.flight_id_str).Split('_').Select(q => Convert.ToInt32(q)).ToList();
+
+
+                string lic_no = Convert.ToString(dto.lic_no);
+                string userid = Convert.ToString(dto.user_id);
+
+
+
+                var employee = context.ViewEmployees.Where(q => q.UserId == userid).FirstOrDefault();
+                if (employee != null)
+                {
+                    if (!employee.NDTNumber.ToLower().Contains(lic_no.ToLower()))
+                    {
+
+                        return Ok(new DataResponse() { IsSuccess = false, Messages = new List<string>() { "The license number is wrong." } });
+                    }
+                }
+                else
+                {
+                    if (lic_no.ToLower() != "lic4806")
+                    {
+                        return Ok(new DataResponse() { IsSuccess = false, Messages = new List<string>() { "The license number is wrong." } });
+                    }
+                }
+
+                List<sgn_ofp_result> sgn_result = new List<sgn_ofp_result>();
+                //var ofps = context.OFPImports.Where(q => fids.Contains(q.FlightId)).ToList();
+                var ofps = context.OFPB_Root.Where(q => fids.Contains(q.FlightID)).ToList();
+                foreach (var ofp in ofps)
+                {
+                    ofp.DateSign= DateTime.UtcNow;
+                    ofp.SignedbyId= employee != null? (Nullable<int>) employee.Id :null;
+
+
+                    //ofp.PIC = employee != null ? employee.Name : lic_no;
+                    //ofp.PICId = employee.Id;
+                    //ofp.JLDatePICApproved = DateTime.UtcNow;
+                    //ofp.JLSignedBy = lic_no;
+
+                    sgn_result.Add(new sgn_ofp_result()
+                    {
+                        FlightId = (int)ofp.FlightID,
+                        Id = ofp.Id,
+                        JLDatePICApproved = (DateTime)ofp.DateSign, //ofp.JLDatePICApproved,
+                        JLSignedBy =employee.Name, //ofp.JLSignedBy,
+                        PIC = employee.Name, //ofp.PIC,
+                        PICId = (int)ofp.SignedbyId, //ofp.PICId
                     });
 
                 }
@@ -1849,7 +2071,7 @@ namespace ApiAPSB.Controllers
 
         }
 
-
+        //09-09
         [Route("api/pic/vr/sign/new")]
         [AcceptVerbs("Post")]
         public IHttpActionResult PostVRPICSIGNNew(dto_sign dto)
@@ -1998,9 +2220,9 @@ namespace ApiAPSB.Controllers
             }
 
         }
-        [Route("api/ofps/validate/{fids}")]
+        [Route("api/ofps/validate/old/{fids}")]
         [AcceptVerbs("GET")]
-        public IHttpActionResult ValidateOFPs(string fids)
+        public IHttpActionResult ValidateOFPs_OLD(string fids)
         {
             List<_h_error> errors = new List<_h_error>();
             var rvsm_check = true;
@@ -2265,6 +2487,138 @@ namespace ApiAPSB.Controllers
             }
         }
 
+
+
+        [Route("api/ofps/validate/{fids}")]
+        [AcceptVerbs("GET")]
+        public IHttpActionResult ValidateOFPs(string fids)
+        {
+            List<_h_error> errors = new List<_h_error>();
+            var rvsm_check = true;
+            List<int?> _fids = fids.Split('_').Select(q => (Nullable<int>)Convert.ToInt32(q)).ToList();
+
+            var _context = new Models.dbEntities();
+            var _msgs = new List<string>();
+            try
+            {
+                var ofp_roots = _context.view_ofpb_root_report.Where(q => _fids.Contains(q.FlightID)).ToList();
+                List<int?> ofp_ids = ofp_roots.Select(q => (Nullable<int>)q.Id).ToList();
+                var ofp_navs = _context.OFPB_MainNavLog.Where(q => ofp_ids.Contains(q.RootId) && q.NavType== "MAIN").ToList();
+
+
+                //var ofpImports = _context.OFPImports.Where(q => _fids.Contains(q.FlightId)).Select(q => new
+                //{
+                //    q.FlightId,
+                //    q.FlightNo,
+                //    q.Origin,
+                //    q.Destination,
+                //    q.Id
+                //}).ToList();
+
+                var flight_ids = ofp_roots.Select(q => q.FlightID).ToList();
+                var flights = _context.FlightInformations.Where(q => flight_ids.Contains(q.ID)).ToList();
+                var flights2 = _context.AppLegs.Where(q => _fids.Contains(q.ID)).ToList();
+                if (ofp_roots.Count == 0)
+                {
+                    foreach (var flt in flights2)
+                        errors.Add(new _h_error()
+                        {
+                            flight_no = flt.FlightNumber,
+                            id = flt.ID,
+                            rvsm_flight = true,
+                            rvsm_grnd = true,
+                            rvsm_prelevel = true,
+                            toc = true,
+                            toc_tod = true,
+                            tod = true,
+                            mvt = flt.BlockOff == null || flt.BlockOn == null || flt.TakeOff == null || flt.Landing == null,
+                            fuel = flt.FuelUplift == null || flt.FuelUsed == null || flt.FuelRemaining == null
+
+
+
+                        });
+                    return Ok(new DataResponse()
+                    {
+                        Data = errors,
+                        IsSuccess = true,
+                        Messages = _msgs
+
+                    });
+                }
+
+                foreach (var ofp in ofp_roots)
+                {
+                    var flt2 = flights2.FirstOrDefault(q => q.ID == ofp.FlightID);
+
+                    var error = new _h_error()
+                    {
+                        flight_no = flt2.FlightNumber,
+                        id = flt2.ID,
+                        mvt = flt2.BlockOff == null || flt2.BlockOn == null || flt2.TakeOff == null || flt2.Landing == null,
+                        fuel = flt2.FuelUplift == null || flt2.FuelUsed == null || flt2.FuelRemaining == null
+
+                    };
+                    errors.Add(error);
+                    var nav = ofp_navs.Where(q => q.RootId == ofp.Id).ToList();
+                    if (nav == null || nav.Count==0)
+                    {
+                        error.toc = true;
+                        error.tod = true;
+                    }
+                    else
+                    {
+                        var toc = nav.Where(q => q.WayPoint == "-TOC-").FirstOrDefault();
+                        if (toc == null || toc.FuelRemainedActual == null)
+                            error.toc = true;
+
+                        var tod = nav.Where(q => q.WayPoint == "-TOD-").FirstOrDefault();
+                        if (tod == null || tod.FuelRemainedActual == null)
+                            error.tod = true;
+                    }
+                    if (rvsm_check)
+                    {
+                        error.rvsm_grnd = string.IsNullOrEmpty(ofp.rvsm_gnd_lalt) || string.IsNullOrEmpty(ofp.rvsm_gnd_ralt) || string.IsNullOrEmpty(ofp.rvsm_gnd_stby)
+                           || string.IsNullOrEmpty(ofp.rvsm_gnd_time);
+                        error.rvsm_flight = string.IsNullOrEmpty(ofp.rvsm_flt1_fl) || string.IsNullOrEmpty(ofp.rvsm_flt1_lalt) || string.IsNullOrEmpty(ofp.rvsm_flt1_ralt)
+                            || string.IsNullOrEmpty(ofp.rvsm_flt1_stby) || string.IsNullOrEmpty(ofp.rvsm_flt1_time);
+ 
+
+                    }
+
+
+                }
+
+               
+
+               
+
+               
+
+
+
+                return Ok(new DataResponse()
+                {
+                    Data = errors,
+                    IsSuccess = true,
+                    Messages = _msgs
+
+                });
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += " INNER:" + ex.InnerException.Message;
+
+                return Ok(new DataResponse()
+                {
+                    Data = new List<_h_error>() { new _h_error() { other = msg, flight_no = "-", } },
+                    IsSuccess = true
+
+                });
+            }
+        }
+
         [Route("api/efb/discretion/save")]
         [AcceptVerbs("POST")]
         public async Task<IHttpActionResult> SaveDiscretion(discretion_form dto)
@@ -2303,7 +2657,7 @@ namespace ApiAPSB.Controllers
                     max_fdp = dto.max_fdp,
                     planned_flt_duty_time = dto.planned_flt_duty_time,
                     actual_flt_duty_time = dto.actual_flt_duty_time,
-                      
+
                 };
 
                 context.discretion_form.Add(entity);

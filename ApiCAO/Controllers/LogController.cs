@@ -294,7 +294,7 @@ namespace ApiCAO.Controllers
                 // var icao = "CPN";
                 // string key = "d41668c393974880aae19ef35f5099eb";
 
-                ppa_entities context = new ppa_entities();
+                ppa_entities context = new ppa_entities(); 
                 var flt = context.ViewCaos.Where(q => q.ID == id).FirstOrDefault(); // context.ViewLegTimes.Where(q => q.ID == id).FirstOrDefault();
                 if (flt.FlightStatusID != 2 && !(flt.FlightStatusID == 15 || flt.FlightStatusID == 3))
                     return Ok();

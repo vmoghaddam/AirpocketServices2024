@@ -47,7 +47,6 @@ namespace ApiAPSB.Models
         public virtual DbSet<Person> People { get; set; }
         public virtual DbSet<ViewEmployee> ViewEmployees { get; set; }
         public virtual DbSet<DayGP> DayGPs { get; set; }
-        public virtual DbSet<ViewEFBVoyageReport> ViewEFBVoyageReports { get; set; }
         public virtual DbSet<ViewLegCrew> ViewLegCrews { get; set; }
         public virtual DbSet<EFBASR> EFBASRs { get; set; }
         public virtual DbSet<XFlightCrew> XFlightCrews { get; set; }
@@ -64,9 +63,16 @@ namespace ApiAPSB.Models
         public virtual DbSet<OFPB_Prop> OFPB_Prop { get; set; }
         public virtual DbSet<ViewEFBVoyageIrrAll> ViewEFBVoyageIrrAlls { get; set; }
         public virtual DbSet<ViewEFBVoyageReasonAll> ViewEFBVoyageReasonAlls { get; set; }
-        public virtual DbSet<OFPB_Root> OFPB_Root { get; set; }
-        public virtual DbSet<view_ofpb_root> view_ofpb_root { get; set; }
+        public virtual DbSet<ViewQACSREvent> ViewQACSREvents { get; set; }
+        public virtual DbSet<ViewQAMaintenance> ViewQAMaintenances { get; set; }
+        public virtual DbSet<ViewQACSR> ViewQACSRs { get; set; }
         public virtual DbSet<OFPB_MainNavLog> OFPB_MainNavLog { get; set; }
+        public virtual DbSet<OFPB_Root> OFPB_Root { get; set; }
+        public virtual DbSet<ViewEFBVoyageReport> ViewEFBVoyageReports { get; set; }
+        public virtual DbSet<view_ofbb_root_actual> view_ofbb_root_actual { get; set; }
         public virtual DbSet<view_ofpb_navlog> view_ofpb_navlog { get; set; }
+        public virtual DbSet<view_ofpb_navlog_actual> view_ofpb_navlog_actual { get; set; }
+        public virtual DbSet<view_ofpb_root> view_ofpb_root { get; set; }
+        public virtual DbSet<view_ofpb_root_report> view_ofpb_root_report { get; set; }
     }
 }

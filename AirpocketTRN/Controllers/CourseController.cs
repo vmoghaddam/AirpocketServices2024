@@ -543,6 +543,37 @@ namespace AirpocketTRN.Controllers
             return Ok(result);
         }
 
+        [Route("api/courses/mandatory/people/type/{type}")]
+        [AcceptVerbs("GET")]
+        public async Task<IHttpActionResult> GetPersonMandatoryCoursesByType(int type)
+        {
+            //var result = await courseService.GetPersonMandatoryCoursesByType(type,group);
+            var result = await courseService.GetCertificateHistoryByType(type);
+
+            return Ok(result);
+        }
+
+        //GetCertificateHistory_Expiring
+        [Route("api/expiring")]
+        [AcceptVerbs("GET")]
+        public async Task<IHttpActionResult> GetCertificateHistory_Expiring( )
+        {
+            //var result = await courseService.GetPersonMandatoryCoursesByType(type,group);
+            var result = await courseService.GetCertificateHistory_Expiring( );
+
+            return Ok(result);
+        }
+        [Route("api/expiring/people/{type}")]
+        [AcceptVerbs("GET")]
+        public async Task<IHttpActionResult> GetCertificateHistory_Expiring_People(string type)
+        {
+            //var result = await courseService.GetPersonMandatoryCoursesByType(type,group);
+            var result = await courseService.GetCertificateHistory_Expiring_People(type);
+
+            return Ok(result);
+        }
+
+
         [Route("api/course/people/{cid}")]
         [AcceptVerbs("GET")]
         public async Task<IHttpActionResult> GetCoursePeople(int cid)

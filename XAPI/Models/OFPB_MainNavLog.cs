@@ -43,6 +43,16 @@ namespace XAPI.Models
         public Nullable<int> FuelUsedActual { get; set; }
         public string LongitudeStr { get; set; }
         public string LatitudeStr { get; set; }
+        public Nullable<int> DiffFuelRemained { get; set; }
+        public Nullable<int> DiffFuelUsed { get; set; }
+        public Nullable<long> date_update { get; set; }
+        public string user_update { get; set; }
+        public Nullable<int> FuelRemained2 { get; set; }
+        public Nullable<int> FuelUsed2 { get; set; }
+        public Nullable<int> CumulativeFuel { get; set; }
+        public string Direction { get; set; }
+        public string WindComponent { get; set; }
+        public Nullable<int> ZoneFuel { get; set; }
     
         public virtual OFPB_Root OFPB_Root { get; set; }
     }

@@ -12,7 +12,7 @@ namespace ApiAPSB.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class view_ofpb_navlog
+    public partial class view_ofpb_navlog_actual
     {
         public int Id { get; set; }
         public string WayPoint { get; set; }
@@ -29,8 +29,6 @@ namespace ApiAPSB.Models
         public string MagneticTrack { get; set; }
         public string Temperature { get; set; }
         public string ZoneTime { get; set; }
-        public Nullable<int> ZoneTimeInt { get; set; }
-        public Nullable<int> CumZoneTimeInt { get; set; }
         public string CumulativeTime { get; set; }
         public Nullable<int> FuelRemained { get; set; }
         public Nullable<int> FuelUsed { get; set; }
@@ -55,6 +53,5 @@ namespace ApiAPSB.Models
         public string Direction { get; set; }
         public string WindComponent { get; set; }
         public Nullable<int> ZoneFuel { get; set; }
-        public Nullable<long> rank { get; set; }
     }
 }
