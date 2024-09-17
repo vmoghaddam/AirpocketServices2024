@@ -30,6 +30,7 @@
           <Property Name="delay_code" Type="nvarchar" MaxLength="2000" />
           <Property Name="update_date" Type="datetime" />
           <Property Name="update_user_id" Type="varchar" MaxLength="255" />
+          <Property Name="onblock" Type="datetime2" Precision="7" />
         </EntityType>
         <EntityType Name="chk_turn_around_item">
           <Key>
@@ -785,12 +786,12 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_grh_turn_around_item_value' do
             <End Role="chk_turn_around_item" EntitySet="chk_turn_around_item" />
             <End Role="chk_turn_around_item_value" EntitySet="chk_turn_around_item_value" />
           </AssociationSet>
+          <EntitySet Name="view_grh_turn_around" EntityType="ppaModel.view_grh_turn_around" />
           <EntitySet Name="chk_turn_around" EntityType="ppaModel.chk_turn_around" />
           <AssociationSet Name="chk_form_fk" Association="ppaModel.chk_form_fk">
             <End Role="chk_turn_around" EntitySet="chk_turn_around" />
             <End Role="chk_turn_around_item_value" EntitySet="chk_turn_around_item_value" />
           </AssociationSet>
-          <EntitySet Name="view_grh_turn_around" EntityType="ppaModel.view_grh_turn_around" />
           </EntityContainer>
         <EntityType Name="AppFuel">
           <Key>
@@ -1116,47 +1117,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_grh_turn_around_item_value' do
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="chk_turn_around">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="flight_id" Type="Int32" />
-          <Property Name="station_id" Type="Int32" />
-          <Property Name="fuel_litr" Type="Int32" />
-          <Property Name="fuel_sn" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="remark" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="sign_date" Type="DateTime" Precision="7" />
-          <Property Name="sign_user_id" Type="Int32" />
-          <Property Name="station_manager_user_id" Type="Int32" />
-          <Property Name="station_manager_sign_date" Type="DateTime" Precision="7" />
-          <Property Name="pax_male" Type="Int32" />
-          <Property Name="pax_female" Type="Int32" />
-          <Property Name="pax_adult" Type="Int32" />
-          <Property Name="pax_child" Type="Int32" />
-          <Property Name="pax_infant" Type="Int32" />
-          <Property Name="offblock" Type="DateTime" Precision="7" />
-          <Property Name="takeoff" Type="DateTime" Precision="7" />
-          <Property Name="delay" Type="Int32" />
-          <Property Name="delay_code" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
-          <Property Name="update_date" Type="DateTime" Precision="3" />
-          <Property Name="update_user_id" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="chk_turn_around_item_value" Relationship="ppaModel.chk_form_fk" FromRole="chk_turn_around" ToRole="chk_turn_around_item_value" />
-        </EntityType>
-        <Association Name="chk_form_fk">
-          <End Type="ppaModel.chk_turn_around" Role="chk_turn_around" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="ppaModel.chk_turn_around_item_value" Role="chk_turn_around_item_value" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="chk_turn_around">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="chk_turn_around_item_value">
-              <PropertyRef Name="form_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="view_grh_turn_around">
           <Key>
             <PropertyRef Name="id" />
@@ -1211,6 +1171,48 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_grh_turn_around_item_value' do
           <Property Name="to_id" Type="Int32" />
           <Property Name="scheduled_time" Type="Int32" />
         </EntityType>
+        <EntityType Name="chk_turn_around">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="flight_id" Type="Int32" />
+          <Property Name="station_id" Type="Int32" />
+          <Property Name="fuel_litr" Type="Int32" />
+          <Property Name="fuel_sn" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="remark" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="sign_date" Type="DateTime" Precision="7" />
+          <Property Name="sign_user_id" Type="Int32" />
+          <Property Name="station_manager_user_id" Type="Int32" />
+          <Property Name="station_manager_sign_date" Type="DateTime" Precision="7" />
+          <Property Name="pax_male" Type="Int32" />
+          <Property Name="pax_female" Type="Int32" />
+          <Property Name="pax_adult" Type="Int32" />
+          <Property Name="pax_child" Type="Int32" />
+          <Property Name="pax_infant" Type="Int32" />
+          <Property Name="offblock" Type="DateTime" Precision="7" />
+          <Property Name="takeoff" Type="DateTime" Precision="7" />
+          <Property Name="delay" Type="Int32" />
+          <Property Name="delay_code" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="update_date" Type="DateTime" Precision="3" />
+          <Property Name="update_user_id" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="onblock" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="chk_turn_around_item_value" Relationship="ppaModel.chk_form_fk" FromRole="chk_turn_around" ToRole="chk_turn_around_item_value" />
+        </EntityType>
+        <Association Name="chk_form_fk">
+          <End Type="ppaModel.chk_turn_around" Role="chk_turn_around" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ppaModel.chk_turn_around_item_value" Role="chk_turn_around_item_value" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="chk_turn_around">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="chk_turn_around_item_value">
+              <PropertyRef Name="form_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1519,33 +1521,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_grh_turn_around_item_value' do
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="chk_turn_around">
-            <EntityTypeMapping TypeName="ppaModel.chk_turn_around">
-              <MappingFragment StoreEntitySet="chk_turn_around">
-                <ScalarProperty Name="update_user_id" ColumnName="update_user_id" />
-                <ScalarProperty Name="update_date" ColumnName="update_date" />
-                <ScalarProperty Name="delay_code" ColumnName="delay_code" />
-                <ScalarProperty Name="delay" ColumnName="delay" />
-                <ScalarProperty Name="takeoff" ColumnName="takeoff" />
-                <ScalarProperty Name="offblock" ColumnName="offblock" />
-                <ScalarProperty Name="pax_infant" ColumnName="pax_infant" />
-                <ScalarProperty Name="pax_child" ColumnName="pax_child" />
-                <ScalarProperty Name="pax_adult" ColumnName="pax_adult" />
-                <ScalarProperty Name="pax_female" ColumnName="pax_female" />
-                <ScalarProperty Name="pax_male" ColumnName="pax_male" />
-                <ScalarProperty Name="station_manager_sign_date" ColumnName="station_manager_sign_date" />
-                <ScalarProperty Name="station_manager_user_id" ColumnName="station_manager_user_id" />
-                <ScalarProperty Name="sign_user_id" ColumnName="sign_user_id" />
-                <ScalarProperty Name="sign_date" ColumnName="sign_date" />
-                <ScalarProperty Name="remark" ColumnName="remark" />
-                <ScalarProperty Name="fuel_sn" ColumnName="fuel_sn" />
-                <ScalarProperty Name="fuel_litr" ColumnName="fuel_litr" />
-                <ScalarProperty Name="station_id" ColumnName="station_id" />
-                <ScalarProperty Name="flight_id" ColumnName="flight_id" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="view_grh_turn_around">
             <EntityTypeMapping TypeName="ppaModel.view_grh_turn_around">
               <MappingFragment StoreEntitySet="view_grh_turn_around">
@@ -1576,6 +1551,34 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_grh_turn_around_item_value' do
                 <ScalarProperty Name="ac_model" ColumnName="ac_model" />
                 <ScalarProperty Name="ac_type" ColumnName="ac_type" />
                 <ScalarProperty Name="flight_no" ColumnName="flight_no" />
+                <ScalarProperty Name="update_user_id" ColumnName="update_user_id" />
+                <ScalarProperty Name="update_date" ColumnName="update_date" />
+                <ScalarProperty Name="delay_code" ColumnName="delay_code" />
+                <ScalarProperty Name="delay" ColumnName="delay" />
+                <ScalarProperty Name="takeoff" ColumnName="takeoff" />
+                <ScalarProperty Name="offblock" ColumnName="offblock" />
+                <ScalarProperty Name="pax_infant" ColumnName="pax_infant" />
+                <ScalarProperty Name="pax_child" ColumnName="pax_child" />
+                <ScalarProperty Name="pax_adult" ColumnName="pax_adult" />
+                <ScalarProperty Name="pax_female" ColumnName="pax_female" />
+                <ScalarProperty Name="pax_male" ColumnName="pax_male" />
+                <ScalarProperty Name="station_manager_sign_date" ColumnName="station_manager_sign_date" />
+                <ScalarProperty Name="station_manager_user_id" ColumnName="station_manager_user_id" />
+                <ScalarProperty Name="sign_user_id" ColumnName="sign_user_id" />
+                <ScalarProperty Name="sign_date" ColumnName="sign_date" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="fuel_sn" ColumnName="fuel_sn" />
+                <ScalarProperty Name="fuel_litr" ColumnName="fuel_litr" />
+                <ScalarProperty Name="station_id" ColumnName="station_id" />
+                <ScalarProperty Name="flight_id" ColumnName="flight_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="chk_turn_around">
+            <EntityTypeMapping TypeName="ppaModel.chk_turn_around">
+              <MappingFragment StoreEntitySet="chk_turn_around">
+                <ScalarProperty Name="onblock" ColumnName="onblock" />
                 <ScalarProperty Name="update_user_id" ColumnName="update_user_id" />
                 <ScalarProperty Name="update_date" ColumnName="update_date" />
                 <ScalarProperty Name="delay_code" ColumnName="delay_code" />

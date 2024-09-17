@@ -151,5 +151,44 @@ namespace ApiXLS.Models
         public string ATL { get; set; }
         public string ATCPlan { get; set; }
         public Nullable<decimal> FuelPlanned { get; set; }
+        public Nullable<int> OFPExtra { get; set; }
+        public Nullable<int> OFPCONTFUEL { get; set; }
+        public Nullable<int> OFPALT1FUEL { get; set; }
+        public Nullable<int> OFPALT2FUEL { get; set; }
+        public Nullable<int> OFPFINALRESFUEL { get; set; }
+        public Nullable<int> OFPTAXIFUEL { get; set; }
+        public Nullable<int> OFPETOPSADDNLFUEL { get; set; }
+        public Nullable<int> OFPOPSEXTRAFUEL { get; set; }
+        public int OFPTANKERINGFUEL { get; set; }
+        public Nullable<int> OFPTOTALFUEL { get; set; }
+        public Nullable<int> OFPMINTOFFUEL { get; set; }
+        public Nullable<int> OFPOFFBLOCKFUEL { get; set; }
+        public Nullable<int> OFPTRIPFUEL { get; set; }
+        public Nullable<int> PILOTREQFUEL { get; set; }
+        public Nullable<int> FuelUsedEng1 { get; set; }
+        public Nullable<int> FuelUsedEng2 { get; set; }
+        public Nullable<int> ACTUALTANKERINGFUEL { get; set; }
+        public Nullable<int> TANKERINGDIFF { get; set; }
+        public Nullable<int> ACTUALTOTALFUEL { get; set; }
+        public string LTR2 { get; set; }
+        public Nullable<System.DateTime> BlockOffStation { get; set; }
+        public Nullable<System.DateTime> BlockOnStation { get; set; }
+        public Nullable<System.DateTime> LandingStation { get; set; }
+        public Nullable<System.DateTime> TakeoffStation { get; set; }
+        public Nullable<System.DateTime> dep_dawn { get; set; }
+        public Nullable<System.DateTime> dep_dusk { get; set; }
+        public Nullable<System.DateTime> arr_dawn { get; set; }
+        public Nullable<System.DateTime> arr_dusk { get; set; }
+        public string FlightTypeOPS { get; set; }
+        public string AttForms { get; set; }
+        public Nullable<System.DateTime> BlockOffStationLocal { get; set; }
+        public Nullable<System.DateTime> BlockOnStationLocal { get; set; }
+        public Nullable<System.DateTime> LandingStationLocal { get; set; }
+        public Nullable<System.DateTime> TakeoffStationLocal { get; set; }
+        public string RouteCountry { get; set; }
+        public Nullable<int> PaxFemale { get; set; }
+        public Nullable<int> PaxMale { get; set; }
+        public Nullable<bool> IsDomestic { get; set; }
+        public string AircraftModel { get; set; }
     }
 }

@@ -280,7 +280,7 @@ namespace ApiGRH.Controllers
             {
                 var info = context.view_grh_turn_around.FirstOrDefault(q => q.flight_id == flight_id);
                 form.tasks = context.view_grh_turn_around_item_value
-                  .Where(q => q.flight_id == flight_id)
+                  .Where(q => q.form_id == info.id)
                   .Select(q => new Task
                   {
                       item_id = q.id,
@@ -360,6 +360,44 @@ namespace ApiGRH.Controllers
             public int? station_id { get; set; }
         }
 
+        [Route("api/grh/turnaround/get/flights/{station_id}/{dfrom}/{dto}")]
+        [AcceptVerbs("GET")]
+        public async Task<DataResponse> get_turn_around_station (int station_id,string dfrom,string dto)
+        {
+            DateTime date_from = DateTime.ParseExact(dfrom, "yyyyMMdd", CultureInfo.InvariantCulture);
+            DateTime date_to = DateTime.ParseExact(dto, "yyyyMMdd", CultureInfo.InvariantCulture);
+
+            try
+            {
+                var flights = context.view_grh_turn_around.Where(q => q.station_id == station_id && q.std_day_local >= date_from && q.std_day_local <= date_to).ToList();
+
+
+
+
+
+                return new DataResponse()
+                {
+                    IsSuccess = true,
+                    Data = flights
+                };
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += "   " + ex.InnerException.Message;
+                return new DataResponse()
+                {
+                    IsSuccess = false,
+                    Data = msg,
+                };
+
+            }
+
+
+        }
+
+
         [Route("api/grh/turnaround/get/flights")]
         [AcceptVerbs("Post")]
         public async Task<DataResponse> turn_around_station_get(get_turnaround_station dto)
@@ -409,6 +447,85 @@ namespace ApiGRH.Controllers
 
 
         }
+
+
+        public class dto_block
+        {
+            public int flight_id { get; set; }
+            public string user_id { get; set; }
+            public string date { get; set; }
+        }
+
+        [Route("api/grh/turnaround/save/offblock")]
+        [AcceptVerbs("Post")]
+        public async Task<DataResponse> turn_around_save_offblock(dto_block dto)
+        {
+            try
+            {
+                var form = context.chk_turn_around.FirstOrDefault(q =>q.flight_id == dto.flight_id);
+                form.offblock = DateTime.ParseExact(dto.date, "yyyyMMddHHmm", null); ;
+                form.update_user_id = dto.user_id;
+                form.update_date = DateTime.Now;
+
+                context.SaveChanges();
+
+                return new DataResponse()
+                {
+                    IsSuccess = true,
+                    Data = form.id
+                };
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += "   " + ex.InnerException.Message;
+                return new DataResponse()
+                {
+                    IsSuccess = false,
+                    Data = msg,
+                };
+
+            }
+
+
+        }
+
+
+        [Route("api/grh/turnaround/save/onblock")]
+        [AcceptVerbs("Post")]
+        public async Task<DataResponse> turn_around_save_onblock(dto_block dto)
+        {
+            try
+            {
+                var form = context.chk_turn_around.FirstOrDefault(q => q.flight_id == dto.flight_id);
+                form.onblock = DateTime.ParseExact(dto.date, "yyyyMMddHHmm", null); ;
+                form.update_user_id = dto.user_id;
+                form.update_date = DateTime.Now;
+                context.SaveChanges();
+
+                return new DataResponse()
+                {
+                    IsSuccess = true,
+                    Data = form.id
+                };
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += "   " + ex.InnerException.Message;
+                return new DataResponse()
+                {
+                    IsSuccess = false,
+                    Data = msg,
+                };
+
+            }
+
+
+        }
+
 
 
     }

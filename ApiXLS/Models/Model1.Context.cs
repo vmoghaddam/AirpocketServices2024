@@ -31,5 +31,26 @@ namespace ApiXLS.Models
         public virtual DbSet<ViewLegCrew> ViewLegCrews { get; set; }
         public virtual DbSet<ViewFlightDaily> ViewFlightDailies { get; set; }
         public virtual DbSet<ViewFlightDailyLCB> ViewFlightDailyLCBs { get; set; }
+        public virtual DbSet<ViewBookApplicableEmployee> ViewBookApplicableEmployees { get; set; }
+        public virtual DbSet<OFPB_BurnOffAdjustment> OFPB_BurnOffAdjustment { get; set; }
+        public virtual DbSet<OFPB_Distances> OFPB_Distances { get; set; }
+        public virtual DbSet<OFPB_Fuels> OFPB_Fuels { get; set; }
+        public virtual DbSet<OFPB_Times> OFPB_Times { get; set; }
+        public virtual DbSet<OFPB_WindTemperature> OFPB_WindTemperature { get; set; }
+        public virtual DbSet<OFPB_Alternate2NavLog> OFPB_Alternate2NavLog { get; set; }
+        public virtual DbSet<OFPB_WindTemperatureClimb> OFPB_WindTemperatureClimb { get; set; }
+        public virtual DbSet<OFPB_WindTemperatureCruise> OFPB_WindTemperatureCruise { get; set; }
+        public virtual DbSet<OFPB_WindTemperatureDescent> OFPB_WindTemperatureDescent { get; set; }
+        public virtual DbSet<OFPB_AltDrift> OFPB_AltDrift { get; set; }
+        public virtual DbSet<OFPB_WeightDrift> OFPB_WeightDrift { get; set; }
+        public virtual DbSet<OFPB_CriticalSection> OFPB_CriticalSection { get; set; }
+        public virtual DbSet<ViewLegTime> ViewLegTimes { get; set; }
+        public virtual DbSet<FlightInformation> FlightInformations { get; set; }
+        public virtual DbSet<OFPB_Root> OFPB_Root { get; set; }
+        public virtual DbSet<ofpb_import_history> ofpb_import_history { get; set; }
+        public virtual DbSet<OFPSkyPuter> OFPSkyPuters { get; set; }
+        public virtual DbSet<OFPB_CS_Runway> OFPB_CS_Runway { get; set; }
+        public virtual DbSet<OFPB_MainNavLog> OFPB_MainNavLog { get; set; }
+        public virtual DbSet<OFPB_Alternate1NavLog> OFPB_Alternate1NavLog { get; set; }
     }
 }
