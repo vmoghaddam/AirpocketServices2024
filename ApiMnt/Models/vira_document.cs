@@ -25,8 +25,6 @@ namespace ApiMnt.Models
         public int id { get; set; }
         public Nullable<int> requestId { get; set; }
         public Nullable<int> receiptType { get; set; }
-        public string acfT_TypeId { get; set; }
-        public Nullable<int> acfT_MSNId { get; set; }
         public Nullable<int> companyId { get; set; }
         public Nullable<int> priorityId { get; set; }
         public Nullable<System.DateTime> deadline { get; set; }
@@ -41,6 +39,46 @@ namespace ApiMnt.Models
         public string remark { get; set; }
         public string paper_no { get; set; }
         public Nullable<int> vira_id { get; set; }
+        public Nullable<int> status { get; set; }
+        public Nullable<System.DateTime> date_status { get; set; }
+        public string vira_type { get; set; }
+        public string acfT_TypeId { get; set; }
+        public Nullable<int> acfT_MSNIds { get; set; }
+        public Nullable<int> acfT_MSNId { get; set; }
+        public Nullable<System.DateTime> paper_date { get; set; }
+        public string fullNo { get; set; }
+        public Nullable<int> paperYear { get; set; }
+        public Nullable<int> paperType { get; set; }
+        public string senderLocation_Title { get; set; }
+        public string receiverLocation_Title { get; set; }
+        public string senderUser_FullName { get; set; }
+        public string receiverUser_FullName { get; set; }
+        public string acfT_Type { get; set; }
+        public string register { get; set; }
+        public string NisNo { get; set; }
+        public Nullable<int> CmP_PartNumberId { get; set; }
+        public string Priority { get; set; }
+        public string ApproverLocation_Title { get; set; }
+        public string ApproverUser_FullName { get; set; }
+        public string CancellerLocation_Title { get; set; }
+        public string CancellerUser_FullName { get; set; }
+        public Nullable<System.DateTime> VerifiedDate { get; set; }
+        public Nullable<int> LastStatusId { get; set; }
+        public Nullable<decimal> Quantity { get; set; }
+        public string Uom { get; set; }
+        public string PartNumber { get; set; }
+        public string Description { get; set; }
+        public Nullable<int> PartNumberStatus_Int { get; set; }
+        public string IpC_Reference { get; set; }
+        public string Request_FullNo { get; set; }
+        public string Request_ACFTType { get; set; }
+        public string Request_Register { get; set; }
+        public string Request_Priority { get; set; }
+        public string Stock_Title { get; set; }
+        public string Request_SenderUser_FullName { get; set; }
+        public string Request_ApproverUser_FullName { get; set; }
+        public string Request_PartNumber { get; set; }
+        public string Request_PartDescription { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<vira_document_item> vira_document_item { get; set; }

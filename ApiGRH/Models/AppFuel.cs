@@ -11,7 +11,7 @@ namespace ApiGRH.Models
 {
     using System;
     using System.Collections.Generic;
-
+    
     public partial class AppFuel
     {
         public int FlightId { get; set; }
@@ -19,8 +19,8 @@ namespace ApiGRH.Models
         public Nullable<decimal> FuelTotal { get; set; }
         public Nullable<decimal> Remaining { get; set; }
         public Nullable<decimal> UsedFuel { get; set; }
-        public Nullable<decimal> UsedFuelAvg { get; set; }
-        public Nullable<decimal> UsedFuelAvgReg { get; set; }
+        public decimal UsedFuelAvg { get; set; }
+        public decimal UsedFuelAvgReg { get; set; }
         public Nullable<int> Taxi { get; set; }
         public Nullable<int> FPTripFuel { get; set; }
         public Nullable<int> FPFuel { get; set; }
@@ -79,5 +79,9 @@ namespace ApiGRH.Models
         public string P2Name { get; set; }
         public Nullable<int> P2Id { get; set; }
         public string P2ScheduleName { get; set; }
+        public Nullable<decimal> ExtraFuel { get; set; }
+        public Nullable<int> FuelUsedEng1 { get; set; }
+        public Nullable<int> FuelUsedEng2 { get; set; }
+        public Nullable<int> FuelUsedEng { get; set; }
     }
 }

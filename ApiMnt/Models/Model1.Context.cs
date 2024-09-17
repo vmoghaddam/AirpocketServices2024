@@ -40,9 +40,12 @@ namespace ApiMnt.Models
         public virtual DbSet<Ac_MSN> Ac_MSN { get; set; }
         public virtual DbSet<view_mnt_engine> view_mnt_engine { get; set; }
         public virtual DbSet<view_mnt_aircraft> view_mnt_aircraft { get; set; }
-        public virtual DbSet<vira_document> vira_document { get; set; }
-        public virtual DbSet<vira_document_item> vira_document_item { get; set; }
         public virtual DbSet<vira_document_msn> vira_document_msn { get; set; }
         public virtual DbSet<vira_document_type> vira_document_type { get; set; }
+        public virtual DbSet<vira_document_item_result> vira_document_item_result { get; set; }
+        public virtual DbSet<vira_document_item> vira_document_item { get; set; }
+        public virtual DbSet<vira_requestlog> vira_requestlog { get; set; }
+        public virtual DbSet<vira_log> vira_log { get; set; }
+        public virtual DbSet<vira_document> vira_document { get; set; }
     }
 }
