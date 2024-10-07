@@ -55,5 +55,6 @@ namespace ApiQA.Models
         public string DelayReason { get; set; }
         public Nullable<int> Delay { get; set; }
         public string AccessMeasure { get; set; }
+        public string FormNo { get; set; }
     }
 }

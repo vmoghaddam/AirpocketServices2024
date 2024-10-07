@@ -1860,6 +1860,9 @@ namespace ApiPlanning.ViewModels
             apt_infos.Add(new apt_info() { Id = 152357, IATA = "TAS", ICAO = "UTTT", UTC = 300, TIMEZONE = "" });
 
 
+            apt_infos.Add(new apt_info() { Id = 136659, IATA = "SHJ", ICAO = "OMSJ", UTC = 240, TIMEZONE = "" });
+
+
 
 
             return apt_infos;

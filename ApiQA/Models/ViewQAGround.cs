@@ -103,5 +103,6 @@ namespace ApiQA.Models
         public Nullable<System.TimeSpan> ScheduledGroundTime { get; set; }
         public string DelayReason { get; set; }
         public Nullable<int> Delay { get; set; }
+        public string FormNo { get; set; }
     }
 }

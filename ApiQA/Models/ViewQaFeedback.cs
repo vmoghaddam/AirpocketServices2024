@@ -21,5 +21,7 @@ namespace ApiQA.Models
         public Nullable<System.DateTime> DateCreate { get; set; }
         public Nullable<int> CreatorId { get; set; }
         public string FormKey { get; set; }
+        public string Creator { get; set; }
+        public Nullable<int> TypeId { get; set; }
     }
 }

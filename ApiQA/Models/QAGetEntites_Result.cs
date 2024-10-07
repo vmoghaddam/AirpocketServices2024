@@ -35,5 +35,8 @@ namespace ApiQA.Models
         public Nullable<System.DateTime> DateSign { get; set; }
         public Nullable<System.DateTime> DeadLine { get; set; }
         public Nullable<int> Priority { get; set; }
+        public string FormNo { get; set; }
+        public Nullable<int> FollowingId { get; set; }
+        public Nullable<int> CategoryOrder { get; set; }
     }
 }

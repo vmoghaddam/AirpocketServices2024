@@ -200,8 +200,10 @@ warning 6002: The table/view 'ppa_varesh.dbo.RptFDPItem' does not have a primary
           <Property Name="STDDay" Type="date" />
           <Property Name="STADay" Type="date" />
           <Property Name="FlightTime" Type="int" />
+          <Property Name="JLFlightTime" Type="int" />
           <Property Name="FixedFlightTime" Type="int" />
           <Property Name="BlockTime" Type="int" />
+          <Property Name="JLBlockTime" Type="int" />
           <Property Name="ScheduledTime" Type="int" />
           <Property Name="CrewId" Type="int" />
           <Property Name="Name" Type="nvarchar" MaxLength="1001" Nullable="false" />
@@ -210,9 +212,10 @@ warning 6002: The table/view 'ppa_varesh.dbo.RptFDPItem' does not have a primary
           <Property Name="ScheduleName" Type="varchar" MaxLength="500" />
           <Property Name="JobGroup" Type="nvarchar" MaxLength="500" />
           <Property Name="JobGroupCode" Type="varchar" MaxLength="500" />
-          <Property Name="JobGroupRoot" Type="varchar" MaxLength="7" Nullable="false" />
+          <Property Name="JobGroupRoot" Type="varchar" MaxLength="16" Nullable="false" />
           <Property Name="Rank" Type="bigint" />
           <Property Name="DutyType" Type="int" Nullable="false" />
+          <Property Name="PositionId" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.RptFlightRVSM' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -412,6 +415,53 @@ warning 6002: The table/view 'ppa_varesh.dbo.RptRefuse' does not have a primary 
           <Property Name="JobGroupRoot" Type="varchar" MaxLength="7" Nullable="false" />
           <Property Name="Duration" Type="int" />
           <Property Name="FX" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.summary_flight_pax' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="summary_flight_pax">
+          <Key>
+            <PropertyRef Name="season" />
+            <PropertyRef Name="season_title" />
+            <PropertyRef Name="pyear" />
+            <PropertyRef Name="pmonth" />
+            <PropertyRef Name="register" />
+            <PropertyRef Name="register_id" />
+            <PropertyRef Name="origin_icao" />
+            <PropertyRef Name="destination_icao" />
+            <PropertyRef Name="origin" />
+            <PropertyRef Name="destination" />
+          </Key>
+          <Property Name="season" Type="int" Nullable="false" />
+          <Property Name="season_title" Type="varchar" MaxLength="7" Nullable="false" />
+          <Property Name="pyear_month_name" Type="nvarchar" MaxLength="511" />
+          <Property Name="pyear" Type="int" Nullable="false" />
+          <Property Name="pmonth" Type="int" Nullable="false" />
+          <Property Name="pmonth_name" Type="nvarchar" MaxLength="255" />
+          <Property Name="register" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="register_id" Type="int" Nullable="false" />
+          <Property Name="aircraft_type" Type="nvarchar" MaxLength="255" />
+          <Property Name="origin_icao" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="destination_icao" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="origin" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="destination" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="pax_adult" Type="int" />
+          <Property Name="pax_child" Type="int" />
+          <Property Name="pax_infant" Type="int" />
+          <Property Name="pax_total" Type="int" />
+          <Property Name="pax_rev" Type="int" />
+          <Property Name="baggage_weight" Type="int" />
+          <Property Name="cargo_weight" Type="int" />
+          <Property Name="fuel_uplift" Type="decimal" Precision="38" Scale="4" />
+          <Property Name="fuel_used" Type="decimal" Precision="38" Scale="4" />
+          <Property Name="block_time" Type="int" />
+          <Property Name="flight_time" Type="int" />
+          <Property Name="flights_count" Type="int" />
+          <Property Name="std_hour_0004" Type="int" />
+          <Property Name="std_hour_0408" Type="int" />
+          <Property Name="std_hour_0812" Type="int" />
+          <Property Name="std_hour_1216" Type="int" />
+          <Property Name="std_hour_1620" Type="int" />
+          <Property Name="std_hour_2024" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.ViewCourseFDP' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1001,6 +1051,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewFlightDaily' does not have a pr
             <PropertyRef Name="IsDepInt" />
             <PropertyRef Name="IsArrInt" />
             <PropertyRef Name="FixTime" />
+            <PropertyRef Name="IsINT" />
           </Key>
           <Property Name="ID" Type="int" Nullable="false" />
           <Property Name="FlightId" Type="int" Nullable="false" />
@@ -1122,6 +1173,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewFlightDaily' does not have a pr
           <Property Name="IsArrInt" Type="int" Nullable="false" />
           <Property Name="XRoute" Type="varchar" MaxLength="500" />
           <Property Name="FixTime" Type="int" Nullable="false" />
+          <Property Name="PYear" Type="nvarchar" MaxLength="4" />
+          <Property Name="IsINT" Type="int" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.ViewFlightDelay' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1445,6 +1498,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewLegCrew' does not have a primar
           <Property Name="DelayOffBlock" Type="int" />
           <Property Name="STADay" Type="date" />
           <Property Name="STDDay" Type="date" />
+          <Property Name="STDDayLocal" Type="date" />
           <Property Name="ArrivalRemark" Type="nvarchar" MaxLength="2000" />
           <Property Name="FlightStatus" Type="nvarchar" MaxLength="60" Nullable="false" />
           <Property Name="Register" Type="nvarchar" MaxLength="50" />
@@ -1549,6 +1603,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
             <PropertyRef Name="SexId" />
             <PropertyRef Name="GroupOrder" />
             <PropertyRef Name="IsCockpit" />
+            <PropertyRef Name="MainGroup" />
           </Key>
           <Property Name="CrewId" Type="int" />
           <Property Name="FlightId" Type="int" />
@@ -1573,6 +1628,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="Code" Type="varchar" MaxLength="500" />
           <Property Name="DateConfirmed" Type="datetime" />
           <Property Name="IsConfirmed" Type="bit" />
+          <Property Name="MainGroup" Type="varchar" MaxLength="7" Nullable="false" />
         </EntityType>
         <Association Name="fk_fdp_fdp">
           <End Role="FDP" Type="Self.FDP" Multiplicity="0..1" />
@@ -1672,8 +1728,10 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
     [RptFDPItem].[STDDay] AS [STDDay], 
     [RptFDPItem].[STADay] AS [STADay], 
     [RptFDPItem].[FlightTime] AS [FlightTime], 
+    [RptFDPItem].[JLFlightTime] AS [JLFlightTime], 
     [RptFDPItem].[FixedFlightTime] AS [FixedFlightTime], 
     [RptFDPItem].[BlockTime] AS [BlockTime], 
+    [RptFDPItem].[JLBlockTime] AS [JLBlockTime], 
     [RptFDPItem].[ScheduledTime] AS [ScheduledTime], 
     [RptFDPItem].[CrewId] AS [CrewId], 
     [RptFDPItem].[Name] AS [Name], 
@@ -1684,7 +1742,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
     [RptFDPItem].[JobGroupCode] AS [JobGroupCode], 
     [RptFDPItem].[JobGroupRoot] AS [JobGroupRoot], 
     [RptFDPItem].[Rank] AS [Rank], 
-    [RptFDPItem].[DutyType] AS [DutyType]
+    [RptFDPItem].[DutyType] AS [DutyType], 
+    [RptFDPItem].[PositionId] AS [PositionId]
     FROM [dbo].[RptFDPItem] AS [RptFDPItem]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="RptFlightRVSM" EntityType="Self.RptFlightRVSM" store:Type="Views" store:Schema="dbo">
@@ -1856,6 +1915,41 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
     [RptRefuse].[Duration] AS [Duration], 
     [RptRefuse].[FX] AS [FX]
     FROM [dbo].[RptRefuse] AS [RptRefuse]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="summary_flight_pax" EntityType="Self.summary_flight_pax" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [summary_flight_pax].[season] AS [season], 
+    [summary_flight_pax].[season_title] AS [season_title], 
+    [summary_flight_pax].[pyear_month_name] AS [pyear_month_name], 
+    [summary_flight_pax].[pyear] AS [pyear], 
+    [summary_flight_pax].[pmonth] AS [pmonth], 
+    [summary_flight_pax].[pmonth_name] AS [pmonth_name], 
+    [summary_flight_pax].[register] AS [register], 
+    [summary_flight_pax].[register_id] AS [register_id], 
+    [summary_flight_pax].[aircraft_type] AS [aircraft_type], 
+    [summary_flight_pax].[origin_icao] AS [origin_icao], 
+    [summary_flight_pax].[destination_icao] AS [destination_icao], 
+    [summary_flight_pax].[origin] AS [origin], 
+    [summary_flight_pax].[destination] AS [destination], 
+    [summary_flight_pax].[pax_adult] AS [pax_adult], 
+    [summary_flight_pax].[pax_child] AS [pax_child], 
+    [summary_flight_pax].[pax_infant] AS [pax_infant], 
+    [summary_flight_pax].[pax_total] AS [pax_total], 
+    [summary_flight_pax].[pax_rev] AS [pax_rev], 
+    [summary_flight_pax].[baggage_weight] AS [baggage_weight], 
+    [summary_flight_pax].[cargo_weight] AS [cargo_weight], 
+    [summary_flight_pax].[fuel_uplift] AS [fuel_uplift], 
+    [summary_flight_pax].[fuel_used] AS [fuel_used], 
+    [summary_flight_pax].[block_time] AS [block_time], 
+    [summary_flight_pax].[flight_time] AS [flight_time], 
+    [summary_flight_pax].[flights_count] AS [flights_count], 
+    [summary_flight_pax].[std_hour_0004] AS [std_hour_0004], 
+    [summary_flight_pax].[std_hour_0408] AS [std_hour_0408], 
+    [summary_flight_pax].[std_hour_0812] AS [std_hour_0812], 
+    [summary_flight_pax].[std_hour_1216] AS [std_hour_1216], 
+    [summary_flight_pax].[std_hour_1620] AS [std_hour_1620], 
+    [summary_flight_pax].[std_hour_2024] AS [std_hour_2024]
+    FROM [dbo].[summary_flight_pax] AS [summary_flight_pax]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ViewCourseFDP" EntityType="Self.ViewCourseFDP" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -2428,7 +2522,9 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
     [ViewFlightDaily].[IsDepInt] AS [IsDepInt], 
     [ViewFlightDaily].[IsArrInt] AS [IsArrInt], 
     [ViewFlightDaily].[XRoute] AS [XRoute], 
-    [ViewFlightDaily].[FixTime] AS [FixTime]
+    [ViewFlightDaily].[FixTime] AS [FixTime], 
+    [ViewFlightDaily].[PYear] AS [PYear], 
+    [ViewFlightDaily].[IsINT] AS [IsINT]
     FROM [dbo].[ViewFlightDaily] AS [ViewFlightDaily]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ViewFlightDelay" EntityType="Self.ViewFlightDelay" store:Type="Views" store:Schema="dbo">
@@ -2682,6 +2778,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
     [ViewLegCrew].[DelayOffBlock] AS [DelayOffBlock], 
     [ViewLegCrew].[STADay] AS [STADay], 
     [ViewLegCrew].[STDDay] AS [STDDay], 
+    [ViewLegCrew].[STDDayLocal] AS [STDDayLocal], 
     [ViewLegCrew].[ArrivalRemark] AS [ArrivalRemark], 
     [ViewLegCrew].[FlightStatus] AS [FlightStatus], 
     [ViewLegCrew].[Register] AS [Register], 
@@ -2788,7 +2885,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
     [XFlightCrew].[IsCockpit] AS [IsCockpit], 
     [XFlightCrew].[Code] AS [Code], 
     [XFlightCrew].[DateConfirmed] AS [DateConfirmed], 
-    [XFlightCrew].[IsConfirmed] AS [IsConfirmed]
+    [XFlightCrew].[IsConfirmed] AS [IsConfirmed], 
+    [XFlightCrew].[MainGroup] AS [MainGroup]
     FROM [dbo].[XFlightCrew] AS [XFlightCrew]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="fk_fdp_fdp" Association="Self.fk_fdp_fdp">
@@ -2822,11 +2920,12 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySet Name="ViewFlightDailies" EntityType="ModelEntities.ViewFlightDaily" />
           <EntitySet Name="RptRefuses" EntityType="ModelEntities.RptRefuse" />
           <EntitySet Name="ViewFlightCockpits" EntityType="ModelEntities.ViewFlightCockpit" />
-          <EntitySet Name="RptFDPItems" EntityType="ModelEntities.RptFDPItem" />
           <EntitySet Name="ViewLegCrews" EntityType="ModelEntities.ViewLegCrew" />
           <EntitySet Name="ViewFlightPaxes" EntityType="ModelEntities.ViewFlightPax" />
           <EntitySet Name="ViewRegHistoryYearlies" EntityType="ModelEntities.ViewRegHistoryYearly" />
           <EntitySet Name="rpt_pax_total" EntityType="ModelEntities.rpt_pax_total" />
+          <EntitySet Name="summary_flight_pax" EntityType="ModelEntities.summary_flight_pax" />
+          <EntitySet Name="RptFDPItems" EntityType="ModelEntities.RptFDPItem" />
         </EntityContainer>
         <EntityType Name="ViewFinMonthlyRoute">
           <Key>
@@ -3592,6 +3691,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
             <PropertyRef Name="GroupOrder" />
             <PropertyRef Name="IsCockpit" />
             <PropertyRef Name="NID" />
+            <PropertyRef Name="MainGroup" />
           </Key>
           <Property Name="CrewId" Type="Int32" />
           <Property Name="FlightId" Type="Int32" />
@@ -3616,6 +3716,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="PLastName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="PName" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
           <Property Name="NID" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="MainGroup" Type="String" Nullable="false" MaxLength="7" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ViewDelayedFlight">
           <Key>
@@ -3836,6 +3937,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
             <PropertyRef Name="IsDepInt" />
             <PropertyRef Name="IsArrInt" />
             <PropertyRef Name="FixTime" />
+            <PropertyRef Name="IsINT" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="FlightId" Type="Int32" Nullable="false" />
@@ -3957,6 +4059,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="IsArrInt" Type="Int32" Nullable="false" />
           <Property Name="XRoute" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="FixTime" Type="Int32" Nullable="false" />
+          <Property Name="PYear" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="IsINT" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="RptRefuse">
           <Key>
@@ -4062,54 +4166,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="PFLR" Type="Int32" />
           <Property Name="JLBlockTime" Type="Int32" />
           <Property Name="JLFlightTime" Type="Int32" />
-        </EntityType>
-        <EntityType Name="RptFDPItem">
-          <Key>
-            <PropertyRef Name="Id" />
-            <PropertyRef Name="FDPId" />
-            <PropertyRef Name="Name" />
-            <PropertyRef Name="FirstName" />
-            <PropertyRef Name="LastName" />
-            <PropertyRef Name="JobGroupRoot" />
-            <PropertyRef Name="DutyType" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="FDPId" Type="Int32" Nullable="false" />
-          <Property Name="FlightId" Type="Int32" />
-          <Property Name="IsSector" Type="Boolean" />
-          <Property Name="IsOff" Type="Boolean" />
-          <Property Name="IsActive" Type="Boolean" />
-          <Property Name="IsPositioning" Type="Boolean" />
-          <Property Name="IsCanceled" Type="Boolean" />
-          <Property Name="FlightStatusID" Type="Int32" />
-          <Property Name="FlightNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="FromAirportId" Type="Int32" />
-          <Property Name="ToAirportId" Type="Int32" />
-          <Property Name="FromAirport" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="ToAirport" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="STD" Type="DateTime" Precision="3" />
-          <Property Name="STA" Type="DateTime" Precision="3" />
-          <Property Name="ChocksOut" Type="DateTime" Precision="3" />
-          <Property Name="STDLocal" Type="DateTime" Precision="3" />
-          <Property Name="STALocal" Type="DateTime" Precision="3" />
-          <Property Name="STDDayUTC" Type="DateTime" Precision="0" />
-          <Property Name="STADayUTC" Type="DateTime" Precision="0" />
-          <Property Name="STDDay" Type="DateTime" Precision="0" />
-          <Property Name="STADay" Type="DateTime" Precision="0" />
-          <Property Name="FlightTime" Type="Int32" />
-          <Property Name="FixedFlightTime" Type="Int32" />
-          <Property Name="BlockTime" Type="Int32" />
-          <Property Name="ScheduledTime" Type="Int32" />
-          <Property Name="CrewId" Type="Int32" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="1001" FixedLength="false" Unicode="true" />
-          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="LastName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="ScheduleName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="JobGroup" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="JobGroupCode" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="JobGroupRoot" Type="String" Nullable="false" MaxLength="7" FixedLength="false" Unicode="false" />
-          <Property Name="Rank" Type="Int64" />
-          <Property Name="DutyType" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="ViewLegCrew">
           <Key>
@@ -4217,6 +4273,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="ValidTypes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="BaseAirport" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="BaseAirportId" Type="Int32" />
+          <Property Name="STDDayLocal" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="ViewFlightPax">
           <Key>
@@ -4332,6 +4389,102 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="Route" Type="String" Nullable="false" MaxLength="511" FixedLength="false" Unicode="true" />
           <Property Name="Flights" Type="Int32" />
           <Property Name="TotalPax" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="summary_flight_pax">
+          <Key>
+            <PropertyRef Name="season" />
+            <PropertyRef Name="season_title" />
+            <PropertyRef Name="pyear" />
+            <PropertyRef Name="pmonth" />
+            <PropertyRef Name="register" />
+            <PropertyRef Name="register_id" />
+            <PropertyRef Name="origin_icao" />
+            <PropertyRef Name="destination_icao" />
+            <PropertyRef Name="origin" />
+            <PropertyRef Name="destination" />
+          </Key>
+          <Property Name="season" Type="Int32" Nullable="false" />
+          <Property Name="season_title" Type="String" Nullable="false" MaxLength="7" FixedLength="false" Unicode="false" />
+          <Property Name="pyear_month_name" Type="String" MaxLength="511" FixedLength="false" Unicode="true" />
+          <Property Name="pyear" Type="Int32" Nullable="false" />
+          <Property Name="pmonth" Type="Int32" Nullable="false" />
+          <Property Name="pmonth_name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="register" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="register_id" Type="Int32" Nullable="false" />
+          <Property Name="aircraft_type" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="origin_icao" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="destination_icao" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="origin" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="destination" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="pax_adult" Type="Int32" />
+          <Property Name="pax_child" Type="Int32" />
+          <Property Name="pax_infant" Type="Int32" />
+          <Property Name="pax_total" Type="Int32" />
+          <Property Name="pax_rev" Type="Int32" />
+          <Property Name="baggage_weight" Type="Int32" />
+          <Property Name="cargo_weight" Type="Int32" />
+          <Property Name="fuel_uplift" Type="Decimal" Precision="38" Scale="4" />
+          <Property Name="fuel_used" Type="Decimal" Precision="38" Scale="4" />
+          <Property Name="block_time" Type="Int32" />
+          <Property Name="flight_time" Type="Int32" />
+          <Property Name="flights_count" Type="Int32" />
+          <Property Name="std_hour_0004" Type="Int32" />
+          <Property Name="std_hour_0408" Type="Int32" />
+          <Property Name="std_hour_0812" Type="Int32" />
+          <Property Name="std_hour_1216" Type="Int32" />
+          <Property Name="std_hour_1620" Type="Int32" />
+          <Property Name="std_hour_2024" Type="Int32" />
+        </EntityType>
+        <EntityType Name="RptFDPItem">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="FDPId" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="FirstName" />
+            <PropertyRef Name="LastName" />
+            <PropertyRef Name="JobGroupRoot" />
+            <PropertyRef Name="DutyType" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="FDPId" Type="Int32" Nullable="false" />
+          <Property Name="FlightId" Type="Int32" />
+          <Property Name="IsSector" Type="Boolean" />
+          <Property Name="IsOff" Type="Boolean" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="IsPositioning" Type="Boolean" />
+          <Property Name="IsCanceled" Type="Boolean" />
+          <Property Name="FlightStatusID" Type="Int32" />
+          <Property Name="FlightNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FromAirportId" Type="Int32" />
+          <Property Name="ToAirportId" Type="Int32" />
+          <Property Name="FromAirport" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ToAirport" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="STD" Type="DateTime" Precision="3" />
+          <Property Name="STA" Type="DateTime" Precision="3" />
+          <Property Name="ChocksOut" Type="DateTime" Precision="3" />
+          <Property Name="STDLocal" Type="DateTime" Precision="3" />
+          <Property Name="STALocal" Type="DateTime" Precision="3" />
+          <Property Name="STDDayUTC" Type="DateTime" Precision="0" />
+          <Property Name="STADayUTC" Type="DateTime" Precision="0" />
+          <Property Name="STDDay" Type="DateTime" Precision="0" />
+          <Property Name="STADay" Type="DateTime" Precision="0" />
+          <Property Name="FlightTime" Type="Int32" />
+          <Property Name="JLFlightTime" Type="Int32" />
+          <Property Name="FixedFlightTime" Type="Int32" />
+          <Property Name="BlockTime" Type="Int32" />
+          <Property Name="JLBlockTime" Type="Int32" />
+          <Property Name="ScheduledTime" Type="Int32" />
+          <Property Name="CrewId" Type="Int32" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ScheduleName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="JobGroup" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="JobGroupCode" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="JobGroupRoot" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="false" />
+          <Property Name="Rank" Type="Int64" />
+          <Property Name="DutyType" Type="Int32" Nullable="false" />
+          <Property Name="PositionId" Type="Int32" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -4999,6 +5152,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySetMapping Name="XFlightCrews">
             <EntityTypeMapping TypeName="ModelEntities.XFlightCrew">
               <MappingFragment StoreEntitySet="XFlightCrew">
+                <ScalarProperty Name="MainGroup" ColumnName="MainGroup" />
                 <ScalarProperty Name="NID" ColumnName="NID" />
                 <ScalarProperty Name="PName" ColumnName="PName" />
                 <ScalarProperty Name="PLastName" ColumnName="PLastName" />
@@ -5203,6 +5357,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySetMapping Name="ViewFlightDailies">
             <EntityTypeMapping TypeName="ModelEntities.ViewFlightDaily">
               <MappingFragment StoreEntitySet="ViewFlightDaily">
+                <ScalarProperty Name="IsINT" ColumnName="IsINT" />
+                <ScalarProperty Name="PYear" ColumnName="PYear" />
                 <ScalarProperty Name="FixTime" ColumnName="FixTime" />
                 <ScalarProperty Name="XRoute" ColumnName="XRoute" />
                 <ScalarProperty Name="IsArrInt" ColumnName="IsArrInt" />
@@ -5414,52 +5570,10 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="RptFDPItems">
-            <EntityTypeMapping TypeName="ModelEntities.RptFDPItem">
-              <MappingFragment StoreEntitySet="RptFDPItem">
-                <ScalarProperty Name="DutyType" ColumnName="DutyType" />
-                <ScalarProperty Name="Rank" ColumnName="Rank" />
-                <ScalarProperty Name="JobGroupRoot" ColumnName="JobGroupRoot" />
-                <ScalarProperty Name="JobGroupCode" ColumnName="JobGroupCode" />
-                <ScalarProperty Name="JobGroup" ColumnName="JobGroup" />
-                <ScalarProperty Name="ScheduleName" ColumnName="ScheduleName" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="CrewId" ColumnName="CrewId" />
-                <ScalarProperty Name="ScheduledTime" ColumnName="ScheduledTime" />
-                <ScalarProperty Name="BlockTime" ColumnName="BlockTime" />
-                <ScalarProperty Name="FixedFlightTime" ColumnName="FixedFlightTime" />
-                <ScalarProperty Name="FlightTime" ColumnName="FlightTime" />
-                <ScalarProperty Name="STADay" ColumnName="STADay" />
-                <ScalarProperty Name="STDDay" ColumnName="STDDay" />
-                <ScalarProperty Name="STADayUTC" ColumnName="STADayUTC" />
-                <ScalarProperty Name="STDDayUTC" ColumnName="STDDayUTC" />
-                <ScalarProperty Name="STALocal" ColumnName="STALocal" />
-                <ScalarProperty Name="STDLocal" ColumnName="STDLocal" />
-                <ScalarProperty Name="ChocksOut" ColumnName="ChocksOut" />
-                <ScalarProperty Name="STA" ColumnName="STA" />
-                <ScalarProperty Name="STD" ColumnName="STD" />
-                <ScalarProperty Name="ToAirport" ColumnName="ToAirport" />
-                <ScalarProperty Name="FromAirport" ColumnName="FromAirport" />
-                <ScalarProperty Name="ToAirportId" ColumnName="ToAirportId" />
-                <ScalarProperty Name="FromAirportId" ColumnName="FromAirportId" />
-                <ScalarProperty Name="FlightNumber" ColumnName="FlightNumber" />
-                <ScalarProperty Name="FlightStatusID" ColumnName="FlightStatusID" />
-                <ScalarProperty Name="IsCanceled" ColumnName="IsCanceled" />
-                <ScalarProperty Name="IsPositioning" ColumnName="IsPositioning" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="IsOff" ColumnName="IsOff" />
-                <ScalarProperty Name="IsSector" ColumnName="IsSector" />
-                <ScalarProperty Name="FlightId" ColumnName="FlightId" />
-                <ScalarProperty Name="FDPId" ColumnName="FDPId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ViewLegCrews">
             <EntityTypeMapping TypeName="ModelEntities.ViewLegCrew">
               <MappingFragment StoreEntitySet="ViewLegCrew">
+                <ScalarProperty Name="STDDayLocal" ColumnName="STDDayLocal" />
                 <ScalarProperty Name="BaseAirportId" ColumnName="BaseAirportId" />
                 <ScalarProperty Name="BaseAirport" ColumnName="BaseAirport" />
                 <ScalarProperty Name="ValidTypes" ColumnName="ValidTypes" />
@@ -5662,6 +5776,89 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
                 <ScalarProperty Name="TotalPax" ColumnName="TotalPax" />
                 <ScalarProperty Name="Flights" ColumnName="Flights" />
                 <ScalarProperty Name="Route" ColumnName="Route" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="summary_flight_pax">
+            <EntityTypeMapping TypeName="ModelEntities.summary_flight_pax">
+              <MappingFragment StoreEntitySet="summary_flight_pax">
+                <ScalarProperty Name="std_hour_2024" ColumnName="std_hour_2024" />
+                <ScalarProperty Name="std_hour_1620" ColumnName="std_hour_1620" />
+                <ScalarProperty Name="std_hour_1216" ColumnName="std_hour_1216" />
+                <ScalarProperty Name="std_hour_0812" ColumnName="std_hour_0812" />
+                <ScalarProperty Name="std_hour_0408" ColumnName="std_hour_0408" />
+                <ScalarProperty Name="std_hour_0004" ColumnName="std_hour_0004" />
+                <ScalarProperty Name="flights_count" ColumnName="flights_count" />
+                <ScalarProperty Name="flight_time" ColumnName="flight_time" />
+                <ScalarProperty Name="block_time" ColumnName="block_time" />
+                <ScalarProperty Name="fuel_used" ColumnName="fuel_used" />
+                <ScalarProperty Name="fuel_uplift" ColumnName="fuel_uplift" />
+                <ScalarProperty Name="cargo_weight" ColumnName="cargo_weight" />
+                <ScalarProperty Name="baggage_weight" ColumnName="baggage_weight" />
+                <ScalarProperty Name="pax_rev" ColumnName="pax_rev" />
+                <ScalarProperty Name="pax_total" ColumnName="pax_total" />
+                <ScalarProperty Name="pax_infant" ColumnName="pax_infant" />
+                <ScalarProperty Name="pax_child" ColumnName="pax_child" />
+                <ScalarProperty Name="pax_adult" ColumnName="pax_adult" />
+                <ScalarProperty Name="destination" ColumnName="destination" />
+                <ScalarProperty Name="origin" ColumnName="origin" />
+                <ScalarProperty Name="destination_icao" ColumnName="destination_icao" />
+                <ScalarProperty Name="origin_icao" ColumnName="origin_icao" />
+                <ScalarProperty Name="aircraft_type" ColumnName="aircraft_type" />
+                <ScalarProperty Name="register_id" ColumnName="register_id" />
+                <ScalarProperty Name="register" ColumnName="register" />
+                <ScalarProperty Name="pmonth_name" ColumnName="pmonth_name" />
+                <ScalarProperty Name="pmonth" ColumnName="pmonth" />
+                <ScalarProperty Name="pyear" ColumnName="pyear" />
+                <ScalarProperty Name="pyear_month_name" ColumnName="pyear_month_name" />
+                <ScalarProperty Name="season_title" ColumnName="season_title" />
+                <ScalarProperty Name="season" ColumnName="season" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RptFDPItems">
+            <EntityTypeMapping TypeName="ModelEntities.RptFDPItem">
+              <MappingFragment StoreEntitySet="RptFDPItem">
+                <ScalarProperty Name="PositionId" ColumnName="PositionId" />
+                <ScalarProperty Name="DutyType" ColumnName="DutyType" />
+                <ScalarProperty Name="Rank" ColumnName="Rank" />
+                <ScalarProperty Name="JobGroupRoot" ColumnName="JobGroupRoot" />
+                <ScalarProperty Name="JobGroupCode" ColumnName="JobGroupCode" />
+                <ScalarProperty Name="JobGroup" ColumnName="JobGroup" />
+                <ScalarProperty Name="ScheduleName" ColumnName="ScheduleName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CrewId" ColumnName="CrewId" />
+                <ScalarProperty Name="ScheduledTime" ColumnName="ScheduledTime" />
+                <ScalarProperty Name="JLBlockTime" ColumnName="JLBlockTime" />
+                <ScalarProperty Name="BlockTime" ColumnName="BlockTime" />
+                <ScalarProperty Name="FixedFlightTime" ColumnName="FixedFlightTime" />
+                <ScalarProperty Name="JLFlightTime" ColumnName="JLFlightTime" />
+                <ScalarProperty Name="FlightTime" ColumnName="FlightTime" />
+                <ScalarProperty Name="STADay" ColumnName="STADay" />
+                <ScalarProperty Name="STDDay" ColumnName="STDDay" />
+                <ScalarProperty Name="STADayUTC" ColumnName="STADayUTC" />
+                <ScalarProperty Name="STDDayUTC" ColumnName="STDDayUTC" />
+                <ScalarProperty Name="STALocal" ColumnName="STALocal" />
+                <ScalarProperty Name="STDLocal" ColumnName="STDLocal" />
+                <ScalarProperty Name="ChocksOut" ColumnName="ChocksOut" />
+                <ScalarProperty Name="STA" ColumnName="STA" />
+                <ScalarProperty Name="STD" ColumnName="STD" />
+                <ScalarProperty Name="ToAirport" ColumnName="ToAirport" />
+                <ScalarProperty Name="FromAirport" ColumnName="FromAirport" />
+                <ScalarProperty Name="ToAirportId" ColumnName="ToAirportId" />
+                <ScalarProperty Name="FromAirportId" ColumnName="FromAirportId" />
+                <ScalarProperty Name="FlightNumber" ColumnName="FlightNumber" />
+                <ScalarProperty Name="FlightStatusID" ColumnName="FlightStatusID" />
+                <ScalarProperty Name="IsCanceled" ColumnName="IsCanceled" />
+                <ScalarProperty Name="IsPositioning" ColumnName="IsPositioning" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="IsOff" ColumnName="IsOff" />
+                <ScalarProperty Name="IsSector" ColumnName="IsSector" />
+                <ScalarProperty Name="FlightId" ColumnName="FlightId" />
+                <ScalarProperty Name="FDPId" ColumnName="FDPId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

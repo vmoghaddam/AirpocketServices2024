@@ -81,6 +81,11 @@ namespace ApiQA.Models
         public virtual DbSet<QAGetEntites_Result> QAGetEntites_Result { get; set; }
         public virtual DbSet<ViewQABYEmployee> ViewQABYEmployees { get; set; }
         public virtual DbSet<EFBASR> EFBASRs { get; set; }
+        public virtual DbSet<survey_category> survey_category { get; set; }
+        public virtual DbSet<survey_participant> survey_participant { get; set; }
+        public virtual DbSet<survey_question> survey_question { get; set; }
+        public virtual DbSet<survey_result> survey_result { get; set; }
+        public virtual DbSet<survey_driver> survey_driver { get; set; }
     
         public virtual int QAByEmployeeCount(Nullable<int> type, Nullable<int> entityId)
         {

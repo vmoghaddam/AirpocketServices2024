@@ -38,8 +38,10 @@ namespace ApiReportFlight.Models
         public Nullable<System.DateTime> STDDay { get; set; }
         public Nullable<System.DateTime> STADay { get; set; }
         public Nullable<int> FlightTime { get; set; }
+        public Nullable<int> JLFlightTime { get; set; }
         public Nullable<int> FixedFlightTime { get; set; }
         public Nullable<int> BlockTime { get; set; }
+        public Nullable<int> JLBlockTime { get; set; }
         public Nullable<int> ScheduledTime { get; set; }
         public Nullable<int> CrewId { get; set; }
         public string Name { get; set; }
@@ -51,5 +53,6 @@ namespace ApiReportFlight.Models
         public string JobGroupRoot { get; set; }
         public Nullable<long> Rank { get; set; }
         public int DutyType { get; set; }
+        public Nullable<int> PositionId { get; set; }
     }
 }

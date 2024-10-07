@@ -45,6 +45,7 @@ namespace ApiQA.Models
         public Nullable<int> ReporterId { get; set; }
         public string DelayReason { get; set; }
         public Nullable<int> Delay { get; set; }
+        public string FormNo { get; set; }
     
         public virtual FlightInformation FlightInformation { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

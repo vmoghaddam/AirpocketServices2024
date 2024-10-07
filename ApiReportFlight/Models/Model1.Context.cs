@@ -42,10 +42,11 @@ namespace ApiReportFlight.Models
         public virtual DbSet<ViewFlightDaily> ViewFlightDailies { get; set; }
         public virtual DbSet<RptRefuse> RptRefuses { get; set; }
         public virtual DbSet<ViewFlightCockpit> ViewFlightCockpits { get; set; }
-        public virtual DbSet<RptFDPItem> RptFDPItems { get; set; }
         public virtual DbSet<ViewLegCrew> ViewLegCrews { get; set; }
         public virtual DbSet<ViewFlightPax> ViewFlightPaxes { get; set; }
         public virtual DbSet<ViewRegHistoryYearly> ViewRegHistoryYearlies { get; set; }
         public virtual DbSet<rpt_pax_total> rpt_pax_total { get; set; }
+        public virtual DbSet<summary_flight_pax> summary_flight_pax { get; set; }
+        public virtual DbSet<RptFDPItem> RptFDPItems { get; set; }
     }
 }

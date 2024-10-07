@@ -139,6 +139,24 @@ namespace ApiReportFlight.Controllers
 
                                  }).OrderBy(q => q.GroupOrder).ThenByDescending(q => q.FixedFlightTime).ThenBy(q => q.LastName).ToList();
 
+
+            //safety
+            var qry_safety = from x in context.RptFDPItems
+                             where x.PositionId == 1162 && x.STDDay >= df && x.STDDay < dt && crew_ids.Contains(x.CrewId)
+                             select x;
+            var ds_safety = qry_safety.ToList();
+            var ds_safety_total = (from x in ds_safety
+                                   group x by new { x.CrewId } into grp
+                                   select new
+                                   {
+                                       grp.Key.CrewId,
+                                       count = grp.Count(),
+                                       blocktime = grp.Sum(q => q.BlockTime),
+                                   }).ToList();
+                               
+
+
+
             var qry_nofdp = from x in context.RptNoFDPs
                             where x.Date >= df && x.Date < dt && crew_ids.Contains(x.CrewId)
                             select x;
@@ -181,6 +199,13 @@ namespace ApiReportFlight.Controllers
                 crew.GroupOrder = getOrder(crew.JobGroup);
                 var nofdps = ds_nofdp_total.Where(q => q.CrewId == crew.CrewId).ToList();
                 var refs = ds_refuse_total.Where(q => q.CrewId == crew.CrewId).ToList();
+
+                var safety = ds_safety_total.FirstOrDefault(q => q.CrewId == crew.CrewId);
+                if (safety != null)
+                {
+                    crew.Safety = safety.count;
+                    crew.SafetyBlock = safety.blocktime!=null?(int)safety.blocktime:0;
+                }
                 foreach (var rec in refs)
                 {
                     crew.Refuse += rec.Count;
@@ -341,6 +366,9 @@ namespace ApiReportFlight.Controllers
 
             public int Leg2X { get; set; }
             public int Leg4X { get; set; }
+
+            public int Safety { get; set; }
+            public int SafetyBlock { get; set; }
 
             public int IntFDP { get; set; }
             public int IntFlt { get; set; }
@@ -2501,6 +2529,178 @@ namespace ApiReportFlight.Controllers
                 pax_route_total
             };
             return Ok(result);
+        }
+        public partial class dto_summary_flight_pax
+        {
+            public int season { get; set; }
+            public string season_title { get; set; }
+            public string pyear_month_name { get; set; }
+            public int pyear { get; set; }
+            public int pmonth { get; set; }
+            public string pmonth_name { get; set; }
+            public string register { get; set; }
+            public int register_id { get; set; }
+            public string aircraft_type { get; set; }
+            public string origin_icao { get; set; }
+            public string destination_icao { get; set; }
+            public string origin { get; set; }
+            public string destination { get; set; }
+            public Nullable<int> pax_adult { get; set; }
+            public Nullable<int> pax_child { get; set; }
+            public Nullable<int> pax_infant { get; set; }
+            public Nullable<int> pax_total { get; set; }
+            public Nullable<int> pax_rev { get; set; }
+            public Nullable<int> baggage_weight { get; set; }
+            public Nullable<int> cargo_weight { get; set; }
+            public Nullable<decimal> fuel_uplift { get; set; }
+            public Nullable<decimal> fuel_used { get; set; }
+            public Nullable<int> block_time { get; set; }
+            public Nullable<int> flight_time { get; set; }
+            public Nullable<int> flights_count { get; set; }
+            public Nullable<int> std_hour_0004 { get; set; }
+            public Nullable<int> std_hour_0408 { get; set; }
+            public Nullable<int> std_hour_0812 { get; set; }
+            public Nullable<int> std_hour_1216 { get; set; }
+            public Nullable<int> std_hour_1620 { get; set; }
+            public Nullable<int> std_hour_2024 { get; set; }
+
+
+            public string route { get; set; }
+            public int? grp_total_pax { get; set; }
+            public int? grp_total_pax_reg { get; set; }
+
+            public decimal? grp_total_fuel { get; set; }
+            public decimal? grp_total_fuel_reg { get; set; }
+
+            public int? grp_total_block { get; set; }
+            public int? grp_total_block_reg { get; set; }
+
+            public int? grp_total_flight { get; set; }
+            public int? grp_total_flight_reg { get; set; }
+
+            public int? grp_total_count { get; set; }
+            public int? grp_total_count_reg { get; set; }
+        }
+        [Route("api/summary/pax/monthly/{y1}/{y2}")]
+        [AcceptVerbs("GET")]
+        public IHttpActionResult GetSummaryPaxMonthly(int y1,int y2)
+        {
+             
+            try
+            {
+                var context = new ppa_Entities();
+                var query = from x in context.summary_flight_pax
+                            select x;
+                if (y1 != -1)
+                    query = query.Where(q => q.pyear >= y1);
+                if (y2 != -1)
+                    query = query.Where(q => q.pyear <= y2);
+
+                var query_result = query.OrderBy(q => q.pyear).ThenBy(q => q.pmonth).ThenBy(q => q.aircraft_type).ThenBy(q => q.register).ToList();
+                var result = new List<dto_summary_flight_pax>();
+                foreach (var x in query_result)
+                {
+                    var item =JsonConvert.DeserializeObject<dto_summary_flight_pax>( JsonConvert.SerializeObject(x));
+                    item.route = item.origin + "-" + item.destination;
+                    result.Add(item);
+                }
+                var grp_total = (from x in result
+                                 group x by new { x.route } into grp
+                                 select new
+                                 {
+                                     grp.Key.route,
+                                     total_pax = grp.Sum(q => q.pax_total),
+                                     total_fuel = grp.Sum(q => q.fuel_used),
+                                     total_block = grp.Sum(q => q.block_time),
+                                     total_flight = grp.Sum(q => q.flight_time),
+                                     total_count = grp.Sum(q => q.flights_count),
+
+                                 }).ToList();
+                var grp_total_month = (from x in result
+                                 group x by new { x.route,x.pyear,x.pmonth,x.pmonth_name } into grp
+                                 select new
+                                 {
+                                     grp.Key.pyear,
+                                     grp.Key.pmonth,
+                                     grp.Key.pmonth_name,
+                                     grp.Key.route,
+
+                                     total_pax = grp.Sum(q => q.pax_total),
+                                     total_fuel = grp.Sum(q => q.fuel_used),
+                                     total_block = grp.Sum(q => q.block_time),
+                                     total_flight = grp.Sum(q => q.flight_time),
+                                     total_count = grp.Sum(q => q.flights_count),
+
+                                 }).ToList();
+                var grp_total_reg = (from x in result
+                                 group x by new { x.route,x.register_id,x.register,x.aircraft_type } into grp
+                                 select new
+                                 {
+                                     grp.Key.route,
+                                     grp.Key.register_id,
+                                     grp.Key.register,
+                                     total_pax = grp.Sum(q => q.pax_total),
+                                     total_fuel = grp.Sum(q => q.fuel_used),
+                                     total_block = grp.Sum(q => q.block_time),
+                                     total_flight = grp.Sum(q => q.flight_time),
+                                     total_count = grp.Sum(q => q.flights_count),
+
+                                 }).ToList();
+                var grp_total_reg_month = (from x in result
+                                     group x by new { x.route, x.pyear, x.pmonth, x.pmonth_name,x.aircraft_type,x.register, x.register_id } into grp
+                                     select new
+                                     {
+                                         grp.Key.pyear,
+                                         grp.Key.pmonth,
+                                         grp.Key.pmonth_name,
+                                         grp.Key.route,
+                                         grp.Key.register_id,
+                                         grp.Key.register,
+                                         total_pax = grp.Sum(q => q.pax_total),
+                                         total_fuel = grp.Sum(q => q.fuel_used),
+                                         total_block = grp.Sum(q => q.block_time),
+                                         total_flight = grp.Sum(q => q.flight_time),
+                                         total_count = grp.Sum(q => q.flights_count),
+
+                                     }).ToList();
+
+                foreach (var x in result)
+                {
+                    var obj = grp_total.FirstOrDefault(q => q.route == x.route);
+                    var obj_reg = grp_total_reg.FirstOrDefault(q => q.route == x.route && q.register_id == x.register_id);
+                    if (obj != null)
+                    {
+                        x.grp_total_block = obj.total_block;
+                        x.grp_total_count = obj.total_count;
+                        x.grp_total_flight = obj.total_flight;
+                        x.grp_total_fuel = obj.total_fuel;
+                        x.grp_total_pax = obj.total_pax;
+                    }
+                    if (obj_reg != null)
+                    {
+                        x.grp_total_block_reg = obj_reg.total_block;
+                        x.grp_total_count_reg = obj_reg.total_count;
+                        x.grp_total_flight_reg = obj_reg.total_flight;
+                        x.grp_total_fuel_reg = obj_reg.total_fuel;
+                        x.grp_total_pax_reg = obj_reg.total_pax;
+                    }
+                }
+
+
+                return Ok(new { 
+                    result,
+                    grp_total,
+                    grp_total_month,
+                    grp_total_reg,
+                    grp_total_reg_month
+
+                });
+            }
+            catch (Exception ex)
+            {
+                return Ok(false);
+            }
+
         }
 
 

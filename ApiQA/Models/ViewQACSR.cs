@@ -50,5 +50,7 @@ namespace ApiQA.Models
         public string DelayReason { get; set; }
         public Nullable<int> Delay { get; set; }
         public string Result { get; set; }
+        public string FormNo { get; set; }
+        public string EventTitles { get; set; }
     }
 }

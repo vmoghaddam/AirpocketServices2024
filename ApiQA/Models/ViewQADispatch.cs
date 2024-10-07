@@ -66,5 +66,6 @@ namespace ApiQA.Models
         public Nullable<bool> FlightPerformed { get; set; }
         public Nullable<System.TimeSpan> FlightPerformedTime { get; set; }
         public string Result { get; set; }
+        public string FormNo { get; set; }
     }
 }

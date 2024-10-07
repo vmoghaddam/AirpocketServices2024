@@ -20,5 +20,8 @@ namespace ApiQA.Models
         public string Feedback { get; set; }
         public Nullable<System.DateTime> DateCreate { get; set; }
         public Nullable<int> CreatorId { get; set; }
+        public Nullable<System.DateTime> DateVisit { get; set; }
+        public Nullable<int> ReceiverId { get; set; }
+        public Nullable<int> TypeId { get; set; }
     }
 }

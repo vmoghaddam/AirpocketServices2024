@@ -24,6 +24,7 @@
           <Property Name="UTC" Type="int" />
           <Property Name="Category" Type="varchar" MaxLength="255" />
           <Property Name="TimeZone" Type="varchar" MaxLength="500" />
+          <Property Name="Name2" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="DutyLog">
           <Key>
@@ -160,6 +161,9 @@
           <Property Name="EmployeeId" Type="int" />
           <Property Name="ReporterId" Type="int" />
           <Property Name="Status" Type="int" />
+          <Property Name="FormNo" Type="varchar" MaxLength="255" />
+          <Property Name="DateStatus" Type="datetime" />
+          <Property Name="StatusEmployeeId" Type="int" />
         </EntityType>
         <EntityType Name="FlightInformation">
           <Key>
@@ -459,6 +463,11 @@
           <Property Name="FuelRemained" Type="int" />
           <Property Name="FuelUsed" Type="int" />
           <Property Name="FuelUpliftLitr" Type="int" />
+          <Property Name="CCPreFlightCheckRemark" Type="varchar" MaxLength="1000" />
+          <Property Name="FlightTypeOPS" Type="varchar" MaxLength="500" />
+          <Property Name="AttForms" Type="varchar" MaxLength="500" />
+          <Property Name="PaxMale" Type="int" />
+          <Property Name="PaxFemale" Type="int" />
         </EntityType>
         <EntityType Name="QAAttachments">
           <Key>
@@ -523,6 +532,7 @@
           <Property Name="InjeryOccurring" Type="bit" />
           <Property Name="DelayReason" Type="nvarchar" MaxLength="255" />
           <Property Name="Delay" Type="int" />
+          <Property Name="FormNo" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="QAComments">
           <Key>
@@ -564,6 +574,7 @@
           <Property Name="ReporterId" Type="int" />
           <Property Name="DelayReason" Type="nvarchar" MaxLength="255" />
           <Property Name="Delay" Type="int" />
+          <Property Name="FormNo" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="QACSREvent">
           <Key>
@@ -606,6 +617,7 @@
           <Property Name="Mobile" Type="nvarchar" MaxLength="255" />
           <Property Name="DelayReason" Type="nvarchar" MaxLength="255" />
           <Property Name="Delay" Type="int" />
+          <Property Name="FormNo" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="QADispatch">
           <Key>
@@ -650,6 +662,7 @@
           <Property Name="FlightPerFormedTime" Type="time" Precision="7" />
           <Property Name="DelayReason" Type="nvarchar" MaxLength="255" />
           <Property Name="Delay" Type="int" />
+          <Property Name="FormNo" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="QAFeedback">
           <Key>
@@ -661,6 +674,9 @@
           <Property Name="Feedback" Type="nvarchar" MaxLength="2000" />
           <Property Name="DateCreate" Type="datetime2" Precision="7" />
           <Property Name="CreatorId" Type="int" />
+          <Property Name="DateVisit" Type="datetime" />
+          <Property Name="ReceiverId" Type="int" />
+          <Property Name="TypeId" Type="int" />
         </EntityType>
         <EntityType Name="QAFollowingUp">
           <Key>
@@ -677,6 +693,12 @@
           <Property Name="ParentId" Type="int" />
           <Property Name="DeadLine" Type="datetime" />
           <Property Name="Priority" Type="int" />
+          <Property Name="DateVisit" Type="datetime" />
+          <Property Name="ReceiverDateVisit" Type="datetime" />
+          <Property Name="DateNotified" Type="datetime" />
+          <Property Name="NotificationCount" Type="int" />
+          <Property Name="SMS" Type="nvarchar" MaxLength="2000" />
+          <Property Name="SMSRefId" Type="int" />
         </EntityType>
         <EntityType Name="QAGetEntites_Result">
           <Key>
@@ -703,6 +725,9 @@
           <Property Name="DateSign" Type="datetime2" Precision="0" />
           <Property Name="DeadLine" Type="datetime2" Precision="7" />
           <Property Name="Priority" Type="int" />
+          <Property Name="FormNo" Type="varchar" MaxLength="255" />
+          <Property Name="FollowingId" Type="int" />
+          <Property Name="CategoryOrder" Type="int" />
         </EntityType>
         <EntityType Name="QAGroundIAD">
           <Key>
@@ -781,6 +806,7 @@
           <Property Name="ScheduledGroundTime" Type="time" Precision="7" />
           <Property Name="DelayReason" Type="nvarchar" MaxLength="255" />
           <Property Name="Delay" Type="int" />
+          <Property Name="FormNo" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="QAHazard">
           <Key>
@@ -805,6 +831,7 @@
           <Property Name="RelatedDepartment" Type="nvarchar" MaxLength="200" />
           <Property Name="DelayReason" Type="nvarchar" MaxLength="255" />
           <Property Name="Delay" Type="int" />
+          <Property Name="FormNo" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="QAMaintenance">
           <Key>
@@ -835,6 +862,7 @@
           <Property Name="DateHazard" Type="datetime" />
           <Property Name="DelayReason" Type="nvarchar" MaxLength="255" />
           <Property Name="Delay" Type="int" />
+          <Property Name="FormNo" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="QAOption">
           <Key>
@@ -903,6 +931,64 @@
           <Property Name="TelNumber" Type="nvarchar" MaxLength="255" />
           <Property Name="DelayReason" Type="nvarchar" MaxLength="255" />
           <Property Name="Delay" Type="int" />
+          <Property Name="FormNo" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="survey_category">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="title" Type="nvarchar" MaxLength="1000" />
+          <Property Name="survey_type" Type="nvarchar" MaxLength="500" />
+          <Property Name="order_index" Type="int" />
+        </EntityType>
+        <EntityType Name="survey_driver">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="survey_id" Type="int" Nullable="false" />
+          <Property Name="driver_name" Type="nvarchar" MaxLength="1000" />
+          <Property Name="journey_route" Type="nvarchar" MaxLength="1000" />
+          <Property Name="journey_subject" Type="nvarchar" MaxLength="1000" />
+          <Property Name="journey_title" Type="nvarchar" MaxLength="1000" />
+          <Property Name="journey_time" Type="nvarchar" MaxLength="500" />
+          <Property Name="vehicle_no" Type="nvarchar" MaxLength="500" />
+          <Property Name="remark" Type="nvarchar" MaxLength="2000" />
+          <Property Name="date_year" Type="int" />
+          <Property Name="date_month" Type="int" />
+          <Property Name="date_day" Type="int" />
+        </EntityType>
+        <EntityType Name="survey_participant">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="participant_name" Type="nvarchar" MaxLength="1000" />
+          <Property Name="email" Type="nvarchar" MaxLength="1000" />
+          <Property Name="phone" Type="nvarchar" MaxLength="500" />
+          <Property Name="participant_id" Type="int" />
+          <Property Name="participant_key" Type="nvarchar" MaxLength="1000" />
+          <Property Name="submitted_at" Type="datetime" />
+        </EntityType>
+        <EntityType Name="survey_question">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="category_id" Type="int" />
+          <Property Name="title" Type="nvarchar" MaxLength="1000" />
+          <Property Name="order_index" Type="int" />
+        </EntityType>
+        <EntityType Name="survey_result">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="participant_id" Type="int" Nullable="false" />
+          <Property Name="question_id" Type="int" Nullable="false" />
+          <Property Name="answer" Type="int" />
+          <Property Name="response_time" Type="datetime" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.AppLeg' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -917,10 +1003,10 @@ warning 6002: The table/view 'ppa_varesh.dbo.AppLeg' does not have a primary key
             <PropertyRef Name="MSN" />
             <PropertyRef Name="IsJL" />
             <PropertyRef Name="IsJLApproved" />
+            
             <PropertyRef Name="IPScheduleName" />
             <PropertyRef Name="P1ScheduleName" />
             <PropertyRef Name="P2ScheduleName" />
-            
           </Key>
           <Property Name="ID" Type="int" Nullable="false" />
           <Property Name="FlightId" Type="int" Nullable="false" />
@@ -1035,16 +1121,16 @@ warning 6002: The table/view 'ppa_varesh.dbo.AppLeg' does not have a primary key
           <Property Name="PF" Type="varchar" MaxLength="255" />
           <Property Name="IPName" Type="nvarchar" MaxLength="1001" />
           <Property Name="IPId" Type="int" />
-          <Property Name="IPScheduleName" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="IPScheduleName" Type="varchar" MaxLength="500" Nullable="false" />
           <Property Name="P1Name" Type="nvarchar" MaxLength="1001" />
           <Property Name="P1Id" Type="int" />
-          <Property Name="P1ScheduleName" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="P1ScheduleName" Type="varchar" MaxLength="500" Nullable="false" />
           <Property Name="P2Name" Type="nvarchar" MaxLength="1001" />
           <Property Name="P2Id" Type="int" />
-          <Property Name="P2ScheduleName" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="P2ScheduleName" Type="varchar" MaxLength="500" Nullable="false" />
           <Property Name="PIC" Type="nvarchar" MaxLength="1001" />
           <Property Name="PICId" Type="int" />
-          <Property Name="SIC" Type="varchar" MaxLength="500" />
+          <Property Name="SIC" Type="nvarchar" MaxLength="2004" />
           <Property Name="SICId" Type="int" />
           <Property Name="JLDatePICApproved" Type="datetime" />
           <Property Name="JLSignedBy" Type="varchar" MaxLength="500" />
@@ -1083,6 +1169,21 @@ warning 6002: The table/view 'ppa_varesh.dbo.AppLeg' does not have a primary key
           <Property Name="BlockOnStation" Type="datetime" />
           <Property Name="LandingStation" Type="datetime" />
           <Property Name="TakeoffStation" Type="datetime" />
+          <Property Name="dep_dawn" Type="datetime" />
+          <Property Name="dep_dusk" Type="datetime" />
+          <Property Name="arr_dawn" Type="datetime" />
+          <Property Name="arr_dusk" Type="datetime" />
+          <Property Name="FlightTypeOPS" Type="varchar" MaxLength="500" />
+          <Property Name="AttForms" Type="varchar" MaxLength="500" />
+          <Property Name="BlockOffStationLocal" Type="datetime" />
+          <Property Name="BlockOnStationLocal" Type="datetime" />
+          <Property Name="LandingStationLocal" Type="datetime" />
+          <Property Name="TakeoffStationLocal" Type="datetime" />
+          <Property Name="RouteCountry" Type="nvarchar" MaxLength="500" />
+          <Property Name="PaxFemale" Type="int" />
+          <Property Name="PaxMale" Type="int" />
+          <Property Name="IsDomestic" Type="bit" />
+          <Property Name="AircraftModel" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.HelperMaxFDP' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1530,6 +1631,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewEmployee' does not have a prima
           <Property Name="JobGroupParentId" Type="int" />
           <Property Name="Type737ExpireDate" Type="datetime2" Precision="7" />
           <Property Name="TypeMDExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="LicNo" Type="nvarchar" MaxLength="200" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.ViewFlightLog' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1809,6 +1911,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewProfile' does not have a primar
           <Property Name="RemainSMS" Type="int" />
           <Property Name="RemainSMSL1L2L3" Type="int" />
           <Property Name="RemainTRG07A" Type="int" />
+          <Property Name="ImageUrl" Type="nvarchar" MaxLength="1000" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.ViewProfileLog' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1859,6 +1962,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQABYEmployee' does not have a p
           <Property Name="Comment" Type="nvarchar(max)" />
           <Property Name="Priority" Type="int" />
           <Property Name="DeadLine" Type="datetime" />
+          <Property Name="FollowingId" Type="int" />
           <Property Name="Category" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="ReviewResult" Type="int" />
           <Property Name="ReviewResultTitle" Type="varchar" MaxLength="6" Nullable="false" />
@@ -1877,6 +1981,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQAByEmployeeCount' does not hav
           <Property Name="type" Type="int" Nullable="false" />
           <Property Name="TypeTitle" Type="varchar" MaxLength="38" />
           <Property Name="ClosedCount" Type="int" Nullable="false" />
+          <Property Name="ReturnCount" Type="int" />
           <Property Name="InProgressCount" Type="int" Nullable="false" />
           <Property Name="NewCount" Type="int" Nullable="false" />
         </EntityType>
@@ -1922,6 +2027,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQACatering' does not have a pri
           <Property Name="InjeryOccurring" Type="bit" />
           <Property Name="DelayReason" Type="nvarchar" MaxLength="255" />
           <Property Name="Delay" Type="int" />
+          <Property Name="FormNo" Type="varchar" MaxLength="1000" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.ViewQAComments' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1959,7 +2065,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQACSR' does not have a primary 
           <Property Name="Register" Type="nvarchar" MaxLength="50" />
           <Property Name="FlightDate" Type="date" />
           <Property Name="EventLocation" Type="nvarchar" MaxLength="200" />
-          <Property Name="TypeRegisteration" Type="nvarchar" MaxLength="101" />
+          <Property Name="TypeRegisteration" Type="nvarchar" MaxLength="50" />
           <Property Name="WeatherCondition" Type="nvarchar" MaxLength="200" />
           <Property Name="PaxTotal" Type="int" />
           <Property Name="PhaseId" Type="int" />
@@ -1980,6 +2086,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQACSR' does not have a primary 
           <Property Name="DelayReason" Type="nvarchar" MaxLength="255" />
           <Property Name="Delay" Type="int" />
           <Property Name="Result" Type="nvarchar" MaxLength="4000" />
+          <Property Name="FormNo" Type="varchar" MaxLength="1000" />
+          <Property Name="EventTitles" Type="nvarchar(max)" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.ViewQACSREvent' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -2043,6 +2151,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQACyber' does not have a primar
           <Property Name="DelayReason" Type="nvarchar" MaxLength="255" />
           <Property Name="Delay" Type="int" />
           <Property Name="AccessMeasure" Type="nvarchar" MaxLength="255" />
+          <Property Name="FormNo" Type="varchar" MaxLength="1000" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.ViewQADashCatering' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -2265,6 +2374,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQADispatch' does not have a pri
           <Property Name="FlightPerformed" Type="bit" />
           <Property Name="FlightPerformedTime" Type="time" Precision="7" />
           <Property Name="Result" Type="nvarchar" MaxLength="500" />
+          <Property Name="FormNo" Type="varchar" MaxLength="1000" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.ViewQaFeedback' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -2274,12 +2384,14 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQaFeedback' does not have a pri
             <PropertyRef Name="FormId" />
             <PropertyRef Name="FormType" />
           </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="FormId" Type="int" Nullable="false" />
           <Property Name="FormType" Type="int" Nullable="false" />
           <Property Name="Feedback" Type="nvarchar" MaxLength="2000" />
           <Property Name="DateCreate" Type="datetime2" Precision="7" />
           <Property Name="CreatorId" Type="int" />
+          <Property Name="Creator" Type="nvarchar" MaxLength="1003" />
+          <Property Name="TypeId" Type="int" />
           <Property Name="FormKey" Type="varchar" MaxLength="601" />
         </EntityType>
         <!--Errors Found During Generation:
@@ -2289,9 +2401,11 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQAFollowingUp' does not have a 
             <PropertyRef Name="Id" />
             <PropertyRef Name="ReferrerId" />
             <PropertyRef Name="ReviewResultTitle" />
+            <PropertyRef Name="ReceiverDateVisit" />
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="Type" Type="int" />
+          <Property Name="TypeTitle" Type="varchar" MaxLength="38" />
           <Property Name="EntityId" Type="int" />
           <Property Name="ReferrerId" Type="int" Nullable="false" />
           <Property Name="ReferrerName" Type="nvarchar" MaxLength="1003" />
@@ -2299,9 +2413,15 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQAFollowingUp' does not have a 
           <Property Name="ReferredName" Type="nvarchar" MaxLength="1003" />
           <Property Name="ReviewResult" Type="int" />
           <Property Name="ParentId" Type="int" />
+          <Property Name="DateVisit" Type="datetime" />
           <Property Name="ReviewResultTitle" Type="varchar" MaxLength="6" Nullable="false" />
           <Property Name="Comment" Type="nvarchar(max)" />
           <Property Name="DateStatus" Type="datetime" />
+          <Property Name="DeadLine" Type="datetime" />
+          <Property Name="PriorityId" Type="int" />
+          <Property Name="Priority" Type="varchar" MaxLength="6" />
+          <Property Name="ReceiverDateVisit" Type="int" Nullable="false" />
+          <Property Name="FlightId" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.ViewQAGround' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -2399,12 +2519,14 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQAGround' does not have a prima
           <Property Name="ScheduledGroundTime" Type="time" Precision="7" />
           <Property Name="DelayReason" Type="nvarchar" MaxLength="255" />
           <Property Name="Delay" Type="int" />
+          <Property Name="FormNo" Type="varchar" MaxLength="1000" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.ViewQAHazard' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewQAHazard">
           <Key>
             <PropertyRef Name="Id" />
+            <PropertyRef Name="FlightId" />
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="EmployeeId" Type="int" />
@@ -2425,6 +2547,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQAHazard' does not have a prima
           <Property Name="RelatedDepartment" Type="nvarchar" MaxLength="200" />
           <Property Name="DelayReason" Type="nvarchar" MaxLength="255" />
           <Property Name="Delay" Type="int" />
+          <Property Name="FlightId" Type="int" Nullable="false" />
+          <Property Name="FormNo" Type="varchar" MaxLength="1000" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.ViewQAMaintenance' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -2464,6 +2588,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQAMaintenance' does not have a 
           <Property Name="Result" Type="nvarchar" MaxLength="4000" />
           <Property Name="DelayReason" Type="nvarchar" MaxLength="255" />
           <Property Name="Delay" Type="int" />
+          <Property Name="FormNo" Type="varchar" MaxLength="1000" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.ViewQaReportsByCreator' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -2549,6 +2674,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <Property Name="TelNumber" Type="nvarchar" MaxLength="255" />
           <Property Name="DelayReason" Type="nvarchar" MaxLength="255" />
           <Property Name="Delay" Type="int" />
+          <Property Name="FormNo" Type="varchar" MaxLength="1000" />
         </EntityType>
         <Association Name="FK__QACaterin__Fligh__2DA7A64D">
           <End Role="FlightInformation" Type="Self.FlightInformation" Multiplicity="0..1" />
@@ -2814,6 +2940,46 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__survey_qu__categ__48717679">
+          <End Role="survey_category" Type="Self.survey_category" Multiplicity="0..1" />
+          <End Role="survey_question" Type="Self.survey_question" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="survey_category">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="survey_question">
+              <PropertyRef Name="category_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__survey_re__parti__4F1E7408">
+          <End Role="survey_participant" Type="Self.survey_participant" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="survey_result" Type="Self.survey_result" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="survey_participant">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="survey_result">
+              <PropertyRef Name="participant_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__survey_re__quest__50129841">
+          <End Role="survey_question" Type="Self.survey_question" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="survey_result" Type="Self.survey_result" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="survey_question">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="survey_result">
+              <PropertyRef Name="question_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_asr_flt">
           <End Role="FlightInformation" Type="Self.FlightInformation" Multiplicity="1" />
           <End Role="EFBASR" Type="Self.EFBASR" Multiplicity="*" />
@@ -2847,6 +3013,20 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
             </Principal>
             <Dependent Role="FlightInformation">
               <PropertyRef Name="ToAirportId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_su_supa">
+          <End Role="survey_participant" Type="Self.survey_participant" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="survey_driver" Type="Self.survey_driver" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="survey_participant">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="survey_driver">
+              <PropertyRef Name="survey_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2911,6 +3091,11 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <EntitySet Name="QAReceiverComments" EntityType="Self.QAReceiverComments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="QAResponsibilties" EntityType="Self.QAResponsibilties" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="QASecurity" EntityType="Self.QASecurity" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="survey_category" EntityType="Self.survey_category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="survey_driver" EntityType="Self.survey_driver" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="survey_participant" EntityType="Self.survey_participant" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="survey_question" EntityType="Self.survey_question" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="survey_result" EntityType="Self.survey_result" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AppLeg" EntityType="Self.AppLeg" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [AppLeg].[ID] AS [ID], 
@@ -3073,7 +3258,22 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
     [AppLeg].[BlockOffStation] AS [BlockOffStation], 
     [AppLeg].[BlockOnStation] AS [BlockOnStation], 
     [AppLeg].[LandingStation] AS [LandingStation], 
-    [AppLeg].[TakeoffStation] AS [TakeoffStation]
+    [AppLeg].[TakeoffStation] AS [TakeoffStation], 
+    [AppLeg].[dep_dawn] AS [dep_dawn], 
+    [AppLeg].[dep_dusk] AS [dep_dusk], 
+    [AppLeg].[arr_dawn] AS [arr_dawn], 
+    [AppLeg].[arr_dusk] AS [arr_dusk], 
+    [AppLeg].[FlightTypeOPS] AS [FlightTypeOPS], 
+    [AppLeg].[AttForms] AS [AttForms], 
+    [AppLeg].[BlockOffStationLocal] AS [BlockOffStationLocal], 
+    [AppLeg].[BlockOnStationLocal] AS [BlockOnStationLocal], 
+    [AppLeg].[LandingStationLocal] AS [LandingStationLocal], 
+    [AppLeg].[TakeoffStationLocal] AS [TakeoffStationLocal], 
+    [AppLeg].[RouteCountry] AS [RouteCountry], 
+    [AppLeg].[PaxFemale] AS [PaxFemale], 
+    [AppLeg].[PaxMale] AS [PaxMale], 
+    [AppLeg].[IsDomestic] AS [IsDomestic], 
+    [AppLeg].[AircraftModel] AS [AircraftModel]
     FROM [dbo].[AppLeg] AS [AppLeg]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="HelperMaxFDP" EntityType="Self.HelperMaxFDP" store:Type="Views" store:Schema="dbo">
@@ -3445,7 +3645,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
     [ViewEmployee].[JobGroupId] AS [JobGroupId], 
     [ViewEmployee].[JobGroupParentId] AS [JobGroupParentId], 
     [ViewEmployee].[Type737ExpireDate] AS [Type737ExpireDate], 
-    [ViewEmployee].[TypeMDExpireDate] AS [TypeMDExpireDate]
+    [ViewEmployee].[TypeMDExpireDate] AS [TypeMDExpireDate], 
+    [ViewEmployee].[LicNo] AS [LicNo]
     FROM [dbo].[ViewEmployee] AS [ViewEmployee]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ViewFlightLog" EntityType="Self.ViewFlightLog" store:Type="Views" store:Schema="dbo">
@@ -3697,7 +3898,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
     [ViewProfile].[RemainSMSL2L3] AS [RemainSMSL2L3], 
     [ViewProfile].[RemainSMS] AS [RemainSMS], 
     [ViewProfile].[RemainSMSL1L2L3] AS [RemainSMSL1L2L3], 
-    [ViewProfile].[RemainTRG07A] AS [RemainTRG07A]
+    [ViewProfile].[RemainTRG07A] AS [RemainTRG07A], 
+    [ViewProfile].[ImageUrl] AS [ImageUrl]
     FROM [dbo].[ViewProfile] AS [ViewProfile]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ViewProfileLog" EntityType="Self.ViewProfileLog" store:Type="Views" store:Schema="dbo">
@@ -3740,6 +3942,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
     [ViewQABYEmployee].[Comment] AS [Comment], 
     [ViewQABYEmployee].[Priority] AS [Priority], 
     [ViewQABYEmployee].[DeadLine] AS [DeadLine], 
+    [ViewQABYEmployee].[FollowingId] AS [FollowingId], 
     [ViewQABYEmployee].[Category] AS [Category], 
     [ViewQABYEmployee].[ReviewResult] AS [ReviewResult], 
     [ViewQABYEmployee].[ReviewResultTitle] AS [ReviewResultTitle]
@@ -3751,6 +3954,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
     [ViewQAByEmployeeCount].[type] AS [type], 
     [ViewQAByEmployeeCount].[TypeTitle] AS [TypeTitle], 
     [ViewQAByEmployeeCount].[ClosedCount] AS [ClosedCount], 
+    [ViewQAByEmployeeCount].[ReturnCount] AS [ReturnCount], 
     [ViewQAByEmployeeCount].[InProgressCount] AS [InProgressCount], 
     [ViewQAByEmployeeCount].[NewCount] AS [NewCount]
     FROM [dbo].[ViewQAByEmployeeCount] AS [ViewQAByEmployeeCount]</DefiningQuery>
@@ -3792,7 +3996,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
     [ViewQACatering].[Result] AS [Result], 
     [ViewQACatering].[InjeryOccurring] AS [InjeryOccurring], 
     [ViewQACatering].[DelayReason] AS [DelayReason], 
-    [ViewQACatering].[Delay] AS [Delay]
+    [ViewQACatering].[Delay] AS [Delay], 
+    [ViewQACatering].[FormNo] AS [FormNo]
     FROM [dbo].[ViewQACatering] AS [ViewQACatering]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ViewQAComments" EntityType="Self.ViewQAComments" store:Type="Views" store:Schema="dbo">
@@ -3844,7 +4049,9 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
     [ViewQACSR].[StatusEmployeeName] AS [StatusEmployeeName], 
     [ViewQACSR].[DelayReason] AS [DelayReason], 
     [ViewQACSR].[Delay] AS [Delay], 
-    [ViewQACSR].[Result] AS [Result]
+    [ViewQACSR].[Result] AS [Result], 
+    [ViewQACSR].[FormNo] AS [FormNo], 
+    [ViewQACSR].[EventTitles] AS [EventTitles]
     FROM [dbo].[ViewQACSR] AS [ViewQACSR]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ViewQACSREvent" EntityType="Self.ViewQACSREvent" store:Type="Views" store:Schema="dbo">
@@ -3897,7 +4104,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
     [ViewQACyber].[Result] AS [Result], 
     [ViewQACyber].[DelayReason] AS [DelayReason], 
     [ViewQACyber].[Delay] AS [Delay], 
-    [ViewQACyber].[AccessMeasure] AS [AccessMeasure]
+    [ViewQACyber].[AccessMeasure] AS [AccessMeasure], 
+    [ViewQACyber].[FormNo] AS [FormNo]
     FROM [dbo].[ViewQACyber] AS [ViewQACyber]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ViewQADashCatering" EntityType="Self.ViewQADashCatering" store:Type="Views" store:Schema="dbo">
@@ -4070,7 +4278,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
     [ViewQADispatch].[CrewChangedTime] AS [CrewChangedTime], 
     [ViewQADispatch].[FlightPerformed] AS [FlightPerformed], 
     [ViewQADispatch].[FlightPerformedTime] AS [FlightPerformedTime], 
-    [ViewQADispatch].[Result] AS [Result]
+    [ViewQADispatch].[Result] AS [Result], 
+    [ViewQADispatch].[FormNo] AS [FormNo]
     FROM [dbo].[ViewQADispatch] AS [ViewQADispatch]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ViewQaFeedback" EntityType="Self.ViewQaFeedback" store:Type="Views" store:Schema="dbo">
@@ -4081,6 +4290,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
     [ViewQaFeedback].[Feedback] AS [Feedback], 
     [ViewQaFeedback].[DateCreate] AS [DateCreate], 
     [ViewQaFeedback].[CreatorId] AS [CreatorId], 
+    [ViewQaFeedback].[Creator] AS [Creator], 
+    [ViewQaFeedback].[TypeId] AS [TypeId], 
     [ViewQaFeedback].[FormKey] AS [FormKey]
     FROM [dbo].[ViewQaFeedback] AS [ViewQaFeedback]</DefiningQuery>
           </EntitySet>
@@ -4088,6 +4299,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
             <DefiningQuery>SELECT 
     [ViewQAFollowingUp].[Id] AS [Id], 
     [ViewQAFollowingUp].[Type] AS [Type], 
+    [ViewQAFollowingUp].[TypeTitle] AS [TypeTitle], 
     [ViewQAFollowingUp].[EntityId] AS [EntityId], 
     [ViewQAFollowingUp].[ReferrerId] AS [ReferrerId], 
     [ViewQAFollowingUp].[ReferrerName] AS [ReferrerName], 
@@ -4095,9 +4307,15 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
     [ViewQAFollowingUp].[ReferredName] AS [ReferredName], 
     [ViewQAFollowingUp].[ReviewResult] AS [ReviewResult], 
     [ViewQAFollowingUp].[ParentId] AS [ParentId], 
+    [ViewQAFollowingUp].[DateVisit] AS [DateVisit], 
     [ViewQAFollowingUp].[ReviewResultTitle] AS [ReviewResultTitle], 
     [ViewQAFollowingUp].[Comment] AS [Comment], 
-    [ViewQAFollowingUp].[DateStatus] AS [DateStatus]
+    [ViewQAFollowingUp].[DateStatus] AS [DateStatus], 
+    [ViewQAFollowingUp].[DeadLine] AS [DeadLine], 
+    [ViewQAFollowingUp].[PriorityId] AS [PriorityId], 
+    [ViewQAFollowingUp].[Priority] AS [Priority], 
+    [ViewQAFollowingUp].[ReceiverDateVisit] AS [ReceiverDateVisit], 
+    [ViewQAFollowingUp].[FlightId] AS [FlightId]
     FROM [dbo].[ViewQAFollowingUp] AS [ViewQAFollowingUp]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ViewQAGround" EntityType="Self.ViewQAGround" store:Type="Views" store:Schema="dbo">
@@ -4190,7 +4408,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
     [ViewQAGround].[FlightDelay] AS [FlightDelay], 
     [ViewQAGround].[ScheduledGroundTime] AS [ScheduledGroundTime], 
     [ViewQAGround].[DelayReason] AS [DelayReason], 
-    [ViewQAGround].[Delay] AS [Delay]
+    [ViewQAGround].[Delay] AS [Delay], 
+    [ViewQAGround].[FormNo] AS [FormNo]
     FROM [dbo].[ViewQAGround] AS [ViewQAGround]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ViewQAHazard" EntityType="Self.ViewQAHazard" store:Type="Views" store:Schema="dbo">
@@ -4213,7 +4432,9 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
     [ViewQAHazard].[TelNumber] AS [TelNumber], 
     [ViewQAHazard].[RelatedDepartment] AS [RelatedDepartment], 
     [ViewQAHazard].[DelayReason] AS [DelayReason], 
-    [ViewQAHazard].[Delay] AS [Delay]
+    [ViewQAHazard].[Delay] AS [Delay], 
+    [ViewQAHazard].[FlightId] AS [FlightId], 
+    [ViewQAHazard].[FormNo] AS [FormNo]
     FROM [dbo].[ViewQAHazard] AS [ViewQAHazard]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ViewQAMaintenance" EntityType="Self.ViewQAMaintenance" store:Type="Views" store:Schema="dbo">
@@ -4249,7 +4470,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
     [ViewQAMaintenance].[StatusEmployeeName] AS [StatusEmployeeName], 
     [ViewQAMaintenance].[Result] AS [Result], 
     [ViewQAMaintenance].[DelayReason] AS [DelayReason], 
-    [ViewQAMaintenance].[Delay] AS [Delay]
+    [ViewQAMaintenance].[Delay] AS [Delay], 
+    [ViewQAMaintenance].[FormNo] AS [FormNo]
     FROM [dbo].[ViewQAMaintenance] AS [ViewQAMaintenance]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ViewQaReportsByCreator" EntityType="Self.ViewQaReportsByCreator" store:Type="Views" store:Schema="dbo">
@@ -4321,7 +4543,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
     [ViewQASecurity].[Email] AS [Email], 
     [ViewQASecurity].[TelNumber] AS [TelNumber], 
     [ViewQASecurity].[DelayReason] AS [DelayReason], 
-    [ViewQASecurity].[Delay] AS [Delay]
+    [ViewQASecurity].[Delay] AS [Delay], 
+    [ViewQASecurity].[FormNo] AS [FormNo]
     FROM [dbo].[ViewQASecurity] AS [ViewQASecurity]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK__QACaterin__Fligh__2DA7A64D" Association="Self.FK__QACaterin__Fligh__2DA7A64D">
@@ -4412,6 +4635,18 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
             <End Role="QAOption" EntitySet="QAOption" />
             <End Role="QASecurity" EntitySet="QASecurity" />
           </AssociationSet>
+          <AssociationSet Name="FK__survey_qu__categ__48717679" Association="Self.FK__survey_qu__categ__48717679">
+            <End Role="survey_category" EntitySet="survey_category" />
+            <End Role="survey_question" EntitySet="survey_question" />
+          </AssociationSet>
+          <AssociationSet Name="FK__survey_re__parti__4F1E7408" Association="Self.FK__survey_re__parti__4F1E7408">
+            <End Role="survey_participant" EntitySet="survey_participant" />
+            <End Role="survey_result" EntitySet="survey_result" />
+          </AssociationSet>
+          <AssociationSet Name="FK__survey_re__quest__50129841" Association="Self.FK__survey_re__quest__50129841">
+            <End Role="survey_question" EntitySet="survey_question" />
+            <End Role="survey_result" EntitySet="survey_result" />
+          </AssociationSet>
           <AssociationSet Name="fk_asr_flt" Association="Self.fk_asr_flt">
             <End Role="FlightInformation" EntitySet="FlightInformation" />
             <End Role="EFBASR" EntitySet="EFBASR" />
@@ -4423,6 +4658,10 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <AssociationSet Name="fk_flightinformation_toairport" Association="Self.fk_flightinformation_toairport">
             <End Role="Airport" EntitySet="Airport" />
             <End Role="FlightInformation" EntitySet="FlightInformation" />
+          </AssociationSet>
+          <AssociationSet Name="fk_su_supa" Association="Self.fk_su_supa">
+            <End Role="survey_participant" EntitySet="survey_participant" />
+            <End Role="survey_driver" EntitySet="survey_driver" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -4621,6 +4860,27 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <AssociationSet Name="fk_asr_flt" Association="ppaModel.fk_asr_flt">
             <End Role="FlightInformation" EntitySet="FlightInformations" />
             <End Role="EFBASR" EntitySet="EFBASRs" />
+          </AssociationSet>
+          <EntitySet Name="survey_category" EntityType="ppaModel.survey_category" />
+          <EntitySet Name="survey_participant" EntityType="ppaModel.survey_participant" />
+          <EntitySet Name="survey_question" EntityType="ppaModel.survey_question" />
+          <EntitySet Name="survey_result" EntityType="ppaModel.survey_result" />
+          <AssociationSet Name="FK__survey_qu__categ__48717679" Association="ppaModel.FK__survey_qu__categ__48717679">
+            <End Role="survey_category" EntitySet="survey_category" />
+            <End Role="survey_question" EntitySet="survey_question" />
+          </AssociationSet>
+          <AssociationSet Name="FK__survey_re__parti__4F1E7408" Association="ppaModel.FK__survey_re__parti__4F1E7408">
+            <End Role="survey_participant" EntitySet="survey_participant" />
+            <End Role="survey_result" EntitySet="survey_result" />
+          </AssociationSet>
+          <AssociationSet Name="FK__survey_re__quest__50129841" Association="ppaModel.FK__survey_re__quest__50129841">
+            <End Role="survey_question" EntitySet="survey_question" />
+            <End Role="survey_result" EntitySet="survey_result" />
+          </AssociationSet>
+          <EntitySet Name="survey_driver" EntityType="ppaModel.survey_driver" />
+          <AssociationSet Name="fk_su_supa" Association="ppaModel.fk_su_supa">
+            <End Role="survey_participant" EntitySet="survey_participant" />
+            <End Role="survey_driver" EntitySet="survey_driver" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="FlightInformation">
@@ -4931,6 +5191,11 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <NavigationProperty Name="Airport" Relationship="ppaModel.fk_flightinformation_fromairport" FromRole="FlightInformation" ToRole="Airport" />
           <NavigationProperty Name="Airport1" Relationship="ppaModel.fk_flightinformation_toairport" FromRole="FlightInformation" ToRole="Airport" />
           <NavigationProperty Name="EFBASRs" Relationship="ppaModel.fk_asr_flt" FromRole="FlightInformation" ToRole="EFBASR" />
+          <Property Name="CCPreFlightCheckRemark" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="FlightTypeOPS" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="AttForms" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="PaxMale" Type="Int32" />
+          <Property Name="PaxFemale" Type="Int32" />
           </EntityType>
         <EntityType Name="AppLeg">
           <Key>
@@ -5060,16 +5325,16 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <Property Name="PF" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="IPName" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
           <Property Name="IPId" Type="Int32" />
-          <Property Name="IPScheduleName" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="IPScheduleName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="P1Name" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
           <Property Name="P1Id" Type="Int32" />
-          <Property Name="P1ScheduleName" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="P1ScheduleName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="P2Name" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
           <Property Name="P2Id" Type="Int32" />
-          <Property Name="P2ScheduleName" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="P2ScheduleName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="PIC" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
           <Property Name="PICId" Type="Int32" />
-          <Property Name="SIC" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="SIC" Type="String" MaxLength="2004" FixedLength="false" Unicode="true" />
           <Property Name="SICId" Type="Int32" />
           <Property Name="JLDatePICApproved" Type="DateTime" Precision="3" />
           <Property Name="JLSignedBy" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
@@ -5108,6 +5373,21 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <Property Name="BlockOnStation" Type="DateTime" Precision="3" />
           <Property Name="LandingStation" Type="DateTime" Precision="3" />
           <Property Name="TakeoffStation" Type="DateTime" Precision="3" />
+          <Property Name="dep_dawn" Type="DateTime" Precision="3" />
+          <Property Name="dep_dusk" Type="DateTime" Precision="3" />
+          <Property Name="arr_dawn" Type="DateTime" Precision="3" />
+          <Property Name="arr_dusk" Type="DateTime" Precision="3" />
+          <Property Name="FlightTypeOPS" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="AttForms" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="BlockOffStationLocal" Type="DateTime" Precision="3" />
+          <Property Name="BlockOnStationLocal" Type="DateTime" Precision="3" />
+          <Property Name="LandingStationLocal" Type="DateTime" Precision="3" />
+          <Property Name="TakeoffStationLocal" Type="DateTime" Precision="3" />
+          <Property Name="RouteCountry" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="PaxFemale" Type="Int32" />
+          <Property Name="PaxMale" Type="Int32" />
+          <Property Name="IsDomestic" Type="Boolean" />
+          <Property Name="AircraftModel" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
         </EntityType>
         <ComplexType Name="QACSRGet_Result">
           <Property Type="Int32" Name="Id" Nullable="true" />
@@ -5759,6 +6039,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
             <PropertyRef Name="Id" />
             <PropertyRef Name="ReferrerId" />
             <PropertyRef Name="ReviewResultTitle" />
+            <PropertyRef Name="ReceiverDateVisit" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
           <Property Name="Type" Type="Int32" />
@@ -5772,6 +6053,13 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <Property Name="ReviewResultTitle" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
           <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="DateStatus" Type="DateTime" Precision="3" />
+          <Property Name="TypeTitle" Type="String" MaxLength="38" FixedLength="false" Unicode="false" />
+          <Property Name="DateVisit" Type="DateTime" Precision="3" />
+          <Property Name="DeadLine" Type="DateTime" Precision="3" />
+          <Property Name="PriorityId" Type="Int32" />
+          <Property Name="Priority" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="ReceiverDateVisit" Type="Int32" Nullable="false" />
+          <Property Name="FlightId" Type="Int32" />
         </EntityType>
         <EntityType Name="ViewQAByEmployeeCount">
           <Key>
@@ -5787,6 +6075,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <Property Name="ClosedCount" Type="Int32" Nullable="false" />
           <Property Name="InProgressCount" Type="Int32" Nullable="false" />
           <Property Name="NewCount" Type="Int32" Nullable="false" />
+          <Property Name="ReturnCount" Type="Int32" />
         </EntityType>
         <ComplexType Name="QASecurityGet_Result2">
           <Property Type="Int32" Name="Id" Nullable="true" />
@@ -6241,6 +6530,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <Property Name="Delay" Type="Int32" />
           <NavigationProperty Name="FlightInformation" Relationship="ppaModel.FK__QACaterin__Fligh__2DA7A64D" FromRole="QACatering" ToRole="FlightInformation" />
           <NavigationProperty Name="QAOption" Relationship="ppaModel.FK__QACaterin__Reaso__2E9BCA86" FromRole="QACatering" ToRole="QAOption" />
+          <Property Name="FormNo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="QACSR">
           <Key>
@@ -6273,6 +6563,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <Property Name="Delay" Type="Int32" />
           <NavigationProperty Name="FlightInformation" Relationship="ppaModel.FK__QACSR__FlightId__2141CF68" FromRole="QACSR" ToRole="FlightInformation" />
           <NavigationProperty Name="QACSREvents" Relationship="ppaModel.FK__QACSREven__QACSR__2512604C" FromRole="QACSR" ToRole="QACSREvent" />
+          <Property Name="FormNo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="QACyber">
           <Key>
@@ -6311,6 +6602,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <NavigationProperty Name="QAOption" Relationship="ppaModel.FK__QACyber__AccessI__0E39E7EC" FromRole="QACyber" ToRole="QAOption" />
           <NavigationProperty Name="QAOption1" Relationship="ppaModel.FK__QACyber__Inciden__0B5D7B41" FromRole="QACyber" ToRole="QAOption" />
           <NavigationProperty Name="QAOption2" Relationship="ppaModel.FK__QACyber__MethodI__0A695708" FromRole="QACyber" ToRole="QAOption" />
+          <Property Name="FormNo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="QADispatch">
           <Key>
@@ -6356,6 +6648,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <Property Name="DelayReason" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Delay" Type="Int32" />
           <NavigationProperty Name="FlightInformation" Relationship="ppaModel.FK__QADispatc__Fligh__77C096E8" FromRole="QADispatch" ToRole="FlightInformation" />
+          <Property Name="FormNo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="QAGroundIAD">
           <Key>
@@ -6440,6 +6733,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <NavigationProperty Name="QAOption2" Relationship="ppaModel.FK__QAGroundI__WXSur__19A0ADA0" FromRole="QAGroundIAD" ToRole="QAOption" />
           <NavigationProperty Name="QAOption3" Relationship="ppaModel.FK__QAGroundI__WXWea__18AC8967" FromRole="QAGroundIAD" ToRole="QAOption" />
           <NavigationProperty Name="Airport1" Relationship="ppaModel.FK__QAGroundI__Airpo__16C440F5" FromRole="QAGroundIAD" ToRole="Airport" />
+          <Property Name="FormNo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="QAHazard">
           <Key>
@@ -6464,6 +6758,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <Property Name="RelatedDepartment" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="DelayReason" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Delay" Type="Int32" />
+          <Property Name="FormNo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="QAMaintenance">
           <Key>
@@ -6497,6 +6792,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <NavigationProperty Name="FlightInformation" Relationship="ppaModel.FK__QAMOR__FlightId__10174366" FromRole="QAMaintenance" ToRole="FlightInformation" />
           <NavigationProperty Name="QAOption" Relationship="ppaModel.FK__QAMOR__Component__110B679F" FromRole="QAMaintenance" ToRole="QAOption" />
           <NavigationProperty Name="Airport" Relationship="ppaModel.FK__QAMOR__StationId__11FF8BD8" FromRole="QAMaintenance" ToRole="Airport" />
+          <Property Name="FormNo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="QAReceiverComment">
           <Key>
@@ -6544,6 +6840,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <Property Name="Delay" Type="Int32" />
           <NavigationProperty Name="FlightInformation" Relationship="ppaModel.FK__QASecurit__Fligh__33607FA3" FromRole="QASecurity" ToRole="FlightInformation" />
           <NavigationProperty Name="QAOption" Relationship="ppaModel.FK__QASecurit__Reaso__3548C815" FromRole="QASecurity" ToRole="QAOption" />
+          <Property Name="FormNo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ViewQACatering">
           <Key>
@@ -6585,6 +6882,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <Property Name="InjeryOccurring" Type="Boolean" />
           <Property Name="DelayReason" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Delay" Type="Int32" />
+          <Property Name="FormNo" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ViewQACSR">
           <Key>
@@ -6605,7 +6903,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <Property Name="Register" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="FlightDate" Type="DateTime" Precision="0" />
           <Property Name="EventLocation" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="TypeRegisteration" Type="String" MaxLength="101" FixedLength="false" Unicode="true" />
+          <Property Name="TypeRegisteration" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="WeatherCondition" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="PaxTotal" Type="Int32" />
           <Property Name="PhaseId" Type="Int32" />
@@ -6626,6 +6924,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <Property Name="DelayReason" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Delay" Type="Int32" />
           <Property Name="Result" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="FormNo" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="EventTitles" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="ViewQACyber">
           <Key>
@@ -6673,6 +6973,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <Property Name="DelayReason" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Delay" Type="Int32" />
           <Property Name="AccessMeasure" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FormNo" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ViewQADispatch">
           <Key>
@@ -6730,6 +7031,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <Property Name="FlightPerformed" Type="Boolean" />
           <Property Name="FlightPerformedTime" Type="Time" Precision="7" />
           <Property Name="Result" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="FormNo" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ViewQAGround">
           <Key>
@@ -6825,10 +7127,12 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <Property Name="ScheduledGroundTime" Type="Time" Precision="7" />
           <Property Name="DelayReason" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Delay" Type="Int32" />
+          <Property Name="FormNo" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ViewQAHazard">
           <Key>
             <PropertyRef Name="Id" />
+            <PropertyRef Name="FlightId" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
           <Property Name="EmployeeId" Type="Int32" />
@@ -6849,6 +7153,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <Property Name="RelatedDepartment" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="DelayReason" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Delay" Type="Int32" />
+          <Property Name="FlightId" Type="Int32" Nullable="false" />
+          <Property Name="FormNo" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ViewQAMaintenance">
           <Key>
@@ -6886,6 +7192,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <Property Name="Result" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
           <Property Name="DelayReason" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Delay" Type="Int32" />
+          <Property Name="FormNo" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ViewQASecurity">
           <Key>
@@ -6926,6 +7233,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <Property Name="TelNumber" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="DelayReason" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Delay" Type="Int32" />
+          <Property Name="FormNo" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="FK__QACaterin__Fligh__2DA7A64D">
           <End Type="ppaModel.FlightInformation" Role="FlightInformation" Multiplicity="0..1" />
@@ -7463,6 +7771,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <NavigationProperty Name="QAMaintenances" Relationship="ppaModel.FK__QAMOR__StationId__11FF8BD8" FromRole="Airport" ToRole="QAMaintenance" />
           <NavigationProperty Name="FlightInformations" Relationship="ppaModel.fk_flightinformation_fromairport" FromRole="Airport" ToRole="FlightInformation" />
           <NavigationProperty Name="FlightInformations1" Relationship="ppaModel.fk_flightinformation_toairport" FromRole="Airport" ToRole="FlightInformation" />
+          <Property Name="Name2" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK__QAGroundI__Airpo__16C440F5">
           <End Type="ppaModel.Airport" Role="Airport" Multiplicity="0..1" />
@@ -7907,6 +8216,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <Property Name="JobGroupParentId" Type="Int32" />
           <Property Name="Type737ExpireDate" Type="DateTime" Precision="7" />
           <Property Name="TypeMDExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="LicNo" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="ViewProfile">
           <Key>
@@ -8129,6 +8439,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <Property Name="RemainSMSL2L3" Type="Int32" />
           <Property Name="RemainSMSL1L2L3" Type="Int32" />
           <Property Name="RemainTRG07A" Type="Int32" />
+          <Property Name="ImageUrl" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="ViewProfileLog">
           <Key>
@@ -8322,6 +8633,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <Property Name="DateCreate" Type="DateTime" Precision="7" />
           <Property Name="CreatorId" Type="Int32" />
           <Property Name="FormKey" Type="String" MaxLength="601" FixedLength="false" Unicode="false" />
+          <Property Name="Creator" Type="String" MaxLength="1003" FixedLength="false" Unicode="true" />
+          <Property Name="TypeId" Type="Int32" />
         </EntityType>
         <EntityType Name="ViewQaReportsByCreator">
           <Key>
@@ -8364,6 +8677,12 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <Property Name="ParentId" Type="Int32" />
           <Property Name="DeadLine" Type="DateTime" Precision="3" />
           <Property Name="Priority" Type="Int32" />
+          <Property Name="DateVisit" Type="DateTime" Precision="3" />
+          <Property Name="ReceiverDateVisit" Type="DateTime" Precision="3" />
+          <Property Name="DateNotified" Type="DateTime" Precision="3" />
+          <Property Name="NotificationCount" Type="Int32" />
+          <Property Name="SMS" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="SMSRefId" Type="Int32" />
         </EntityType>
         <EntityType Name="QAFeedback">
           <Key>
@@ -8375,6 +8694,9 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <Property Name="Feedback" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
           <Property Name="DateCreate" Type="DateTime" Precision="7" />
           <Property Name="CreatorId" Type="Int32" />
+          <Property Name="DateVisit" Type="DateTime" Precision="3" />
+          <Property Name="ReceiverId" Type="Int32" />
+          <Property Name="TypeId" Type="Int32" />
         </EntityType>
         <EntityType Name="QAGetEntites_Result">
           <Key>
@@ -8401,6 +8723,9 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <Property Name="DateSign" Type="DateTime" Precision="0" />
           <Property Name="DeadLine" Type="DateTime" Precision="7" />
           <Property Name="Priority" Type="Int32" />
+          <Property Name="FormNo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="FollowingId" Type="Int32" />
+          <Property Name="CategoryOrder" Type="Int32" />
         </EntityType>
         <EntityType Name="ViewQABYEmployee">
           <Key>
@@ -8416,6 +8741,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <Property Name="Category" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="ReviewResult" Type="Int32" />
           <Property Name="ReviewResultTitle" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="FollowingId" Type="Int32" />
         </EntityType>
         <EntityType Name="EFBASR">
           <Key>
@@ -8528,6 +8854,9 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <Property Name="ReporterId" Type="Int32" />
           <Property Name="Status" Type="Int32" />
           <NavigationProperty Name="FlightInformation" Relationship="ppaModel.fk_asr_flt" FromRole="EFBASR" ToRole="FlightInformation" />
+          <Property Name="FormNo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="DateStatus" Type="DateTime" Precision="3" />
+          <Property Name="StatusEmployeeId" Type="Int32" />
         </EntityType>
         <Association Name="fk_asr_flt">
           <End Type="ppaModel.FlightInformation" Role="FlightInformation" Multiplicity="1" />
@@ -8541,6 +8870,125 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="survey_category">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="title" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="survey_type" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="order_index" Type="Int32" />
+          <NavigationProperty Name="survey_question" Relationship="ppaModel.FK__survey_qu__categ__48717679" FromRole="survey_category" ToRole="survey_question" />
+        </EntityType>
+        <EntityType Name="survey_participant">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="participant_name" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="email" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="phone" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="participant_id" Type="Int32" />
+          <Property Name="participant_key" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="submitted_at" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="survey_result" Relationship="ppaModel.FK__survey_re__parti__4F1E7408" FromRole="survey_participant" ToRole="survey_result" />
+          <NavigationProperty Name="survey_driver" Relationship="ppaModel.fk_su_supa" FromRole="survey_participant" ToRole="survey_driver" />
+        </EntityType>
+        <EntityType Name="survey_question">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="category_id" Type="Int32" />
+          <Property Name="title" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="order_index" Type="Int32" />
+          <NavigationProperty Name="survey_category" Relationship="ppaModel.FK__survey_qu__categ__48717679" FromRole="survey_question" ToRole="survey_category" />
+          <NavigationProperty Name="survey_result" Relationship="ppaModel.FK__survey_re__quest__50129841" FromRole="survey_question" ToRole="survey_result" />
+        </EntityType>
+        <EntityType Name="survey_result">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="participant_id" Type="Int32" Nullable="false" />
+          <Property Name="question_id" Type="Int32" Nullable="false" />
+          <Property Name="answer" Type="Int32" />
+          <Property Name="response_time" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="survey_participant" Relationship="ppaModel.FK__survey_re__parti__4F1E7408" FromRole="survey_result" ToRole="survey_participant" />
+          <NavigationProperty Name="survey_question" Relationship="ppaModel.FK__survey_re__quest__50129841" FromRole="survey_result" ToRole="survey_question" />
+        </EntityType>
+        <Association Name="FK__survey_qu__categ__48717679">
+          <End Type="ppaModel.survey_category" Role="survey_category" Multiplicity="0..1" />
+          <End Type="ppaModel.survey_question" Role="survey_question" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="survey_category">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="survey_question">
+              <PropertyRef Name="category_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__survey_re__parti__4F1E7408">
+          <End Type="ppaModel.survey_participant" Role="survey_participant" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ppaModel.survey_result" Role="survey_result" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="survey_participant">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="survey_result">
+              <PropertyRef Name="participant_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__survey_re__quest__50129841">
+          <End Type="ppaModel.survey_question" Role="survey_question" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ppaModel.survey_result" Role="survey_result" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="survey_question">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="survey_result">
+              <PropertyRef Name="question_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="survey_driver">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="survey_id" Type="Int32" Nullable="false" />
+          <Property Name="driver_name" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="journey_route" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="journey_subject" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="journey_title" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="journey_time" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="vehicle_no" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="remark" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="date_year" Type="Int32" />
+          <Property Name="date_month" Type="Int32" />
+          <Property Name="date_day" Type="Int32" />
+          <NavigationProperty Name="survey_participant" Relationship="ppaModel.fk_su_supa" FromRole="survey_driver" ToRole="survey_participant" />
+        </EntityType>
+        <Association Name="fk_su_supa">
+          <End Type="ppaModel.survey_participant" Role="survey_participant" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ppaModel.survey_driver" Role="survey_driver" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="survey_participant">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="survey_driver">
+              <PropertyRef Name="survey_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -8550,6 +8998,11 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <EntitySetMapping Name="FlightInformations">
             <EntityTypeMapping TypeName="ppaModel.FlightInformation">
               <MappingFragment StoreEntitySet="FlightInformation">
+                <ScalarProperty Name="PaxFemale" ColumnName="PaxFemale" />
+                <ScalarProperty Name="PaxMale" ColumnName="PaxMale" />
+                <ScalarProperty Name="AttForms" ColumnName="AttForms" />
+                <ScalarProperty Name="FlightTypeOPS" ColumnName="FlightTypeOPS" />
+                <ScalarProperty Name="CCPreFlightCheckRemark" ColumnName="CCPreFlightCheckRemark" />
                 <ScalarProperty Name="FuelUpliftLitr" ColumnName="FuelUpliftLitr" />
                 <ScalarProperty Name="FuelUsed" ColumnName="FuelUsed" />
                 <ScalarProperty Name="FuelRemained" ColumnName="FuelRemained" />
@@ -8850,6 +9303,21 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <EntitySetMapping Name="AppLegs">
             <EntityTypeMapping TypeName="ppaModel.AppLeg">
               <MappingFragment StoreEntitySet="AppLeg">
+                <ScalarProperty Name="AircraftModel" ColumnName="AircraftModel" />
+                <ScalarProperty Name="IsDomestic" ColumnName="IsDomestic" />
+                <ScalarProperty Name="PaxMale" ColumnName="PaxMale" />
+                <ScalarProperty Name="PaxFemale" ColumnName="PaxFemale" />
+                <ScalarProperty Name="RouteCountry" ColumnName="RouteCountry" />
+                <ScalarProperty Name="TakeoffStationLocal" ColumnName="TakeoffStationLocal" />
+                <ScalarProperty Name="LandingStationLocal" ColumnName="LandingStationLocal" />
+                <ScalarProperty Name="BlockOnStationLocal" ColumnName="BlockOnStationLocal" />
+                <ScalarProperty Name="BlockOffStationLocal" ColumnName="BlockOffStationLocal" />
+                <ScalarProperty Name="AttForms" ColumnName="AttForms" />
+                <ScalarProperty Name="FlightTypeOPS" ColumnName="FlightTypeOPS" />
+                <ScalarProperty Name="arr_dusk" ColumnName="arr_dusk" />
+                <ScalarProperty Name="arr_dawn" ColumnName="arr_dawn" />
+                <ScalarProperty Name="dep_dusk" ColumnName="dep_dusk" />
+                <ScalarProperty Name="dep_dawn" ColumnName="dep_dawn" />
                 <ScalarProperty Name="TakeoffStation" ColumnName="TakeoffStation" />
                 <ScalarProperty Name="LandingStation" ColumnName="LandingStation" />
                 <ScalarProperty Name="BlockOnStation" ColumnName="BlockOnStation" />
@@ -9115,6 +9583,13 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <EntitySetMapping Name="ViewQAFollowingUps">
             <EntityTypeMapping TypeName="ppaModel.ViewQAFollowingUp">
               <MappingFragment StoreEntitySet="ViewQAFollowingUp">
+                <ScalarProperty Name="FlightId" ColumnName="FlightId" />
+                <ScalarProperty Name="ReceiverDateVisit" ColumnName="ReceiverDateVisit" />
+                <ScalarProperty Name="Priority" ColumnName="Priority" />
+                <ScalarProperty Name="PriorityId" ColumnName="PriorityId" />
+                <ScalarProperty Name="DeadLine" ColumnName="DeadLine" />
+                <ScalarProperty Name="DateVisit" ColumnName="DateVisit" />
+                <ScalarProperty Name="TypeTitle" ColumnName="TypeTitle" />
                 <ScalarProperty Name="DateStatus" ColumnName="DateStatus" />
                 <ScalarProperty Name="Comment" ColumnName="Comment" />
                 <ScalarProperty Name="ReviewResultTitle" ColumnName="ReviewResultTitle" />
@@ -9133,6 +9608,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <EntitySetMapping Name="ViewQAByEmployeeCounts">
             <EntityTypeMapping TypeName="ppaModel.ViewQAByEmployeeCount">
               <MappingFragment StoreEntitySet="ViewQAByEmployeeCount">
+                <ScalarProperty Name="ReturnCount" ColumnName="ReturnCount" />
                 <ScalarProperty Name="NewCount" ColumnName="NewCount" />
                 <ScalarProperty Name="InProgressCount" ColumnName="InProgressCount" />
                 <ScalarProperty Name="ClosedCount" ColumnName="ClosedCount" />
@@ -9275,6 +9751,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <EntitySetMapping Name="QACaterings">
             <EntityTypeMapping TypeName="ppaModel.QACatering">
               <MappingFragment StoreEntitySet="QACatering">
+                <ScalarProperty Name="FormNo" ColumnName="FormNo" />
                 <ScalarProperty Name="Delay" ColumnName="Delay" />
                 <ScalarProperty Name="DelayReason" ColumnName="DelayReason" />
                 <ScalarProperty Name="InjeryOccurring" ColumnName="InjeryOccurring" />
@@ -9313,6 +9790,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <EntitySetMapping Name="QACSRs">
             <EntityTypeMapping TypeName="ppaModel.QACSR">
               <MappingFragment StoreEntitySet="QACSR">
+                <ScalarProperty Name="FormNo" ColumnName="FormNo" />
                 <ScalarProperty Name="Delay" ColumnName="Delay" />
                 <ScalarProperty Name="DelayReason" ColumnName="DelayReason" />
                 <ScalarProperty Name="ReporterId" ColumnName="ReporterId" />
@@ -9344,6 +9822,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <EntitySetMapping Name="QACybers">
             <EntityTypeMapping TypeName="ppaModel.QACyber">
               <MappingFragment StoreEntitySet="QACyber">
+                <ScalarProperty Name="FormNo" ColumnName="FormNo" />
                 <ScalarProperty Name="Delay" ColumnName="Delay" />
                 <ScalarProperty Name="DelayReason" ColumnName="DelayReason" />
                 <ScalarProperty Name="Mobile" ColumnName="Mobile" />
@@ -9379,6 +9858,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <EntitySetMapping Name="QADispatches">
             <EntityTypeMapping TypeName="ppaModel.QADispatch">
               <MappingFragment StoreEntitySet="QADispatch">
+                <ScalarProperty Name="FormNo" ColumnName="FormNo" />
                 <ScalarProperty Name="Delay" ColumnName="Delay" />
                 <ScalarProperty Name="DelayReason" ColumnName="DelayReason" />
                 <ScalarProperty Name="FlightPerFormedTime" ColumnName="FlightPerFormedTime" />
@@ -9424,6 +9904,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <EntitySetMapping Name="QAGroundIADs">
             <EntityTypeMapping TypeName="ppaModel.QAGroundIAD">
               <MappingFragment StoreEntitySet="QAGroundIAD">
+                <ScalarProperty Name="FormNo" ColumnName="FormNo" />
                 <ScalarProperty Name="Delay" ColumnName="Delay" />
                 <ScalarProperty Name="DelayReason" ColumnName="DelayReason" />
                 <ScalarProperty Name="ScheduledGroundTime" ColumnName="ScheduledGroundTime" />
@@ -9503,6 +9984,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <EntitySetMapping Name="QAHazards">
             <EntityTypeMapping TypeName="ppaModel.QAHazard">
               <MappingFragment StoreEntitySet="QAHazard">
+                <ScalarProperty Name="FormNo" ColumnName="FormNo" />
                 <ScalarProperty Name="Delay" ColumnName="Delay" />
                 <ScalarProperty Name="DelayReason" ColumnName="DelayReason" />
                 <ScalarProperty Name="RelatedDepartment" ColumnName="RelatedDepartment" />
@@ -9528,6 +10010,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <EntitySetMapping Name="QAMaintenances">
             <EntityTypeMapping TypeName="ppaModel.QAMaintenance">
               <MappingFragment StoreEntitySet="QAMaintenance">
+                <ScalarProperty Name="FormNo" ColumnName="FormNo" />
                 <ScalarProperty Name="Delay" ColumnName="Delay" />
                 <ScalarProperty Name="DelayReason" ColumnName="DelayReason" />
                 <ScalarProperty Name="DateHazard" ColumnName="DateHazard" />
@@ -9568,6 +10051,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <EntitySetMapping Name="QASecurities">
             <EntityTypeMapping TypeName="ppaModel.QASecurity">
               <MappingFragment StoreEntitySet="QASecurity">
+                <ScalarProperty Name="FormNo" ColumnName="FormNo" />
                 <ScalarProperty Name="Delay" ColumnName="Delay" />
                 <ScalarProperty Name="DelayReason" ColumnName="DelayReason" />
                 <ScalarProperty Name="TelNumber" ColumnName="TelNumber" />
@@ -9605,6 +10089,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <EntitySetMapping Name="ViewQACaterings">
             <EntityTypeMapping TypeName="ppaModel.ViewQACatering">
               <MappingFragment StoreEntitySet="ViewQACatering">
+                <ScalarProperty Name="FormNo" ColumnName="FormNo" />
                 <ScalarProperty Name="Delay" ColumnName="Delay" />
                 <ScalarProperty Name="DelayReason" ColumnName="DelayReason" />
                 <ScalarProperty Name="InjeryOccurring" ColumnName="InjeryOccurring" />
@@ -9647,6 +10132,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <EntitySetMapping Name="ViewQACSRs">
             <EntityTypeMapping TypeName="ppaModel.ViewQACSR">
               <MappingFragment StoreEntitySet="ViewQACSR">
+                <ScalarProperty Name="EventTitles" ColumnName="EventTitles" />
+                <ScalarProperty Name="FormNo" ColumnName="FormNo" />
                 <ScalarProperty Name="Result" ColumnName="Result" />
                 <ScalarProperty Name="Delay" ColumnName="Delay" />
                 <ScalarProperty Name="DelayReason" ColumnName="DelayReason" />
@@ -9689,6 +10176,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <EntitySetMapping Name="ViewQACybers">
             <EntityTypeMapping TypeName="ppaModel.ViewQACyber">
               <MappingFragment StoreEntitySet="ViewQACyber">
+                <ScalarProperty Name="FormNo" ColumnName="FormNo" />
                 <ScalarProperty Name="AccessMeasure" ColumnName="AccessMeasure" />
                 <ScalarProperty Name="Delay" ColumnName="Delay" />
                 <ScalarProperty Name="DelayReason" ColumnName="DelayReason" />
@@ -9736,6 +10224,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <EntitySetMapping Name="ViewQADispatches">
             <EntityTypeMapping TypeName="ppaModel.ViewQADispatch">
               <MappingFragment StoreEntitySet="ViewQADispatch">
+                <ScalarProperty Name="FormNo" ColumnName="FormNo" />
                 <ScalarProperty Name="Result" ColumnName="Result" />
                 <ScalarProperty Name="FlightPerformedTime" ColumnName="FlightPerformedTime" />
                 <ScalarProperty Name="FlightPerformed" ColumnName="FlightPerformed" />
@@ -9794,6 +10283,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <EntitySetMapping Name="ViewQAGrounds">
             <EntityTypeMapping TypeName="ppaModel.ViewQAGround">
               <MappingFragment StoreEntitySet="ViewQAGround">
+                <ScalarProperty Name="FormNo" ColumnName="FormNo" />
                 <ScalarProperty Name="Delay" ColumnName="Delay" />
                 <ScalarProperty Name="DelayReason" ColumnName="DelayReason" />
                 <ScalarProperty Name="ScheduledGroundTime" ColumnName="ScheduledGroundTime" />
@@ -9889,6 +10379,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <EntitySetMapping Name="ViewQAHazards">
             <EntityTypeMapping TypeName="ppaModel.ViewQAHazard">
               <MappingFragment StoreEntitySet="ViewQAHazard">
+                <ScalarProperty Name="FormNo" ColumnName="FormNo" />
+                <ScalarProperty Name="FlightId" ColumnName="FlightId" />
                 <ScalarProperty Name="Delay" ColumnName="Delay" />
                 <ScalarProperty Name="DelayReason" ColumnName="DelayReason" />
                 <ScalarProperty Name="RelatedDepartment" ColumnName="RelatedDepartment" />
@@ -9914,6 +10406,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <EntitySetMapping Name="ViewQAMaintenances">
             <EntityTypeMapping TypeName="ppaModel.ViewQAMaintenance">
               <MappingFragment StoreEntitySet="ViewQAMaintenance">
+                <ScalarProperty Name="FormNo" ColumnName="FormNo" />
                 <ScalarProperty Name="Delay" ColumnName="Delay" />
                 <ScalarProperty Name="DelayReason" ColumnName="DelayReason" />
                 <ScalarProperty Name="Result" ColumnName="Result" />
@@ -9952,6 +10445,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <EntitySetMapping Name="ViewQASecurities">
             <EntityTypeMapping TypeName="ppaModel.ViewQASecurity">
               <MappingFragment StoreEntitySet="ViewQASecurity">
+                <ScalarProperty Name="FormNo" ColumnName="FormNo" />
                 <ScalarProperty Name="Delay" ColumnName="Delay" />
                 <ScalarProperty Name="DelayReason" ColumnName="DelayReason" />
                 <ScalarProperty Name="TelNumber" ColumnName="TelNumber" />
@@ -10306,6 +10800,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <EntitySetMapping Name="Airports">
             <EntityTypeMapping TypeName="ppaModel.Airport">
               <MappingFragment StoreEntitySet="Airport">
+                <ScalarProperty Name="Name2" ColumnName="Name2" />
                 <ScalarProperty Name="TimeZone" ColumnName="TimeZone" />
                 <ScalarProperty Name="Category" ColumnName="Category" />
                 <ScalarProperty Name="UTC" ColumnName="UTC" />
@@ -10327,6 +10822,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <EntitySetMapping Name="ViewEmployees">
             <EntityTypeMapping TypeName="ppaModel.ViewEmployee">
               <MappingFragment StoreEntitySet="ViewEmployee">
+                <ScalarProperty Name="LicNo" ColumnName="LicNo" />
                 <ScalarProperty Name="TypeMDExpireDate" ColumnName="TypeMDExpireDate" />
                 <ScalarProperty Name="Type737ExpireDate" ColumnName="Type737ExpireDate" />
                 <ScalarProperty Name="JobGroupParentId" ColumnName="JobGroupParentId" />
@@ -10658,6 +11154,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <EntitySetMapping Name="ViewProfiles">
             <EntityTypeMapping TypeName="ppaModel.ViewProfile">
               <MappingFragment StoreEntitySet="ViewProfile">
+                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
                 <ScalarProperty Name="RemainTRG07A" ColumnName="RemainTRG07A" />
                 <ScalarProperty Name="RemainSMSL1L2L3" ColumnName="RemainSMSL1L2L3" />
                 <ScalarProperty Name="RemainSMSL2L3" ColumnName="RemainSMSL2L3" />
@@ -11035,6 +11532,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <EntitySetMapping Name="ViewQaFeedbacks">
             <EntityTypeMapping TypeName="ppaModel.ViewQaFeedback">
               <MappingFragment StoreEntitySet="ViewQaFeedback">
+                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+                <ScalarProperty Name="Creator" ColumnName="Creator" />
                 <ScalarProperty Name="FormKey" ColumnName="FormKey" />
                 <ScalarProperty Name="CreatorId" ColumnName="CreatorId" />
                 <ScalarProperty Name="DateCreate" ColumnName="DateCreate" />
@@ -11071,6 +11570,12 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <EntitySetMapping Name="QAFollowingUps">
             <EntityTypeMapping TypeName="ppaModel.QAFollowingUp">
               <MappingFragment StoreEntitySet="QAFollowingUp">
+                <ScalarProperty Name="SMSRefId" ColumnName="SMSRefId" />
+                <ScalarProperty Name="SMS" ColumnName="SMS" />
+                <ScalarProperty Name="NotificationCount" ColumnName="NotificationCount" />
+                <ScalarProperty Name="DateNotified" ColumnName="DateNotified" />
+                <ScalarProperty Name="ReceiverDateVisit" ColumnName="ReceiverDateVisit" />
+                <ScalarProperty Name="DateVisit" ColumnName="DateVisit" />
                 <ScalarProperty Name="Priority" ColumnName="Priority" />
                 <ScalarProperty Name="DeadLine" ColumnName="DeadLine" />
                 <ScalarProperty Name="ParentId" ColumnName="ParentId" />
@@ -11088,6 +11593,9 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <EntitySetMapping Name="QAFeedbacks">
             <EntityTypeMapping TypeName="ppaModel.QAFeedback">
               <MappingFragment StoreEntitySet="QAFeedback">
+                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+                <ScalarProperty Name="ReceiverId" ColumnName="ReceiverId" />
+                <ScalarProperty Name="DateVisit" ColumnName="DateVisit" />
                 <ScalarProperty Name="CreatorId" ColumnName="CreatorId" />
                 <ScalarProperty Name="DateCreate" ColumnName="DateCreate" />
                 <ScalarProperty Name="Feedback" ColumnName="Feedback" />
@@ -11100,6 +11608,9 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <EntitySetMapping Name="QAGetEntites_Result">
             <EntityTypeMapping TypeName="ppaModel.QAGetEntites_Result">
               <MappingFragment StoreEntitySet="QAGetEntites_Result">
+                <ScalarProperty Name="CategoryOrder" ColumnName="CategoryOrder" />
+                <ScalarProperty Name="FollowingId" ColumnName="FollowingId" />
+                <ScalarProperty Name="FormNo" ColumnName="FormNo" />
                 <ScalarProperty Name="Priority" ColumnName="Priority" />
                 <ScalarProperty Name="DeadLine" ColumnName="DeadLine" />
                 <ScalarProperty Name="DateSign" ColumnName="DateSign" />
@@ -11127,6 +11638,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <EntitySetMapping Name="ViewQABYEmployees">
             <EntityTypeMapping TypeName="ppaModel.ViewQABYEmployee">
               <MappingFragment StoreEntitySet="ViewQABYEmployee">
+                <ScalarProperty Name="FollowingId" ColumnName="FollowingId" />
                 <ScalarProperty Name="ReviewResultTitle" ColumnName="ReviewResultTitle" />
                 <ScalarProperty Name="ReviewResult" ColumnName="ReviewResult" />
                 <ScalarProperty Name="Category" ColumnName="Category" />
@@ -11143,6 +11655,9 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <EntitySetMapping Name="EFBASRs">
             <EntityTypeMapping TypeName="ppaModel.EFBASR">
               <MappingFragment StoreEntitySet="EFBASR">
+                <ScalarProperty Name="StatusEmployeeId" ColumnName="StatusEmployeeId" />
+                <ScalarProperty Name="DateStatus" ColumnName="DateStatus" />
+                <ScalarProperty Name="FormNo" ColumnName="FormNo" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="ReporterId" ColumnName="ReporterId" />
                 <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
@@ -11249,6 +11764,68 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
                 <ScalarProperty Name="OccurrenceDate" ColumnName="OccurrenceDate" />
                 <ScalarProperty Name="EventTypeId" ColumnName="EventTypeId" />
                 <ScalarProperty Name="FlightId" ColumnName="FlightId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="survey_category">
+            <EntityTypeMapping TypeName="ppaModel.survey_category">
+              <MappingFragment StoreEntitySet="survey_category">
+                <ScalarProperty Name="order_index" ColumnName="order_index" />
+                <ScalarProperty Name="survey_type" ColumnName="survey_type" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="survey_participant">
+            <EntityTypeMapping TypeName="ppaModel.survey_participant">
+              <MappingFragment StoreEntitySet="survey_participant">
+                <ScalarProperty Name="submitted_at" ColumnName="submitted_at" />
+                <ScalarProperty Name="participant_key" ColumnName="participant_key" />
+                <ScalarProperty Name="participant_id" ColumnName="participant_id" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="participant_name" ColumnName="participant_name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="survey_question">
+            <EntityTypeMapping TypeName="ppaModel.survey_question">
+              <MappingFragment StoreEntitySet="survey_question">
+                <ScalarProperty Name="order_index" ColumnName="order_index" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="category_id" ColumnName="category_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="survey_result">
+            <EntityTypeMapping TypeName="ppaModel.survey_result">
+              <MappingFragment StoreEntitySet="survey_result">
+                <ScalarProperty Name="response_time" ColumnName="response_time" />
+                <ScalarProperty Name="answer" ColumnName="answer" />
+                <ScalarProperty Name="question_id" ColumnName="question_id" />
+                <ScalarProperty Name="participant_id" ColumnName="participant_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="survey_driver">
+            <EntityTypeMapping TypeName="ppaModel.survey_driver">
+              <MappingFragment StoreEntitySet="survey_driver">
+                <ScalarProperty Name="date_day" ColumnName="date_day" />
+                <ScalarProperty Name="date_month" ColumnName="date_month" />
+                <ScalarProperty Name="date_year" ColumnName="date_year" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="vehicle_no" ColumnName="vehicle_no" />
+                <ScalarProperty Name="journey_time" ColumnName="journey_time" />
+                <ScalarProperty Name="journey_title" ColumnName="journey_title" />
+                <ScalarProperty Name="journey_subject" ColumnName="journey_subject" />
+                <ScalarProperty Name="journey_route" ColumnName="journey_route" />
+                <ScalarProperty Name="driver_name" ColumnName="driver_name" />
+                <ScalarProperty Name="survey_id" ColumnName="survey_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

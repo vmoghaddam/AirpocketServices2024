@@ -110,5 +110,6 @@ namespace ApiReportFlight.Models
         public string ValidTypes { get; set; }
         public string BaseAirport { get; set; }
         public Nullable<int> BaseAirportId { get; set; }
+        public Nullable<System.DateTime> STDDayLocal { get; set; }
     }
 }

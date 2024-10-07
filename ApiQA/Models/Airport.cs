@@ -38,6 +38,7 @@ namespace ApiQA.Models
         public Nullable<int> UTC { get; set; }
         public string Category { get; set; }
         public string TimeZone { get; set; }
+        public string Name2 { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<QAGroundIAD> QAGroundIADs { get; set; }

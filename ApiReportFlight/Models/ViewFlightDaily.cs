@@ -134,5 +134,7 @@ namespace ApiReportFlight.Models
         public int IsArrInt { get; set; }
         public string XRoute { get; set; }
         public int FixTime { get; set; }
+        public string PYear { get; set; }
+        public int IsINT { get; set; }
     }
 }

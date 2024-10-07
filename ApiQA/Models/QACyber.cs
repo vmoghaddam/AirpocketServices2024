@@ -43,6 +43,7 @@ namespace ApiQA.Models
         public string Mobile { get; set; }
         public string DelayReason { get; set; }
         public Nullable<int> Delay { get; set; }
+        public string FormNo { get; set; }
     
         public virtual FlightInformation FlightInformation { get; set; }
         public virtual QAOption QAOption { get; set; }

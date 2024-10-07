@@ -53,6 +53,7 @@ namespace ApiQA.Models
         public Nullable<System.TimeSpan> FlightPerFormedTime { get; set; }
         public string DelayReason { get; set; }
         public Nullable<int> Delay { get; set; }
+        public string FormNo { get; set; }
     
         public virtual FlightInformation FlightInformation { get; set; }
     }

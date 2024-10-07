@@ -12,14 +12,15 @@ namespace ApiQA.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class ViewQAByEmployeeCount
+    public partial class survey_result
     {
-        public int type { get; set; }
-        public string TypeTitle { get; set; }
-        public int EmployeeId { get; set; }
-        public int ClosedCount { get; set; }
-        public int InProgressCount { get; set; }
-        public int NewCount { get; set; }
-        public Nullable<int> ReturnCount { get; set; }
+        public int id { get; set; }
+        public int participant_id { get; set; }
+        public int question_id { get; set; }
+        public Nullable<int> answer { get; set; }
+        public Nullable<System.DateTime> response_time { get; set; }
+    
+        public virtual survey_participant survey_participant { get; set; }
+        public virtual survey_question survey_question { get; set; }
     }
 }

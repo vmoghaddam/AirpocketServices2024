@@ -26,5 +26,12 @@ namespace ApiQA.Models
         public string ReviewResultTitle { get; set; }
         public string Comment { get; set; }
         public Nullable<System.DateTime> DateStatus { get; set; }
+        public string TypeTitle { get; set; }
+        public Nullable<System.DateTime> DateVisit { get; set; }
+        public Nullable<System.DateTime> DeadLine { get; set; }
+        public Nullable<int> PriorityId { get; set; }
+        public string Priority { get; set; }
+        public int ReceiverDateVisit { get; set; }
+        public Nullable<int> FlightId { get; set; }
     }
 }
