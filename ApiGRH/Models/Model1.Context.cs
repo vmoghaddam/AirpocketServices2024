@@ -30,7 +30,7 @@ namespace ApiGRH.Models
         public virtual DbSet<chk_turn_around_item> chk_turn_around_item { get; set; }
         public virtual DbSet<AppLeg> AppLegs { get; set; }
         public virtual DbSet<chk_turn_around_item_value> chk_turn_around_item_value { get; set; }
-        public virtual DbSet<chk_turn_around> chk_turn_around { get; set; }
         public virtual DbSet<view_grh_turn_around> view_grh_turn_around { get; set; }
+        public virtual DbSet<chk_turn_around> chk_turn_around { get; set; }
     }
 }

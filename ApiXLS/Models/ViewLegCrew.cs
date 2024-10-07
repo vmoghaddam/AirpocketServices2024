@@ -38,7 +38,7 @@ namespace ApiXLS.Models
         public Nullable<int> Duty { get; set; }
         public Nullable<int> ScheduledFlightTime { get; set; }
         public Nullable<int> SITATime { get; set; }
-        public int FixTime { get; set; }
+        public Nullable<int> FixTime { get; set; }
         public Nullable<int> FlightTimeActual { get; set; }
         public Nullable<System.DateTime> ArrivalLocal { get; set; }
         public Nullable<System.DateTime> DepartureLocal { get; set; }
@@ -106,5 +106,10 @@ namespace ApiXLS.Models
         public Nullable<int> JL_BlockTime { get; set; }
         public Nullable<System.DateTime> Takeoff { get; set; }
         public string PID { get; set; }
+        public Nullable<System.DateTime> STDDayLocal { get; set; }
+        public Nullable<int> NetFixTime { get; set; }
+        public string ValidTypes { get; set; }
+        public string BaseAirport { get; set; }
+        public Nullable<int> BaseAirportId { get; set; }
     }
 }

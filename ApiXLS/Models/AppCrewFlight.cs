@@ -144,5 +144,33 @@ namespace ApiXLS.Models
         public Nullable<decimal> FPTripFuel { get; set; }
         public Nullable<decimal> FPFuel { get; set; }
         public Nullable<decimal> FuelPlanned { get; set; }
+        public Nullable<int> OFPExtra { get; set; }
+        public Nullable<int> OFPCONTFUEL { get; set; }
+        public Nullable<int> OFPALT1FUEL { get; set; }
+        public Nullable<int> OFPALT2FUEL { get; set; }
+        public Nullable<int> OFPFINALRESFUEL { get; set; }
+        public Nullable<int> OFPTAXIFUEL { get; set; }
+        public Nullable<int> OFPETOPSADDNLFUEL { get; set; }
+        public Nullable<int> OFPOPSEXTRAFUEL { get; set; }
+        public int OFPTANKERINGFUEL { get; set; }
+        public Nullable<int> OFPTOTALFUEL { get; set; }
+        public Nullable<int> OFPMINTOFFUEL { get; set; }
+        public Nullable<int> OFPOFFBLOCKFUEL { get; set; }
+        public Nullable<int> OFPTRIPFUEL { get; set; }
+        public Nullable<int> PILOTREQFUEL { get; set; }
+        public Nullable<int> FuelUsedEng1 { get; set; }
+        public Nullable<int> FuelUsedEng2 { get; set; }
+        public Nullable<int> ACTUALTANKERINGFUEL { get; set; }
+        public Nullable<int> TANKERINGDIFF { get; set; }
+        public Nullable<int> ACTUALTOTALFUEL { get; set; }
+        public string LTR2 { get; set; }
+        public Nullable<System.DateTime> dep_dawn { get; set; }
+        public Nullable<System.DateTime> dep_dusk { get; set; }
+        public Nullable<System.DateTime> arr_dawn { get; set; }
+        public Nullable<System.DateTime> arr_dusk { get; set; }
+        public string FlightTypeOPS { get; set; }
+        public string AttForms { get; set; }
+        public Nullable<int> PaxFemale { get; set; }
+        public Nullable<int> PaxMale { get; set; }
     }
 }

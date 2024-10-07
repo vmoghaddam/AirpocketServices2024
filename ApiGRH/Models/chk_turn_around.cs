@@ -41,6 +41,7 @@ namespace ApiGRH.Models
         public string delay_code { get; set; }
         public Nullable<System.DateTime> update_date { get; set; }
         public string update_user_id { get; set; }
+        public Nullable<System.DateTime> onblock { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<chk_turn_around_item_value> chk_turn_around_item_value { get; set; }
