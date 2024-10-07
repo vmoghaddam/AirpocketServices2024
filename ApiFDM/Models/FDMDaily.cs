@@ -14,7 +14,9 @@ namespace ApiFDM.Models
     
     public partial class FDMDaily
     {
-        public System.DateTime FlightDate { get; set; }
+        public int year { get; set; }
+        public int month { get; set; }
+        public Nullable<int> YearMonth { get; set; }
         public Nullable<int> EventCount { get; set; }
         public Nullable<int> FlightCount { get; set; }
         public Nullable<int> HighCount { get; set; }
@@ -23,5 +25,6 @@ namespace ApiFDM.Models
         public Nullable<int> Score { get; set; }
         public Nullable<int> ScorePerFlight { get; set; }
         public Nullable<int> EventPerFlight { get; set; }
+        public Nullable<int> ScorePerEvent { get; set; }
     }
 }

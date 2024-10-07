@@ -15,6 +15,11 @@ using System.Windows.Markup;
 using System.Data.Entity.Validation;
 using Microsoft.Ajax.Utilities;
 using System.Threading;
+using Spire.Pdf.Graphics;
+using Spire.Pdf;
+using System.Drawing;
+using System.IO;
+using Spire.Pdf.General.Find;
 
 namespace ApiXLS.Controllers
 {
@@ -272,6 +277,55 @@ namespace ApiXLS.Controllers
             public string date { get; set; }
 
             public string key { get; set; }
+        }
+
+
+        [Route("api/generate/certificate")]
+        [AcceptVerbs("Get")]
+        public async Task<IHttpActionResult> generate_certificate()
+        {
+            PdfDocument pdf = new PdfDocument();
+
+            string uploadFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "upload");
+            string pdfTemplatePath = Path.Combine(uploadFolderPath, "certificate.pdf");
+
+
+            pdf.LoadFromFile(pdfTemplatePath);
+
+            // Access the first page of the PDF
+            PdfPageBase page = pdf.Pages[0];
+
+            // Define dynamic content (the person's name)
+            string personName = "John Doe"; // Replace this with the actual name
+
+            PlaceTextAtCoordinates(page,  personName);
+
+            // Save the modified PDF
+            string outputPdfPath = Path.Combine(uploadFolderPath, "GeneratedCertificateWithReplacedName7.pdf");
+            pdf.SaveToFile(outputPdfPath);
+
+            // Close the document
+            pdf.Close();
+
+
+            return Ok(page);
+        }
+
+
+
+        static void PlaceTextAtCoordinates(PdfPageBase page, string replacementText)
+        {
+            // Define the font and brush for the replacement text
+            PdfTrueTypeFont font = new PdfTrueTypeFont(new Font("Arial", 18f, FontStyle.Bold), true);
+            PdfSolidBrush brush = new PdfSolidBrush(Color.Black);
+
+            // Manually set the coordinates where the placeholder text should be replaced
+            // Adjust the X and Y values to position the text correctly
+            float xPosition = 360; // Adjust this based on where the text should appear horizontally
+            float yPosition = 250; // Adjust this based on where the text should appear vertically
+
+            // Draw the replacement text at the specified coordinates
+            page.Canvas.DrawString(replacementText, font, brush, new PointF(xPosition, yPosition));
         }
 
 

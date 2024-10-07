@@ -14,8 +14,8 @@ namespace ApiFDM.Models
     
     public partial class FDMCptFoMonthly
     {
-        public int year { get; set; }
-        public int month { get; set; }
+        public Nullable<int> Year { get; set; }
+        public Nullable<int> Month { get; set; }
         public Nullable<int> YearMonth { get; set; }
         public string P1Name { get; set; }
         public int P1Id { get; set; }

@@ -19,11 +19,11 @@ namespace ApiFDM.Models
         public string CptName { get; set; }
         public int CptId { get; set; }
         public string CptCode { get; set; }
+        public Nullable<bool> Approved { get; set; }
         public Nullable<int> EventCount { get; set; }
         public Nullable<int> HighCount { get; set; }
         public Nullable<int> MediumCount { get; set; }
         public Nullable<int> LowCount { get; set; }
         public Nullable<int> Score { get; set; }
-        public Nullable<bool> Approved { get; set; }
     }
 }

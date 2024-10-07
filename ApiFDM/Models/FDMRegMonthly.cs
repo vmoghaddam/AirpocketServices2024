@@ -14,10 +14,9 @@ namespace ApiFDM.Models
     
     public partial class FDMRegMonthly
     {
-        public int Year { get; set; }
-        public int Month { get; set; }
+        public Nullable<int> Year { get; set; }
+        public Nullable<int> Month { get; set; }
         public Nullable<int> YearMonth { get; set; }
-        public string aircrafttype { get; set; }
         public string Register { get; set; }
         public int RegisterId { get; set; }
         public Nullable<int> EventCount { get; set; }

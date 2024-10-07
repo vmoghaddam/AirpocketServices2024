@@ -20,11 +20,11 @@ namespace ApiFDM.Models
         public string CptCode { get; set; }
         public Nullable<int> FlightCount { get; set; }
         public Nullable<int> incidentCount { get; set; }
+        public Nullable<bool> Approved { get; set; }
         public Nullable<int> HighCount { get; set; }
         public Nullable<int> MediumCount { get; set; }
         public Nullable<int> LowCount { get; set; }
         public Nullable<int> Score { get; set; }
         public Nullable<int> FaultPercentagePerFlight { get; set; }
-        public Nullable<bool> Approved { get; set; }
     }
 }

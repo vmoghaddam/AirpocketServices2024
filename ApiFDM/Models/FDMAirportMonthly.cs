@@ -17,10 +17,6 @@ namespace ApiFDM.Models
         public int Month { get; set; }
         public int Year { get; set; }
         public Nullable<int> YearMonth { get; set; }
-        public string AircraftType { get; set; }
-        public string FromAirportIATA { get; set; }
-        public string ToAirportIATA { get; set; }
-        public string Route { get; set; }
         public Nullable<int> FlightCount { get; set; }
         public Nullable<int> EventsCount { get; set; }
         public Nullable<int> HighCount { get; set; }
@@ -32,5 +28,8 @@ namespace ApiFDM.Models
         public Nullable<int> HighScore { get; set; }
         public Nullable<int> MediumScore { get; set; }
         public Nullable<int> LowScore { get; set; }
+        public string FromAirportIATA { get; set; }
+        public string ToAirportIATA { get; set; }
+        public string Route { get; set; }
     }
 }

@@ -68,5 +68,8 @@ namespace ApiFDM.Models
         public Nullable<bool> Confirmation { get; set; }
         public string ValidationPerson { get; set; }
         public string ConfirmationPerson { get; set; }
+        public string PIC { get; set; }
+        public Nullable<int> FlightNo { get; set; }
+        public string MainParameter { get; set; }
     }
 }

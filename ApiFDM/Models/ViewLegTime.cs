@@ -28,7 +28,6 @@ namespace ApiFDM.Models
         public Nullable<System.DateTime> STD { get; set; }
         public Nullable<System.DateTime> STA { get; set; }
         public Nullable<System.DateTime> STDLocal { get; set; }
-        public Nullable<System.DateTime> STDDayLocal { get; set; }
         public Nullable<System.DateTime> STALocal { get; set; }
         public Nullable<System.DateTime> Date { get; set; }
         public Nullable<int> FlightStatusID { get; set; }
@@ -109,8 +108,7 @@ namespace ApiFDM.Models
         public Nullable<int> TotalSeat { get; set; }
         public int BaggageWeight { get; set; }
         public int CargoWeight { get; set; }
-        public Nullable<int> Freight { get; set; }
-        public Nullable<System.DateTime> FlightDateX { get; set; }
+        public int Freight { get; set; }
         public Nullable<System.DateTime> FlightDate { get; set; }
         public Nullable<int> CargoCount { get; set; }
         public Nullable<int> BaggageCount { get; set; }
@@ -131,5 +129,12 @@ namespace ApiFDM.Models
         public string CPRegister { get; set; }
         public string DepCountry { get; set; }
         public string ArrCountry { get; set; }
+        public Nullable<int> OFPMINTOFFUEL { get; set; }
+        public Nullable<int> OFPOFFBLOCKFUEL { get; set; }
+        public Nullable<int> OFPTRIPFUEL { get; set; }
+        public Nullable<int> PILOTREQFUEL { get; set; }
+        public Nullable<decimal> FuelPlanned { get; set; }
+        public string PF { get; set; }
+        public Nullable<int> OFPTOTALFUEL { get; set; }
     }
 }

@@ -11,28 +11,33 @@ namespace ApiFDM.Models
 
     public class Boeing
     {
-        public string FlightPhase { get; set; }
+        public string Phase { get; set; }
+        public string MainParameter { get; set; }
         public string Severity { get; set; }
         public string EventName { get; set; }
         public string Value { get; set; }
+        public string Limit { get; set; }
         public string Minor { get; set; }
         public string Major { get; set; }
         public string Critical { get; set; }
-        public TimeSpan Duration { get; set; }
+        public float Duration { get; set; }
         public string Aircraft { get; set; }
         public string TOAirport { get; set; }
         public string TDAirport { get; set; }
-        public string RecdFltNum { get; set; }
+        public string FlightNo { get; set; }
         public string Date { get; set; }
         public string P1 { get; set; }
         public string P2 { get; set; }
         public string IP { get; set; }
+        public string FlyBy { get; set; }
         public string StateName { get; set; }
         public string Context { get; set; }
-        public string TORunway { get; set; }
-        public string TDRunway { get; set; }
-        public string TODatetime { get; set; }
-        public string TDDatetime { get; set; }
+        public string FromAirportIATA { get; set; }
+        public string ToAirportIATA { get; set; }
+        public string FromAirport { get; set; }
+        public string ToAirport { get; set; }
+        public string TO_Datetime { get; set; }
+        public string TD_Datetime { get; set; }
         public string Type { get; set; }
         public string Units { get; set; }
         public string ValueName { get; set; }
@@ -130,7 +135,7 @@ namespace ApiFDM.Models
             {
                 DateTime? result = new DateTime();
 
-                if (DateTime.TryParse(TDDatetime, out DateTime y))
+                if (DateTime.TryParse(TD_Datetime, out DateTime y))
                 {
                     result = y.Date;
                 }
@@ -167,11 +172,11 @@ namespace ApiFDM.Models
             get
             {
                 string result = null;
-                var B737FLTNO = (RecdFltNum == null) ? (int?)null : RecdFltNum.Length;
+                var B737FLTNO = (FlightNo == null) ? (int?)null : FlightNo.Length;
                 if (B737FLTNO == 2)
-                    result = "00" + RecdFltNum;
+                    result = "00" + FlightNo;
                 else
-                    result = RecdFltNum;
+                    result = FlightNo;
                 return result;
             }
         }
@@ -190,37 +195,40 @@ namespace ApiFDM.Models
     public class MD
     {
         public string ValueName { get; set; }
-        public string LimitLevel { get; set; }
-        public string description { get; set; }
-        public string LevelsValue { get; set; }
-        public string limit { get; set; }
+        public string Severity { get; set; }
+        public string EventName { get; set; }
+        public float Duration { get; set; }
+        public string ExceedValue { get; set; }
+        public string LimitValue { get; set; }
+        public string Phase { get; set; }
+        public string FromAirport { get; set; }
+        public string FromAirportIATA { get; set; }
+        public string ToAirport { get; set; }
+        public string ToAirportIATA { get; set; }
         public string Date { get; set; }
 
         public string FlightNo { get; set; }
-        public string Reg { get; set; }
-        public string From { get; set; }
-        public string To { get; set; }
-
-        public string P1 { get; set; }
-
-        public string P2 { get; set; }
-
+        public string Aircraft { get; set; }
         public string IP { get; set; }
-
-        public string PFLR { get; set; }
-        public float Duration { get; set; }
+        public string P1 { get; set; }
+        public string P2 { get; set; }
+        public string PIC { get; set; }
+        public string AircraftType { get; set; }
+        public string MainParameter { get; set; }
+        public string Context { get; set; }
+        public string TO_DateTime { get; set; }
+        public string TD_DateTime { get; set; }
         public int RegisterId { get; set; }
         public string FileName { get; set; }
         public int recordNum { get; set; }
-        public string FlightPhase { get; set; }
         public string StateName { get; set; }
         public float? ValueX
         {
             get
             {
                 float? result = null;
-                if (float.TryParse(LevelsValue, out float x))
-                    result = float.Parse(LevelsValue);
+                if (float.TryParse(ExceedValue, out float x))
+                    result = float.Parse(ExceedValue);
                 else
                     result = null;
 
@@ -250,65 +258,78 @@ namespace ApiFDM.Models
         {
             get
             {
-                DateTime? result = new DateTime();
+             
+                    DateTime? result = new DateTime();
 
-
-                //   var _date = Date.Length == 9 ? "20" + Date : Date;
-                try
-                {
-                    var split = Date.Split('-');
-                    var month = 0;
-                    switch (split[1])
+                    if (DateTime.TryParse(TO_DateTime, out DateTime y))
                     {
-                        case "Jan":
-                            month = 1;
-                            break;
-                        case "Feb":
-                            month = 2;
-                            break;
-                        case "Mar":
-                            month = 3;
-                            break;
-                        case "Apr":
-                            month = 4;
-                            break;
-                        case "May":
-                            month = 5;
-                            break;
-                        case "Jun":
-                            month = 6;
-                            break;
-                        case "Jul":
-                            month = 7;
-                            break;
-                        case "Aug":
-                            month = 8;
-                            break;
-                        case "Sep":
-                            month = 9;
-                            break;
-                        case "Oct":
-                            month = 10;
-                            break;
-                        case "Nov":
-                            month = 11;
-                            break;
-                        case "Dec":
-                            month = 12;
-                            break;
-
+                        result = y.Date;
                     }
+                    else
+                    {
+                        result = null;
+                    }
+                    return result;
+                
+                //DateTime? result = new DateTime();
 
-                    result = new DateTime(2000 + Int32.Parse(split[0]), month, Int32.Parse(split[2]));
 
-                }
-                catch (Exception ex)
-                {
-                    result = null;
-                }
+                ////   var _date = Date.Length == 9 ? "20" + Date : Date;
+                //try
+                //{
+                //    var split = TO_DateTime.Split('-');
+                //    var month = 0;
+                //    switch (split[1])
+                //    {
+                //        case "Jan":
+                //            month = 1;
+                //            break;
+                //        case "Feb":
+                //            month = 2;
+                //            break;
+                //        case "Mar":
+                //            month = 3;
+                //            break;
+                //        case "Apr":
+                //            month = 4;
+                //            break;
+                //        case "May":
+                //            month = 5;
+                //            break;
+                //        case "Jun":
+                //            month = 6;
+                //            break;
+                //        case "Jul":
+                //            month = 7;
+                //            break;
+                //        case "Aug":
+                //            month = 8;
+                //            break;
+                //        case "Sep":
+                //            month = 9;
+                //            break;
+                //        case "Oct":
+                //            month = 10;
+                //            break;
+                //        case "Nov":
+                //            month = 11;
+                //            break;
+                //        case "Dec":
+                //            month = 12;
+                //            break;
+
+                //    }
+
+                //    result = new DateTime(2000 + Int32.Parse(split[0]), month, Int32.Parse(split[2]));
+
+                //}
+                //catch (Exception ex)
+                //{
+                //    result = null;
+                //}
 
 
-                return result;
+                //return result;
             }
         }
 
@@ -333,7 +354,7 @@ namespace ApiFDM.Models
         {
             get
             {
-                if (this.DateX == null || this.description == null || this.LimitLevelX == null)
+                if (this.DateX == null || this.EventName == null || this.LimitLevelX == null)
                     return false;
                 return true;
             }
@@ -344,7 +365,7 @@ namespace ApiFDM.Models
         {
             get
             {
-                var limitLevel = this.LimitLevel.ToLower();
+                var limitLevel = this.Severity.ToLower();
 
                 string result = null;
                 if (limitLevel == "high" || limitLevel == "critical")
