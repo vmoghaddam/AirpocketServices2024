@@ -256,30 +256,25 @@ namespace ApiFDM.Controllers
 
                     flight.Severity = row[0];
                     flight.EventName = row[1];
-                    flight.Value = row[2];
-                    flight.Minor = row[3];
-                    flight.Major = row[4];
-                    flight.Critical = row[5];
-                    flight.Duration = TimeSpan.Parse(row[6]);
-                    flight.TOAirport = row[7];
-                    flight.TDAirport = row[8];
-                    flight.RecdFltNum = row[9];
-                    flight.TDDatetime = row[10];
-                    //flight.IP = row[11];
-                    //flight.P1 = row[12];
-                    //flight.P2 = row[13];
-                    flight.Aircraft = row[11];
-                    flight.FlightPhase = row[12];
-                    flight.StateName = row[13];
-                    flight.Context = row[14];
-                    flight.TORunway = row[15];
-                    flight.TDRunway = row[16];
-                    flight.TODatetime = row[17];
-                    flight.Type = row[18];
-                    flight.Units = row[19];
-                    flight.ValueName = row[20];
-                    flight.EnginePos = row[21];
-
+                    flight.Duration = float.Parse(row[2]);
+                    flight.Value = row[3];
+                    flight.Limit = row[4];
+                    flight.FromAirport = row[5];
+                    flight.FromAirportIATA =row[6];
+                    flight.ToAirport = row[7];
+                    flight.ToAirportIATA = row[7];
+                    flight.TO_Datetime = row[9];
+                    flight.TD_Datetime = row[10];
+                    flight.FlightNo = row[11];
+                    flight.Aircraft = row[12];
+                    flight.IP = row[13];
+                    flight.P1 = row[14];
+                    flight.P2 = row[15];
+                    flight.FlyBy = row[16];
+                    flight.Phase = row[17];
+                    flight.MainParameter = row[18];
+                    flight.Context = row[19];
+                    
                     flights.Add(flight);
                 }
 
@@ -303,7 +298,7 @@ namespace ApiFDM.Controllers
                 foreach (var y in flights)
                 {
                     var flight = existFlight.FirstOrDefault(q => q.STDDay == y.DateX && q.FlightNumber == y.FlightNumber);
-                    var Key = (y.EventName).Trim() + Trim(y.Aircraft) + DateConvert(y.DateX) + y.TOAirport + y.TDAirport + (y.FlightPhase == null ? string.Empty : y.FlightPhase);
+                    var Key = (y.EventName).Trim() + Trim(y.Aircraft) + DateConvert(y.DateX) + y.TOAirport + y.TDAirport + (y.Phase == null ? string.Empty : y.Phase);
                     if (fdmKeys.Contains(Key))
                         continue;
 
@@ -315,7 +310,7 @@ namespace ApiFDM.Controllers
                         entity.Severity = y.SeverityX;
                         entity.Date = y.DateX;
                         entity.EventName = y.EventName;
-                        entity.Duration = y.Duration;
+                        entity.Duration = TimeSpan.FromSeconds((double)new decimal(y.Duration));
                         //entity.P1 = y.P1;
                         //entity.P1Id = PilotsId.Where(q => q.Code == y.P1).Select(w => (int?)w.CrewId).DefaultIfEmpty().First();
                         //entity.P2 = y.P2;
@@ -333,7 +328,7 @@ namespace ApiFDM.Controllers
                         entity.Minor = y.MinorX;
                         entity.Major = y.MajorX;
                         entity.Critical = y.CriticalX;
-                        entity.Phase = y.FlightPhase;
+                        entity.Phase = y.Phase;
                         entity.Context = y.Context;
                         entity.StateName = y.StateName;
                         entity.Type = y.Type;
@@ -355,6 +350,7 @@ namespace ApiFDM.Controllers
                         entity.Confirmation = false;
                         entity.IsVisible = false;
                         entity.Validity = 0;
+                        entity.MainParameter = y.MainParameter;
                         context.FDMs.Add(entity);
 
                     }
@@ -369,7 +365,7 @@ namespace ApiFDM.Controllers
                         failedItem.P2 = y.P2;
                         failedItem.FileName = fn;
                         failedItem.Value = y.ValueX;
-                        failedItem.Duration = y.Duration;
+                        failedItem.Duration = TimeSpan.FromSeconds((double)new decimal(y.Duration));
                         failedItem.flightNo = y.FlightNumber;
                         failedItem.Message = flight != null ? string.Empty : "Flight record not found";
                         failedItems.Add(failedItem);
@@ -432,22 +428,38 @@ namespace ApiFDM.Controllers
                     var flight = new MD();
                     var row = rows[i];
 
-                    flight.LimitLevel = row[0];
-                    flight.description = row[1];
+                    flight.Severity = row[0];
+                    flight.EventName = row[1];
                     flight.Duration = float.Parse(row[2]);
-                    flight.LevelsValue = row[3];
-                    flight.limit = row[4];
-                    flight.Date = row[5];
-                    flight.FlightNo = row[6];
-                    flight.Reg = row[7];
-                    flight.From = row[8];
-                    flight.To = row[9];
-                    flight.FlightPhase = row[10];
-                    flight.StateName = row[11];
-                    //flight.IP = row[10];
-                    //flight.P1 = row[11];
-                    //flight.P2 = row[12];
-                    //flight.PFLR = row[13];
+                    flight.ExceedValue = row[3];
+                    flight.LimitValue = row[4];
+                    flight.Phase = row[5];
+                    flight.FromAirport = row[6];
+                    flight.FromAirportIATA = row[7];
+                    flight.ToAirport = row[8];
+                    flight.ToAirportIATA = row[9];
+                    flight.FlightNo = row[10];
+                    flight.Aircraft = row[11];
+                    flight.IP = row[12];
+                    flight.P1 = row[13];
+                    flight.P2 = row[14];
+                    flight.PIC = row[15];
+                    flight.AircraftType = row[16];
+                    flight.MainParameter = row[17];
+                    flight.Context = row[18];
+                    flight.TO_DateTime = row[19];
+                    flight.TD_DateTime = row[20];
+                    //flight.Date = row[5];
+                    //flight.FlightNo = row[6];
+                    //flight.Reg = row[7];
+                    //flight.From = row[8];
+                    //flight.To = row[9];
+                    //flight.FlightPhase = row[10];
+                    //flight.StateName = row[11];
+                    ////flight.IP = row[10];
+                    ////flight.P1 = row[11];
+                    ////flight.P2 = row[12];
+                    ////flight.PFLR = row[13];
                     flights.Add(flight);
                 }
 
@@ -473,8 +485,8 @@ namespace ApiFDM.Controllers
                 foreach (var y in flights)
                 {
 
-                    var flight = existFlight.FirstOrDefault(q => q.STDDay == y.DateX && q.FlightNumber == y.FlightNo);
-                    var Key = Trim(y.description) + Trim(y.Reg) + DateConvert(y.DateX) + y.From + y.To;
+                    var flight = existFlight.FirstOrDefault(q => q.STDDay == y.DateX && q.FlightNumber == y.FlightNumber);
+                    var Key = Trim(y.EventName) + Trim(y.Aircraft) + DateConvert(y.DateX) + y.FromAirportIATA + y.ToAirportIATA;
 
                     if (fdmKeys.Contains(Key))
                         continue;
@@ -485,9 +497,9 @@ namespace ApiFDM.Controllers
                         var entity = new FDM();
                         entity.Severity = y.LimitLevelX;
                         entity.Date = y.DateX;
-                        entity.EventName = y.description;
+                        entity.EventName = y.EventName;
                         entity.Duration = TimeSpan.FromSeconds((double)new decimal(y.Duration));
-                        entity.Value = y.LevelsValue;
+                        entity.Value = y.ExceedValue;
                         //entity.P1 = y.P1;
                         //entity.P1Id = PilotsId.Where(q => q.Code == y.P1).Select(w => (int?)w.CrewId).DefaultIfEmpty().First();
                         //entity.P2 = y.P2;
@@ -511,24 +523,27 @@ namespace ApiFDM.Controllers
                         entity.ToAirportIATA = flight.ToAirportIATA;
                         entity.FlightId = flight.FlightId;
                         //entity.AircraftTypeId = flight.TypeId;
-                        entity.Limit = y.limit;
+                        entity.Limit = y.LimitValue;
                         entity.Key = Key;
                         entity.Approved = false;
                         entity.Removed = false;
                         entity.Confirmation = false;
                         entity.IsVisible = false;
                         entity.Validity = 0;
-                        entity.Phase = y.FlightPhase;
+                        entity.Phase = y.Phase;
                         entity.StateName = y.StateName;
+                        entity.MainParameter = y.MainParameter;
+                        entity.PIC = y.PIC;
+                        entity.Context = y.Context;
                         context.FDMs.Add(entity);
 
                     }
                     else
                     {
                         var failedItem = new FailedItmes();
-                        failedItem.Severity = y.LimitLevel;
+                        failedItem.Severity = y.Severity;
                         failedItem.Date = y.DateX;
-                        failedItem.EventName = y.description;
+                        failedItem.EventName = y.EventName;
                         failedItem.P1 = y.P1;
                         failedItem.P2 = y.P2;
                         failedItem.Value = y.ValueX;

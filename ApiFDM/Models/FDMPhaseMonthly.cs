@@ -15,8 +15,8 @@ namespace ApiFDM.Models
     public partial class FDMPhaseMonthly
     {
         public string Phase { get; set; }
-        public Nullable<int> year { get; set; }
-        public Nullable<int> month { get; set; }
+        public int Month { get; set; }
+        public int Year { get; set; }
         public Nullable<int> YearMonth { get; set; }
         public string Name { get; set; }
         public int CrewId { get; set; }
