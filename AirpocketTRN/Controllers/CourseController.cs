@@ -705,6 +705,15 @@ namespace AirpocketTRN.Controllers
             return Ok(result);
         }
 
+        [Route("api/course/exam/result/save")]
+        [AcceptVerbs("POST")]
+        public async Task<IHttpActionResult> PostCourseExamResult(dto_exam_result dto)
+        {
+            var result = await courseService.UpdateExamResult(dto);
+
+            return Ok(result);
+        }
+
         [Route("api/course/syllabus/save")]
         [AcceptVerbs("POST")]
         public async Task<IHttpActionResult> PostCourseSyllabus(dynamic dto)

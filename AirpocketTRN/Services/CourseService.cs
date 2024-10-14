@@ -3190,6 +3190,27 @@ namespace AirpocketTRN.Services
         }
 
         //06-13
+        //10-14
+        public async Task<DataResponse> UpdateExamResult (dto_exam_result dto)
+        {
+            var course_people = await context.CoursePeoples.Where(q => q.CourseId == dto.course_id).ToListAsync();
+            foreach(var x in course_people)
+            {
+                var sc = dto.scores.FirstOrDefault(q => q.person_id == x.PersonId);
+                if (sc!=null)
+                {
+                    x.ExamResult = sc.score;
+                }
+            }
+
+            await context.SaveChangesAsync();
+
+            return new DataResponse()
+            {
+                IsSuccess = true,
+                Data = dto,
+            };
+        }
         public async Task<DataResponse> UpdateCoursePeopleStatus(CoursePeopleStatusViewModel dto)
         {
             CoursePeople cp = null;

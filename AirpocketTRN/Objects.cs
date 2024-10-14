@@ -5,6 +5,21 @@ using System.Web;
 
 namespace AirpocketTRN
 {
+
+    public class person_score
+    {
+        public int person_id { get; set; }
+        public int score { get; set; }
+    }
+
+    public class dto_exam_result
+    {
+        public int course_id { get; set; }
+        public List<person_score> scores { get; set; }
+        public string exam_date { get; set; }
+
+    }
+
     public class DataResponse
     {
         public bool IsSuccess { get; set; }
