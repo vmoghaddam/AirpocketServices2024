@@ -12,22 +12,21 @@ namespace AirpocketTRN.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Teacher
+    public partial class trn_questions
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Teacher()
+        public trn_questions()
         {
-            this.TeacherDocuments = new HashSet<TeacherDocument>();
-            this.Courses = new HashSet<Course>();
+            this.trn_answers = new HashSet<trn_answers>();
         }
     
-        public int PersonId { get; set; }
-        public string Remark { get; set; }
+        public int id { get; set; }
+        public Nullable<int> course_type { get; set; }
+        public Nullable<int> course_hardness { get; set; }
+        public string persian_title { get; set; }
+        public string english_title { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TeacherDocument> TeacherDocuments { get; set; }
-        public virtual Person Person { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Course> Courses { get; set; }
+        public virtual ICollection<trn_answers> trn_answers { get; set; }
     }
 }

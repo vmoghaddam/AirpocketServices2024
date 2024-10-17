@@ -20,7 +20,7 @@ namespace AirpocketTRN.Models
         public string comments { get; set; }
         public Nullable<int> crm_assessment_id { get; set; }
     
-        public virtual trn_crm_assessment_questions trn_crm_assessment_questions { get; set; }
         public virtual trn_crm_assessment trn_crm_assessment { get; set; }
+        public virtual trn_crm_assessment_questions trn_crm_assessment_questions { get; set; }
     }
 }

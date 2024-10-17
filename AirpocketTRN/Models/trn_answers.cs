@@ -12,14 +12,14 @@ namespace AirpocketTRN.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class trn_line_check_action_values
+    public partial class trn_answers
     {
         public int id { get; set; }
-        public Nullable<int> action_id { get; set; }
-        public Nullable<int> form_id { get; set; }
-        public Nullable<int> rating { get; set; }
+        public Nullable<int> quesion_id { get; set; }
+        public string english_title { get; set; }
+        public string persian_title { get; set; }
+        public Nullable<int> is_answer { get; set; }
     
-        public virtual trn_line_check trn_line_check { get; set; }
-        public virtual trn_line_check_actions trn_line_check_actions { get; set; }
+        public virtual trn_questions trn_questions { get; set; }
     }
 }

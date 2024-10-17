@@ -63,5 +63,12 @@ namespace AirpocketTRN.Models
         public string JobGroup { get; set; }
         public string JobGroupCode { get; set; }
         public Nullable<int> EmployeeId { get; set; }
+        public Nullable<System.DateTime> Date_Sign_Ins1 { get; set; }
+        public Nullable<System.DateTime> Date_Sign_Ins2 { get; set; }
+        public Nullable<System.DateTime> Date_Sign_Director { get; set; }
+        public Nullable<System.DateTime> Date_Sign_Staff { get; set; }
+        public Nullable<System.DateTime> Date_Sign_OPS { get; set; }
+        public Nullable<System.DateTime> Date_Exam_Sign_Ins1 { get; set; }
+        public Nullable<System.DateTime> Date_Exam_Sign_Ins2 { get; set; }
     }
 }

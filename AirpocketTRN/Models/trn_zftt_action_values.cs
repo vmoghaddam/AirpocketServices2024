@@ -19,7 +19,7 @@ namespace AirpocketTRN.Models
         public Nullable<int> form_id { get; set; }
         public Nullable<int> assessment { get; set; }
     
-        public virtual trn_zftt_actions trn_zftt_actions { get; set; }
         public virtual trn_zftt trn_zftt { get; set; }
+        public virtual trn_zftt_actions trn_zftt_actions { get; set; }
     }
 }

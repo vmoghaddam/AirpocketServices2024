@@ -23,7 +23,7 @@ namespace AirpocketTRN.Models
         public Nullable<bool> fchar { get; set; }
         public Nullable<bool> proc { get; set; }
     
-        public virtual trn_fstd_system_differences trn_fstd_system_differences { get; set; }
         public virtual trn_fstd trn_fstd { get; set; }
+        public virtual trn_fstd_system_differences trn_fstd_system_differences { get; set; }
     }
 }

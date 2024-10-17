@@ -19,7 +19,7 @@ namespace AirpocketTRN.Models
         public Nullable<int> form_id { get; set; }
         public Nullable<int> rating { get; set; }
     
-        public virtual trn_instructor_actions trn_instructor_actions { get; set; }
         public virtual trn_instructor trn_instructor { get; set; }
+        public virtual trn_instructor_actions trn_instructor_actions { get; set; }
     }
 }

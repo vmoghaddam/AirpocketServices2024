@@ -714,6 +714,85 @@ namespace AirpocketTRN.Controllers
             return Ok(result);
         }
 
+        [Route("api/course/exam/sign")]
+        [AcceptVerbs("POST")]
+        public async Task<IHttpActionResult> PostCourseExamSign(dto_exam_sign dto)
+        {
+            var result = await courseService.UpdateExamSign(dto);
+
+            return Ok(result);
+        }
+
+        [Route("api/course/sign/director")]
+        [AcceptVerbs("POST")]
+        public async Task<IHttpActionResult> PostCourseSignDirector(dto_exam_sign dto)
+        {
+            var result = await courseService.UpdateCourseSignDirector(dto);
+
+            return Ok(result);
+        }
+        [Route("api/course/sign/staff")]
+        [AcceptVerbs("POST")]
+        public async Task<IHttpActionResult> PostCourseSignStaff(dto_exam_sign dto)
+        {
+            var result = await courseService.UpdateCourseSignStaff(dto);
+
+            return Ok(result);
+        }
+        [Route("api/course/sign/ops")]
+        [AcceptVerbs("POST")]
+        public async Task<IHttpActionResult> PostCourseSignOps(dto_exam_sign dto)
+        {
+            var result = await courseService.UpdateCourseSignOPS(dto);
+
+            return Ok(result);
+        }
+
+        [Route("api/course/sign/")]
+        [AcceptVerbs("POST")]
+        public async Task<IHttpActionResult> PostCourseSign(dto_exam_sign dto)
+        {
+            var result = await courseService.UpdateCourseSign(dto);
+
+            return Ok(result);
+        }
+
+        //UpdateCoursePeopleSignDirector
+        [Route("api/cp/sign/director")]
+        [AcceptVerbs("POST")]
+        public async Task<IHttpActionResult> PostCPSignDirector(dto_exam_sign dto)
+        {
+            var result = await courseService.UpdateCoursePeopleSignDirector(dto);
+
+            return Ok(result);
+        }
+        [Route("api/cp/sign/staff")]
+        [AcceptVerbs("POST")]
+        public async Task<IHttpActionResult> PostCPSignStaff(dto_exam_sign dto)
+        {
+            var result = await courseService.UpdateCoursePeopleSignStaff(dto);
+
+            return Ok(result);
+        }
+
+        [Route("api/cp/sign/")]
+        [AcceptVerbs("POST")]
+        public async Task<IHttpActionResult> PostCPSignIns(dto_exam_sign dto)
+        {
+            var result = await courseService.UpdateCoursePeopleSign(dto);
+
+            return Ok(result);
+        }
+
+        [Route("api/cp/sign/ops")]
+        [AcceptVerbs("POST")]
+        public async Task<IHttpActionResult> PostCPSignOPS(dto_exam_sign dto)
+        {
+            var result = await courseService.UpdateCoursePeopleSignOPS(dto);
+
+            return Ok(result);
+        }
+
         [Route("api/course/syllabus/save")]
         [AcceptVerbs("POST")]
         public async Task<IHttpActionResult> PostCourseSyllabus(dynamic dto)
@@ -757,6 +836,42 @@ namespace AirpocketTRN.Controllers
         public async Task<IHttpActionResult> GetTeacherCourses(int id)
         {
             var result = await courseService.GetTeacherCourses(id);
+
+            return Ok(result.Data);
+        }
+
+        [Route("api/instructor/courses/active/{id}")]
+        [AcceptVerbs("GET")]
+        public async Task<IHttpActionResult> GetInstructorActiveCourses(int id)
+        {
+            var result = await courseService.GetTeacherActiveCourses(id);
+
+            return Ok(result.Data);
+        }
+        [Route("api/instructor/courses/archived/{id}")]
+        [AcceptVerbs("GET")]
+        public async Task<IHttpActionResult> GetTeacherArchivedCourses(int id)
+        {
+            var result = await courseService.GetTeacherArchivedCourses(id);
+
+            return Ok(result.Data);
+        }
+
+
+        [Route("api/director/courses/active/{id}")]
+        [AcceptVerbs("GET")]
+        public async Task<IHttpActionResult> GetDirectorActiveCourses(int id)
+        {
+            var result = await courseService.GetDirectorActiveCourses(id);
+
+            return Ok(result.Data);
+        }
+
+        [Route("api/director/courses/archived/{id}")]
+        [AcceptVerbs("GET")]
+        public async Task<IHttpActionResult> GetDirectorArchivedCourses(int id)
+        {
+            var result = await courseService.GetDirectorArchivedCourses(id);
 
             return Ok(result.Data);
         }

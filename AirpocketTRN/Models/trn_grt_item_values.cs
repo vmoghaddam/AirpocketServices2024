@@ -19,7 +19,7 @@ namespace AirpocketTRN.Models
         public Nullable<int> item_id { get; set; }
         public Nullable<int> grade { get; set; }
     
-        public virtual trn_grt_items trn_grt_items { get; set; }
         public virtual trn_grt trn_grt { get; set; }
+        public virtual trn_grt_items trn_grt_items { get; set; }
     }
 }

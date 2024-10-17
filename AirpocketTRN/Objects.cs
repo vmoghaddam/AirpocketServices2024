@@ -10,6 +10,7 @@ namespace AirpocketTRN
     {
         public int person_id { get; set; }
         public int score { get; set; }
+        public string status_id { get; set; }
     }
 
     public class dto_exam_result
@@ -18,8 +19,20 @@ namespace AirpocketTRN
         public List<person_score> scores { get; set; }
         public string exam_date { get; set; }
 
-    }
+       
 
+    }
+    public class dto_exam_sign
+    {
+        public int persin_id { get; set; }
+       
+        public int course_id { get; set; }
+
+        public int student_id { get; set; }
+
+
+
+    }
     public class DataResponse
     {
         public bool IsSuccess { get; set; }

@@ -35,7 +35,6 @@ namespace AirpocketTRN.Models
         public virtual DbSet<CourseSessionPresence> CourseSessionPresences { get; set; }
         public virtual DbSet<ViewFDPIdea> ViewFDPIdeas { get; set; }
         public virtual DbSet<CourseSessionFDP> CourseSessionFDPs { get; set; }
-        public virtual DbSet<ViewCourseSession> ViewCourseSessions { get; set; }
         public virtual DbSet<BookFile> BookFiles { get; set; }
         public virtual DbSet<Document> Documents { get; set; }
         public virtual DbSet<CourseType> CourseTypes { get; set; }
@@ -53,21 +52,18 @@ namespace AirpocketTRN.Models
         public virtual DbSet<AppCertificate> AppCertificates { get; set; }
         public virtual DbSet<Teacher> Teachers { get; set; }
         public virtual DbSet<ViewTeacher> ViewTeachers { get; set; }
-        public virtual DbSet<ViewTeacherCourse> ViewTeacherCourses { get; set; }
         public virtual DbSet<CourseTypeJobGroup> CourseTypeJobGroups { get; set; }
         public virtual DbSet<ViewCourseTypeJobGroup> ViewCourseTypeJobGroups { get; set; }
         public virtual DbSet<CourseSessionPresenceDetail> CourseSessionPresenceDetails { get; set; }
         public virtual DbSet<ViewCourseSessionPresenceDetail> ViewCourseSessionPresenceDetails { get; set; }
         public virtual DbSet<ViewCourseSessionPresence> ViewCourseSessionPresences { get; set; }
         public virtual DbSet<CourseSMSHistory> CourseSMSHistories { get; set; }
-        public virtual DbSet<CoursePeople> CoursePeoples { get; set; }
         public virtual DbSet<ViewCoursePeoplePassedRanked> ViewCoursePeoplePassedRankeds { get; set; }
         public virtual DbSet<TeacherDocument> TeacherDocuments { get; set; }
         public virtual DbSet<ViewTeacherDocument> ViewTeacherDocuments { get; set; }
         public virtual DbSet<ViewPersonDocumentFileX> ViewPersonDocumentFileXes { get; set; }
         public virtual DbSet<Charterer> Charterers { get; set; }
         public virtual DbSet<EmployeeDocument> EmployeeDocuments { get; set; }
-        public virtual DbSet<Course> Courses { get; set; }
         public virtual DbSet<JobGroup> JobGroups { get; set; }
         public virtual DbSet<ViewJobGroup> ViewJobGroups { get; set; }
         public virtual DbSet<CourseDocument> CourseDocuments { get; set; }
@@ -84,7 +80,6 @@ namespace AirpocketTRN.Models
         public virtual DbSet<TrnDbAppFieldMapping> TrnDbAppFieldMappings { get; set; }
         public virtual DbSet<ViewCourseSMSHistoryRanked> ViewCourseSMSHistoryRankeds { get; set; }
         public virtual DbSet<CertificateType> CertificateTypes { get; set; }
-        public virtual DbSet<ViewCourseNew> ViewCourseNews { get; set; }
         public virtual DbSet<ViewProfile> ViewProfiles { get; set; }
         public virtual DbSet<ViewCertificateHistoryRanked> ViewCertificateHistoryRankeds { get; set; }
         public virtual DbSet<Manager> Managers { get; set; }
@@ -97,6 +92,55 @@ namespace AirpocketTRN.Models
         public virtual DbSet<ViewCourseTypeApplicable> ViewCourseTypeApplicables { get; set; }
         public virtual DbSet<Person> People { get; set; }
         public virtual DbSet<C_view_trncard> C_view_trncard { get; set; }
+        public virtual DbSet<trn_answers> trn_answers { get; set; }
+        public virtual DbSet<trn_crm_assessment> trn_crm_assessment { get; set; }
+        public virtual DbSet<trn_crm_assessment_questions> trn_crm_assessment_questions { get; set; }
+        public virtual DbSet<trn_crm_assessment_questions_value> trn_crm_assessment_questions_value { get; set; }
+        public virtual DbSet<trn_efb_action_values> trn_efb_action_values { get; set; }
+        public virtual DbSet<trn_efb_actions> trn_efb_actions { get; set; }
+        public virtual DbSet<trn_efb_assessment> trn_efb_assessment { get; set; }
+        public virtual DbSet<trn_efb_sections> trn_efb_sections { get; set; }
+        public virtual DbSet<trn_fsdt_crm_sections> trn_fsdt_crm_sections { get; set; }
+        public virtual DbSet<trn_fstd> trn_fstd { get; set; }
+        public virtual DbSet<trn_fstd_crm> trn_fstd_crm { get; set; }
+        public virtual DbSet<trn_fstd_crm_action_value> trn_fstd_crm_action_value { get; set; }
+        public virtual DbSet<trn_fstd_crm_actions> trn_fstd_crm_actions { get; set; }
+        public virtual DbSet<trn_fstd_system_difference_value> trn_fstd_system_difference_value { get; set; }
+        public virtual DbSet<trn_fstd_system_differences> trn_fstd_system_differences { get; set; }
+        public virtual DbSet<trn_grt> trn_grt { get; set; }
+        public virtual DbSet<trn_grt_item_values> trn_grt_item_values { get; set; }
+        public virtual DbSet<trn_grt_items> trn_grt_items { get; set; }
+        public virtual DbSet<trn_instructor> trn_instructor { get; set; }
+        public virtual DbSet<trn_instructor_actions> trn_instructor_actions { get; set; }
+        public virtual DbSet<trn_instructor_actions_values> trn_instructor_actions_values { get; set; }
+        public virtual DbSet<trn_instructor_sections> trn_instructor_sections { get; set; }
+        public virtual DbSet<trn_line_check> trn_line_check { get; set; }
+        public virtual DbSet<trn_line_check_action_values> trn_line_check_action_values { get; set; }
+        public virtual DbSet<trn_line_check_actions> trn_line_check_actions { get; set; }
+        public virtual DbSet<trn_line_check_sections> trn_line_check_sections { get; set; }
+        public virtual DbSet<trn_line_crm> trn_line_crm { get; set; }
+        public virtual DbSet<trn_line_crm_actions> trn_line_crm_actions { get; set; }
+        public virtual DbSet<trn_line_crm_actions_values> trn_line_crm_actions_values { get; set; }
+        public virtual DbSet<trn_line_crm_sections> trn_line_crm_sections { get; set; }
+        public virtual DbSet<trn_questions> trn_questions { get; set; }
+        public virtual DbSet<trn_zftt> trn_zftt { get; set; }
+        public virtual DbSet<trn_zftt_action_values> trn_zftt_action_values { get; set; }
+        public virtual DbSet<trn_zftt_actions> trn_zftt_actions { get; set; }
+        public virtual DbSet<trn_zftt_sections> trn_zftt_sections { get; set; }
+        public virtual DbSet<view_trn_crm_assessment> view_trn_crm_assessment { get; set; }
+        public virtual DbSet<view_trn_efb_assessment> view_trn_efb_assessment { get; set; }
         public virtual DbSet<view_trn_expiring> view_trn_expiring { get; set; }
+        public virtual DbSet<view_trn_fstd_crm> view_trn_fstd_crm { get; set; }
+        public virtual DbSet<view_trn_fstd_monitoring> view_trn_fstd_monitoring { get; set; }
+        public virtual DbSet<view_trn_grt> view_trn_grt { get; set; }
+        public virtual DbSet<view_trn_instructor> view_trn_instructor { get; set; }
+        public virtual DbSet<view_trn_line_check> view_trn_line_check { get; set; }
+        public virtual DbSet<view_trn_line_crm> view_trn_line_crm { get; set; }
+        public virtual DbSet<view_trn_zftt> view_trn_zftt { get; set; }
+        public virtual DbSet<CoursePeople> CoursePeoples { get; set; }
+        public virtual DbSet<Course> Courses { get; set; }
+        public virtual DbSet<ViewCourseNew> ViewCourseNews { get; set; }
+        public virtual DbSet<ViewCourseSession> ViewCourseSessions { get; set; }
+        public virtual DbSet<ViewTeacherCourse> ViewTeacherCourses { get; set; }
     }
 }

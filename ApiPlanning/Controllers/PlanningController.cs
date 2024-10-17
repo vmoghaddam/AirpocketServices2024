@@ -374,11 +374,14 @@ namespace ApiPlanning.Controllers
                 List<FlightInformation> flights = new List<FlightInformation>();
                 var str = DateTime.Now.ToString("MMddmmss");
                 var flightGroup = Convert.ToInt32(str);
+                var _dec_day = false;
                 foreach (var dt in intervalDays)
                 {
+
                     entity = new FlightInformation();
                     _context.FlightInformations.Add(entity);
                     flights.Add(entity);
+                   
                     //if (entity.STD != null)
                     //{
                     //    var oldSTD = ((DateTime)entity.STD).AddMinutes(270).Date;
@@ -406,7 +409,12 @@ namespace ApiPlanning.Controllers
                   //      temp_std = temp_std.AddDays(-1);
 
                     entity.STD = new DateTime(dt.Year, dt.Month, dt.Day, stdHours, stdMinutes, 0);
-                    if (dto_std.Day != ((DateTime)entity.STD).Day)
+                    if (dt == intervalDays.First())
+                    {
+                        _dec_day = dto_std.Day != ((DateTime)entity.STD).Day;
+                    }
+                    //if (dto_std.Day != ((DateTime)entity.STD).Day)
+                    if (_dec_day)
                         entity.STD = ((DateTime)entity.STD).AddDays(-1);
 
 

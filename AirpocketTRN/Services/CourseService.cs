@@ -3200,9 +3200,158 @@ namespace AirpocketTRN.Services
                 if (sc!=null)
                 {
                     x.ExamResult = sc.score;
+                    x.ExamStatus = sc.status_id;
                 }
             }
 
+            await context.SaveChangesAsync();
+
+            return new DataResponse()
+            {
+                IsSuccess = true,
+                Data = dto,
+            };
+        }
+
+        public async Task<DataResponse> UpdateExamSign(dto_exam_sign dto)
+        {
+            var course  = await context.Courses.Where(q => q.Id == dto.course_id).FirstAsync();
+            if (course !=null)
+            {
+                course.Date_Exam_Sign_Ins1 = DateTime.Now;
+               
+            }    
+            await context.SaveChangesAsync();
+
+            return new DataResponse()
+            {
+                IsSuccess = true,
+                Data = dto,
+            };
+        }
+        public async Task<DataResponse> UpdateCourseSign(dto_exam_sign dto)
+        {
+            var course = await context.Courses.Where(q => q.Id == dto.course_id).FirstAsync();
+            if (course != null)
+            {
+                course.Date_Sign_Ins1 = DateTime.Now;
+
+            }
+            await context.SaveChangesAsync();
+
+            return new DataResponse()
+            {
+                IsSuccess = true,
+                Data = dto,
+            };
+        }
+        public async Task<DataResponse> UpdateCourseSignDirector(dto_exam_sign dto)
+        {
+            var course = await context.Courses.Where(q => q.Id == dto.course_id).FirstAsync();
+            if (course != null)
+            {
+                course.Date_Sign_Director = DateTime.Now;
+
+            }
+            await context.SaveChangesAsync();
+
+            return new DataResponse()
+            {
+                IsSuccess = true,
+                Data = dto,
+            };
+        }
+        public async Task<DataResponse> UpdateCourseSignOPS(dto_exam_sign dto)
+        {
+            var course = await context.Courses.Where(q => q.Id == dto.course_id).FirstAsync();
+            if (course != null)
+            {
+                course.Date_Sign_OPS = DateTime.Now;
+
+            }
+            await context.SaveChangesAsync();
+
+            return new DataResponse()
+            {
+                IsSuccess = true,
+                Data = dto,
+            };
+        }
+        public async Task<DataResponse> UpdateCourseSignStaff(dto_exam_sign dto)
+        {
+            var course = await context.Courses.Where(q => q.Id == dto.course_id).FirstAsync();
+            if (course != null)
+            {
+                course.Date_Sign_Staff = DateTime.Now;
+
+            }
+            await context.SaveChangesAsync();
+
+            return new DataResponse()
+            {
+                IsSuccess = true,
+                Data = dto,
+            };
+        }
+
+
+        public async Task<DataResponse> UpdateCoursePeopleSign(dto_exam_sign dto)
+        {
+            var cp = await context.CoursePeoples.Where(q => q.CourseId == dto.course_id && q.PersonId==dto.persin_id).FirstAsync();
+            if (cp != null)
+            {
+                cp.Date_Sign_Ins1 = DateTime.Now;
+
+            }
+            await context.SaveChangesAsync();
+
+            return new DataResponse()
+            {
+                IsSuccess = true,
+                Data = dto,
+            };
+        }
+
+        public async Task<DataResponse> UpdateCoursePeopleSignOPS(dto_exam_sign dto)
+        {
+            var cp = await context.CoursePeoples.Where(q => q.CourseId == dto.course_id && q.PersonId == dto.persin_id).FirstAsync();
+            if (cp != null)
+            {
+                cp.Date_Sign_OPS = DateTime.Now;
+
+            }
+            await context.SaveChangesAsync();
+
+            return new DataResponse()
+            {
+                IsSuccess = true,
+                Data = dto,
+            };
+        }
+        public async Task<DataResponse> UpdateCoursePeopleSignStaff(dto_exam_sign dto)
+        {
+            var cp = await context.CoursePeoples.Where(q => q.CourseId == dto.course_id && q.PersonId == dto.persin_id).FirstAsync();
+            if (cp != null)
+            {
+                cp.Date_Sign_Staff = DateTime.Now;
+
+            }
+            await context.SaveChangesAsync();
+
+            return new DataResponse()
+            {
+                IsSuccess = true,
+                Data = dto,
+            };
+        }
+        public async Task<DataResponse> UpdateCoursePeopleSignDirector(dto_exam_sign dto)
+        {
+            var cp = await context.CoursePeoples.Where(q => q.CourseId == dto.course_id && q.PersonId == dto.persin_id).FirstAsync();
+            if (cp != null)
+            {
+                cp.Date_Sign_Director = DateTime.Now;
+
+            }
             await context.SaveChangesAsync();
 
             return new DataResponse()
@@ -5410,6 +5559,77 @@ namespace AirpocketTRN.Services
                    q.Id == id
 
            ).OrderBy(q => q.DateStart).ToListAsync();
+
+
+
+            return new DataResponse()
+            {
+                Data = certs,
+                IsSuccess = true,
+            };
+        }
+
+        public async Task<DataResponse> GetTeacherActiveCourses(int id)
+        {
+            var certs = await context.ViewTeacherCourses.Where(q =>
+                   q.Id == id
+                   && (q.Date_Sign_Ins1==null || q.Date_Exam_Sign_Ins1==null)
+
+           ).OrderByDescending(q => q.DateStart).ToListAsync();
+
+
+
+            return new DataResponse()
+            {
+                Data = certs,
+                IsSuccess = true,
+            };
+        }
+
+        public async Task<DataResponse> GetTeacherArchivedCourses(int id)
+        {
+            var certs = await context.ViewTeacherCourses.Where(q =>
+                   q.Id == id
+                   && (q.Date_Sign_Ins1 != null && q.Date_Exam_Sign_Ins1 != null)
+
+           ).OrderByDescending(q => q.DateStart).ToListAsync();
+
+
+
+            return new DataResponse()
+            {
+                Data = certs,
+                IsSuccess = true,
+            };
+        }
+
+
+        public async Task<DataResponse> GetDirectorActiveCourses(int id)
+        {
+            var certs = await context.ViewTeacherCourses.Where(q =>
+                   //q.Id == id
+                    (q.Date_Sign_Ins1 != null && q.Date_Exam_Sign_Ins1 != null)
+                    && q.Date_Sign_Director==null
+
+           ).OrderByDescending(q => q.DateStart).ToListAsync();
+
+
+
+            return new DataResponse()
+            {
+                Data = certs,
+                IsSuccess = true,
+            };
+        }
+
+        public async Task<DataResponse> GetDirectorArchivedCourses(int id)
+        {
+            var certs = await context.ViewTeacherCourses.Where(q =>
+                    //q.Id == id
+                    (q.Date_Sign_Ins1 != null && q.Date_Exam_Sign_Ins1 != null)
+                    && q.Date_Sign_Director != null
+
+           ).OrderByDescending(q => q.DateStart).ToListAsync();
 
 
 

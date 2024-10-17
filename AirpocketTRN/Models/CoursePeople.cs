@@ -27,8 +27,14 @@ namespace AirpocketTRN.Models
         public string ImgUrl { get; set; }
         public Nullable<int> ExamResult { get; set; }
         public Nullable<System.DateTime> ExamDate { get; set; }
+        public string ExamStatus { get; set; }
+        public Nullable<System.DateTime> Date_Sign_Ins1 { get; set; }
+        public Nullable<System.DateTime> Date_Sign_Ins2 { get; set; }
+        public Nullable<System.DateTime> Date_Sign_Director { get; set; }
+        public Nullable<System.DateTime> Date_Sign_Staff { get; set; }
+        public Nullable<System.DateTime> Date_Sign_OPS { get; set; }
     
-        public virtual Course Course { get; set; }
         public virtual Person Person { get; set; }
+        public virtual Course Course { get; set; }
     }
 }

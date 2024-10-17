@@ -70,5 +70,12 @@ namespace AirpocketTRN.Models
         public Nullable<System.DateTime> SMSInsDate { get; set; }
         public string AttForm { get; set; }
         public string Intervals { get; set; }
+        public Nullable<System.DateTime> Date_Sign_Ins1 { get; set; }
+        public Nullable<System.DateTime> Date_Sign_Ins2 { get; set; }
+        public Nullable<System.DateTime> Date_Sign_Director { get; set; }
+        public Nullable<System.DateTime> Date_Sign_Staff { get; set; }
+        public Nullable<System.DateTime> Date_Sign_OPS { get; set; }
+        public Nullable<System.DateTime> Date_Exam_Sign_Ins1 { get; set; }
+        public Nullable<System.DateTime> Date_Exam_Sign_Ins2 { get; set; }
     }
 }
