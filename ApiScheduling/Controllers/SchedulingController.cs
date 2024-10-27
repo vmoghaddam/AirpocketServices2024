@@ -1557,6 +1557,17 @@ namespace ApiScheduling.Controllers
             var context = new Models.dbEntities();
             int fdpId = Convert.ToInt32(dto.Id);
             var fdp = await context.FDPs.FirstOrDefaultAsync(q => q.Id == fdpId);
+            string username = Convert.ToString(dto.username);
+            if (fdp.DutyType==5000 || fdp.DutyType == 100003)
+            {
+                if (string.IsNullOrEmpty(username))
+                    return Ok(-1);
+
+                if ( username.ToLower() != "trn.moradi" && username.ToLower()!= "F.OMIDVAR")
+                    return Ok(-1);
+
+
+            }
             double total = 0;
             if (!string.IsNullOrEmpty(fdp.InitFlights))
             {
@@ -1893,6 +1904,17 @@ namespace ApiScheduling.Controllers
                                                   || (q.InitEnd > duty.InitStart && q.InitEnd <= duty.InitRestTo)
                                                 )
                                              );
+            //var _interupted_for_training = await context.FDPs.FirstOrDefaultAsync(q =>
+
+            //                               q.Id != duty.Id && q.CrewId == duty.CrewId
+            //                               && (
+
+            //                                     (duty.InitStart >= q.InitStart && duty.InitRestTo <= q.InitEnd)
+            //                                     || (q.InitStart >= duty.InitStart && q.InitEnd <= duty.InitRestTo)
+            //                                     || (q.InitStart >= duty.InitStart && q.InitStart < duty.InitRestTo)
+            //                                     || (q.InitEnd > duty.InitStart && q.InitEnd <= duty.InitRestTo)
+            //                                   )
+            //                                );
 
             switch (duty.DutyType)
             {
@@ -1941,6 +1963,22 @@ namespace ApiScheduling.Controllers
                     break;
                 case 5000://trn
                 case 5001: //office
+                    if (_interupted_norest != null &&
+                        (_interupted_norest.DutyType == 1165
+                       // || _interupted_norest.DutyType == 1167
+                        //|| _interupted_norest.DutyType == 1170
+                       // || _interupted_norest.DutyType == 1168
+                       // || _interupted_norest.DutyType == 300010)
+                        )
+                        )//other airline stby
+                        return new CustomActionResult(HttpStatusCode.OK, new
+                        {
+                            Code = 406,
+                            message = "Interruption Error." + (_interupted_norest.InitStart == null ? "" : ((DateTime)_interupted_norest.InitStart).ToString("yyyy-MM-dd") + " " + _interupted_norest.InitFlts + " " + _interupted_norest.InitRoute)
+
+                        });
+                    break;
+                   
                 case 300014:
                 case 100001: //meeting
                     if (_interupted != null &&
@@ -3115,6 +3153,15 @@ namespace ApiScheduling.Controllers
                             bool sendError = false;
                             switch (_interupted.DutyType)
                             {
+                                case 5000:
+                                    if ((fdp.InitStart >= _interupted.InitStart && fdp.InitStart <= _interupted.InitEnd)
+                                           || (fdp.InitEnd >= _interupted.InitStart && fdp.InitEnd <= _interupted.InitEnd)
+                                           || (_interupted.InitStart >= fdp.InitStart && _interupted.InitStart <= fdp.InitEnd)
+                                           || (_interupted.InitEnd >= fdp.InitStart && _interupted.InitEnd <= fdp.InitEnd)
+                                           )
+                                        sendError = true;
+
+                                    break;
                                 case 10000:
                                 case 100000:
                                 case 100002:

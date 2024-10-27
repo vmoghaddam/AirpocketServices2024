@@ -876,7 +876,14 @@ namespace AirpocketTRN.Controllers
             return Ok(result.Data);
         }
 
+        [Route("api/exam/student/answer")]
+        [AcceptVerbs("POST")]
+        public async Task<IHttpActionResult> PostExamStudentAnswer(dto_exam_student_answer dto)
+        {
+            var result = await courseService.UpdateExamStudentAnswer(dto);
 
+            return Ok(result.Data);
+        }
 
         [Route("api/sms/test")]
         [AcceptVerbs("GET")]

@@ -5,7 +5,16 @@ using System.Web;
 
 namespace AirpocketTRN
 {
+    public class dto_exam_student_answer
+    {
 
+        public int person_id { get; set; }
+        public int question_id { get; set; }
+        public int answer_id { get; set; }
+        public string remark { get; set; }
+
+
+    }
     public class person_score
     {
         public int person_id { get; set; }
@@ -19,13 +28,13 @@ namespace AirpocketTRN
         public List<person_score> scores { get; set; }
         public string exam_date { get; set; }
 
-       
+
 
     }
     public class dto_exam_sign
     {
         public int persin_id { get; set; }
-       
+
         public int course_id { get; set; }
 
         public int student_id { get; set; }
@@ -98,7 +107,7 @@ namespace AirpocketTRN
                     }
                 };
 
-                 
+
             }
             //2021-07-01-08-00-10-00
             var prts = str.Split('-').Select(q => Convert.ToInt32(q)).ToList();

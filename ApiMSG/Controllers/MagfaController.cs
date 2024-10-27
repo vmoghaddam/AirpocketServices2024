@@ -132,6 +132,16 @@ namespace ApiMSG.Controllers
             return Ok(notifications);
         }
 
+        [Route("api/qa/notify/asr/v2/{id}")]
+        [AcceptVerbs("GET")]
+        public IHttpActionResult GetNotifyASR2(int id)
+        {
+            Magfa m1 = new Magfa();
+           var res= m1.enqueue(1, "09124449584", "asr test")[0];
+            return Ok(res);
+
+        }
+
             [Route("api/qa/notify/asr/{id}")]
         [AcceptVerbs("GET")]
         public IHttpActionResult GetNotifyASR(int id)
@@ -372,6 +382,9 @@ namespace ApiMSG.Controllers
                 return Ok(msg);
             }
         }
+
+
+
 
         [Route("api/qa/feedback/first/{no}/{eid}")]
         [AcceptVerbs("GET")]

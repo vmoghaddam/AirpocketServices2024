@@ -1080,6 +1080,17 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="section_name" Type="nvarchar" MaxLength="255" />
         </EntityType>
+        <EntityType Name="trn_exam_student_answer">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="person_id" Type="int" Nullable="false" />
+          <Property Name="question_id" Type="int" Nullable="false" />
+          <Property Name="answer_id" Type="int" Nullable="false" />
+          <Property Name="remark" Type="nvarchar" MaxLength="1000" />
+          <Property Name="date_sent" Type="datetime2" Precision="7" />
+        </EntityType>
         <EntityType Name="trn_fsdt_crm_sections">
           <Key>
             <PropertyRef Name="id" />
@@ -4839,6 +4850,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <EntitySet Name="trn_efb_actions" EntityType="Self.trn_efb_actions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="trn_efb_assessment" EntityType="Self.trn_efb_assessment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="trn_efb_sections" EntityType="Self.trn_efb_sections" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="trn_exam_student_answer" EntityType="Self.trn_exam_student_answer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="trn_fsdt_crm_sections" EntityType="Self.trn_fsdt_crm_sections" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="trn_fstd" EntityType="Self.trn_fstd" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="trn_fstd_crm" EntityType="Self.trn_fstd_crm" Schema="dbo" store:Type="Tables" />
@@ -7551,6 +7563,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <EntitySet Name="ViewCourseNews" EntityType="FLYModel.ViewCourseNew" />
           <EntitySet Name="ViewCourseSessions" EntityType="FLYModel.ViewCourseSession" />
           <EntitySet Name="ViewTeacherCourses" EntityType="FLYModel.ViewTeacherCourse" />
+          <EntitySet Name="trn_exam_student_answer" EntityType="FLYModel.trn_exam_student_answer" />
           </EntityContainer>
         <EntityType Name="ViewLegTime">
           <Key>
@@ -12325,6 +12338,17 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <Property Name="Date_Exam_Sign_Ins1" Type="DateTime" Precision="7" />
           <Property Name="Date_Exam_Sign_Ins2" Type="DateTime" Precision="7" />
         </EntityType>
+        <EntityType Name="trn_exam_student_answer">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="person_id" Type="Int32" Nullable="false" />
+          <Property Name="question_id" Type="Int32" Nullable="false" />
+          <Property Name="answer_id" Type="Int32" Nullable="false" />
+          <Property Name="remark" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="date_sent" Type="DateTime" Precision="7" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -16107,6 +16131,18 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
                 <ScalarProperty Name="CourseType" ColumnName="CourseType" />
                 <ScalarProperty Name="CourseTypeId" ColumnName="CourseTypeId" />
                 <ScalarProperty Name="CourseId" ColumnName="CourseId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="trn_exam_student_answer">
+            <EntityTypeMapping TypeName="FLYModel.trn_exam_student_answer">
+              <MappingFragment StoreEntitySet="trn_exam_student_answer">
+                <ScalarProperty Name="date_sent" ColumnName="date_sent" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="answer_id" ColumnName="answer_id" />
+                <ScalarProperty Name="question_id" ColumnName="question_id" />
+                <ScalarProperty Name="person_id" ColumnName="person_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

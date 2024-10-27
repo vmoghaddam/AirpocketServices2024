@@ -142,5 +142,6 @@ namespace AirpocketTRN.Models
         public virtual DbSet<ViewCourseNew> ViewCourseNews { get; set; }
         public virtual DbSet<ViewCourseSession> ViewCourseSessions { get; set; }
         public virtual DbSet<ViewTeacherCourse> ViewTeacherCourses { get; set; }
+        public virtual DbSet<trn_exam_student_answer> trn_exam_student_answer { get; set; }
     }
 }

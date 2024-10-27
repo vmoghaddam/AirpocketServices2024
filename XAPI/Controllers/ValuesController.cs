@@ -1667,7 +1667,7 @@ namespace XAPI.Controllers
                         var reqparm = new System.Collections.Specialized.NameValueCollection();
                         reqparm.Add("key", dto.key);
                         reqparm.Add("plan", dto.plan);
-                        byte[] responsebytes = client.UploadValues("https://fleet.flypersia.aero/xpi/api/skyputer/flypersia", "POST", reqparm);
+                        byte[] responsebytes = client.UploadValues("https://fleet.flypersiaairlines.ir/xpi/api/skyputer/flypersia", "POST", reqparm);
                         responsebody = Encoding.UTF8.GetString(responsebytes);
 
                     }
@@ -2721,9 +2721,12 @@ namespace XAPI.Controllers
                 }
 
                 string apln2 = parts.Where(q => q.StartsWith("apln:|")).Count() > 1 ? parts.Where(q => q.StartsWith("apln:|")).ToList()[1] : null;
+                if (string.IsNullOrEmpty(apln2))
+                    //bpln
+                    apln2 = parts.FirstOrDefault(q => q.StartsWith("bpln:|"));
                 if (apln2 != null)
                 {
-                    apln2 = apln2.Replace("apln:|", "");
+                    apln2 = apln2.Replace("apln:|", "").Replace("bpln:|", "");
                     var apln2Rows = apln2.Split('|').ToList();
                     List<JObject> apln2Json = new List<JObject>();
                     idx = 0;
@@ -3479,7 +3482,7 @@ namespace XAPI.Controllers
 
                 //}
                 context.SaveChanges();
-
+                /*
                 foreach (var x in mplan_points)
                 // plan.OFPPoints.Add(x);
                 {
@@ -3601,7 +3604,7 @@ namespace XAPI.Controllers
 
                 main_context.SaveChanges();
 
-
+                */
 
                 return Ok(true);
             }

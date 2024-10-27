@@ -5639,7 +5639,37 @@ namespace AirpocketTRN.Services
                 IsSuccess = true,
             };
         }
+        //UpdateExamStudentAnswer
+        public async Task<DataResponse> UpdateExamStudentAnswer(dto_exam_student_answer dto)
+        {
+            var entity = await context.trn_exam_student_answer.Where(q =>
+                   q.person_id == dto.person_id
+                   && q.question_id == dto.question_id
 
+           ).FirstOrDefaultAsync();
+            if (entity == null)
+            {
+                entity = new trn_exam_student_answer()
+                {
+                    person_id = dto.person_id,
+                     question_id=dto.question_id,
+                      
+                  
+                };
+                
+                context.trn_exam_student_answer.Add(entity);
+            }
+
+            entity.date_sent = DateTime.Now;
+            entity.answer_id = dto.answer_id;
+            await context.SaveChangesAsync();
+
+            return new DataResponse()
+            {
+                Data = entity.id,
+                IsSuccess = true,
+            };
+        }
 
         public async Task<DataResponse> GetCertificateUrl(int person, int type)
         {
