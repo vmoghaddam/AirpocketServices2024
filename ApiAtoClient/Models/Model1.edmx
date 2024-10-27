@@ -1,0 +1,637 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ppaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="trn_exam">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="course_id" Type="int" Nullable="false" />
+          <Property Name="exam_date" Type="datetime2" Precision="7" />
+          <Property Name="exam_date_persian" Type="varchar" MaxLength="500" />
+          <Property Name="location_title" Type="nvarchar" MaxLength="1000" />
+          <Property Name="location_address" Type="nvarchar" MaxLength="2000" />
+          <Property Name="location_phone" Type="nvarchar" MaxLength="500" />
+          <Property Name="remark" Type="nvarchar" MaxLength="2000" />
+          <Property Name="status_id" Type="int" />
+          <Property Name="created_by" Type="int" />
+          <Property Name="confirmed_by" Type="int" />
+          <Property Name="created_date" Type="datetime2" Precision="7" />
+          <Property Name="confirmed_date" Type="datetime2" Precision="7" />
+          <Property Name="exam_type_id" Type="int" />
+          <Property Name="signed_by_ins1_date" Type="datetime2" Precision="7" />
+          <Property Name="signed_by_ins2_date" Type="datetime2" Precision="7" />
+          <Property Name="signed_by_director_date" Type="datetime2" Precision="7" />
+          <Property Name="signed_by_staff_date" Type="datetime2" Precision="7" />
+          <Property Name="duration" Type="int" />
+          <Property Name="date_start" Type="datetime2" Precision="7" />
+          <Property Name="date_end_scheduled" Type="datetime2" Precision="7" />
+          <Property Name="date_end_actual" Type="datetime2" Precision="7" />
+          <Property Name="date_start_scheduled" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="trn_exam_group">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="exam_id" Type="int" Nullable="false" />
+          <Property Name="group_id" Type="int" />
+          <Property Name="remark" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="trn_exam_person">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="exam_id" Type="int" Nullable="false" />
+          <Property Name="person_id" Type="int" Nullable="false" />
+          <Property Name="remark" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="trn_exam_question">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="exam_id" Type="int" Nullable="false" />
+          <Property Name="question_id" Type="int" Nullable="false" />
+          <Property Name="response_time" Type="int" />
+          <Property Name="remark" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="trn_exam_student_answer">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="person_id" Type="int" Nullable="false" />
+          <Property Name="question_id" Type="int" Nullable="false" />
+          <Property Name="answer_id" Type="int" Nullable="false" />
+          <Property Name="remark" Type="nvarchar" MaxLength="1000" />
+          <Property Name="date_sent" Type="datetime2" Precision="7" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.view_trn_exam' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_trn_exam">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="course_id" />
+            <PropertyRef Name="status" />
+            <PropertyRef Name="created_by" />
+            <PropertyRef Name="confirmed_by" />
+            <PropertyRef Name="exam_type" />
+            <PropertyRef Name="course_type_id" />
+            <PropertyRef Name="course_start" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="course_id" Type="int" Nullable="false" />
+          <Property Name="exam_date" Type="datetime2" Precision="7" />
+          <Property Name="exam_date_persian" Type="varchar" MaxLength="500" />
+          <Property Name="location_title" Type="nvarchar" MaxLength="1000" />
+          <Property Name="location_address" Type="nvarchar" MaxLength="2000" />
+          <Property Name="location_phone" Type="nvarchar" MaxLength="500" />
+          <Property Name="remark" Type="nvarchar" MaxLength="2000" />
+          <Property Name="status_id" Type="int" />
+          <Property Name="status" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="created_by_id" Type="int" />
+          <Property Name="created_by" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="confirmed_by_id" Type="int" />
+          <Property Name="confirmed_by" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="created_date" Type="datetime2" Precision="7" />
+          <Property Name="confirmed_date" Type="datetime2" Precision="7" />
+          <Property Name="exam_type_id" Type="int" />
+          <Property Name="exam_type" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="signed_by_ins1_date" Type="datetime2" Precision="7" />
+          <Property Name="signed_by_ins2_date" Type="datetime2" Precision="7" />
+          <Property Name="signed_by_director_date" Type="datetime2" Precision="7" />
+          <Property Name="signed_by_staff_date" Type="datetime2" Precision="7" />
+          <Property Name="duration" Type="int" />
+          <Property Name="date_start" Type="datetime2" Precision="7" />
+          <Property Name="date_end_scheduled" Type="datetime2" Precision="7" />
+          <Property Name="date_end_actual" Type="datetime2" Precision="7" />
+          <Property Name="date_start_scheduled" Type="datetime2" Precision="7" />
+          <Property Name="course_type" Type="nvarchar" MaxLength="500" />
+          <Property Name="course_type_id" Type="int" Nullable="false" />
+          <Property Name="course_start" Type="date" Nullable="false" />
+          <Property Name="course_end" Type="date" />
+          <Property Name="instructor" Type="nvarchar" MaxLength="1001" />
+          <Property Name="training_director" Type="nvarchar" MaxLength="500" />
+          <Property Name="course_duration" Type="int" />
+          <Property Name="course_title" Type="nvarchar" MaxLength="500" />
+          <Property Name="course_no" Type="varchar" MaxLength="204" />
+          <Property Name="instructor2" Type="nvarchar" MaxLength="1001" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.view_trn_exam_question_person' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_trn_exam_question_person">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="question_id" />
+            <PropertyRef Name="exam_id" />
+            <PropertyRef Name="course_id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="question_id" Type="int" Nullable="false" />
+          <Property Name="exam_id" Type="int" Nullable="false" />
+          <Property Name="response_time" Type="int" />
+          <Property Name="english_title" Type="varchar" MaxLength="1000" />
+          <Property Name="persian_title" Type="nvarchar" MaxLength="1000" />
+          <Property Name="category_id" Type="int" />
+          <Property Name="category" Type="nvarchar" MaxLength="1000" />
+          <Property Name="course_id" Type="int" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="500" />
+          <Property Name="person_id" Type="int" />
+          <Property Name="first_name" Type="nvarchar" MaxLength="500" />
+          <Property Name="last_name" Type="nvarchar" MaxLength="500" />
+          <Property Name="answer_id" Type="int" />
+          <Property Name="date_sent" Type="datetime2" Precision="7" />
+        </EntityType>
+        <Association Name="fk_ex_ex_1">
+          <End Role="trn_exam" Type="Self.trn_exam" Multiplicity="1" />
+          <End Role="trn_exam_question" Type="Self.trn_exam_question" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="trn_exam">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="trn_exam_question">
+              <PropertyRef Name="exam_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_exam_group_exam">
+          <End Role="trn_exam" Type="Self.trn_exam" Multiplicity="1" />
+          <End Role="trn_exam_group" Type="Self.trn_exam_group" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="trn_exam">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="trn_exam_group">
+              <PropertyRef Name="exam_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_st_ans_wxqu">
+          <End Role="trn_exam_question" Type="Self.trn_exam_question" Multiplicity="1" />
+          <End Role="trn_exam_student_answer" Type="Self.trn_exam_student_answer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="trn_exam_question">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="trn_exam_student_answer">
+              <PropertyRef Name="question_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ppaModelStoreContainer">
+          <EntitySet Name="trn_exam" EntityType="Self.trn_exam" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="trn_exam_group" EntityType="Self.trn_exam_group" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="trn_exam_person" EntityType="Self.trn_exam_person" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="trn_exam_question" EntityType="Self.trn_exam_question" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="trn_exam_student_answer" EntityType="Self.trn_exam_student_answer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="view_trn_exam" EntityType="Self.view_trn_exam" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_trn_exam].[id] AS [id], 
+    [view_trn_exam].[course_id] AS [course_id], 
+    [view_trn_exam].[exam_date] AS [exam_date], 
+    [view_trn_exam].[exam_date_persian] AS [exam_date_persian], 
+    [view_trn_exam].[location_title] AS [location_title], 
+    [view_trn_exam].[location_address] AS [location_address], 
+    [view_trn_exam].[location_phone] AS [location_phone], 
+    [view_trn_exam].[remark] AS [remark], 
+    [view_trn_exam].[status_id] AS [status_id], 
+    [view_trn_exam].[status] AS [status], 
+    [view_trn_exam].[created_by_id] AS [created_by_id], 
+    [view_trn_exam].[created_by] AS [created_by], 
+    [view_trn_exam].[confirmed_by_id] AS [confirmed_by_id], 
+    [view_trn_exam].[confirmed_by] AS [confirmed_by], 
+    [view_trn_exam].[created_date] AS [created_date], 
+    [view_trn_exam].[confirmed_date] AS [confirmed_date], 
+    [view_trn_exam].[exam_type_id] AS [exam_type_id], 
+    [view_trn_exam].[exam_type] AS [exam_type], 
+    [view_trn_exam].[signed_by_ins1_date] AS [signed_by_ins1_date], 
+    [view_trn_exam].[signed_by_ins2_date] AS [signed_by_ins2_date], 
+    [view_trn_exam].[signed_by_director_date] AS [signed_by_director_date], 
+    [view_trn_exam].[signed_by_staff_date] AS [signed_by_staff_date], 
+    [view_trn_exam].[duration] AS [duration], 
+    [view_trn_exam].[date_start] AS [date_start], 
+    [view_trn_exam].[date_end_scheduled] AS [date_end_scheduled], 
+    [view_trn_exam].[date_end_actual] AS [date_end_actual], 
+    [view_trn_exam].[date_start_scheduled] AS [date_start_scheduled], 
+    [view_trn_exam].[course_type] AS [course_type], 
+    [view_trn_exam].[course_type_id] AS [course_type_id], 
+    [view_trn_exam].[course_start] AS [course_start], 
+    [view_trn_exam].[course_end] AS [course_end], 
+    [view_trn_exam].[instructor] AS [instructor], 
+    [view_trn_exam].[training_director] AS [training_director], 
+    [view_trn_exam].[course_duration] AS [course_duration], 
+    [view_trn_exam].[course_title] AS [course_title], 
+    [view_trn_exam].[course_no] AS [course_no], 
+    [view_trn_exam].[instructor2] AS [instructor2]
+    FROM [dbo].[view_trn_exam] AS [view_trn_exam]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="view_trn_exam_question_person" EntityType="Self.view_trn_exam_question_person" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_trn_exam_question_person].[id] AS [id], 
+    [view_trn_exam_question_person].[question_id] AS [question_id], 
+    [view_trn_exam_question_person].[exam_id] AS [exam_id], 
+    [view_trn_exam_question_person].[response_time] AS [response_time], 
+    [view_trn_exam_question_person].[english_title] AS [english_title], 
+    [view_trn_exam_question_person].[persian_title] AS [persian_title], 
+    [view_trn_exam_question_person].[category_id] AS [category_id], 
+    [view_trn_exam_question_person].[category] AS [category], 
+    [view_trn_exam_question_person].[course_id] AS [course_id], 
+    [view_trn_exam_question_person].[Title] AS [Title], 
+    [view_trn_exam_question_person].[person_id] AS [person_id], 
+    [view_trn_exam_question_person].[first_name] AS [first_name], 
+    [view_trn_exam_question_person].[last_name] AS [last_name], 
+    [view_trn_exam_question_person].[answer_id] AS [answer_id], 
+    [view_trn_exam_question_person].[date_sent] AS [date_sent]
+    FROM [dbo].[view_trn_exam_question_person] AS [view_trn_exam_question_person]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="fk_ex_ex_1" Association="Self.fk_ex_ex_1">
+            <End Role="trn_exam" EntitySet="trn_exam" />
+            <End Role="trn_exam_question" EntitySet="trn_exam_question" />
+          </AssociationSet>
+          <AssociationSet Name="fk_exam_group_exam" Association="Self.fk_exam_group_exam">
+            <End Role="trn_exam" EntitySet="trn_exam" />
+            <End Role="trn_exam_group" EntitySet="trn_exam_group" />
+          </AssociationSet>
+          <AssociationSet Name="fk_st_ans_wxqu" Association="Self.fk_st_ans_wxqu">
+            <End Role="trn_exam_question" EntitySet="trn_exam_question" />
+            <End Role="trn_exam_student_answer" EntitySet="trn_exam_student_answer" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ppaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="ppa_entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="trn_exam" EntityType="ppaModel.trn_exam" />
+          <EntitySet Name="trn_exam_group" EntityType="ppaModel.trn_exam_group" />
+          <EntitySet Name="trn_exam_person" EntityType="ppaModel.trn_exam_person" />
+          <EntitySet Name="trn_exam_question" EntityType="ppaModel.trn_exam_question" />
+          <EntitySet Name="trn_exam_student_answer" EntityType="ppaModel.trn_exam_student_answer" />
+          <EntitySet Name="view_trn_exam" EntityType="ppaModel.view_trn_exam" />
+          <EntitySet Name="view_trn_exam_question_person" EntityType="ppaModel.view_trn_exam_question_person" />
+          <AssociationSet Name="fk_ex_ex_1" Association="ppaModel.fk_ex_ex_1">
+            <End Role="trn_exam" EntitySet="trn_exam" />
+            <End Role="trn_exam_question" EntitySet="trn_exam_question" />
+          </AssociationSet>
+          <AssociationSet Name="fk_exam_group_exam" Association="ppaModel.fk_exam_group_exam">
+            <End Role="trn_exam" EntitySet="trn_exam" />
+            <End Role="trn_exam_group" EntitySet="trn_exam_group" />
+          </AssociationSet>
+          <AssociationSet Name="fk_st_ans_wxqu" Association="ppaModel.fk_st_ans_wxqu">
+            <End Role="trn_exam_question" EntitySet="trn_exam_question" />
+            <End Role="trn_exam_student_answer" EntitySet="trn_exam_student_answer" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="trn_exam">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="course_id" Type="Int32" Nullable="false" />
+          <Property Name="exam_date" Type="DateTime" Precision="7" />
+          <Property Name="exam_date_persian" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="location_title" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="location_address" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="location_phone" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="remark" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="status_id" Type="Int32" />
+          <Property Name="created_by" Type="Int32" />
+          <Property Name="confirmed_by" Type="Int32" />
+          <Property Name="created_date" Type="DateTime" Precision="7" />
+          <Property Name="confirmed_date" Type="DateTime" Precision="7" />
+          <Property Name="exam_type_id" Type="Int32" />
+          <Property Name="signed_by_ins1_date" Type="DateTime" Precision="7" />
+          <Property Name="signed_by_ins2_date" Type="DateTime" Precision="7" />
+          <Property Name="signed_by_director_date" Type="DateTime" Precision="7" />
+          <Property Name="signed_by_staff_date" Type="DateTime" Precision="7" />
+          <Property Name="duration" Type="Int32" />
+          <Property Name="date_start" Type="DateTime" Precision="7" />
+          <Property Name="date_end_scheduled" Type="DateTime" Precision="7" />
+          <Property Name="date_end_actual" Type="DateTime" Precision="7" />
+          <Property Name="date_start_scheduled" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="trn_exam_question" Relationship="ppaModel.fk_ex_ex_1" FromRole="trn_exam" ToRole="trn_exam_question" />
+          <NavigationProperty Name="trn_exam_group" Relationship="ppaModel.fk_exam_group_exam" FromRole="trn_exam" ToRole="trn_exam_group" />
+        </EntityType>
+        <EntityType Name="trn_exam_group">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="exam_id" Type="Int32" Nullable="false" />
+          <Property Name="group_id" Type="Int32" />
+          <Property Name="remark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="trn_exam" Relationship="ppaModel.fk_exam_group_exam" FromRole="trn_exam_group" ToRole="trn_exam" />
+        </EntityType>
+        <EntityType Name="trn_exam_person">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="exam_id" Type="Int32" Nullable="false" />
+          <Property Name="person_id" Type="Int32" Nullable="false" />
+          <Property Name="remark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="trn_exam_question">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="exam_id" Type="Int32" Nullable="false" />
+          <Property Name="question_id" Type="Int32" Nullable="false" />
+          <Property Name="response_time" Type="Int32" />
+          <Property Name="remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="trn_exam" Relationship="ppaModel.fk_ex_ex_1" FromRole="trn_exam_question" ToRole="trn_exam" />
+          <NavigationProperty Name="trn_exam_student_answer" Relationship="ppaModel.fk_st_ans_wxqu" FromRole="trn_exam_question" ToRole="trn_exam_student_answer" />
+        </EntityType>
+        <EntityType Name="trn_exam_student_answer">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="person_id" Type="Int32" Nullable="false" />
+          <Property Name="question_id" Type="Int32" Nullable="false" />
+          <Property Name="answer_id" Type="Int32" Nullable="false" />
+          <Property Name="remark" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="date_sent" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="trn_exam_question" Relationship="ppaModel.fk_st_ans_wxqu" FromRole="trn_exam_student_answer" ToRole="trn_exam_question" />
+        </EntityType>
+        <EntityType Name="view_trn_exam">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="course_id" />
+            <PropertyRef Name="status" />
+            <PropertyRef Name="created_by" />
+            <PropertyRef Name="confirmed_by" />
+            <PropertyRef Name="exam_type" />
+            <PropertyRef Name="course_type_id" />
+            <PropertyRef Name="course_start" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="course_id" Type="Int32" Nullable="false" />
+          <Property Name="exam_date" Type="DateTime" Precision="7" />
+          <Property Name="exam_date_persian" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="location_title" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="location_address" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="location_phone" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="remark" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="status_id" Type="Int32" />
+          <Property Name="status" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="created_by_id" Type="Int32" />
+          <Property Name="created_by" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="confirmed_by_id" Type="Int32" />
+          <Property Name="confirmed_by" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="created_date" Type="DateTime" Precision="7" />
+          <Property Name="confirmed_date" Type="DateTime" Precision="7" />
+          <Property Name="exam_type_id" Type="Int32" />
+          <Property Name="exam_type" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="signed_by_ins1_date" Type="DateTime" Precision="7" />
+          <Property Name="signed_by_ins2_date" Type="DateTime" Precision="7" />
+          <Property Name="signed_by_director_date" Type="DateTime" Precision="7" />
+          <Property Name="signed_by_staff_date" Type="DateTime" Precision="7" />
+          <Property Name="duration" Type="Int32" />
+          <Property Name="date_start" Type="DateTime" Precision="7" />
+          <Property Name="date_end_scheduled" Type="DateTime" Precision="7" />
+          <Property Name="date_end_actual" Type="DateTime" Precision="7" />
+          <Property Name="date_start_scheduled" Type="DateTime" Precision="7" />
+          <Property Name="course_type" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="course_type_id" Type="Int32" Nullable="false" />
+          <Property Name="course_start" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="course_end" Type="DateTime" Precision="0" />
+          <Property Name="instructor" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="training_director" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="course_duration" Type="Int32" />
+          <Property Name="course_title" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="course_no" Type="String" MaxLength="204" FixedLength="false" Unicode="false" />
+          <Property Name="instructor2" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="view_trn_exam_question_person">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="question_id" />
+            <PropertyRef Name="exam_id" />
+            <PropertyRef Name="course_id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="question_id" Type="Int32" Nullable="false" />
+          <Property Name="exam_id" Type="Int32" Nullable="false" />
+          <Property Name="response_time" Type="Int32" />
+          <Property Name="english_title" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="persian_title" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="category_id" Type="Int32" />
+          <Property Name="category" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="course_id" Type="Int32" Nullable="false" />
+          <Property Name="Title" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="person_id" Type="Int32" />
+          <Property Name="first_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="last_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="answer_id" Type="Int32" />
+          <Property Name="date_sent" Type="DateTime" Precision="7" />
+        </EntityType>
+        <Association Name="fk_ex_ex_1">
+          <End Type="ppaModel.trn_exam" Role="trn_exam" Multiplicity="1" />
+          <End Type="ppaModel.trn_exam_question" Role="trn_exam_question" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="trn_exam">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="trn_exam_question">
+              <PropertyRef Name="exam_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_exam_group_exam">
+          <End Type="ppaModel.trn_exam" Role="trn_exam" Multiplicity="1" />
+          <End Type="ppaModel.trn_exam_group" Role="trn_exam_group" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="trn_exam">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="trn_exam_group">
+              <PropertyRef Name="exam_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_st_ans_wxqu">
+          <End Type="ppaModel.trn_exam_question" Role="trn_exam_question" Multiplicity="1" />
+          <End Type="ppaModel.trn_exam_student_answer" Role="trn_exam_student_answer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="trn_exam_question">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="trn_exam_student_answer">
+              <PropertyRef Name="question_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ppaModelStoreContainer" CdmEntityContainer="ppa_entities">
+          <EntitySetMapping Name="trn_exam">
+            <EntityTypeMapping TypeName="ppaModel.trn_exam">
+              <MappingFragment StoreEntitySet="trn_exam">
+                <ScalarProperty Name="date_start_scheduled" ColumnName="date_start_scheduled" />
+                <ScalarProperty Name="date_end_actual" ColumnName="date_end_actual" />
+                <ScalarProperty Name="date_end_scheduled" ColumnName="date_end_scheduled" />
+                <ScalarProperty Name="date_start" ColumnName="date_start" />
+                <ScalarProperty Name="duration" ColumnName="duration" />
+                <ScalarProperty Name="signed_by_staff_date" ColumnName="signed_by_staff_date" />
+                <ScalarProperty Name="signed_by_director_date" ColumnName="signed_by_director_date" />
+                <ScalarProperty Name="signed_by_ins2_date" ColumnName="signed_by_ins2_date" />
+                <ScalarProperty Name="signed_by_ins1_date" ColumnName="signed_by_ins1_date" />
+                <ScalarProperty Name="exam_type_id" ColumnName="exam_type_id" />
+                <ScalarProperty Name="confirmed_date" ColumnName="confirmed_date" />
+                <ScalarProperty Name="created_date" ColumnName="created_date" />
+                <ScalarProperty Name="confirmed_by" ColumnName="confirmed_by" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="status_id" ColumnName="status_id" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="location_phone" ColumnName="location_phone" />
+                <ScalarProperty Name="location_address" ColumnName="location_address" />
+                <ScalarProperty Name="location_title" ColumnName="location_title" />
+                <ScalarProperty Name="exam_date_persian" ColumnName="exam_date_persian" />
+                <ScalarProperty Name="exam_date" ColumnName="exam_date" />
+                <ScalarProperty Name="course_id" ColumnName="course_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="trn_exam_group">
+            <EntityTypeMapping TypeName="ppaModel.trn_exam_group">
+              <MappingFragment StoreEntitySet="trn_exam_group">
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="group_id" ColumnName="group_id" />
+                <ScalarProperty Name="exam_id" ColumnName="exam_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="trn_exam_person">
+            <EntityTypeMapping TypeName="ppaModel.trn_exam_person">
+              <MappingFragment StoreEntitySet="trn_exam_person">
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="person_id" ColumnName="person_id" />
+                <ScalarProperty Name="exam_id" ColumnName="exam_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="trn_exam_question">
+            <EntityTypeMapping TypeName="ppaModel.trn_exam_question">
+              <MappingFragment StoreEntitySet="trn_exam_question">
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="response_time" ColumnName="response_time" />
+                <ScalarProperty Name="question_id" ColumnName="question_id" />
+                <ScalarProperty Name="exam_id" ColumnName="exam_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="trn_exam_student_answer">
+            <EntityTypeMapping TypeName="ppaModel.trn_exam_student_answer">
+              <MappingFragment StoreEntitySet="trn_exam_student_answer">
+                <ScalarProperty Name="date_sent" ColumnName="date_sent" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="answer_id" ColumnName="answer_id" />
+                <ScalarProperty Name="question_id" ColumnName="question_id" />
+                <ScalarProperty Name="person_id" ColumnName="person_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_trn_exam">
+            <EntityTypeMapping TypeName="ppaModel.view_trn_exam">
+              <MappingFragment StoreEntitySet="view_trn_exam">
+                <ScalarProperty Name="instructor2" ColumnName="instructor2" />
+                <ScalarProperty Name="course_no" ColumnName="course_no" />
+                <ScalarProperty Name="course_title" ColumnName="course_title" />
+                <ScalarProperty Name="course_duration" ColumnName="course_duration" />
+                <ScalarProperty Name="training_director" ColumnName="training_director" />
+                <ScalarProperty Name="instructor" ColumnName="instructor" />
+                <ScalarProperty Name="course_end" ColumnName="course_end" />
+                <ScalarProperty Name="course_start" ColumnName="course_start" />
+                <ScalarProperty Name="course_type_id" ColumnName="course_type_id" />
+                <ScalarProperty Name="course_type" ColumnName="course_type" />
+                <ScalarProperty Name="date_start_scheduled" ColumnName="date_start_scheduled" />
+                <ScalarProperty Name="date_end_actual" ColumnName="date_end_actual" />
+                <ScalarProperty Name="date_end_scheduled" ColumnName="date_end_scheduled" />
+                <ScalarProperty Name="date_start" ColumnName="date_start" />
+                <ScalarProperty Name="duration" ColumnName="duration" />
+                <ScalarProperty Name="signed_by_staff_date" ColumnName="signed_by_staff_date" />
+                <ScalarProperty Name="signed_by_director_date" ColumnName="signed_by_director_date" />
+                <ScalarProperty Name="signed_by_ins2_date" ColumnName="signed_by_ins2_date" />
+                <ScalarProperty Name="signed_by_ins1_date" ColumnName="signed_by_ins1_date" />
+                <ScalarProperty Name="exam_type" ColumnName="exam_type" />
+                <ScalarProperty Name="exam_type_id" ColumnName="exam_type_id" />
+                <ScalarProperty Name="confirmed_date" ColumnName="confirmed_date" />
+                <ScalarProperty Name="created_date" ColumnName="created_date" />
+                <ScalarProperty Name="confirmed_by" ColumnName="confirmed_by" />
+                <ScalarProperty Name="confirmed_by_id" ColumnName="confirmed_by_id" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="created_by_id" ColumnName="created_by_id" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="status_id" ColumnName="status_id" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="location_phone" ColumnName="location_phone" />
+                <ScalarProperty Name="location_address" ColumnName="location_address" />
+                <ScalarProperty Name="location_title" ColumnName="location_title" />
+                <ScalarProperty Name="exam_date_persian" ColumnName="exam_date_persian" />
+                <ScalarProperty Name="exam_date" ColumnName="exam_date" />
+                <ScalarProperty Name="course_id" ColumnName="course_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_trn_exam_question_person">
+            <EntityTypeMapping TypeName="ppaModel.view_trn_exam_question_person">
+              <MappingFragment StoreEntitySet="view_trn_exam_question_person">
+                <ScalarProperty Name="date_sent" ColumnName="date_sent" />
+                <ScalarProperty Name="answer_id" ColumnName="answer_id" />
+                <ScalarProperty Name="last_name" ColumnName="last_name" />
+                <ScalarProperty Name="first_name" ColumnName="first_name" />
+                <ScalarProperty Name="person_id" ColumnName="person_id" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="course_id" ColumnName="course_id" />
+                <ScalarProperty Name="category" ColumnName="category" />
+                <ScalarProperty Name="category_id" ColumnName="category_id" />
+                <ScalarProperty Name="persian_title" ColumnName="persian_title" />
+                <ScalarProperty Name="english_title" ColumnName="english_title" />
+                <ScalarProperty Name="response_time" ColumnName="response_time" />
+                <ScalarProperty Name="exam_id" ColumnName="exam_id" />
+                <ScalarProperty Name="question_id" ColumnName="question_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
