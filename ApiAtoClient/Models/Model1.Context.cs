@@ -32,5 +32,6 @@ namespace ApiAtoClient.Models
         public virtual DbSet<trn_exam_student_answer> trn_exam_student_answer { get; set; }
         public virtual DbSet<view_trn_exam> view_trn_exam { get; set; }
         public virtual DbSet<view_trn_exam_question_person> view_trn_exam_question_person { get; set; }
+        public virtual DbSet<trn_answers> trn_answers { get; set; }
     }
 }

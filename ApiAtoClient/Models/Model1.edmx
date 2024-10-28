@@ -5,6 +5,17 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="ppaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="trn_answers">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="quesion_id" Type="int" />
+          <Property Name="english_title" Type="varchar" MaxLength="1000" />
+          <Property Name="persian_title" Type="nvarchar" MaxLength="1000" />
+          <Property Name="is_answer" Type="int" />
+          <Property Name="is_rtl" Type="bit" />
+        </EntityType>
         <EntityType Name="trn_exam">
           <Key>
             <PropertyRef Name="id" />
@@ -185,6 +196,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_trn_exam_question_person' does
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="ppaModelStoreContainer">
+          <EntitySet Name="trn_answers" EntityType="Self.trn_answers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="trn_exam" EntityType="Self.trn_exam" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="trn_exam_group" EntityType="Self.trn_exam_group" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="trn_exam_person" EntityType="Self.trn_exam_person" Schema="dbo" store:Type="Tables" />
@@ -287,6 +299,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_trn_exam_question_person' does
             <End Role="trn_exam_question" EntitySet="trn_exam_question" />
             <End Role="trn_exam_student_answer" EntitySet="trn_exam_student_answer" />
           </AssociationSet>
+          <EntitySet Name="trn_answers" EntityType="ppaModel.trn_answers" />
         </EntityContainer>
         <EntityType Name="trn_exam">
           <Key>
@@ -469,6 +482,17 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_trn_exam_question_person' does
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="trn_answers">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="quesion_id" Type="Int32" />
+          <Property Name="english_title" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="persian_title" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="is_answer" Type="Int32" />
+          <Property Name="is_rtl" Type="Boolean" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -607,6 +631,18 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_trn_exam_question_person' does
                 <ScalarProperty Name="response_time" ColumnName="response_time" />
                 <ScalarProperty Name="exam_id" ColumnName="exam_id" />
                 <ScalarProperty Name="question_id" ColumnName="question_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="trn_answers">
+            <EntityTypeMapping TypeName="ppaModel.trn_answers">
+              <MappingFragment StoreEntitySet="trn_answers">
+                <ScalarProperty Name="is_rtl" ColumnName="is_rtl" />
+                <ScalarProperty Name="is_answer" ColumnName="is_answer" />
+                <ScalarProperty Name="persian_title" ColumnName="persian_title" />
+                <ScalarProperty Name="english_title" ColumnName="english_title" />
+                <ScalarProperty Name="quesion_id" ColumnName="quesion_id" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

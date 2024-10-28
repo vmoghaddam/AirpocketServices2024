@@ -1,5 +1,6 @@
 ﻿using ApiAtoClient.Models;
 using ApiAtoClient.ViewModels;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -27,7 +28,17 @@ namespace ApiAtoClient.Controllers
 
                 ppa_entities context = new ppa_entities();
                 var exam=await context.view_trn_exam.Where(q=>q.id==id).FirstOrDefaultAsync();
-                var questions=await context.view_trn_exam_question_person.Where(q=>q.exam_id==id && q.person_id==client_id).ToListAsync();
+                var _questions = await context.view_trn_exam_question_person.Where(q => q.exam_id == id && q.person_id == client_id).ToListAsync();
+
+                var qids=_questions.Select(q=>(Nullable<int>) q.id).ToList();
+
+                var questions= _questions.Select(q => JsonConvert.DeserializeObject<view_trn_exam_question_person_dto>(JsonConvert.SerializeObject(q))).ToList();
+                var answers = await context.trn_answers.Where(q => qids.Contains(q.quesion_id)).ToListAsync();
+                foreach(var q in questions)
+                {
+                    q.answers = answers.Where(x=>x.quesion_id==q.id).ToList();
+                }
+
 
                 var result = new DataResponse()
                 {

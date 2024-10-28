@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using ApiAtoClient.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -108,5 +109,24 @@ namespace ApiAtoClient
         public object Data { get; set; }
         public List<string> Errors { get; set; }
         public List<string> Messages { get; set; }
+    }
+    public partial class view_trn_exam_question_person_dto
+    {
+        public int id { get; set; }
+        public int question_id { get; set; }
+        public int exam_id { get; set; }
+        public Nullable<int> response_time { get; set; }
+        public string english_title { get; set; }
+        public string persian_title { get; set; }
+        public Nullable<int> category_id { get; set; }
+        public string category { get; set; }
+        public int course_id { get; set; }
+        public string Title { get; set; }
+        public Nullable<int> person_id { get; set; }
+        public string first_name { get; set; }
+        public string last_name { get; set; }
+        public Nullable<int> answer_id { get; set; }
+        public Nullable<System.DateTime> date_sent { get; set; }
+        public List<trn_answers> answers { get; set; }
     }
 }
