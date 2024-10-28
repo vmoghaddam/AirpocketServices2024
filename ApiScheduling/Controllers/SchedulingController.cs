@@ -2293,8 +2293,8 @@ namespace ApiScheduling.Controllers
             else
                 duty.InitRestTo = duty.DateEnd;
             //porn
-            var exc = new List<int>() { 100009, 100020, 100021, 100022, 100023, 1170 };
-            var check = new List<int>() { 1165, 1166, 1167, 1168, 300013, 1169, 5000, 5001, 100000, 100002, 100003, 100004, 100005, 100006,100007, 100008, 100025, 300008, 300009, 300010, 300014 };
+            var exc = new List<int>() { 100009, 100020, 100021, 100022, 100023, 1170,5000 };
+            var check = new List<int>() { 1165, 1166, 1167, 1168, 300013, 1169,  5001, 100000, 100002, 100003, 100004, 100005, 100006,100007, 100008, 100025, 300008, 300009, 300010, 300014 };
             // var _interupted = await this.context.FDPs.FirstOrDefaultAsync(q => !exc.Contains(q.DutyType) && q.CrewId == duty.CrewId
             // && (
             //       (duty.InitStart >= q.InitStart && duty.InitStart <= q.InitRestTo)

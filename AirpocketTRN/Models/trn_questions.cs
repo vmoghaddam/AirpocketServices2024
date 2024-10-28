@@ -18,15 +18,26 @@ namespace AirpocketTRN.Models
         public trn_questions()
         {
             this.trn_answers = new HashSet<trn_answers>();
+            this.trn_exam_question = new HashSet<trn_exam_question>();
         }
     
         public int id { get; set; }
-        public Nullable<int> course_type { get; set; }
-        public Nullable<int> course_hardness { get; set; }
         public string persian_title { get; set; }
         public string english_title { get; set; }
+        public string remark { get; set; }
+        public Nullable<int> type_id { get; set; }
+        public bool is_rtl { get; set; }
+        public Nullable<int> coefficient { get; set; }
+        public int hardness { get; set; }
+        public Nullable<int> response_time { get; set; }
+        public Nullable<int> course_type_id { get; set; }
+        public Nullable<int> category_id { get; set; }
+        public Nullable<int> chapter_id { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<trn_answers> trn_answers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<trn_exam_question> trn_exam_question { get; set; }
+        public virtual trn_question_category trn_question_category { get; set; }
     }
 }

@@ -28,7 +28,7 @@ namespace ApiAtoClient.Controllers
 
                 ppa_entities context = new ppa_entities();
                 var exam=await context.view_trn_exam.Where(q=>q.id==id).FirstOrDefaultAsync();
-                var _questions = await context.view_trn_exam_question_person.Where(q => q.exam_id == id && q.person_id == client_id).ToListAsync();
+                var _questions = await context.view_trn_exam_question_person.Where(q => q.exam_id == id && q.person_id == client_id).OrderBy(q=>q.category_id).ThenBy(q=>q.question_id).ToListAsync();
 
                 var qids=_questions.Select(q=>(Nullable<int>) q.id).ToList();
 
@@ -90,6 +90,26 @@ namespace ApiAtoClient.Controllers
             {
                 IsSuccess = true,
                  
+            };
+            return Ok(result);
+        }
+
+        public class dto_profile
+        {
+            public string user_id { get; set; }
+        }
+        [Route("api/ato/client/profile")]
+        [AcceptVerbs("POST")]
+        public async Task<IHttpActionResult> PostProfile(dto_profile dto)
+        {
+            ppa_entities context = new ppa_entities();
+            var profile = await context.view_trn_profile.FirstOrDefaultAsync(q => q.UserId==dto.user_id);
+            
+            var result = new DataResponse()
+            {
+                IsSuccess = true,
+                Data= profile
+
             };
             return Ok(result);
         }

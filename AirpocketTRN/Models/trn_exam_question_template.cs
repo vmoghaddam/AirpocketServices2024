@@ -12,15 +12,13 @@ namespace AirpocketTRN.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class trn_exam_student_answer
+    public partial class trn_exam_question_template
     {
         public int id { get; set; }
-        public int person_id { get; set; }
-        public int question_id { get; set; }
-        public int answer_id { get; set; }
-        public string remark { get; set; }
-        public Nullable<System.DateTime> date_sent { get; set; }
-    
-        public virtual trn_exam_question trn_exam_question { get; set; }
+        public int exam_id { get; set; }
+        public Nullable<int> question_category_id { get; set; }
+        public Nullable<int> hardness { get; set; }
+        public Nullable<int> total { get; set; }
+        public string reamrk { get; set; }
     }
 }

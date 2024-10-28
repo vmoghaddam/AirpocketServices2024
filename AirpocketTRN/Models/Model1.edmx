@@ -976,11 +976,12 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="quesion_id" Type="int" />
           <Property Name="english_title" Type="varchar" MaxLength="1000" />
           <Property Name="persian_title" Type="nvarchar" MaxLength="1000" />
           <Property Name="is_answer" Type="int" />
+          <Property Name="is_rtl" Type="bit" />
         </EntityType>
         <EntityType Name="trn_crm_assessment">
           <Key>
@@ -1079,6 +1080,27 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="section_name" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="trn_exam_question">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="exam_id" Type="int" Nullable="false" />
+          <Property Name="question_id" Type="int" Nullable="false" />
+          <Property Name="response_time" Type="int" />
+          <Property Name="remark" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="trn_exam_question_template">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="exam_id" Type="int" Nullable="false" />
+          <Property Name="question_category_id" Type="int" />
+          <Property Name="hardness" Type="int" />
+          <Property Name="total" Type="int" />
+          <Property Name="reamrk" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="trn_exam_student_answer">
           <Key>
@@ -1403,15 +1425,30 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="section_name" Type="nvarchar" MaxLength="255" />
         </EntityType>
+        <EntityType Name="trn_question_category">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="category" Type="nvarchar" MaxLength="1000" />
+          <Property Name="remark" Type="nvarchar" MaxLength="1000" />
+        </EntityType>
         <EntityType Name="trn_questions">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" />
-          <Property Name="course_type" Type="int" />
-          <Property Name="course_hardness" Type="int" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="persian_title" Type="nvarchar" MaxLength="1000" />
           <Property Name="english_title" Type="varchar" MaxLength="1000" />
+          <Property Name="remark" Type="nvarchar" MaxLength="1000" />
+          <Property Name="type_id" Type="int" />
+          <Property Name="is_rtl" Type="bit" Nullable="false" />
+          <Property Name="coefficient" Type="int" />
+          <Property Name="hardness" Type="int" Nullable="false" />
+          <Property Name="response_time" Type="int" />
+          <Property Name="course_type_id" Type="int" />
+          <Property Name="category_id" Type="int" />
+          <Property Name="chapter_id" Type="int" />
         </EntityType>
         <EntityType Name="trn_zftt">
           <Key>
@@ -4650,6 +4687,18 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_ex_qu_1">
+          <End Role="trn_questions" Type="Self.trn_questions" Multiplicity="1" />
+          <End Role="trn_exam_question" Type="Self.trn_exam_question" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="trn_questions">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="trn_exam_question">
+              <PropertyRef Name="question_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_fdp_fdp">
           <End Role="FDP" Type="Self.FDP" Multiplicity="0..1" />
           <End Role="FDP1" Type="Self.FDP" Multiplicity="*" />
@@ -4758,6 +4807,18 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_qu_cat">
+          <End Role="trn_question_category" Type="Self.trn_question_category" Multiplicity="0..1" />
+          <End Role="trn_questions" Type="Self.trn_questions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="trn_question_category">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="trn_questions">
+              <PropertyRef Name="category_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_session_course">
           <End Role="Course" Type="Self.Course" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -4769,6 +4830,18 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
             </Principal>
             <Dependent Role="CourseSession">
               <PropertyRef Name="CourseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_st_ans_wxqu">
+          <End Role="trn_exam_question" Type="Self.trn_exam_question" Multiplicity="1" />
+          <End Role="trn_exam_student_answer" Type="Self.trn_exam_student_answer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="trn_exam_question">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="trn_exam_student_answer">
+              <PropertyRef Name="question_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4850,6 +4923,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <EntitySet Name="trn_efb_actions" EntityType="Self.trn_efb_actions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="trn_efb_assessment" EntityType="Self.trn_efb_assessment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="trn_efb_sections" EntityType="Self.trn_efb_sections" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="trn_exam_question" EntityType="Self.trn_exam_question" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="trn_exam_question_template" EntityType="Self.trn_exam_question_template" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="trn_exam_student_answer" EntityType="Self.trn_exam_student_answer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="trn_fsdt_crm_sections" EntityType="Self.trn_fsdt_crm_sections" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="trn_fstd" EntityType="Self.trn_fstd" Schema="dbo" store:Type="Tables" />
@@ -4873,6 +4948,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <EntitySet Name="trn_line_crm_actions" EntityType="Self.trn_line_crm_actions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="trn_line_crm_actions_values" EntityType="Self.trn_line_crm_actions_values" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="trn_line_crm_sections" EntityType="Self.trn_line_crm_sections" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="trn_question_category" EntityType="Self.trn_question_category" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="trn_questions" EntityType="Self.trn_questions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="trn_zftt" EntityType="Self.trn_zftt" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="trn_zftt_action_values" EntityType="Self.trn_zftt_action_values" Schema="dbo" store:Type="Tables" />
@@ -7184,6 +7260,10 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
             <End Role="Document" EntitySet="Document" />
             <End Role="Document1" EntitySet="Document" />
           </AssociationSet>
+          <AssociationSet Name="fk_ex_qu_1" Association="Self.fk_ex_qu_1">
+            <End Role="trn_questions" EntitySet="trn_questions" />
+            <End Role="trn_exam_question" EntitySet="trn_exam_question" />
+          </AssociationSet>
           <AssociationSet Name="fk_fdp_fdp" Association="Self.fk_fdp_fdp">
             <End Role="FDP" EntitySet="FDP" />
             <End Role="FDP1" EntitySet="FDP" />
@@ -7216,9 +7296,17 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
             <End Role="Person" EntitySet="Person" />
             <End Role="CourseSessionPresenceDetail" EntitySet="CourseSessionPresenceDetail" />
           </AssociationSet>
+          <AssociationSet Name="fk_qu_cat" Association="Self.fk_qu_cat">
+            <End Role="trn_question_category" EntitySet="trn_question_category" />
+            <End Role="trn_questions" EntitySet="trn_questions" />
+          </AssociationSet>
           <AssociationSet Name="fk_session_course" Association="Self.fk_session_course">
             <End Role="Course" EntitySet="Course" />
             <End Role="CourseSession" EntitySet="CourseSession" />
+          </AssociationSet>
+          <AssociationSet Name="fk_st_ans_wxqu" Association="Self.fk_st_ans_wxqu">
+            <End Role="trn_exam_question" EntitySet="trn_exam_question" />
+            <End Role="trn_exam_student_answer" EntitySet="trn_exam_student_answer" />
           </AssociationSet>
           <AssociationSet Name="fk_syl_crs" Association="Self.fk_syl_crs">
             <End Role="Course" EntitySet="Course" />
@@ -7411,7 +7499,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <EntitySet Name="trn_line_crm_actions" EntityType="FLYModel.trn_line_crm_actions" />
           <EntitySet Name="trn_line_crm_actions_values" EntityType="FLYModel.trn_line_crm_actions_values" />
           <EntitySet Name="trn_line_crm_sections" EntityType="FLYModel.trn_line_crm_sections" />
-          <EntitySet Name="trn_questions" EntityType="FLYModel.trn_questions" />
           <EntitySet Name="trn_zftt" EntityType="FLYModel.trn_zftt" />
           <EntitySet Name="trn_zftt_action_values" EntityType="FLYModel.trn_zftt_action_values" />
           <EntitySet Name="trn_zftt_actions" EntityType="FLYModel.trn_zftt_actions" />
@@ -7426,10 +7513,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <EntitySet Name="view_trn_line_check" EntityType="FLYModel.view_trn_line_check" />
           <EntitySet Name="view_trn_line_crm" EntityType="FLYModel.view_trn_line_crm" />
           <EntitySet Name="view_trn_zftt" EntityType="FLYModel.view_trn_zftt" />
-          <AssociationSet Name="FK__trn_answe__quesi__7CE53EB8" Association="FLYModel.FK__trn_answe__quesi__7CE53EB8">
-            <End Role="trn_questions" EntitySet="trn_questions" />
-            <End Role="trn_answers" EntitySet="trn_answers" />
-          </AssociationSet>
           <AssociationSet Name="FK__trn_efb_a__actio__7579271A" Association="FLYModel.FK__trn_efb_a__actio__7579271A">
             <End Role="trn_efb_actions" EntitySet="trn_efb_actions" />
             <End Role="trn_efb_action_values" EntitySet="trn_efb_action_values" />
@@ -7564,6 +7647,26 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <EntitySet Name="ViewCourseSessions" EntityType="FLYModel.ViewCourseSession" />
           <EntitySet Name="ViewTeacherCourses" EntityType="FLYModel.ViewTeacherCourse" />
           <EntitySet Name="trn_exam_student_answer" EntityType="FLYModel.trn_exam_student_answer" />
+          <EntitySet Name="trn_exam_question" EntityType="FLYModel.trn_exam_question" />
+          <EntitySet Name="trn_exam_question_template" EntityType="FLYModel.trn_exam_question_template" />
+          <EntitySet Name="trn_question_category" EntityType="FLYModel.trn_question_category" />
+          <AssociationSet Name="fk_st_ans_wxqu" Association="FLYModel.fk_st_ans_wxqu">
+            <End Role="trn_exam_question" EntitySet="trn_exam_question" />
+            <End Role="trn_exam_student_answer" EntitySet="trn_exam_student_answer" />
+          </AssociationSet>
+          <EntitySet Name="trn_questions" EntityType="FLYModel.trn_questions" />
+          <AssociationSet Name="FK__trn_answe__quesi__7CE53EB8" Association="FLYModel.FK__trn_answe__quesi__7CE53EB8">
+            <End Role="trn_questions" EntitySet="trn_questions" />
+            <End Role="trn_answers" EntitySet="trn_answers" />
+          </AssociationSet>
+          <AssociationSet Name="fk_ex_qu_1" Association="FLYModel.fk_ex_qu_1">
+            <End Role="trn_questions" EntitySet="trn_questions" />
+            <End Role="trn_exam_question" EntitySet="trn_exam_question" />
+          </AssociationSet>
+          <AssociationSet Name="fk_qu_cat" Association="FLYModel.fk_qu_cat">
+            <End Role="trn_question_category" EntitySet="trn_question_category" />
+            <End Role="trn_questions" EntitySet="trn_questions" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="ViewLegTime">
           <Key>
@@ -10950,6 +11053,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <Property Name="english_title" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
           <Property Name="persian_title" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="is_answer" Type="Int32" />
+          <Property Name="is_rtl" Type="Boolean" />
           <NavigationProperty Name="trn_questions" Relationship="FLYModel.FK__trn_answe__quesi__7CE53EB8" FromRole="trn_answers" ToRole="trn_questions" />
         </EntityType>
         <EntityType Name="trn_crm_assessment">
@@ -11432,17 +11536,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <Property Name="section_name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="trn_line_crm_actions" Relationship="FLYModel.FK__trn_line___secti__2DBD803D" FromRole="trn_line_crm_sections" ToRole="trn_line_crm_actions" />
         </EntityType>
-        <EntityType Name="trn_questions">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" />
-          <Property Name="course_type" Type="Int32" />
-          <Property Name="course_hardness" Type="Int32" />
-          <Property Name="persian_title" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="english_title" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="trn_answers" Relationship="FLYModel.FK__trn_answe__quesi__7CE53EB8" FromRole="trn_questions" ToRole="trn_answers" />
-        </EntityType>
         <EntityType Name="trn_zftt">
           <Key>
             <PropertyRef Name="id" />
@@ -11648,18 +11741,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <Property Name="action_id" Type="Int32" Nullable="false" />
           <Property Name="assessment" Type="Int32" />
         </EntityType>
-        <Association Name="FK__trn_answe__quesi__7CE53EB8">
-          <End Type="FLYModel.trn_questions" Role="trn_questions" Multiplicity="0..1" />
-          <End Type="FLYModel.trn_answers" Role="trn_answers" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="trn_questions">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="trn_answers">
-              <PropertyRef Name="quesion_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__trn_efb_a__actio__7579271A">
           <End Type="FLYModel.trn_efb_actions" Role="trn_efb_actions" Multiplicity="0..1" />
           <End Type="FLYModel.trn_efb_action_values" Role="trn_efb_action_values" Multiplicity="*" />
@@ -12348,7 +12429,108 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <Property Name="answer_id" Type="Int32" Nullable="false" />
           <Property Name="remark" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="date_sent" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="trn_exam_question" Relationship="FLYModel.fk_st_ans_wxqu" FromRole="trn_exam_student_answer" ToRole="trn_exam_question" />
         </EntityType>
+        <EntityType Name="trn_exam_question">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="exam_id" Type="Int32" Nullable="false" />
+          <Property Name="question_id" Type="Int32" Nullable="false" />
+          <Property Name="response_time" Type="Int32" />
+          <Property Name="remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="trn_exam_student_answer" Relationship="FLYModel.fk_st_ans_wxqu" FromRole="trn_exam_question" ToRole="trn_exam_student_answer" />
+          <NavigationProperty Name="trn_questions" Relationship="FLYModel.fk_ex_qu_1" FromRole="trn_exam_question" ToRole="trn_questions" />
+        </EntityType>
+        <EntityType Name="trn_exam_question_template">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="exam_id" Type="Int32" Nullable="false" />
+          <Property Name="question_category_id" Type="Int32" />
+          <Property Name="hardness" Type="Int32" />
+          <Property Name="total" Type="Int32" />
+          <Property Name="reamrk" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="trn_question_category">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="category" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="remark" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="trn_questions" Relationship="FLYModel.fk_qu_cat" FromRole="trn_question_category" ToRole="trn_questions" />
+        </EntityType>
+        <Association Name="fk_st_ans_wxqu">
+          <End Type="FLYModel.trn_exam_question" Role="trn_exam_question" Multiplicity="1" />
+          <End Type="FLYModel.trn_exam_student_answer" Role="trn_exam_student_answer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="trn_exam_question">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="trn_exam_student_answer">
+              <PropertyRef Name="question_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="trn_questions">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="persian_title" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="english_title" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="remark" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="type_id" Type="Int32" />
+          <Property Name="is_rtl" Type="Boolean" Nullable="false" />
+          <Property Name="coefficient" Type="Int32" />
+          <Property Name="hardness" Type="Int32" Nullable="false" />
+          <Property Name="response_time" Type="Int32" />
+          <Property Name="course_type_id" Type="Int32" />
+          <Property Name="category_id" Type="Int32" />
+          <Property Name="chapter_id" Type="Int32" />
+          <NavigationProperty Name="trn_answers" Relationship="FLYModel.FK__trn_answe__quesi__7CE53EB8" FromRole="trn_questions" ToRole="trn_answers" />
+          <NavigationProperty Name="trn_exam_question" Relationship="FLYModel.fk_ex_qu_1" FromRole="trn_questions" ToRole="trn_exam_question" />
+          <NavigationProperty Name="trn_question_category" Relationship="FLYModel.fk_qu_cat" FromRole="trn_questions" ToRole="trn_question_category" />
+        </EntityType>
+        <Association Name="FK__trn_answe__quesi__7CE53EB8">
+          <End Type="FLYModel.trn_questions" Role="trn_questions" Multiplicity="0..1" />
+          <End Type="FLYModel.trn_answers" Role="trn_answers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="trn_questions">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="trn_answers">
+              <PropertyRef Name="quesion_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_ex_qu_1">
+          <End Type="FLYModel.trn_questions" Role="trn_questions" Multiplicity="1" />
+          <End Type="FLYModel.trn_exam_question" Role="trn_exam_question" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="trn_questions">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="trn_exam_question">
+              <PropertyRef Name="question_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_qu_cat">
+          <End Type="FLYModel.trn_question_category" Role="trn_question_category" Multiplicity="0..1" />
+          <End Type="FLYModel.trn_questions" Role="trn_questions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="trn_question_category">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="trn_questions">
+              <PropertyRef Name="category_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -15221,6 +15403,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <EntitySetMapping Name="trn_answers">
             <EntityTypeMapping TypeName="FLYModel.trn_answers">
               <MappingFragment StoreEntitySet="trn_answers">
+                <ScalarProperty Name="is_rtl" ColumnName="is_rtl" />
                 <ScalarProperty Name="is_answer" ColumnName="is_answer" />
                 <ScalarProperty Name="persian_title" ColumnName="persian_title" />
                 <ScalarProperty Name="english_title" ColumnName="english_title" />
@@ -15664,17 +15847,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
             <EntityTypeMapping TypeName="FLYModel.trn_line_crm_sections">
               <MappingFragment StoreEntitySet="trn_line_crm_sections">
                 <ScalarProperty Name="section_name" ColumnName="section_name" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="trn_questions">
-            <EntityTypeMapping TypeName="FLYModel.trn_questions">
-              <MappingFragment StoreEntitySet="trn_questions">
-                <ScalarProperty Name="english_title" ColumnName="english_title" />
-                <ScalarProperty Name="persian_title" ColumnName="persian_title" />
-                <ScalarProperty Name="course_hardness" ColumnName="course_hardness" />
-                <ScalarProperty Name="course_type" ColumnName="course_type" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -16142,6 +16314,56 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
                 <ScalarProperty Name="answer_id" ColumnName="answer_id" />
                 <ScalarProperty Name="question_id" ColumnName="question_id" />
                 <ScalarProperty Name="person_id" ColumnName="person_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="trn_exam_question">
+            <EntityTypeMapping TypeName="FLYModel.trn_exam_question">
+              <MappingFragment StoreEntitySet="trn_exam_question">
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="response_time" ColumnName="response_time" />
+                <ScalarProperty Name="question_id" ColumnName="question_id" />
+                <ScalarProperty Name="exam_id" ColumnName="exam_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="trn_exam_question_template">
+            <EntityTypeMapping TypeName="FLYModel.trn_exam_question_template">
+              <MappingFragment StoreEntitySet="trn_exam_question_template">
+                <ScalarProperty Name="reamrk" ColumnName="reamrk" />
+                <ScalarProperty Name="total" ColumnName="total" />
+                <ScalarProperty Name="hardness" ColumnName="hardness" />
+                <ScalarProperty Name="question_category_id" ColumnName="question_category_id" />
+                <ScalarProperty Name="exam_id" ColumnName="exam_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="trn_question_category">
+            <EntityTypeMapping TypeName="FLYModel.trn_question_category">
+              <MappingFragment StoreEntitySet="trn_question_category">
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="category" ColumnName="category" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="trn_questions">
+            <EntityTypeMapping TypeName="FLYModel.trn_questions">
+              <MappingFragment StoreEntitySet="trn_questions">
+                <ScalarProperty Name="chapter_id" ColumnName="chapter_id" />
+                <ScalarProperty Name="category_id" ColumnName="category_id" />
+                <ScalarProperty Name="course_type_id" ColumnName="course_type_id" />
+                <ScalarProperty Name="response_time" ColumnName="response_time" />
+                <ScalarProperty Name="hardness" ColumnName="hardness" />
+                <ScalarProperty Name="coefficient" ColumnName="coefficient" />
+                <ScalarProperty Name="is_rtl" ColumnName="is_rtl" />
+                <ScalarProperty Name="type_id" ColumnName="type_id" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="english_title" ColumnName="english_title" />
+                <ScalarProperty Name="persian_title" ColumnName="persian_title" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

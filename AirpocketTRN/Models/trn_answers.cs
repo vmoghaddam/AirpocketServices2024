@@ -19,6 +19,7 @@ namespace AirpocketTRN.Models
         public string english_title { get; set; }
         public string persian_title { get; set; }
         public Nullable<int> is_answer { get; set; }
+        public Nullable<bool> is_rtl { get; set; }
     
         public virtual trn_questions trn_questions { get; set; }
     }

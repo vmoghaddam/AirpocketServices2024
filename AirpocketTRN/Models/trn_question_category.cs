@@ -12,15 +12,19 @@ namespace AirpocketTRN.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class trn_exam_student_answer
+    public partial class trn_question_category
     {
-        public int id { get; set; }
-        public int person_id { get; set; }
-        public int question_id { get; set; }
-        public int answer_id { get; set; }
-        public string remark { get; set; }
-        public Nullable<System.DateTime> date_sent { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public trn_question_category()
+        {
+            this.trn_questions = new HashSet<trn_questions>();
+        }
     
-        public virtual trn_exam_question trn_exam_question { get; set; }
+        public int id { get; set; }
+        public string category { get; set; }
+        public string remark { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<trn_questions> trn_questions { get; set; }
     }
 }

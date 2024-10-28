@@ -159,6 +159,48 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_trn_exam_question_person' does
           <Property Name="answer_id" Type="int" />
           <Property Name="date_sent" Type="datetime2" Precision="7" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.view_trn_profile' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_trn_profile">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="NID" />
+            <PropertyRef Name="SexId" />
+            <PropertyRef Name="FirstName" />
+            <PropertyRef Name="LastName" />
+            <PropertyRef Name="IsActive" />
+            <PropertyRef Name="IsDeleted" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NID" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="SexId" Type="int" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="DateBirth" Type="date" />
+          <Property Name="Email" Type="nvarchar" MaxLength="500" />
+          <Property Name="Phone1" Type="nvarchar" MaxLength="500" />
+          <Property Name="Phone2" Type="nvarchar" MaxLength="500" />
+          <Property Name="Mobile" Type="nvarchar" MaxLength="500" />
+          <Property Name="PassportNumber" Type="nvarchar" MaxLength="500" />
+          <Property Name="DatePassportIssue" Type="date" />
+          <Property Name="DatePassportExpire" Type="date" />
+          <Property Name="Address" Type="nvarchar" MaxLength="2000" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="2000" />
+          <Property Name="CityId" Type="int" />
+          <Property Name="FatherName" Type="nvarchar" MaxLength="500" />
+          <Property Name="IDNo" Type="nvarchar" MaxLength="500" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" />
+          <Property Name="ImageUrl" Type="nvarchar" MaxLength="1000" />
+          <Property Name="LicenceTitle" Type="nvarchar" MaxLength="500" />
+          <Property Name="PostalCode" Type="varchar" MaxLength="255" />
+          <Property Name="ScheduleName" Type="varchar" MaxLength="500" />
+          <Property Name="Code" Type="varchar" MaxLength="500" />
+          <Property Name="WhatsApp" Type="nvarchar" MaxLength="500" />
+          <Property Name="Telegram" Type="nvarchar" MaxLength="255" />
+          <Property Name="LinkedIn" Type="nvarchar" MaxLength="500" />
+        </EntityType>
         <Association Name="fk_ex_ex_1">
           <End Role="trn_exam" Type="Self.trn_exam" Multiplicity="1" />
           <End Role="trn_exam_question" Type="Self.trn_exam_question" Multiplicity="*" />
@@ -262,6 +304,39 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_trn_exam_question_person' does
     [view_trn_exam_question_person].[date_sent] AS [date_sent]
     FROM [dbo].[view_trn_exam_question_person] AS [view_trn_exam_question_person]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="view_trn_profile" EntityType="Self.view_trn_profile" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_trn_profile].[Id] AS [Id], 
+    [view_trn_profile].[NID] AS [NID], 
+    [view_trn_profile].[SexId] AS [SexId], 
+    [view_trn_profile].[FirstName] AS [FirstName], 
+    [view_trn_profile].[LastName] AS [LastName], 
+    [view_trn_profile].[DateBirth] AS [DateBirth], 
+    [view_trn_profile].[Email] AS [Email], 
+    [view_trn_profile].[Phone1] AS [Phone1], 
+    [view_trn_profile].[Phone2] AS [Phone2], 
+    [view_trn_profile].[Mobile] AS [Mobile], 
+    [view_trn_profile].[PassportNumber] AS [PassportNumber], 
+    [view_trn_profile].[DatePassportIssue] AS [DatePassportIssue], 
+    [view_trn_profile].[DatePassportExpire] AS [DatePassportExpire], 
+    [view_trn_profile].[Address] AS [Address], 
+    [view_trn_profile].[IsActive] AS [IsActive], 
+    [view_trn_profile].[IsDeleted] AS [IsDeleted], 
+    [view_trn_profile].[Remark] AS [Remark], 
+    [view_trn_profile].[CityId] AS [CityId], 
+    [view_trn_profile].[FatherName] AS [FatherName], 
+    [view_trn_profile].[IDNo] AS [IDNo], 
+    [view_trn_profile].[UserId] AS [UserId], 
+    [view_trn_profile].[ImageUrl] AS [ImageUrl], 
+    [view_trn_profile].[LicenceTitle] AS [LicenceTitle], 
+    [view_trn_profile].[PostalCode] AS [PostalCode], 
+    [view_trn_profile].[ScheduleName] AS [ScheduleName], 
+    [view_trn_profile].[Code] AS [Code], 
+    [view_trn_profile].[WhatsApp] AS [WhatsApp], 
+    [view_trn_profile].[Telegram] AS [Telegram], 
+    [view_trn_profile].[LinkedIn] AS [LinkedIn]
+    FROM [dbo].[view_trn_profile] AS [view_trn_profile]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="fk_ex_ex_1" Association="Self.fk_ex_ex_1">
             <End Role="trn_exam" EntitySet="trn_exam" />
             <End Role="trn_exam_question" EntitySet="trn_exam_question" />
@@ -300,6 +375,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_trn_exam_question_person' does
             <End Role="trn_exam_student_answer" EntitySet="trn_exam_student_answer" />
           </AssociationSet>
           <EntitySet Name="trn_answers" EntityType="ppaModel.trn_answers" />
+          <EntitySet Name="view_trn_profile" EntityType="ppaModel.view_trn_profile" />
         </EntityContainer>
         <EntityType Name="trn_exam">
           <Key>
@@ -493,6 +569,46 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_trn_exam_question_person' does
           <Property Name="is_answer" Type="Int32" />
           <Property Name="is_rtl" Type="Boolean" />
         </EntityType>
+        <EntityType Name="view_trn_profile">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="NID" />
+            <PropertyRef Name="SexId" />
+            <PropertyRef Name="FirstName" />
+            <PropertyRef Name="LastName" />
+            <PropertyRef Name="IsActive" />
+            <PropertyRef Name="IsDeleted" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NID" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="SexId" Type="Int32" Nullable="false" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="DateBirth" Type="DateTime" Precision="0" />
+          <Property Name="Email" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Phone1" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Phone2" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Mobile" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="PassportNumber" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="DatePassportIssue" Type="DateTime" Precision="0" />
+          <Property Name="DatePassportExpire" Type="DateTime" Precision="0" />
+          <Property Name="Address" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="Remark" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="CityId" Type="Int32" />
+          <Property Name="FatherName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IDNo" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ImageUrl" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="LicenceTitle" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="PostalCode" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ScheduleName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Code" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="WhatsApp" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Telegram" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="LinkedIn" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -644,6 +760,41 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_trn_exam_question_person' does
                 <ScalarProperty Name="english_title" ColumnName="english_title" />
                 <ScalarProperty Name="quesion_id" ColumnName="quesion_id" />
                 <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_trn_profile">
+            <EntityTypeMapping TypeName="ppaModel.view_trn_profile">
+              <MappingFragment StoreEntitySet="view_trn_profile">
+                <ScalarProperty Name="LinkedIn" ColumnName="LinkedIn" />
+                <ScalarProperty Name="Telegram" ColumnName="Telegram" />
+                <ScalarProperty Name="WhatsApp" ColumnName="WhatsApp" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="ScheduleName" ColumnName="ScheduleName" />
+                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+                <ScalarProperty Name="LicenceTitle" ColumnName="LicenceTitle" />
+                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="IDNo" ColumnName="IDNo" />
+                <ScalarProperty Name="FatherName" ColumnName="FatherName" />
+                <ScalarProperty Name="CityId" ColumnName="CityId" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="DatePassportExpire" ColumnName="DatePassportExpire" />
+                <ScalarProperty Name="DatePassportIssue" ColumnName="DatePassportIssue" />
+                <ScalarProperty Name="PassportNumber" ColumnName="PassportNumber" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="Phone2" ColumnName="Phone2" />
+                <ScalarProperty Name="Phone1" ColumnName="Phone1" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="DateBirth" ColumnName="DateBirth" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="SexId" ColumnName="SexId" />
+                <ScalarProperty Name="NID" ColumnName="NID" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
