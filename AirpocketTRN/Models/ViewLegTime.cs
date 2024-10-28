@@ -136,5 +136,6 @@ namespace AirpocketTRN.Models
         public Nullable<decimal> FuelPlanned { get; set; }
         public string PF { get; set; }
         public Nullable<int> OFPTOTALFUEL { get; set; }
+        public Nullable<System.DateTime> STDDayLocal { get; set; }
     }
 }

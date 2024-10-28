@@ -29,5 +29,6 @@ namespace AirpocketTRN.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<trn_exam_student_answer> trn_exam_student_answer { get; set; }
         public virtual trn_questions trn_questions { get; set; }
+        public virtual trn_exam trn_exam { get; set; }
     }
 }

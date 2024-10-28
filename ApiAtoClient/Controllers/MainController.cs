@@ -97,13 +97,14 @@ namespace ApiAtoClient.Controllers
         public class dto_profile
         {
             public string user_id { get; set; }
+            public int person_id { get; set; }
         }
         [Route("api/ato/client/profile")]
         [AcceptVerbs("POST")]
         public async Task<IHttpActionResult> PostProfile(dto_profile dto)
         {
             ppa_entities context = new ppa_entities();
-            var profile = await context.view_trn_profile.FirstOrDefaultAsync(q => q.UserId==dto.user_id);
+            var profile = await context.view_trn_profile.FirstOrDefaultAsync(q => q.Id==dto.person_id);
             
             var result = new DataResponse()
             {

@@ -395,7 +395,7 @@
           <Property Name="PosRemark" Type="varchar" MaxLength="500" />
           <Property Name="PosTicketUrl" Type="varchar" MaxLength="500" />
           <Property Name="DutyEndDateLocal" Type="datetime2" Precision="7" />
-          <Property Name="InitTo" Type="varchar" MaxLength="500" />
+          <Property Name="InitTo" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="FDPItem">
           <Key>
@@ -1081,6 +1081,34 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="section_name" Type="nvarchar" MaxLength="255" />
         </EntityType>
+        <EntityType Name="trn_exam">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="course_id" Type="int" Nullable="false" />
+          <Property Name="exam_date" Type="datetime2" Precision="7" />
+          <Property Name="exam_date_persian" Type="varchar" MaxLength="500" />
+          <Property Name="location_title" Type="nvarchar" MaxLength="1000" />
+          <Property Name="location_address" Type="nvarchar" MaxLength="2000" />
+          <Property Name="location_phone" Type="nvarchar" MaxLength="500" />
+          <Property Name="remark" Type="nvarchar" MaxLength="2000" />
+          <Property Name="status_id" Type="int" />
+          <Property Name="created_by" Type="int" />
+          <Property Name="confirmed_by" Type="int" />
+          <Property Name="created_date" Type="datetime2" Precision="7" />
+          <Property Name="confirmed_date" Type="datetime2" Precision="7" />
+          <Property Name="exam_type_id" Type="int" />
+          <Property Name="signed_by_ins1_date" Type="datetime2" Precision="7" />
+          <Property Name="signed_by_ins2_date" Type="datetime2" Precision="7" />
+          <Property Name="signed_by_director_date" Type="datetime2" Precision="7" />
+          <Property Name="signed_by_staff_date" Type="datetime2" Precision="7" />
+          <Property Name="duration" Type="int" />
+          <Property Name="date_start" Type="datetime2" Precision="7" />
+          <Property Name="date_end_scheduled" Type="datetime2" Precision="7" />
+          <Property Name="date_end_actual" Type="datetime2" Precision="7" />
+          <Property Name="date_start_scheduled" Type="datetime2" Precision="7" />
+        </EntityType>
         <EntityType Name="trn_exam_question">
           <Key>
             <PropertyRef Name="id" />
@@ -1519,43 +1547,7 @@
           <Property Name="Remark" Type="varchar" MaxLength="500" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo._view_trncard' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="_view_trncard">
-          <Key>
-            <PropertyRef Name="profile_id" />
-            <PropertyRef Name="name" />
-            <PropertyRef Name="first_name" />
-            <PropertyRef Name="last_name" />
-            <PropertyRef Name="person_id" />
-            <PropertyRef Name="nid" />
-            <PropertyRef Name="jobgroup" />
-            <PropertyRef Name="jobgroup_root" />
-            <PropertyRef Name="column_name" />
-            <PropertyRef Name="trncard_title" />
-          </Key>
-          <Property Name="profile_id" Type="int" Nullable="false" />
-          <Property Name="name" Type="nvarchar" MaxLength="1003" Nullable="false" />
-          <Property Name="first_name" Type="nvarchar" MaxLength="500" Nullable="false" />
-          <Property Name="last_name" Type="nvarchar" MaxLength="500" Nullable="false" />
-          <Property Name="person_id" Type="int" Nullable="false" />
-          <Property Name="nid" Type="nvarchar" MaxLength="500" Nullable="false" />
-          <Property Name="jobgroup" Type="nvarchar" MaxLength="500" Nullable="false" />
-          <Property Name="imageurl" Type="nvarchar" MaxLength="1000" />
-          <Property Name="jobgroup_root" Type="varchar" MaxLength="16" Nullable="false" />
-          <Property Name="clmn_caption" Type="nvarchar" MaxLength="255" />
-          <Property Name="clmn_name" Type="nvarchar" MaxLength="255" />
-          <Property Name="title" Type="varchar" MaxLength="255" />
-          <Property Name="column_name" Type="varchar" MaxLength="500" Nullable="false" />
-          <Property Name="trncard_title" Type="varchar" MaxLength="500" Nullable="false" />
-          <Property Name="IssueField" Type="varchar" MaxLength="500" />
-          <Property Name="ExpireField" Type="varchar" MaxLength="500" />
-          <Property Name="IssueDate" Type="datetime2" Precision="7" />
-          <Property Name="ExpireDate" Type="datetime2" Precision="7" />
-          <Property Name="interval_month" Type="int" />
-          <Property Name="Remain" Type="int" />
-        </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.AppCertificate' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.AppCertificate' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="AppCertificate">
           <Key>
             <PropertyRef Name="CrewId" />
@@ -1591,7 +1583,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.AppCertificate' does not have a pri
           <Property Name="StatusId" Type="int" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.ExpFlight' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.ExpFlight' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ExpFlight">
           <Key>
             <PropertyRef Name="Id" />
@@ -1633,7 +1625,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ExpFlight' does not have a primary 
           <Property Name="ArrivalLocal" Type="datetime" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.GRPCourseTypeExpiring' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.GRPCourseTypeExpiring' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="GRPCourseTypeExpiring">
           <Key>
             <PropertyRef Name="TypeId" />
@@ -1648,7 +1640,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.GRPCourseTypeExpiring' does not hav
           <Property Name="UnknownCount" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.GRPCourseTypeExpiringGroup' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.GRPCourseTypeExpiringGroup' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="GRPCourseTypeExpiringGroup">
           <Key>
             <PropertyRef Name="TypeId" />
@@ -1665,14 +1657,13 @@ warning 6002: The table/view 'ppa_varesh.dbo.GRPCourseTypeExpiringGroup' does no
           <Property Name="JobGroupMain" Type="nvarchar" MaxLength="500" />
           <Property Name="JobGroupMainCode" Type="varchar" MaxLength="500" />
           <Property Name="Mandatory" Type="int" />
-          <Property Name="CertificateTypeId" Type="int" />
           <Property Name="EmployeesCount" Type="int" />
           <Property Name="ValidCount" Type="int" />
           <Property Name="ExpiredCount" Type="int" />
           <Property Name="ExpiringCount" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.GRPCourseTypeExpiringMainGroup' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.GRPCourseTypeExpiringMainGroup' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="GRPCourseTypeExpiringMainGroup">
           <Key>
             <PropertyRef Name="TypeId" />
@@ -1690,7 +1681,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.GRPCourseTypeExpiringMainGroup' doe
           <Property Name="UnknownCount" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.GRPGroupsCourseTypeExpiring' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.GRPGroupsCourseTypeExpiring' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="GRPGroupsCourseTypeExpiring">
           <Key>
             <PropertyRef Name="JobGroupMain" />
@@ -1713,7 +1704,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.GRPGroupsCourseTypeExpiring' does n
           <Property Name="UnknownCount" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.GRPGroupsExpiring' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.GRPGroupsExpiring' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="GRPGroupsExpiring">
           <Key>
             <PropertyRef Name="JobGroupMain" />
@@ -1733,7 +1724,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.GRPGroupsExpiring' does not have a 
           <Property Name="UnknownCount" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.GRPMainGroupsExpiring' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.GRPMainGroupsExpiring' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="GRPMainGroupsExpiring">
           <Key>
             <PropertyRef Name="JobGroupMain" />
@@ -1748,7 +1739,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.GRPMainGroupsExpiring' does not hav
           <Property Name="UnknownCount" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.SumMandatoryCourseExpired' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.SumMandatoryCourseExpired' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="SumMandatoryCourseExpired">
           <Key>
             <PropertyRef Name="JobGroupRoot" />
@@ -1761,7 +1752,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.SumMandatoryCourseExpired' does not
           <Property Name="CNT" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.view_trn_crm_assessment' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.view_trn_crm_assessment' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="view_trn_crm_assessment">
           <Key>
             <PropertyRef Name="question_id" />
@@ -1775,7 +1766,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_trn_crm_assessment' does not h
           <Property Name="form_id" Type="int" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.view_trn_efb_assessment' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.view_trn_efb_assessment' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="view_trn_efb_assessment">
           <Key>
             <PropertyRef Name="form_id" />
@@ -1790,7 +1781,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_trn_efb_assessment' does not h
           <Property Name="assessment" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.view_trn_expiring' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.view_trn_expiring' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="view_trn_expiring">
           <Key>
             <PropertyRef Name="Id" />
@@ -1800,7 +1791,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_trn_expiring' does not have a 
           <Property Name="LastName" Type="nvarchar" MaxLength="500" />
           <Property Name="FirstName" Type="nvarchar" MaxLength="500" />
           <Property Name="JobGroup" Type="nvarchar" MaxLength="500" />
-          <Property Name="JobGroupRoot" Type="nvarchar" MaxLength="500" />
+          <Property Name="JobGroupRoot" Type="varchar" MaxLength="7" />
           <Property Name="Identifier" Type="varchar" MaxLength="255" />
           <Property Name="ODateIssue" Type="datetime2" Precision="7" />
           <Property Name="ODateExpire" Type="datetime2" Precision="7" />
@@ -1822,7 +1813,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_trn_expiring' does not have a 
           <Property Name="JobGroupMainId" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.view_trn_fstd_crm' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.view_trn_fstd_crm' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="view_trn_fstd_crm">
           <Key>
             <PropertyRef Name="form_id" />
@@ -1837,7 +1828,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_trn_fstd_crm' does not have a 
           <Property Name="assessment" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.view_trn_fstd_monitoring' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.view_trn_fstd_monitoring' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="view_trn_fstd_monitoring">
           <Key>
             <PropertyRef Name="form_id" />
@@ -1853,7 +1844,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_trn_fstd_monitoring' does not 
           <Property Name="proc" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.view_trn_grt' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.view_trn_grt' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="view_trn_grt">
           <Key>
             <PropertyRef Name="item_id" />
@@ -1867,7 +1858,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_trn_grt' does not have a prima
           <Property Name="form_id" Type="int" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.view_trn_instructor' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.view_trn_instructor' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="view_trn_instructor">
           <Key>
             <PropertyRef Name="form_id" />
@@ -1882,7 +1873,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_trn_instructor' does not have 
           <Property Name="rating" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.view_trn_line_check' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.view_trn_line_check' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="view_trn_line_check">
           <Key>
             <PropertyRef Name="form_id" />
@@ -1898,7 +1889,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_trn_line_check' does not have 
           <Property Name="rating" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.view_trn_line_crm' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.view_trn_line_crm' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="view_trn_line_crm">
           <Key>
             <PropertyRef Name="form_id" />
@@ -1913,7 +1904,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_trn_line_crm' does not have a 
           <Property Name="assessment" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.view_trn_zftt' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.view_trn_zftt' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="view_trn_zftt">
           <Key>
             <PropertyRef Name="form_id" />
@@ -1928,7 +1919,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_trn_zftt' does not have a prim
           <Property Name="assessment" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.ViewCertificateHistory' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.ViewCertificateHistory' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewCertificateHistory">
           <Key>
             <PropertyRef Name="Id" />
@@ -1994,7 +1985,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewCertificateHistory' does not ha
           <Property Name="RankOrder" Type="bigint" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.ViewCertificateHistoryRanked' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.ViewCertificateHistoryRanked' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewCertificateHistoryRanked">
           <Key>
             <PropertyRef Name="Id" />
@@ -2069,7 +2060,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewCertificateHistoryRanked' does 
           <Property Name="IsCritical" Type="int" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.ViewCourseAllowedEmployee' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.ViewCourseAllowedEmployee' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewCourseAllowedEmployee">
           <Key>
             <PropertyRef Name="CourseId" />
@@ -2111,7 +2102,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewCourseAllowedEmployee' does not
           <Property Name="InActive" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.ViewCourseDocument' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.ViewCourseDocument' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewCourseDocument">
           <Key>
             <PropertyRef Name="Id" />
@@ -2126,15 +2117,15 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewCourseDocument' does not have a
           <Property Name="FileUrl" Type="varchar" MaxLength="2000" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.ViewCourseNew' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.ViewCourseNew' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewCourseNew">
           <Key>
             <PropertyRef Name="Id" />
             <PropertyRef Name="CourseTypeId" />
             <PropertyRef Name="DateStart" />
             <PropertyRef Name="Recurrent" />
-            <PropertyRef Name="Sessions" />
             <PropertyRef Name="PeopleCount" />
+            <PropertyRef Name="Sessions" />
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="CourseTypeId" Type="int" Nullable="false" />
@@ -2165,7 +2156,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewCourseNew' does not have a prim
           <Property Name="CustomerId" Type="int" />
           <Property Name="No" Type="varchar" MaxLength="204" />
           <Property Name="IsNotificationEnabled" Type="bit" />
-          <Property Name="Sessions" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="Sessions" Type="varchar" MaxLength="200" Nullable="false" />
           <Property Name="PeopleCount" Type="int" Nullable="false" />
           <Property Name="Organization" Type="nvarchar" MaxLength="1000" />
           <Property Name="DurationUnit" Type="nvarchar" MaxLength="1000" />
@@ -2201,7 +2192,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewCourseNew' does not have a prim
           <Property Name="Date_Exam_Sign_Ins2" Type="datetime2" Precision="7" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.ViewCoursePeople' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.ViewCoursePeople' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewCoursePeople">
           <Key>
             <PropertyRef Name="Id" />
@@ -2303,7 +2294,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewCoursePeople' does not have a p
           <Property Name="Course_Date_Exam_Sign_Ins2" Type="datetime2" Precision="7" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.ViewCoursePeoplePassedRanked' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.ViewCoursePeoplePassedRanked' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewCoursePeoplePassedRanked">
           <Key>
             <PropertyRef Name="Id" />
@@ -2383,7 +2374,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewCoursePeoplePassedRanked' does 
           <Property Name="Remaining" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.ViewCoursePeopleRanked' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.ViewCoursePeopleRanked' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewCoursePeopleRanked">
           <Key>
             <PropertyRef Name="Id" />
@@ -2457,7 +2448,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewCoursePeopleRanked' does not ha
           <Property Name="ImageUrl" Type="nvarchar" MaxLength="1059" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.ViewCoursePeopleRankedByStart' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.ViewCoursePeopleRankedByStart' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewCoursePeopleRankedByStart">
           <Key>
             <PropertyRef Name="Id" />
@@ -2509,7 +2500,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewCoursePeopleRankedByStart' does
           <Property Name="GroupId" Type="int" />
           <Property Name="JobGroup" Type="nvarchar" MaxLength="500" />
           <Property Name="JobGroupCode" Type="varchar" MaxLength="500" />
-          <Property Name="JobGroupRoot" Type="varchar" MaxLength="16" Nullable="false" />
+          <Property Name="JobGroupRoot" Type="varchar" MaxLength="7" Nullable="false" />
           <Property Name="SexId" Type="int" Nullable="false" />
           <Property Name="NID" Type="nvarchar" MaxLength="500" Nullable="false" />
           <Property Name="FirstName" Type="nvarchar" MaxLength="500" Nullable="false" />
@@ -2540,7 +2531,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewCoursePeopleRankedByStart' does
           <Property Name="ProfileGroup" Type="varchar" MaxLength="16" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.ViewCourseRemaining' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.ViewCourseRemaining' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewCourseRemaining">
           <Key>
             <PropertyRef Name="Id" />
@@ -2574,7 +2565,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewCourseRemaining' does not have 
           <Property Name="Remaining" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.ViewCourseSession' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.ViewCourseSession' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewCourseSession">
           <Key>
             <PropertyRef Name="Id" />
@@ -2614,7 +2605,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewCourseSession' does not have a 
           <Property Name="Status" Type="varchar" MaxLength="11" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.ViewCourseSessionPresence' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.ViewCourseSessionPresence' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewCourseSessionPresence">
           <Key>
             
@@ -2641,7 +2632,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewCourseSessionPresence' does not
           <Property Name="IsPresent" Type="int" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.ViewCourseSessionPresenceDetail' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.ViewCourseSessionPresenceDetail' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewCourseSessionPresenceDetail">
           <Key>
             <PropertyRef Name="Id" />
@@ -2658,7 +2649,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewCourseSessionPresenceDetail' do
           <Property Name="Attendance" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.ViewCourseSMSHistoryRanked' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.ViewCourseSMSHistoryRanked' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewCourseSMSHistoryRanked">
           <Key>
             <PropertyRef Name="Id" />
@@ -2677,7 +2668,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewCourseSMSHistoryRanked' does no
           <Property Name="RankLast" Type="bigint" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.ViewCourseType' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.ViewCourseType' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewCourseType">
           <Key>
             <PropertyRef Name="Id" />
@@ -2705,7 +2696,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewCourseType' does not have a pri
           <Property Name="MapIntervals" Type="varchar" MaxLength="8000" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.ViewCourseTypeApplicable' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.ViewCourseTypeApplicable' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewCourseTypeApplicable">
           <Key>
             <PropertyRef Name="Id" />
@@ -2727,7 +2718,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewCourseTypeApplicable' does not 
           <Property Name="CertificateId2" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.ViewCourseTypeJobGroup' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.ViewCourseTypeJobGroup' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewCourseTypeJobGroup">
           <Key>
             <PropertyRef Name="Title" />
@@ -2746,7 +2737,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewCourseTypeJobGroup' does not ha
           <Property Name="Duration" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.ViewEmployee' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.ViewEmployee' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewEmployee">
           <Key>
             <PropertyRef Name="Id" />
@@ -2756,6 +2747,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewEmployee' does not have a prima
             
             <PropertyRef Name="IsActive" />
             <PropertyRef Name="IsDeleted" />
+            <PropertyRef Name="JobGroupRoot" />
             <PropertyRef Name="MarriageId" />
             <PropertyRef Name="NID" />
             <PropertyRef Name="SexId" />
@@ -2815,7 +2807,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewEmployee' does not have a prima
             <PropertyRef Name="FlightSum" />
             <PropertyRef Name="FlightEarly" />
             <PropertyRef Name="FlightLate" />
-            <PropertyRef Name="JobGroupRoot" />
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="PID" Type="nvarchar" MaxLength="500" Nullable="false" />
@@ -2833,6 +2824,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewEmployee' does not have a prima
           <Property Name="Username" Type="nvarchar" MaxLength="1000" />
           <Property Name="Password" Type="nvarchar" MaxLength="1000" />
           <Property Name="CustomerId" Type="int" />
+          <Property Name="OA" Type="int" />
           <Property Name="GroupId" Type="int" />
           <Property Name="C1GroupId" Type="int" />
           <Property Name="JobGroupC1" Type="nvarchar" MaxLength="500" />
@@ -2843,7 +2835,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewEmployee' does not have a prima
           <Property Name="C3GroupId" Type="int" />
           <Property Name="JobGroup" Type="nvarchar" MaxLength="500" />
           <Property Name="JobGroupCode" Type="varchar" MaxLength="500" />
-          <Property Name="JobGroupRoot" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="JobGroupRoot" Type="varchar" MaxLength="7" Nullable="false" />
           <Property Name="MarriageId" Type="int" Nullable="false" />
           <Property Name="NID" Type="nvarchar" MaxLength="500" Nullable="false" />
           <Property Name="SexId" Type="int" Nullable="false" />
@@ -3142,10 +3134,9 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewEmployee' does not have a prima
           <Property Name="JobGroupParentId" Type="int" />
           <Property Name="Type737ExpireDate" Type="datetime2" Precision="7" />
           <Property Name="TypeMDExpireDate" Type="datetime2" Precision="7" />
-          <Property Name="LicNo" Type="nvarchar" MaxLength="200" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.ViewEmployeeAbs' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.ViewEmployeeAbs' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewEmployeeAbs">
           <Key>
             <PropertyRef Name="Id" />
@@ -3180,7 +3171,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewEmployeeAbs' does not have a pr
           <Property Name="InActive" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.ViewEmployeeLight' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.ViewEmployeeLight' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewEmployeeLight">
           <Key>
             <PropertyRef Name="Id" />
@@ -3305,9 +3296,10 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewEmployeeLight' does not have a 
           <Property Name="InActive" Type="bit" />
           <Property Name="BaseAirportId" Type="int" />
           <Property Name="JobGroupCode2" Type="varchar" MaxLength="500" />
+          <Property Name="OtherAirline" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.ViewEmployeeTraining' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.ViewEmployeeTraining' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewEmployeeTraining">
           <Key>
             <PropertyRef Name="Id" />
@@ -3397,7 +3389,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewEmployeeTraining' does not have
           <Property Name="MandatoryExpired" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.ViewFDPIdea' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.ViewFDPIdea' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewFDPIdea">
           <Key>
             <PropertyRef Name="Id" />
@@ -3412,7 +3404,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewFDPIdea' does not have a primar
           <Property Name="RestUntil" Type="datetime" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.ViewFDPRest' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.ViewFDPRest' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewFDPRest">
           <Key>
             <PropertyRef Name="Id" />
@@ -3507,7 +3499,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewFDPRest' does not have a primar
           <Property Name="Remark" Type="varchar" MaxLength="1000" />
           <Property Name="Remark2" Type="nvarchar" MaxLength="500" />
           <Property Name="InitFlts" Type="varchar" MaxLength="500" />
-          <Property Name="InitRoute" Type="varchar" MaxLength="500" />
+          <Property Name="InitRoute" Type="nvarchar(max)" />
           <Property Name="CanceledNo" Type="varchar" MaxLength="500" />
           <Property Name="CanceledRoute" Type="varchar" MaxLength="500" />
           <Property Name="Extension" Type="int" />
@@ -3528,9 +3520,11 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewFDPRest' does not have a primar
           <Property Name="PosTicketUrl" Type="varchar" MaxLength="500" />
           <Property Name="Key" Type="varchar" MaxLength="500" />
           <Property Name="OutOfHomeBase" Type="bit" />
+          <Property Name="InitToIATA" Type="varchar" MaxLength="255" />
+          <Property Name="InitHomeBase" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.ViewJobGroup' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.ViewJobGroup' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewJobGroup">
           <Key>
             <PropertyRef Name="Id" />
@@ -3561,7 +3555,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewJobGroup' does not have a prima
           <Property Name="ParentCode2" Type="varchar" MaxLength="500" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.ViewJobGroupMain' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.ViewJobGroupMain' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewJobGroupMain">
           <Key>
             <PropertyRef Name="Id" />
@@ -3580,7 +3574,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewJobGroupMain' does not have a p
           <Property Name="FullCode2" Type="varchar" MaxLength="500" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.ViewLegTime' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.ViewLegTime' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewLegTime">
           <Key>
             <PropertyRef Name="ID" />
@@ -3632,6 +3626,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewLegTime' does not have a primar
           <Property Name="ArrivalRemark" Type="nvarchar" MaxLength="2000" />
           <Property Name="DepartureRemark" Type="nvarchar" MaxLength="2000" />
           <Property Name="STDDay" Type="date" />
+          <Property Name="STDDayLocal" Type="date" />
           <Property Name="STADay" Type="date" />
           <Property Name="DelayOffBlock" Type="int" />
           <Property Name="DelayTakeoff" Type="int" />
@@ -3716,7 +3711,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewLegTime' does not have a primar
           <Property Name="OFPTOTALFUEL" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.ViewMandatoryCourse' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.ViewMandatoryCourse' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewMandatoryCourse">
           <Key>
             <PropertyRef Name="TypeId" />
@@ -3736,7 +3731,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewMandatoryCourse' does not have 
           <Property Name="Continual" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.ViewMandatoryCourseEmployee' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.ViewMandatoryCourseEmployee' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewMandatoryCourseEmployee">
           <Key>
             <PropertyRef Name="FirstName" />
@@ -3805,7 +3800,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewMandatoryCourseEmployee' does n
           <Property Name="inactive" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.ViewPersonDocumentFileX' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.ViewPersonDocumentFileX' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewPersonDocumentFileX">
           <Key>
             <PropertyRef Name="PersonId" />
@@ -3825,7 +3820,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewPersonDocumentFileX' does not h
           <Property Name="PersonDocumentId" Type="int" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.ViewProfile' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.ViewProfile' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewProfile">
           <Key>
             <PropertyRef Name="Id" />
@@ -4047,10 +4042,9 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewProfile' does not have a primar
           <Property Name="RemainSMS" Type="int" />
           <Property Name="RemainSMSL1L2L3" Type="int" />
           <Property Name="RemainTRG07A" Type="int" />
-          <Property Name="ImageUrl" Type="nvarchar" MaxLength="1000" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.ViewSyllabus' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.ViewSyllabus' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewSyllabus">
           <Key>
             <PropertyRef Name="Id" />
@@ -4072,7 +4066,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewSyllabus' does not have a prima
           <Property Name="Instructor" Type="nvarchar" MaxLength="1001" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacher' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.ViewTeacher' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewTeacher">
           <Key>
             <PropertyRef Name="Id" />
@@ -4105,7 +4099,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacher' does not have a primar
           <Property Name="CourseCount" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherCourse' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.ViewTeacherCourse' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewTeacherCourse">
           <Key>
             <PropertyRef Name="CourseId" />
@@ -4179,7 +4173,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherCourse' does not have a 
           <Property Name="Date_Exam_Sign_Ins2" Type="datetime2" Precision="7" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_ava.dbo.ViewTeacherDocument' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewTeacherDocument">
           <Key>
             <PropertyRef Name="Id" />
@@ -4687,6 +4681,18 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_ex_ex_1">
+          <End Role="trn_exam" Type="Self.trn_exam" Multiplicity="1" />
+          <End Role="trn_exam_question" Type="Self.trn_exam_question" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="trn_exam">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="trn_exam_question">
+              <PropertyRef Name="exam_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_ex_qu_1">
           <End Role="trn_questions" Type="Self.trn_questions" Multiplicity="1" />
           <End Role="trn_exam_question" Type="Self.trn_exam_question" Multiplicity="*" />
@@ -4696,6 +4702,18 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
             </Principal>
             <Dependent Role="trn_exam_question">
               <PropertyRef Name="question_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_exma_course">
+          <End Role="Course" Type="Self.Course" Multiplicity="1" />
+          <End Role="trn_exam" Type="Self.trn_exam" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="trn_exam">
+              <PropertyRef Name="course_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4804,6 +4822,18 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
             </Principal>
             <Dependent Role="CourseSessionPresenceDetail">
               <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_qte_exam">
+          <End Role="trn_exam" Type="Self.trn_exam" Multiplicity="1" />
+          <End Role="trn_exam_question_template" Type="Self.trn_exam_question_template" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="trn_exam">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="trn_exam_question_template">
+              <PropertyRef Name="exam_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4923,6 +4953,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <EntitySet Name="trn_efb_actions" EntityType="Self.trn_efb_actions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="trn_efb_assessment" EntityType="Self.trn_efb_assessment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="trn_efb_sections" EntityType="Self.trn_efb_sections" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="trn_exam" EntityType="Self.trn_exam" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="trn_exam_question" EntityType="Self.trn_exam_question" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="trn_exam_question_template" EntityType="Self.trn_exam_question_template" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="trn_exam_student_answer" EntityType="Self.trn_exam_student_answer" Schema="dbo" store:Type="Tables" />
@@ -4955,30 +4986,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <EntitySet Name="trn_zftt_actions" EntityType="Self.trn_zftt_actions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="trn_zftt_sections" EntityType="Self.trn_zftt_sections" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TrnDbAppFieldMapping" EntityType="Self.TrnDbAppFieldMapping" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="_view_trncard" EntityType="Self._view_trncard" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [_view_trncard].[profile_id] AS [profile_id], 
-    [_view_trncard].[name] AS [name], 
-    [_view_trncard].[first_name] AS [first_name], 
-    [_view_trncard].[last_name] AS [last_name], 
-    [_view_trncard].[person_id] AS [person_id], 
-    [_view_trncard].[nid] AS [nid], 
-    [_view_trncard].[jobgroup] AS [jobgroup], 
-    [_view_trncard].[imageurl] AS [imageurl], 
-    [_view_trncard].[jobgroup_root] AS [jobgroup_root], 
-    [_view_trncard].[clmn_caption] AS [clmn_caption], 
-    [_view_trncard].[clmn_name] AS [clmn_name], 
-    [_view_trncard].[title] AS [title], 
-    [_view_trncard].[column_name] AS [column_name], 
-    [_view_trncard].[trncard_title] AS [trncard_title], 
-    [_view_trncard].[IssueField] AS [IssueField], 
-    [_view_trncard].[ExpireField] AS [ExpireField], 
-    [_view_trncard].[IssueDate] AS [IssueDate], 
-    [_view_trncard].[ExpireDate] AS [ExpireDate], 
-    [_view_trncard].[interval_month] AS [interval_month], 
-    [_view_trncard].[Remain] AS [Remain]
-    FROM [dbo].[_view_trncard] AS [_view_trncard]</DefiningQuery>
-          </EntitySet>
           <EntitySet Name="AppCertificate" EntityType="Self.AppCertificate" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [AppCertificate].[CrewId] AS [CrewId], 
@@ -5064,7 +5071,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
     [GRPCourseTypeExpiringGroup].[JobGroupMain] AS [JobGroupMain], 
     [GRPCourseTypeExpiringGroup].[JobGroupMainCode] AS [JobGroupMainCode], 
     [GRPCourseTypeExpiringGroup].[Mandatory] AS [Mandatory], 
-    [GRPCourseTypeExpiringGroup].[CertificateTypeId] AS [CertificateTypeId], 
     [GRPCourseTypeExpiringGroup].[EmployeesCount] AS [EmployeesCount], 
     [GRPCourseTypeExpiringGroup].[ValidCount] AS [ValidCount], 
     [GRPCourseTypeExpiringGroup].[ExpiredCount] AS [ExpiredCount], 
@@ -5917,6 +5923,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
     [ViewEmployee].[Username] AS [Username], 
     [ViewEmployee].[Password] AS [Password], 
     [ViewEmployee].[CustomerId] AS [CustomerId], 
+    [ViewEmployee].[OA] AS [OA], 
     [ViewEmployee].[GroupId] AS [GroupId], 
     [ViewEmployee].[C1GroupId] AS [C1GroupId], 
     [ViewEmployee].[JobGroupC1] AS [JobGroupC1], 
@@ -6225,8 +6232,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
     [ViewEmployee].[JobGroupId] AS [JobGroupId], 
     [ViewEmployee].[JobGroupParentId] AS [JobGroupParentId], 
     [ViewEmployee].[Type737ExpireDate] AS [Type737ExpireDate], 
-    [ViewEmployee].[TypeMDExpireDate] AS [TypeMDExpireDate], 
-    [ViewEmployee].[LicNo] AS [LicNo]
+    [ViewEmployee].[TypeMDExpireDate] AS [TypeMDExpireDate]
     FROM [dbo].[ViewEmployee] AS [ViewEmployee]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ViewEmployeeAbs" EntityType="Self.ViewEmployeeAbs" store:Type="Views" store:Schema="dbo">
@@ -6348,7 +6354,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
     [ViewEmployeeLight].[ScheduleName] AS [ScheduleName], 
     [ViewEmployeeLight].[InActive] AS [InActive], 
     [ViewEmployeeLight].[BaseAirportId] AS [BaseAirportId], 
-    [ViewEmployeeLight].[JobGroupCode2] AS [JobGroupCode2]
+    [ViewEmployeeLight].[JobGroupCode2] AS [JobGroupCode2], 
+    [ViewEmployeeLight].[OtherAirline] AS [OtherAirline]
     FROM [dbo].[ViewEmployeeLight] AS [ViewEmployeeLight]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ViewEmployeeTraining" EntityType="Self.ViewEmployeeTraining" store:Type="Views" store:Schema="dbo">
@@ -6535,7 +6542,9 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
     [ViewFDPRest].[PosRemark] AS [PosRemark], 
     [ViewFDPRest].[PosTicketUrl] AS [PosTicketUrl], 
     [ViewFDPRest].[Key] AS [Key], 
-    [ViewFDPRest].[OutOfHomeBase] AS [OutOfHomeBase]
+    [ViewFDPRest].[OutOfHomeBase] AS [OutOfHomeBase], 
+    [ViewFDPRest].[InitToIATA] AS [InitToIATA], 
+    [ViewFDPRest].[InitHomeBase] AS [InitHomeBase]
     FROM [dbo].[ViewFDPRest] AS [ViewFDPRest]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ViewJobGroup" EntityType="Self.ViewJobGroup" store:Type="Views" store:Schema="dbo">
@@ -6615,6 +6624,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
     [ViewLegTime].[ArrivalRemark] AS [ArrivalRemark], 
     [ViewLegTime].[DepartureRemark] AS [DepartureRemark], 
     [ViewLegTime].[STDDay] AS [STDDay], 
+    [ViewLegTime].[STDDayLocal] AS [STDDayLocal], 
     [ViewLegTime].[STADay] AS [STADay], 
     [ViewLegTime].[DelayOffBlock] AS [DelayOffBlock], 
     [ViewLegTime].[DelayTakeoff] AS [DelayTakeoff], 
@@ -6985,8 +6995,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
     [ViewProfile].[RemainSMSL2L3] AS [RemainSMSL2L3], 
     [ViewProfile].[RemainSMS] AS [RemainSMS], 
     [ViewProfile].[RemainSMSL1L2L3] AS [RemainSMSL1L2L3], 
-    [ViewProfile].[RemainTRG07A] AS [RemainTRG07A], 
-    [ViewProfile].[ImageUrl] AS [ImageUrl]
+    [ViewProfile].[RemainTRG07A] AS [RemainTRG07A]
     FROM [dbo].[ViewProfile] AS [ViewProfile]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ViewSyllabus" EntityType="Self.ViewSyllabus" store:Type="Views" store:Schema="dbo">
@@ -7260,9 +7269,17 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
             <End Role="Document" EntitySet="Document" />
             <End Role="Document1" EntitySet="Document" />
           </AssociationSet>
+          <AssociationSet Name="fk_ex_ex_1" Association="Self.fk_ex_ex_1">
+            <End Role="trn_exam" EntitySet="trn_exam" />
+            <End Role="trn_exam_question" EntitySet="trn_exam_question" />
+          </AssociationSet>
           <AssociationSet Name="fk_ex_qu_1" Association="Self.fk_ex_qu_1">
             <End Role="trn_questions" EntitySet="trn_questions" />
             <End Role="trn_exam_question" EntitySet="trn_exam_question" />
+          </AssociationSet>
+          <AssociationSet Name="fk_exma_course" Association="Self.fk_exma_course">
+            <End Role="Course" EntitySet="Course" />
+            <End Role="trn_exam" EntitySet="trn_exam" />
           </AssociationSet>
           <AssociationSet Name="fk_fdp_fdp" Association="Self.fk_fdp_fdp">
             <End Role="FDP" EntitySet="FDP" />
@@ -7295,6 +7312,10 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <AssociationSet Name="fk_pscod_person" Association="Self.fk_pscod_person">
             <End Role="Person" EntitySet="Person" />
             <End Role="CourseSessionPresenceDetail" EntitySet="CourseSessionPresenceDetail" />
+          </AssociationSet>
+          <AssociationSet Name="fk_qte_exam" Association="Self.fk_qte_exam">
+            <End Role="trn_exam" EntitySet="trn_exam" />
+            <End Role="trn_exam_question_template" EntitySet="trn_exam_question_template" />
           </AssociationSet>
           <AssociationSet Name="fk_qu_cat" Association="Self.fk_qu_cat">
             <End Role="trn_question_category" EntitySet="trn_question_category" />
@@ -7667,6 +7688,19 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
             <End Role="trn_question_category" EntitySet="trn_question_category" />
             <End Role="trn_questions" EntitySet="trn_questions" />
           </AssociationSet>
+          <EntitySet Name="trn_exam" EntityType="FLYModel.trn_exam" />
+          <AssociationSet Name="fk_exma_course" Association="FLYModel.fk_exma_course">
+            <End Role="Course" EntitySet="Courses" />
+            <End Role="trn_exam" EntitySet="trn_exam" />
+          </AssociationSet>
+          <AssociationSet Name="fk_ex_ex_1" Association="FLYModel.fk_ex_ex_1">
+            <End Role="trn_exam" EntitySet="trn_exam" />
+            <End Role="trn_exam_question" EntitySet="trn_exam_question" />
+          </AssociationSet>
+          <AssociationSet Name="fk_qte_exam" Association="FLYModel.fk_qte_exam">
+            <End Role="trn_exam" EntitySet="trn_exam" />
+            <End Role="trn_exam_question_template" EntitySet="trn_exam_question_template" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="ViewLegTime">
           <Key>
@@ -7800,6 +7834,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <Property Name="FuelPlanned" Type="Decimal" Precision="18" Scale="4" />
           <Property Name="PF" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="OFPTOTALFUEL" Type="Int32" />
+          <Property Name="STDDayLocal" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="ExpFlight">
           <Key>
@@ -7923,7 +7958,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <Property Name="PosRemark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="PosTicketUrl" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="DutyEndDateLocal" Type="DateTime" Precision="7" />
-          <Property Name="InitTo" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="InitTo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="FDPItem">
           <Key>
@@ -8093,6 +8128,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <Property Name="InActive" Type="Boolean" />
           <Property Name="BaseAirportId" Type="Int32" />
           <Property Name="JobGroupCode2" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="OtherAirline" Type="Boolean" />
         </EntityType>
         <EntityType Name="ViewFDPRest">
           <Key>
@@ -8188,7 +8224,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <Property Name="Remark" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
           <Property Name="Remark2" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="InitFlts" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="InitRoute" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="InitRoute" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CanceledNo" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="CanceledRoute" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="Extension" Type="Int32" />
@@ -8209,6 +8245,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <Property Name="PosTicketUrl" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="Key" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="OutOfHomeBase" Type="Boolean" />
+          <Property Name="InitToIATA" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="InitHomeBase" Type="Int32" />
         </EntityType>
         <EntityType Name="CourseSession">
           <Key>
@@ -8671,7 +8709,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <Property Name="GroupId" Type="Int32" />
           <Property Name="JobGroup" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="JobGroupCode" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="JobGroupRoot" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="JobGroupRoot" Type="String" Nullable="false" MaxLength="7" FixedLength="false" Unicode="false" />
           <Property Name="MarriageId" Type="Int32" Nullable="false" />
           <Property Name="NID" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="SexId" Type="Int32" Nullable="false" />
@@ -8978,6 +9016,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <Property Name="Type737ExpireDate" Type="DateTime" Precision="7" />
           <Property Name="TypeMDExpireDate" Type="DateTime" Precision="7" />
           <Property Name="LicNo" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="OA" Type="Int32" />
         </EntityType>
         <EntityType Name="GRPGroupsCourseTypeExpiring">
           <Key>
@@ -10363,7 +10402,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <Property Name="GroupId" Type="Int32" />
           <Property Name="JobGroup" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="JobGroupCode" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="JobGroupRoot" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="false" />
+          <Property Name="JobGroupRoot" Type="String" Nullable="false" MaxLength="7" FixedLength="false" Unicode="false" />
           <Property Name="SexId" Type="Int32" Nullable="false" />
           <Property Name="NID" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="FirstName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
@@ -11628,7 +11667,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <Property Name="LastName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="FirstName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="JobGroup" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="JobGroupRoot" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="JobGroupRoot" Type="String" MaxLength="7" FixedLength="false" Unicode="false" />
           <Property Name="Identifier" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="ODateIssue" Type="DateTime" Precision="7" />
           <Property Name="ODateExpire" Type="DateTime" Precision="7" />
@@ -12115,6 +12154,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <NavigationProperty Name="CourseSessionPresenceDetails" Relationship="FLYModel.fk_pscod_course" FromRole="Course" ToRole="CourseSessionPresenceDetail" />
           <NavigationProperty Name="CourseSessions" Relationship="FLYModel.fk_session_course" FromRole="Course" ToRole="CourseSession" />
           <NavigationProperty Name="CourseSyllabus" Relationship="FLYModel.fk_syl_crs" FromRole="Course" ToRole="CourseSyllabu" />
+          <NavigationProperty Name="trn_exam" Relationship="FLYModel.fk_exma_course" FromRole="Course" ToRole="trn_exam" />
         </EntityType>
         <Association Name="fk_course_instructor">
           <End Type="FLYModel.Teacher" Role="Teacher" Multiplicity="0..1" />
@@ -12274,7 +12314,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <Property Name="CustomerId" Type="Int32" />
           <Property Name="No" Type="String" MaxLength="204" FixedLength="false" Unicode="false" />
           <Property Name="IsNotificationEnabled" Type="Boolean" />
-          <Property Name="Sessions" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="Sessions" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="PeopleCount" Type="Int32" Nullable="false" />
           <Property Name="Organization" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="DurationUnit" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
@@ -12442,6 +12482,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <Property Name="remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="trn_exam_student_answer" Relationship="FLYModel.fk_st_ans_wxqu" FromRole="trn_exam_question" ToRole="trn_exam_student_answer" />
           <NavigationProperty Name="trn_questions" Relationship="FLYModel.fk_ex_qu_1" FromRole="trn_exam_question" ToRole="trn_questions" />
+          <NavigationProperty Name="trn_exam" Relationship="FLYModel.fk_ex_ex_1" FromRole="trn_exam_question" ToRole="trn_exam" />
         </EntityType>
         <EntityType Name="trn_exam_question_template">
           <Key>
@@ -12453,6 +12494,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <Property Name="hardness" Type="Int32" />
           <Property Name="total" Type="Int32" />
           <Property Name="reamrk" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="trn_exam" Relationship="FLYModel.fk_qte_exam" FromRole="trn_exam_question_template" ToRole="trn_exam" />
         </EntityType>
         <EntityType Name="trn_question_category">
           <Key>
@@ -12531,6 +12573,73 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="trn_exam">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="course_id" Type="Int32" Nullable="false" />
+          <Property Name="exam_date" Type="DateTime" Precision="7" />
+          <Property Name="exam_date_persian" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="location_title" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="location_address" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="location_phone" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="remark" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="status_id" Type="Int32" />
+          <Property Name="created_by" Type="Int32" />
+          <Property Name="confirmed_by" Type="Int32" />
+          <Property Name="created_date" Type="DateTime" Precision="7" />
+          <Property Name="confirmed_date" Type="DateTime" Precision="7" />
+          <Property Name="exam_type_id" Type="Int32" />
+          <Property Name="signed_by_ins1_date" Type="DateTime" Precision="7" />
+          <Property Name="signed_by_ins2_date" Type="DateTime" Precision="7" />
+          <Property Name="signed_by_director_date" Type="DateTime" Precision="7" />
+          <Property Name="signed_by_staff_date" Type="DateTime" Precision="7" />
+          <Property Name="duration" Type="Int32" />
+          <Property Name="date_start" Type="DateTime" Precision="7" />
+          <Property Name="date_end_scheduled" Type="DateTime" Precision="7" />
+          <Property Name="date_end_actual" Type="DateTime" Precision="7" />
+          <Property Name="date_start_scheduled" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="Course" Relationship="FLYModel.fk_exma_course" FromRole="trn_exam" ToRole="Course" />
+          <NavigationProperty Name="trn_exam_question" Relationship="FLYModel.fk_ex_ex_1" FromRole="trn_exam" ToRole="trn_exam_question" />
+          <NavigationProperty Name="trn_exam_question_template" Relationship="FLYModel.fk_qte_exam" FromRole="trn_exam" ToRole="trn_exam_question_template" />
+        </EntityType>
+        <Association Name="fk_exma_course">
+          <End Type="FLYModel.Course" Role="Course" Multiplicity="1" />
+          <End Type="FLYModel.trn_exam" Role="trn_exam" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="trn_exam">
+              <PropertyRef Name="course_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_ex_ex_1">
+          <End Type="FLYModel.trn_exam" Role="trn_exam" Multiplicity="1" />
+          <End Type="FLYModel.trn_exam_question" Role="trn_exam_question" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="trn_exam">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="trn_exam_question">
+              <PropertyRef Name="exam_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_qte_exam">
+          <End Type="FLYModel.trn_exam" Role="trn_exam" Multiplicity="1" />
+          <End Type="FLYModel.trn_exam_question_template" Role="trn_exam_question_template" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="trn_exam">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="trn_exam_question_template">
+              <PropertyRef Name="exam_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -12540,6 +12649,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <EntitySetMapping Name="ViewLegTimes">
             <EntityTypeMapping TypeName="FLYModel.ViewLegTime">
               <MappingFragment StoreEntitySet="ViewLegTime">
+                <ScalarProperty Name="STDDayLocal" ColumnName="STDDayLocal" />
                 <ScalarProperty Name="OFPTOTALFUEL" ColumnName="OFPTOTALFUEL" />
                 <ScalarProperty Name="PF" ColumnName="PF" />
                 <ScalarProperty Name="FuelPlanned" ColumnName="FuelPlanned" />
@@ -12807,6 +12917,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <EntitySetMapping Name="ViewEmployeeLights">
             <EntityTypeMapping TypeName="FLYModel.ViewEmployeeLight">
               <MappingFragment StoreEntitySet="ViewEmployeeLight">
+                <ScalarProperty Name="OtherAirline" ColumnName="OtherAirline" />
                 <ScalarProperty Name="JobGroupCode2" ColumnName="JobGroupCode2" />
                 <ScalarProperty Name="BaseAirportId" ColumnName="BaseAirportId" />
                 <ScalarProperty Name="InActive" ColumnName="InActive" />
@@ -12909,6 +13020,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <EntitySetMapping Name="ViewFDPRests">
             <EntityTypeMapping TypeName="FLYModel.ViewFDPRest">
               <MappingFragment StoreEntitySet="ViewFDPRest">
+                <ScalarProperty Name="InitHomeBase" ColumnName="InitHomeBase" />
+                <ScalarProperty Name="InitToIATA" ColumnName="InitToIATA" />
                 <ScalarProperty Name="OutOfHomeBase" ColumnName="OutOfHomeBase" />
                 <ScalarProperty Name="Key" ColumnName="Key" />
                 <ScalarProperty Name="PosTicketUrl" ColumnName="PosTicketUrl" />
@@ -13327,7 +13440,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <EntitySetMapping Name="ViewEmployees">
             <EntityTypeMapping TypeName="FLYModel.ViewEmployee">
               <MappingFragment StoreEntitySet="ViewEmployee">
-                <ScalarProperty Name="LicNo" ColumnName="LicNo" />
+                <ScalarProperty Name="OA" ColumnName="OA" />
                 <ScalarProperty Name="TypeMDExpireDate" ColumnName="TypeMDExpireDate" />
                 <ScalarProperty Name="Type737ExpireDate" ColumnName="Type737ExpireDate" />
                 <ScalarProperty Name="JobGroupParentId" ColumnName="JobGroupParentId" />
@@ -14327,7 +14440,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <EntitySetMapping Name="ViewProfiles">
             <EntityTypeMapping TypeName="FLYModel.ViewProfile">
               <MappingFragment StoreEntitySet="ViewProfile">
-                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
                 <ScalarProperty Name="RemainSMSL1L2L3" ColumnName="RemainSMSL1L2L3" />
                 <ScalarProperty Name="RemainTRG07A" ColumnName="RemainTRG07A" />
                 <ScalarProperty Name="RemainSMSL2L3" ColumnName="RemainSMSL2L3" />
@@ -14825,7 +14937,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
                 <ScalarProperty Name="ExpiredCount" ColumnName="ExpiredCount" />
                 <ScalarProperty Name="ValidCount" ColumnName="ValidCount" />
                 <ScalarProperty Name="EmployeesCount" ColumnName="EmployeesCount" />
-                <ScalarProperty Name="CertificateTypeId" ColumnName="CertificateTypeId" />
                 <ScalarProperty Name="Mandatory" ColumnName="Mandatory" />
                 <ScalarProperty Name="JobGroupMainCode" ColumnName="JobGroupMainCode" />
                 <ScalarProperty Name="JobGroupMain" ColumnName="JobGroupMain" />
@@ -15371,32 +15482,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
                 <ScalarProperty Name="MarriageId" ColumnName="MarriageId" />
                 <ScalarProperty Name="DateCreate" ColumnName="DateCreate" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="C_view_trncard">
-            <EntityTypeMapping TypeName="FLYModel.C_view_trncard">
-              <MappingFragment StoreEntitySet="_view_trncard">
-                <ScalarProperty Name="Remain" ColumnName="Remain" />
-                <ScalarProperty Name="interval_month" ColumnName="interval_month" />
-                <ScalarProperty Name="ExpireDate" ColumnName="ExpireDate" />
-                <ScalarProperty Name="IssueDate" ColumnName="IssueDate" />
-                <ScalarProperty Name="ExpireField" ColumnName="ExpireField" />
-                <ScalarProperty Name="IssueField" ColumnName="IssueField" />
-                <ScalarProperty Name="trncard_title" ColumnName="trncard_title" />
-                <ScalarProperty Name="column_name" ColumnName="column_name" />
-                <ScalarProperty Name="title" ColumnName="title" />
-                <ScalarProperty Name="clmn_name" ColumnName="clmn_name" />
-                <ScalarProperty Name="clmn_caption" ColumnName="clmn_caption" />
-                <ScalarProperty Name="jobgroup_root" ColumnName="jobgroup_root" />
-                <ScalarProperty Name="imageurl" ColumnName="imageurl" />
-                <ScalarProperty Name="jobgroup" ColumnName="jobgroup" />
-                <ScalarProperty Name="nid" ColumnName="nid" />
-                <ScalarProperty Name="person_id" ColumnName="person_id" />
-                <ScalarProperty Name="last_name" ColumnName="last_name" />
-                <ScalarProperty Name="first_name" ColumnName="first_name" />
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="profile_id" ColumnName="profile_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -16364,6 +16449,35 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
                 <ScalarProperty Name="remark" ColumnName="remark" />
                 <ScalarProperty Name="english_title" ColumnName="english_title" />
                 <ScalarProperty Name="persian_title" ColumnName="persian_title" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="trn_exam">
+            <EntityTypeMapping TypeName="FLYModel.trn_exam">
+              <MappingFragment StoreEntitySet="trn_exam">
+                <ScalarProperty Name="date_start_scheduled" ColumnName="date_start_scheduled" />
+                <ScalarProperty Name="date_end_actual" ColumnName="date_end_actual" />
+                <ScalarProperty Name="date_end_scheduled" ColumnName="date_end_scheduled" />
+                <ScalarProperty Name="date_start" ColumnName="date_start" />
+                <ScalarProperty Name="duration" ColumnName="duration" />
+                <ScalarProperty Name="signed_by_staff_date" ColumnName="signed_by_staff_date" />
+                <ScalarProperty Name="signed_by_director_date" ColumnName="signed_by_director_date" />
+                <ScalarProperty Name="signed_by_ins2_date" ColumnName="signed_by_ins2_date" />
+                <ScalarProperty Name="signed_by_ins1_date" ColumnName="signed_by_ins1_date" />
+                <ScalarProperty Name="exam_type_id" ColumnName="exam_type_id" />
+                <ScalarProperty Name="confirmed_date" ColumnName="confirmed_date" />
+                <ScalarProperty Name="created_date" ColumnName="created_date" />
+                <ScalarProperty Name="confirmed_by" ColumnName="confirmed_by" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="status_id" ColumnName="status_id" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="location_phone" ColumnName="location_phone" />
+                <ScalarProperty Name="location_address" ColumnName="location_address" />
+                <ScalarProperty Name="location_title" ColumnName="location_title" />
+                <ScalarProperty Name="exam_date_persian" ColumnName="exam_date_persian" />
+                <ScalarProperty Name="exam_date" ColumnName="exam_date" />
+                <ScalarProperty Name="course_id" ColumnName="course_id" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

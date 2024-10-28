@@ -110,5 +110,6 @@ namespace AirpocketTRN.Models
         public Nullable<bool> InActive { get; set; }
         public Nullable<int> BaseAirportId { get; set; }
         public string JobGroupCode2 { get; set; }
+        public Nullable<bool> OtherAirline { get; set; }
     }
 }

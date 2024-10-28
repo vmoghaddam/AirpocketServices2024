@@ -2593,6 +2593,37 @@ namespace AirpocketTRN.Services
                 }
             }
 
+            var exiting_exams = await context.trn_exam.Where(q => q.course_id == dto.Id).ToListAsync();
+            var exam_ids = exiting_exams.Select(q => q.id).ToList();
+            var existing_templates=await context.trn_exam_question_template.Where(q=>exam_ids.Contains(q.exam_id)).ToListAsync();
+
+            if (dto.exams!=null && dto.exams.Count > 0)
+            {
+                var dto_exam = dto.exams.First();
+                var db_exam = await context.trn_exam.FirstOrDefaultAsync(q => q.course_id == dto.Id);
+                if (db_exam == null)
+                {
+                    db_exam = new trn_exam();
+                    entity.trn_exam.Add(db_exam);
+                }
+                //db_exam.date_start = dto_exam.date_start;
+               // db_exam.date_start_scheduled = dto_exam.date_start_scheduled;
+               // db_exam.duration = dto_exam.duration;
+               // db_exam.exam_date = dto_exam.exam_date;
+               // db_exam.
+                foreach(var temp in dto_exam.template)
+                {
+                    var db_temp = existing_templates.FirstOrDefault(q => q.exam_id == db_exam.id && q.question_category_id == temp.category_id);
+                    if (db_temp == null)
+                    {
+                        db_temp = new trn_exam_question_template();
+                        db_exam.trn_exam_question_template.Add(db_temp);
+                    }
+                    db_temp.question_category_id= temp.category_id;
+                    db_temp.total = temp.count;
+                }
+
+            }
             //pasco
             /* var docs = await context.CourseDocuments.Where(q => q.CourseId == dto.Id).ToListAsync();
              var docids = dto.Documents.Where(q => q.Id > 0).Select(q => q.Id).ToList();

@@ -68,6 +68,43 @@ namespace AirpocketTRN.ViewModels
 
     }
 
+    public class ExamViewModel
+    {
+        public int id { get; set; }
+        public int course_id { get; set; }
+        public Nullable<System.DateTime> exam_date { get; set; }
+        public string exam_date_persian { get; set; }
+        public string location_title { get; set; }
+        public string location_address { get; set; }
+        public string location_phone { get; set; }
+        public string remark { get; set; }
+        public Nullable<int> status_id { get; set; }
+        public Nullable<int> created_by { get; set; }
+        public Nullable<int> confirmed_by { get; set; }
+        public Nullable<System.DateTime> created_date { get; set; }
+        public Nullable<System.DateTime> confirmed_date { get; set; }
+        public Nullable<int> exam_type_id { get; set; }
+        public Nullable<System.DateTime> signed_by_ins1_date { get; set; }
+        public Nullable<System.DateTime> signed_by_ins2_date { get; set; }
+        public Nullable<System.DateTime> signed_by_director_date { get; set; }
+        public Nullable<System.DateTime> signed_by_staff_date { get; set; }
+        public Nullable<int> duration { get; set; }
+        public Nullable<System.DateTime> date_start { get; set; }
+        public Nullable<System.DateTime> date_end_scheduled { get; set; }
+        public Nullable<System.DateTime> date_end_actual { get; set; }
+        public Nullable<System.DateTime> date_start_scheduled { get; set; }
+
+        public List<string> groups { get; set; }
+        public List<int> people { get; set; }
+        public List<exam_template> template { get; set; }
+    }
+    public class exam_template
+    {
+        public int template_id { get; set; }
+        public int category_id { get; set; }
+        public string category { get; set; }
+        public int? count { get; set; }
+    }
     public class CourseViewModel
     {
         public int Id { get; set; }
@@ -120,6 +157,7 @@ namespace AirpocketTRN.ViewModels
         public List<CourseDoc> Documents { get; set; }
         public List<SyllabusDto> Syllabi { get; set; }
 
+        public List<ExamViewModel> exams { get; set; }
 
     }
     public class SyllabusDto

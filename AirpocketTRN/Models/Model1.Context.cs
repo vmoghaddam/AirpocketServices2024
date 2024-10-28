@@ -146,5 +146,6 @@ namespace AirpocketTRN.Models
         public virtual DbSet<trn_exam_question_template> trn_exam_question_template { get; set; }
         public virtual DbSet<trn_question_category> trn_question_category { get; set; }
         public virtual DbSet<trn_questions> trn_questions { get; set; }
+        public virtual DbSet<trn_exam> trn_exam { get; set; }
     }
 }

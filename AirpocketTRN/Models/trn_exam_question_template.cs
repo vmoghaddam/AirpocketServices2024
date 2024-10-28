@@ -20,5 +20,7 @@ namespace AirpocketTRN.Models
         public Nullable<int> hardness { get; set; }
         public Nullable<int> total { get; set; }
         public string reamrk { get; set; }
+    
+        public virtual trn_exam trn_exam { get; set; }
     }
 }
