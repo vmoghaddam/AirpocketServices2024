@@ -31,6 +31,13 @@ namespace AirpocketTRN.Models
         public string Password { get; set; }
         public Nullable<int> CustomerId { get; set; }
         public Nullable<int> GroupId { get; set; }
+        public Nullable<int> C1GroupId { get; set; }
+        public string JobGroupC1 { get; set; }
+        public string JobGroupCodeC1 { get; set; }
+        public Nullable<int> C2GroupId { get; set; }
+        public string JobGroupC2 { get; set; }
+        public string JobGroupCodeC2 { get; set; }
+        public Nullable<int> C3GroupId { get; set; }
         public string JobGroup { get; set; }
         public string JobGroupCode { get; set; }
         public string JobGroupRoot { get; set; }
@@ -109,9 +116,9 @@ namespace AirpocketTRN.Models
         public int IsPassportExpired { get; set; }
         public int IsPassportExpiring { get; set; }
         public Nullable<System.DateTime> DateExpireNDT { get; set; }
-        public int CriticalCertificatesCount { get; set; }
-        public int BookAlert { get; set; }
         public string Types { get; set; }
+        public int BookAlert { get; set; }
+        public int CriticalCertificatesCount { get; set; }
         public Nullable<System.DateTime> ProficiencyExpireDate { get; set; }
         public Nullable<System.DateTime> CrewMemberCertificateExpireDate { get; set; }
         public Nullable<System.DateTime> LicenceExpireDate { get; set; }
@@ -226,6 +233,9 @@ namespace AirpocketTRN.Models
         public Nullable<int> RemainTRE { get; set; }
         public Nullable<int> RemainRecurrent { get; set; }
         public Nullable<int> RemainLine { get; set; }
+        public Nullable<int> RemainEGPWS { get; set; }
+        public Nullable<int> RemainRSP { get; set; }
+        public Nullable<int> RemainLRC { get; set; }
         public double FlightSum { get; set; }
         public int FlightEarly { get; set; }
         public int FlightLate { get; set; }
@@ -233,16 +243,7 @@ namespace AirpocketTRN.Models
         public string JobGroupMain { get; set; }
         public string JobGroupMainCode { get; set; }
         public string JobGroupCode2 { get; set; }
-        public Nullable<int> RemainEGPWS { get; set; }
-        public Nullable<int> C1GroupId { get; set; }
-        public string JobGroupC1 { get; set; }
-        public string JobGroupCodeC1 { get; set; }
-        public Nullable<int> C2GroupId { get; set; }
-        public string JobGroupC2 { get; set; }
-        public string JobGroupCodeC2 { get; set; }
-        public Nullable<int> C3GroupId { get; set; }
-        public Nullable<int> RemainRSP { get; set; }
-        public Nullable<int> RemainLRC { get; set; }
+        public Nullable<int> JobGroupMainId { get; set; }
         public string CodeX { get; set; }
         public Nullable<int> RemainTypeMD { get; set; }
         public Nullable<int> RemainType737 { get; set; }
@@ -334,12 +335,10 @@ namespace AirpocketTRN.Models
         public Nullable<int> Remain33 { get; set; }
         public Nullable<int> Remain34 { get; set; }
         public Nullable<int> Remain35 { get; set; }
-        public Nullable<int> JobGroupMainId { get; set; }
         public Nullable<int> JobGroupId { get; set; }
         public Nullable<int> JobGroupParentId { get; set; }
         public Nullable<System.DateTime> Type737ExpireDate { get; set; }
         public Nullable<System.DateTime> TypeMDExpireDate { get; set; }
         public string LicNo { get; set; }
-        public Nullable<int> OA { get; set; }
     }
 }

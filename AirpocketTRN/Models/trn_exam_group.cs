@@ -7,16 +7,16 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ApiAtoClient.Models
+namespace AirpocketTRN.Models
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class trn_exam_person
+    public partial class trn_exam_group
     {
         public int id { get; set; }
         public int exam_id { get; set; }
-        public int person_id { get; set; }
+        public Nullable<int> group_id { get; set; }
         public string remark { get; set; }
     
         public virtual trn_exam trn_exam { get; set; }

@@ -19,6 +19,8 @@ namespace AirpocketTRN.Models
         {
             this.trn_exam_question = new HashSet<trn_exam_question>();
             this.trn_exam_question_template = new HashSet<trn_exam_question_template>();
+            this.trn_exam_group = new HashSet<trn_exam_group>();
+            this.trn_exam_person = new HashSet<trn_exam_person>();
         }
     
         public int id { get; set; }
@@ -50,5 +52,9 @@ namespace AirpocketTRN.Models
         public virtual ICollection<trn_exam_question> trn_exam_question { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<trn_exam_question_template> trn_exam_question_template { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<trn_exam_group> trn_exam_group { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<trn_exam_person> trn_exam_person { get; set; }
     }
 }

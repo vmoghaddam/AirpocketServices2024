@@ -25,12 +25,9 @@ namespace AirpocketTRN.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<ViewLegTime> ViewLegTimes { get; set; }
         public virtual DbSet<ExpFlight> ExpFlights { get; set; }
         public virtual DbSet<FDP> FDPs { get; set; }
         public virtual DbSet<FDPItem> FDPItems { get; set; }
-        public virtual DbSet<ViewEmployeeLight> ViewEmployeeLights { get; set; }
-        public virtual DbSet<ViewFDPRest> ViewFDPRests { get; set; }
         public virtual DbSet<CourseSession> CourseSessions { get; set; }
         public virtual DbSet<CourseSessionPresence> CourseSessionPresences { get; set; }
         public virtual DbSet<ViewFDPIdea> ViewFDPIdeas { get; set; }
@@ -45,7 +42,6 @@ namespace AirpocketTRN.Models
         public virtual DbSet<ViewJobGroupMain> ViewJobGroupMains { get; set; }
         public virtual DbSet<GRPCourseTypeExpiring> GRPCourseTypeExpirings { get; set; }
         public virtual DbSet<GRPCourseTypeExpiringMainGroup> GRPCourseTypeExpiringMainGroups { get; set; }
-        public virtual DbSet<ViewEmployee> ViewEmployees { get; set; }
         public virtual DbSet<GRPGroupsCourseTypeExpiring> GRPGroupsCourseTypeExpirings { get; set; }
         public virtual DbSet<GRPGroupsExpiring> GRPGroupsExpirings { get; set; }
         public virtual DbSet<GRPMainGroupsExpiring> GRPMainGroupsExpirings { get; set; }
@@ -80,18 +76,15 @@ namespace AirpocketTRN.Models
         public virtual DbSet<TrnDbAppFieldMapping> TrnDbAppFieldMappings { get; set; }
         public virtual DbSet<ViewCourseSMSHistoryRanked> ViewCourseSMSHistoryRankeds { get; set; }
         public virtual DbSet<CertificateType> CertificateTypes { get; set; }
-        public virtual DbSet<ViewProfile> ViewProfiles { get; set; }
         public virtual DbSet<ViewCertificateHistoryRanked> ViewCertificateHistoryRankeds { get; set; }
         public virtual DbSet<Manager> Managers { get; set; }
         public virtual DbSet<ManagerGroup> ManagerGroups { get; set; }
         public virtual DbSet<ViewCoursePeople> ViewCoursePeoples { get; set; }
         public virtual DbSet<ViewCertificateHistory> ViewCertificateHistories { get; set; }
         public virtual DbSet<ViewCoursePeopleRankedByStart> ViewCoursePeopleRankedByStarts { get; set; }
-        public virtual DbSet<GRPCourseTypeExpiringGroup> GRPCourseTypeExpiringGroups { get; set; }
         public virtual DbSet<CourseTypeApplicable> CourseTypeApplicables { get; set; }
         public virtual DbSet<ViewCourseTypeApplicable> ViewCourseTypeApplicables { get; set; }
         public virtual DbSet<Person> People { get; set; }
-        public virtual DbSet<C_view_trncard> C_view_trncard { get; set; }
         public virtual DbSet<trn_answers> trn_answers { get; set; }
         public virtual DbSet<trn_crm_assessment> trn_crm_assessment { get; set; }
         public virtual DbSet<trn_crm_assessment_questions> trn_crm_assessment_questions { get; set; }
@@ -147,5 +140,15 @@ namespace AirpocketTRN.Models
         public virtual DbSet<trn_question_category> trn_question_category { get; set; }
         public virtual DbSet<trn_questions> trn_questions { get; set; }
         public virtual DbSet<trn_exam> trn_exam { get; set; }
+        public virtual DbSet<trn_exam_group> trn_exam_group { get; set; }
+        public virtual DbSet<trn_exam_person> trn_exam_person { get; set; }
+        public virtual DbSet<C_view_trncard> C_view_trncard { get; set; }
+        public virtual DbSet<ViewLegTime> ViewLegTimes { get; set; }
+        public virtual DbSet<ViewFDPRest> ViewFDPRests { get; set; }
+        public virtual DbSet<ViewEmployee> ViewEmployees { get; set; }
+        public virtual DbSet<ViewEmployeeLight> ViewEmployeeLights { get; set; }
+        public virtual DbSet<GRPCourseTypeExpiringGroup> GRPCourseTypeExpiringGroups { get; set; }
+        public virtual DbSet<ViewProfile> ViewProfiles { get; set; }
+        public virtual DbSet<view_trn_exam_question_template> view_trn_exam_question_template { get; set; }
     }
 }

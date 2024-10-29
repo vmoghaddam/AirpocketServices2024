@@ -1,5 +1,6 @@
 ﻿using AirpocketTRN.Models;
 using AirpocketTRN.ViewModels;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -1525,6 +1526,19 @@ namespace AirpocketTRN.Services
             var course = await context.ViewCourseNews.Where(q => q.Id == cid).FirstOrDefaultAsync();
             var sessions = await context.CourseSessions.Where(q => q.CourseId == cid).OrderBy(q => q.DateStart).ToListAsync();
             var syllabi = await context.CourseSyllabus.Where(q => q.CourseId == cid).ToListAsync();
+            var exams=await context.trn_exam.Where(q=>q.course_id==cid).ToListAsync();
+            var exam_ids = exams.Select(q => q.id).ToList();
+            var groups = await context.trn_exam_group.Where(q => exam_ids.Contains(q.exam_id)).ToListAsync();
+            var people = await context.trn_exam_person.Where(q => exam_ids.Contains(q.exam_id)).ToListAsync();
+            var templates = await context.view_trn_exam_question_template.Where(q => exam_ids.Contains(q.exam_id)).ToListAsync();
+            var _exams = new List<ExamViewModel>();
+            foreach(var exam in exams)
+            {
+                var _exam =JsonConvert.DeserializeObject< ExamViewModel>( JsonConvert.SerializeObject(exam));
+                _exam.groups = new List<int>(); //groups.Where(q => q.exam_id == exam.id).Select.ToList();
+                _exam.people = new List<int>(); //people.Where
+                _exam.template = templates.Where(q => q.exam_id == exam.id).ToList();
+            }
 
             return new DataResponse()
             {
@@ -2620,10 +2634,26 @@ namespace AirpocketTRN.Services
                         db_exam.trn_exam_question_template.Add(db_temp);
                     }
                     db_temp.question_category_id= temp.category_id;
-                    db_temp.total = temp.count;
+                    db_temp.total = temp.total;
                 }
 
+                var existing_exam_grps = await context.trn_exam_group.Where(q => q.exam_id == db_exam.id).ToListAsync();
+                var existing_exam_people=await context.trn_exam_person.Where(q=>q.exam_id==db_exam.id).ToListAsync();
+                if (existing_exam_grps != null && existing_exam_grps.Count > 0)
+                    context.trn_exam_group.RemoveRange(existing_exam_grps);
+                if (existing_exam_people!=null && existing_exam_people.Count > 0)
+                    context.trn_exam_person.RemoveRange(existing_exam_people);
+               // var grps = await context.JobGroups.Where(q => dto_exam.groups.Contains(q.Id)).ToListAsync();
+                foreach(var g in dto_exam.groups)
+                {
+                    db_exam.trn_exam_group.Add(new trn_exam_group() { group_id = g });
+                }
+                foreach (var p in dto_exam.people)
+                    db_exam.trn_exam_person.Add(new trn_exam_person() { person_id=p });
+
             }
+
+           
             //pasco
             /* var docs = await context.CourseDocuments.Where(q => q.CourseId == dto.Id).ToListAsync();
              var docids = dto.Documents.Where(q => q.Id > 0).Select(q => q.Id).ToList();

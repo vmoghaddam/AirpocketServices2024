@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AirpocketTRN.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -94,9 +95,9 @@ namespace AirpocketTRN.ViewModels
         public Nullable<System.DateTime> date_end_actual { get; set; }
         public Nullable<System.DateTime> date_start_scheduled { get; set; }
 
-        public List<string> groups { get; set; }
+        public List<int> groups { get; set; }
         public List<int> people { get; set; }
-        public List<exam_template> template { get; set; }
+        public List<view_trn_exam_question_template> template { get; set; }
     }
     public class exam_template
     {

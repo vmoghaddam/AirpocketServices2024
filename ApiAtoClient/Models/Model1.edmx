@@ -57,7 +57,7 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="exam_id" Type="int" Nullable="false" />
           <Property Name="person_id" Type="int" Nullable="false" />
           <Property Name="remark" Type="varchar" MaxLength="500" />
@@ -160,6 +160,61 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_trn_exam_question_person' does
           <Property Name="date_sent" Type="datetime2" Precision="7" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.view_trn_person_exam' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_trn_person_exam">
+          <Key>
+            <PropertyRef Name="course_id" />
+            <PropertyRef Name="course_type_id" />
+            <PropertyRef Name="course_date_start" />
+            <PropertyRef Name="nid" />
+            <PropertyRef Name="first_name" />
+            <PropertyRef Name="last_name" />
+            <PropertyRef Name="name" />
+            <PropertyRef Name="exam_status" />
+            <PropertyRef Name="exam_result" />
+          </Key>
+          <Property Name="course_id" Type="int" Nullable="false" />
+          <Property Name="person_id" Type="int" />
+          <Property Name="course_type_id" Type="int" Nullable="false" />
+          <Property Name="course_type" Type="nvarchar" MaxLength="500" />
+          <Property Name="course_date_start" Type="date" Nullable="false" />
+          <Property Name="course_date_end" Type="date" />
+          <Property Name="instructor" Type="nvarchar" MaxLength="2004" />
+          <Property Name="location" Type="nvarchar" MaxLength="500" />
+          <Property Name="course_status_id" Type="int" />
+          <Property Name="course_status" Type="varchar" MaxLength="11" />
+          <Property Name="training_director" Type="nvarchar" MaxLength="500" />
+          <Property Name="course_title" Type="nvarchar" MaxLength="500" />
+          <Property Name="course_no" Type="varchar" MaxLength="204" />
+          <Property Name="nid" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="first_name" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="last_name" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="1001" Nullable="false" />
+          <Property Name="mobile" Type="nvarchar" MaxLength="500" />
+          <Property Name="id_no" Type="nvarchar" MaxLength="500" />
+          <Property Name="instructor1" Type="nvarchar" MaxLength="1001" />
+          <Property Name="instructor2" Type="nvarchar" MaxLength="1001" />
+          <Property Name="instructor2_id" Type="int" />
+          <Property Name="instructor1_id" Type="int" />
+          <Property Name="course_sms_status" Type="varchar" MaxLength="500" />
+          <Property Name="course_sms_date" Type="datetime2" Precision="7" />
+          <Property Name="course_sms_refid" Type="bigint" />
+          <Property Name="course_sms_msg" Type="varchar" MaxLength="2000" />
+          <Property Name="exam_date_scheduled" Type="datetime2" Precision="7" />
+          <Property Name="exam_location" Type="nvarchar" MaxLength="1000" />
+          <Property Name="exam_address" Type="nvarchar" MaxLength="2000" />
+          <Property Name="exam_phone" Type="nvarchar" MaxLength="500" />
+          <Property Name="exam_remark" Type="nvarchar" MaxLength="2000" />
+          <Property Name="exam_status_id" Type="int" />
+          <Property Name="exam_status" Type="varchar" MaxLength="9" Nullable="false" />
+          <Property Name="exam_score" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="exam_result_id" Type="int" />
+          <Property Name="exam_result" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="exam_type_id" Type="int" />
+          <Property Name="exam_duration" Type="int" />
+          <Property Name="exam_date_actual" Type="datetime2" Precision="7" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.view_trn_profile' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="view_trn_profile">
           <Key>
@@ -221,6 +276,18 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_trn_profile' does not have a p
               <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="trn_exam_group">
+              <PropertyRef Name="exam_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_examp_exam">
+          <End Role="trn_exam" Type="Self.trn_exam" Multiplicity="1" />
+          <End Role="trn_exam_person" Type="Self.trn_exam_person" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="trn_exam">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="trn_exam_person">
               <PropertyRef Name="exam_id" />
             </Dependent>
           </ReferentialConstraint>
@@ -304,6 +371,50 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_trn_profile' does not have a p
     [view_trn_exam_question_person].[date_sent] AS [date_sent]
     FROM [dbo].[view_trn_exam_question_person] AS [view_trn_exam_question_person]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="view_trn_person_exam" EntityType="Self.view_trn_person_exam" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_trn_person_exam].[course_id] AS [course_id], 
+    [view_trn_person_exam].[person_id] AS [person_id], 
+    [view_trn_person_exam].[course_type_id] AS [course_type_id], 
+    [view_trn_person_exam].[course_type] AS [course_type], 
+    [view_trn_person_exam].[course_date_start] AS [course_date_start], 
+    [view_trn_person_exam].[course_date_end] AS [course_date_end], 
+    [view_trn_person_exam].[instructor] AS [instructor], 
+    [view_trn_person_exam].[location] AS [location], 
+    [view_trn_person_exam].[course_status_id] AS [course_status_id], 
+    [view_trn_person_exam].[course_status] AS [course_status], 
+    [view_trn_person_exam].[training_director] AS [training_director], 
+    [view_trn_person_exam].[course_title] AS [course_title], 
+    [view_trn_person_exam].[course_no] AS [course_no], 
+    [view_trn_person_exam].[nid] AS [nid], 
+    [view_trn_person_exam].[first_name] AS [first_name], 
+    [view_trn_person_exam].[last_name] AS [last_name], 
+    [view_trn_person_exam].[name] AS [name], 
+    [view_trn_person_exam].[mobile] AS [mobile], 
+    [view_trn_person_exam].[id_no] AS [id_no], 
+    [view_trn_person_exam].[instructor1] AS [instructor1], 
+    [view_trn_person_exam].[instructor2] AS [instructor2], 
+    [view_trn_person_exam].[instructor2_id] AS [instructor2_id], 
+    [view_trn_person_exam].[instructor1_id] AS [instructor1_id], 
+    [view_trn_person_exam].[course_sms_status] AS [course_sms_status], 
+    [view_trn_person_exam].[course_sms_date] AS [course_sms_date], 
+    [view_trn_person_exam].[course_sms_refid] AS [course_sms_refid], 
+    [view_trn_person_exam].[course_sms_msg] AS [course_sms_msg], 
+    [view_trn_person_exam].[exam_date_scheduled] AS [exam_date_scheduled], 
+    [view_trn_person_exam].[exam_location] AS [exam_location], 
+    [view_trn_person_exam].[exam_address] AS [exam_address], 
+    [view_trn_person_exam].[exam_phone] AS [exam_phone], 
+    [view_trn_person_exam].[exam_remark] AS [exam_remark], 
+    [view_trn_person_exam].[exam_status_id] AS [exam_status_id], 
+    [view_trn_person_exam].[exam_status] AS [exam_status], 
+    [view_trn_person_exam].[exam_score] AS [exam_score], 
+    [view_trn_person_exam].[exam_result_id] AS [exam_result_id], 
+    [view_trn_person_exam].[exam_result] AS [exam_result], 
+    [view_trn_person_exam].[exam_type_id] AS [exam_type_id], 
+    [view_trn_person_exam].[exam_duration] AS [exam_duration], 
+    [view_trn_person_exam].[exam_date_actual] AS [exam_date_actual]
+    FROM [dbo].[view_trn_person_exam] AS [view_trn_person_exam]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="view_trn_profile" EntityType="Self.view_trn_profile" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [view_trn_profile].[Id] AS [Id], 
@@ -345,6 +456,10 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_trn_profile' does not have a p
             <End Role="trn_exam" EntitySet="trn_exam" />
             <End Role="trn_exam_group" EntitySet="trn_exam_group" />
           </AssociationSet>
+          <AssociationSet Name="fk_examp_exam" Association="Self.fk_examp_exam">
+            <End Role="trn_exam" EntitySet="trn_exam" />
+            <End Role="trn_exam_person" EntitySet="trn_exam_person" />
+          </AssociationSet>
           <AssociationSet Name="fk_st_ans_wxqu" Association="Self.fk_st_ans_wxqu">
             <End Role="trn_exam_question" EntitySet="trn_exam_question" />
             <End Role="trn_exam_student_answer" EntitySet="trn_exam_student_answer" />
@@ -376,6 +491,11 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_trn_profile' does not have a p
           </AssociationSet>
           <EntitySet Name="trn_answers" EntityType="ppaModel.trn_answers" />
           <EntitySet Name="view_trn_profile" EntityType="ppaModel.view_trn_profile" />
+          <EntitySet Name="view_trn_person_exam" EntityType="ppaModel.view_trn_person_exam" />
+          <AssociationSet Name="fk_examp_exam" Association="ppaModel.fk_examp_exam">
+            <End Role="trn_exam" EntitySet="trn_exam" />
+            <End Role="trn_exam_person" EntitySet="trn_exam_person" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="trn_exam">
           <Key>
@@ -406,6 +526,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_trn_profile' does not have a p
           <Property Name="date_start_scheduled" Type="DateTime" Precision="7" />
           <NavigationProperty Name="trn_exam_question" Relationship="ppaModel.fk_ex_ex_1" FromRole="trn_exam" ToRole="trn_exam_question" />
           <NavigationProperty Name="trn_exam_group" Relationship="ppaModel.fk_exam_group_exam" FromRole="trn_exam" ToRole="trn_exam_group" />
+          <NavigationProperty Name="trn_exam_person" Relationship="ppaModel.fk_examp_exam" FromRole="trn_exam" ToRole="trn_exam_person" />
         </EntityType>
         <EntityType Name="trn_exam_group">
           <Key>
@@ -425,6 +546,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_trn_profile' does not have a p
           <Property Name="exam_id" Type="Int32" Nullable="false" />
           <Property Name="person_id" Type="Int32" Nullable="false" />
           <Property Name="remark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="trn_exam" Relationship="ppaModel.fk_examp_exam" FromRole="trn_exam_person" ToRole="trn_exam" />
         </EntityType>
         <EntityType Name="trn_exam_question">
           <Key>
@@ -609,6 +731,71 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_trn_profile' does not have a p
           <Property Name="Telegram" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="LinkedIn" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="view_trn_person_exam">
+          <Key>
+            <PropertyRef Name="course_id" />
+            <PropertyRef Name="course_type_id" />
+            <PropertyRef Name="course_date_start" />
+            <PropertyRef Name="nid" />
+            <PropertyRef Name="first_name" />
+            <PropertyRef Name="last_name" />
+            <PropertyRef Name="name" />
+            <PropertyRef Name="exam_status" />
+            <PropertyRef Name="exam_result" />
+          </Key>
+          <Property Name="course_id" Type="Int32" Nullable="false" />
+          <Property Name="person_id" Type="Int32" />
+          <Property Name="course_type_id" Type="Int32" Nullable="false" />
+          <Property Name="course_type" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="course_date_start" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="course_date_end" Type="DateTime" Precision="0" />
+          <Property Name="instructor" Type="String" MaxLength="2004" FixedLength="false" Unicode="true" />
+          <Property Name="location" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="course_status_id" Type="Int32" />
+          <Property Name="course_status" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
+          <Property Name="training_director" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="course_title" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="course_no" Type="String" MaxLength="204" FixedLength="false" Unicode="false" />
+          <Property Name="nid" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="first_name" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="last_name" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="mobile" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="id_no" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="instructor1" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="instructor2" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="instructor2_id" Type="Int32" />
+          <Property Name="instructor1_id" Type="Int32" />
+          <Property Name="course_sms_status" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="course_sms_date" Type="DateTime" Precision="7" />
+          <Property Name="course_sms_refid" Type="Int64" />
+          <Property Name="course_sms_msg" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="exam_date_scheduled" Type="DateTime" Precision="7" />
+          <Property Name="exam_location" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="exam_address" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="exam_phone" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="exam_remark" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="exam_status_id" Type="Int32" />
+          <Property Name="exam_status" Type="String" Nullable="false" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="exam_score" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="exam_result_id" Type="Int32" />
+          <Property Name="exam_result" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="exam_type_id" Type="Int32" />
+          <Property Name="exam_duration" Type="Int32" />
+          <Property Name="exam_date_actual" Type="DateTime" Precision="7" />
+        </EntityType>
+        <Association Name="fk_examp_exam">
+          <End Type="ppaModel.trn_exam" Role="trn_exam" Multiplicity="1" />
+          <End Type="ppaModel.trn_exam_person" Role="trn_exam_person" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="trn_exam">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="trn_exam_person">
+              <PropertyRef Name="exam_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -795,6 +982,52 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_trn_profile' does not have a p
                 <ScalarProperty Name="SexId" ColumnName="SexId" />
                 <ScalarProperty Name="NID" ColumnName="NID" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_trn_person_exam">
+            <EntityTypeMapping TypeName="ppaModel.view_trn_person_exam">
+              <MappingFragment StoreEntitySet="view_trn_person_exam">
+                <ScalarProperty Name="exam_date_actual" ColumnName="exam_date_actual" />
+                <ScalarProperty Name="exam_duration" ColumnName="exam_duration" />
+                <ScalarProperty Name="exam_type_id" ColumnName="exam_type_id" />
+                <ScalarProperty Name="exam_result" ColumnName="exam_result" />
+                <ScalarProperty Name="exam_result_id" ColumnName="exam_result_id" />
+                <ScalarProperty Name="exam_score" ColumnName="exam_score" />
+                <ScalarProperty Name="exam_status" ColumnName="exam_status" />
+                <ScalarProperty Name="exam_status_id" ColumnName="exam_status_id" />
+                <ScalarProperty Name="exam_remark" ColumnName="exam_remark" />
+                <ScalarProperty Name="exam_phone" ColumnName="exam_phone" />
+                <ScalarProperty Name="exam_address" ColumnName="exam_address" />
+                <ScalarProperty Name="exam_location" ColumnName="exam_location" />
+                <ScalarProperty Name="exam_date_scheduled" ColumnName="exam_date_scheduled" />
+                <ScalarProperty Name="course_sms_msg" ColumnName="course_sms_msg" />
+                <ScalarProperty Name="course_sms_refid" ColumnName="course_sms_refid" />
+                <ScalarProperty Name="course_sms_date" ColumnName="course_sms_date" />
+                <ScalarProperty Name="course_sms_status" ColumnName="course_sms_status" />
+                <ScalarProperty Name="instructor1_id" ColumnName="instructor1_id" />
+                <ScalarProperty Name="instructor2_id" ColumnName="instructor2_id" />
+                <ScalarProperty Name="instructor2" ColumnName="instructor2" />
+                <ScalarProperty Name="instructor1" ColumnName="instructor1" />
+                <ScalarProperty Name="id_no" ColumnName="id_no" />
+                <ScalarProperty Name="mobile" ColumnName="mobile" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="last_name" ColumnName="last_name" />
+                <ScalarProperty Name="first_name" ColumnName="first_name" />
+                <ScalarProperty Name="nid" ColumnName="nid" />
+                <ScalarProperty Name="course_no" ColumnName="course_no" />
+                <ScalarProperty Name="course_title" ColumnName="course_title" />
+                <ScalarProperty Name="training_director" ColumnName="training_director" />
+                <ScalarProperty Name="course_status" ColumnName="course_status" />
+                <ScalarProperty Name="course_status_id" ColumnName="course_status_id" />
+                <ScalarProperty Name="location" ColumnName="location" />
+                <ScalarProperty Name="instructor" ColumnName="instructor" />
+                <ScalarProperty Name="course_date_end" ColumnName="course_date_end" />
+                <ScalarProperty Name="course_date_start" ColumnName="course_date_start" />
+                <ScalarProperty Name="course_type" ColumnName="course_type" />
+                <ScalarProperty Name="course_type_id" ColumnName="course_type_id" />
+                <ScalarProperty Name="person_id" ColumnName="person_id" />
+                <ScalarProperty Name="course_id" ColumnName="course_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

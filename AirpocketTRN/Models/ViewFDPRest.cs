@@ -115,7 +115,5 @@ namespace AirpocketTRN.Models
         public string PosTicketUrl { get; set; }
         public string Key { get; set; }
         public Nullable<bool> OutOfHomeBase { get; set; }
-        public string InitToIATA { get; set; }
-        public Nullable<int> InitHomeBase { get; set; }
     }
 }

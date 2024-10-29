@@ -116,6 +116,43 @@ namespace ApiAtoClient.Controllers
         }
 
 
+        [Route("api/ato/client/exams/{client_id}")]
+        public async Task<IHttpActionResult> GetClientExamsById(  int client_id)
+        {
+            try
+            {
+
+                ppa_entities context = new ppa_entities();
+                var exams = await context.view_trn_person_exam.Where(q => q.person_id==client_id).OrderBy(q=>q.exam_status_id).ThenByDescending(q=>q.exam_date_actual).ToListAsync();
+
+                 
+
+                var result = new DataResponse()
+                {
+                    Data = exams,
+                    IsSuccess = true,
+                };
+
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += "   " + ex.InnerException.Message;
+                var result = new DataResponse()
+                {
+                    IsSuccess = false,
+                    Errors = new List<string>() { msg }
+                };
+
+
+                return Ok(result);
+
+            }
+
+        }
 
 
 
