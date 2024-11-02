@@ -473,6 +473,11 @@ namespace AirpocketTRN.Controllers
             return Ok(result);
         }
 
+
+       
+
+
+
         [Route("api/course/person/date")]
         [AcceptVerbs("GET")]
         public async Task<IHttpActionResult> GetCoursePeopleSessionsByDate(DateTime dt,int pid)

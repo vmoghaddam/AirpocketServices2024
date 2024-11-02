@@ -1538,6 +1538,7 @@ namespace AirpocketTRN.Services
                 _exam.groups = new List<int>(); //groups.Where(q => q.exam_id == exam.id).Select.ToList();
                 _exam.people = new List<int>(); //people.Where
                 _exam.template = templates.Where(q => q.exam_id == exam.id).ToList();
+                _exams.Add(_exam);
             }
 
             return new DataResponse()
@@ -1546,7 +1547,8 @@ namespace AirpocketTRN.Services
                 {
                     course,
                     sessions,
-                    syllabi
+                    syllabi,
+                    exams=_exams,
 
                 },
                 IsSuccess = true,
@@ -4945,24 +4947,82 @@ namespace AirpocketTRN.Services
             };
         }
 
+        public async Task<DataResponse> GetExamSummary(int exam_id)
+        {
+            var summary = await context.view_trn_exam_summary_details.Where(q => q.exam_id==exam_id).OrderBy(q=>q.last_name).ThenBy(q=>q.first_name).ToListAsync();
+            return new DataResponse()
+            {
+                Data = summary,
+                IsSuccess = true,
+            };
+        }
+
+
+        public async Task<DataResponse> GetExamPeopleAnswers(int exam_id)
+        {
+            var summary = await context.view_trn_exam_question_person_details.Where(q => q.exam_id == exam_id)
+                .OrderBy(q => q.last_name).ThenBy(q => q.first_name).ThenBy(q => q.category).ThenBy(q => q.question_id)
+                .ToListAsync();
+            return new DataResponse()
+            {
+                Data = summary,
+                IsSuccess = true,
+            };
+        }
+
+        public async Task<DataResponse> GetExamPeopleAnswersByPerson(int exam_id,int person_id)
+        {
+            var summary = await context.view_trn_exam_question_person_details.Where(q => q.exam_id == exam_id && q.person_id==person_id)
+                .OrderBy(q=>q.category).ThenBy(q=>q.question_id)
+                .ToListAsync();
+            return new DataResponse()
+            {
+                Data = summary,
+                IsSuccess = true,
+            };
+        }
+
         public async Task<DataResponse> GetCoursePeopleAndSessions(int cid)
         {
-
+            var course = await context.ViewCourseNews.Where(q => q.Id == cid).FirstOrDefaultAsync();
             var sessions = await context.CourseSessions.Where(q => q.CourseId == cid).OrderBy(q => q.DateStart).ToListAsync();
             var people = await context.ViewCoursePeoples.Where(q => q.CourseId == cid).OrderBy(q => q.DateStart).ToListAsync();
             //var press = await context.CourseSessionPresences.Where(q => q.CourseId == cid).ToListAsync();
             var press = await context.ViewCourseSessionPresences.Where(q => q.CourseId == cid).ToListAsync();
             var syllabi = await context.ViewSyllabus.Where(q => q.CourseId == cid).ToListAsync();
+            var _exams = await context.trn_exam.Where(q => q.course_id == cid).ToListAsync();
+            var exams = _exams.Select(q => JsonConvert.DeserializeObject<ExamViewModel>(JsonConvert.SerializeObject(q))).ToList();
+
+
+            var exam_ids=exams.Select(q=>q.id).ToList();
+            var templates = await context.view_trn_exam_question_template.Where(q => exam_ids.Contains(q.exam_id)).ToListAsync();
+            var questions=await context.view_trn_exam_question.Where(q=>exam_ids.Contains(q.exam_id)).ToListAsync();
+            var exam_summary = await context.view_trn_exam_summary_details.Where(q => exam_ids.Contains(q.exam_id)).ToListAsync();
+            foreach (var x in exams)
+            {
+                x.date_end_scheduled = ((DateTime)x.exam_date).AddMinutes(Convert.ToDouble(x.duration));
+                if (x.status_id!=0 && x.date_end_actual==null && x.date_start != null)
+                {
+                    x.date_end_actual = ((DateTime)x.date_start).AddMinutes(Convert.ToDouble(x.duration));
+                }
+                x.questions = questions.Where(q => q.exam_id == x.id).OrderBy(q => q.category).ThenBy(q => q.question_id).ToList();
+                x.template = templates.Where(q => q.exam_id == x.id).ToList();
+                x.summary = exam_summary.Where(q => q.exam_id == x.id).OrderBy(q=>q.last_name).ThenBy(q=>q.first_name).ToList();
+            }
+
+           
 
 
             return new DataResponse()
             {
                 Data = new
                 {
+                    course,
                     sessions,
                     people,
                     press,
-                    syllabi
+                    syllabi,
+                    exams
                 },
                 IsSuccess = true,
             };

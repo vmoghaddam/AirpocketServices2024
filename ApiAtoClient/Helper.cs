@@ -110,6 +110,18 @@ namespace ApiAtoClient
         public List<string> Errors { get; set; }
         public List<string> Messages { get; set; }
     }
+    public class dto_answer_out
+    {
+        public int id { get; set; }
+        public int answer_id { get; set; }
+        public Nullable<int> quesion_id { get; set; }
+        public Nullable<int> exam_quesion_id { get; set; }
+        public string english_title { get; set; }
+        public string persian_title { get; set; }
+
+        public Nullable<bool> is_rtl { get; set; }
+        public bool is_selected { get; set; }
+    }
     public partial class view_trn_exam_question_person_dto
     {
         public int id { get; set; }
@@ -127,6 +139,7 @@ namespace ApiAtoClient
         public string last_name { get; set; }
         public Nullable<int> answer_id { get; set; }
         public Nullable<System.DateTime> date_sent { get; set; }
-        public List<trn_answers> answers { get; set; }
+        public List<trn_answers> db_answers { get; set; }
+        public List<dto_answer_out> answers { get; set; }
     }
 }

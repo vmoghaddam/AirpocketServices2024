@@ -1836,17 +1836,106 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_trn_efb_assessment' does not h
           <Property Name="assessment" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.view_trn_exam_question' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_trn_exam_question">
+          <Key>
+            <PropertyRef Name="exam_id" />
+            <PropertyRef Name="exam_question_id" />
+            <PropertyRef Name="question_id" />
+            <PropertyRef Name="is_rtl" />
+            <PropertyRef Name="hardness" />
+            <PropertyRef Name="correct_answer_id" />
+          </Key>
+          <Property Name="exam_id" Type="int" Nullable="false" />
+          <Property Name="exam_question_id" Type="int" Nullable="false" />
+          <Property Name="question_id" Type="int" Nullable="false" />
+          <Property Name="english_title" Type="varchar" MaxLength="1000" />
+          <Property Name="category_id" Type="int" />
+          <Property Name="is_rtl" Type="bit" Nullable="false" />
+          <Property Name="hardness" Type="int" Nullable="false" />
+          <Property Name="category" Type="nvarchar" MaxLength="1000" />
+          <Property Name="correct_answer_title" Type="varchar" MaxLength="1000" />
+          <Property Name="correct_answer_id" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.view_trn_exam_question_person_details' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_trn_exam_question_person_details">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="question_id" />
+            <PropertyRef Name="exam_id" />
+            <PropertyRef Name="course_id" />
+            <PropertyRef Name="is_correct" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="question_id" Type="int" Nullable="false" />
+          <Property Name="exam_id" Type="int" Nullable="false" />
+          <Property Name="response_time" Type="int" />
+          <Property Name="english_title" Type="varchar" MaxLength="1000" />
+          <Property Name="persian_title" Type="nvarchar" MaxLength="1000" />
+          <Property Name="category_id" Type="int" />
+          <Property Name="category" Type="nvarchar" MaxLength="1000" />
+          <Property Name="course_id" Type="int" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="500" />
+          <Property Name="person_id" Type="int" />
+          <Property Name="first_name" Type="nvarchar" MaxLength="500" />
+          <Property Name="last_name" Type="nvarchar" MaxLength="500" />
+          <Property Name="name" Type="nvarchar" MaxLength="1003" />
+          <Property Name="nid" Type="nvarchar" MaxLength="500" />
+          <Property Name="mobile" Type="nvarchar" MaxLength="500" />
+          <Property Name="answer_id" Type="int" />
+          <Property Name="is_correct" Type="int" Nullable="false" />
+          <Property Name="date_sent" Type="datetime2" Precision="7" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.view_trn_exam_question_template' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="view_trn_exam_question_template">
           <Key>
-            <PropertyRef Name="id" />
+            <PropertyRef Name="category_id" />
+            <PropertyRef Name="course_id" />
             <PropertyRef Name="exam_id" />
+            <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" />
-          <Property Name="exam_id" Type="int" Nullable="false" />
-          <Property Name="category_id" Type="int" />
+          <Property Name="category_id" Type="int" Nullable="false" />
           <Property Name="category" Type="nvarchar" MaxLength="1000" />
+          <Property Name="course_id" Type="int" Nullable="false" />
+          <Property Name="exam_id" Type="int" Nullable="false" />
+          <Property Name="id" Type="int" Nullable="false" />
           <Property Name="total" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.view_trn_exam_summary_details' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_trn_exam_summary_details">
+          <Key>
+            <PropertyRef Name="exam_id" />
+            <PropertyRef Name="person_id" />
+            <PropertyRef Name="first_name" />
+            <PropertyRef Name="last_name" />
+            <PropertyRef Name="name" />
+            <PropertyRef Name="nid" />
+            <PropertyRef Name="course_id" />
+            <PropertyRef Name="result" />
+          </Key>
+          <Property Name="exam_id" Type="int" Nullable="false" />
+          <Property Name="person_id" Type="int" Nullable="false" />
+          <Property Name="first_name" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="last_name" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="1003" Nullable="false" />
+          <Property Name="nid" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="mobile" Type="nvarchar" MaxLength="500" />
+          <Property Name="course_id" Type="int" Nullable="false" />
+          <Property Name="status_id" Type="int" />
+          <Property Name="date_start" Type="datetime2" Precision="7" />
+          <Property Name="duration" Type="int" />
+          <Property Name="date_end" Type="datetime2" Precision="7" />
+          <Property Name="passed_minutes" Type="int" />
+          <Property Name="remained_minutes" Type="int" />
+          <Property Name="total_questions" Type="int" />
+          <Property Name="total_answered" Type="int" />
+          <Property Name="total_remained" Type="int" />
+          <Property Name="score" Type="int" />
+          <Property Name="result" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="result_id" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.view_trn_expiring' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1970,6 +2059,48 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_trn_line_crm' does not have a 
           <Property Name="description" Type="nvarchar" MaxLength="255" />
           <Property Name="action_id" Type="int" Nullable="false" />
           <Property Name="assessment" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.view_trn_profile' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_trn_profile">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="NID" />
+            <PropertyRef Name="SexId" />
+            <PropertyRef Name="FirstName" />
+            <PropertyRef Name="LastName" />
+            <PropertyRef Name="IsActive" />
+            <PropertyRef Name="IsDeleted" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NID" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="SexId" Type="int" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="DateBirth" Type="date" />
+          <Property Name="Email" Type="nvarchar" MaxLength="500" />
+          <Property Name="Phone1" Type="nvarchar" MaxLength="500" />
+          <Property Name="Phone2" Type="nvarchar" MaxLength="500" />
+          <Property Name="Mobile" Type="nvarchar" MaxLength="500" />
+          <Property Name="PassportNumber" Type="nvarchar" MaxLength="500" />
+          <Property Name="DatePassportIssue" Type="date" />
+          <Property Name="DatePassportExpire" Type="date" />
+          <Property Name="Address" Type="nvarchar" MaxLength="2000" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="2000" />
+          <Property Name="CityId" Type="int" />
+          <Property Name="FatherName" Type="nvarchar" MaxLength="500" />
+          <Property Name="IDNo" Type="nvarchar" MaxLength="500" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" />
+          <Property Name="ImageUrl" Type="nvarchar" MaxLength="1000" />
+          <Property Name="LicenceTitle" Type="nvarchar" MaxLength="500" />
+          <Property Name="PostalCode" Type="varchar" MaxLength="255" />
+          <Property Name="ScheduleName" Type="varchar" MaxLength="500" />
+          <Property Name="Code" Type="varchar" MaxLength="500" />
+          <Property Name="WhatsApp" Type="nvarchar" MaxLength="500" />
+          <Property Name="Telegram" Type="nvarchar" MaxLength="255" />
+          <Property Name="LinkedIn" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.view_trn_zftt' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -5276,14 +5407,76 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
     [view_trn_efb_assessment].[assessment] AS [assessment]
     FROM [dbo].[view_trn_efb_assessment] AS [view_trn_efb_assessment]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="view_trn_exam_question" EntityType="Self.view_trn_exam_question" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_trn_exam_question].[exam_id] AS [exam_id], 
+    [view_trn_exam_question].[exam_question_id] AS [exam_question_id], 
+    [view_trn_exam_question].[question_id] AS [question_id], 
+    [view_trn_exam_question].[english_title] AS [english_title], 
+    [view_trn_exam_question].[category_id] AS [category_id], 
+    [view_trn_exam_question].[is_rtl] AS [is_rtl], 
+    [view_trn_exam_question].[hardness] AS [hardness], 
+    [view_trn_exam_question].[category] AS [category], 
+    [view_trn_exam_question].[correct_answer_title] AS [correct_answer_title], 
+    [view_trn_exam_question].[correct_answer_id] AS [correct_answer_id]
+    FROM [dbo].[view_trn_exam_question] AS [view_trn_exam_question]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="view_trn_exam_question_person_details" EntityType="Self.view_trn_exam_question_person_details" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_trn_exam_question_person_details].[id] AS [id], 
+    [view_trn_exam_question_person_details].[question_id] AS [question_id], 
+    [view_trn_exam_question_person_details].[exam_id] AS [exam_id], 
+    [view_trn_exam_question_person_details].[response_time] AS [response_time], 
+    [view_trn_exam_question_person_details].[english_title] AS [english_title], 
+    [view_trn_exam_question_person_details].[persian_title] AS [persian_title], 
+    [view_trn_exam_question_person_details].[category_id] AS [category_id], 
+    [view_trn_exam_question_person_details].[category] AS [category], 
+    [view_trn_exam_question_person_details].[course_id] AS [course_id], 
+    [view_trn_exam_question_person_details].[Title] AS [Title], 
+    [view_trn_exam_question_person_details].[person_id] AS [person_id], 
+    [view_trn_exam_question_person_details].[first_name] AS [first_name], 
+    [view_trn_exam_question_person_details].[last_name] AS [last_name], 
+    [view_trn_exam_question_person_details].[name] AS [name], 
+    [view_trn_exam_question_person_details].[nid] AS [nid], 
+    [view_trn_exam_question_person_details].[mobile] AS [mobile], 
+    [view_trn_exam_question_person_details].[answer_id] AS [answer_id], 
+    [view_trn_exam_question_person_details].[is_correct] AS [is_correct], 
+    [view_trn_exam_question_person_details].[date_sent] AS [date_sent]
+    FROM [dbo].[view_trn_exam_question_person_details] AS [view_trn_exam_question_person_details]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="view_trn_exam_question_template" EntityType="Self.view_trn_exam_question_template" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
-    [view_trn_exam_question_template].[id] AS [id], 
-    [view_trn_exam_question_template].[exam_id] AS [exam_id], 
     [view_trn_exam_question_template].[category_id] AS [category_id], 
     [view_trn_exam_question_template].[category] AS [category], 
+    [view_trn_exam_question_template].[course_id] AS [course_id], 
+    [view_trn_exam_question_template].[exam_id] AS [exam_id], 
+    [view_trn_exam_question_template].[id] AS [id], 
     [view_trn_exam_question_template].[total] AS [total]
     FROM [dbo].[view_trn_exam_question_template] AS [view_trn_exam_question_template]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="view_trn_exam_summary_details" EntityType="Self.view_trn_exam_summary_details" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_trn_exam_summary_details].[exam_id] AS [exam_id], 
+    [view_trn_exam_summary_details].[person_id] AS [person_id], 
+    [view_trn_exam_summary_details].[first_name] AS [first_name], 
+    [view_trn_exam_summary_details].[last_name] AS [last_name], 
+    [view_trn_exam_summary_details].[name] AS [name], 
+    [view_trn_exam_summary_details].[nid] AS [nid], 
+    [view_trn_exam_summary_details].[mobile] AS [mobile], 
+    [view_trn_exam_summary_details].[course_id] AS [course_id], 
+    [view_trn_exam_summary_details].[status_id] AS [status_id], 
+    [view_trn_exam_summary_details].[date_start] AS [date_start], 
+    [view_trn_exam_summary_details].[duration] AS [duration], 
+    [view_trn_exam_summary_details].[date_end] AS [date_end], 
+    [view_trn_exam_summary_details].[passed_minutes] AS [passed_minutes], 
+    [view_trn_exam_summary_details].[remained_minutes] AS [remained_minutes], 
+    [view_trn_exam_summary_details].[total_questions] AS [total_questions], 
+    [view_trn_exam_summary_details].[total_answered] AS [total_answered], 
+    [view_trn_exam_summary_details].[total_remained] AS [total_remained], 
+    [view_trn_exam_summary_details].[score] AS [score], 
+    [view_trn_exam_summary_details].[result] AS [result], 
+    [view_trn_exam_summary_details].[result_id] AS [result_id]
+    FROM [dbo].[view_trn_exam_summary_details] AS [view_trn_exam_summary_details]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="view_trn_expiring" EntityType="Self.view_trn_expiring" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -5375,6 +5568,39 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
     [view_trn_line_crm].[action_id] AS [action_id], 
     [view_trn_line_crm].[assessment] AS [assessment]
     FROM [dbo].[view_trn_line_crm] AS [view_trn_line_crm]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="view_trn_profile" EntityType="Self.view_trn_profile" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_trn_profile].[Id] AS [Id], 
+    [view_trn_profile].[NID] AS [NID], 
+    [view_trn_profile].[SexId] AS [SexId], 
+    [view_trn_profile].[FirstName] AS [FirstName], 
+    [view_trn_profile].[LastName] AS [LastName], 
+    [view_trn_profile].[DateBirth] AS [DateBirth], 
+    [view_trn_profile].[Email] AS [Email], 
+    [view_trn_profile].[Phone1] AS [Phone1], 
+    [view_trn_profile].[Phone2] AS [Phone2], 
+    [view_trn_profile].[Mobile] AS [Mobile], 
+    [view_trn_profile].[PassportNumber] AS [PassportNumber], 
+    [view_trn_profile].[DatePassportIssue] AS [DatePassportIssue], 
+    [view_trn_profile].[DatePassportExpire] AS [DatePassportExpire], 
+    [view_trn_profile].[Address] AS [Address], 
+    [view_trn_profile].[IsActive] AS [IsActive], 
+    [view_trn_profile].[IsDeleted] AS [IsDeleted], 
+    [view_trn_profile].[Remark] AS [Remark], 
+    [view_trn_profile].[CityId] AS [CityId], 
+    [view_trn_profile].[FatherName] AS [FatherName], 
+    [view_trn_profile].[IDNo] AS [IDNo], 
+    [view_trn_profile].[UserId] AS [UserId], 
+    [view_trn_profile].[ImageUrl] AS [ImageUrl], 
+    [view_trn_profile].[LicenceTitle] AS [LicenceTitle], 
+    [view_trn_profile].[PostalCode] AS [PostalCode], 
+    [view_trn_profile].[ScheduleName] AS [ScheduleName], 
+    [view_trn_profile].[Code] AS [Code], 
+    [view_trn_profile].[WhatsApp] AS [WhatsApp], 
+    [view_trn_profile].[Telegram] AS [Telegram], 
+    [view_trn_profile].[LinkedIn] AS [LinkedIn]
+    FROM [dbo].[view_trn_profile] AS [view_trn_profile]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="view_trn_zftt" EntityType="Self.view_trn_zftt" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -7841,6 +8067,10 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <EntitySet Name="GRPCourseTypeExpiringGroups" EntityType="FLYModel.GRPCourseTypeExpiringGroup" />
           <EntitySet Name="ViewProfiles" EntityType="FLYModel.ViewProfile" />
           <EntitySet Name="view_trn_exam_question_template" EntityType="FLYModel.view_trn_exam_question_template" />
+          <EntitySet Name="view_trn_exam_question" EntityType="FLYModel.view_trn_exam_question" />
+          <EntitySet Name="view_trn_exam_summary_details" EntityType="FLYModel.view_trn_exam_summary_details" />
+          <EntitySet Name="view_trn_exam_question_person_details" EntityType="FLYModel.view_trn_exam_question_person_details" />
+          <EntitySet Name="view_trn_profile" EntityType="FLYModel.view_trn_profile" />
           </EntityContainer>
         <EntityType Name="ExpFlight">
           <Key>
@@ -12839,14 +13069,137 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
         </EntityType>
         <EntityType Name="view_trn_exam_question_template">
           <Key>
-            <PropertyRef Name="id" />
+            <PropertyRef Name="category_id" />
+            <PropertyRef Name="course_id" />
             <PropertyRef Name="exam_id" />
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="category_id" Type="Int32" Nullable="false" />
+          <Property Name="category" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="course_id" Type="Int32" Nullable="false" />
+          <Property Name="exam_id" Type="Int32" Nullable="false" />
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="total" Type="Int32" />
+        </EntityType>
+        <EntityType Name="view_trn_exam_question">
+          <Key>
+            <PropertyRef Name="exam_id" />
+            <PropertyRef Name="exam_question_id" />
+            <PropertyRef Name="question_id" />
+            <PropertyRef Name="is_rtl" />
+            <PropertyRef Name="hardness" />
+            <PropertyRef Name="correct_answer_id" />
+          </Key>
+          <Property Name="exam_id" Type="Int32" Nullable="false" />
+          <Property Name="exam_question_id" Type="Int32" Nullable="false" />
+          <Property Name="question_id" Type="Int32" Nullable="false" />
+          <Property Name="english_title" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="category_id" Type="Int32" />
+          <Property Name="is_rtl" Type="Boolean" Nullable="false" />
+          <Property Name="hardness" Type="Int32" Nullable="false" />
+          <Property Name="category" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="correct_answer_title" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="correct_answer_id" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="view_trn_exam_summary_details">
+          <Key>
+            <PropertyRef Name="exam_id" />
+            <PropertyRef Name="person_id" />
+            <PropertyRef Name="first_name" />
+            <PropertyRef Name="last_name" />
+            <PropertyRef Name="name" />
+            <PropertyRef Name="nid" />
+            <PropertyRef Name="course_id" />
+            <PropertyRef Name="result" />
+          </Key>
+          <Property Name="exam_id" Type="Int32" Nullable="false" />
+          <Property Name="person_id" Type="Int32" Nullable="false" />
+          <Property Name="first_name" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="last_name" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="1003" FixedLength="false" Unicode="true" />
+          <Property Name="nid" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="mobile" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="course_id" Type="Int32" Nullable="false" />
+          <Property Name="status_id" Type="Int32" />
+          <Property Name="date_start" Type="DateTime" Precision="7" />
+          <Property Name="duration" Type="Int32" />
+          <Property Name="date_end" Type="DateTime" Precision="7" />
+          <Property Name="passed_minutes" Type="Int32" />
+          <Property Name="remained_minutes" Type="Int32" />
+          <Property Name="total_questions" Type="Int32" />
+          <Property Name="total_answered" Type="Int32" />
+          <Property Name="total_remained" Type="Int32" />
+          <Property Name="score" Type="Int32" />
+          <Property Name="result" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="result_id" Type="Int32" />
+        </EntityType>
+        <EntityType Name="view_trn_exam_question_person_details">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="question_id" />
+            <PropertyRef Name="exam_id" />
+            <PropertyRef Name="course_id" />
+            <PropertyRef Name="is_correct" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="question_id" Type="Int32" Nullable="false" />
           <Property Name="exam_id" Type="Int32" Nullable="false" />
+          <Property Name="response_time" Type="Int32" />
+          <Property Name="english_title" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="persian_title" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="category_id" Type="Int32" />
           <Property Name="category" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="total" Type="Int32" />
+          <Property Name="course_id" Type="Int32" Nullable="false" />
+          <Property Name="Title" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="person_id" Type="Int32" />
+          <Property Name="first_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="last_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="name" Type="String" MaxLength="1003" FixedLength="false" Unicode="true" />
+          <Property Name="nid" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="mobile" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="answer_id" Type="Int32" />
+          <Property Name="is_correct" Type="Int32" Nullable="false" />
+          <Property Name="date_sent" Type="DateTime" Precision="7" />
+        </EntityType>
+        <EntityType Name="view_trn_profile">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="NID" />
+            <PropertyRef Name="SexId" />
+            <PropertyRef Name="FirstName" />
+            <PropertyRef Name="LastName" />
+            <PropertyRef Name="IsActive" />
+            <PropertyRef Name="IsDeleted" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NID" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="SexId" Type="Int32" Nullable="false" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="DateBirth" Type="DateTime" Precision="0" />
+          <Property Name="Email" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Phone1" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Phone2" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Mobile" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="PassportNumber" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="DatePassportIssue" Type="DateTime" Precision="0" />
+          <Property Name="DatePassportExpire" Type="DateTime" Precision="0" />
+          <Property Name="Address" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="Remark" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="CityId" Type="Int32" />
+          <Property Name="FatherName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IDNo" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ImageUrl" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="LicenceTitle" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="PostalCode" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ScheduleName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Code" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="WhatsApp" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Telegram" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="LinkedIn" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -16738,10 +17091,113 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
             <EntityTypeMapping TypeName="FLYModel.view_trn_exam_question_template">
               <MappingFragment StoreEntitySet="view_trn_exam_question_template">
                 <ScalarProperty Name="total" ColumnName="total" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="exam_id" ColumnName="exam_id" />
+                <ScalarProperty Name="course_id" ColumnName="course_id" />
                 <ScalarProperty Name="category" ColumnName="category" />
                 <ScalarProperty Name="category_id" ColumnName="category_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_trn_exam_question">
+            <EntityTypeMapping TypeName="FLYModel.view_trn_exam_question">
+              <MappingFragment StoreEntitySet="view_trn_exam_question">
+                <ScalarProperty Name="correct_answer_id" ColumnName="correct_answer_id" />
+                <ScalarProperty Name="correct_answer_title" ColumnName="correct_answer_title" />
+                <ScalarProperty Name="category" ColumnName="category" />
+                <ScalarProperty Name="hardness" ColumnName="hardness" />
+                <ScalarProperty Name="is_rtl" ColumnName="is_rtl" />
+                <ScalarProperty Name="category_id" ColumnName="category_id" />
+                <ScalarProperty Name="english_title" ColumnName="english_title" />
+                <ScalarProperty Name="question_id" ColumnName="question_id" />
+                <ScalarProperty Name="exam_question_id" ColumnName="exam_question_id" />
                 <ScalarProperty Name="exam_id" ColumnName="exam_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_trn_exam_summary_details">
+            <EntityTypeMapping TypeName="FLYModel.view_trn_exam_summary_details">
+              <MappingFragment StoreEntitySet="view_trn_exam_summary_details">
+                <ScalarProperty Name="result_id" ColumnName="result_id" />
+                <ScalarProperty Name="result" ColumnName="result" />
+                <ScalarProperty Name="score" ColumnName="score" />
+                <ScalarProperty Name="total_remained" ColumnName="total_remained" />
+                <ScalarProperty Name="total_answered" ColumnName="total_answered" />
+                <ScalarProperty Name="total_questions" ColumnName="total_questions" />
+                <ScalarProperty Name="remained_minutes" ColumnName="remained_minutes" />
+                <ScalarProperty Name="passed_minutes" ColumnName="passed_minutes" />
+                <ScalarProperty Name="date_end" ColumnName="date_end" />
+                <ScalarProperty Name="duration" ColumnName="duration" />
+                <ScalarProperty Name="date_start" ColumnName="date_start" />
+                <ScalarProperty Name="status_id" ColumnName="status_id" />
+                <ScalarProperty Name="course_id" ColumnName="course_id" />
+                <ScalarProperty Name="mobile" ColumnName="mobile" />
+                <ScalarProperty Name="nid" ColumnName="nid" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="last_name" ColumnName="last_name" />
+                <ScalarProperty Name="first_name" ColumnName="first_name" />
+                <ScalarProperty Name="person_id" ColumnName="person_id" />
+                <ScalarProperty Name="exam_id" ColumnName="exam_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_trn_exam_question_person_details">
+            <EntityTypeMapping TypeName="FLYModel.view_trn_exam_question_person_details">
+              <MappingFragment StoreEntitySet="view_trn_exam_question_person_details">
+                <ScalarProperty Name="date_sent" ColumnName="date_sent" />
+                <ScalarProperty Name="is_correct" ColumnName="is_correct" />
+                <ScalarProperty Name="answer_id" ColumnName="answer_id" />
+                <ScalarProperty Name="mobile" ColumnName="mobile" />
+                <ScalarProperty Name="nid" ColumnName="nid" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="last_name" ColumnName="last_name" />
+                <ScalarProperty Name="first_name" ColumnName="first_name" />
+                <ScalarProperty Name="person_id" ColumnName="person_id" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="course_id" ColumnName="course_id" />
+                <ScalarProperty Name="category" ColumnName="category" />
+                <ScalarProperty Name="category_id" ColumnName="category_id" />
+                <ScalarProperty Name="persian_title" ColumnName="persian_title" />
+                <ScalarProperty Name="english_title" ColumnName="english_title" />
+                <ScalarProperty Name="response_time" ColumnName="response_time" />
+                <ScalarProperty Name="exam_id" ColumnName="exam_id" />
+                <ScalarProperty Name="question_id" ColumnName="question_id" />
                 <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_trn_profile">
+            <EntityTypeMapping TypeName="FLYModel.view_trn_profile">
+              <MappingFragment StoreEntitySet="view_trn_profile">
+                <ScalarProperty Name="LinkedIn" ColumnName="LinkedIn" />
+                <ScalarProperty Name="Telegram" ColumnName="Telegram" />
+                <ScalarProperty Name="WhatsApp" ColumnName="WhatsApp" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="ScheduleName" ColumnName="ScheduleName" />
+                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+                <ScalarProperty Name="LicenceTitle" ColumnName="LicenceTitle" />
+                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="IDNo" ColumnName="IDNo" />
+                <ScalarProperty Name="FatherName" ColumnName="FatherName" />
+                <ScalarProperty Name="CityId" ColumnName="CityId" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="DatePassportExpire" ColumnName="DatePassportExpire" />
+                <ScalarProperty Name="DatePassportIssue" ColumnName="DatePassportIssue" />
+                <ScalarProperty Name="PassportNumber" ColumnName="PassportNumber" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="Phone2" ColumnName="Phone2" />
+                <ScalarProperty Name="Phone1" ColumnName="Phone1" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="DateBirth" ColumnName="DateBirth" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="SexId" ColumnName="SexId" />
+                <ScalarProperty Name="NID" ColumnName="NID" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

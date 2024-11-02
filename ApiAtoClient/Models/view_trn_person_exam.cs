@@ -14,6 +14,7 @@ namespace ApiAtoClient.Models
     
     public partial class view_trn_person_exam
     {
+        public int exam_id { get; set; }
         public int course_id { get; set; }
         public Nullable<int> person_id { get; set; }
         public int course_type_id { get; set; }
