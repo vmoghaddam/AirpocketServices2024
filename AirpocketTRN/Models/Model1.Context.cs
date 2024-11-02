@@ -150,5 +150,9 @@ namespace AirpocketTRN.Models
         public virtual DbSet<GRPCourseTypeExpiringGroup> GRPCourseTypeExpiringGroups { get; set; }
         public virtual DbSet<ViewProfile> ViewProfiles { get; set; }
         public virtual DbSet<view_trn_exam_question_template> view_trn_exam_question_template { get; set; }
+        public virtual DbSet<view_trn_exam_question> view_trn_exam_question { get; set; }
+        public virtual DbSet<view_trn_exam_summary_details> view_trn_exam_summary_details { get; set; }
+        public virtual DbSet<view_trn_exam_question_person_details> view_trn_exam_question_person_details { get; set; }
+        public virtual DbSet<view_trn_profile> view_trn_profile { get; set; }
     }
 }

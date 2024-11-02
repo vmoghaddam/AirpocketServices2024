@@ -7,18 +7,22 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AirpocketTRN.Models
+namespace ApiAtoClient.Models
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class view_trn_exam_question_template
+    public partial class view_trn_exam_question
     {
-        public int category_id { get; set; }
-        public string category { get; set; }
-        public int course_id { get; set; }
         public int exam_id { get; set; }
-        public int id { get; set; }
-        public Nullable<int> total { get; set; }
+        public int exam_question_id { get; set; }
+        public int question_id { get; set; }
+        public string english_title { get; set; }
+        public Nullable<int> category_id { get; set; }
+        public bool is_rtl { get; set; }
+        public int hardness { get; set; }
+        public string category { get; set; }
+        public string correct_answer_title { get; set; }
+        public int correct_answer_id { get; set; }
     }
 }

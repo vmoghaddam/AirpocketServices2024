@@ -98,6 +98,8 @@ namespace AirpocketTRN.ViewModels
         public List<int> groups { get; set; }
         public List<int> people { get; set; }
         public List<view_trn_exam_question_template> template { get; set; }
+        public List<view_trn_exam_question> questions { get; set; }
+        public List<view_trn_exam_summary_details> summary { get; set; }
     }
     public class exam_template
     {

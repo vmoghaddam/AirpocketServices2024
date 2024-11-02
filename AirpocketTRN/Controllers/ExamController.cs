@@ -25,6 +25,12 @@ namespace AirpocketTRN.Controllers
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class ExamController : ApiController
     {
+        CourseService courseService = null;
+
+        public ExamController()
+        {
+            courseService = new CourseService();
+        }
 
         public List<trn_questions> TakeRandomRows(List<trn_questions> list, int n)
         {
@@ -34,7 +40,43 @@ namespace AirpocketTRN.Controllers
             // Order the list randomly and take n rows
             return list.OrderBy(x => random.Next()).Take(n).ToList();
         }
+        [Route("api/trn/exam/status/")]
+        [AcceptVerbs("Post")]
+        public async Task<IHttpActionResult> post_exam_status(dynamic dto)
+        {
+            int exam_id = Convert.ToInt32(dto.exam_id);
+            int status=Convert.ToInt32(dto.status);
+            FLYEntities context = new FLYEntities();
+            context.Configuration.LazyLoadingEnabled = false;
+            var exam=await context.trn_exam.FirstOrDefaultAsync(q=>q.id==exam_id);
+            exam.status_id = status;
+            switch (status)
+            {
+                case 0:
+                    exam.date_start = null;
+                    exam.date_end_actual = null;
+                    break;
+                case 1:
+                    exam.date_start = DateTime.Now;
+                    exam.date_end_actual = null;
+                    break;
+                case 2:
+                    exam.date_end_actual= DateTime.Now;
+                    break;
+                default:
+                    break;
 
+            }
+
+            await context.SaveChangesAsync();
+            var result = new DataResponse()
+            {
+                IsSuccess = true,
+                Data = status,
+
+            };
+            return Ok(result);
+        }
 
         [Route("api/trn/exam/questions/generate")]
         [AcceptVerbs("Post")]
@@ -61,7 +103,7 @@ namespace AirpocketTRN.Controllers
                     });
                 }
 
-            }
+            } 
             var exists=await context.trn_exam_question.Where(q=>q.exam_id==dto.exam_id).ToListAsync();
             if (exists != null && exists.Count > 0)
                 context.trn_exam_question.RemoveRange(exists);
@@ -71,12 +113,39 @@ namespace AirpocketTRN.Controllers
             var result = new DataResponse()
             {
                 IsSuccess = true,
-                Data= generated_questions,
+                Data= generated_questions.Select(q=>new {q.exam_id,q.id,q.question_id,q.remark }),
 
             };
             return Ok(result);
         }
 
+        [Route("api/exam/summary/{exam_id}")]
+        [AcceptVerbs("GET")]
+        public async Task<IHttpActionResult> GetCoursePeopleSessions(int exam_id)
+        {
+            var result = await courseService.GetExamSummary(exam_id);
+
+            return Ok(result);
+        }
+
+        [Route("api/exam/results/{exam_id}")]
+        [AcceptVerbs("GET")]
+        public async Task<IHttpActionResult> GetExamResults(int exam_id)
+        {
+            var result = await courseService.GetExamPeopleAnswers(exam_id);
+
+            return Ok(result);
+        }
+
+        [Route("api/exam/person/results/{exam_id}/{person_id}")]
+        [AcceptVerbs("GET")]
+        public async Task<IHttpActionResult> GetExamPersonResults(int exam_id,int person_id)
+        {
+            var result = await courseService.GetExamPeopleAnswersByPerson(exam_id,person_id);
+            //GetExamPeopleAnswersByPerson
+
+            return Ok(result);
+        }
 
         public class dto_exam_questions_generate
         {
