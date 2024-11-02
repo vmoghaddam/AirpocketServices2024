@@ -53,5 +53,9 @@ namespace ApiAPSB.Models
         public string Direction { get; set; }
         public string WindComponent { get; set; }
         public Nullable<int> ZoneFuel { get; set; }
+        public string C_ETA { get; set; }
+        public Nullable<int> ZoneTimeInt { get; set; }
+        public Nullable<int> CumZoneTimeInt { get; set; }
+        public Nullable<long> rank { get; set; }
     }
 }

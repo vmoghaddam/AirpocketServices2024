@@ -309,6 +309,117 @@
           <Property Name="PaxMale" Type="int" />
           <Property Name="PaxFemale" Type="int" />
         </EntityType>
+        <EntityType Name="neerja_evaluation_form">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="flight_id" Type="int" Nullable="false" />
+          <Property Name="reporter_id" Type="int" />
+          <Property Name="position" Type="varchar" MaxLength="500" />
+          <Property Name="date_sign" Type="datetime2" Precision="7" />
+          <Property Name="remark" Type="nvarchar" MaxLength="2000" />
+        </EntityType>
+        <EntityType Name="neerja_evaluation_form_score">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="item_id" Type="int" Nullable="false" />
+          <Property Name="crew_id" Type="int" Nullable="false" />
+          <Property Name="position" Type="varchar" MaxLength="500" />
+          <Property Name="score" Type="int" />
+          <Property Name="remark" Type="nvarchar" MaxLength="1000" />
+          <Property Name="form_id" Type="int" />
+        </EntityType>
+        <EntityType Name="neerja_evaluation_item">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="title" Type="nvarchar" MaxLength="1000" />
+          <Property Name="remark" Type="nvarchar" MaxLength="1000" />
+        </EntityType>
+        <EntityType Name="neerja_preflight_check_form">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="flight_id" Type="int" />
+          <Property Name="date_create" Type="datetime2" Precision="7" />
+          <Property Name="remark" Type="nvarchar" MaxLength="2000" />
+        </EntityType>
+        <EntityType Name="neerja_preflight_check_form_sign">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="form_id" Type="int" Nullable="false" />
+          <Property Name="crew_id" Type="int" Nullable="false" />
+          <Property Name="date_sign" Type="datetime2" Precision="7" />
+          <Property Name="crew_no" Type="varchar" MaxLength="500" />
+          <Property Name="remark" Type="nvarchar" MaxLength="1000" />
+          <Property Name="flight_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="neerja_preflight_check_item">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="category" Type="varchar" MaxLength="1000" />
+          <Property Name="title" Type="varchar" MaxLength="1000" />
+          <Property Name="remark" Type="varchar" MaxLength="500" />
+          <Property Name="category_id" Type="int" />
+        </EntityType>
+        <EntityType Name="neerja_preflight_check_item_category">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="category" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="remark" Type="nvarchar" MaxLength="500" />
+          <Property Name="order_id" Type="int" />
+        </EntityType>
+        <EntityType Name="neerja_preflight_ckeck_form_item">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="flight_id" Type="int" Nullable="false" />
+          <Property Name="crew_id" Type="int" Nullable="false" />
+          <Property Name="position" Type="varchar" MaxLength="255" />
+          <Property Name="is_servicable" Type="bit" />
+          <Property Name="remark" Type="nvarchar" MaxLength="2000" />
+          <Property Name="item_id" Type="int" />
+          <Property Name="date_sign" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="neerja_preflight_from_remark">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="crew_id" Type="int" Nullable="false" />
+          <Property Name="flight_id" Type="int" Nullable="false" />
+          <Property Name="remark" Type="nvarchar" MaxLength="2000" />
+        </EntityType>
+        <EntityType Name="neerja_scc_report_form">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="flight_id" Type="int" Nullable="false" />
+          <Property Name="crew_id" Type="int" />
+          <Property Name="date_create" Type="datetime2" Precision="7" />
+          <Property Name="date_sign" Type="datetime2" Precision="7" />
+          <Property Name="crew_no" Type="varchar" MaxLength="500" />
+          <Property Name="catering_issue" Type="nvarchar" MaxLength="2000" />
+          <Property Name="airport_service" Type="nvarchar" MaxLength="2000" />
+          <Property Name="technical" Type="nvarchar" MaxLength="2000" />
+          <Property Name="safety_issue" Type="nvarchar" MaxLength="2000" />
+          <Property Name="general_issue" Type="nvarchar" MaxLength="2000" />
+          <Property Name="remark" Type="nvarchar" MaxLength="2000" />
+          <Property Name="position" Type="varchar" MaxLength="500" />
+        </EntityType>
         <EntityType Name="OFPB_AltDrift">
           <Key>
             <PropertyRef Name="Id" />
@@ -1200,6 +1311,78 @@ warning 6002: The table/view 'ppa_dev.dbo.AppLeg' does not have a primary key de
           <Property Name="AircraftModel" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_dev.dbo.view_neerja_evaluation' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_neerja_evaluation">
+          <Key>
+            <PropertyRef Name="flight_id" />
+            <PropertyRef Name="reporter_id" />
+            <PropertyRef Name="crew_id" />
+            <PropertyRef Name="item_id" />
+          </Key>
+          <Property Name="flight_id" Type="int" Nullable="false" />
+          <Property Name="reporter_id" Type="int" Nullable="false" />
+          <Property Name="date_sign" Type="datetime2" Precision="7" />
+          <Property Name="remark" Type="nvarchar" MaxLength="2000" />
+          <Property Name="score" Type="int" />
+          <Property Name="position" Type="varchar" MaxLength="500" />
+          <Property Name="crew_id" Type="int" Nullable="false" />
+          <Property Name="item_id" Type="int" Nullable="false" />
+          <Property Name="title" Type="nvarchar" MaxLength="1000" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="500" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_dev.dbo.view_neerja_pfc_item' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_neerja_pfc_item">
+          <Key>
+            <PropertyRef Name="item_id" />
+            <PropertyRef Name="category" />
+            <PropertyRef Name="flight_id" />
+            <PropertyRef Name="crew_id" />
+            <PropertyRef Name="name" />
+            <PropertyRef Name="job_group" />
+            <PropertyRef Name="nid" />
+          </Key>
+          <Property Name="category_order_id" Type="int" />
+          <Property Name="item_title" Type="varchar" MaxLength="1000" />
+          <Property Name="item_id" Type="int" Nullable="false" />
+          <Property Name="category" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="category_id" Type="int" />
+          <Property Name="flight_id" Type="int" Nullable="false" />
+          <Property Name="crew_id" Type="int" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="1001" Nullable="false" />
+          <Property Name="mobile" Type="nvarchar" MaxLength="500" />
+          <Property Name="group_id" Type="int" />
+          <Property Name="job_group" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="nid" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="position_id" Type="int" />
+          <Property Name="position" Type="varchar" MaxLength="255" />
+          <Property Name="is_servicable" Type="bit" />
+          <Property Name="remark" Type="nvarchar" MaxLength="2000" />
+          <Property Name="result_id" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_dev.dbo.view_neerja_scc_report' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_neerja_scc_report">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="flight_id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="flight_id" Type="int" Nullable="false" />
+          <Property Name="crew_id" Type="int" />
+          <Property Name="date_create" Type="datetime2" Precision="7" />
+          <Property Name="date_sign" Type="datetime2" Precision="7" />
+          <Property Name="crew_no" Type="varchar" MaxLength="500" />
+          <Property Name="catering_issue" Type="nvarchar" MaxLength="2000" />
+          <Property Name="airport_service" Type="nvarchar" MaxLength="2000" />
+          <Property Name="technical" Type="nvarchar" MaxLength="2000" />
+          <Property Name="safety_issue" Type="nvarchar" MaxLength="2000" />
+          <Property Name="general_issue" Type="nvarchar" MaxLength="2000" />
+          <Property Name="remark" Type="nvarchar" MaxLength="2000" />
+          <Property Name="position" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_dev.dbo.ViewBookApplicableEmployee' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewBookApplicableEmployee">
           <Key>
@@ -1322,6 +1505,46 @@ warning 6002: The table/view 'ppa_dev.dbo.ViewBookApplicableEmployee' does not h
           <Property Name="FileCount" Type="int" />
           <Property Name="FileUrl" Type="nvarchar" MaxLength="1000" />
           <Property Name="FileId" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_dev.dbo.ViewFlightCrewNewX' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ViewFlightCrewNewX">
+          <Key>
+            <PropertyRef Name="FDPId" />
+            <PropertyRef Name="FDPItemId" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="SexId" />
+            <PropertyRef Name="GroupOrder" />
+            <PropertyRef Name="IsCockpit" />
+            <PropertyRef Name="PID" />
+            <PropertyRef Name="PersonId" />
+          </Key>
+          <Property Name="FDPId" Type="int" Nullable="false" />
+          <Property Name="FDPItemId" Type="int" Nullable="false" />
+          <Property Name="CrewId" Type="int" />
+          <Property Name="FlightId" Type="int" />
+          <Property Name="IsPositioning" Type="bit" />
+          <Property Name="PositionId" Type="int" />
+          <Property Name="Position" Type="varchar" MaxLength="255" />
+          <Property Name="Name" Type="nvarchar" MaxLength="1003" Nullable="false" />
+          <Property Name="Mobile" Type="nvarchar" MaxLength="500" />
+          <Property Name="ScheduleName" Type="varchar" MaxLength="500" />
+          <Property Name="GroupId" Type="int" />
+          <Property Name="JobGroup" Type="nvarchar" MaxLength="500" />
+          <Property Name="JobGroupCode" Type="varchar" MaxLength="500" />
+          <Property Name="SexId" Type="int" Nullable="false" />
+          <Property Name="Sex" Type="nvarchar" MaxLength="500" />
+          <Property Name="GroupOrder" Type="int" Nullable="false" />
+          <Property Name="IsCockpit" Type="int" Nullable="false" />
+          <Property Name="Rank" Type="bigint" />
+          <Property Name="RankPosition" Type="bigint" />
+          <Property Name="Pickup" Type="datetime" />
+          <Property Name="PickupLocal" Type="datetime" />
+          <Property Name="Code" Type="varchar" MaxLength="500" />
+          <Property Name="PID" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="PersonId" Type="int" Nullable="false" />
+          <Property Name="BaseAirport" Type="nvarchar" MaxLength="255" />
+          <Property Name="BaseAirportId" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_dev.dbo.ViewFlightDaily' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -2064,6 +2287,18 @@ warning 6002: The table/view 'ppa_dev.dbo.ViewTimeTable' does not have a primary
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_it_ca">
+          <End Role="neerja_preflight_check_item_category" Type="Self.neerja_preflight_check_item_category" Multiplicity="0..1" />
+          <End Role="neerja_preflight_check_item" Type="Self.neerja_preflight_check_item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="neerja_preflight_check_item_category">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="neerja_preflight_check_item">
+              <PropertyRef Name="category_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_ofproot_ofp">
           <End Role="OFPSkyPuter" Type="Self.OFPSkyPuter" Multiplicity="0..1" />
           <End Role="OFPB_Root" Type="Self.OFPB_Root" Multiplicity="*" />
@@ -2087,6 +2322,116 @@ warning 6002: The table/view 'ppa_dev.dbo.ViewTimeTable' does not have a primary
             </Principal>
             <Dependent Role="OFPB_WindTemperature">
               <PropertyRef Name="OFPId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_scc_rep_flight">
+          <End Role="FlightInformation" Type="Self.FlightInformation" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="neerja_scc_report_form" Type="Self.neerja_scc_report_form" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FlightInformation">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="neerja_scc_report_form">
+              <PropertyRef Name="flight_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_x01_02">
+          <End Role="FlightInformation" Type="Self.FlightInformation" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="neerja_preflight_check_form" Type="Self.neerja_preflight_check_form" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FlightInformation">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="neerja_preflight_check_form">
+              <PropertyRef Name="flight_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_x01_06">
+          <End Role="FlightInformation" Type="Self.FlightInformation" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="neerja_preflight_ckeck_form_item" Type="Self.neerja_preflight_ckeck_form_item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FlightInformation">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="neerja_preflight_ckeck_form_item">
+              <PropertyRef Name="flight_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_x01_07">
+          <End Role="neerja_preflight_check_item" Type="Self.neerja_preflight_check_item" Multiplicity="0..1" />
+          <End Role="neerja_preflight_ckeck_form_item" Type="Self.neerja_preflight_ckeck_form_item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="neerja_preflight_check_item">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="neerja_preflight_ckeck_form_item">
+              <PropertyRef Name="item_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_xx_01">
+          <End Role="neerja_evaluation_form" Type="Self.neerja_evaluation_form" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="neerja_evaluation_form_score" Type="Self.neerja_evaluation_form_score" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="neerja_evaluation_form">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="neerja_evaluation_form_score">
+              <PropertyRef Name="form_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_xx_02">
+          <End Role="neerja_evaluation_item" Type="Self.neerja_evaluation_item" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="neerja_evaluation_form_score" Type="Self.neerja_evaluation_form_score" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="neerja_evaluation_item">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="neerja_evaluation_form_score">
+              <PropertyRef Name="item_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_y01_03">
+          <End Role="FlightInformation" Type="Self.FlightInformation" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="neerja_preflight_check_form_sign" Type="Self.neerja_preflight_check_form_sign" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FlightInformation">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="neerja_preflight_check_form_sign">
+              <PropertyRef Name="flight_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_z01_01">
+          <End Role="FlightInformation" Type="Self.FlightInformation" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="neerja_evaluation_form" Type="Self.neerja_evaluation_form" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FlightInformation">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="neerja_evaluation_form">
+              <PropertyRef Name="flight_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2148,6 +2493,16 @@ warning 6002: The table/view 'ppa_dev.dbo.ViewTimeTable' does not have a primary
         </Association>
         <EntityContainer Name="dbModelStoreContainer">
           <EntitySet Name="FlightInformation" EntityType="Self.FlightInformation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="neerja_evaluation_form" EntityType="Self.neerja_evaluation_form" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="neerja_evaluation_form_score" EntityType="Self.neerja_evaluation_form_score" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="neerja_evaluation_item" EntityType="Self.neerja_evaluation_item" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="neerja_preflight_check_form" EntityType="Self.neerja_preflight_check_form" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="neerja_preflight_check_form_sign" EntityType="Self.neerja_preflight_check_form_sign" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="neerja_preflight_check_item" EntityType="Self.neerja_preflight_check_item" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="neerja_preflight_check_item_category" EntityType="Self.neerja_preflight_check_item_category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="neerja_preflight_ckeck_form_item" EntityType="Self.neerja_preflight_ckeck_form_item" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="neerja_preflight_from_remark" EntityType="Self.neerja_preflight_from_remark" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="neerja_scc_report_form" EntityType="Self.neerja_scc_report_form" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OFPB_AltDrift" EntityType="Self.OFPB_AltDrift" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OFPB_Alternate1NavLog" EntityType="Self.OFPB_Alternate1NavLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OFPB_BurnOffAdjustment" EntityType="Self.OFPB_BurnOffAdjustment" Schema="dbo" store:Type="Tables" />
@@ -2557,6 +2912,59 @@ warning 6002: The table/view 'ppa_dev.dbo.ViewTimeTable' does not have a primary
     [AppLeg].[AircraftModel] AS [AircraftModel]
     FROM [dbo].[AppLeg] AS [AppLeg]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="view_neerja_evaluation" EntityType="Self.view_neerja_evaluation" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_neerja_evaluation].[flight_id] AS [flight_id], 
+    [view_neerja_evaluation].[reporter_id] AS [reporter_id], 
+    [view_neerja_evaluation].[date_sign] AS [date_sign], 
+    [view_neerja_evaluation].[remark] AS [remark], 
+    [view_neerja_evaluation].[score] AS [score], 
+    [view_neerja_evaluation].[position] AS [position], 
+    [view_neerja_evaluation].[crew_id] AS [crew_id], 
+    [view_neerja_evaluation].[item_id] AS [item_id], 
+    [view_neerja_evaluation].[title] AS [title], 
+    [view_neerja_evaluation].[FirstName] AS [FirstName], 
+    [view_neerja_evaluation].[LastName] AS [LastName]
+    FROM [dbo].[view_neerja_evaluation] AS [view_neerja_evaluation]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="view_neerja_pfc_item" EntityType="Self.view_neerja_pfc_item" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_neerja_pfc_item].[category_order_id] AS [category_order_id], 
+    [view_neerja_pfc_item].[item_title] AS [item_title], 
+    [view_neerja_pfc_item].[item_id] AS [item_id], 
+    [view_neerja_pfc_item].[category] AS [category], 
+    [view_neerja_pfc_item].[category_id] AS [category_id], 
+    [view_neerja_pfc_item].[flight_id] AS [flight_id], 
+    [view_neerja_pfc_item].[crew_id] AS [crew_id], 
+    [view_neerja_pfc_item].[name] AS [name], 
+    [view_neerja_pfc_item].[mobile] AS [mobile], 
+    [view_neerja_pfc_item].[group_id] AS [group_id], 
+    [view_neerja_pfc_item].[job_group] AS [job_group], 
+    [view_neerja_pfc_item].[nid] AS [nid], 
+    [view_neerja_pfc_item].[position_id] AS [position_id], 
+    [view_neerja_pfc_item].[position] AS [position], 
+    [view_neerja_pfc_item].[is_servicable] AS [is_servicable], 
+    [view_neerja_pfc_item].[remark] AS [remark], 
+    [view_neerja_pfc_item].[result_id] AS [result_id]
+    FROM [dbo].[view_neerja_pfc_item] AS [view_neerja_pfc_item]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="view_neerja_scc_report" EntityType="Self.view_neerja_scc_report" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_neerja_scc_report].[id] AS [id], 
+    [view_neerja_scc_report].[flight_id] AS [flight_id], 
+    [view_neerja_scc_report].[crew_id] AS [crew_id], 
+    [view_neerja_scc_report].[date_create] AS [date_create], 
+    [view_neerja_scc_report].[date_sign] AS [date_sign], 
+    [view_neerja_scc_report].[crew_no] AS [crew_no], 
+    [view_neerja_scc_report].[catering_issue] AS [catering_issue], 
+    [view_neerja_scc_report].[airport_service] AS [airport_service], 
+    [view_neerja_scc_report].[technical] AS [technical], 
+    [view_neerja_scc_report].[safety_issue] AS [safety_issue], 
+    [view_neerja_scc_report].[general_issue] AS [general_issue], 
+    [view_neerja_scc_report].[remark] AS [remark], 
+    [view_neerja_scc_report].[position] AS [position]
+    FROM [dbo].[view_neerja_scc_report] AS [view_neerja_scc_report]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="ViewBookApplicableEmployee" EntityType="Self.ViewBookApplicableEmployee" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [ViewBookApplicableEmployee].[EmployeeId] AS [EmployeeId], 
@@ -2662,6 +3070,36 @@ warning 6002: The table/view 'ppa_dev.dbo.ViewTimeTable' does not have a primary
     [ViewBookApplicableEmployee].[FileUrl] AS [FileUrl], 
     [ViewBookApplicableEmployee].[FileId] AS [FileId]
     FROM [dbo].[ViewBookApplicableEmployee] AS [ViewBookApplicableEmployee]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="ViewFlightCrewNewX" EntityType="Self.ViewFlightCrewNewX" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ViewFlightCrewNewX].[FDPId] AS [FDPId], 
+    [ViewFlightCrewNewX].[FDPItemId] AS [FDPItemId], 
+    [ViewFlightCrewNewX].[CrewId] AS [CrewId], 
+    [ViewFlightCrewNewX].[FlightId] AS [FlightId], 
+    [ViewFlightCrewNewX].[IsPositioning] AS [IsPositioning], 
+    [ViewFlightCrewNewX].[PositionId] AS [PositionId], 
+    [ViewFlightCrewNewX].[Position] AS [Position], 
+    [ViewFlightCrewNewX].[Name] AS [Name], 
+    [ViewFlightCrewNewX].[Mobile] AS [Mobile], 
+    [ViewFlightCrewNewX].[ScheduleName] AS [ScheduleName], 
+    [ViewFlightCrewNewX].[GroupId] AS [GroupId], 
+    [ViewFlightCrewNewX].[JobGroup] AS [JobGroup], 
+    [ViewFlightCrewNewX].[JobGroupCode] AS [JobGroupCode], 
+    [ViewFlightCrewNewX].[SexId] AS [SexId], 
+    [ViewFlightCrewNewX].[Sex] AS [Sex], 
+    [ViewFlightCrewNewX].[GroupOrder] AS [GroupOrder], 
+    [ViewFlightCrewNewX].[IsCockpit] AS [IsCockpit], 
+    [ViewFlightCrewNewX].[Rank] AS [Rank], 
+    [ViewFlightCrewNewX].[RankPosition] AS [RankPosition], 
+    [ViewFlightCrewNewX].[Pickup] AS [Pickup], 
+    [ViewFlightCrewNewX].[PickupLocal] AS [PickupLocal], 
+    [ViewFlightCrewNewX].[Code] AS [Code], 
+    [ViewFlightCrewNewX].[PID] AS [PID], 
+    [ViewFlightCrewNewX].[PersonId] AS [PersonId], 
+    [ViewFlightCrewNewX].[BaseAirport] AS [BaseAirport], 
+    [ViewFlightCrewNewX].[BaseAirportId] AS [BaseAirportId]
+    FROM [dbo].[ViewFlightCrewNewX] AS [ViewFlightCrewNewX]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ViewFlightDaily" EntityType="Self.ViewFlightDaily" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -3245,6 +3683,10 @@ warning 6002: The table/view 'ppa_dev.dbo.ViewTimeTable' does not have a primary
             <End Role="OFPB_Root" EntitySet="OFPB_Root" />
             <End Role="OFPB_WindTemperatureDescent" EntitySet="OFPB_WindTemperatureDescent" />
           </AssociationSet>
+          <AssociationSet Name="fk_it_ca" Association="Self.fk_it_ca">
+            <End Role="neerja_preflight_check_item_category" EntitySet="neerja_preflight_check_item_category" />
+            <End Role="neerja_preflight_check_item" EntitySet="neerja_preflight_check_item" />
+          </AssociationSet>
           <AssociationSet Name="fk_ofproot_ofp" Association="Self.fk_ofproot_ofp">
             <End Role="OFPSkyPuter" EntitySet="OFPSkyPuter" />
             <End Role="OFPB_Root" EntitySet="OFPB_Root" />
@@ -3252,6 +3694,38 @@ warning 6002: The table/view 'ppa_dev.dbo.ViewTimeTable' does not have a primary
           <AssociationSet Name="fk_ofpwt_ofp" Association="Self.fk_ofpwt_ofp">
             <End Role="OFPB_Root" EntitySet="OFPB_Root" />
             <End Role="OFPB_WindTemperature" EntitySet="OFPB_WindTemperature" />
+          </AssociationSet>
+          <AssociationSet Name="fk_scc_rep_flight" Association="Self.fk_scc_rep_flight">
+            <End Role="FlightInformation" EntitySet="FlightInformation" />
+            <End Role="neerja_scc_report_form" EntitySet="neerja_scc_report_form" />
+          </AssociationSet>
+          <AssociationSet Name="fk_x01_02" Association="Self.fk_x01_02">
+            <End Role="FlightInformation" EntitySet="FlightInformation" />
+            <End Role="neerja_preflight_check_form" EntitySet="neerja_preflight_check_form" />
+          </AssociationSet>
+          <AssociationSet Name="fk_x01_06" Association="Self.fk_x01_06">
+            <End Role="FlightInformation" EntitySet="FlightInformation" />
+            <End Role="neerja_preflight_ckeck_form_item" EntitySet="neerja_preflight_ckeck_form_item" />
+          </AssociationSet>
+          <AssociationSet Name="fk_x01_07" Association="Self.fk_x01_07">
+            <End Role="neerja_preflight_check_item" EntitySet="neerja_preflight_check_item" />
+            <End Role="neerja_preflight_ckeck_form_item" EntitySet="neerja_preflight_ckeck_form_item" />
+          </AssociationSet>
+          <AssociationSet Name="fk_xx_01" Association="Self.fk_xx_01">
+            <End Role="neerja_evaluation_form" EntitySet="neerja_evaluation_form" />
+            <End Role="neerja_evaluation_form_score" EntitySet="neerja_evaluation_form_score" />
+          </AssociationSet>
+          <AssociationSet Name="fk_xx_02" Association="Self.fk_xx_02">
+            <End Role="neerja_evaluation_item" EntitySet="neerja_evaluation_item" />
+            <End Role="neerja_evaluation_form_score" EntitySet="neerja_evaluation_form_score" />
+          </AssociationSet>
+          <AssociationSet Name="fk_y01_03" Association="Self.fk_y01_03">
+            <End Role="FlightInformation" EntitySet="FlightInformation" />
+            <End Role="neerja_preflight_check_form_sign" EntitySet="neerja_preflight_check_form_sign" />
+          </AssociationSet>
+          <AssociationSet Name="fk_z01_01" Association="Self.fk_z01_01">
+            <End Role="FlightInformation" EntitySet="FlightInformation" />
+            <End Role="neerja_evaluation_form" EntitySet="neerja_evaluation_form" />
           </AssociationSet>
           <AssociationSet Name="OFPB_CS_FK" Association="Self.OFPB_CS_FK">
             <End Role="OFPB_Root" EntitySet="OFPB_Root" />
@@ -3366,6 +3840,56 @@ warning 6002: The table/view 'ppa_dev.dbo.ViewTimeTable' does not have a primary
             <End Role="OFPB_Root" EntitySet="OFPB_Root" />
             <End Role="OFPB_Alternate1NavLog" EntitySet="OFPB_Alternate1NavLog" />
           </AssociationSet>
+          <EntitySet Name="neerja_evaluation_form" EntityType="dbModel.neerja_evaluation_form" />
+          <EntitySet Name="neerja_evaluation_form_score" EntityType="dbModel.neerja_evaluation_form_score" />
+          <EntitySet Name="neerja_evaluation_item" EntityType="dbModel.neerja_evaluation_item" />
+          <EntitySet Name="neerja_preflight_check_form" EntityType="dbModel.neerja_preflight_check_form" />
+          <EntitySet Name="neerja_preflight_check_form_sign" EntityType="dbModel.neerja_preflight_check_form_sign" />
+          <EntitySet Name="neerja_preflight_check_item" EntityType="dbModel.neerja_preflight_check_item" />
+          <EntitySet Name="neerja_preflight_check_item_category" EntityType="dbModel.neerja_preflight_check_item_category" />
+          <EntitySet Name="neerja_preflight_ckeck_form_item" EntityType="dbModel.neerja_preflight_ckeck_form_item" />
+          <EntitySet Name="neerja_preflight_from_remark" EntityType="dbModel.neerja_preflight_from_remark" />
+          <EntitySet Name="neerja_scc_report_form" EntityType="dbModel.neerja_scc_report_form" />
+          <EntitySet Name="view_neerja_evaluation" EntityType="dbModel.view_neerja_evaluation" />
+          <EntitySet Name="view_neerja_pfc_item" EntityType="dbModel.view_neerja_pfc_item" />
+          <EntitySet Name="view_neerja_scc_report" EntityType="dbModel.view_neerja_scc_report" />
+          <AssociationSet Name="fk_scc_rep_flight" Association="dbModel.fk_scc_rep_flight">
+            <End Role="FlightInformation" EntitySet="FlightInformations" />
+            <End Role="neerja_scc_report_form" EntitySet="neerja_scc_report_form" />
+          </AssociationSet>
+          <AssociationSet Name="fk_x01_02" Association="dbModel.fk_x01_02">
+            <End Role="FlightInformation" EntitySet="FlightInformations" />
+            <End Role="neerja_preflight_check_form" EntitySet="neerja_preflight_check_form" />
+          </AssociationSet>
+          <AssociationSet Name="fk_x01_06" Association="dbModel.fk_x01_06">
+            <End Role="FlightInformation" EntitySet="FlightInformations" />
+            <End Role="neerja_preflight_ckeck_form_item" EntitySet="neerja_preflight_ckeck_form_item" />
+          </AssociationSet>
+          <AssociationSet Name="fk_y01_03" Association="dbModel.fk_y01_03">
+            <End Role="FlightInformation" EntitySet="FlightInformations" />
+            <End Role="neerja_preflight_check_form_sign" EntitySet="neerja_preflight_check_form_sign" />
+          </AssociationSet>
+          <AssociationSet Name="fk_z01_01" Association="dbModel.fk_z01_01">
+            <End Role="FlightInformation" EntitySet="FlightInformations" />
+            <End Role="neerja_evaluation_form" EntitySet="neerja_evaluation_form" />
+          </AssociationSet>
+          <AssociationSet Name="fk_xx_01" Association="dbModel.fk_xx_01">
+            <End Role="neerja_evaluation_form" EntitySet="neerja_evaluation_form" />
+            <End Role="neerja_evaluation_form_score" EntitySet="neerja_evaluation_form_score" />
+          </AssociationSet>
+          <AssociationSet Name="fk_xx_02" Association="dbModel.fk_xx_02">
+            <End Role="neerja_evaluation_item" EntitySet="neerja_evaluation_item" />
+            <End Role="neerja_evaluation_form_score" EntitySet="neerja_evaluation_form_score" />
+          </AssociationSet>
+          <AssociationSet Name="fk_it_ca" Association="dbModel.fk_it_ca">
+            <End Role="neerja_preflight_check_item_category" EntitySet="neerja_preflight_check_item_category" />
+            <End Role="neerja_preflight_check_item" EntitySet="neerja_preflight_check_item" />
+          </AssociationSet>
+          <AssociationSet Name="fk_x01_07" Association="dbModel.fk_x01_07">
+            <End Role="neerja_preflight_check_item" EntitySet="neerja_preflight_check_item" />
+            <End Role="neerja_preflight_ckeck_form_item" EntitySet="neerja_preflight_ckeck_form_item" />
+          </AssociationSet>
+          <EntitySet Name="ViewFlightCrewNewXes" EntityType="dbModel.ViewFlightCrewNewX" />
         </EntityContainer>
         <EntityType Name="AppLeg">
           <Key>
@@ -4931,6 +5455,11 @@ warning 6002: The table/view 'ppa_dev.dbo.ViewTimeTable' does not have a primary
           <Property Name="AttForms" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="PaxMale" Type="Int32" />
           <Property Name="PaxFemale" Type="Int32" />
+          <NavigationProperty Name="neerja_scc_report_form" Relationship="dbModel.fk_scc_rep_flight" FromRole="FlightInformation" ToRole="neerja_scc_report_form" />
+          <NavigationProperty Name="neerja_preflight_check_form" Relationship="dbModel.fk_x01_02" FromRole="FlightInformation" ToRole="neerja_preflight_check_form" />
+          <NavigationProperty Name="neerja_preflight_ckeck_form_item" Relationship="dbModel.fk_x01_06" FromRole="FlightInformation" ToRole="neerja_preflight_ckeck_form_item" />
+          <NavigationProperty Name="neerja_preflight_check_form_sign" Relationship="dbModel.fk_y01_03" FromRole="FlightInformation" ToRole="neerja_preflight_check_form_sign" />
+          <NavigationProperty Name="neerja_evaluation_form" Relationship="dbModel.fk_z01_01" FromRole="FlightInformation" ToRole="neerja_evaluation_form" />
         </EntityType>
         <EntityType Name="OFPB_Root">
           <Key>
@@ -5511,6 +6040,356 @@ warning 6002: The table/view 'ppa_dev.dbo.ViewTimeTable' does not have a primary
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="neerja_evaluation_form">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="flight_id" Type="Int32" Nullable="false" />
+          <Property Name="reporter_id" Type="Int32" />
+          <Property Name="position" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="date_sign" Type="DateTime" Precision="7" />
+          <Property Name="remark" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="FlightInformation" Relationship="dbModel.fk_z01_01" FromRole="neerja_evaluation_form" ToRole="FlightInformation" />
+          <NavigationProperty Name="neerja_evaluation_form_score" Relationship="dbModel.fk_xx_01" FromRole="neerja_evaluation_form" ToRole="neerja_evaluation_form_score" />
+        </EntityType>
+        <EntityType Name="neerja_evaluation_form_score">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="item_id" Type="Int32" Nullable="false" />
+          <Property Name="crew_id" Type="Int32" Nullable="false" />
+          <Property Name="position" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="score" Type="Int32" />
+          <Property Name="remark" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="form_id" Type="Int32" />
+          <NavigationProperty Name="neerja_evaluation_form" Relationship="dbModel.fk_xx_01" FromRole="neerja_evaluation_form_score" ToRole="neerja_evaluation_form" />
+          <NavigationProperty Name="neerja_evaluation_item" Relationship="dbModel.fk_xx_02" FromRole="neerja_evaluation_form_score" ToRole="neerja_evaluation_item" />
+        </EntityType>
+        <EntityType Name="neerja_evaluation_item">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="title" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="remark" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="neerja_evaluation_form_score" Relationship="dbModel.fk_xx_02" FromRole="neerja_evaluation_item" ToRole="neerja_evaluation_form_score" />
+        </EntityType>
+        <EntityType Name="neerja_preflight_check_form">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="flight_id" Type="Int32" />
+          <Property Name="date_create" Type="DateTime" Precision="7" />
+          <Property Name="remark" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="FlightInformation" Relationship="dbModel.fk_x01_02" FromRole="neerja_preflight_check_form" ToRole="FlightInformation" />
+        </EntityType>
+        <EntityType Name="neerja_preflight_check_form_sign">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="form_id" Type="Int32" Nullable="false" />
+          <Property Name="crew_id" Type="Int32" Nullable="false" />
+          <Property Name="date_sign" Type="DateTime" Precision="7" />
+          <Property Name="crew_no" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="remark" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="flight_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="FlightInformation" Relationship="dbModel.fk_y01_03" FromRole="neerja_preflight_check_form_sign" ToRole="FlightInformation" />
+        </EntityType>
+        <EntityType Name="neerja_preflight_check_item">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="category" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="title" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="remark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="category_id" Type="Int32" />
+          <NavigationProperty Name="neerja_preflight_check_item_category" Relationship="dbModel.fk_it_ca" FromRole="neerja_preflight_check_item" ToRole="neerja_preflight_check_item_category" />
+          <NavigationProperty Name="neerja_preflight_ckeck_form_item" Relationship="dbModel.fk_x01_07" FromRole="neerja_preflight_check_item" ToRole="neerja_preflight_ckeck_form_item" />
+        </EntityType>
+        <EntityType Name="neerja_preflight_check_item_category">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="category" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="order_id" Type="Int32" />
+          <NavigationProperty Name="neerja_preflight_check_item" Relationship="dbModel.fk_it_ca" FromRole="neerja_preflight_check_item_category" ToRole="neerja_preflight_check_item" />
+        </EntityType>
+        <EntityType Name="neerja_preflight_ckeck_form_item">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="flight_id" Type="Int32" Nullable="false" />
+          <Property Name="crew_id" Type="Int32" Nullable="false" />
+          <Property Name="position" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="is_servicable" Type="Boolean" />
+          <Property Name="remark" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="item_id" Type="Int32" />
+          <Property Name="date_sign" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="FlightInformation" Relationship="dbModel.fk_x01_06" FromRole="neerja_preflight_ckeck_form_item" ToRole="FlightInformation" />
+          <NavigationProperty Name="neerja_preflight_check_item" Relationship="dbModel.fk_x01_07" FromRole="neerja_preflight_ckeck_form_item" ToRole="neerja_preflight_check_item" />
+        </EntityType>
+        <EntityType Name="neerja_preflight_from_remark">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="crew_id" Type="Int32" Nullable="false" />
+          <Property Name="flight_id" Type="Int32" Nullable="false" />
+          <Property Name="remark" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="neerja_scc_report_form">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="flight_id" Type="Int32" Nullable="false" />
+          <Property Name="crew_id" Type="Int32" />
+          <Property Name="date_create" Type="DateTime" Precision="7" />
+          <Property Name="date_sign" Type="DateTime" Precision="7" />
+          <Property Name="crew_no" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="catering_issue" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="airport_service" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="technical" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="safety_issue" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="general_issue" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="remark" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="position" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="FlightInformation" Relationship="dbModel.fk_scc_rep_flight" FromRole="neerja_scc_report_form" ToRole="FlightInformation" />
+        </EntityType>
+        <EntityType Name="view_neerja_evaluation">
+          <Key>
+            <PropertyRef Name="flight_id" />
+            <PropertyRef Name="reporter_id" />
+            <PropertyRef Name="crew_id" />
+            <PropertyRef Name="item_id" />
+          </Key>
+          <Property Name="flight_id" Type="Int32" Nullable="false" />
+          <Property Name="reporter_id" Type="Int32" Nullable="false" />
+          <Property Name="date_sign" Type="DateTime" Precision="7" />
+          <Property Name="remark" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="score" Type="Int32" />
+          <Property Name="position" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="crew_id" Type="Int32" Nullable="false" />
+          <Property Name="item_id" Type="Int32" Nullable="false" />
+          <Property Name="title" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="view_neerja_pfc_item">
+          <Key>
+            <PropertyRef Name="item_id" />
+            <PropertyRef Name="category" />
+            <PropertyRef Name="flight_id" />
+            <PropertyRef Name="crew_id" />
+            <PropertyRef Name="name" />
+            <PropertyRef Name="job_group" />
+            <PropertyRef Name="nid" />
+          </Key>
+          <Property Name="category_order_id" Type="Int32" />
+          <Property Name="item_title" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="item_id" Type="Int32" Nullable="false" />
+          <Property Name="category" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="category_id" Type="Int32" />
+          <Property Name="flight_id" Type="Int32" Nullable="false" />
+          <Property Name="crew_id" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="mobile" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="group_id" Type="Int32" />
+          <Property Name="job_group" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="nid" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="position_id" Type="Int32" />
+          <Property Name="position" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="is_servicable" Type="Boolean" />
+          <Property Name="remark" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="result_id" Type="Int32" />
+        </EntityType>
+        <EntityType Name="view_neerja_scc_report">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="flight_id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="flight_id" Type="Int32" Nullable="false" />
+          <Property Name="crew_id" Type="Int32" />
+          <Property Name="date_create" Type="DateTime" Precision="7" />
+          <Property Name="date_sign" Type="DateTime" Precision="7" />
+          <Property Name="crew_no" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="catering_issue" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="airport_service" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="technical" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="safety_issue" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="general_issue" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="remark" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="position" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="fk_scc_rep_flight">
+          <End Type="dbModel.FlightInformation" Role="FlightInformation" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="dbModel.neerja_scc_report_form" Role="neerja_scc_report_form" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FlightInformation">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="neerja_scc_report_form">
+              <PropertyRef Name="flight_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_x01_02">
+          <End Type="dbModel.FlightInformation" Role="FlightInformation" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="dbModel.neerja_preflight_check_form" Role="neerja_preflight_check_form" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FlightInformation">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="neerja_preflight_check_form">
+              <PropertyRef Name="flight_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_x01_06">
+          <End Type="dbModel.FlightInformation" Role="FlightInformation" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="dbModel.neerja_preflight_ckeck_form_item" Role="neerja_preflight_ckeck_form_item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FlightInformation">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="neerja_preflight_ckeck_form_item">
+              <PropertyRef Name="flight_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_y01_03">
+          <End Type="dbModel.FlightInformation" Role="FlightInformation" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="dbModel.neerja_preflight_check_form_sign" Role="neerja_preflight_check_form_sign" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FlightInformation">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="neerja_preflight_check_form_sign">
+              <PropertyRef Name="flight_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_z01_01">
+          <End Type="dbModel.FlightInformation" Role="FlightInformation" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="dbModel.neerja_evaluation_form" Role="neerja_evaluation_form" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FlightInformation">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="neerja_evaluation_form">
+              <PropertyRef Name="flight_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_xx_01">
+          <End Type="dbModel.neerja_evaluation_form" Role="neerja_evaluation_form" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="dbModel.neerja_evaluation_form_score" Role="neerja_evaluation_form_score" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="neerja_evaluation_form">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="neerja_evaluation_form_score">
+              <PropertyRef Name="form_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_xx_02">
+          <End Type="dbModel.neerja_evaluation_item" Role="neerja_evaluation_item" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="dbModel.neerja_evaluation_form_score" Role="neerja_evaluation_form_score" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="neerja_evaluation_item">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="neerja_evaluation_form_score">
+              <PropertyRef Name="item_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_it_ca">
+          <End Type="dbModel.neerja_preflight_check_item_category" Role="neerja_preflight_check_item_category" Multiplicity="0..1" />
+          <End Type="dbModel.neerja_preflight_check_item" Role="neerja_preflight_check_item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="neerja_preflight_check_item_category">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="neerja_preflight_check_item">
+              <PropertyRef Name="category_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_x01_07">
+          <End Type="dbModel.neerja_preflight_check_item" Role="neerja_preflight_check_item" Multiplicity="0..1" />
+          <End Type="dbModel.neerja_preflight_ckeck_form_item" Role="neerja_preflight_ckeck_form_item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="neerja_preflight_check_item">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="neerja_preflight_ckeck_form_item">
+              <PropertyRef Name="item_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ViewFlightCrewNewX">
+          <Key>
+            <PropertyRef Name="FDPId" />
+            <PropertyRef Name="FDPItemId" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="SexId" />
+            <PropertyRef Name="GroupOrder" />
+            <PropertyRef Name="IsCockpit" />
+            <PropertyRef Name="PID" />
+            <PropertyRef Name="PersonId" />
+          </Key>
+          <Property Name="FDPId" Type="Int32" Nullable="false" />
+          <Property Name="FDPItemId" Type="Int32" Nullable="false" />
+          <Property Name="CrewId" Type="Int32" />
+          <Property Name="FlightId" Type="Int32" />
+          <Property Name="IsPositioning" Type="Boolean" />
+          <Property Name="PositionId" Type="Int32" />
+          <Property Name="Position" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="1003" FixedLength="false" Unicode="true" />
+          <Property Name="Mobile" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ScheduleName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="GroupId" Type="Int32" />
+          <Property Name="JobGroup" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="JobGroupCode" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="SexId" Type="Int32" Nullable="false" />
+          <Property Name="Sex" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="GroupOrder" Type="Int32" Nullable="false" />
+          <Property Name="IsCockpit" Type="Int32" Nullable="false" />
+          <Property Name="Rank" Type="Int64" />
+          <Property Name="RankPosition" Type="Int64" />
+          <Property Name="Pickup" Type="DateTime" Precision="3" />
+          <Property Name="PickupLocal" Type="DateTime" Precision="3" />
+          <Property Name="Code" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="PID" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="PersonId" Type="Int32" Nullable="false" />
+          <Property Name="BaseAirport" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="BaseAirportId" Type="Int32" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7351,6 +8230,218 @@ warning 6002: The table/view 'ppa_dev.dbo.ViewTimeTable' does not have a primary
                 <ScalarProperty Name="FlightLevel" ColumnName="FlightLevel" />
                 <ScalarProperty Name="WayPoint" ColumnName="WayPoint" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="neerja_evaluation_form">
+            <EntityTypeMapping TypeName="dbModel.neerja_evaluation_form">
+              <MappingFragment StoreEntitySet="neerja_evaluation_form">
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="date_sign" ColumnName="date_sign" />
+                <ScalarProperty Name="position" ColumnName="position" />
+                <ScalarProperty Name="reporter_id" ColumnName="reporter_id" />
+                <ScalarProperty Name="flight_id" ColumnName="flight_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="neerja_evaluation_form_score">
+            <EntityTypeMapping TypeName="dbModel.neerja_evaluation_form_score">
+              <MappingFragment StoreEntitySet="neerja_evaluation_form_score">
+                <ScalarProperty Name="form_id" ColumnName="form_id" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="score" ColumnName="score" />
+                <ScalarProperty Name="position" ColumnName="position" />
+                <ScalarProperty Name="crew_id" ColumnName="crew_id" />
+                <ScalarProperty Name="item_id" ColumnName="item_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="neerja_evaluation_item">
+            <EntityTypeMapping TypeName="dbModel.neerja_evaluation_item">
+              <MappingFragment StoreEntitySet="neerja_evaluation_item">
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="neerja_preflight_check_form">
+            <EntityTypeMapping TypeName="dbModel.neerja_preflight_check_form">
+              <MappingFragment StoreEntitySet="neerja_preflight_check_form">
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="date_create" ColumnName="date_create" />
+                <ScalarProperty Name="flight_id" ColumnName="flight_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="neerja_preflight_check_form_sign">
+            <EntityTypeMapping TypeName="dbModel.neerja_preflight_check_form_sign">
+              <MappingFragment StoreEntitySet="neerja_preflight_check_form_sign">
+                <ScalarProperty Name="flight_id" ColumnName="flight_id" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="crew_no" ColumnName="crew_no" />
+                <ScalarProperty Name="date_sign" ColumnName="date_sign" />
+                <ScalarProperty Name="crew_id" ColumnName="crew_id" />
+                <ScalarProperty Name="form_id" ColumnName="form_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="neerja_preflight_check_item">
+            <EntityTypeMapping TypeName="dbModel.neerja_preflight_check_item">
+              <MappingFragment StoreEntitySet="neerja_preflight_check_item">
+                <ScalarProperty Name="category_id" ColumnName="category_id" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="category" ColumnName="category" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="neerja_preflight_check_item_category">
+            <EntityTypeMapping TypeName="dbModel.neerja_preflight_check_item_category">
+              <MappingFragment StoreEntitySet="neerja_preflight_check_item_category">
+                <ScalarProperty Name="order_id" ColumnName="order_id" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="category" ColumnName="category" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="neerja_preflight_ckeck_form_item">
+            <EntityTypeMapping TypeName="dbModel.neerja_preflight_ckeck_form_item">
+              <MappingFragment StoreEntitySet="neerja_preflight_ckeck_form_item">
+                <ScalarProperty Name="date_sign" ColumnName="date_sign" />
+                <ScalarProperty Name="item_id" ColumnName="item_id" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="is_servicable" ColumnName="is_servicable" />
+                <ScalarProperty Name="position" ColumnName="position" />
+                <ScalarProperty Name="crew_id" ColumnName="crew_id" />
+                <ScalarProperty Name="flight_id" ColumnName="flight_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="neerja_preflight_from_remark">
+            <EntityTypeMapping TypeName="dbModel.neerja_preflight_from_remark">
+              <MappingFragment StoreEntitySet="neerja_preflight_from_remark">
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="flight_id" ColumnName="flight_id" />
+                <ScalarProperty Name="crew_id" ColumnName="crew_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="neerja_scc_report_form">
+            <EntityTypeMapping TypeName="dbModel.neerja_scc_report_form">
+              <MappingFragment StoreEntitySet="neerja_scc_report_form">
+                <ScalarProperty Name="position" ColumnName="position" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="general_issue" ColumnName="general_issue" />
+                <ScalarProperty Name="safety_issue" ColumnName="safety_issue" />
+                <ScalarProperty Name="technical" ColumnName="technical" />
+                <ScalarProperty Name="airport_service" ColumnName="airport_service" />
+                <ScalarProperty Name="catering_issue" ColumnName="catering_issue" />
+                <ScalarProperty Name="crew_no" ColumnName="crew_no" />
+                <ScalarProperty Name="date_sign" ColumnName="date_sign" />
+                <ScalarProperty Name="date_create" ColumnName="date_create" />
+                <ScalarProperty Name="crew_id" ColumnName="crew_id" />
+                <ScalarProperty Name="flight_id" ColumnName="flight_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_neerja_evaluation">
+            <EntityTypeMapping TypeName="dbModel.view_neerja_evaluation">
+              <MappingFragment StoreEntitySet="view_neerja_evaluation">
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="item_id" ColumnName="item_id" />
+                <ScalarProperty Name="crew_id" ColumnName="crew_id" />
+                <ScalarProperty Name="position" ColumnName="position" />
+                <ScalarProperty Name="score" ColumnName="score" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="date_sign" ColumnName="date_sign" />
+                <ScalarProperty Name="reporter_id" ColumnName="reporter_id" />
+                <ScalarProperty Name="flight_id" ColumnName="flight_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_neerja_pfc_item">
+            <EntityTypeMapping TypeName="dbModel.view_neerja_pfc_item">
+              <MappingFragment StoreEntitySet="view_neerja_pfc_item">
+                <ScalarProperty Name="result_id" ColumnName="result_id" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="is_servicable" ColumnName="is_servicable" />
+                <ScalarProperty Name="position" ColumnName="position" />
+                <ScalarProperty Name="position_id" ColumnName="position_id" />
+                <ScalarProperty Name="nid" ColumnName="nid" />
+                <ScalarProperty Name="job_group" ColumnName="job_group" />
+                <ScalarProperty Name="group_id" ColumnName="group_id" />
+                <ScalarProperty Name="mobile" ColumnName="mobile" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="crew_id" ColumnName="crew_id" />
+                <ScalarProperty Name="flight_id" ColumnName="flight_id" />
+                <ScalarProperty Name="category_id" ColumnName="category_id" />
+                <ScalarProperty Name="category" ColumnName="category" />
+                <ScalarProperty Name="item_id" ColumnName="item_id" />
+                <ScalarProperty Name="item_title" ColumnName="item_title" />
+                <ScalarProperty Name="category_order_id" ColumnName="category_order_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_neerja_scc_report">
+            <EntityTypeMapping TypeName="dbModel.view_neerja_scc_report">
+              <MappingFragment StoreEntitySet="view_neerja_scc_report">
+                <ScalarProperty Name="position" ColumnName="position" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="general_issue" ColumnName="general_issue" />
+                <ScalarProperty Name="safety_issue" ColumnName="safety_issue" />
+                <ScalarProperty Name="technical" ColumnName="technical" />
+                <ScalarProperty Name="airport_service" ColumnName="airport_service" />
+                <ScalarProperty Name="catering_issue" ColumnName="catering_issue" />
+                <ScalarProperty Name="crew_no" ColumnName="crew_no" />
+                <ScalarProperty Name="date_sign" ColumnName="date_sign" />
+                <ScalarProperty Name="date_create" ColumnName="date_create" />
+                <ScalarProperty Name="crew_id" ColumnName="crew_id" />
+                <ScalarProperty Name="flight_id" ColumnName="flight_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ViewFlightCrewNewXes">
+            <EntityTypeMapping TypeName="dbModel.ViewFlightCrewNewX">
+              <MappingFragment StoreEntitySet="ViewFlightCrewNewX">
+                <ScalarProperty Name="BaseAirportId" ColumnName="BaseAirportId" />
+                <ScalarProperty Name="BaseAirport" ColumnName="BaseAirport" />
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="PickupLocal" ColumnName="PickupLocal" />
+                <ScalarProperty Name="Pickup" ColumnName="Pickup" />
+                <ScalarProperty Name="RankPosition" ColumnName="RankPosition" />
+                <ScalarProperty Name="Rank" ColumnName="Rank" />
+                <ScalarProperty Name="IsCockpit" ColumnName="IsCockpit" />
+                <ScalarProperty Name="GroupOrder" ColumnName="GroupOrder" />
+                <ScalarProperty Name="Sex" ColumnName="Sex" />
+                <ScalarProperty Name="SexId" ColumnName="SexId" />
+                <ScalarProperty Name="JobGroupCode" ColumnName="JobGroupCode" />
+                <ScalarProperty Name="JobGroup" ColumnName="JobGroup" />
+                <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+                <ScalarProperty Name="ScheduleName" ColumnName="ScheduleName" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="PositionId" ColumnName="PositionId" />
+                <ScalarProperty Name="IsPositioning" ColumnName="IsPositioning" />
+                <ScalarProperty Name="FlightId" ColumnName="FlightId" />
+                <ScalarProperty Name="CrewId" ColumnName="CrewId" />
+                <ScalarProperty Name="FDPItemId" ColumnName="FDPItemId" />
+                <ScalarProperty Name="FDPId" ColumnName="FDPId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

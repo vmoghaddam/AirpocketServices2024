@@ -428,27 +428,35 @@ namespace ApiFDM.Controllers
                     var flight = new MD();
                     var row = rows[i];
 
-                    flight.Severity = row[0];
-                    flight.EventName = row[1];
-                    flight.Duration = float.Parse(row[2]);
-                    flight.ExceedValue = row[3];
-                    flight.LimitValue = row[4];
-                    flight.Phase = row[5];
-                    flight.FromAirport = row[6];
-                    flight.FromAirportIATA = row[7];
-                    flight.ToAirport = row[8];
-                    flight.ToAirportIATA = row[9];
-                    flight.FlightNo = row[10];
-                    flight.Aircraft = row[11];
-                    flight.IP = row[12];
-                    flight.P1 = row[13];
-                    flight.P2 = row[14];
-                    flight.PIC = row[15];
-                    flight.AircraftType = row[16];
-                    flight.MainParameter = row[17];
-                    flight.Context = row[18];
-                    flight.TO_DateTime = row[19];
-                    flight.TD_DateTime = row[20];
+                    flight.EventId = Int32.Parse(row[0]);
+                    flight.EventDefId = Int32.Parse(row[1]);
+                    flight.Severity = row[2];
+                    flight.EventName = row[3];
+                    flight.Duration = float.Parse(row[4]);
+                    flight.FromAirport = row[5];
+                    flight.FromAirportIATA = row[6];
+                    flight.ToAirport = row[7];
+                    flight.ToAirportIATA = row[8];
+                    flight.TO_DateTime = row[9];
+                    flight.TD_DateTime = row[10];
+                    flight.FlightNo = row[11];
+                    flight.Aircraft = row[12];
+                    flight.IP = row[13];
+                    flight.P1 = row[14];
+                    flight.P2 = row[15];
+                    flight.PIC = row[16];
+                    flight.Phase = row[17];
+
+
+                    flight.AircraftType = row[18];
+                    flight.ExceedValue = row[19];
+                    flight.LimitValue = row[20];
+                    flight.MainParameter = row[21];
+                    flight.Context = row[22];
+                 
+                 
+                  
+                
                     //flight.Date = row[5];
                     //flight.FlightNo = row[6];
                     //flight.Reg = row[7];

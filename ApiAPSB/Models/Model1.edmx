@@ -808,6 +808,46 @@
           <Property Name="PaxMale" Type="int" />
           <Property Name="PaxFemale" Type="int" />
         </EntityType>
+        <EntityType Name="form_discretion">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fdp_id" Type="int" Nullable="false" />
+          <Property Name="date_create" Type="datetime2" Precision="7" />
+          <Property Name="pic_id" Type="int" />
+          <Property Name="pic_name" Type="nvarchar" MaxLength="500" />
+          <Property Name="pic_sign_date" Type="datetime2" Precision="7" />
+          <Property Name="pic_lic_no" Type="nvarchar" MaxLength="500" />
+          <Property Name="dmd_name" Type="nvarchar" MaxLength="500" />
+          <Property Name="dmd_id" Type="int" />
+          <Property Name="dmd_sign_date" Type="datetime2" Precision="7" />
+          <Property Name="crew_scheduler_id" Type="int" />
+          <Property Name="crew_scheduler_name" Type="nvarchar" MaxLength="500" />
+          <Property Name="crew_scheduler_sign_date" Type="datetime2" Precision="7" />
+          <Property Name="discretion_exercised" Type="bit" />
+          <Property Name="planned_fdp" Type="int" />
+          <Property Name="actual_fdp" Type="int" />
+          <Property Name="allowable_fdp" Type="int" />
+          <Property Name="commander_discretion" Type="int" />
+          <Property Name="planned_duty_start" Type="datetime2" Precision="7" />
+          <Property Name="actual_duty_start" Type="datetime2" Precision="7" />
+          <Property Name="planned_fdp_start" Type="datetime2" Precision="7" />
+          <Property Name="actual_fdp_end" Type="datetime2" Precision="7" />
+          <Property Name="commander_report" Type="nvarchar" MaxLength="4000" />
+          <Property Name="crew_scheduler_verification" Type="nvarchar" MaxLength="4000" />
+          <Property Name="dmd_remark" Type="nvarchar" MaxLength="4000" />
+          <Property Name="remark" Type="nvarchar" MaxLength="2000" />
+        </EntityType>
+        <EntityType Name="form_discretion_item">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="form_id" Type="int" Nullable="false" />
+          <Property Name="item_id" Type="int" Nullable="false" />
+          <Property Name="remark" Type="varchar" MaxLength="500" />
+        </EntityType>
         <EntityType Name="geo_apt_sunrise">
           <Key>
             <PropertyRef Name="id" />
@@ -1247,6 +1287,18 @@
           <Property Name="DateUpdate" Type="varchar" MaxLength="255" />
           <Property Name="DateUpdateLocal" Type="decimal" Precision="18" Scale="4" />
           <Property Name="Remark" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Option">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="ParentId" Type="int" />
+          <Property Name="IsSystem" Type="bit" Nullable="false" />
+          <Property Name="OrderIndex" Type="int" Nullable="false" />
+          <Property Name="CreatorId" Type="int" />
+          <Property Name="Prop1" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="Person">
           <Key>
@@ -3051,7 +3103,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_ofbb_root_actual' does not hav
           <Property Name="FromAirportIATA" Type="nvarchar" MaxLength="255" />
           <Property Name="ToAirportIATA" Type="nvarchar" MaxLength="255" />
           <Property Name="Register" Type="nvarchar" MaxLength="50" />
-          <Property Name="AircraftType" Type="nvarchar" MaxLength="255" />
+          <Property Name="AircraftType" Type="varchar" MaxLength="500" />
           <Property Name="Freight" Type="int" />
           <Property Name="PaxAdult" Type="int" />
           <Property Name="PaxChild" Type="int" />
@@ -3199,7 +3251,12 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_ofpb_navlog_actual' does not h
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="NavType" Type="nvarchar" MaxLength="300" />
+          <Property Name="FuelRemained2" Type="int" />
+          <Property Name="DiffFuelRemained" Type="int" />
+          <Property Name="FuelUsedActual" Type="int" />
+          <Property Name="CumulativeFuel" Type="int" />
           <Property Name="WayPoint" Type="nvarchar" MaxLength="255" />
           <Property Name="FlightLevel" Type="nvarchar" MaxLength="255" />
           <Property Name="Latitude" Type="float" />
@@ -3213,7 +3270,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_ofpb_navlog_actual' does not h
           <Property Name="Wind" Type="nvarchar" MaxLength="255" />
           <Property Name="MagneticTrack" Type="nvarchar" MaxLength="255" />
           <Property Name="Temperature" Type="nvarchar" MaxLength="255" />
-          <Property Name="ZoneTime" Type="nvarchar" MaxLength="255" />
           <Property Name="CumulativeTime" Type="nvarchar" MaxLength="255" />
           <Property Name="FuelRemained" Type="int" />
           <Property Name="FuelUsed" Type="int" />
@@ -3221,23 +3277,23 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_ofpb_navlog_actual' does not h
           <Property Name="TrueAirSpeed" Type="int" />
           <Property Name="GroundSpeed" Type="int" />
           <Property Name="RootId" Type="int" />
-          <Property Name="NavType" Type="nvarchar" MaxLength="300" />
-          <Property Name="ATA" Type="nvarchar" MaxLength="300" />
-          <Property Name="ETA" Type="nvarchar" MaxLength="300" />
           <Property Name="FuelRemainedActual" Type="int" />
-          <Property Name="FuelUsedActual" Type="int" />
           <Property Name="LatitudeStr" Type="varchar" MaxLength="255" />
           <Property Name="LongitudeStr" Type="varchar" MaxLength="255" />
-          <Property Name="DiffFuelRemained" Type="int" />
           <Property Name="DiffFuelUsed" Type="int" />
           <Property Name="date_update" Type="bigint" />
           <Property Name="user_update" Type="varchar" MaxLength="500" />
-          <Property Name="FuelRemained2" Type="int" />
           <Property Name="FuelUsed2" Type="int" />
-          <Property Name="CumulativeFuel" Type="int" />
+          <Property Name="ATA" Type="nvarchar" MaxLength="300" />
+          <Property Name="_ETA" Type="nvarchar" MaxLength="300" />
+          <Property Name="ETA" Type="nvarchar" MaxLength="4000" />
+          <Property Name="ZoneTime" Type="nvarchar" MaxLength="255" />
+          <Property Name="ZoneTimeInt" Type="int" />
+          <Property Name="CumZoneTimeInt" Type="int" />
           <Property Name="Direction" Type="varchar" MaxLength="500" />
           <Property Name="WindComponent" Type="varchar" MaxLength="500" />
           <Property Name="ZoneFuel" Type="int" />
+          <Property Name="rank" Type="bigint" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.view_ofpb_root' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -5299,6 +5355,20 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_disitem_dis">
+          <End Role="form_discretion" Type="Self.form_discretion" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="form_discretion_item" Type="Self.form_discretion_item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="form_discretion">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="form_discretion_item">
+              <PropertyRef Name="form_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_EFB_FI">
           <End Role="FlightInformation" Type="Self.FlightInformation" Multiplicity="0..1" />
           <End Role="EFBDSPRelease" Type="Self.EFBDSPRelease" Multiplicity="*" />
@@ -5429,6 +5499,42 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PERSON_OPTION_ICAO">
+          <End Role="Option" Type="Self.Option" Multiplicity="0..1" />
+          <End Role="Person" Type="Self.Person" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Option">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Person">
+              <PropertyRef Name="CaoIntervalCalanderTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PERSON_OPTION_INDT">
+          <End Role="Option" Type="Self.Option" Multiplicity="0..1" />
+          <End Role="Person" Type="Self.Person" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Option">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Person">
+              <PropertyRef Name="NDTIntervalCalanderTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PERSON_OPTION_MARRIAGE">
+          <End Role="Option" Type="Self.Option" Multiplicity="1" />
+          <End Role="Person" Type="Self.Person" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Option">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Person">
+              <PropertyRef Name="MarriageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PERSONCUSTOMER_PERSON">
           <End Role="Person" Type="Self.Person" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -5467,6 +5573,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySet Name="FDPItem" EntityType="Self.FDPItem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FlightDocument" EntityType="Self.FlightDocument" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FlightInformation" EntityType="Self.FlightInformation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="form_discretion" EntityType="Self.form_discretion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="form_discretion_item" EntityType="Self.form_discretion_item" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="geo_apt_sunrise" EntityType="Self.geo_apt_sunrise" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="journeylog_atl" EntityType="Self.journeylog_atl" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OFPB_MainNavLog" EntityType="Self.OFPB_MainNavLog" Schema="dbo" store:Type="Tables" />
@@ -5475,6 +5583,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySet Name="OFPB_WindTemperature" EntityType="Self.OFPB_WindTemperature" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OFPImport" EntityType="Self.OFPImport" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OFPImportProp" EntityType="Self.OFPImportProp" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Option" EntityType="Self.Option" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Person" EntityType="Self.Person" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PersonCustomer" EntityType="Self.PersonCustomer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AppCrewFlight" EntityType="Self.AppCrewFlight" store:Type="Views" store:Schema="dbo">
@@ -6780,6 +6889,11 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySet Name="view_ofpb_navlog_actual" EntityType="Self.view_ofpb_navlog_actual" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [view_ofpb_navlog_actual].[Id] AS [Id], 
+    [view_ofpb_navlog_actual].[NavType] AS [NavType], 
+    [view_ofpb_navlog_actual].[FuelRemained2] AS [FuelRemained2], 
+    [view_ofpb_navlog_actual].[DiffFuelRemained] AS [DiffFuelRemained], 
+    [view_ofpb_navlog_actual].[FuelUsedActual] AS [FuelUsedActual], 
+    [view_ofpb_navlog_actual].[CumulativeFuel] AS [CumulativeFuel], 
     [view_ofpb_navlog_actual].[WayPoint] AS [WayPoint], 
     [view_ofpb_navlog_actual].[FlightLevel] AS [FlightLevel], 
     [view_ofpb_navlog_actual].[Latitude] AS [Latitude], 
@@ -6793,7 +6907,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
     [view_ofpb_navlog_actual].[Wind] AS [Wind], 
     [view_ofpb_navlog_actual].[MagneticTrack] AS [MagneticTrack], 
     [view_ofpb_navlog_actual].[Temperature] AS [Temperature], 
-    [view_ofpb_navlog_actual].[ZoneTime] AS [ZoneTime], 
     [view_ofpb_navlog_actual].[CumulativeTime] AS [CumulativeTime], 
     [view_ofpb_navlog_actual].[FuelRemained] AS [FuelRemained], 
     [view_ofpb_navlog_actual].[FuelUsed] AS [FuelUsed], 
@@ -6801,23 +6914,23 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
     [view_ofpb_navlog_actual].[TrueAirSpeed] AS [TrueAirSpeed], 
     [view_ofpb_navlog_actual].[GroundSpeed] AS [GroundSpeed], 
     [view_ofpb_navlog_actual].[RootId] AS [RootId], 
-    [view_ofpb_navlog_actual].[NavType] AS [NavType], 
-    [view_ofpb_navlog_actual].[ATA] AS [ATA], 
-    [view_ofpb_navlog_actual].[ETA] AS [ETA], 
     [view_ofpb_navlog_actual].[FuelRemainedActual] AS [FuelRemainedActual], 
-    [view_ofpb_navlog_actual].[FuelUsedActual] AS [FuelUsedActual], 
     [view_ofpb_navlog_actual].[LatitudeStr] AS [LatitudeStr], 
     [view_ofpb_navlog_actual].[LongitudeStr] AS [LongitudeStr], 
-    [view_ofpb_navlog_actual].[DiffFuelRemained] AS [DiffFuelRemained], 
     [view_ofpb_navlog_actual].[DiffFuelUsed] AS [DiffFuelUsed], 
     [view_ofpb_navlog_actual].[date_update] AS [date_update], 
     [view_ofpb_navlog_actual].[user_update] AS [user_update], 
-    [view_ofpb_navlog_actual].[FuelRemained2] AS [FuelRemained2], 
     [view_ofpb_navlog_actual].[FuelUsed2] AS [FuelUsed2], 
-    [view_ofpb_navlog_actual].[CumulativeFuel] AS [CumulativeFuel], 
+    [view_ofpb_navlog_actual].[ATA] AS [ATA], 
+    [view_ofpb_navlog_actual].[_ETA] AS [_ETA], 
+    [view_ofpb_navlog_actual].[ETA] AS [ETA], 
+    [view_ofpb_navlog_actual].[ZoneTime] AS [ZoneTime], 
+    [view_ofpb_navlog_actual].[ZoneTimeInt] AS [ZoneTimeInt], 
+    [view_ofpb_navlog_actual].[CumZoneTimeInt] AS [CumZoneTimeInt], 
     [view_ofpb_navlog_actual].[Direction] AS [Direction], 
     [view_ofpb_navlog_actual].[WindComponent] AS [WindComponent], 
-    [view_ofpb_navlog_actual].[ZoneFuel] AS [ZoneFuel]
+    [view_ofpb_navlog_actual].[ZoneFuel] AS [ZoneFuel], 
+    [view_ofpb_navlog_actual].[rank] AS [rank]
     FROM [dbo].[view_ofpb_navlog_actual] AS [view_ofpb_navlog_actual]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="view_ofpb_root" EntityType="Self.view_ofpb_root" store:Type="Views" store:Schema="dbo">
@@ -8676,6 +8789,10 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
             <End Role="FlightInformation" EntitySet="FlightInformation" />
             <End Role="EFBASR" EntitySet="EFBASR" />
           </AssociationSet>
+          <AssociationSet Name="fk_disitem_dis" Association="Self.fk_disitem_dis">
+            <End Role="form_discretion" EntitySet="form_discretion" />
+            <End Role="form_discretion_item" EntitySet="form_discretion_item" />
+          </AssociationSet>
           <AssociationSet Name="fk_EFB_FI" Association="Self.fk_EFB_FI">
             <End Role="FlightInformation" EntitySet="FlightInformation" />
             <End Role="EFBDSPRelease" EntitySet="EFBDSPRelease" />
@@ -8715,6 +8832,18 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <AssociationSet Name="fk_ofpwt_ofp" Association="Self.fk_ofpwt_ofp">
             <End Role="OFPB_Root" EntitySet="OFPB_Root" />
             <End Role="OFPB_WindTemperature" EntitySet="OFPB_WindTemperature" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PERSON_OPTION_ICAO" Association="Self.FK_PERSON_OPTION_ICAO">
+            <End Role="Option" EntitySet="Option" />
+            <End Role="Person" EntitySet="Person" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PERSON_OPTION_INDT" Association="Self.FK_PERSON_OPTION_INDT">
+            <End Role="Option" EntitySet="Option" />
+            <End Role="Person" EntitySet="Person" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PERSON_OPTION_MARRIAGE" Association="Self.FK_PERSON_OPTION_MARRIAGE">
+            <End Role="Option" EntitySet="Option" />
+            <End Role="Person" EntitySet="Person" />
           </AssociationSet>
           <AssociationSet Name="FK_PERSONCUSTOMER_PERSON" Association="Self.FK_PERSONCUSTOMER_PERSON">
             <End Role="Person" EntitySet="Person" />
@@ -8805,7 +8934,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
             <End Role="FDP" EntitySet="FDPs" />
             <End Role="FDPItem" EntitySet="FDPItems" />
           </AssociationSet>
-          <EntitySet Name="discretion_form" EntityType="dbModel.discretion_form" />
           <EntitySet Name="view_discretion_form" EntityType="dbModel.view_discretion_form" />
           <EntitySet Name="OFPB_WindTemperature" EntityType="dbModel.OFPB_WindTemperature" />
           <EntitySet Name="view_ofpb_wt" EntityType="dbModel.view_ofpb_wt" />
@@ -8835,6 +8963,26 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySet Name="view_ofpb_navlog_actual" EntityType="dbModel.view_ofpb_navlog_actual" />
           <EntitySet Name="view_ofpb_root" EntityType="dbModel.view_ofpb_root" />
           <EntitySet Name="view_ofpb_root_report" EntityType="dbModel.view_ofpb_root_report" />
+          <EntitySet Name="form_discretion" EntityType="dbModel.form_discretion" />
+          <EntitySet Name="Options" EntityType="dbModel.Option" />
+          <AssociationSet Name="FK_PERSON_OPTION_ICAO" Association="dbModel.FK_PERSON_OPTION_ICAO">
+            <End Role="Option" EntitySet="Options" />
+            <End Role="Person" EntitySet="People" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PERSON_OPTION_INDT" Association="dbModel.FK_PERSON_OPTION_INDT">
+            <End Role="Option" EntitySet="Options" />
+            <End Role="Person" EntitySet="People" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PERSON_OPTION_MARRIAGE" Association="dbModel.FK_PERSON_OPTION_MARRIAGE">
+            <End Role="Option" EntitySet="Options" />
+            <End Role="Person" EntitySet="People" />
+          </AssociationSet>
+          <EntitySet Name="form_discretion_item" EntityType="dbModel.form_discretion_item" />
+          <AssociationSet Name="fk_disitem_dis" Association="dbModel.fk_disitem_dis">
+            <End Role="form_discretion" EntitySet="form_discretion" />
+            <End Role="form_discretion_item" EntitySet="form_discretion_item" />
+          </AssociationSet>
+          <EntitySet Name="discretion_form" EntityType="dbModel.discretion_form" />
           </EntityContainer>
         <EntityType Name="AppCrewFlight">
           <Key>
@@ -11429,6 +11577,9 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="ASD_SRY_ExpireDate" Type="DateTime" Precision="7" />
           <Property Name="FTSL1IssueDate" Type="DateTime" Precision="7" />
           <Property Name="FTSL1ExpireDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="Option" Relationship="dbModel.FK_PERSON_OPTION_ICAO" FromRole="Person" ToRole="Option" />
+          <NavigationProperty Name="Option1" Relationship="dbModel.FK_PERSON_OPTION_INDT" FromRole="Person" ToRole="Option" />
+          <NavigationProperty Name="Option2" Relationship="dbModel.FK_PERSON_OPTION_MARRIAGE" FromRole="Person" ToRole="Option" />
         </EntityType>
         <EntityType Name="ViewEmployee">
           <Key>
@@ -12643,36 +12794,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="discretion_form">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="flight_id" Type="Int32" Nullable="false" />
-          <Property Name="last_duty_started" Type="DateTime" Precision="3" />
-          <Property Name="last_duty_ended" Type="DateTime" Precision="3" />
-          <Property Name="rest_earned" Type="DateTime" Precision="3" />
-          <Property Name="next_duty_planned" Type="DateTime" Precision="3" />
-          <Property Name="next_duty_actual" Type="DateTime" Precision="3" />
-          <Property Name="pre_flight_reduced_rest" Type="Int32" />
-          <Property Name="last_duty_id" Type="Int32" />
-          <Property Name="current_duty_id" Type="Int32" />
-          <Property Name="next_duty_id" Type="Int32" />
-          <Property Name="extended_fdp_value" Type="Int32" />
-          <Property Name="extended_fdp_split_value" Type="Int32" />
-          <Property Name="extended_fdp_inflight_rest_value" Type="Int32" />
-          <Property Name="max_legal_fdp_value" Type="Int32" />
-          <Property Name="discretion_value" Type="Int32" />
-          <Property Name="comment" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
-          <Property Name="pic_id" Type="Int32" />
-          <Property Name="pic_sign_date" Type="DateTime" Precision="7" />
-          <Property Name="fleet_manager_sign_date" Type="DateTime" Precision="7" />
-          <Property Name="create_date" Type="DateTime" Precision="7" />
-          <Property Name="fdp_id" Type="Int32" />
-          <Property Name="max_fdp" Type="Int32" />
-          <Property Name="planned_flt_duty_time" Type="Int32" />
-          <Property Name="actual_flt_duty_time" Type="Int32" />
-        </EntityType>
         <EntityType Name="view_discretion_form">
           <Key>
             <PropertyRef Name="id" />
@@ -13546,7 +13667,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="FromAirportIATA" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="ToAirportIATA" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Register" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="AircraftType" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="AircraftType" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="Freight" Type="Int32" />
           <Property Name="PaxAdult" Type="Int32" />
           <Property Name="PaxChild" Type="Int32" />
@@ -13714,7 +13835,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="RootId" Type="Int32" />
           <Property Name="NavType" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="ATA" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
-          <Property Name="ETA" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="ETA" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
           <Property Name="FuelRemainedActual" Type="Int32" />
           <Property Name="FuelUsedActual" Type="Int32" />
           <Property Name="LatitudeStr" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
@@ -13729,6 +13850,10 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="Direction" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="WindComponent" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="ZoneFuel" Type="Int32" />
+          <Property Name="C_ETA" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="ZoneTimeInt" Type="Int32" />
+          <Property Name="CumZoneTimeInt" Type="Int32" />
+          <Property Name="rank" Type="Int64" />
         </EntityType>
         <EntityType Name="view_ofpb_root">
           <Key>
@@ -14239,6 +14364,143 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="fuel_remain_takeoff" Type="Int32" />
           <Property Name="fuel_remain_landing" Type="Int32" />
           <Property Name="fuel_remain_onblock" Type="Int32" />
+        </EntityType>
+        <EntityType Name="form_discretion">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fdp_id" Type="Int32" Nullable="false" />
+          <Property Name="date_create" Type="DateTime" Precision="7" />
+          <Property Name="pic_id" Type="Int32" />
+          <Property Name="pic_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="pic_sign_date" Type="DateTime" Precision="7" />
+          <Property Name="pic_lic_no" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="dmd_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="dmd_id" Type="Int32" />
+          <Property Name="dmd_sign_date" Type="DateTime" Precision="7" />
+          <Property Name="crew_scheduler_id" Type="Int32" />
+          <Property Name="crew_scheduler_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="crew_scheduler_sign_date" Type="DateTime" Precision="7" />
+          <Property Name="discretion_exercised" Type="Boolean" />
+          <Property Name="planned_fdp" Type="Int32" />
+          <Property Name="actual_fdp" Type="Int32" />
+          <Property Name="allowable_fdp" Type="Int32" />
+          <Property Name="commander_discretion" Type="Int32" />
+          <Property Name="planned_duty_start" Type="DateTime" Precision="7" />
+          <Property Name="actual_duty_start" Type="DateTime" Precision="7" />
+          <Property Name="planned_fdp_start" Type="DateTime" Precision="7" />
+          <Property Name="actual_fdp_end" Type="DateTime" Precision="7" />
+          <Property Name="commander_report" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="crew_scheduler_verification" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="dmd_remark" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="remark" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="form_discretion_item" Relationship="dbModel.fk_disitem_dis" FromRole="form_discretion" ToRole="form_discretion_item" />
+        </EntityType>
+        <EntityType Name="Option">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="ParentId" Type="Int32" />
+          <Property Name="IsSystem" Type="Boolean" Nullable="false" />
+          <Property Name="OrderIndex" Type="Int32" Nullable="false" />
+          <Property Name="CreatorId" Type="Int32" />
+          <Property Name="Prop1" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="People" Relationship="dbModel.FK_PERSON_OPTION_ICAO" FromRole="Option" ToRole="Person" />
+          <NavigationProperty Name="People1" Relationship="dbModel.FK_PERSON_OPTION_INDT" FromRole="Option" ToRole="Person" />
+          <NavigationProperty Name="People2" Relationship="dbModel.FK_PERSON_OPTION_MARRIAGE" FromRole="Option" ToRole="Person" />
+        </EntityType>
+        <Association Name="FK_PERSON_OPTION_ICAO">
+          <End Type="dbModel.Option" Role="Option" Multiplicity="0..1" />
+          <End Type="dbModel.Person" Role="Person" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Option">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Person">
+              <PropertyRef Name="CaoIntervalCalanderTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PERSON_OPTION_INDT">
+          <End Type="dbModel.Option" Role="Option" Multiplicity="0..1" />
+          <End Type="dbModel.Person" Role="Person" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Option">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Person">
+              <PropertyRef Name="NDTIntervalCalanderTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PERSON_OPTION_MARRIAGE">
+          <End Type="dbModel.Option" Role="Option" Multiplicity="1" />
+          <End Type="dbModel.Person" Role="Person" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Option">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Person">
+              <PropertyRef Name="MarriageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="form_discretion_item">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="form_id" Type="Int32" Nullable="false" />
+          <Property Name="item_id" Type="Int32" Nullable="false" />
+          <Property Name="remark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="form_discretion" Relationship="dbModel.fk_disitem_dis" FromRole="form_discretion_item" ToRole="form_discretion" />
+        </EntityType>
+        <Association Name="fk_disitem_dis">
+          <End Type="dbModel.form_discretion" Role="form_discretion" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="dbModel.form_discretion_item" Role="form_discretion_item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="form_discretion">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="form_discretion_item">
+              <PropertyRef Name="form_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="discretion_form">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="flight_id" Type="Int32" Nullable="false" />
+          <Property Name="last_duty_started" Type="DateTime" Precision="3" />
+          <Property Name="last_duty_ended" Type="DateTime" Precision="3" />
+          <Property Name="rest_earned" Type="DateTime" Precision="3" />
+          <Property Name="next_duty_planned" Type="DateTime" Precision="3" />
+          <Property Name="next_duty_actual" Type="DateTime" Precision="3" />
+          <Property Name="pre_flight_reduced_rest" Type="Int32" />
+          <Property Name="last_duty_id" Type="Int32" />
+          <Property Name="current_duty_id" Type="Int32" />
+          <Property Name="next_duty_id" Type="Int32" />
+          <Property Name="extended_fdp_value" Type="Int32" />
+          <Property Name="extended_fdp_split_value" Type="Int32" />
+          <Property Name="extended_fdp_inflight_rest_value" Type="Int32" />
+          <Property Name="max_legal_fdp_value" Type="Int32" />
+          <Property Name="discretion_value" Type="Int32" />
+          <Property Name="comment" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="pic_id" Type="Int32" />
+          <Property Name="pic_sign_date" Type="DateTime" Precision="7" />
+          <Property Name="fleet_manager_sign_date" Type="DateTime" Precision="7" />
+          <Property Name="create_date" Type="DateTime" Precision="7" />
+          <Property Name="fdp_id" Type="Int32" />
+          <Property Name="max_fdp" Type="Int32" />
+          <Property Name="planned_flt_duty_time" Type="Int32" />
+          <Property Name="actual_flt_duty_time" Type="Int32" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -17741,37 +18003,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="discretion_form">
-            <EntityTypeMapping TypeName="dbModel.discretion_form">
-              <MappingFragment StoreEntitySet="discretion_form">
-                <ScalarProperty Name="actual_flt_duty_time" ColumnName="actual_flt_duty_time" />
-                <ScalarProperty Name="planned_flt_duty_time" ColumnName="planned_flt_duty_time" />
-                <ScalarProperty Name="max_fdp" ColumnName="max_fdp" />
-                <ScalarProperty Name="fdp_id" ColumnName="fdp_id" />
-                <ScalarProperty Name="create_date" ColumnName="create_date" />
-                <ScalarProperty Name="fleet_manager_sign_date" ColumnName="fleet_manager_sign_date" />
-                <ScalarProperty Name="pic_sign_date" ColumnName="pic_sign_date" />
-                <ScalarProperty Name="pic_id" ColumnName="pic_id" />
-                <ScalarProperty Name="comment" ColumnName="comment" />
-                <ScalarProperty Name="discretion_value" ColumnName="discretion_value" />
-                <ScalarProperty Name="max_legal_fdp_value" ColumnName="max_legal_fdp_value" />
-                <ScalarProperty Name="extended_fdp_inflight_rest_value" ColumnName="extended_fdp_inflight_rest_value" />
-                <ScalarProperty Name="extended_fdp_split_value" ColumnName="extended_fdp_split_value" />
-                <ScalarProperty Name="extended_fdp_value" ColumnName="extended_fdp_value" />
-                <ScalarProperty Name="next_duty_id" ColumnName="next_duty_id" />
-                <ScalarProperty Name="current_duty_id" ColumnName="current_duty_id" />
-                <ScalarProperty Name="last_duty_id" ColumnName="last_duty_id" />
-                <ScalarProperty Name="pre_flight_reduced_rest" ColumnName="pre_flight_reduced_rest" />
-                <ScalarProperty Name="next_duty_actual" ColumnName="next_duty_actual" />
-                <ScalarProperty Name="next_duty_planned" ColumnName="next_duty_planned" />
-                <ScalarProperty Name="rest_earned" ColumnName="rest_earned" />
-                <ScalarProperty Name="last_duty_ended" ColumnName="last_duty_ended" />
-                <ScalarProperty Name="last_duty_started" ColumnName="last_duty_started" />
-                <ScalarProperty Name="flight_id" ColumnName="flight_id" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="view_discretion_form">
             <EntityTypeMapping TypeName="dbModel.view_discretion_form">
               <MappingFragment StoreEntitySet="view_discretion_form">
@@ -18737,6 +18968,10 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySetMapping Name="view_ofpb_navlog_actual">
             <EntityTypeMapping TypeName="dbModel.view_ofpb_navlog_actual">
               <MappingFragment StoreEntitySet="view_ofpb_navlog_actual">
+                <ScalarProperty Name="rank" ColumnName="rank" />
+                <ScalarProperty Name="CumZoneTimeInt" ColumnName="CumZoneTimeInt" />
+                <ScalarProperty Name="ZoneTimeInt" ColumnName="ZoneTimeInt" />
+                <ScalarProperty Name="C_ETA" ColumnName="_ETA" />
                 <ScalarProperty Name="ZoneFuel" ColumnName="ZoneFuel" />
                 <ScalarProperty Name="WindComponent" ColumnName="WindComponent" />
                 <ScalarProperty Name="Direction" ColumnName="Direction" />
@@ -19285,6 +19520,92 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
                 <ScalarProperty Name="AirlineName" ColumnName="AirlineName" />
                 <ScalarProperty Name="ReferenceNo" ColumnName="ReferenceNo" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="form_discretion">
+            <EntityTypeMapping TypeName="dbModel.form_discretion">
+              <MappingFragment StoreEntitySet="form_discretion">
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="dmd_remark" ColumnName="dmd_remark" />
+                <ScalarProperty Name="crew_scheduler_verification" ColumnName="crew_scheduler_verification" />
+                <ScalarProperty Name="commander_report" ColumnName="commander_report" />
+                <ScalarProperty Name="actual_fdp_end" ColumnName="actual_fdp_end" />
+                <ScalarProperty Name="planned_fdp_start" ColumnName="planned_fdp_start" />
+                <ScalarProperty Name="actual_duty_start" ColumnName="actual_duty_start" />
+                <ScalarProperty Name="planned_duty_start" ColumnName="planned_duty_start" />
+                <ScalarProperty Name="commander_discretion" ColumnName="commander_discretion" />
+                <ScalarProperty Name="allowable_fdp" ColumnName="allowable_fdp" />
+                <ScalarProperty Name="actual_fdp" ColumnName="actual_fdp" />
+                <ScalarProperty Name="planned_fdp" ColumnName="planned_fdp" />
+                <ScalarProperty Name="discretion_exercised" ColumnName="discretion_exercised" />
+                <ScalarProperty Name="crew_scheduler_sign_date" ColumnName="crew_scheduler_sign_date" />
+                <ScalarProperty Name="crew_scheduler_name" ColumnName="crew_scheduler_name" />
+                <ScalarProperty Name="crew_scheduler_id" ColumnName="crew_scheduler_id" />
+                <ScalarProperty Name="dmd_sign_date" ColumnName="dmd_sign_date" />
+                <ScalarProperty Name="dmd_id" ColumnName="dmd_id" />
+                <ScalarProperty Name="dmd_name" ColumnName="dmd_name" />
+                <ScalarProperty Name="pic_lic_no" ColumnName="pic_lic_no" />
+                <ScalarProperty Name="pic_sign_date" ColumnName="pic_sign_date" />
+                <ScalarProperty Name="pic_name" ColumnName="pic_name" />
+                <ScalarProperty Name="pic_id" ColumnName="pic_id" />
+                <ScalarProperty Name="date_create" ColumnName="date_create" />
+                <ScalarProperty Name="fdp_id" ColumnName="fdp_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Options">
+            <EntityTypeMapping TypeName="dbModel.Option">
+              <MappingFragment StoreEntitySet="Option">
+                <ScalarProperty Name="Prop1" ColumnName="Prop1" />
+                <ScalarProperty Name="CreatorId" ColumnName="CreatorId" />
+                <ScalarProperty Name="OrderIndex" ColumnName="OrderIndex" />
+                <ScalarProperty Name="IsSystem" ColumnName="IsSystem" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="form_discretion_item">
+            <EntityTypeMapping TypeName="dbModel.form_discretion_item">
+              <MappingFragment StoreEntitySet="form_discretion_item">
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="item_id" ColumnName="item_id" />
+                <ScalarProperty Name="form_id" ColumnName="form_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="discretion_form">
+            <EntityTypeMapping TypeName="dbModel.discretion_form">
+              <MappingFragment StoreEntitySet="discretion_form">
+                <ScalarProperty Name="actual_flt_duty_time" ColumnName="actual_flt_duty_time" />
+                <ScalarProperty Name="planned_flt_duty_time" ColumnName="planned_flt_duty_time" />
+                <ScalarProperty Name="max_fdp" ColumnName="max_fdp" />
+                <ScalarProperty Name="fdp_id" ColumnName="fdp_id" />
+                <ScalarProperty Name="create_date" ColumnName="create_date" />
+                <ScalarProperty Name="fleet_manager_sign_date" ColumnName="fleet_manager_sign_date" />
+                <ScalarProperty Name="pic_sign_date" ColumnName="pic_sign_date" />
+                <ScalarProperty Name="pic_id" ColumnName="pic_id" />
+                <ScalarProperty Name="comment" ColumnName="comment" />
+                <ScalarProperty Name="discretion_value" ColumnName="discretion_value" />
+                <ScalarProperty Name="max_legal_fdp_value" ColumnName="max_legal_fdp_value" />
+                <ScalarProperty Name="extended_fdp_inflight_rest_value" ColumnName="extended_fdp_inflight_rest_value" />
+                <ScalarProperty Name="extended_fdp_split_value" ColumnName="extended_fdp_split_value" />
+                <ScalarProperty Name="extended_fdp_value" ColumnName="extended_fdp_value" />
+                <ScalarProperty Name="next_duty_id" ColumnName="next_duty_id" />
+                <ScalarProperty Name="current_duty_id" ColumnName="current_duty_id" />
+                <ScalarProperty Name="last_duty_id" ColumnName="last_duty_id" />
+                <ScalarProperty Name="pre_flight_reduced_rest" ColumnName="pre_flight_reduced_rest" />
+                <ScalarProperty Name="next_duty_actual" ColumnName="next_duty_actual" />
+                <ScalarProperty Name="next_duty_planned" ColumnName="next_duty_planned" />
+                <ScalarProperty Name="rest_earned" ColumnName="rest_earned" />
+                <ScalarProperty Name="last_duty_ended" ColumnName="last_duty_ended" />
+                <ScalarProperty Name="last_duty_started" ColumnName="last_duty_started" />
+                <ScalarProperty Name="flight_id" ColumnName="flight_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

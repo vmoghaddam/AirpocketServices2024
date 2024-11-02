@@ -56,7 +56,6 @@ namespace ApiAPSB.Models
         public virtual DbSet<journeylog_atl> journeylog_atl { get; set; }
         public virtual DbSet<AppLegJL> AppLegJLs { get; set; }
         public virtual DbSet<FDP> FDPs { get; set; }
-        public virtual DbSet<discretion_form> discretion_form { get; set; }
         public virtual DbSet<view_discretion_form> view_discretion_form { get; set; }
         public virtual DbSet<OFPB_WindTemperature> OFPB_WindTemperature { get; set; }
         public virtual DbSet<view_ofpb_wt> view_ofpb_wt { get; set; }
@@ -74,5 +73,9 @@ namespace ApiAPSB.Models
         public virtual DbSet<view_ofpb_navlog_actual> view_ofpb_navlog_actual { get; set; }
         public virtual DbSet<view_ofpb_root> view_ofpb_root { get; set; }
         public virtual DbSet<view_ofpb_root_report> view_ofpb_root_report { get; set; }
+        public virtual DbSet<form_discretion> form_discretion { get; set; }
+        public virtual DbSet<Option> Options { get; set; }
+        public virtual DbSet<form_discretion_item> form_discretion_item { get; set; }
+        public virtual DbSet<discretion_form> discretion_form { get; set; }
     }
 }

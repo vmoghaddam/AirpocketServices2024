@@ -28,9 +28,6 @@ namespace ApiFDM.Models
         }
     
         public virtual DbSet<CrewSecretCode> CrewSecretCodes { get; set; }
-        public virtual DbSet<FlightInformation> FlightInformations { get; set; }
-        public virtual DbSet<Airport> Airports { get; set; }
-        public virtual DbSet<Ac_MSN> Ac_MSN { get; set; }
         public virtual DbSet<FDMCptAirportEventMonthly> FDMCptAirportEventMonthlies { get; set; }
         public virtual DbSet<FDMCptAirportMonthly> FDMCptAirportMonthlies { get; set; }
         public virtual DbSet<FDMCptAnnually> FDMCptAnnuallies { get; set; }
@@ -50,8 +47,6 @@ namespace ApiFDM.Models
         public virtual DbSet<FDMRegEventMonthly> FDMRegEventMonthlies { get; set; }
         public virtual DbSet<FDMRegFoMonthly> FDMRegFoMonthlies { get; set; }
         public virtual DbSet<FDM> FDMs { get; set; }
-        public virtual DbSet<ViewLegTime> ViewLegTimes { get; set; }
-        public virtual DbSet<AppLeg> AppLegs { get; set; }
         public virtual DbSet<FDMAVG> FDMAVGs { get; set; }
         public virtual DbSet<ViewFDM> ViewFDMs { get; set; }
         public virtual DbSet<FDMMonthly> FDMMonthlies { get; set; }
@@ -59,6 +54,11 @@ namespace ApiFDM.Models
         public virtual DbSet<FDMAirportMonthly> FDMAirportMonthlies { get; set; }
         public virtual DbSet<FDMRegMonthly> FDMRegMonthlies { get; set; }
         public virtual DbSet<FDMEventMonthly> FDMEventMonthlies { get; set; }
+        public virtual DbSet<ViewLegTime> ViewLegTimes { get; set; }
+        public virtual DbSet<AppLeg> AppLegs { get; set; }
+        public virtual DbSet<Ac_MSN> Ac_MSN { get; set; }
+        public virtual DbSet<Airport> Airports { get; set; }
+        public virtual DbSet<FlightInformation> FlightInformations { get; set; }
     
         public virtual int FillFDMCptMonthlyTBL(Nullable<int> yearFrom, Nullable<int> monthFrom, Nullable<int> yearTo, Nullable<int> monthTo)
         {

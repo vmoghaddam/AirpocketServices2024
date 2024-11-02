@@ -14,6 +14,16 @@ namespace ApiXLS.Models
     
     public partial class FlightInformation
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public FlightInformation()
+        {
+            this.neerja_scc_report_form = new HashSet<neerja_scc_report_form>();
+            this.neerja_preflight_check_form = new HashSet<neerja_preflight_check_form>();
+            this.neerja_preflight_ckeck_form_item = new HashSet<neerja_preflight_ckeck_form_item>();
+            this.neerja_preflight_check_form_sign = new HashSet<neerja_preflight_check_form_sign>();
+            this.neerja_evaluation_form = new HashSet<neerja_evaluation_form>();
+        }
+    
         public int ID { get; set; }
         public Nullable<int> TypeID { get; set; }
         public Nullable<int> RegisterID { get; set; }
@@ -313,5 +323,16 @@ namespace ApiXLS.Models
         public string AttForms { get; set; }
         public Nullable<int> PaxMale { get; set; }
         public Nullable<int> PaxFemale { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<neerja_scc_report_form> neerja_scc_report_form { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<neerja_preflight_check_form> neerja_preflight_check_form { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<neerja_preflight_ckeck_form_item> neerja_preflight_ckeck_form_item { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<neerja_preflight_check_form_sign> neerja_preflight_check_form_sign { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<neerja_evaluation_form> neerja_evaluation_form { get; set; }
     }
 }

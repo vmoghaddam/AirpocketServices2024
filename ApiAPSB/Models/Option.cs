@@ -7,34 +7,34 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ApiFDM.Models
+namespace ApiAPSB.Models
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Airport
+    public partial class Option
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Airport()
+        public Option()
         {
-            this.FlightInformations = new HashSet<FlightInformation>();
-            this.FlightInformations1 = new HashSet<FlightInformation>();
+            this.People = new HashSet<Person>();
+            this.People1 = new HashSet<Person>();
+            this.People2 = new HashSet<Person>();
         }
     
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string IATA { get; set; }
-        public string ICAO { get; set; }
-        public Nullable<int> CityId { get; set; }
-        public string ImportId { get; set; }
-        public string Type { get; set; }
-        public Nullable<decimal> Latitude { get; set; }
-        public Nullable<decimal> Longitude { get; set; }
-        public Nullable<int> SortIndex { get; set; }
+        public string Title { get; set; }
+        public Nullable<int> ParentId { get; set; }
+        public bool IsSystem { get; set; }
+        public int OrderIndex { get; set; }
+        public Nullable<int> CreatorId { get; set; }
+        public string Prop1 { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<FlightInformation> FlightInformations { get; set; }
+        public virtual ICollection<Person> People { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<FlightInformation> FlightInformations1 { get; set; }
+        public virtual ICollection<Person> People1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Person> People2 { get; set; }
     }
 }

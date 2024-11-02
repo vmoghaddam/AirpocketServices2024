@@ -523,5 +523,8 @@ namespace ApiAPSB.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PersonCustomer> PersonCustomers { get; set; }
+        public virtual Option Option { get; set; }
+        public virtual Option Option1 { get; set; }
+        public virtual Option Option2 { get; set; }
     }
 }

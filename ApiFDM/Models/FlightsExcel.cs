@@ -222,6 +222,8 @@ namespace ApiFDM.Models
         public string FileName { get; set; }
         public int recordNum { get; set; }
         public string StateName { get; set; }
+        public int EventId { get; set; }
+        public int EventDefId { get; set; }
         public float? ValueX
         {
             get

@@ -52,5 +52,19 @@ namespace ApiXLS.Models
         public virtual DbSet<OFPB_CS_Runway> OFPB_CS_Runway { get; set; }
         public virtual DbSet<OFPB_MainNavLog> OFPB_MainNavLog { get; set; }
         public virtual DbSet<OFPB_Alternate1NavLog> OFPB_Alternate1NavLog { get; set; }
+        public virtual DbSet<neerja_evaluation_form> neerja_evaluation_form { get; set; }
+        public virtual DbSet<neerja_evaluation_form_score> neerja_evaluation_form_score { get; set; }
+        public virtual DbSet<neerja_evaluation_item> neerja_evaluation_item { get; set; }
+        public virtual DbSet<neerja_preflight_check_form> neerja_preflight_check_form { get; set; }
+        public virtual DbSet<neerja_preflight_check_form_sign> neerja_preflight_check_form_sign { get; set; }
+        public virtual DbSet<neerja_preflight_check_item> neerja_preflight_check_item { get; set; }
+        public virtual DbSet<neerja_preflight_check_item_category> neerja_preflight_check_item_category { get; set; }
+        public virtual DbSet<neerja_preflight_ckeck_form_item> neerja_preflight_ckeck_form_item { get; set; }
+        public virtual DbSet<neerja_preflight_from_remark> neerja_preflight_from_remark { get; set; }
+        public virtual DbSet<neerja_scc_report_form> neerja_scc_report_form { get; set; }
+        public virtual DbSet<view_neerja_evaluation> view_neerja_evaluation { get; set; }
+        public virtual DbSet<view_neerja_pfc_item> view_neerja_pfc_item { get; set; }
+        public virtual DbSet<view_neerja_scc_report> view_neerja_scc_report { get; set; }
+        public virtual DbSet<ViewFlightCrewNewX> ViewFlightCrewNewXes { get; set; }
     }
 }
