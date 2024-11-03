@@ -470,27 +470,33 @@ namespace ApiAPSB.Controllers
         {
 
             dbEntities context = new dbEntities();
-            context.Configuration.LazyLoadingEnabled = false;
 
             var entity = new discretion_dto2();
+            List<form_discretion_item> items = new List<form_discretion_item>();
             entity.items = new List<discretion_item_dto>();
             var result = await context.form_discretion.FirstOrDefaultAsync(q => q.fdp_id == fdp_id);
-            var items = context.form_discretion_item.Where(q => q.form_id == result.id).ToList();
-
-            entity.id = result.id;
-            entity.fdp_id = result.fdp_id;
-            entity.commander_report = result.commander_report;
-            entity.pic_date_sign = result.pic_sign_date;
-            entity.date_create = result.date_create;
-            foreach (var item in items)
+            if (result != null)
             {
-                var x = new discretion_item_dto();
-                x.id = item.id;
-                x.form_id = item.form_id;
-                x.remark = item.remark;
-                x.item_id = item.item_id;
+                items = context.form_discretion_item.Where(q => q.form_id == result.id).ToList();
 
-                entity.items.Add(x);
+                entity.id = result.id;
+                entity.fdp_id = result.fdp_id;
+                entity.commander_report = result.commander_report;
+                entity.pic_date_sign = result.pic_sign_date;
+                entity.date_create = result.date_create;
+                if (items != null)
+                {
+                    foreach (var item in items)
+                    {
+                        var x = new discretion_item_dto();
+                        x.id = item.id;
+                        x.form_id = item.form_id;
+                        x.remark = item.remark;
+                        x.item_id = item.item_id;
+
+                        entity.items.Add(x);
+                    }
+                }
             }
             return new DataResponse()
             {
@@ -506,12 +512,19 @@ namespace ApiAPSB.Controllers
         {
             try
             {
+               
+
                 dbEntities context = new dbEntities();
+               
+                var itemsToDelete = new List<form_discretion_item>();
                 form_discretion entity = await context.form_discretion.FirstOrDefaultAsync(q => q.id == dto.id);
-                var itemsToDelete = context.form_discretion_item
-    .Where(item => item.form_id == entity.id)
-    .ToList();
-                if (entity == null)
+                if (entity != null)
+                {
+                    itemsToDelete = context.form_discretion_item
+       .Where(item => item.form_id == entity.id)
+       .ToList();
+                }
+                 if (entity == null)
                 {
                     entity = new form_discretion();
                     context.form_discretion.Add(entity);
@@ -536,12 +549,15 @@ namespace ApiAPSB.Controllers
                 return new DataResponse()
                 {
                     IsSuccess = true,
-                    Data = entity,
+                    Data = entity.id,
                 };
             }
             catch (Exception ex)
             {
-                return new DataResponse() { IsSuccess = false };
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += " INNER: " + ex.InnerException.Message;
+                return new DataResponse() { IsSuccess = false, Data = msg };
             }
         }
 

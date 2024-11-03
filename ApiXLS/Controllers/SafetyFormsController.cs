@@ -143,10 +143,7 @@ namespace ApiXLS.Controllers
             }
             catch (Exception ex)
             {
-                var msg = ex.Message;
-                if (ex.InnerException != null)
-                    msg += "   " + ex.InnerException.Message;
-                return BadRequest(msg);
+                ,AircraftModel.Model AircraftModel
             }
         }
     }

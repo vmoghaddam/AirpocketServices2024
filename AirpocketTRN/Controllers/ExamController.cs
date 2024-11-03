@@ -45,10 +45,10 @@ namespace AirpocketTRN.Controllers
         public async Task<IHttpActionResult> post_exam_status(dynamic dto)
         {
             int exam_id = Convert.ToInt32(dto.exam_id);
-            int status=Convert.ToInt32(dto.status);
+            int status = Convert.ToInt32(dto.status);
             FLYEntities context = new FLYEntities();
             context.Configuration.LazyLoadingEnabled = false;
-            var exam=await context.trn_exam.FirstOrDefaultAsync(q=>q.id==exam_id);
+            var exam = await context.trn_exam.FirstOrDefaultAsync(q => q.id == exam_id);
             exam.status_id = status;
             switch (status)
             {
@@ -61,7 +61,7 @@ namespace AirpocketTRN.Controllers
                     exam.date_end_actual = null;
                     break;
                 case 2:
-                    exam.date_end_actual= DateTime.Now;
+                    exam.date_end_actual = DateTime.Now;
                     break;
                 default:
                     break;
@@ -103,17 +103,17 @@ namespace AirpocketTRN.Controllers
                     });
                 }
 
-            } 
-            var exists=await context.trn_exam_question.Where(q=>q.exam_id==dto.exam_id).ToListAsync();
+            }
+            var exists = await context.trn_exam_question.Where(q => q.exam_id == dto.exam_id).ToListAsync();
             if (exists != null && exists.Count > 0)
                 context.trn_exam_question.RemoveRange(exists);
-            foreach(var q in generated_questions)
+            foreach (var q in generated_questions)
                 context.trn_exam_question.Add(q);
             await context.SaveAsync();
             var result = new DataResponse()
             {
                 IsSuccess = true,
-                Data= generated_questions.Select(q=>new {q.exam_id,q.id,q.question_id,q.remark }),
+                Data = generated_questions.Select(q => new { q.exam_id, q.id, q.question_id, q.remark }),
 
             };
             return Ok(result);
@@ -139,9 +139,9 @@ namespace AirpocketTRN.Controllers
 
         [Route("api/exam/person/results/{exam_id}/{person_id}")]
         [AcceptVerbs("GET")]
-        public async Task<IHttpActionResult> GetExamPersonResults(int exam_id,int person_id)
+        public async Task<IHttpActionResult> GetExamPersonResults(int exam_id, int person_id)
         {
-            var result = await courseService.GetExamPeopleAnswersByPerson(exam_id,person_id);
+            var result = await courseService.GetExamPeopleAnswersByPerson(exam_id, person_id);
             //GetExamPeopleAnswersByPerson
 
             return Ok(result);
@@ -152,5 +152,90 @@ namespace AirpocketTRN.Controllers
             public int exam_id { get; set; }
         }
 
+
+        public class question_dto
+        {
+            public int exam_id { get; set; }
+            public int exam_question_id { get; set; }
+            public int? question_id { get; set; }
+            public string english_title { get; set; }
+            public int? category_id { get; set; }
+            public bool is_rtl { get; set; }
+            public int hardness { get; set; }
+            public string category { get; set; }
+            public string correct_answer_title { get; set; }
+            public int correct_answer_id { get; set; }
+
+            public List<answers_dto> answers { get; set; }
+        }
+
+
+        public class answers_dto
+        {
+            public int id { get; set; }
+            public int? quesion_id { get; set; }
+            public string english_title { get; set; }
+            public string persian_title { get; set; }
+            public int? is_answer { get; set; }
+            public bool? is_rtl { get; set; }
+
+        }
+
+        [Route("api/exam/questions/{exam_id}")]
+        [AcceptVerbs("GET")]
+        public async Task<IHttpActionResult> GetExamQuestions(int exam_id)
+        {
+            try
+            {
+                FLYEntities context = new FLYEntities();
+                var questions = await context.view_trn_exam_question
+     .Where(q => q.exam_id == exam_id)
+     .Select(q => new question_dto
+     {
+         exam_id = q.exam_id,
+         exam_question_id = q.exam_question_id,
+         question_id = q.question_id,
+         english_title = q.english_title,
+         category_id = q.category_id,
+         is_rtl = q.is_rtl,
+         hardness = q.hardness,
+         category = q.category,
+         correct_answer_title = q.correct_answer_title,
+         correct_answer_id = q.correct_answer_id
+     })
+     .ToListAsync();
+
+                var questions_id = questions.Select(q => q.question_id).ToList();
+                var answersGrouped = context.trn_answers
+      .Where(a => questions_id.Contains(a.quesion_id))
+      .Select(a => new answers_dto
+      {
+          id = a.id,
+          quesion_id = a.quesion_id,
+          english_title = a.english_title,
+          persian_title = a.persian_title,
+          is_answer = a.is_answer,
+          is_rtl = a.is_rtl
+      })
+      .ToList()
+      .GroupBy(a => a.quesion_id)
+      .ToDictionary(g => g.Key, g => g.ToList());
+
+                foreach (var question in questions)
+                {
+                    question.answers = answersGrouped.ContainsKey(question.question_id)
+                                       ? answersGrouped[question.question_id]
+                                       : new List<answers_dto>();
+                }
+
+                var result = new { questions };
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
