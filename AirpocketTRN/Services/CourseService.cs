@@ -4949,7 +4949,8 @@ namespace AirpocketTRN.Services
 
         public async Task<DataResponse> GetExamSummary(int exam_id)
         {
-            var summary = await context.view_trn_exam_summary_details.Where(q => q.exam_id==exam_id).OrderBy(q=>q.last_name).ThenBy(q=>q.first_name).ToListAsync();
+            
+            var summary = await context.view_trn_exam_summary_details.Where(q => q.main_exam_id==exam_id).OrderBy(q=>q.last_name).ThenBy(q=>q.first_name).ToListAsync();
             return new DataResponse()
             {
                 Data = summary,

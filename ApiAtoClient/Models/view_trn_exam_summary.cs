@@ -28,6 +28,6 @@ namespace ApiAtoClient.Models
         public Nullable<int> total_remained { get; set; }
         public Nullable<int> score { get; set; }
         public string result { get; set; }
-        public string result_id { get; set; }
+        public Nullable<int> result_id { get; set; }
     }
 }

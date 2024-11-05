@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AirpocketTRN.Models
+namespace ApiAtoClient.Models
 {
     using System;
     using System.Collections.Generic;
@@ -34,6 +34,5 @@ namespace AirpocketTRN.Models
         public Nullable<int> score { get; set; }
         public string result { get; set; }
         public Nullable<int> result_id { get; set; }
-        public Nullable<int> main_exam_id { get; set; }
     }
 }

@@ -184,5 +184,11 @@ namespace AirpocketAPI.Models
         public string RouteCountry { get; set; }
         public Nullable<int> PaxFemale { get; set; }
         public Nullable<int> PaxMale { get; set; }
+        public Nullable<System.DateTime> BlockOffStationLocal { get; set; }
+        public Nullable<System.DateTime> BlockOnStationLocal { get; set; }
+        public Nullable<System.DateTime> LandingStationLocal { get; set; }
+        public Nullable<System.DateTime> TakeoffStationLocal { get; set; }
+        public Nullable<bool> IsDomestic { get; set; }
+        public string AircraftModel { get; set; }
     }
 }

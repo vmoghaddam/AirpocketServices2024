@@ -22,5 +22,6 @@ namespace AirpocketTRN.Models
         public Nullable<System.DateTime> date_sent { get; set; }
     
         public virtual trn_exam_question trn_exam_question { get; set; }
+        public virtual trn_person_exam_question trn_person_exam_question { get; set; }
     }
 }
