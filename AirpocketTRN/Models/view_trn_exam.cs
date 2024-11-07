@@ -12,18 +12,8 @@ namespace AirpocketTRN.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class trn_exam
+    public partial class view_trn_exam
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public trn_exam()
-        {
-            this.trn_exam_question = new HashSet<trn_exam_question>();
-            this.trn_exam_question_template = new HashSet<trn_exam_question_template>();
-            this.trn_exam_group = new HashSet<trn_exam_group>();
-            this.trn_exam_person = new HashSet<trn_exam_person>();
-            this.trn_person_exam = new HashSet<trn_person_exam>();
-        }
-    
         public int id { get; set; }
         public int course_id { get; set; }
         public Nullable<System.DateTime> exam_date { get; set; }
@@ -33,11 +23,15 @@ namespace AirpocketTRN.Models
         public string location_phone { get; set; }
         public string remark { get; set; }
         public Nullable<int> status_id { get; set; }
-        public Nullable<int> created_by { get; set; }
-        public Nullable<int> confirmed_by { get; set; }
+        public string status { get; set; }
+        public Nullable<int> created_by_id { get; set; }
+        public string created_by { get; set; }
+        public Nullable<int> confirmed_by_id { get; set; }
+        public string confirmed_by { get; set; }
         public Nullable<System.DateTime> created_date { get; set; }
         public Nullable<System.DateTime> confirmed_date { get; set; }
         public Nullable<int> exam_type_id { get; set; }
+        public string exam_type { get; set; }
         public Nullable<System.DateTime> signed_by_ins1_date { get; set; }
         public Nullable<System.DateTime> signed_by_ins2_date { get; set; }
         public Nullable<System.DateTime> signed_by_director_date { get; set; }
@@ -47,17 +41,15 @@ namespace AirpocketTRN.Models
         public Nullable<System.DateTime> date_end_scheduled { get; set; }
         public Nullable<System.DateTime> date_end_actual { get; set; }
         public Nullable<System.DateTime> date_start_scheduled { get; set; }
-    
-        public virtual Course Course { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<trn_exam_question> trn_exam_question { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<trn_exam_question_template> trn_exam_question_template { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<trn_exam_group> trn_exam_group { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<trn_exam_person> trn_exam_person { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<trn_person_exam> trn_person_exam { get; set; }
+        public string course_type { get; set; }
+        public int course_type_id { get; set; }
+        public System.DateTime course_start { get; set; }
+        public Nullable<System.DateTime> course_end { get; set; }
+        public string instructor { get; set; }
+        public string training_director { get; set; }
+        public Nullable<int> course_duration { get; set; }
+        public string course_title { get; set; }
+        public string course_no { get; set; }
+        public string instructor2 { get; set; }
     }
 }

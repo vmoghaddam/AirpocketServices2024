@@ -12,7 +12,7 @@ namespace AirpocketTRN.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class view_trn_exam_question_person_details
+    public partial class view_trn_exam_question_person
     {
         public int id { get; set; }
         public int question_id { get; set; }
@@ -27,12 +27,9 @@ namespace AirpocketTRN.Models
         public Nullable<int> person_id { get; set; }
         public string first_name { get; set; }
         public string last_name { get; set; }
-        public string name { get; set; }
-        public string nid { get; set; }
-        public string mobile { get; set; }
         public Nullable<int> answer_id { get; set; }
-        public int is_correct { get; set; }
-        public Nullable<int> correct_ans { get; set; }
         public Nullable<System.DateTime> date_sent { get; set; }
+        public Nullable<int> is_correct { get; set; }
+        public Nullable<int> correct_ans { get; set; }
     }
 }

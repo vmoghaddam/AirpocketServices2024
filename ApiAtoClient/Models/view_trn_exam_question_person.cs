@@ -29,5 +29,7 @@ namespace ApiAtoClient.Models
         public string last_name { get; set; }
         public Nullable<int> answer_id { get; set; }
         public Nullable<System.DateTime> date_sent { get; set; }
+        public Nullable<int> is_correct { get; set; }
+        public Nullable<int> correct_ans { get; set; }
     }
 }

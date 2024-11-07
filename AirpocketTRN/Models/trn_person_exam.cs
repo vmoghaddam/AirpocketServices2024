@@ -12,16 +12,12 @@ namespace AirpocketTRN.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class trn_exam
+    public partial class trn_person_exam
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public trn_exam()
+        public trn_person_exam()
         {
-            this.trn_exam_question = new HashSet<trn_exam_question>();
-            this.trn_exam_question_template = new HashSet<trn_exam_question_template>();
-            this.trn_exam_group = new HashSet<trn_exam_group>();
-            this.trn_exam_person = new HashSet<trn_exam_person>();
-            this.trn_person_exam = new HashSet<trn_person_exam>();
+            this.trn_person_exam_question = new HashSet<trn_person_exam_question>();
         }
     
         public int id { get; set; }
@@ -47,17 +43,13 @@ namespace AirpocketTRN.Models
         public Nullable<System.DateTime> date_end_scheduled { get; set; }
         public Nullable<System.DateTime> date_end_actual { get; set; }
         public Nullable<System.DateTime> date_start_scheduled { get; set; }
+        public Nullable<int> main_exam_id { get; set; }
+        public Nullable<int> person_id { get; set; }
+        public Nullable<System.DateTime> person_sign_date { get; set; }
     
         public virtual Course Course { get; set; }
+        public virtual trn_exam trn_exam { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<trn_exam_question> trn_exam_question { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<trn_exam_question_template> trn_exam_question_template { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<trn_exam_group> trn_exam_group { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<trn_exam_person> trn_exam_person { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<trn_person_exam> trn_person_exam { get; set; }
+        public virtual ICollection<trn_person_exam_question> trn_person_exam_question { get; set; }
     }
 }

@@ -33,8 +33,9 @@ namespace ApiAtoClient.Controllers
 
                 ppa_entities context = new ppa_entities();
                 var profile=await context.view_trn_profile.Where(q=>q.Id==client_id).FirstOrDefaultAsync();
-                var exam=await context.view_trn_exam.Where(q=>q.id==id).FirstOrDefaultAsync();
-                //var _questions = await context.view_trn_exam_question_person.Where(q => q.exam_id == id && q.person_id == client_id).OrderBy(q=>q.category_id).ThenBy(q=>q.question_id).ToListAsync();
+                // var exam=await context.view_trn_exam.Where(q=>q.id==id).FirstOrDefaultAsync();
+
+                var exam = await context.view_trn_person_exam.Where(q => q.exam_id == id).FirstOrDefaultAsync();
                 List<view_trn_exam_question_person> _questions = new List<view_trn_exam_question_person>();
 
 
@@ -53,6 +54,7 @@ namespace ApiAtoClient.Controllers
 
                 var questions= _questions.Select(q => JsonConvert.DeserializeObject<view_trn_exam_question_person_dto>(JsonConvert.SerializeObject(q))).ToList();
                 var answers = await context.trn_answers.Where(q => qids.Contains(q.quesion_id)).ToListAsync();
+                //var xxxxx= await context.view_trm_exam_student_answer.Where(q => q.person_id == client_id ).ToListAsync();
                 var client_answers=await context.view_trm_exam_student_answer.Where(q=>q.person_id==client_id && qids2.Contains(q.question_id)).ToListAsync();
 
                 var out_answers = new List<dto_answer_out>();

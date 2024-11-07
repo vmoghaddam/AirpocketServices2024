@@ -113,5 +113,7 @@ namespace AirpocketAPI.Models
         public Nullable<int> PosFDPId { get; set; }
         public string PosRemark { get; set; }
         public string PosTicketUrl { get; set; }
+        public string Key { get; set; }
+        public Nullable<bool> OutOfHomeBase { get; set; }
     }
 }

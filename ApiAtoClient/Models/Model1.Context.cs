@@ -29,14 +29,19 @@ namespace ApiAtoClient.Models
         public virtual DbSet<trn_exam_group> trn_exam_group { get; set; }
         public virtual DbSet<trn_exam_person> trn_exam_person { get; set; }
         public virtual DbSet<trn_exam_question> trn_exam_question { get; set; }
-        public virtual DbSet<trn_exam_student_answer> trn_exam_student_answer { get; set; }
         public virtual DbSet<view_trn_exam> view_trn_exam { get; set; }
-        public virtual DbSet<view_trn_exam_question_person> view_trn_exam_question_person { get; set; }
         public virtual DbSet<trn_answers> trn_answers { get; set; }
-        public virtual DbSet<view_trn_person_exam> view_trn_person_exam { get; set; }
         public virtual DbSet<view_trn_profile> view_trn_profile { get; set; }
         public virtual DbSet<view_trn_exam_question> view_trn_exam_question { get; set; }
-        public virtual DbSet<view_trn_exam_summary> view_trn_exam_summary { get; set; }
         public virtual DbSet<view_trm_exam_student_answer> view_trm_exam_student_answer { get; set; }
+        public virtual DbSet<view_trn_person_exam> view_trn_person_exam { get; set; }
+        public virtual DbSet<trn_person_exam> trn_person_exam { get; set; }
+        public virtual DbSet<trn_person_exam_question> trn_person_exam_question { get; set; }
+        public virtual DbSet<view_trn_exam_person> view_trn_exam_person { get; set; }
+        public virtual DbSet<view_trn_exam_question_person> view_trn_exam_question_person { get; set; }
+        public virtual DbSet<view_trn_exam_question_person_details> view_trn_exam_question_person_details { get; set; }
+        public virtual DbSet<trn_exam_student_answer> trn_exam_student_answer { get; set; }
+        public virtual DbSet<view_trn_exam_summary> view_trn_exam_summary { get; set; }
+        public virtual DbSet<view_trn_exam_summary_details> view_trn_exam_summary_details { get; set; }
     }
 }

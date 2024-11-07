@@ -31,5 +31,6 @@ namespace AirpocketAPI.Models
         public Nullable<double> FlightCYearx { get; set; }
         public Nullable<double> Duty1 { get; set; }
         public Nullable<double> Flight1 { get; set; }
+        public Nullable<int> CYear { get; set; }
     }
 }

@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ApiAtoClient.Models
+namespace AirpocketTRN.Models
 {
     using System;
     using System.Collections.Generic;

@@ -84,5 +84,7 @@ namespace AirpocketAPI.Models
         public Nullable<int> PosFDPId { get; set; }
         public string PosRemark { get; set; }
         public string PosTicketUrl { get; set; }
+        public string ValidTypesStr { get; set; }
+        public string DutyTypeTitleAcType { get; set; }
     }
 }

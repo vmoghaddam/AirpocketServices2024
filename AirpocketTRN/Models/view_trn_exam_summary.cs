@@ -12,15 +12,10 @@ namespace AirpocketTRN.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class view_trn_exam_summary_details
+    public partial class view_trn_exam_summary
     {
         public int exam_id { get; set; }
         public int person_id { get; set; }
-        public string first_name { get; set; }
-        public string last_name { get; set; }
-        public string name { get; set; }
-        public string nid { get; set; }
-        public string mobile { get; set; }
         public int course_id { get; set; }
         public Nullable<int> status_id { get; set; }
         public Nullable<System.DateTime> date_start { get; set; }
