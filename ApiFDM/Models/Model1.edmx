@@ -164,6 +164,15 @@
           <Property Name="MediumScore" Type="int" />
           <Property Name="LowScore" Type="int" />
         </EntityType>
+        <EntityType Name="FDMEventParameters">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="event_id" Type="int" />
+          <Property Name="param_title" Type="varchar" MaxLength="255" />
+          <Property Name="param_value" Type="varchar" MaxLength="255" />
+        </EntityType>
         <EntityType Name="FlightInformation">
           <Key>
             <PropertyRef Name="ID" />
@@ -1017,7 +1026,13 @@ warning 6002: The table/view 'EPACSPN.dbo.FDMPhaseMonthly' does not have a prima
           <Property Name="CrewId" Type="int" Nullable="false" />
           <Property Name="JobGroup" Type="nvarchar" MaxLength="500" />
           <Property Name="EventCount" Type="int" />
+          <Property Name="HighCount" Type="int" />
+          <Property Name="MediumCount" Type="int" />
+          <Property Name="LowCount" Type="int" />
           <Property Name="Score" Type="int" />
+          <Property Name="HighScore" Type="int" />
+          <Property Name="MediumScore" Type="int" />
+          <Property Name="LowScore" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'EPACSPN.dbo.FDMRegCptDaily ' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1159,11 +1174,11 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewFDM' does not have a primary key d
           <Property Name="Register" Type="nvarchar" MaxLength="50" />
           <Property Name="RegisterID" Type="int" />
           <Property Name="P1Id" Type="int" />
-          <Property Name="P1Code" Type="varchar" MaxLength="100" />
+          <Property Name="P1Code" Type="nvarchar" MaxLength="1001" />
           <Property Name="P2Id" Type="int" />
-          <Property Name="P2Code" Type="varchar" MaxLength="100" />
+          <Property Name="P2Code" Type="nvarchar" MaxLength="1001" />
           <Property Name="IPId" Type="int" />
-          <Property Name="IPCode" Type="varchar" MaxLength="100" />
+          <Property Name="IPCode" Type="nvarchar" MaxLength="1001" />
           <Property Name="IPName" Type="nvarchar" MaxLength="1001" />
           <Property Name="P1Name" Type="nvarchar" MaxLength="1001" />
           <Property Name="P2Name" Type="nvarchar" MaxLength="1001" />
@@ -1353,6 +1368,20 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
           <Property Name="ArrCountry" Type="varchar" MaxLength="1" Nullable="false" />
           <Property Name="OFPTOTALFUEL" Type="int" />
         </EntityType>
+        <Association Name="fdm_event_fk">
+          <End Role="FDM" Type="Self.FDM" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="FDMEventParameters" Type="Self.FDMEventParameters" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FDM">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FDMEventParameters">
+              <PropertyRef Name="event_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_FlightInformation_Ac_MSN">
           <End Role="Ac_MSN" Type="Self.Ac_MSN" Multiplicity="0..1" />
           <End Role="FlightInformation" Type="Self.FlightInformation" Multiplicity="*" />
@@ -1395,6 +1424,7 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
           <EntitySet Name="CrewSecretCode" EntityType="Self.CrewSecretCode" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FDM" EntityType="Self.FDM" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FDMCptMonthlyTBL" EntityType="Self.FDMCptMonthlyTBL" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FDMEventParameters" EntityType="Self.FDMEventParameters" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FlightInformation" EntityType="Self.FlightInformation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AppLeg" EntityType="Self.AppLeg" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -1876,7 +1906,13 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
     [FDMPhaseMonthly].[CrewId] AS [CrewId], 
     [FDMPhaseMonthly].[JobGroup] AS [JobGroup], 
     [FDMPhaseMonthly].[EventCount] AS [EventCount], 
-    [FDMPhaseMonthly].[Score] AS [Score]
+    [FDMPhaseMonthly].[HighCount] AS [HighCount], 
+    [FDMPhaseMonthly].[MediumCount] AS [MediumCount], 
+    [FDMPhaseMonthly].[LowCount] AS [LowCount], 
+    [FDMPhaseMonthly].[Score] AS [Score], 
+    [FDMPhaseMonthly].[HighScore] AS [HighScore], 
+    [FDMPhaseMonthly].[MediumScore] AS [MediumScore], 
+    [FDMPhaseMonthly].[LowScore] AS [LowScore]
     FROM [dbo].[FDMPhaseMonthly] AS [FDMPhaseMonthly]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="FDMRegCptDaily " EntityType="Self.FDMRegCptDaily " store:Type="Views" store:Schema="dbo">
@@ -2173,6 +2209,10 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
     [ViewLegTime].[OFPTOTALFUEL] AS [OFPTOTALFUEL]
     FROM [dbo].[ViewLegTime] AS [ViewLegTime]</DefiningQuery>
           </EntitySet>
+          <AssociationSet Name="fdm_event_fk" Association="Self.fdm_event_fk">
+            <End Role="FDM" EntitySet="FDM" />
+            <End Role="FDMEventParameters" EntitySet="FDMEventParameters" />
+          </AssociationSet>
           <AssociationSet Name="FK_FlightInformation_Ac_MSN" Association="Self.FK_FlightInformation_Ac_MSN">
             <End Role="Ac_MSN" EntitySet="Ac_MSN" />
             <End Role="FlightInformation" EntitySet="FlightInformation" />
@@ -2210,7 +2250,6 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
           <EntitySet Name="FDMEventDailies" EntityType="dbModel.FDMEventDaily" />
           <EntitySet Name="FDMFoEventMonthlies" EntityType="dbModel.FDMFoEventMonthly" />
           <EntitySet Name="FDMFoMonthlies" EntityType="dbModel.FDMFoMonthly" />
-          <EntitySet Name="FDMPhaseMonthlies" EntityType="dbModel.FDMPhaseMonthly" />
           <EntitySet Name="FDMRegCptDaily_" EntityType="dbModel.FDMRegCptDaily_" />
           <EntitySet Name="FDMRegCptMonthlies" EntityType="dbModel.FDMRegCptMonthly" />
           <EntitySet Name="FDMRegDailies" EntityType="dbModel.FDMRegDaily" />
@@ -2241,6 +2280,12 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
             <End Role="Airport" EntitySet="Airports" />
             <End Role="FlightInformation" EntitySet="FlightInformations" />
           </AssociationSet>
+          <EntitySet Name="FDMEventParameters" EntityType="dbModel.FDMEventParameter" />
+          <AssociationSet Name="fdm_event_fk" Association="dbModel.fdm_event_fk">
+            <End Role="FDM" EntitySet="FDMs" />
+            <End Role="FDMEventParameter" EntitySet="FDMEventParameters" />
+          </AssociationSet>
+          <EntitySet Name="FDMPhaseMonthlies" EntityType="dbModel.FDMPhaseMonthly" />
           </EntityContainer>
         <EntityType Name="CrewSecretCode">
           <Key>
@@ -2509,24 +2554,6 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
           <Property Name="MediumScore" Type="Int32" />
           <Property Name="LowScore" Type="Int32" />
         </EntityType>
-        <EntityType Name="FDMPhaseMonthly">
-          <Key>
-            <PropertyRef Name="Phase" />
-            <PropertyRef Name="Month" />
-            <PropertyRef Name="Year" />
-            <PropertyRef Name="Name" />
-            <PropertyRef Name="CrewId" />
-          </Key>
-          <Property Name="Phase" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="Month" Type="Int32" Nullable="false" />
-          <Property Name="Year" Type="Int32" Nullable="false" />
-          <Property Name="YearMonth" Type="Int32" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="1003" FixedLength="false" Unicode="true" />
-          <Property Name="CrewId" Type="Int32" Nullable="false" />
-          <Property Name="JobGroup" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="EventCount" Type="Int32" />
-          <Property Name="Score" Type="Int32" />
-        </EntityType>
         <EntityType Name="FDMRegCptDaily_">
           <Key>
             <PropertyRef Name="CptId" />
@@ -2682,6 +2709,7 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
           <Property Name="PIC" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="FlightNo" Type="Int32" />
           <Property Name="MainParameter" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="FDMEventParameters" Relationship="dbModel.fdm_event_fk" FromRole="FDM" ToRole="FDMEventParameter" />
         </EntityType>
         <EntityType Name="FDMAVG">
           <Key>
@@ -2704,11 +2732,11 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
           <Property Name="Register" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="RegisterID" Type="Int32" />
           <Property Name="P1Id" Type="Int32" />
-          <Property Name="P1Code" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="P1Code" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
           <Property Name="P2Id" Type="Int32" />
-          <Property Name="P2Code" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="P2Code" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
           <Property Name="IPId" Type="Int32" />
-          <Property Name="IPCode" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="IPCode" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
           <Property Name="IPName" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
           <Property Name="P1Name" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
           <Property Name="P2Name" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
@@ -3578,6 +3606,54 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="FDMEventParameter">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="event_id" Type="Int32" />
+          <Property Name="param_title" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="param_value" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="FDM" Relationship="dbModel.fdm_event_fk" FromRole="FDMEventParameter" ToRole="FDM" />
+        </EntityType>
+        <Association Name="fdm_event_fk">
+          <End Type="dbModel.FDM" Role="FDM" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="dbModel.FDMEventParameter" Role="FDMEventParameter" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FDM">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FDMEventParameter">
+              <PropertyRef Name="event_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="FDMPhaseMonthly">
+          <Key>
+            <PropertyRef Name="Phase" />
+            <PropertyRef Name="Month" />
+            <PropertyRef Name="Year" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="CrewId" />
+          </Key>
+          <Property Name="Phase" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Month" Type="Int32" Nullable="false" />
+          <Property Name="Year" Type="Int32" Nullable="false" />
+          <Property Name="YearMonth" Type="Int32" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="1003" FixedLength="false" Unicode="true" />
+          <Property Name="CrewId" Type="Int32" Nullable="false" />
+          <Property Name="JobGroup" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="EventCount" Type="Int32" />
+          <Property Name="HighCount" Type="Int32" />
+          <Property Name="MediumCount" Type="Int32" />
+          <Property Name="LowCount" Type="Int32" />
+          <Property Name="Score" Type="Int32" />
+          <Property Name="HighScore" Type="Int32" />
+          <Property Name="MediumScore" Type="Int32" />
+          <Property Name="LowScore" Type="Int32" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3853,21 +3929,6 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
                 <ScalarProperty Name="YearMonth" ColumnName="YearMonth" />
                 <ScalarProperty Name="Year" ColumnName="Year" />
                 <ScalarProperty Name="Month" ColumnName="Month" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="FDMPhaseMonthlies">
-            <EntityTypeMapping TypeName="dbModel.FDMPhaseMonthly">
-              <MappingFragment StoreEntitySet="FDMPhaseMonthly">
-                <ScalarProperty Name="Score" ColumnName="Score" />
-                <ScalarProperty Name="EventCount" ColumnName="EventCount" />
-                <ScalarProperty Name="JobGroup" ColumnName="JobGroup" />
-                <ScalarProperty Name="CrewId" ColumnName="CrewId" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="YearMonth" ColumnName="YearMonth" />
-                <ScalarProperty Name="Year" ColumnName="Year" />
-                <ScalarProperty Name="Month" ColumnName="Month" />
-                <ScalarProperty Name="Phase" ColumnName="Phase" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -4865,6 +4926,37 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
                 <ScalarProperty Name="RegisterID" ColumnName="RegisterID" />
                 <ScalarProperty Name="TypeID" ColumnName="TypeID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FDMEventParameters">
+            <EntityTypeMapping TypeName="dbModel.FDMEventParameter">
+              <MappingFragment StoreEntitySet="FDMEventParameters">
+                <ScalarProperty Name="param_value" ColumnName="param_value" />
+                <ScalarProperty Name="param_title" ColumnName="param_title" />
+                <ScalarProperty Name="event_id" ColumnName="event_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FDMPhaseMonthlies">
+            <EntityTypeMapping TypeName="dbModel.FDMPhaseMonthly">
+              <MappingFragment StoreEntitySet="FDMPhaseMonthly">
+                <ScalarProperty Name="LowScore" ColumnName="LowScore" />
+                <ScalarProperty Name="MediumScore" ColumnName="MediumScore" />
+                <ScalarProperty Name="HighScore" ColumnName="HighScore" />
+                <ScalarProperty Name="Score" ColumnName="Score" />
+                <ScalarProperty Name="LowCount" ColumnName="LowCount" />
+                <ScalarProperty Name="MediumCount" ColumnName="MediumCount" />
+                <ScalarProperty Name="HighCount" ColumnName="HighCount" />
+                <ScalarProperty Name="EventCount" ColumnName="EventCount" />
+                <ScalarProperty Name="JobGroup" ColumnName="JobGroup" />
+                <ScalarProperty Name="CrewId" ColumnName="CrewId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="YearMonth" ColumnName="YearMonth" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="Month" ColumnName="Month" />
+                <ScalarProperty Name="Phase" ColumnName="Phase" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

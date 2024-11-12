@@ -10,6 +10,9 @@ using System.Data;
 using System.Data.Entity;
 
 using System.Data.SqlClient;
+using System.Text.RegularExpressions;
+using System.Web.UI;
+using System.Reflection.Emit;
 
 
 
@@ -60,6 +63,143 @@ namespace ApiFDM.Controllers
         //    };
 
         //}
+
+
+        [HttpGet]
+        [Route("api/sync/fdm/context")]
+        public async Task<DataResponse> SyncFDMContext()
+        {
+            try
+            {
+                //string input = "[Height Above Airfield]=7000  [Pressure Altitude]=10992  [AIR GROUND]=0  [Computed Airspeed]=310  [UTC Time]=76064.25  [Pitch Angle]=-2.8125  [Pitch Rate]=0  [Vertical Speed]=-4320  [IVVC]=-340.822932  [Absolute Vertical Speed]=4320";
+                var df = DateTime.Parse("2024-04-01");
+                var dt = DateTime.Parse("2024-04-15");
+                var contexts = await context.FDMs.Where(q => q.Context != null && q.Date >= df && q.Date <= dt).ToListAsync();
+                var events_param = await context.FDMEventParameters.ToListAsync();
+                foreach (var cntx in contexts)
+                {
+
+                    var evn = events_param.Where(q => q.event_id == cntx.Id).ToList();
+                    context.FDMEventParameters.RemoveRange(evn);
+
+                    // Regular expression to match key-value pairs
+                    Regex regex = new Regex(@"\[([^\]]+)\]=([^\[]+)", RegexOptions.Compiled);
+
+                    // List to store key-value pairs
+                    List<KeyValuePair<string, string>> keyValuePairs = new List<KeyValuePair<string, string>>();
+
+                    // Find matches and add them to the list
+                    foreach (Match match in regex.Matches(cntx.Context))
+                    {
+
+                        var e = new FDMEventParameter();
+                        e.event_id = cntx.Id;
+                        e.param_title = match.Groups[1].Value.Trim();
+                        e.param_value = match.Groups[2].Value.Trim();
+                        //string key = match.Groups[1].Value.Trim();
+                        //string value = match.Groups[2].Value.Trim();
+                        //keyValuePairs.Add(new KeyValuePair<string, string>(key, value));
+                        context.FDMEventParameters.Add(e);
+                    }
+
+                    //// Output the key-value pairs
+                    //foreach (var kvp in keyValuePairs)
+                    //{
+                    //    Console.WriteLine($"Key: {kvp.Key}, Value: {kvp.Value}");
+                    //}
+                }
+
+                await context.SaveChangesAsync();
+
+                return new DataResponse()
+                {
+                    IsSuccess = true,
+                    Data = null
+                };
+
+            }
+            catch (Exception ex)
+            {
+                return new DataResponse()
+                {
+                    IsSuccess = false,
+                    Data = ex
+                };
+            }
+        }
+
+        //[HttpGet]
+        //[Route("api/sync/fdm/context")]
+        //public async Task<DataResponse> SyncFDMContext()
+        //{
+        //    try
+        //    {
+        //        var startDate = DateTime.Parse("2024-04-01");
+        //        var endDate = DateTime.Parse("2024-04-15");
+
+        //        // Fetch contexts and event parameters in one go
+        //        var contexts = await context.FDMs
+        //            .Where(q => q.Context != null && q.Date >= startDate && q.Date <= endDate)
+        //            .ToListAsync();
+
+        //        // Convert context IDs to a list of nullable int to match event_id type
+        //        var contextIds = contexts.Select(ctx => (int?)ctx.Id).ToList();
+
+        //        var eventParamDict = await context.FDMEventParameters
+        //            .Where(ep => contextIds.Contains(ep.event_id))
+        //            .GroupBy(ep => ep.event_id)
+        //            .ToDictionaryAsync(g => g.Key, g => g.ToList()); // Ensure each entry is a list
+
+        //        // Store new parameters to be added
+        //        var newEventParameters = new List<FDMEventParameter>();
+
+        //        // Compile regex once
+        //        var regex = new Regex(@"\[([^\]]+)\]=([^\[]+)", RegexOptions.Compiled);
+
+        //        foreach (var cntx in contexts)
+        //        {
+        //            // Remove related event parameters efficiently if exists in dictionary
+        //            if (eventParamDict.TryGetValue(cntx.Id, out var existingParameters))
+        //            {
+        //                context.FDMEventParameters.RemoveRange(existingParameters); // Remove the list of parameters
+        //            }
+
+        //            // Parse context and add new parameters
+        //            foreach (Match match in regex.Matches(cntx.Context))
+        //            {
+        //                newEventParameters.Add(new FDMEventParameter
+        //                {
+        //                    event_id = cntx.Id,
+        //                    param_title = match.Groups[1].Value.Trim(),
+        //                    param_value = match.Groups[2].Value.Trim()
+        //                });
+        //            }
+        //        }
+
+        //        // Add all new parameters in one batch
+        //        context.FDMEventParameters.AddRange(newEventParameters);
+
+        //        // Save changes once
+        //        await context.SaveChangesAsync();
+
+        //        return new DataResponse
+        //        {
+        //            IsSuccess = true,
+        //            Data = null
+        //        };
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Optionally log the exception here for further diagnosis
+        //        return new DataResponse
+        //        {
+        //            IsSuccess = false,
+        //            Data = ex
+        //        };
+        //    }
+        //}
+
+
 
         [HttpGet]
         [Route("api/fdm/register/byMonth/{ymf}/{ymt}/{ACType}")]
@@ -152,9 +292,9 @@ namespace ApiFDM.Controllers
                                 LowScore = grp.Sum(q => q.LowScore),
                                 MediumScore = grp.Sum(q => q.MediumScore),
 
-                                ScorePerFlight = (grp.Sum(q => q.HighCount) * 4 + grp.Sum(q => q.MediumCount) * 2 + grp.Sum(q => q.LowCount)) * 1.0 / grp.Sum(q => q.FlightCount) * 1.0,
+                                ScorePerFlight = ((grp.Sum(q => q.HighCount) * 4 + grp.Sum(q => q.MediumCount) * 2 + grp.Sum(q => q.LowCount)) * 1.0 / grp.Sum(q => q.FlightCount) * 1.0) * 100,
                                 EventsCount = grp.Sum(q => q.HighCount) + grp.Sum(q => q.MediumCount) + grp.Sum(q => q.LowCount),
-                                EventPerFlight = grp.Sum(q => q.EventCount) * 1.0 / grp.Sum(q => q.FlightCount) * 1.0,
+                                EventPerFlight = (grp.Sum(q => q.EventCount) * 1.0 / grp.Sum(q => q.FlightCount) * 1.0) * 100,
                                 ScorePerEvent = grp.Sum(q => q.EventCount) == 0 ? 0 : grp.Sum(q => q.Score) * 1.0 / grp.Sum(q => q.EventCount) * 1.0,
                             };
 
@@ -512,7 +652,7 @@ namespace ApiFDM.Controllers
                 //                      where x.YearMonth >= min_from && x.YearMonth <= max_to
                 //                      select x).ToListAsync();
 
-                var kosquery =  context.FDMRegMonthlies.Where(q => q.YearMonth >= min_from && q.YearMonth <= max_to).ToList();
+                var kosquery = context.FDMRegMonthlies.Where(q => q.YearMonth >= min_from && q.YearMonth <= max_to).ToList();
 
                 // Step 1: Group by Register, RegisterId, and YearMonth to aggregate monthly data
                 var monthlyAggregates = kosquery
@@ -634,50 +774,99 @@ namespace ApiFDM.Controllers
 
         }
 
+        public class FDMMonthlyDashboardResult
+        {
+            public string YearMonth { get; set; }
+            public int? HighCount { get; set; }
+            public int? MediumCount { get; set; }
+            public int? LowCount { get; set; }
+            public int? FlightCount { get; set; }
+            public int? Score { get; set; }
+            public int? HighScore { get; set; }
+            public int? LowScore { get; set; }
+            public int? MediumScore { get; set; }
+            public double? ScorePerFlight { get; set; }
+            public int? EventsCount { get; set; }
+            public double? EventPerFlight { get; set; }
+            public double? ScorePerEvent { get; set; }
+        }
+
+
 
         [HttpGet]
-        [Route("api/fdm/dashboard/monthly/{year}/{month}/{ACType}")]
-        public async Task<DataResponse> fdmdashboardMonthly(int year, int month, string ACType)
+        [Route("api/fdm/dashboard/monthly/{ymf}/{ymt}")]
+        public async Task<DataResponse> fdmdashboardMonthly(int ymf, int ymt)
         {
-            var d1 = new DateTime(year, month, 1);
+
+            var result = new List<FDMMonthlyDashboardResult>();
+            int year_from = ymf / 100;
+            int month_from = ymf % 100;
+            int year_to = ymt / 100;
+            int month_to = ymt % 100;
+
+            var df = new DateTime(year_from, month_from, 1);
+            var dt = new DateTime(year_to, month_to, 1);
+            var months = dt.Subtract(df).Days / (365.25 / 12);
+            var d = new DateTime(year_to, month_to, 1);
             var dates = new List<int?>();
-            dates.Add(Convert.ToInt32(d1.ToString("yyyyMM")));
+            dates.Add(Convert.ToInt32(d.ToString("yyyyMM")));
             for (var i = 0; i <= 11; i++)
             {
-                d1 = d1.AddMonths(-1);
-                dates.Add(Convert.ToInt32(d1.ToString("yyyyMM")));
+                d = d.AddMonths(-1);
+                dates.Add(Convert.ToInt32(d.ToString("yyyyMM")));
             }
 
             try
             {
-                var query = from x in context.FDMMonthlies
-                            where dates.Contains(x.YearMonth)
-                            group x by new { x.YearMonth } into grp
-                            select new
-                            {
-                                YearMonth = grp.Key.YearMonth.HasValue ? grp.Key.YearMonth.ToString() : string.Empty,
-                                HighCount = grp.Sum(q => q.HighCount),
-                                MediumCount = grp.Sum(q => q.MediumCount),
-                                LowCount = grp.Sum(q => q.LowCount),
-                                FlightCount = grp.Sum(q => q.FlightCount),
-                                Score = grp.Sum(q => q.Score),
-                                HighScore = grp.Sum(q => q.HighCount) * 4,
-                                LowScore = grp.Sum(q => q.LowCount),
-                                MediumScore = grp.Sum(q => q.MediumCount) * 2,
+                if (months > 12)
+                {
+                    var query = from x in context.FDMMonthlies
+                                where x.YearMonth >= ymf && x.YearMonth <= ymt
+                                group x by new { x.YearMonth } into grp
+                                select new FDMMonthlyDashboardResult
+                                {
+                                    YearMonth = grp.Key.YearMonth.HasValue ? grp.Key.YearMonth.ToString() : string.Empty,
+                                    HighCount = grp.Sum(q => q.HighCount),
+                                    MediumCount = grp.Sum(q => q.MediumCount),
+                                    LowCount = grp.Sum(q => q.LowCount),
+                                    FlightCount = grp.Sum(q => q.FlightCount),
+                                    Score = grp.Sum(q => q.Score),
+                                    HighScore = grp.Sum(q => q.HighCount) * 4,
+                                    LowScore = grp.Sum(q => q.LowCount),
+                                    MediumScore = grp.Sum(q => q.MediumCount) * 2,
 
-                                ScorePerFlight = (grp.Sum(q => q.HighCount) * 4 + grp.Sum(q => q.MediumCount) * 2 + grp.Sum(q => q.LowCount)) * 1.0 / grp.Sum(q => q.FlightCount) * 1.0,
-                                EventsCount = grp.Sum(q => q.HighCount) + grp.Sum(q => q.MediumCount) + grp.Sum(q => q.LowCount),
-                                EventPerFlight = grp.Sum(q => q.EventCount) * 1.0 / grp.Sum(q => q.FlightCount) * 1.0,
-                                ScorePerEvent = grp.Sum(q => q.EventCount) == 0 ? 0 : grp.Sum(q => q.Score) * 1.0 / grp.Sum(q => q.EventCount) * 1.0,
+                                    ScorePerFlight = (grp.Sum(q => q.HighCount) * 4 + grp.Sum(q => q.MediumCount) * 2 + grp.Sum(q => q.LowCount)) * 1.0 / grp.Sum(q => q.FlightCount) * 1.0,
+                                    EventsCount = grp.Sum(q => q.HighCount) + grp.Sum(q => q.MediumCount) + grp.Sum(q => q.LowCount),
+                                    EventPerFlight = grp.Sum(q => q.EventCount) * 1.0 / grp.Sum(q => q.FlightCount) * 1.0,
+                                    ScorePerEvent = grp.Sum(q => q.EventCount) == 0 ? 0 : grp.Sum(q => q.Score) * 1.0 / grp.Sum(q => q.EventCount) * 1.0,
+                                };
+                    result = query.ToList();
+                }
+                else
+                {
+                    var query = from x in context.FDMMonthlies
+                                where dates.Contains(x.YearMonth)
+                                group x by new { x.YearMonth } into grp
+                                select new FDMMonthlyDashboardResult
+                                {
+                                    YearMonth = grp.Key.YearMonth.HasValue ? grp.Key.YearMonth.ToString() : string.Empty,
+                                    HighCount = grp.Sum(q => q.HighCount),
+                                    MediumCount = grp.Sum(q => q.MediumCount),
+                                    LowCount = grp.Sum(q => q.LowCount),
+                                    FlightCount = grp.Sum(q => q.FlightCount),
+                                    Score = grp.Sum(q => q.Score),
+                                    HighScore = grp.Sum(q => q.HighCount) * 4,
+                                    LowScore = grp.Sum(q => q.LowCount),
+                                    MediumScore = grp.Sum(q => q.MediumCount) * 2,
 
+                                    ScorePerFlight = (grp.Sum(q => q.HighCount) * 4 + grp.Sum(q => q.MediumCount) * 2 + grp.Sum(q => q.LowCount)) * 1.0 / grp.Sum(q => q.FlightCount) * 1.0,
+                                    EventsCount = grp.Sum(q => q.HighCount) + grp.Sum(q => q.MediumCount) + grp.Sum(q => q.LowCount),
+                                    EventPerFlight = grp.Sum(q => q.EventCount) * 1.0 / grp.Sum(q => q.FlightCount) * 1.0,
+                                    ScorePerEvent = grp.Sum(q => q.EventCount) == 0 ? 0 : grp.Sum(q => q.Score) * 1.0 / grp.Sum(q => q.EventCount) * 1.0,
+                                };
+                    result = query.ToList();
+                }
 
-                                //ScorePerFlight = (grp.Sum(q => q.HighCount) * 4 + grp.Sum(q => q.MediumCount) * 2 + grp.Sum(q => q.LowCount)) * 100.0 / grp.Sum(q => q.FlightCount) * 1.0,
-                                //EventsCount = grp.Sum(q => q.HighCount) + grp.Sum(q => q.MediumCount) + grp.Sum(q => q.LowCount),
-                                //EventPerFlight = grp.Sum(q => q.EventCount) * 100.0 / grp.Sum(q => q.FlightCount) * 1.0,
-                                //ScorePerEvent = grp.Sum(q => q.ScorePerEvent)
-
-                            };
-                var result = query.ToList();
                 return new DataResponse()
                 {
                     Data = result,
@@ -2930,9 +3119,7 @@ namespace ApiFDM.Controllers
 
 
             var query = (from x in context.FDMPhaseMonthlies
-                             //where x.Month >= (mf + 1) && x.Month <= (mt + 1) && x.Year >= yt && x.Year <= yf && x.CrewId == cptId
                          where x.YearMonth >= ymf && x.YearMonth <= ymt
-                         //where x.Year == year && x.Month == month && x.CrewId == cptId
                          select x).ToList();
             var result = (from x in query
                           group x by new { x.Phase } into grp
@@ -2941,6 +3128,15 @@ namespace ApiFDM.Controllers
                               Phase = grp.Key.Phase,
                               Score = grp.Sum(q => q.Score),
                               Count = grp.Sum(q => q.EventCount),
+                              HighCount = grp.Sum(q => q.HighCount),
+                              LowCount = grp.Sum(q => q.LowCount),
+                              MediumCount = grp.Sum(q => q.MediumCount),
+                              HighScore = grp.Sum(q => q.HighScore),
+                              LowScore = grp.Sum(q => q.LowScore),
+                              MediumScore = grp.Sum(q => q.MediumScore),
+                              EventsCount = grp.Sum(q => q.HighCount) + grp.Sum(q => q.MediumCount) + grp.Sum(q => q.LowCount),
+                              ScorePerEvent = grp.Sum(q => q.EventCount) == 0 ? 0 : grp.Sum(q => q.Score) * 1.0 / grp.Sum(q => q.EventCount) * 1.0,
+
                           }).OrderByDescending(q => q.Count).ToList();
 
             //var result = query.ToList();
@@ -2951,6 +3147,42 @@ namespace ApiFDM.Controllers
             };
         }
 
+        [HttpGet]
+        [Route("api/fdm/phase/monthly/{ymf}/{ymt}")]
+        public async Task<DataResponse> GetPhaseMonthly(int ymf, int ymt)
+        {
+
+
+            var query = (from x in context.FDMPhaseMonthlies
+                         where x.YearMonth >= ymf && x.YearMonth <= ymt
+                         select x).ToList();
+            var result = (from x in query
+                          group x by new {x.Month, x.Year, x.YearMonth } into grp
+                          select new
+                          {
+                              grp.Key.Month,
+                              grp.Key.Year,
+                              grp.Key.YearMonth,
+                              Score = grp.Sum(q => q.Score),
+                              Count = grp.Sum(q => q.EventCount),
+                              HighCount = grp.Sum(q => q.HighCount),
+                              LowCount = grp.Sum(q => q.LowCount),
+                              MediumCount = grp.Sum(q => q.MediumCount),
+                              HighScore = grp.Sum(q => q.HighScore),
+                              LowScore = grp.Sum(q => q.LowScore),
+                              MediumScore = grp.Sum(q => q.MediumScore),
+                              EventsCount = grp.Sum(q => q.HighCount) + grp.Sum(q => q.MediumCount) + grp.Sum(q => q.LowCount),
+                              ScorePerEvent = grp.Sum(q => q.EventCount) == 0 ? 0 : grp.Sum(q => q.Score) * 1.0 / grp.Sum(q => q.EventCount) * 1.0,
+
+                          }).OrderByDescending(q => q.Count).ToList();
+
+            //var result = query.ToList();
+            return new DataResponse()
+            {
+                IsSuccess = true,
+                Data = result
+            };
+        }
         [HttpGet]
         [Route("api/fdm/get/cpt/phase/monthly2/{ymf}/{ymt}/{cptId}")]
         public async Task<DataResponse> GetCptPhaseMonthly2(int ymf, int ymt, int cptId)
@@ -3057,56 +3289,113 @@ namespace ApiFDM.Controllers
             };
         }
 
+        public class FDMQueryResult
+        {
+            public string CptCode { get; set; }
+            public int CptId { get; set; }
+            public string CptName { get; set; }
+            public int? Month { get; set; }
+            public int? HighCount { get; set; }
+            public int? LowCount { get; set; }
+            public int? MediumCount { get; set; }
+            public int? FlightCount { get; set; }
+            public int? Score { get; set; }
+            public int? HighScore { get; set; }
+            public int? LowScore { get; set; }
+            public int? MediumScore { get; set; }
+            public double? ScorePerFlight { get; set; }
+            public int? EventsCount { get; set; }
+            public double? EventPerFlight { get; set; }
+            public double? ScorePerEvent { get; set; }
+        }
+
+
         [HttpGet]
         [Route("api/get/fdm/top/cpt/month/{ymf}/{ymt}")]
         public async Task<DataResponse> GetTopCptByMonth(int ymf, int ymt)
         {
+            var result = new List<FDMQueryResult>();
+            int year_from = ymf / 100;
+            int month_from = ymf % 100;
+            int year_to = ymt / 100;
+            int month_to = ymt % 100;
 
-            //var d1 = new DateTime(year, month, 1);
-            //var dates = new List<int?>();
-            //dates.Add(Convert.ToInt32(d1.ToString("yyyyMM")));
-            //for (var i = 0; i <= 11; i++)
-            //{
-            //    d1 = d1.AddMonths(-1);
-            //    dates.Add(Convert.ToInt32(d1.ToString("yyyyMM")));
-            //}
+            var df = new DateTime(year_from, month_from, 1);
+            var dt = new DateTime(year_to, month_to, 1);
+            var months = dt.Subtract(df).Days / (365.25 / 12);
+            var d = new DateTime(year_to, month_to, 1);
+            var dates = new List<int?>();
+            dates.Add(Convert.ToInt32(d.ToString("yyyyMM")));
+            for (var i = 0; i <= 11; i++)
+            {
+                d = d.AddMonths(-1);
+                dates.Add(Convert.ToInt32(d.ToString("yyyyMM")));
+            }
             try
             {
-                var query = from x in context.FDMCptMonthlies
-                                //where x.Year == year && x.Month == month
-                            where x.YearMonth >= ymf && x.YearMonth <= ymt
-                            //where dates.Contains(x.YearMonth)
-                            group x by new { x.CptName, x.CptId, x.CptCode } into grp
-                            select new
-                            {
-                                grp.Key.CptCode,
-                                grp.Key.CptId,
-                                grp.Key.CptName,
-                                Month = grp.Sum(q => q.Month),
-                                HighCount = grp.Sum(q => q.HighCount),
-                                LowCount = grp.Sum(q => q.LowCount),
-                                MediumCount = grp.Sum(q => q.MediumCount),
-                                FlightCount = grp.Sum(q => q.FlightCount),
-                                Score = grp.Sum(q => q.Score),
-                                HighScore = grp.Sum(q => q.HighScore),
-                                LowScore = grp.Sum(q => q.LowScore),
-                                MediumScore = grp.Sum(q => q.MediumScore),
+                if (months >= 12)
+                {
+                    var query = from x in context.FDMCptMonthlies
+                                    //where x.Year == year && x.Month == month
+                                where x.YearMonth >= ymf && x.YearMonth <= ymt
+                                //where dates.Contains(x.YearMonth)
+                                group x by new { x.CptName, x.CptId, x.CptCode } into grp
+                                select new FDMQueryResult
+                                {
+                                    CptCode = grp.Key.CptCode,
+                                    CptId = grp.Key.CptId,
+                                    CptName = grp.Key.CptName,
+                                    Month = grp.Sum(q => q.Month),
+                                    HighCount = grp.Sum(q => q.HighCount),
+                                    LowCount = grp.Sum(q => q.LowCount),
+                                    MediumCount = grp.Sum(q => q.MediumCount),
+                                    FlightCount = grp.Sum(q => q.FlightCount),
+                                    Score = grp.Sum(q => q.Score),
+                                    HighScore = grp.Sum(q => q.HighScore),
+                                    LowScore = grp.Sum(q => q.LowScore),
+                                    MediumScore = grp.Sum(q => q.MediumScore),
 
-                                ScorePerFlight = (grp.Sum(q => q.HighCount) * 4 + grp.Sum(q => q.MediumCount) * 2 + grp.Sum(q => q.LowCount)) * 1.0 / grp.Sum(q => q.FlightCount) * 1.0,
-                                EventsCount = grp.Sum(q => q.HighCount) + grp.Sum(q => q.MediumCount) + grp.Sum(q => q.LowCount),
-                                EventPerFlight = grp.Sum(q => q.EventCount) * 1.0 / grp.Sum(q => q.FlightCount) * 1.0,
+                                    ScorePerFlight = (grp.Sum(q => q.HighCount) * 4 + grp.Sum(q => q.MediumCount) * 2 + grp.Sum(q => q.LowCount)) * 1.0 / grp.Sum(q => q.FlightCount) * 1.0,
+                                    EventsCount = grp.Sum(q => q.HighCount) + grp.Sum(q => q.MediumCount) + grp.Sum(q => q.LowCount),
+                                    EventPerFlight = grp.Sum(q => q.EventCount) * 1.0 / grp.Sum(q => q.FlightCount) * 1.0,
 
-                                //EventPerFlight = grp.Sum(q => q.EventPerFlight),
-                                ScorePerEvent = grp.Sum(q => q.EventCount) == 0 ? 0 : grp.Sum(q => q.Score) * 1.0 / grp.Sum(q => q.EventCount) * 1.0,
+                                    ScorePerEvent = grp.Sum(q => q.EventCount) == 0 ? 0 : grp.Sum(q => q.Score) * 1.0 / grp.Sum(q => q.EventCount) * 1.0,
 
-                                //ScorePerFlight = grp.Sum(q => q.ScorePerFlight),
-                                //EventPerFlight = grp.Sum(q => q.EventPerFlight),
-                                //EventsCount = grp.Sum(q => q.EventCount),
-                                //ScorePerEvent = grp.Sum(q => q.ScorePerEvent),
+                                };
+                    result = query.OrderByDescending(q => q.ScorePerFlight).Take(10).ToList();
+                }
+                else
+                {
+                    var query = from x in context.FDMCptMonthlies
+                                    //where x.Year == year && x.Month == month
+                                    //where x.YearMonth >= ymf && x.YearMonth <= ymt
+                                where dates.Contains(x.YearMonth)
+                                group x by new { x.CptName, x.CptId, x.CptCode } into grp
+                                select new FDMQueryResult
+                                {
+                                    CptCode = grp.Key.CptCode,
+                                    CptId = grp.Key.CptId,
+                                    CptName = grp.Key.CptName,
+                                    Month = grp.Sum(q => q.Month),
+                                    HighCount = grp.Sum(q => q.HighCount),
+                                    LowCount = grp.Sum(q => q.LowCount),
+                                    MediumCount = grp.Sum(q => q.MediumCount),
+                                    FlightCount = grp.Sum(q => q.FlightCount),
+                                    Score = grp.Sum(q => q.Score),
+                                    HighScore = grp.Sum(q => q.HighScore),
+                                    LowScore = grp.Sum(q => q.LowScore),
+                                    MediumScore = grp.Sum(q => q.MediumScore),
 
-                            };
+                                    ScorePerFlight = (grp.Sum(q => q.HighCount) * 4 + grp.Sum(q => q.MediumCount) * 2 + grp.Sum(q => q.LowCount)) * 1.0 / grp.Sum(q => q.FlightCount) * 1.0,
+                                    EventsCount = grp.Sum(q => q.HighCount) + grp.Sum(q => q.MediumCount) + grp.Sum(q => q.LowCount),
+                                    EventPerFlight = grp.Sum(q => q.EventCount) * 1.0 / grp.Sum(q => q.FlightCount) * 1.0,
 
-                var result = query.OrderByDescending(q => q.ScorePerFlight).Take(10).ToList();
+                                    ScorePerEvent = grp.Sum(q => q.EventCount) == 0 ? 0 : grp.Sum(q => q.Score) * 1.0 / grp.Sum(q => q.EventCount) * 1.0,
+
+                                };
+                    result = query.OrderByDescending(q => q.ScorePerFlight).Take(10).ToList();
+                }
+
                 return new DataResponse()
                 {
                     IsSuccess = true,
