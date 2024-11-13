@@ -2608,7 +2608,6 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
           <EntitySet Name="FDMs" EntityType="dbModel.FDM" />
           <EntitySet Name="FDMAVGs" EntityType="dbModel.FDMAVG" />
           <EntitySet Name="ViewFDMs" EntityType="dbModel.ViewFDM" />
-          <EntitySet Name="FDMMonthlies" EntityType="dbModel.FDMMonthly" />
           <EntitySet Name="FDMCptMonthlyTBLs" EntityType="dbModel.FDMCptMonthlyTBL" />
           <EntitySet Name="FDMAirportMonthlies" EntityType="dbModel.FDMAirportMonthly" />
           <EntitySet Name="FDMRegMonthlies" EntityType="dbModel.FDMRegMonthly" />
@@ -2639,6 +2638,7 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
             <End Role="FDM" EntitySet="FDMs" />
             <End Role="FDMEventParameter" EntitySet="FDMEventParameters" />
           </AssociationSet>
+          <EntitySet Name="FDMMonthlies" EntityType="dbModel.FDMMonthly" />
           </EntityContainer>
         <EntityType Name="CrewSecretCode">
           <Key>
@@ -3162,28 +3162,6 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
           <Property Name="Responsible" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="Status" Type="String" Nullable="false" MaxLength="9" FixedLength="false" Unicode="false" />
           <Property Name="ValidityStatus" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="FDMMonthly">
-          <Key>
-            <PropertyRef Name="year" />
-            <PropertyRef Name="month" />
-            <PropertyRef Name="Year" />
-            <PropertyRef Name="Month" />
-          </Key>
-          <Property Name="year" Type="Int32" Nullable="false" />
-          <Property Name="month" Type="Int32" Nullable="false" />
-          <Property Name="YearMonth" Type="Int32" />
-          <Property Name="EventCount" Type="Int32" />
-          <Property Name="FlightCount" Type="Int32" />
-          <Property Name="HighCount" Type="Int32" />
-          <Property Name="MediumCount" Type="Int32" />
-          <Property Name="LowCount" Type="Int32" />
-          <Property Name="Score" Type="Int32" />
-          <Property Name="ScorePerFlight" Type="Int32" />
-          <Property Name="EventPerFlight" Type="Int32" />
-          <Property Name="ScorePerEvent" Type="Int32" />
-          <Property Name="Year" Type="Int32" Nullable="false" />
-          <Property Name="Month" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="FDMCptMonthlyTBL">
           <Key>
@@ -4209,6 +4187,24 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="FDMMonthly">
+          <Key>
+            <PropertyRef Name="Year" />
+            <PropertyRef Name="Month" />
+          </Key>
+          <Property Name="Year" Type="Int32" Nullable="false" />
+          <Property Name="Month" Type="Int32" Nullable="false" />
+          <Property Name="YearMonth" Type="Int32" />
+          <Property Name="EventCount" Type="Int32" />
+          <Property Name="FlightCount" Type="Int32" />
+          <Property Name="HighCount" Type="Int32" />
+          <Property Name="MediumCount" Type="Int32" />
+          <Property Name="LowCount" Type="Int32" />
+          <Property Name="Score" Type="Int32" />
+          <Property Name="ScorePerFlight" Type="Int32" />
+          <Property Name="EventPerFlight" Type="Int32" />
+          <Property Name="ScorePerEvent" Type="Int32" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4738,24 +4734,6 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
                 <ScalarProperty Name="FromAirport" ColumnName="FromAirport" />
                 <ScalarProperty Name="ToAirport" ColumnName="ToAirport" />
               </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="FDMMonthlies">
-            <EntityTypeMapping TypeName="dbModel.FDMMonthly">
-              <MappingFragment StoreEntitySet="FDMMonthly">
-                <ScalarProperty Name="Month" ColumnName="Month" />
-                <ScalarProperty Name="Year" ColumnName="Year" />
-                <ScalarProperty Name="ScorePerEvent" ColumnName="ScorePerEvent" />
-                <ScalarProperty Name="EventPerFlight" ColumnName="EventPerFlight" />
-                <ScalarProperty Name="ScorePerFlight" ColumnName="ScorePerFlight" />
-                <ScalarProperty Name="Score" ColumnName="Score" />
-                <ScalarProperty Name="LowCount" ColumnName="LowCount" />
-                <ScalarProperty Name="MediumCount" ColumnName="MediumCount" />
-                <ScalarProperty Name="HighCount" ColumnName="HighCount" />
-                <ScalarProperty Name="FlightCount" ColumnName="FlightCount" />
-                <ScalarProperty Name="EventCount" ColumnName="EventCount" />
-                <ScalarProperty Name="YearMonth" ColumnName="YearMonth" />
-                </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="FDMCptMonthlyTBLs">
@@ -5663,6 +5641,24 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
                 <ScalarProperty Name="param_title" ColumnName="param_title" />
                 <ScalarProperty Name="event_id" ColumnName="event_id" />
                 <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FDMMonthlies">
+            <EntityTypeMapping TypeName="dbModel.FDMMonthly">
+              <MappingFragment StoreEntitySet="FDMMonthly">
+                <ScalarProperty Name="ScorePerEvent" ColumnName="ScorePerEvent" />
+                <ScalarProperty Name="EventPerFlight" ColumnName="EventPerFlight" />
+                <ScalarProperty Name="ScorePerFlight" ColumnName="ScorePerFlight" />
+                <ScalarProperty Name="Score" ColumnName="Score" />
+                <ScalarProperty Name="LowCount" ColumnName="LowCount" />
+                <ScalarProperty Name="MediumCount" ColumnName="MediumCount" />
+                <ScalarProperty Name="HighCount" ColumnName="HighCount" />
+                <ScalarProperty Name="FlightCount" ColumnName="FlightCount" />
+                <ScalarProperty Name="EventCount" ColumnName="EventCount" />
+                <ScalarProperty Name="YearMonth" ColumnName="YearMonth" />
+                <ScalarProperty Name="Month" ColumnName="Month" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

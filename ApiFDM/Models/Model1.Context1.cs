@@ -49,7 +49,6 @@ namespace ApiFDM.Models
         public virtual DbSet<FDM> FDMs { get; set; }
         public virtual DbSet<FDMAVG> FDMAVGs { get; set; }
         public virtual DbSet<ViewFDM> ViewFDMs { get; set; }
-        public virtual DbSet<FDMMonthly> FDMMonthlies { get; set; }
         public virtual DbSet<FDMCptMonthlyTBL> FDMCptMonthlyTBLs { get; set; }
         public virtual DbSet<FDMAirportMonthly> FDMAirportMonthlies { get; set; }
         public virtual DbSet<FDMRegMonthly> FDMRegMonthlies { get; set; }
@@ -64,6 +63,7 @@ namespace ApiFDM.Models
         public virtual DbSet<FDMPhaseDetailByEvent> FDMPhaseDetailByEvents { get; set; }
         public virtual DbSet<FDMPhaseDetailByFlight> FDMPhaseDetailByFlights { get; set; }
         public virtual DbSet<FDMEventParameter> FDMEventParameters { get; set; }
+        public virtual DbSet<FDMMonthly> FDMMonthlies { get; set; }
     
         public virtual int FillFDMCptMonthlyTBL(Nullable<int> yearFrom, Nullable<int> monthFrom, Nullable<int> yearTo, Nullable<int> monthTo)
         {
