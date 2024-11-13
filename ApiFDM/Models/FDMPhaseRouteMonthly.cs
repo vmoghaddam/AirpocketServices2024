@@ -12,9 +12,18 @@ namespace ApiFDM.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class FDMPhaseMonthly
+    public partial class FDMPhaseRouteMonthly
     {
         public string Phase { get; set; }
+        public string FromICAO { get; set; }
+        public string ToICAO { get; set; }
+        public string FromIATA { get; set; }
+        public string ToIATA { get; set; }
+        public string RouteICAO { get; set; }
+        public string RouteIATA { get; set; }
+        public string Register { get; set; }
+        public int RegisterID { get; set; }
+        public string AircraftType { get; set; }
         public int Month { get; set; }
         public int Year { get; set; }
         public Nullable<int> YearMonth { get; set; }
@@ -22,10 +31,10 @@ namespace ApiFDM.Models
         public int CrewId { get; set; }
         public string JobGroup { get; set; }
         public Nullable<int> EventCount { get; set; }
-        public Nullable<int> Score { get; set; }
         public Nullable<int> HighCount { get; set; }
         public Nullable<int> MediumCount { get; set; }
         public Nullable<int> LowCount { get; set; }
+        public Nullable<int> Score { get; set; }
         public Nullable<int> HighScore { get; set; }
         public Nullable<int> MediumScore { get; set; }
         public Nullable<int> LowScore { get; set; }

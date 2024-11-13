@@ -463,6 +463,7 @@ warning 6002: The table/view 'EPACSPN.dbo.AppLeg' does not have a primary key de
           <Key>
             <PropertyRef Name="ID" />
             <PropertyRef Name="FlightId" />
+            <PropertyRef Name="AircraftType2" />
             <PropertyRef Name="FlightStatus" />
             <PropertyRef Name="BaggageWeight" />
             <PropertyRef Name="CargoWeight" />
@@ -493,6 +494,7 @@ warning 6002: The table/view 'EPACSPN.dbo.AppLeg' does not have a primary key de
           <Property Name="FlightTypeID" Type="int" />
           <Property Name="AircraftType" Type="nvarchar" MaxLength="255" />
           <Property Name="TypeId" Type="int" />
+          <Property Name="AircraftType2" Type="varchar" MaxLength="6" Nullable="false" />
           <Property Name="FlightNumber" Type="nvarchar" MaxLength="50" />
           <Property Name="FromAirport" Type="int" />
           <Property Name="ToAirport" Type="int" />
@@ -934,6 +936,11 @@ warning 6002: The table/view 'EPACSPN.dbo.FDMEventMonthly' does not have a prima
           <Property Name="HighCount" Type="int" />
           <Property Name="MediumCount" Type="int" />
           <Property Name="LowCount" Type="int" />
+          <Property Name="Score" Type="int" />
+          <Property Name="HighScore" Type="int" />
+          <Property Name="MediumScore" Type="int" />
+          <Property Name="LowScore" Type="int" />
+          <Property Name="FlightCount" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'EPACSPN.dbo.FDMFoEventMonthly' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -983,11 +990,11 @@ warning 6002: The table/view 'EPACSPN.dbo.FDMFoMonthly' does not have a primary 
 warning 6002: The table/view 'EPACSPN.dbo.FDMMonthly' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="FDMMonthly">
           <Key>
-            <PropertyRef Name="year" />
-            <PropertyRef Name="month" />
+            <PropertyRef Name="Year" />
+            <PropertyRef Name="Month" />
           </Key>
-          <Property Name="year" Type="int" Nullable="false" />
-          <Property Name="month" Type="int" Nullable="false" />
+          <Property Name="Year" Type="int" Nullable="false" />
+          <Property Name="Month" Type="int" Nullable="false" />
           <Property Name="YearMonth" Type="int" />
           <Property Name="EventCount" Type="int" />
           <Property Name="FlightCount" Type="int" />
@@ -998,6 +1005,163 @@ warning 6002: The table/view 'EPACSPN.dbo.FDMMonthly' does not have a primary ke
           <Property Name="ScorePerFlight" Type="int" />
           <Property Name="EventPerFlight" Type="int" />
           <Property Name="ScorePerEvent" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EPACSPN.dbo.FDMPhaseDetailByEvent' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="FDMPhaseDetailByEvent">
+          <Key>
+            <PropertyRef Name="Phase" />
+            <PropertyRef Name="FlightId" />
+            <PropertyRef Name="FromICAO" />
+            <PropertyRef Name="ToICAO" />
+            <PropertyRef Name="FromIATA" />
+            <PropertyRef Name="ToIATA" />
+            <PropertyRef Name="Register" />
+            <PropertyRef Name="RegisterID" />
+            <PropertyRef Name="AircraftType" />
+            <PropertyRef Name="Month" />
+            <PropertyRef Name="Year" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="CrewId" />
+            <PropertyRef Name="HighCount" />
+            <PropertyRef Name="MediumCount" />
+            <PropertyRef Name="LowCount" />
+            <PropertyRef Name="LowScore" />
+          </Key>
+          <Property Name="Phase" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="FlightId" Type="int" Nullable="false" />
+          <Property Name="FlightNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="FromICAO" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="ToICAO" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="FromIATA" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="ToIATA" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="RouteICAO" Type="nvarchar" MaxLength="511" />
+          <Property Name="RouteIATA" Type="nvarchar" MaxLength="511" />
+          <Property Name="Register" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="RegisterID" Type="int" Nullable="false" />
+          <Property Name="AircraftType" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="Month" Type="int" Nullable="false" />
+          <Property Name="Year" Type="int" Nullable="false" />
+          <Property Name="Date" Type="date" />
+          <Property Name="YearMonth" Type="int" />
+          <Property Name="Name" Type="nvarchar" MaxLength="1003" Nullable="false" />
+          <Property Name="CrewId" Type="int" Nullable="false" />
+          <Property Name="JobGroup" Type="nvarchar" MaxLength="500" />
+          <Property Name="EventCount" Type="int" />
+          <Property Name="HighCount" Type="int" Nullable="false" />
+          <Property Name="MediumCount" Type="int" Nullable="false" />
+          <Property Name="LowCount" Type="int" Nullable="false" />
+          <Property Name="Score" Type="int" />
+          <Property Name="HighScore" Type="int" />
+          <Property Name="MediumScore" Type="int" />
+          <Property Name="LowScore" Type="int" Nullable="false" />
+          <Property Name="Severity" Type="varchar" MaxLength="255" />
+          <Property Name="EventName" Type="varchar" MaxLength="255" />
+          <Property Name="Value" Type="nvarchar" MaxLength="53" />
+          <Property Name="Minor" Type="float" />
+          <Property Name="Major" Type="float" />
+          <Property Name="Critical" Type="float" />
+          <Property Name="TDDatetime" Type="datetime2" Precision="0" />
+          <Property Name="StateName" Type="varchar" MaxLength="255" />
+          <Property Name="Context" Type="nvarchar(max)" />
+          <Property Name="Type" Type="varchar" MaxLength="255" />
+          <Property Name="TODatetime" Type="datetime2" Precision="0" />
+          <Property Name="Units" Type="varchar" MaxLength="255" />
+          <Property Name="ValueName" Type="varchar" MaxLength="255" />
+          <Property Name="Limit" Type="varchar" MaxLength="53" />
+          <Property Name="Duration" Type="time" Precision="7" />
+          <Property Name="Remark" Type="varchar" MaxLength="500" />
+          <Property Name="Validity" Type="int" />
+          <Property Name="MainParameter" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EPACSPN.dbo.FDMPhaseDetailByFlight' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="FDMPhaseDetailByFlight">
+          <Key>
+            <PropertyRef Name="Phase" />
+            <PropertyRef Name="FlightId" />
+            <PropertyRef Name="FromICAO" />
+            <PropertyRef Name="ToICAO" />
+            <PropertyRef Name="FromIATA" />
+            <PropertyRef Name="ToIATA" />
+            <PropertyRef Name="Register" />
+            <PropertyRef Name="RegisterID" />
+            <PropertyRef Name="AircraftType" />
+            <PropertyRef Name="Month" />
+            <PropertyRef Name="Year" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="CrewId" />
+          </Key>
+          <Property Name="Phase" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="FlightId" Type="int" Nullable="false" />
+          <Property Name="FlightNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="FromICAO" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="ToICAO" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="FromIATA" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="ToIATA" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="RouteICAO" Type="nvarchar" MaxLength="511" />
+          <Property Name="RouteIATA" Type="nvarchar" MaxLength="511" />
+          <Property Name="Register" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="RegisterID" Type="int" Nullable="false" />
+          <Property Name="AircraftType" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="Month" Type="int" Nullable="false" />
+          <Property Name="Year" Type="int" Nullable="false" />
+          <Property Name="Date" Type="date" />
+          <Property Name="YearMonth" Type="int" />
+          <Property Name="Name" Type="nvarchar" MaxLength="1003" Nullable="false" />
+          <Property Name="CrewId" Type="int" Nullable="false" />
+          <Property Name="JobGroup" Type="nvarchar" MaxLength="500" />
+          <Property Name="EventCount" Type="int" />
+          <Property Name="HighCount" Type="int" />
+          <Property Name="MediumCount" Type="int" />
+          <Property Name="LowCount" Type="int" />
+          <Property Name="Score" Type="int" />
+          <Property Name="HighScore" Type="int" />
+          <Property Name="MediumScore" Type="int" />
+          <Property Name="LowScore" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EPACSPN.dbo.FDMPhaseDetailDaily' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="FDMPhaseDetailDaily">
+          <Key>
+            <PropertyRef Name="Phase" />
+            <PropertyRef Name="FromICAO" />
+            <PropertyRef Name="ToICAO" />
+            <PropertyRef Name="FromIATA" />
+            <PropertyRef Name="ToIATA" />
+            <PropertyRef Name="Register" />
+            <PropertyRef Name="RegisterID" />
+            <PropertyRef Name="AircraftType" />
+            <PropertyRef Name="Month" />
+            <PropertyRef Name="Year" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="CrewId" />
+          </Key>
+          <Property Name="Phase" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="FromICAO" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="ToICAO" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="FromIATA" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="ToIATA" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="RouteICAO" Type="nvarchar" MaxLength="511" />
+          <Property Name="RouteIATA" Type="nvarchar" MaxLength="511" />
+          <Property Name="Register" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="RegisterID" Type="int" Nullable="false" />
+          <Property Name="AircraftType" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="Month" Type="int" Nullable="false" />
+          <Property Name="Year" Type="int" Nullable="false" />
+          <Property Name="Date" Type="date" />
+          <Property Name="YearMonth" Type="int" />
+          <Property Name="Name" Type="nvarchar" MaxLength="1003" Nullable="false" />
+          <Property Name="CrewId" Type="int" Nullable="false" />
+          <Property Name="JobGroup" Type="nvarchar" MaxLength="500" />
+          <Property Name="EventCount" Type="int" />
+          <Property Name="HighCount" Type="int" />
+          <Property Name="MediumCount" Type="int" />
+          <Property Name="LowCount" Type="int" />
+          <Property Name="Score" Type="int" />
+          <Property Name="HighScore" Type="int" />
+          <Property Name="MediumScore" Type="int" />
+          <Property Name="LowScore" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'EPACSPN.dbo.FDMPhaseMonthly' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1017,7 +1181,55 @@ warning 6002: The table/view 'EPACSPN.dbo.FDMPhaseMonthly' does not have a prima
           <Property Name="CrewId" Type="int" Nullable="false" />
           <Property Name="JobGroup" Type="nvarchar" MaxLength="500" />
           <Property Name="EventCount" Type="int" />
+          <Property Name="HighCount" Type="int" />
+          <Property Name="MediumCount" Type="int" />
+          <Property Name="LowCount" Type="int" />
           <Property Name="Score" Type="int" />
+          <Property Name="HighScore" Type="int" />
+          <Property Name="MediumScore" Type="int" />
+          <Property Name="LowScore" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EPACSPN.dbo.FDMPhaseRouteMonthly' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="FDMPhaseRouteMonthly">
+          <Key>
+            <PropertyRef Name="Phase" />
+            <PropertyRef Name="FromICAO" />
+            <PropertyRef Name="ToICAO" />
+            <PropertyRef Name="FromIATA" />
+            <PropertyRef Name="ToIATA" />
+            <PropertyRef Name="Register" />
+            <PropertyRef Name="RegisterID" />
+            <PropertyRef Name="AircraftType" />
+            <PropertyRef Name="Month" />
+            <PropertyRef Name="Year" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="CrewId" />
+          </Key>
+          <Property Name="Phase" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="FromICAO" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="ToICAO" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="FromIATA" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="ToIATA" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="RouteICAO" Type="nvarchar" MaxLength="511" />
+          <Property Name="RouteIATA" Type="nvarchar" MaxLength="511" />
+          <Property Name="Register" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="RegisterID" Type="int" Nullable="false" />
+          <Property Name="AircraftType" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="Month" Type="int" Nullable="false" />
+          <Property Name="Year" Type="int" Nullable="false" />
+          <Property Name="YearMonth" Type="int" />
+          <Property Name="Name" Type="nvarchar" MaxLength="1003" Nullable="false" />
+          <Property Name="CrewId" Type="int" Nullable="false" />
+          <Property Name="JobGroup" Type="nvarchar" MaxLength="500" />
+          <Property Name="EventCount" Type="int" />
+          <Property Name="HighCount" Type="int" />
+          <Property Name="MediumCount" Type="int" />
+          <Property Name="LowCount" Type="int" />
+          <Property Name="Score" Type="int" />
+          <Property Name="HighScore" Type="int" />
+          <Property Name="MediumScore" Type="int" />
+          <Property Name="LowScore" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'EPACSPN.dbo.FDMRegCptDaily ' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1159,11 +1371,11 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewFDM' does not have a primary key d
           <Property Name="Register" Type="nvarchar" MaxLength="50" />
           <Property Name="RegisterID" Type="int" />
           <Property Name="P1Id" Type="int" />
-          <Property Name="P1Code" Type="varchar" MaxLength="100" />
+          <Property Name="P1Code" Type="nvarchar" MaxLength="1001" />
           <Property Name="P2Id" Type="int" />
-          <Property Name="P2Code" Type="varchar" MaxLength="100" />
+          <Property Name="P2Code" Type="nvarchar" MaxLength="1001" />
           <Property Name="IPId" Type="int" />
-          <Property Name="IPCode" Type="varchar" MaxLength="100" />
+          <Property Name="IPCode" Type="nvarchar" MaxLength="1001" />
           <Property Name="IPName" Type="nvarchar" MaxLength="1001" />
           <Property Name="P1Name" Type="nvarchar" MaxLength="1001" />
           <Property Name="P2Name" Type="nvarchar" MaxLength="1001" />
@@ -1417,6 +1629,7 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
     [AppLeg].[FlightTypeID] AS [FlightTypeID], 
     [AppLeg].[AircraftType] AS [AircraftType], 
     [AppLeg].[TypeId] AS [TypeId], 
+    [AppLeg].[AircraftType2] AS [AircraftType2], 
     [AppLeg].[FlightNumber] AS [FlightNumber], 
     [AppLeg].[FromAirport] AS [FromAirport], 
     [AppLeg].[ToAirport] AS [ToAirport], 
@@ -1809,7 +2022,12 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
     [FDMEventMonthly].[EventCount] AS [EventCount], 
     [FDMEventMonthly].[HighCount] AS [HighCount], 
     [FDMEventMonthly].[MediumCount] AS [MediumCount], 
-    [FDMEventMonthly].[LowCount] AS [LowCount]
+    [FDMEventMonthly].[LowCount] AS [LowCount], 
+    [FDMEventMonthly].[Score] AS [Score], 
+    [FDMEventMonthly].[HighScore] AS [HighScore], 
+    [FDMEventMonthly].[MediumScore] AS [MediumScore], 
+    [FDMEventMonthly].[LowScore] AS [LowScore], 
+    [FDMEventMonthly].[FlightCount] AS [FlightCount]
     FROM [dbo].[FDMEventMonthly] AS [FDMEventMonthly]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="FDMFoEventMonthly" EntityType="Self.FDMFoEventMonthly" store:Type="Views" store:Schema="dbo">
@@ -1852,8 +2070,8 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
           </EntitySet>
           <EntitySet Name="FDMMonthly" EntityType="Self.FDMMonthly" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
-    [FDMMonthly].[year] AS [year], 
-    [FDMMonthly].[month] AS [month], 
+    [FDMMonthly].[Year] AS [Year], 
+    [FDMMonthly].[Month] AS [Month], 
     [FDMMonthly].[YearMonth] AS [YearMonth], 
     [FDMMonthly].[EventCount] AS [EventCount], 
     [FDMMonthly].[FlightCount] AS [FlightCount], 
@@ -1866,6 +2084,115 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
     [FDMMonthly].[ScorePerEvent] AS [ScorePerEvent]
     FROM [dbo].[FDMMonthly] AS [FDMMonthly]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="FDMPhaseDetailByEvent" EntityType="Self.FDMPhaseDetailByEvent" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [FDMPhaseDetailByEvent].[Phase] AS [Phase], 
+    [FDMPhaseDetailByEvent].[FlightId] AS [FlightId], 
+    [FDMPhaseDetailByEvent].[FlightNumber] AS [FlightNumber], 
+    [FDMPhaseDetailByEvent].[FromICAO] AS [FromICAO], 
+    [FDMPhaseDetailByEvent].[ToICAO] AS [ToICAO], 
+    [FDMPhaseDetailByEvent].[FromIATA] AS [FromIATA], 
+    [FDMPhaseDetailByEvent].[ToIATA] AS [ToIATA], 
+    [FDMPhaseDetailByEvent].[RouteICAO] AS [RouteICAO], 
+    [FDMPhaseDetailByEvent].[RouteIATA] AS [RouteIATA], 
+    [FDMPhaseDetailByEvent].[Register] AS [Register], 
+    [FDMPhaseDetailByEvent].[RegisterID] AS [RegisterID], 
+    [FDMPhaseDetailByEvent].[AircraftType] AS [AircraftType], 
+    [FDMPhaseDetailByEvent].[Month] AS [Month], 
+    [FDMPhaseDetailByEvent].[Year] AS [Year], 
+    [FDMPhaseDetailByEvent].[Date] AS [Date], 
+    [FDMPhaseDetailByEvent].[YearMonth] AS [YearMonth], 
+    [FDMPhaseDetailByEvent].[Name] AS [Name], 
+    [FDMPhaseDetailByEvent].[CrewId] AS [CrewId], 
+    [FDMPhaseDetailByEvent].[JobGroup] AS [JobGroup], 
+    [FDMPhaseDetailByEvent].[EventCount] AS [EventCount], 
+    [FDMPhaseDetailByEvent].[HighCount] AS [HighCount], 
+    [FDMPhaseDetailByEvent].[MediumCount] AS [MediumCount], 
+    [FDMPhaseDetailByEvent].[LowCount] AS [LowCount], 
+    [FDMPhaseDetailByEvent].[Score] AS [Score], 
+    [FDMPhaseDetailByEvent].[HighScore] AS [HighScore], 
+    [FDMPhaseDetailByEvent].[MediumScore] AS [MediumScore], 
+    [FDMPhaseDetailByEvent].[LowScore] AS [LowScore], 
+    [FDMPhaseDetailByEvent].[Severity] AS [Severity], 
+    [FDMPhaseDetailByEvent].[EventName] AS [EventName], 
+    [FDMPhaseDetailByEvent].[Value] AS [Value], 
+    [FDMPhaseDetailByEvent].[Minor] AS [Minor], 
+    [FDMPhaseDetailByEvent].[Major] AS [Major], 
+    [FDMPhaseDetailByEvent].[Critical] AS [Critical], 
+    [FDMPhaseDetailByEvent].[TDDatetime] AS [TDDatetime], 
+    [FDMPhaseDetailByEvent].[StateName] AS [StateName], 
+    [FDMPhaseDetailByEvent].[Context] AS [Context], 
+    [FDMPhaseDetailByEvent].[Type] AS [Type], 
+    [FDMPhaseDetailByEvent].[TODatetime] AS [TODatetime], 
+    [FDMPhaseDetailByEvent].[Units] AS [Units], 
+    [FDMPhaseDetailByEvent].[ValueName] AS [ValueName], 
+    [FDMPhaseDetailByEvent].[Limit] AS [Limit], 
+    [FDMPhaseDetailByEvent].[Duration] AS [Duration], 
+    [FDMPhaseDetailByEvent].[Remark] AS [Remark], 
+    [FDMPhaseDetailByEvent].[Validity] AS [Validity], 
+    [FDMPhaseDetailByEvent].[MainParameter] AS [MainParameter]
+    FROM [dbo].[FDMPhaseDetailByEvent] AS [FDMPhaseDetailByEvent]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="FDMPhaseDetailByFlight" EntityType="Self.FDMPhaseDetailByFlight" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [FDMPhaseDetailByFlight].[Phase] AS [Phase], 
+    [FDMPhaseDetailByFlight].[FlightId] AS [FlightId], 
+    [FDMPhaseDetailByFlight].[FlightNumber] AS [FlightNumber], 
+    [FDMPhaseDetailByFlight].[FromICAO] AS [FromICAO], 
+    [FDMPhaseDetailByFlight].[ToICAO] AS [ToICAO], 
+    [FDMPhaseDetailByFlight].[FromIATA] AS [FromIATA], 
+    [FDMPhaseDetailByFlight].[ToIATA] AS [ToIATA], 
+    [FDMPhaseDetailByFlight].[RouteICAO] AS [RouteICAO], 
+    [FDMPhaseDetailByFlight].[RouteIATA] AS [RouteIATA], 
+    [FDMPhaseDetailByFlight].[Register] AS [Register], 
+    [FDMPhaseDetailByFlight].[RegisterID] AS [RegisterID], 
+    [FDMPhaseDetailByFlight].[AircraftType] AS [AircraftType], 
+    [FDMPhaseDetailByFlight].[Month] AS [Month], 
+    [FDMPhaseDetailByFlight].[Year] AS [Year], 
+    [FDMPhaseDetailByFlight].[Date] AS [Date], 
+    [FDMPhaseDetailByFlight].[YearMonth] AS [YearMonth], 
+    [FDMPhaseDetailByFlight].[Name] AS [Name], 
+    [FDMPhaseDetailByFlight].[CrewId] AS [CrewId], 
+    [FDMPhaseDetailByFlight].[JobGroup] AS [JobGroup], 
+    [FDMPhaseDetailByFlight].[EventCount] AS [EventCount], 
+    [FDMPhaseDetailByFlight].[HighCount] AS [HighCount], 
+    [FDMPhaseDetailByFlight].[MediumCount] AS [MediumCount], 
+    [FDMPhaseDetailByFlight].[LowCount] AS [LowCount], 
+    [FDMPhaseDetailByFlight].[Score] AS [Score], 
+    [FDMPhaseDetailByFlight].[HighScore] AS [HighScore], 
+    [FDMPhaseDetailByFlight].[MediumScore] AS [MediumScore], 
+    [FDMPhaseDetailByFlight].[LowScore] AS [LowScore]
+    FROM [dbo].[FDMPhaseDetailByFlight] AS [FDMPhaseDetailByFlight]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="FDMPhaseDetailDaily" EntityType="Self.FDMPhaseDetailDaily" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [FDMPhaseDetailDaily].[Phase] AS [Phase], 
+    [FDMPhaseDetailDaily].[FromICAO] AS [FromICAO], 
+    [FDMPhaseDetailDaily].[ToICAO] AS [ToICAO], 
+    [FDMPhaseDetailDaily].[FromIATA] AS [FromIATA], 
+    [FDMPhaseDetailDaily].[ToIATA] AS [ToIATA], 
+    [FDMPhaseDetailDaily].[RouteICAO] AS [RouteICAO], 
+    [FDMPhaseDetailDaily].[RouteIATA] AS [RouteIATA], 
+    [FDMPhaseDetailDaily].[Register] AS [Register], 
+    [FDMPhaseDetailDaily].[RegisterID] AS [RegisterID], 
+    [FDMPhaseDetailDaily].[AircraftType] AS [AircraftType], 
+    [FDMPhaseDetailDaily].[Month] AS [Month], 
+    [FDMPhaseDetailDaily].[Year] AS [Year], 
+    [FDMPhaseDetailDaily].[Date] AS [Date], 
+    [FDMPhaseDetailDaily].[YearMonth] AS [YearMonth], 
+    [FDMPhaseDetailDaily].[Name] AS [Name], 
+    [FDMPhaseDetailDaily].[CrewId] AS [CrewId], 
+    [FDMPhaseDetailDaily].[JobGroup] AS [JobGroup], 
+    [FDMPhaseDetailDaily].[EventCount] AS [EventCount], 
+    [FDMPhaseDetailDaily].[HighCount] AS [HighCount], 
+    [FDMPhaseDetailDaily].[MediumCount] AS [MediumCount], 
+    [FDMPhaseDetailDaily].[LowCount] AS [LowCount], 
+    [FDMPhaseDetailDaily].[Score] AS [Score], 
+    [FDMPhaseDetailDaily].[HighScore] AS [HighScore], 
+    [FDMPhaseDetailDaily].[MediumScore] AS [MediumScore], 
+    [FDMPhaseDetailDaily].[LowScore] AS [LowScore]
+    FROM [dbo].[FDMPhaseDetailDaily] AS [FDMPhaseDetailDaily]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="FDMPhaseMonthly" EntityType="Self.FDMPhaseMonthly" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [FDMPhaseMonthly].[Phase] AS [Phase], 
@@ -1876,8 +2203,42 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
     [FDMPhaseMonthly].[CrewId] AS [CrewId], 
     [FDMPhaseMonthly].[JobGroup] AS [JobGroup], 
     [FDMPhaseMonthly].[EventCount] AS [EventCount], 
-    [FDMPhaseMonthly].[Score] AS [Score]
+    [FDMPhaseMonthly].[HighCount] AS [HighCount], 
+    [FDMPhaseMonthly].[MediumCount] AS [MediumCount], 
+    [FDMPhaseMonthly].[LowCount] AS [LowCount], 
+    [FDMPhaseMonthly].[Score] AS [Score], 
+    [FDMPhaseMonthly].[HighScore] AS [HighScore], 
+    [FDMPhaseMonthly].[MediumScore] AS [MediumScore], 
+    [FDMPhaseMonthly].[LowScore] AS [LowScore]
     FROM [dbo].[FDMPhaseMonthly] AS [FDMPhaseMonthly]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="FDMPhaseRouteMonthly" EntityType="Self.FDMPhaseRouteMonthly" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [FDMPhaseRouteMonthly].[Phase] AS [Phase], 
+    [FDMPhaseRouteMonthly].[FromICAO] AS [FromICAO], 
+    [FDMPhaseRouteMonthly].[ToICAO] AS [ToICAO], 
+    [FDMPhaseRouteMonthly].[FromIATA] AS [FromIATA], 
+    [FDMPhaseRouteMonthly].[ToIATA] AS [ToIATA], 
+    [FDMPhaseRouteMonthly].[RouteICAO] AS [RouteICAO], 
+    [FDMPhaseRouteMonthly].[RouteIATA] AS [RouteIATA], 
+    [FDMPhaseRouteMonthly].[Register] AS [Register], 
+    [FDMPhaseRouteMonthly].[RegisterID] AS [RegisterID], 
+    [FDMPhaseRouteMonthly].[AircraftType] AS [AircraftType], 
+    [FDMPhaseRouteMonthly].[Month] AS [Month], 
+    [FDMPhaseRouteMonthly].[Year] AS [Year], 
+    [FDMPhaseRouteMonthly].[YearMonth] AS [YearMonth], 
+    [FDMPhaseRouteMonthly].[Name] AS [Name], 
+    [FDMPhaseRouteMonthly].[CrewId] AS [CrewId], 
+    [FDMPhaseRouteMonthly].[JobGroup] AS [JobGroup], 
+    [FDMPhaseRouteMonthly].[EventCount] AS [EventCount], 
+    [FDMPhaseRouteMonthly].[HighCount] AS [HighCount], 
+    [FDMPhaseRouteMonthly].[MediumCount] AS [MediumCount], 
+    [FDMPhaseRouteMonthly].[LowCount] AS [LowCount], 
+    [FDMPhaseRouteMonthly].[Score] AS [Score], 
+    [FDMPhaseRouteMonthly].[HighScore] AS [HighScore], 
+    [FDMPhaseRouteMonthly].[MediumScore] AS [MediumScore], 
+    [FDMPhaseRouteMonthly].[LowScore] AS [LowScore]
+    FROM [dbo].[FDMPhaseRouteMonthly] AS [FDMPhaseRouteMonthly]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="FDMRegCptDaily " EntityType="Self.FDMRegCptDaily " store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -2241,6 +2602,10 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
             <End Role="Airport" EntitySet="Airports" />
             <End Role="FlightInformation" EntitySet="FlightInformations" />
           </AssociationSet>
+          <EntitySet Name="FDMPhaseDetailByFlights" EntityType="dbModel.FDMPhaseDetailByFlight" />
+          <EntitySet Name="FDMPhaseDetailDailies" EntityType="dbModel.FDMPhaseDetailDaily" />
+          <EntitySet Name="FDMPhaseRouteMonthlies" EntityType="dbModel.FDMPhaseRouteMonthly" />
+          <EntitySet Name="FDMPhaseDetailByEvents" EntityType="dbModel.FDMPhaseDetailByEvent" />
           </EntityContainer>
         <EntityType Name="CrewSecretCode">
           <Key>
@@ -2526,6 +2891,12 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
           <Property Name="JobGroup" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="EventCount" Type="Int32" />
           <Property Name="Score" Type="Int32" />
+          <Property Name="HighCount" Type="Int32" />
+          <Property Name="MediumCount" Type="Int32" />
+          <Property Name="LowCount" Type="Int32" />
+          <Property Name="HighScore" Type="Int32" />
+          <Property Name="MediumScore" Type="Int32" />
+          <Property Name="LowScore" Type="Int32" />
         </EntityType>
         <EntityType Name="FDMRegCptDaily_">
           <Key>
@@ -2704,11 +3075,11 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
           <Property Name="Register" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="RegisterID" Type="Int32" />
           <Property Name="P1Id" Type="Int32" />
-          <Property Name="P1Code" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="P1Code" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
           <Property Name="P2Id" Type="Int32" />
-          <Property Name="P2Code" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="P2Code" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
           <Property Name="IPId" Type="Int32" />
-          <Property Name="IPCode" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="IPCode" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
           <Property Name="IPName" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
           <Property Name="P1Name" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
           <Property Name="P2Name" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
@@ -2762,6 +3133,8 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
           <Key>
             <PropertyRef Name="year" />
             <PropertyRef Name="month" />
+            <PropertyRef Name="Year" />
+            <PropertyRef Name="Month" />
           </Key>
           <Property Name="year" Type="Int32" Nullable="false" />
           <Property Name="month" Type="Int32" Nullable="false" />
@@ -2775,6 +3148,8 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
           <Property Name="ScorePerFlight" Type="Int32" />
           <Property Name="EventPerFlight" Type="Int32" />
           <Property Name="ScorePerEvent" Type="Int32" />
+          <Property Name="Year" Type="Int32" Nullable="false" />
+          <Property Name="Month" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="FDMCptMonthlyTBL">
           <Key>
@@ -2856,6 +3231,11 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
           <Property Name="HighCount" Type="Int32" />
           <Property Name="MediumCount" Type="Int32" />
           <Property Name="LowCount" Type="Int32" />
+          <Property Name="Score" Type="Int32" />
+          <Property Name="HighScore" Type="Int32" />
+          <Property Name="MediumScore" Type="Int32" />
+          <Property Name="LowScore" Type="Int32" />
+          <Property Name="FlightCount" Type="Int32" />
         </EntityType>
         <EntityType Name="ViewLegTime">
           <Key>
@@ -3007,6 +3387,7 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
             <PropertyRef Name="FlightTypeOPS" />
             <PropertyRef Name="AttForms" />
             <PropertyRef Name="RouteCountry" />
+            <PropertyRef Name="AircraftType2" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="FlightId" Type="Int32" Nullable="false" />
@@ -3180,6 +3561,7 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
           <Property Name="RouteCountry" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
           <Property Name="PaxMale" Type="Int32" />
           <Property Name="PaxFemale" Type="Int32" />
+          <Property Name="AircraftType2" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Ac_MSN">
           <Key>
@@ -3578,6 +3960,197 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="FDMPhaseDetailByFlight">
+          <Key>
+            <PropertyRef Name="Phase" />
+            <PropertyRef Name="FlightId" />
+            <PropertyRef Name="FromICAO" />
+            <PropertyRef Name="ToICAO" />
+            <PropertyRef Name="FromIATA" />
+            <PropertyRef Name="ToIATA" />
+            <PropertyRef Name="Register" />
+            <PropertyRef Name="RegisterID" />
+            <PropertyRef Name="AircraftType" />
+            <PropertyRef Name="Month" />
+            <PropertyRef Name="Year" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="CrewId" />
+          </Key>
+          <Property Name="Phase" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="FlightId" Type="Int32" Nullable="false" />
+          <Property Name="FlightNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FromICAO" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ToICAO" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FromIATA" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ToIATA" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="RouteICAO" Type="String" MaxLength="511" FixedLength="false" Unicode="true" />
+          <Property Name="RouteIATA" Type="String" MaxLength="511" FixedLength="false" Unicode="true" />
+          <Property Name="Register" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RegisterID" Type="Int32" Nullable="false" />
+          <Property Name="AircraftType" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="Month" Type="Int32" Nullable="false" />
+          <Property Name="Year" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Precision="0" />
+          <Property Name="YearMonth" Type="Int32" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="1003" FixedLength="false" Unicode="true" />
+          <Property Name="CrewId" Type="Int32" Nullable="false" />
+          <Property Name="JobGroup" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="EventCount" Type="Int32" />
+          <Property Name="HighCount" Type="Int32" />
+          <Property Name="MediumCount" Type="Int32" />
+          <Property Name="LowCount" Type="Int32" />
+          <Property Name="Score" Type="Int32" />
+          <Property Name="HighScore" Type="Int32" />
+          <Property Name="MediumScore" Type="Int32" />
+          <Property Name="LowScore" Type="Int32" />
+        </EntityType>
+        <EntityType Name="FDMPhaseDetailDaily">
+          <Key>
+            <PropertyRef Name="Phase" />
+            <PropertyRef Name="FromICAO" />
+            <PropertyRef Name="ToICAO" />
+            <PropertyRef Name="FromIATA" />
+            <PropertyRef Name="ToIATA" />
+            <PropertyRef Name="Register" />
+            <PropertyRef Name="RegisterID" />
+            <PropertyRef Name="AircraftType" />
+            <PropertyRef Name="Month" />
+            <PropertyRef Name="Year" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="CrewId" />
+          </Key>
+          <Property Name="Phase" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="FromICAO" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ToICAO" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FromIATA" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ToIATA" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="RouteICAO" Type="String" MaxLength="511" FixedLength="false" Unicode="true" />
+          <Property Name="RouteIATA" Type="String" MaxLength="511" FixedLength="false" Unicode="true" />
+          <Property Name="Register" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RegisterID" Type="Int32" Nullable="false" />
+          <Property Name="AircraftType" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="Month" Type="Int32" Nullable="false" />
+          <Property Name="Year" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Precision="0" />
+          <Property Name="YearMonth" Type="Int32" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="1003" FixedLength="false" Unicode="true" />
+          <Property Name="CrewId" Type="Int32" Nullable="false" />
+          <Property Name="JobGroup" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="EventCount" Type="Int32" />
+          <Property Name="HighCount" Type="Int32" />
+          <Property Name="MediumCount" Type="Int32" />
+          <Property Name="LowCount" Type="Int32" />
+          <Property Name="Score" Type="Int32" />
+          <Property Name="HighScore" Type="Int32" />
+          <Property Name="MediumScore" Type="Int32" />
+          <Property Name="LowScore" Type="Int32" />
+        </EntityType>
+        <EntityType Name="FDMPhaseRouteMonthly">
+          <Key>
+            <PropertyRef Name="Phase" />
+            <PropertyRef Name="FromICAO" />
+            <PropertyRef Name="ToICAO" />
+            <PropertyRef Name="FromIATA" />
+            <PropertyRef Name="ToIATA" />
+            <PropertyRef Name="Register" />
+            <PropertyRef Name="RegisterID" />
+            <PropertyRef Name="AircraftType" />
+            <PropertyRef Name="Month" />
+            <PropertyRef Name="Year" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="CrewId" />
+          </Key>
+          <Property Name="Phase" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="FromICAO" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ToICAO" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FromIATA" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ToIATA" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="RouteICAO" Type="String" MaxLength="511" FixedLength="false" Unicode="true" />
+          <Property Name="RouteIATA" Type="String" MaxLength="511" FixedLength="false" Unicode="true" />
+          <Property Name="Register" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RegisterID" Type="Int32" Nullable="false" />
+          <Property Name="AircraftType" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="Month" Type="Int32" Nullable="false" />
+          <Property Name="Year" Type="Int32" Nullable="false" />
+          <Property Name="YearMonth" Type="Int32" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="1003" FixedLength="false" Unicode="true" />
+          <Property Name="CrewId" Type="Int32" Nullable="false" />
+          <Property Name="JobGroup" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="EventCount" Type="Int32" />
+          <Property Name="HighCount" Type="Int32" />
+          <Property Name="MediumCount" Type="Int32" />
+          <Property Name="LowCount" Type="Int32" />
+          <Property Name="Score" Type="Int32" />
+          <Property Name="HighScore" Type="Int32" />
+          <Property Name="MediumScore" Type="Int32" />
+          <Property Name="LowScore" Type="Int32" />
+        </EntityType>
+        <EntityType Name="FDMPhaseDetailByEvent">
+          <Key>
+            <PropertyRef Name="Phase" />
+            <PropertyRef Name="FlightId" />
+            <PropertyRef Name="FromICAO" />
+            <PropertyRef Name="ToICAO" />
+            <PropertyRef Name="FromIATA" />
+            <PropertyRef Name="ToIATA" />
+            <PropertyRef Name="Register" />
+            <PropertyRef Name="RegisterID" />
+            <PropertyRef Name="AircraftType" />
+            <PropertyRef Name="Month" />
+            <PropertyRef Name="Year" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="CrewId" />
+            <PropertyRef Name="HighCount" />
+            <PropertyRef Name="MediumCount" />
+            <PropertyRef Name="LowCount" />
+            <PropertyRef Name="LowScore" />
+          </Key>
+          <Property Name="Phase" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="FlightId" Type="Int32" Nullable="false" />
+          <Property Name="FlightNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FromICAO" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ToICAO" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FromIATA" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ToIATA" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="RouteICAO" Type="String" MaxLength="511" FixedLength="false" Unicode="true" />
+          <Property Name="RouteIATA" Type="String" MaxLength="511" FixedLength="false" Unicode="true" />
+          <Property Name="Register" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RegisterID" Type="Int32" Nullable="false" />
+          <Property Name="AircraftType" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="Month" Type="Int32" Nullable="false" />
+          <Property Name="Year" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Precision="0" />
+          <Property Name="YearMonth" Type="Int32" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="1003" FixedLength="false" Unicode="true" />
+          <Property Name="CrewId" Type="Int32" Nullable="false" />
+          <Property Name="JobGroup" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="EventCount" Type="Int32" />
+          <Property Name="HighCount" Type="Int32" Nullable="false" />
+          <Property Name="MediumCount" Type="Int32" Nullable="false" />
+          <Property Name="LowCount" Type="Int32" Nullable="false" />
+          <Property Name="Score" Type="Int32" />
+          <Property Name="HighScore" Type="Int32" />
+          <Property Name="MediumScore" Type="Int32" />
+          <Property Name="LowScore" Type="Int32" Nullable="false" />
+          <Property Name="Severity" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="EventName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Value" Type="String" MaxLength="53" FixedLength="false" Unicode="true" />
+          <Property Name="Minor" Type="Double" />
+          <Property Name="Major" Type="Double" />
+          <Property Name="Critical" Type="Double" />
+          <Property Name="TDDatetime" Type="DateTime" Precision="0" />
+          <Property Name="StateName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Context" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="TODatetime" Type="DateTime" Precision="0" />
+          <Property Name="Units" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ValueName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Limit" Type="String" MaxLength="53" FixedLength="false" Unicode="false" />
+          <Property Name="Duration" Type="Time" Precision="7" />
+          <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Validity" Type="Int32" />
+          <Property Name="MainParameter" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3859,6 +4432,12 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
           <EntitySetMapping Name="FDMPhaseMonthlies">
             <EntityTypeMapping TypeName="dbModel.FDMPhaseMonthly">
               <MappingFragment StoreEntitySet="FDMPhaseMonthly">
+                <ScalarProperty Name="LowScore" ColumnName="LowScore" />
+                <ScalarProperty Name="MediumScore" ColumnName="MediumScore" />
+                <ScalarProperty Name="HighScore" ColumnName="HighScore" />
+                <ScalarProperty Name="LowCount" ColumnName="LowCount" />
+                <ScalarProperty Name="MediumCount" ColumnName="MediumCount" />
+                <ScalarProperty Name="HighCount" ColumnName="HighCount" />
                 <ScalarProperty Name="Score" ColumnName="Score" />
                 <ScalarProperty Name="EventCount" ColumnName="EventCount" />
                 <ScalarProperty Name="JobGroup" ColumnName="JobGroup" />
@@ -4106,6 +4685,8 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
           <EntitySetMapping Name="FDMMonthlies">
             <EntityTypeMapping TypeName="dbModel.FDMMonthly">
               <MappingFragment StoreEntitySet="FDMMonthly">
+                <ScalarProperty Name="Month" ColumnName="Month" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
                 <ScalarProperty Name="ScorePerEvent" ColumnName="ScorePerEvent" />
                 <ScalarProperty Name="EventPerFlight" ColumnName="EventPerFlight" />
                 <ScalarProperty Name="ScorePerFlight" ColumnName="ScorePerFlight" />
@@ -4116,9 +4697,7 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
                 <ScalarProperty Name="FlightCount" ColumnName="FlightCount" />
                 <ScalarProperty Name="EventCount" ColumnName="EventCount" />
                 <ScalarProperty Name="YearMonth" ColumnName="YearMonth" />
-                <ScalarProperty Name="month" ColumnName="month" />
-                <ScalarProperty Name="year" ColumnName="year" />
-              </MappingFragment>
+                </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="FDMCptMonthlyTBLs">
@@ -4191,6 +4770,11 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
           <EntitySetMapping Name="FDMEventMonthlies">
             <EntityTypeMapping TypeName="dbModel.FDMEventMonthly">
               <MappingFragment StoreEntitySet="FDMEventMonthly">
+                <ScalarProperty Name="FlightCount" ColumnName="FlightCount" />
+                <ScalarProperty Name="LowScore" ColumnName="LowScore" />
+                <ScalarProperty Name="MediumScore" ColumnName="MediumScore" />
+                <ScalarProperty Name="HighScore" ColumnName="HighScore" />
+                <ScalarProperty Name="Score" ColumnName="Score" />
                 <ScalarProperty Name="LowCount" ColumnName="LowCount" />
                 <ScalarProperty Name="MediumCount" ColumnName="MediumCount" />
                 <ScalarProperty Name="HighCount" ColumnName="HighCount" />
@@ -4335,6 +4919,7 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
           <EntitySetMapping Name="AppLegs">
             <EntityTypeMapping TypeName="dbModel.AppLeg">
               <MappingFragment StoreEntitySet="AppLeg">
+                <ScalarProperty Name="AircraftType2" ColumnName="AircraftType2" />
                 <ScalarProperty Name="PaxFemale" ColumnName="PaxFemale" />
                 <ScalarProperty Name="PaxMale" ColumnName="PaxMale" />
                 <ScalarProperty Name="RouteCountry" ColumnName="RouteCountry" />
@@ -4865,6 +5450,151 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
                 <ScalarProperty Name="RegisterID" ColumnName="RegisterID" />
                 <ScalarProperty Name="TypeID" ColumnName="TypeID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FDMPhaseDetailByFlights">
+            <EntityTypeMapping TypeName="dbModel.FDMPhaseDetailByFlight">
+              <MappingFragment StoreEntitySet="FDMPhaseDetailByFlight">
+                <ScalarProperty Name="LowScore" ColumnName="LowScore" />
+                <ScalarProperty Name="MediumScore" ColumnName="MediumScore" />
+                <ScalarProperty Name="HighScore" ColumnName="HighScore" />
+                <ScalarProperty Name="Score" ColumnName="Score" />
+                <ScalarProperty Name="LowCount" ColumnName="LowCount" />
+                <ScalarProperty Name="MediumCount" ColumnName="MediumCount" />
+                <ScalarProperty Name="HighCount" ColumnName="HighCount" />
+                <ScalarProperty Name="EventCount" ColumnName="EventCount" />
+                <ScalarProperty Name="JobGroup" ColumnName="JobGroup" />
+                <ScalarProperty Name="CrewId" ColumnName="CrewId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="YearMonth" ColumnName="YearMonth" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="Month" ColumnName="Month" />
+                <ScalarProperty Name="AircraftType" ColumnName="AircraftType" />
+                <ScalarProperty Name="RegisterID" ColumnName="RegisterID" />
+                <ScalarProperty Name="Register" ColumnName="Register" />
+                <ScalarProperty Name="RouteIATA" ColumnName="RouteIATA" />
+                <ScalarProperty Name="RouteICAO" ColumnName="RouteICAO" />
+                <ScalarProperty Name="ToIATA" ColumnName="ToIATA" />
+                <ScalarProperty Name="FromIATA" ColumnName="FromIATA" />
+                <ScalarProperty Name="ToICAO" ColumnName="ToICAO" />
+                <ScalarProperty Name="FromICAO" ColumnName="FromICAO" />
+                <ScalarProperty Name="FlightNumber" ColumnName="FlightNumber" />
+                <ScalarProperty Name="FlightId" ColumnName="FlightId" />
+                <ScalarProperty Name="Phase" ColumnName="Phase" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FDMPhaseDetailDailies">
+            <EntityTypeMapping TypeName="dbModel.FDMPhaseDetailDaily">
+              <MappingFragment StoreEntitySet="FDMPhaseDetailDaily">
+                <ScalarProperty Name="LowScore" ColumnName="LowScore" />
+                <ScalarProperty Name="MediumScore" ColumnName="MediumScore" />
+                <ScalarProperty Name="HighScore" ColumnName="HighScore" />
+                <ScalarProperty Name="Score" ColumnName="Score" />
+                <ScalarProperty Name="LowCount" ColumnName="LowCount" />
+                <ScalarProperty Name="MediumCount" ColumnName="MediumCount" />
+                <ScalarProperty Name="HighCount" ColumnName="HighCount" />
+                <ScalarProperty Name="EventCount" ColumnName="EventCount" />
+                <ScalarProperty Name="JobGroup" ColumnName="JobGroup" />
+                <ScalarProperty Name="CrewId" ColumnName="CrewId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="YearMonth" ColumnName="YearMonth" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="Month" ColumnName="Month" />
+                <ScalarProperty Name="AircraftType" ColumnName="AircraftType" />
+                <ScalarProperty Name="RegisterID" ColumnName="RegisterID" />
+                <ScalarProperty Name="Register" ColumnName="Register" />
+                <ScalarProperty Name="RouteIATA" ColumnName="RouteIATA" />
+                <ScalarProperty Name="RouteICAO" ColumnName="RouteICAO" />
+                <ScalarProperty Name="ToIATA" ColumnName="ToIATA" />
+                <ScalarProperty Name="FromIATA" ColumnName="FromIATA" />
+                <ScalarProperty Name="ToICAO" ColumnName="ToICAO" />
+                <ScalarProperty Name="FromICAO" ColumnName="FromICAO" />
+                <ScalarProperty Name="Phase" ColumnName="Phase" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FDMPhaseRouteMonthlies">
+            <EntityTypeMapping TypeName="dbModel.FDMPhaseRouteMonthly">
+              <MappingFragment StoreEntitySet="FDMPhaseRouteMonthly">
+                <ScalarProperty Name="LowScore" ColumnName="LowScore" />
+                <ScalarProperty Name="MediumScore" ColumnName="MediumScore" />
+                <ScalarProperty Name="HighScore" ColumnName="HighScore" />
+                <ScalarProperty Name="Score" ColumnName="Score" />
+                <ScalarProperty Name="LowCount" ColumnName="LowCount" />
+                <ScalarProperty Name="MediumCount" ColumnName="MediumCount" />
+                <ScalarProperty Name="HighCount" ColumnName="HighCount" />
+                <ScalarProperty Name="EventCount" ColumnName="EventCount" />
+                <ScalarProperty Name="JobGroup" ColumnName="JobGroup" />
+                <ScalarProperty Name="CrewId" ColumnName="CrewId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="YearMonth" ColumnName="YearMonth" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="Month" ColumnName="Month" />
+                <ScalarProperty Name="AircraftType" ColumnName="AircraftType" />
+                <ScalarProperty Name="RegisterID" ColumnName="RegisterID" />
+                <ScalarProperty Name="Register" ColumnName="Register" />
+                <ScalarProperty Name="RouteIATA" ColumnName="RouteIATA" />
+                <ScalarProperty Name="RouteICAO" ColumnName="RouteICAO" />
+                <ScalarProperty Name="ToIATA" ColumnName="ToIATA" />
+                <ScalarProperty Name="FromIATA" ColumnName="FromIATA" />
+                <ScalarProperty Name="ToICAO" ColumnName="ToICAO" />
+                <ScalarProperty Name="FromICAO" ColumnName="FromICAO" />
+                <ScalarProperty Name="Phase" ColumnName="Phase" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FDMPhaseDetailByEvents">
+            <EntityTypeMapping TypeName="dbModel.FDMPhaseDetailByEvent">
+              <MappingFragment StoreEntitySet="FDMPhaseDetailByEvent">
+                <ScalarProperty Name="MainParameter" ColumnName="MainParameter" />
+                <ScalarProperty Name="Validity" ColumnName="Validity" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="Duration" ColumnName="Duration" />
+                <ScalarProperty Name="Limit" ColumnName="Limit" />
+                <ScalarProperty Name="ValueName" ColumnName="ValueName" />
+                <ScalarProperty Name="Units" ColumnName="Units" />
+                <ScalarProperty Name="TODatetime" ColumnName="TODatetime" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Context" ColumnName="Context" />
+                <ScalarProperty Name="StateName" ColumnName="StateName" />
+                <ScalarProperty Name="TDDatetime" ColumnName="TDDatetime" />
+                <ScalarProperty Name="Critical" ColumnName="Critical" />
+                <ScalarProperty Name="Major" ColumnName="Major" />
+                <ScalarProperty Name="Minor" ColumnName="Minor" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="EventName" ColumnName="EventName" />
+                <ScalarProperty Name="Severity" ColumnName="Severity" />
+                <ScalarProperty Name="LowScore" ColumnName="LowScore" />
+                <ScalarProperty Name="MediumScore" ColumnName="MediumScore" />
+                <ScalarProperty Name="HighScore" ColumnName="HighScore" />
+                <ScalarProperty Name="Score" ColumnName="Score" />
+                <ScalarProperty Name="LowCount" ColumnName="LowCount" />
+                <ScalarProperty Name="MediumCount" ColumnName="MediumCount" />
+                <ScalarProperty Name="HighCount" ColumnName="HighCount" />
+                <ScalarProperty Name="EventCount" ColumnName="EventCount" />
+                <ScalarProperty Name="JobGroup" ColumnName="JobGroup" />
+                <ScalarProperty Name="CrewId" ColumnName="CrewId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="YearMonth" ColumnName="YearMonth" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="Month" ColumnName="Month" />
+                <ScalarProperty Name="AircraftType" ColumnName="AircraftType" />
+                <ScalarProperty Name="RegisterID" ColumnName="RegisterID" />
+                <ScalarProperty Name="Register" ColumnName="Register" />
+                <ScalarProperty Name="RouteIATA" ColumnName="RouteIATA" />
+                <ScalarProperty Name="RouteICAO" ColumnName="RouteICAO" />
+                <ScalarProperty Name="ToIATA" ColumnName="ToIATA" />
+                <ScalarProperty Name="FromIATA" ColumnName="FromIATA" />
+                <ScalarProperty Name="ToICAO" ColumnName="ToICAO" />
+                <ScalarProperty Name="FromICAO" ColumnName="FromICAO" />
+                <ScalarProperty Name="FlightNumber" ColumnName="FlightNumber" />
+                <ScalarProperty Name="FlightId" ColumnName="FlightId" />
+                <ScalarProperty Name="Phase" ColumnName="Phase" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

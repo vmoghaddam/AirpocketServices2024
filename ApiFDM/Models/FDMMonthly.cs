@@ -26,5 +26,7 @@ namespace ApiFDM.Models
         public Nullable<int> ScorePerFlight { get; set; }
         public Nullable<int> EventPerFlight { get; set; }
         public Nullable<int> ScorePerEvent { get; set; }
+        public int Year { get; set; }
+        public int Month { get; set; }
     }
 }
