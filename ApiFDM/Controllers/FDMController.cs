@@ -755,8 +755,8 @@ namespace ApiFDM.Controllers
                 TotalFlightCount = ds.Sum(q => q.FlightCount),
                 TotalEventsCount = ds.Sum(q => q.EventsCount),
                 TotalScores = ds.Sum(q => q.Scores),
-                EventPerFlight = ds.Sum(q => q.FlightCount) != 0 ? ds.Sum(q => q.EventsCount) * 1.0 / ds.Sum(q => q.FlightCount) : 0,
-                ScorePerFlight = ds.Sum(q => q.FlightCount) == 0 ? 0 : ds.Sum(q => q.Scores) * 1.0 / ds.Sum(q => q.FlightCount) * 1.0,
+                EventPerFlight = ds.Sum(q => q.FlightCount) != 0 ? (ds.Sum(q => q.EventsCount) * 1.0 / ds.Sum(q => q.FlightCount)) * 100 : 0,
+                ScorePerFlight = ds.Sum(q => q.FlightCount) == 0 ? 0 :( ds.Sum(q => q.Scores) * 1.0 / ds.Sum(q => q.FlightCount) * 1.0) * 100,
                 TotalHighCount = ds.Sum(q => q.HighLevelCount),
                 TotalMediumCount = ds.Sum(q => q.MediumLevelCount),
                 TotalLowCount = ds.Sum(q => q.LowLevelCount),
@@ -777,6 +777,8 @@ namespace ApiFDM.Controllers
         public class FDMMonthlyDashboardResult
         {
             public string YearMonth { get; set; }
+            public int Month { get; set; }
+            public int Year { get; set; }
             public int? HighCount { get; set; }
             public int? MediumCount { get; set; }
             public int? LowCount { get; set; }
@@ -822,10 +824,12 @@ namespace ApiFDM.Controllers
                 {
                     var query = from x in context.FDMMonthlies
                                 where x.YearMonth >= ymf && x.YearMonth <= ymt
-                                group x by new { x.YearMonth } into grp
+                                group x by new { x.YearMonth, x.Year, x.Month } into grp
                                 select new FDMMonthlyDashboardResult
                                 {
                                     YearMonth = grp.Key.YearMonth.HasValue ? grp.Key.YearMonth.ToString() : string.Empty,
+                                    Month = grp.Key.Month,
+                                    Year = grp.Key.Year,
                                     HighCount = grp.Sum(q => q.HighCount),
                                     MediumCount = grp.Sum(q => q.MediumCount),
                                     LowCount = grp.Sum(q => q.LowCount),
@@ -846,10 +850,12 @@ namespace ApiFDM.Controllers
                 {
                     var query = from x in context.FDMMonthlies
                                 where dates.Contains(x.YearMonth)
-                                group x by new { x.YearMonth } into grp
+                                group x by new { x.YearMonth, x.Month, x.Year } into grp
                                 select new FDMMonthlyDashboardResult
                                 {
                                     YearMonth = grp.Key.YearMonth.HasValue ? grp.Key.YearMonth.ToString() : string.Empty,
+                                    Month = grp.Key.Month,
+                                    Year = grp.Key.Year,
                                     HighCount = grp.Sum(q => q.HighCount),
                                     MediumCount = grp.Sum(q => q.MediumCount),
                                     LowCount = grp.Sum(q => q.LowCount),
@@ -1007,6 +1013,9 @@ namespace ApiFDM.Controllers
                 return new DataResponse() { Data = ex.InnerException, IsSuccess = false };
             }
         }
+
+
+
 
         [HttpGet]
         [Route("api/fdm/route/{ymf}/{ymt}/{ACType}")]
@@ -3157,7 +3166,7 @@ namespace ApiFDM.Controllers
                          where x.YearMonth >= ymf && x.YearMonth <= ymt
                          select x).ToList();
             var result = (from x in query
-                          group x by new {x.Month, x.Year, x.YearMonth } into grp
+                          group x by new { x.Month, x.Year, x.YearMonth } into grp
                           select new
                           {
                               grp.Key.Month,

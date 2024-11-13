@@ -186,5 +186,6 @@ namespace ApiFDM.Models
         public string RouteCountry { get; set; }
         public Nullable<int> PaxMale { get; set; }
         public Nullable<int> PaxFemale { get; set; }
+        public string AircraftType2 { get; set; }
     }
 }
