@@ -277,6 +277,37 @@ namespace AirpocketTRN.Controllers
             return Ok(result);
         }
 
+        public class dto_exam_done
+        {
+            public int exam_id { get; set; }
+            public int person_id { get; set; }
+
+        }
+        [Route("api/trn/exam/sign/client")]
+        [AcceptVerbs("Post")]
+
+        public async Task<IHttpActionResult> sign_exam_client(dto_exam_done dto)
+        {
+            FLYEntities context = new FLYEntities();
+            context.Configuration.LazyLoadingEnabled = false;
+            var exam=await context.trn_person_exam.FirstOrDefaultAsync(q=>q.id==dto.exam_id && q.person_id==dto.person_id);
+            if (exam != null && exam.status_id!=2)
+            {
+                exam.status_id = 2;
+                exam.person_sign_date= DateTime.Now;
+            }
+
+
+            await context.SaveAsync();
+            var result = new DataResponse()
+            {
+                IsSuccess = true,
+                Data =dto.exam_id,
+
+            };
+            return Ok(result);
+        }
+
         [Route("api/exam/summary/{exam_id}")]
         [AcceptVerbs("GET")]
         public async Task<IHttpActionResult> GetCoursePeopleSessions(int exam_id)
