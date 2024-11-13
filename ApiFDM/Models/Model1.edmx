@@ -164,6 +164,15 @@
           <Property Name="MediumScore" Type="int" />
           <Property Name="LowScore" Type="int" />
         </EntityType>
+        <EntityType Name="FDMEventParameters">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="event_id" Type="int" />
+          <Property Name="param_title" Type="varchar" MaxLength="255" />
+          <Property Name="param_value" Type="varchar" MaxLength="255" />
+        </EntityType>
         <EntityType Name="FlightInformation">
           <Key>
             <PropertyRef Name="ID" />
@@ -1565,6 +1574,20 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
           <Property Name="ArrCountry" Type="varchar" MaxLength="1" Nullable="false" />
           <Property Name="OFPTOTALFUEL" Type="int" />
         </EntityType>
+        <Association Name="fdm_event_fk">
+          <End Role="FDM" Type="Self.FDM" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="FDMEventParameters" Type="Self.FDMEventParameters" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FDM">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FDMEventParameters">
+              <PropertyRef Name="event_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_FlightInformation_Ac_MSN">
           <End Role="Ac_MSN" Type="Self.Ac_MSN" Multiplicity="0..1" />
           <End Role="FlightInformation" Type="Self.FlightInformation" Multiplicity="*" />
@@ -1607,6 +1630,7 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
           <EntitySet Name="CrewSecretCode" EntityType="Self.CrewSecretCode" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FDM" EntityType="Self.FDM" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FDMCptMonthlyTBL" EntityType="Self.FDMCptMonthlyTBL" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FDMEventParameters" EntityType="Self.FDMEventParameters" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FlightInformation" EntityType="Self.FlightInformation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AppLeg" EntityType="Self.AppLeg" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -2534,6 +2558,10 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
     [ViewLegTime].[OFPTOTALFUEL] AS [OFPTOTALFUEL]
     FROM [dbo].[ViewLegTime] AS [ViewLegTime]</DefiningQuery>
           </EntitySet>
+          <AssociationSet Name="fdm_event_fk" Association="Self.fdm_event_fk">
+            <End Role="FDM" EntitySet="FDM" />
+            <End Role="FDMEventParameters" EntitySet="FDMEventParameters" />
+          </AssociationSet>
           <AssociationSet Name="FK_FlightInformation_Ac_MSN" Association="Self.FK_FlightInformation_Ac_MSN">
             <End Role="Ac_MSN" EntitySet="Ac_MSN" />
             <End Role="FlightInformation" EntitySet="FlightInformation" />
@@ -2606,6 +2634,11 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
           <EntitySet Name="FDMPhaseRouteMonthlies" EntityType="dbModel.FDMPhaseRouteMonthly" />
           <EntitySet Name="FDMPhaseDetailByEvents" EntityType="dbModel.FDMPhaseDetailByEvent" />
           <EntitySet Name="FDMPhaseDetailByFlights" EntityType="dbModel.FDMPhaseDetailByFlight" />
+          <EntitySet Name="FDMEventParameters" EntityType="dbModel.FDMEventParameter" />
+          <AssociationSet Name="fdm_event_fk" Association="dbModel.fdm_event_fk">
+            <End Role="FDM" EntitySet="FDMs" />
+            <End Role="FDMEventParameter" EntitySet="FDMEventParameters" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="CrewSecretCode">
           <Key>
@@ -3053,6 +3086,7 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
           <Property Name="PIC" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="FlightNo" Type="Int32" />
           <Property Name="MainParameter" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="FDMEventParameters" Relationship="dbModel.fdm_event_fk" FromRole="FDM" ToRole="FDMEventParameter" />
         </EntityType>
         <EntityType Name="FDMAVG">
           <Key>
@@ -4151,6 +4185,30 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
           <Property Name="MediumScore" Type="Int32" />
           <Property Name="LowScore" Type="Int32" />
         </EntityType>
+        <EntityType Name="FDMEventParameter">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="event_id" Type="Int32" />
+          <Property Name="param_title" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="param_value" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="FDM" Relationship="dbModel.fdm_event_fk" FromRole="FDMEventParameter" ToRole="FDM" />
+        </EntityType>
+        <Association Name="fdm_event_fk">
+          <End Type="dbModel.FDM" Role="FDM" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="dbModel.FDMEventParameter" Role="FDMEventParameter" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FDM">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FDMEventParameter">
+              <PropertyRef Name="event_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -5595,6 +5653,16 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
                 <ScalarProperty Name="FlightNumber" ColumnName="FlightNumber" />
                 <ScalarProperty Name="FlightId" ColumnName="FlightId" />
                 <ScalarProperty Name="Phase" ColumnName="Phase" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FDMEventParameters">
+            <EntityTypeMapping TypeName="dbModel.FDMEventParameter">
+              <MappingFragment StoreEntitySet="FDMEventParameters">
+                <ScalarProperty Name="param_value" ColumnName="param_value" />
+                <ScalarProperty Name="param_title" ColumnName="param_title" />
+                <ScalarProperty Name="event_id" ColumnName="event_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

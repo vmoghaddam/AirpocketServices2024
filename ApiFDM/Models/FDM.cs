@@ -14,6 +14,12 @@ namespace ApiFDM.Models
     
     public partial class FDM
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public FDM()
+        {
+            this.FDMEventParameters = new HashSet<FDMEventParameter>();
+        }
+    
         public int Id { get; set; }
         public string Severity { get; set; }
         public string EventName { get; set; }
@@ -71,5 +77,8 @@ namespace ApiFDM.Models
         public string PIC { get; set; }
         public Nullable<int> FlightNo { get; set; }
         public string MainParameter { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<FDMEventParameter> FDMEventParameters { get; set; }
     }
 }
