@@ -60,10 +60,12 @@ namespace ApiFDM.Models
         public virtual DbSet<FlightInformation> FlightInformations { get; set; }
         public virtual DbSet<FDMPhaseDetailDaily> FDMPhaseDetailDailies { get; set; }
         public virtual DbSet<FDMPhaseRouteMonthly> FDMPhaseRouteMonthlies { get; set; }
-        public virtual DbSet<FDMPhaseDetailByEvent> FDMPhaseDetailByEvents { get; set; }
         public virtual DbSet<FDMPhaseDetailByFlight> FDMPhaseDetailByFlights { get; set; }
         public virtual DbSet<FDMEventParameter> FDMEventParameters { get; set; }
         public virtual DbSet<FDMMonthly> FDMMonthlies { get; set; }
+        public virtual DbSet<FDMPhaseMonthlyNoCrew> FDMPhaseMonthlyNoCrews { get; set; }
+        public virtual DbSet<FDMPhaseDetailByEvent> FDMPhaseDetailByEvents { get; set; }
+        public virtual DbSet<FDMPhaseDetailCrewByEvent> FDMPhaseDetailCrewByEvents { get; set; }
     
         public virtual int FillFDMCptMonthlyTBL(Nullable<int> yearFrom, Nullable<int> monthFrom, Nullable<int> yearTo, Nullable<int> monthTo)
         {

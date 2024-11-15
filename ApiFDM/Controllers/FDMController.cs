@@ -3127,7 +3127,7 @@ namespace ApiFDM.Controllers
         {
 
 
-            var query = (from x in context.FDMPhaseMonthlies
+            var query = (from x in context.FDMPhaseMonthlyNoCrews
                          where x.YearMonth >= ymf && x.YearMonth <= ymt
                          select x).ToList();
             var result = (from x in query

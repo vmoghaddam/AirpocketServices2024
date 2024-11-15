@@ -12,7 +12,7 @@ namespace ApiFDM.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class FDMPhaseDetailByEvent
+    public partial class FDMPhaseDetailCrewByEvent
     {
         public int Id { get; set; }
         public string Phase { get; set; }
@@ -31,6 +31,9 @@ namespace ApiFDM.Models
         public int Year { get; set; }
         public Nullable<System.DateTime> Date { get; set; }
         public Nullable<int> YearMonth { get; set; }
+        public string Name { get; set; }
+        public int CrewId { get; set; }
+        public string JobGroup { get; set; }
         public Nullable<int> EventCount { get; set; }
         public int HighCount { get; set; }
         public int MediumCount { get; set; }
