@@ -1108,6 +1108,7 @@
           <Property Name="date_end_scheduled" Type="datetime2" Precision="7" />
           <Property Name="date_end_actual" Type="datetime2" Precision="7" />
           <Property Name="date_start_scheduled" Type="datetime2" Precision="7" />
+          <Property Name="is_negetive_point" Type="bit" />
         </EntityType>
         <EntityType Name="trn_exam_group">
           <Key>
@@ -2062,7 +2063,11 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_trn_exam_summary' does not hav
           <Property Name="total_questions" Type="int" />
           <Property Name="total_answered" Type="int" />
           <Property Name="total_remained" Type="int" />
-          <Property Name="score" Type="int" />
+          <Property Name="ignored" Type="int" />
+          <Property Name="correct_answer" Type="int" />
+          <Property Name="wrong_answer" Type="int" />
+          <Property Name="negative_point" Type="numeric" Precision="18" Scale="6" />
+          <Property Name="score" Type="decimal" Precision="8" Scale="2" />
           <Property Name="result" Type="varchar" MaxLength="6" />
           <Property Name="result_id" Type="int" />
           <Property Name="main_exam_id" Type="int" />
@@ -2097,7 +2102,11 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_trn_exam_summary_details' does
           <Property Name="total_questions" Type="int" />
           <Property Name="total_answered" Type="int" />
           <Property Name="total_remained" Type="int" />
-          <Property Name="score" Type="int" />
+          <Property Name="correct_answer" Type="int" />
+          <Property Name="wrong_answer" Type="int" />
+          <Property Name="ignored" Type="int" />
+          <Property Name="negative_point" Type="numeric" Precision="18" Scale="6" />
+          <Property Name="score" Type="decimal" Precision="8" Scale="2" />
           <Property Name="result" Type="varchar" MaxLength="6" Nullable="false" />
           <Property Name="result_id" Type="int" />
           <Property Name="main_exam_id" Type="int" />
@@ -2333,6 +2342,32 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_trn_profile' does not have a p
           <Property Name="WhatsApp" Type="nvarchar" MaxLength="500" />
           <Property Name="Telegram" Type="nvarchar" MaxLength="255" />
           <Property Name="LinkedIn" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.view_trn_student_answer' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_trn_student_answer">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="person_id" />
+            <PropertyRef Name="question_id" />
+            <PropertyRef Name="answer_id" />
+            <PropertyRef Name="person_exam_id" />
+            <PropertyRef Name="main_question_id" />
+            <PropertyRef Name="correct_answer_id" />
+            <PropertyRef Name="is_correct" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="person_id" Type="int" Nullable="false" />
+          <Property Name="question_id" Type="int" Nullable="false" />
+          <Property Name="answer_id" Type="int" Nullable="false" />
+          <Property Name="remark" Type="nvarchar" MaxLength="1000" />
+          <Property Name="date_sent" Type="datetime2" Precision="7" />
+          <Property Name="person_exam_id" Type="int" Nullable="false" />
+          <Property Name="main_question_id" Type="int" Nullable="false" />
+          <Property Name="english_title" Type="varchar" MaxLength="1000" />
+          <Property Name="correct_answer" Type="varchar" MaxLength="1000" />
+          <Property Name="correct_answer_id" Type="int" Nullable="false" />
+          <Property Name="is_correct" Type="int" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.view_trn_zftt' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -5824,6 +5859,10 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
     [view_trn_exam_summary].[total_questions] AS [total_questions], 
     [view_trn_exam_summary].[total_answered] AS [total_answered], 
     [view_trn_exam_summary].[total_remained] AS [total_remained], 
+    [view_trn_exam_summary].[ignored] AS [ignored], 
+    [view_trn_exam_summary].[correct_answer] AS [correct_answer], 
+    [view_trn_exam_summary].[wrong_answer] AS [wrong_answer], 
+    [view_trn_exam_summary].[negative_point] AS [negative_point], 
     [view_trn_exam_summary].[score] AS [score], 
     [view_trn_exam_summary].[result] AS [result], 
     [view_trn_exam_summary].[result_id] AS [result_id], 
@@ -5849,6 +5888,10 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
     [view_trn_exam_summary_details].[total_questions] AS [total_questions], 
     [view_trn_exam_summary_details].[total_answered] AS [total_answered], 
     [view_trn_exam_summary_details].[total_remained] AS [total_remained], 
+    [view_trn_exam_summary_details].[correct_answer] AS [correct_answer], 
+    [view_trn_exam_summary_details].[wrong_answer] AS [wrong_answer], 
+    [view_trn_exam_summary_details].[ignored] AS [ignored], 
+    [view_trn_exam_summary_details].[negative_point] AS [negative_point], 
     [view_trn_exam_summary_details].[score] AS [score], 
     [view_trn_exam_summary_details].[result] AS [result], 
     [view_trn_exam_summary_details].[result_id] AS [result_id], 
@@ -6032,6 +6075,22 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
     [view_trn_profile].[Telegram] AS [Telegram], 
     [view_trn_profile].[LinkedIn] AS [LinkedIn]
     FROM [dbo].[view_trn_profile] AS [view_trn_profile]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="view_trn_student_answer" EntityType="Self.view_trn_student_answer" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_trn_student_answer].[id] AS [id], 
+    [view_trn_student_answer].[person_id] AS [person_id], 
+    [view_trn_student_answer].[question_id] AS [question_id], 
+    [view_trn_student_answer].[answer_id] AS [answer_id], 
+    [view_trn_student_answer].[remark] AS [remark], 
+    [view_trn_student_answer].[date_sent] AS [date_sent], 
+    [view_trn_student_answer].[person_exam_id] AS [person_exam_id], 
+    [view_trn_student_answer].[main_question_id] AS [main_question_id], 
+    [view_trn_student_answer].[english_title] AS [english_title], 
+    [view_trn_student_answer].[correct_answer] AS [correct_answer], 
+    [view_trn_student_answer].[correct_answer_id] AS [correct_answer_id], 
+    [view_trn_student_answer].[is_correct] AS [is_correct]
+    FROM [dbo].[view_trn_student_answer] AS [view_trn_student_answer]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="view_trn_zftt" EntityType="Self.view_trn_zftt" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -8483,29 +8542,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
             <End Role="trn_question_category" EntitySet="trn_question_category" />
             <End Role="trn_questions" EntitySet="trn_questions" />
           </AssociationSet>
-          <EntitySet Name="trn_exam" EntityType="FLYModel.trn_exam" />
-          <AssociationSet Name="fk_exma_course" Association="FLYModel.fk_exma_course">
-            <End Role="Course" EntitySet="Courses" />
-            <End Role="trn_exam" EntitySet="trn_exam" />
-          </AssociationSet>
-          <AssociationSet Name="fk_ex_ex_1" Association="FLYModel.fk_ex_ex_1">
-            <End Role="trn_exam" EntitySet="trn_exam" />
-            <End Role="trn_exam_question" EntitySet="trn_exam_question" />
-          </AssociationSet>
-          <AssociationSet Name="fk_qte_exam" Association="FLYModel.fk_qte_exam">
-            <End Role="trn_exam" EntitySet="trn_exam" />
-            <End Role="trn_exam_question_template" EntitySet="trn_exam_question_template" />
-          </AssociationSet>
           <EntitySet Name="trn_exam_group" EntityType="FLYModel.trn_exam_group" />
-          <AssociationSet Name="fk_exam_group_exam" Association="FLYModel.fk_exam_group_exam">
-            <End Role="trn_exam" EntitySet="trn_exam" />
-            <End Role="trn_exam_group" EntitySet="trn_exam_group" />
-          </AssociationSet>
           <EntitySet Name="trn_exam_person" EntityType="FLYModel.trn_exam_person" />
-          <AssociationSet Name="fk_examp_exam" Association="FLYModel.fk_examp_exam">
-            <End Role="trn_exam" EntitySet="trn_exam" />
-            <End Role="trn_exam_person" EntitySet="trn_exam_person" />
-          </AssociationSet>
           <EntitySet Name="view_trn_exam_question_template" EntityType="FLYModel.view_trn_exam_question_template" />
           <EntitySet Name="view_trn_exam_question" EntityType="FLYModel.view_trn_exam_question" />
           <EntitySet Name="view_trn_profile" EntityType="FLYModel.view_trn_profile" />
@@ -8517,10 +8555,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <EntitySet Name="trn_person_exam" EntityType="FLYModel.trn_person_exam" />
           <AssociationSet Name="FK__trn_exam___cours__6F212F46" Association="FLYModel.FK__trn_exam___cours__6F212F46">
             <End Role="Course" EntitySet="Courses" />
-            <End Role="trn_person_exam" EntitySet="trn_person_exam" />
-          </AssociationSet>
-          <AssociationSet Name="fk_pexam_main" Association="FLYModel.fk_pexam_main">
-            <End Role="trn_exam" EntitySet="trn_exam" />
             <End Role="trn_person_exam" EntitySet="trn_person_exam" />
           </AssociationSet>
           <AssociationSet Name="FK__trn_exam___exam___72F1C02A" Association="FLYModel.FK__trn_exam___exam___72F1C02A">
@@ -8543,8 +8577,34 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <EntitySet Name="ViewEmployeeLights" EntityType="FLYModel.ViewEmployeeLight" />
           <EntitySet Name="GRPCourseTypeExpiringGroups" EntityType="FLYModel.GRPCourseTypeExpiringGroup" />
           <EntitySet Name="ViewProfiles" EntityType="FLYModel.ViewProfile" />
+          <EntitySet Name="trn_exam" EntityType="FLYModel.trn_exam" />
           <EntitySet Name="view_trn_exam_summary" EntityType="FLYModel.view_trn_exam_summary" />
           <EntitySet Name="view_trn_exam_summary_details" EntityType="FLYModel.view_trn_exam_summary_details" />
+          <EntitySet Name="view_trn_student_answer" EntityType="FLYModel.view_trn_student_answer" />
+          <AssociationSet Name="fk_exma_course" Association="FLYModel.fk_exma_course">
+            <End Role="Course" EntitySet="Courses" />
+            <End Role="trn_exam" EntitySet="trn_exam" />
+          </AssociationSet>
+          <AssociationSet Name="fk_ex_ex_1" Association="FLYModel.fk_ex_ex_1">
+            <End Role="trn_exam" EntitySet="trn_exam" />
+            <End Role="trn_exam_question" EntitySet="trn_exam_question" />
+          </AssociationSet>
+          <AssociationSet Name="fk_exam_group_exam" Association="FLYModel.fk_exam_group_exam">
+            <End Role="trn_exam" EntitySet="trn_exam" />
+            <End Role="trn_exam_group" EntitySet="trn_exam_group" />
+          </AssociationSet>
+          <AssociationSet Name="fk_examp_exam" Association="FLYModel.fk_examp_exam">
+            <End Role="trn_exam" EntitySet="trn_exam" />
+            <End Role="trn_exam_person" EntitySet="trn_exam_person" />
+          </AssociationSet>
+          <AssociationSet Name="fk_pexam_main" Association="FLYModel.fk_pexam_main">
+            <End Role="trn_exam" EntitySet="trn_exam" />
+            <End Role="trn_person_exam" EntitySet="trn_person_exam" />
+          </AssociationSet>
+          <AssociationSet Name="fk_qte_exam" Association="FLYModel.fk_qte_exam">
+            <End Role="trn_exam" EntitySet="trn_exam" />
+            <End Role="trn_exam_question_template" EntitySet="trn_exam_question_template" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="ExpFlight">
           <Key>
@@ -11959,8 +12019,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <NavigationProperty Name="CourseSessionPresenceDetails" Relationship="FLYModel.fk_pscod_course" FromRole="Course" ToRole="CourseSessionPresenceDetail" />
           <NavigationProperty Name="CourseSessions" Relationship="FLYModel.fk_session_course" FromRole="Course" ToRole="CourseSession" />
           <NavigationProperty Name="CourseSyllabus" Relationship="FLYModel.fk_syl_crs" FromRole="Course" ToRole="CourseSyllabu" />
-          <NavigationProperty Name="trn_exam" Relationship="FLYModel.fk_exma_course" FromRole="Course" ToRole="trn_exam" />
           <NavigationProperty Name="trn_person_exam" Relationship="FLYModel.FK__trn_exam___cours__6F212F46" FromRole="Course" ToRole="trn_person_exam" />
+          <NavigationProperty Name="trn_exam" Relationship="FLYModel.fk_exma_course" FromRole="Course" ToRole="trn_exam" />
         </EntityType>
         <Association Name="fk_course_instructor">
           <End Type="FLYModel.Teacher" Role="Teacher" Multiplicity="0..1" />
@@ -12381,76 +12441,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="trn_exam">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="course_id" Type="Int32" Nullable="false" />
-          <Property Name="exam_date" Type="DateTime" Precision="7" />
-          <Property Name="exam_date_persian" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="location_title" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="location_address" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
-          <Property Name="location_phone" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="remark" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
-          <Property Name="status_id" Type="Int32" />
-          <Property Name="created_by" Type="Int32" />
-          <Property Name="confirmed_by" Type="Int32" />
-          <Property Name="created_date" Type="DateTime" Precision="7" />
-          <Property Name="confirmed_date" Type="DateTime" Precision="7" />
-          <Property Name="exam_type_id" Type="Int32" />
-          <Property Name="signed_by_ins1_date" Type="DateTime" Precision="7" />
-          <Property Name="signed_by_ins2_date" Type="DateTime" Precision="7" />
-          <Property Name="signed_by_director_date" Type="DateTime" Precision="7" />
-          <Property Name="signed_by_staff_date" Type="DateTime" Precision="7" />
-          <Property Name="duration" Type="Int32" />
-          <Property Name="date_start" Type="DateTime" Precision="7" />
-          <Property Name="date_end_scheduled" Type="DateTime" Precision="7" />
-          <Property Name="date_end_actual" Type="DateTime" Precision="7" />
-          <Property Name="date_start_scheduled" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="Course" Relationship="FLYModel.fk_exma_course" FromRole="trn_exam" ToRole="Course" />
-          <NavigationProperty Name="trn_exam_question" Relationship="FLYModel.fk_ex_ex_1" FromRole="trn_exam" ToRole="trn_exam_question" />
-          <NavigationProperty Name="trn_exam_question_template" Relationship="FLYModel.fk_qte_exam" FromRole="trn_exam" ToRole="trn_exam_question_template" />
-          <NavigationProperty Name="trn_exam_group" Relationship="FLYModel.fk_exam_group_exam" FromRole="trn_exam" ToRole="trn_exam_group" />
-          <NavigationProperty Name="trn_exam_person" Relationship="FLYModel.fk_examp_exam" FromRole="trn_exam" ToRole="trn_exam_person" />
-          <NavigationProperty Name="trn_person_exam" Relationship="FLYModel.fk_pexam_main" FromRole="trn_exam" ToRole="trn_person_exam" />
-        </EntityType>
-        <Association Name="fk_exma_course">
-          <End Type="FLYModel.Course" Role="Course" Multiplicity="1" />
-          <End Type="FLYModel.trn_exam" Role="trn_exam" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Course">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="trn_exam">
-              <PropertyRef Name="course_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="fk_ex_ex_1">
-          <End Type="FLYModel.trn_exam" Role="trn_exam" Multiplicity="1" />
-          <End Type="FLYModel.trn_exam_question" Role="trn_exam_question" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="trn_exam">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="trn_exam_question">
-              <PropertyRef Name="exam_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="fk_qte_exam">
-          <End Type="FLYModel.trn_exam" Role="trn_exam" Multiplicity="1" />
-          <End Type="FLYModel.trn_exam_question_template" Role="trn_exam_question_template" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="trn_exam">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="trn_exam_question_template">
-              <PropertyRef Name="exam_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="trn_exam_group">
           <Key>
             <PropertyRef Name="id" />
@@ -12461,18 +12451,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <Property Name="remark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="trn_exam" Relationship="FLYModel.fk_exam_group_exam" FromRole="trn_exam_group" ToRole="trn_exam" />
         </EntityType>
-        <Association Name="fk_exam_group_exam">
-          <End Type="FLYModel.trn_exam" Role="trn_exam" Multiplicity="1" />
-          <End Type="FLYModel.trn_exam_group" Role="trn_exam_group" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="trn_exam">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="trn_exam_group">
-              <PropertyRef Name="exam_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="trn_exam_person">
           <Key>
             <PropertyRef Name="id" />
@@ -12483,18 +12461,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <Property Name="remark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="trn_exam" Relationship="FLYModel.fk_examp_exam" FromRole="trn_exam_person" ToRole="trn_exam" />
         </EntityType>
-        <Association Name="fk_examp_exam">
-          <End Type="FLYModel.trn_exam" Role="trn_exam" Multiplicity="1" />
-          <End Type="FLYModel.trn_exam_person" Role="trn_exam_person" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="trn_exam">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="trn_exam_person">
-              <PropertyRef Name="exam_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="view_trn_exam_question_template">
           <Key>
             <PropertyRef Name="category_id" />
@@ -12626,8 +12592,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <Property Name="person_id" Type="Int32" />
           <Property Name="person_sign_date" Type="DateTime" Precision="7" />
           <NavigationProperty Name="Course" Relationship="FLYModel.FK__trn_exam___cours__6F212F46" FromRole="trn_person_exam" ToRole="Course" />
-          <NavigationProperty Name="trn_exam" Relationship="FLYModel.fk_pexam_main" FromRole="trn_person_exam" ToRole="trn_exam" />
           <NavigationProperty Name="trn_person_exam_question" Relationship="FLYModel.FK__trn_exam___exam___72F1C02A" FromRole="trn_person_exam" ToRole="trn_person_exam_question" />
+          <NavigationProperty Name="trn_exam" Relationship="FLYModel.fk_pexam_main" FromRole="trn_person_exam" ToRole="trn_exam" />
         </EntityType>
         <Association Name="FK__trn_exam___cours__6F212F46">
           <End Type="FLYModel.Course" Role="Course" Multiplicity="1" />
@@ -12638,18 +12604,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
             </Principal>
             <Dependent Role="trn_person_exam">
               <PropertyRef Name="course_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="fk_pexam_main">
-          <End Type="FLYModel.trn_exam" Role="trn_exam" Multiplicity="0..1" />
-          <End Type="FLYModel.trn_person_exam" Role="trn_person_exam" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="trn_exam">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="trn_person_exam">
-              <PropertyRef Name="main_exam_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -13911,6 +13865,41 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <Property Name="RemainTRG07A" Type="Int32" />
           <Property Name="ImageUrl" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="trn_exam">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="course_id" Type="Int32" Nullable="false" />
+          <Property Name="exam_date" Type="DateTime" Precision="7" />
+          <Property Name="exam_date_persian" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="location_title" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="location_address" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="location_phone" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="remark" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="status_id" Type="Int32" />
+          <Property Name="created_by" Type="Int32" />
+          <Property Name="confirmed_by" Type="Int32" />
+          <Property Name="created_date" Type="DateTime" Precision="7" />
+          <Property Name="confirmed_date" Type="DateTime" Precision="7" />
+          <Property Name="exam_type_id" Type="Int32" />
+          <Property Name="signed_by_ins1_date" Type="DateTime" Precision="7" />
+          <Property Name="signed_by_ins2_date" Type="DateTime" Precision="7" />
+          <Property Name="signed_by_director_date" Type="DateTime" Precision="7" />
+          <Property Name="signed_by_staff_date" Type="DateTime" Precision="7" />
+          <Property Name="duration" Type="Int32" />
+          <Property Name="date_start" Type="DateTime" Precision="7" />
+          <Property Name="date_end_scheduled" Type="DateTime" Precision="7" />
+          <Property Name="date_end_actual" Type="DateTime" Precision="7" />
+          <Property Name="date_start_scheduled" Type="DateTime" Precision="7" />
+          <Property Name="is_negetive_point" Type="Boolean" />
+          <NavigationProperty Name="Course" Relationship="FLYModel.fk_exma_course" FromRole="trn_exam" ToRole="Course" />
+          <NavigationProperty Name="trn_exam_question" Relationship="FLYModel.fk_ex_ex_1" FromRole="trn_exam" ToRole="trn_exam_question" />
+          <NavigationProperty Name="trn_exam_group" Relationship="FLYModel.fk_exam_group_exam" FromRole="trn_exam" ToRole="trn_exam_group" />
+          <NavigationProperty Name="trn_exam_person" Relationship="FLYModel.fk_examp_exam" FromRole="trn_exam" ToRole="trn_exam_person" />
+          <NavigationProperty Name="trn_person_exam" Relationship="FLYModel.fk_pexam_main" FromRole="trn_exam" ToRole="trn_person_exam" />
+          <NavigationProperty Name="trn_exam_question_template" Relationship="FLYModel.fk_qte_exam" FromRole="trn_exam" ToRole="trn_exam_question_template" />
+        </EntityType>
         <EntityType Name="view_trn_exam_summary">
           <Key>
             <PropertyRef Name="exam_id" />
@@ -13929,7 +13918,11 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <Property Name="total_questions" Type="Int32" />
           <Property Name="total_answered" Type="Int32" />
           <Property Name="total_remained" Type="Int32" />
-          <Property Name="score" Type="Int32" />
+          <Property Name="ignored" Type="Int32" />
+          <Property Name="correct_answer" Type="Int32" />
+          <Property Name="wrong_answer" Type="Int32" />
+          <Property Name="negative_point" Type="Decimal" Precision="18" Scale="6" />
+          <Property Name="score" Type="Decimal" Precision="8" Scale="2" />
           <Property Name="result" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
           <Property Name="result_id" Type="Int32" />
           <Property Name="main_exam_id" Type="Int32" />
@@ -13962,11 +13955,111 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <Property Name="total_questions" Type="Int32" />
           <Property Name="total_answered" Type="Int32" />
           <Property Name="total_remained" Type="Int32" />
-          <Property Name="score" Type="Int32" />
+          <Property Name="correct_answer" Type="Int32" />
+          <Property Name="wrong_answer" Type="Int32" />
+          <Property Name="ignored" Type="Int32" />
+          <Property Name="negative_point" Type="Decimal" Precision="18" Scale="6" />
+          <Property Name="score" Type="Decimal" Precision="8" Scale="2" />
           <Property Name="result" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
           <Property Name="result_id" Type="Int32" />
           <Property Name="main_exam_id" Type="Int32" />
         </EntityType>
+        <EntityType Name="view_trn_student_answer">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="person_id" />
+            <PropertyRef Name="question_id" />
+            <PropertyRef Name="answer_id" />
+            <PropertyRef Name="person_exam_id" />
+            <PropertyRef Name="main_question_id" />
+            <PropertyRef Name="correct_answer_id" />
+            <PropertyRef Name="is_correct" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="person_id" Type="Int32" Nullable="false" />
+          <Property Name="question_id" Type="Int32" Nullable="false" />
+          <Property Name="answer_id" Type="Int32" Nullable="false" />
+          <Property Name="remark" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="date_sent" Type="DateTime" Precision="7" />
+          <Property Name="person_exam_id" Type="Int32" Nullable="false" />
+          <Property Name="main_question_id" Type="Int32" Nullable="false" />
+          <Property Name="english_title" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="correct_answer" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="correct_answer_id" Type="Int32" Nullable="false" />
+          <Property Name="is_correct" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="fk_exma_course">
+          <End Type="FLYModel.Course" Role="Course" Multiplicity="1" />
+          <End Type="FLYModel.trn_exam" Role="trn_exam" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="trn_exam">
+              <PropertyRef Name="course_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_ex_ex_1">
+          <End Type="FLYModel.trn_exam" Role="trn_exam" Multiplicity="1" />
+          <End Type="FLYModel.trn_exam_question" Role="trn_exam_question" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="trn_exam">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="trn_exam_question">
+              <PropertyRef Name="exam_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_exam_group_exam">
+          <End Type="FLYModel.trn_exam" Role="trn_exam" Multiplicity="1" />
+          <End Type="FLYModel.trn_exam_group" Role="trn_exam_group" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="trn_exam">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="trn_exam_group">
+              <PropertyRef Name="exam_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_examp_exam">
+          <End Type="FLYModel.trn_exam" Role="trn_exam" Multiplicity="1" />
+          <End Type="FLYModel.trn_exam_person" Role="trn_exam_person" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="trn_exam">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="trn_exam_person">
+              <PropertyRef Name="exam_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_pexam_main">
+          <End Type="FLYModel.trn_exam" Role="trn_exam" Multiplicity="0..1" />
+          <End Type="FLYModel.trn_person_exam" Role="trn_person_exam" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="trn_exam">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="trn_person_exam">
+              <PropertyRef Name="main_exam_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_qte_exam">
+          <End Type="FLYModel.trn_exam" Role="trn_exam" Multiplicity="1" />
+          <End Type="FLYModel.trn_exam_question_template" Role="trn_exam_question_template" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="trn_exam">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="trn_exam_question_template">
+              <PropertyRef Name="exam_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -16880,35 +16973,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="trn_exam">
-            <EntityTypeMapping TypeName="FLYModel.trn_exam">
-              <MappingFragment StoreEntitySet="trn_exam">
-                <ScalarProperty Name="date_start_scheduled" ColumnName="date_start_scheduled" />
-                <ScalarProperty Name="date_end_actual" ColumnName="date_end_actual" />
-                <ScalarProperty Name="date_end_scheduled" ColumnName="date_end_scheduled" />
-                <ScalarProperty Name="date_start" ColumnName="date_start" />
-                <ScalarProperty Name="duration" ColumnName="duration" />
-                <ScalarProperty Name="signed_by_staff_date" ColumnName="signed_by_staff_date" />
-                <ScalarProperty Name="signed_by_director_date" ColumnName="signed_by_director_date" />
-                <ScalarProperty Name="signed_by_ins2_date" ColumnName="signed_by_ins2_date" />
-                <ScalarProperty Name="signed_by_ins1_date" ColumnName="signed_by_ins1_date" />
-                <ScalarProperty Name="exam_type_id" ColumnName="exam_type_id" />
-                <ScalarProperty Name="confirmed_date" ColumnName="confirmed_date" />
-                <ScalarProperty Name="created_date" ColumnName="created_date" />
-                <ScalarProperty Name="confirmed_by" ColumnName="confirmed_by" />
-                <ScalarProperty Name="created_by" ColumnName="created_by" />
-                <ScalarProperty Name="status_id" ColumnName="status_id" />
-                <ScalarProperty Name="remark" ColumnName="remark" />
-                <ScalarProperty Name="location_phone" ColumnName="location_phone" />
-                <ScalarProperty Name="location_address" ColumnName="location_address" />
-                <ScalarProperty Name="location_title" ColumnName="location_title" />
-                <ScalarProperty Name="exam_date_persian" ColumnName="exam_date_persian" />
-                <ScalarProperty Name="exam_date" ColumnName="exam_date" />
-                <ScalarProperty Name="course_id" ColumnName="course_id" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="trn_exam_group">
             <EntityTypeMapping TypeName="FLYModel.trn_exam_group">
               <MappingFragment StoreEntitySet="trn_exam_group">
@@ -18121,6 +18185,36 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="trn_exam">
+            <EntityTypeMapping TypeName="FLYModel.trn_exam">
+              <MappingFragment StoreEntitySet="trn_exam">
+                <ScalarProperty Name="is_negetive_point" ColumnName="is_negetive_point" />
+                <ScalarProperty Name="date_start_scheduled" ColumnName="date_start_scheduled" />
+                <ScalarProperty Name="date_end_actual" ColumnName="date_end_actual" />
+                <ScalarProperty Name="date_end_scheduled" ColumnName="date_end_scheduled" />
+                <ScalarProperty Name="date_start" ColumnName="date_start" />
+                <ScalarProperty Name="duration" ColumnName="duration" />
+                <ScalarProperty Name="signed_by_staff_date" ColumnName="signed_by_staff_date" />
+                <ScalarProperty Name="signed_by_director_date" ColumnName="signed_by_director_date" />
+                <ScalarProperty Name="signed_by_ins2_date" ColumnName="signed_by_ins2_date" />
+                <ScalarProperty Name="signed_by_ins1_date" ColumnName="signed_by_ins1_date" />
+                <ScalarProperty Name="exam_type_id" ColumnName="exam_type_id" />
+                <ScalarProperty Name="confirmed_date" ColumnName="confirmed_date" />
+                <ScalarProperty Name="created_date" ColumnName="created_date" />
+                <ScalarProperty Name="confirmed_by" ColumnName="confirmed_by" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="status_id" ColumnName="status_id" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="location_phone" ColumnName="location_phone" />
+                <ScalarProperty Name="location_address" ColumnName="location_address" />
+                <ScalarProperty Name="location_title" ColumnName="location_title" />
+                <ScalarProperty Name="exam_date_persian" ColumnName="exam_date_persian" />
+                <ScalarProperty Name="exam_date" ColumnName="exam_date" />
+                <ScalarProperty Name="course_id" ColumnName="course_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="view_trn_exam_summary">
             <EntityTypeMapping TypeName="FLYModel.view_trn_exam_summary">
               <MappingFragment StoreEntitySet="view_trn_exam_summary">
@@ -18128,6 +18222,10 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
                 <ScalarProperty Name="result_id" ColumnName="result_id" />
                 <ScalarProperty Name="result" ColumnName="result" />
                 <ScalarProperty Name="score" ColumnName="score" />
+                <ScalarProperty Name="negative_point" ColumnName="negative_point" />
+                <ScalarProperty Name="wrong_answer" ColumnName="wrong_answer" />
+                <ScalarProperty Name="correct_answer" ColumnName="correct_answer" />
+                <ScalarProperty Name="ignored" ColumnName="ignored" />
                 <ScalarProperty Name="total_remained" ColumnName="total_remained" />
                 <ScalarProperty Name="total_answered" ColumnName="total_answered" />
                 <ScalarProperty Name="total_questions" ColumnName="total_questions" />
@@ -18150,6 +18248,10 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
                 <ScalarProperty Name="result_id" ColumnName="result_id" />
                 <ScalarProperty Name="result" ColumnName="result" />
                 <ScalarProperty Name="score" ColumnName="score" />
+                <ScalarProperty Name="negative_point" ColumnName="negative_point" />
+                <ScalarProperty Name="ignored" ColumnName="ignored" />
+                <ScalarProperty Name="wrong_answer" ColumnName="wrong_answer" />
+                <ScalarProperty Name="correct_answer" ColumnName="correct_answer" />
                 <ScalarProperty Name="total_remained" ColumnName="total_remained" />
                 <ScalarProperty Name="total_answered" ColumnName="total_answered" />
                 <ScalarProperty Name="total_questions" ColumnName="total_questions" />
@@ -18167,6 +18269,24 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
                 <ScalarProperty Name="first_name" ColumnName="first_name" />
                 <ScalarProperty Name="person_id" ColumnName="person_id" />
                 <ScalarProperty Name="exam_id" ColumnName="exam_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_trn_student_answer">
+            <EntityTypeMapping TypeName="FLYModel.view_trn_student_answer">
+              <MappingFragment StoreEntitySet="view_trn_student_answer">
+                <ScalarProperty Name="is_correct" ColumnName="is_correct" />
+                <ScalarProperty Name="correct_answer_id" ColumnName="correct_answer_id" />
+                <ScalarProperty Name="correct_answer" ColumnName="correct_answer" />
+                <ScalarProperty Name="english_title" ColumnName="english_title" />
+                <ScalarProperty Name="main_question_id" ColumnName="main_question_id" />
+                <ScalarProperty Name="person_exam_id" ColumnName="person_exam_id" />
+                <ScalarProperty Name="date_sent" ColumnName="date_sent" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="answer_id" ColumnName="answer_id" />
+                <ScalarProperty Name="question_id" ColumnName="question_id" />
+                <ScalarProperty Name="person_id" ColumnName="person_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

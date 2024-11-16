@@ -148,12 +148,7 @@ namespace AirpocketTRN.Controllers
                 var selected_qs = TakeRandomRows(qs, (int)template.total);
                 foreach (var q in selected_qs)
                 {
-                    generated_questions.Add(new trn_exam_question()
-                    {
-                        exam_id = dto.exam_id,
-                        question_id = q.id,
-                        remark = "date: " + DateTime.Now.ToString("yyyy-MM-dd HH:mm")
-                    });
+                   
                     person_generated_questions.Add(
                      new trn_person_exam_question()
                      {
@@ -174,7 +169,7 @@ namespace AirpocketTRN.Controllers
 
 
 
-            var person_exams = await context.trn_person_exam.Where(q => q.main_exam_id == dto.exam_id && (q.status_id == 0 || q.status_id == 3)).ToListAsync();
+            var person_exams = await context.trn_person_exam.Where(q => q.main_exam_id == dto.exam_id && (q.status_id == 0 || q.status_id == 3 || q.status_id == 1)).ToListAsync();
             foreach (var person_exam in person_exams)
             {
                 var pexists = await context.trn_person_exam_question.Where(q => q.exam_id == person_exam.id).ToListAsync();
@@ -241,6 +236,7 @@ namespace AirpocketTRN.Controllers
                 }
 
             }
+           // List<trn_person_exam_question> dddddd = new List<trn_person_exam_question>();
             foreach(var person_exam in person_exams)
             {
                 var exists = await context.trn_person_exam_question.Where(q => q.exam_id == person_exam.id).ToListAsync();
@@ -256,7 +252,7 @@ namespace AirpocketTRN.Controllers
                         remark = q.remark,
                     };
 
-                    context.trn_person_exam_question.Add(q); 
+                    context.trn_person_exam_question.Add(_q); 
                 }
             }
 

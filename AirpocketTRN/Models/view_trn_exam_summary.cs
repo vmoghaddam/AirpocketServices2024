@@ -26,7 +26,11 @@ namespace AirpocketTRN.Models
         public Nullable<int> total_questions { get; set; }
         public Nullable<int> total_answered { get; set; }
         public Nullable<int> total_remained { get; set; }
-        public Nullable<int> score { get; set; }
+        public Nullable<int> ignored { get; set; }
+        public Nullable<int> correct_answer { get; set; }
+        public Nullable<int> wrong_answer { get; set; }
+        public Nullable<decimal> negative_point { get; set; }
+        public Nullable<decimal> score { get; set; }
         public string result { get; set; }
         public Nullable<int> result_id { get; set; }
         public Nullable<int> main_exam_id { get; set; }

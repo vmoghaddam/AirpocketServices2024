@@ -46,6 +46,7 @@ namespace ApiAtoClient.Models
         public Nullable<System.DateTime> date_end_scheduled { get; set; }
         public Nullable<System.DateTime> date_end_actual { get; set; }
         public Nullable<System.DateTime> date_start_scheduled { get; set; }
+        public Nullable<bool> is_negetive_point { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<trn_exam_question> trn_exam_question { get; set; }

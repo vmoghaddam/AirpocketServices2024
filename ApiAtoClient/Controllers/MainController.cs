@@ -69,6 +69,8 @@ namespace ApiAtoClient.Controllers
                     _ans.persian_title=ans.persian_title;
                     _ans.english_title=ans.english_title;
                     _ans.is_selected = client_answers.FirstOrDefault(q => q.main_question_id == ans.quesion_id && q.answer_id==ans.id) != null;
+                    if (exam.status_id == 2)
+                        _ans.is_answer = ans.is_answer;
                     out_answers.Add(_ans);
 
                 }

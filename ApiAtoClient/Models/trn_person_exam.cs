@@ -47,8 +47,8 @@ namespace ApiAtoClient.Models
         public Nullable<int> person_id { get; set; }
         public Nullable<System.DateTime> person_sign_date { get; set; }
     
-        public virtual trn_exam trn_exam { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<trn_person_exam_question> trn_person_exam_question { get; set; }
+        public virtual trn_exam trn_exam { get; set; }
     }
 }

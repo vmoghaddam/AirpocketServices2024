@@ -121,6 +121,8 @@ namespace ApiAtoClient
 
         public Nullable<bool> is_rtl { get; set; }
         public bool is_selected { get; set; }
+
+        public int? is_answer { get; set; }
     }
     public partial class view_trn_exam_question_person_dto
     {
