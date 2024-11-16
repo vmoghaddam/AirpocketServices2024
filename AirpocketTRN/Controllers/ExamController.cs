@@ -18,7 +18,7 @@ using System.Net.Http.Formatting;
 using System.Security.Permissions;
 
 using System.Web.Helpers;
-
+using Newtonsoft.Json;
 
 namespace AirpocketTRN.Controllers
 {
@@ -330,6 +330,138 @@ namespace AirpocketTRN.Controllers
             //GetExamPeopleAnswersByPerson
 
             return Ok(result);
+        }
+
+        public List<view_trn_exam_question_person> ShuffleQuestionsBasedOnId(List<view_trn_exam_question_person> questions, int client_id)
+        {
+            Random random = new Random(client_id);
+            return questions.OrderBy(q => random.Next()).ToList();
+        }
+
+        public class dto_answer_out
+        {
+            public int id { get; set; }
+            public int answer_id { get; set; }
+            public Nullable<int> quesion_id { get; set; }
+            public Nullable<int> exam_quesion_id { get; set; }
+            public string english_title { get; set; }
+            public string persian_title { get; set; }
+
+            public Nullable<bool> is_rtl { get; set; }
+            public bool is_selected { get; set; }
+
+            public int? is_answer { get; set; }
+        }
+        public partial class view_trn_exam_question_person_dto
+        {
+            public int id { get; set; }
+            public int question_id { get; set; }
+            public int exam_id { get; set; }
+            public Nullable<int> response_time { get; set; }
+            public string english_title { get; set; }
+            public string persian_title { get; set; }
+            public Nullable<int> category_id { get; set; }
+            public string category { get; set; }
+            public int course_id { get; set; }
+            public string Title { get; set; }
+            public Nullable<int> person_id { get; set; }
+            public string first_name { get; set; }
+            public string last_name { get; set; }
+            public Nullable<int> answer_id { get; set; }
+            public Nullable<System.DateTime> date_sent { get; set; }
+            public List<trn_answers> db_answers { get; set; }
+            public List<dto_answer_out> answers { get; set; }
+        }
+        [Route("api/client/exam/{id}/{client_id}")]
+        public async Task<IHttpActionResult> GetClientExamById(int id, int client_id)
+        {
+            try
+            {
+                FLYEntities context = new FLYEntities();
+               
+                var profile = await context.view_trn_profile.Where(q => q.Id == client_id).FirstOrDefaultAsync();
+                // var exam=await context.view_trn_exam.Where(q=>q.id==id).FirstOrDefaultAsync();
+
+                var exam = await context.view_trn_person_exam.Where(q => q.exam_id == id).FirstOrDefaultAsync();
+                List<view_trn_exam_question_person> _questions = new List<view_trn_exam_question_person>();
+
+
+                if (exam.status_id != 0)
+                {
+                    _questions = await context.view_trn_exam_question_person.Where(q => q.exam_id == id && q.person_id == client_id).OrderBy(q => q.category_id).ThenBy(q => q.question_id).ToListAsync();
+
+                    _questions = ShuffleQuestionsBasedOnId(_questions, client_id);
+                }
+
+                //  var _qqq = _questions.Select(q => q.question_id).ToList();
+
+                var qids = _questions.Select(q => (Nullable<int>)q.question_id).ToList();
+
+                var qids2 = _questions.Select(q => (Nullable<int>)q.id).ToList();
+
+                var questions = _questions.Select(q => JsonConvert.DeserializeObject<view_trn_exam_question_person_dto>(JsonConvert.SerializeObject(q))).ToList();
+                var answers = await context.trn_answers.Where(q => qids.Contains(q.quesion_id)).ToListAsync();
+                //var xxxxx= await context.view_trm_exam_student_answer.Where(q => q.person_id == client_id ).ToListAsync();
+                var client_answers = await context.view_trm_exam_student_answer.Where(q => q.person_id == client_id && qids2.Contains(q.question_id)).ToListAsync();
+
+                var out_answers = new List<dto_answer_out>();
+                foreach (var ans in answers)
+                {
+                    var _ans = new dto_answer_out();
+                    _ans.id = ans.id;
+                    _ans.answer_id = ans.id;
+                    _ans.quesion_id = ans.quesion_id;
+
+                    _ans.is_rtl = ans.is_rtl;
+                    _ans.persian_title = ans.persian_title;
+                    _ans.english_title = ans.english_title;
+                    _ans.is_selected = client_answers.FirstOrDefault(q => q.main_question_id == ans.quesion_id && q.answer_id == ans.id) != null;
+                    if (exam.status_id == 2)
+                        _ans.is_answer = ans.is_answer;
+                    out_answers.Add(_ans);
+
+                }
+                foreach (var q in questions)
+                {
+                    q.answers = out_answers.Where(x => x.quesion_id == q.question_id).ToList();
+                    foreach (var x in q.answers)
+                        x.exam_quesion_id = q.id;
+                }
+
+
+                var result = new DataResponse()
+                {
+                    Data = new
+                    {
+                        exam,
+                        questions,
+                        profile,
+                        toal_questions = questions.Count,
+                        total_answerd = client_answers.Count(),
+                        total_remained = questions.Count - client_answers.Count(),
+                    },
+                    IsSuccess = true,
+                };
+
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += "   " + ex.InnerException.Message;
+                var result = new DataResponse()
+                {
+                    IsSuccess = false,
+                    Errors = new List<string>() { msg }
+                };
+
+
+                return Ok(result);
+
+            }
+
         }
 
         public class dto_exam_questions_generate
