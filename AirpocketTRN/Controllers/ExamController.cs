@@ -68,6 +68,11 @@ namespace AirpocketTRN.Controllers
 
             }
 
+            var sub_exams = await context.trn_person_exam.Where(q => q.main_exam_id == exam_id ).ToListAsync();
+            foreach(var x in sub_exams)
+                x.status_id=exam.status_id;
+
+
             await context.SaveChangesAsync();
             var result = new DataResponse()
             {
@@ -135,66 +140,80 @@ namespace AirpocketTRN.Controllers
 
         public async Task<IHttpActionResult> get_crm_assessment(dto_exam_questions_generate dto)
         {
-            FLYEntities context = new FLYEntities();
-            context.Configuration.LazyLoadingEnabled = false;
-            var templates = await context.trn_exam_question_template.Where(q => q.exam_id == dto.exam_id).ToListAsync();
-            var generated_questions = new List<trn_exam_question>();
-            var person_generated_questions = new List<trn_person_exam_question>();
-            var cat_ids = templates.Select(q => q.question_category_id).ToList();
-            var questions = await context.trn_questions.Where(q => cat_ids.Contains(q.category_id)).ToListAsync();
-            foreach (var template in templates)
+            try
             {
-                var qs = questions.Where(q => q.category_id == template.question_category_id).OrderBy(q => q.id).ToList();
-                var selected_qs = TakeRandomRows(qs, (int)template.total);
-                foreach (var q in selected_qs)
+                FLYEntities context = new FLYEntities();
+                context.Configuration.LazyLoadingEnabled = false;
+                var templates = await context.trn_exam_question_template.Where(q => q.exam_id == dto.exam_id).ToListAsync();
+                var generated_questions = new List<trn_exam_question>();
+                var person_generated_questions = new List<trn_person_exam_question>();
+                var cat_ids = templates.Select(q => q.question_category_id).ToList();
+                var questions = await context.trn_questions.Where(q => cat_ids.Contains(q.category_id)).ToListAsync();
+                foreach (var template in templates)
                 {
-                   
-                    person_generated_questions.Add(
-                     new trn_person_exam_question()
-                     {
-                         exam_id = dto.exam_id,
-                         question_id = q.id,
-                         remark = "date: " + DateTime.Now.ToString("yyyy-MM-dd HH:mm"),
+                    var qs = questions.Where(q => q.category_id == template.question_category_id).OrderBy(q => q.id).ToList();
+                    var selected_qs = TakeRandomRows(qs, (int)template.total);
+                    if (selected_qs != null && selected_qs.Count() > 0)
+                        foreach (var q in selected_qs)
+                        {
+                            context.trn_exam_question.Add(new trn_exam_question()
+                            {
+                                 exam_id=dto.exam_id,
+                                  question_id=q.id,
+                                   
+                            });
+                            person_generated_questions.Add(
+                             new trn_person_exam_question()
+                             {
+                                 exam_id = dto.exam_id,
+                                 question_id = q.id,
+                                 remark = "date: " + DateTime.Now.ToString("yyyy-MM-dd HH:mm"),
 
-                     }
-                   );
+                             }
+                           );
+                        }
+
+                }
+                var exists = await context.trn_exam_question.Where(q => q.exam_id == dto.exam_id).ToListAsync();
+                if (exists != null && exists.Count > 0)
+                    context.trn_exam_question.RemoveRange(exists);
+                foreach (var q in generated_questions)
+                    context.trn_exam_question.Add(q);
+
+
+
+                var person_exams = await context.trn_person_exam.Where(q => q.main_exam_id == dto.exam_id && (q.status_id == 0 || q.status_id == 3 || q.status_id == 1)).ToListAsync();
+                foreach (var person_exam in person_exams)
+                {
+                    var pexists = await context.trn_person_exam_question.Where(q => q.exam_id == person_exam.id).ToListAsync();
+                    if (pexists != null && pexists.Count > 0)
+                        context.trn_person_exam_question.RemoveRange(pexists);
+
+                    foreach (var q in person_generated_questions)
+                        context.trn_person_exam_question.Add(new trn_person_exam_question()
+                        {
+                            person_id = person_exam.person_id,
+                            question_id = q.question_id,
+                            remark = q.remark,
+                            exam_id = person_exam.id
+                        });
+
                 }
 
+
+                await context.SaveAsync();
+                var result = new DataResponse()
+                {
+                    IsSuccess = true,
+                    Data = generated_questions.Select(q => new { q.exam_id, q.id, q.question_id, q.remark }),
+
+                };
+                return Ok(result);
             }
-            var exists = await context.trn_exam_question.Where(q => q.exam_id == dto.exam_id).ToListAsync();
-            if (exists != null && exists.Count > 0)
-                context.trn_exam_question.RemoveRange(exists);
-            foreach (var q in generated_questions)
-                context.trn_exam_question.Add(q);
-
-
-
-            var person_exams = await context.trn_person_exam.Where(q => q.main_exam_id == dto.exam_id && (q.status_id == 0 || q.status_id == 3 || q.status_id == 1)).ToListAsync();
-            foreach (var person_exam in person_exams)
+            catch (Exception ex)
             {
-                var pexists = await context.trn_person_exam_question.Where(q => q.exam_id == person_exam.id).ToListAsync();
-                if (pexists != null && pexists.Count > 0)
-                    context.trn_person_exam_question.RemoveRange(pexists);
-
-                foreach (var q in generated_questions)
-                    context.trn_person_exam_question.Add(new trn_person_exam_question()
-                    {
-                        person_id = person_exam.person_id,
-                        question_id = q.question_id,
-                        remark = q.remark,
-                        exam_id = person_exam.id
-                    });
+                return Ok(ex.Message);
             }
-
-
-            await context.SaveAsync();
-            var result = new DataResponse()
-            {
-                IsSuccess = true,
-                Data = generated_questions.Select(q => new { q.exam_id, q.id, q.question_id, q.remark }),
-
-            };
-            return Ok(result);
         }
 
 
@@ -208,7 +227,7 @@ namespace AirpocketTRN.Controllers
             int main_exam_id = Convert.ToInt32(dto.main_exam_id);
 
             var _pids = dto.person_ids.Select(q => (Nullable<int>)q).ToList();
-            List< trn_person_exam> person_exams = await context.trn_person_exam.Where(q => _pids.Contains( q.person_id)  && q.main_exam_id==main_exam_id).ToListAsync();
+            List<trn_person_exam> person_exams = await context.trn_person_exam.Where(q => _pids.Contains(q.person_id) && q.main_exam_id == main_exam_id).ToListAsync();
             var main_exam = await context.trn_exam.FirstOrDefaultAsync(q => q.id == main_exam_id);
 
             var templates = await context.trn_exam_question_template.Where(q => q.exam_id == main_exam.id).ToListAsync();
@@ -231,13 +250,13 @@ namespace AirpocketTRN.Controllers
                         remark = "date: " + DateTime.Now.ToString("yyyy-MM-dd HH:mm"),
                         person_id = -1,
                     });
-                     
-                   
+
+
                 }
 
             }
-           // List<trn_person_exam_question> dddddd = new List<trn_person_exam_question>();
-            foreach(var person_exam in person_exams)
+            // List<trn_person_exam_question> dddddd = new List<trn_person_exam_question>();
+            foreach (var person_exam in person_exams)
             {
                 var exists = await context.trn_person_exam_question.Where(q => q.exam_id == person_exam.id).ToListAsync();
                 if (exists != null && exists.Count > 0)
@@ -252,11 +271,11 @@ namespace AirpocketTRN.Controllers
                         remark = q.remark,
                     };
 
-                    context.trn_person_exam_question.Add(_q); 
+                    context.trn_person_exam_question.Add(_q);
                 }
             }
 
-           
+
 
 
 
@@ -286,11 +305,11 @@ namespace AirpocketTRN.Controllers
         {
             FLYEntities context = new FLYEntities();
             context.Configuration.LazyLoadingEnabled = false;
-            var exam=await context.trn_person_exam.FirstOrDefaultAsync(q=>q.id==dto.exam_id && q.person_id==dto.person_id);
-            if (exam != null && exam.status_id!=2)
+            var exam = await context.trn_person_exam.FirstOrDefaultAsync(q => q.id == dto.exam_id && q.person_id == dto.person_id);
+            if (exam != null && exam.status_id != 2)
             {
                 exam.status_id = 2;
-                exam.person_sign_date= DateTime.Now;
+                exam.person_sign_date = DateTime.Now;
             }
 
 
@@ -298,7 +317,7 @@ namespace AirpocketTRN.Controllers
             var result = new DataResponse()
             {
                 IsSuccess = true,
-                Data =dto.exam_id,
+                Data = dto.exam_id,
 
             };
             return Ok(result);
@@ -378,7 +397,7 @@ namespace AirpocketTRN.Controllers
             try
             {
                 FLYEntities context = new FLYEntities();
-               
+
                 var profile = await context.view_trn_profile.Where(q => q.Id == client_id).FirstOrDefaultAsync();
                 // var exam=await context.view_trn_exam.Where(q=>q.id==id).FirstOrDefaultAsync();
 
@@ -556,5 +575,34 @@ namespace AirpocketTRN.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+
+        [Route("api/question/templates/")]
+        [AcceptVerbs("GET")]
+        public async Task<IHttpActionResult> GetQuestionTemplates()
+        {
+            try
+            {
+                FLYEntities context = new FLYEntities();
+                var temps = await context.view_trn_exam_question_template.OrderBy(q => q.category).ToListAsync();
+
+                var result = new DataResponse()
+                {
+                    Data = temps
+                     ,
+                    IsSuccess = true,
+                };
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
+
     }
 }

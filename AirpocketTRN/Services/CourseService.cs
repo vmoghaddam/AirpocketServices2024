@@ -1596,7 +1596,7 @@ namespace AirpocketTRN.Services
             foreach (var exam in exams)
             {
                 var _exam = JsonConvert.DeserializeObject<ExamViewModel>(JsonConvert.SerializeObject(exam));
-                _exam.groups = groups.Where(q => q.exam_id == exam.id).Select(q =>q.group_id).ToList();
+                _exam.groups = groups.Where(q => q.exam_id == exam.id).Select(q => q.group_id).ToList();
                 _exam.people = people.Where(q => q.exam_id == exam.id).Select(q => q.person_id).ToList();
                 _exam.template = templates.Where(q => q.exam_id == exam.id).ToList();
                 _exams.Add(_exam);
@@ -2690,6 +2690,7 @@ namespace AirpocketTRN.Services
                 db_exam.location_title = dto_exam.location_title;
                 db_exam.location_address = dto_exam.location_address;
                 db_exam.location_phone = dto_exam.location_phone;
+                dto_exam.template = dto_exam.template.Where(q => q.total != null).ToList();
 
                 foreach (var temp in dto_exam.template)
                 {
@@ -3236,7 +3237,7 @@ namespace AirpocketTRN.Services
 
             var exists = await context.CoursePeoples.Where(q => q.CourseId == courseId).Select(q => q.PersonId).ToListAsync();
             var newids = personIds.Where(q => !exists.Contains(q)).ToList();
-
+            var exam = await context.trn_exam.Where(q => q.course_id == courseId).FirstOrDefaultAsync();
             foreach (var id in newids)
             {
                 context.CoursePeoples.Add(new CoursePeople()
@@ -3245,6 +3246,26 @@ namespace AirpocketTRN.Services
                     PersonId = id,
                     StatusId = -1,
                 });
+                if (exam != null)
+                    context.trn_person_exam.Add(new trn_person_exam()
+                    {
+                        person_id = id,
+                        course_id = courseId,
+                        exam_date = exam.exam_date,
+                        location_title = exam.location_title,
+                        date_start = exam.date_start,
+                        duration = exam.duration,
+                        main_exam_id = exam.id,
+                        location_address = exam.location_address,
+                        exam_type_id = exam.exam_type_id,
+                        location_phone = exam.location_phone,
+                        status_id = exam.status_id,
+                        created_by = exam.created_by,
+                        date_start_scheduled = exam.date_start_scheduled,
+                        date_end_scheduled = exam.date_end_scheduled,
+                        created_date = exam.created_date,
+
+                    });
             }
 
             await context.SaveChangesAsync();

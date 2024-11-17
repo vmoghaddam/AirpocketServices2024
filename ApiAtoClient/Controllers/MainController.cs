@@ -213,7 +213,7 @@ namespace ApiAtoClient.Controllers
             {
 
                 ppa_entities context = new ppa_entities();
-                var exams = await context.view_trn_person_exam.Where(q => q.person_id==client_id && q.exam_status_id==0).OrderBy(q=>q.exam_status_id).ThenByDescending(q=>q.exam_date_actual).ToListAsync();
+                var exams = await context.view_trn_person_exam.Where(q => q.person_id==client_id && (q.status_id==0 || q.status_id == 1)).OrderBy(q=>q.exam_status_id).ThenByDescending(q=>q.exam_date_actual).ToListAsync();
 
                  
 

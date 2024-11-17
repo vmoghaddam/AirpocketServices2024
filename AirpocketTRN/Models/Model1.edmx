@@ -8523,7 +8523,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <EntitySet Name="ViewTeacherCourses" EntityType="FLYModel.ViewTeacherCourse" />
           <EntitySet Name="trn_exam_student_answer" EntityType="FLYModel.trn_exam_student_answer" />
           <EntitySet Name="trn_exam_question" EntityType="FLYModel.trn_exam_question" />
-          <EntitySet Name="trn_exam_question_template" EntityType="FLYModel.trn_exam_question_template" />
           <EntitySet Name="trn_question_category" EntityType="FLYModel.trn_question_category" />
           <AssociationSet Name="fk_st_ans_wxqu" Association="FLYModel.fk_st_ans_wxqu">
             <End Role="trn_exam_question" EntitySet="trn_exam_question" />
@@ -8601,6 +8600,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
             <End Role="trn_exam" EntitySet="trn_exam" />
             <End Role="trn_person_exam" EntitySet="trn_person_exam" />
           </AssociationSet>
+          <EntitySet Name="trn_exam_question_template" EntityType="FLYModel.trn_exam_question_template" />
           <AssociationSet Name="fk_qte_exam" Association="FLYModel.fk_qte_exam">
             <End Role="trn_exam" EntitySet="trn_exam" />
             <End Role="trn_exam_question_template" EntitySet="trn_exam_question_template" />
@@ -12351,18 +12351,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <NavigationProperty Name="trn_questions" Relationship="FLYModel.fk_ex_qu_1" FromRole="trn_exam_question" ToRole="trn_questions" />
           <NavigationProperty Name="trn_exam" Relationship="FLYModel.fk_ex_ex_1" FromRole="trn_exam_question" ToRole="trn_exam" />
         </EntityType>
-        <EntityType Name="trn_exam_question_template">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="exam_id" Type="Int32" Nullable="false" />
-          <Property Name="question_category_id" Type="Int32" />
-          <Property Name="hardness" Type="Int32" />
-          <Property Name="total" Type="Int32" />
-          <Property Name="reamrk" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="trn_exam" Relationship="FLYModel.fk_qte_exam" FromRole="trn_exam_question_template" ToRole="trn_exam" />
-        </EntityType>
         <EntityType Name="trn_question_category">
           <Key>
             <PropertyRef Name="id" />
@@ -14048,6 +14036,18 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="trn_exam_question_template">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="exam_id" Type="Int32" Nullable="false" />
+          <Property Name="question_category_id" Type="Int32" />
+          <Property Name="hardness" Type="Int32" />
+          <Property Name="total" Type="Int32" />
+          <Property Name="reamrk" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="trn_exam" Relationship="FLYModel.fk_qte_exam" FromRole="trn_exam_question_template" ToRole="trn_exam" />
+        </EntityType>
         <Association Name="fk_qte_exam">
           <End Type="FLYModel.trn_exam" Role="trn_exam" Multiplicity="1" />
           <End Type="FLYModel.trn_exam_question_template" Role="trn_exam_question_template" Multiplicity="*" />
@@ -16934,18 +16934,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="trn_exam_question_template">
-            <EntityTypeMapping TypeName="FLYModel.trn_exam_question_template">
-              <MappingFragment StoreEntitySet="trn_exam_question_template">
-                <ScalarProperty Name="reamrk" ColumnName="reamrk" />
-                <ScalarProperty Name="total" ColumnName="total" />
-                <ScalarProperty Name="hardness" ColumnName="hardness" />
-                <ScalarProperty Name="question_category_id" ColumnName="question_category_id" />
-                <ScalarProperty Name="exam_id" ColumnName="exam_id" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="trn_question_category">
             <EntityTypeMapping TypeName="FLYModel.trn_question_category">
               <MappingFragment StoreEntitySet="trn_question_category">
@@ -18286,6 +18274,18 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
                 <ScalarProperty Name="answer_id" ColumnName="answer_id" />
                 <ScalarProperty Name="question_id" ColumnName="question_id" />
                 <ScalarProperty Name="person_id" ColumnName="person_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="trn_exam_question_template">
+            <EntityTypeMapping TypeName="FLYModel.trn_exam_question_template">
+              <MappingFragment StoreEntitySet="trn_exam_question_template">
+                <ScalarProperty Name="reamrk" ColumnName="reamrk" />
+                <ScalarProperty Name="total" ColumnName="total" />
+                <ScalarProperty Name="hardness" ColumnName="hardness" />
+                <ScalarProperty Name="question_category_id" ColumnName="question_category_id" />
+                <ScalarProperty Name="exam_id" ColumnName="exam_id" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
