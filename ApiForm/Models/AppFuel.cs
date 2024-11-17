@@ -7,11 +7,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-
 namespace ApiForm.Models
 {
+    using System;
+    using System.Collections.Generic;
+    
     public partial class AppFuel
     {
         public int FlightId { get; set; }
@@ -83,5 +83,25 @@ namespace ApiForm.Models
         public string P2Name { get; set; }
         public Nullable<int> P2Id { get; set; }
         public string P2ScheduleName { get; set; }
+        public int PaxAdult { get; set; }
+        public int PaxChild { get; set; }
+        public int PaxInfant { get; set; }
+        public Nullable<int> RevPax { get; set; }
+        public string PDate { get; set; }
+        public Nullable<int> PYear { get; set; }
+        public string PMonthName { get; set; }
+        public Nullable<int> PMonth { get; set; }
+        public string PDayName { get; set; }
+        public Nullable<int> PDay { get; set; }
+        public int Season { get; set; }
+        public string SeasonTitle { get; set; }
+        public string PYearMonthName { get; set; }
+        public Nullable<System.DateTime> STDLocal { get; set; }
+        public int std_hour_0004 { get; set; }
+        public int std_hour_0408 { get; set; }
+        public int std_hour_0812 { get; set; }
+        public int std_hour_1216 { get; set; }
+        public int std_hour_1620 { get; set; }
+        public int std_hour_2024 { get; set; }
     }
 }

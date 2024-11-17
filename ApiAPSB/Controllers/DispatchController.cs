@@ -38,7 +38,7 @@ using System.Threading;
 
 namespace ApiAPSB.Controllers
 {
-    [EnableCors(origins: "*", headers: "*", methods: "*")]
+    //[EnableCors(origins: "*", headers: "*", methods: "*")]
     public class DispatchController : ApiController
     {
 

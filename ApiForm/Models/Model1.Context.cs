@@ -7,24 +7,26 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
-
 namespace ApiForm.Models
 {
+    using System;
+    using System.Data.Entity;
+    using System.Data.Entity.Infrastructure;
+    
     public partial class ppa_entities : DbContext
     {
         public ppa_entities()
             : base("name=ppa_entities")
         {
         }
-
+    
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();
         }
-
+    
         public virtual DbSet<AppFuel> AppFuels { get; set; }
+        public virtual DbSet<FormVacation> FormVacations { get; set; }
+        public virtual DbSet<ViewFormVacation> ViewFormVacations { get; set; }
     }
 }

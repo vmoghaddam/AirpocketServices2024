@@ -80,7 +80,7 @@ namespace ApiAPSB.Models
         public Nullable<int> FlightTime { get; set; }
         public Nullable<int> ScheduledFlightTime { get; set; }
         public Nullable<int> FlightTimeActual { get; set; }
-        public Nullable<int> FixTime { get; set; }
+        public int FixTime { get; set; }
         public Nullable<int> SITATime { get; set; }
         public Nullable<int> Duty { get; set; }
         public Nullable<int> EstimatedDelay { get; set; }
@@ -108,7 +108,7 @@ namespace ApiAPSB.Models
         public Nullable<int> TotalSeat { get; set; }
         public int BaggageWeight { get; set; }
         public int CargoWeight { get; set; }
-        public int Freight { get; set; }
+        public Nullable<int> Freight { get; set; }
         public Nullable<System.DateTime> FlightDate { get; set; }
         public Nullable<int> CargoCount { get; set; }
         public Nullable<int> BaggageCount { get; set; }

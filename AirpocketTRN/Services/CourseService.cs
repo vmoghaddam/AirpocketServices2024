@@ -1418,11 +1418,11 @@ namespace AirpocketTRN.Services
             public int expired { get; set; }
             public int expiring { get; set; }
         }
-        public async Task<DataResponse> GetCertificateHistory_Expiring_People(string  type )
+        public async Task<DataResponse> GetCertificateHistory_Expiring_People(string type)
         {
             var query = from x in context.view_trn_expiring
                         where x.CertificateType == type
-                           &&  x.Remain <= 45  
+                           && x.Remain <= 45
                         orderby x.Remain
                         select x;
             var result = await query.ToListAsync();
@@ -1437,23 +1437,23 @@ namespace AirpocketTRN.Services
         {
 
             var query_expiring = await (from x in context.view_trn_expiring
-                                  where x.Remain > 0 && x.Remain <= 45 /*&& x.InActive == false && x.RankOrder == 1*/
-                                  group x by new { x.CertificateType  } into grp
-                                  select new
-                                  {
-                                      
-                                      grp.Key.CertificateType,
-                                      cnt = grp.Count(),
-                                  }).ToListAsync();
+                                        where x.Remain > 0 && x.Remain <= 45 /*&& x.InActive == false && x.RankOrder == 1*/
+                                        group x by new { x.CertificateType } into grp
+                                        select new
+                                        {
+
+                                            grp.Key.CertificateType,
+                                            cnt = grp.Count(),
+                                        }).ToListAsync();
             var query_expired = await (from x in context.view_trn_expiring
-                                       where x.Remain <= 0  
-                                 group x by new { x.CertificateType  } into grp
-                                 select new
-                                 {
-                                     
-                                     grp.Key.CertificateType,
-                                     cnt = grp.Count(),
-                                 }).ToListAsync();
+                                       where x.Remain <= 0
+                                       group x by new { x.CertificateType } into grp
+                                       select new
+                                       {
+
+                                           grp.Key.CertificateType,
+                                           cnt = grp.Count(),
+                                       }).ToListAsync();
             var cts = query_expired.Select(q => q.CertificateType).Concat(query_expiring.Select(q => q.CertificateType)).Distinct().ToList();
             var result = new List<expiring_grp>();
             foreach (var x in cts)
@@ -1521,22 +1521,83 @@ namespace AirpocketTRN.Services
             };
         }
 
+
+        public class dto_trn_exam
+        {
+            public int id { get; set; }
+            public int course_id { get; set; }
+            public DateTime? exam_date { get; set; }
+            public string exam_date_persian { get; set; }
+            public string location_title { get; set; }
+            public string location_address { get; set; }
+            public string location_phone { get; set; }
+            public string remark { get; set; }
+            public int? status_id { get; set; }
+            public int? created_by { get; set; }
+            public int? confirmed_by { get; set; }
+            public DateTime? created_date { get; set; }
+            public DateTime? confirmed_date { get; set; }
+            public int? exam_type_id { get; set; }
+            public DateTime? signed_by_ins1_date { get; set; }
+            public DateTime? signed_by_ins2_date { get; set; }
+            public DateTime? signed_by_director_date { get; set; }
+            public DateTime? signed_by_staff_date { get; set; }
+            public int? duration { get; set; }
+            public DateTime? date_start { get; set; }
+            public DateTime? date_end_scheduled { get; set; }
+            public DateTime? date_end_actual { get; set; }
+            public DateTime? date_start_scheduled { get; set; }
+            public bool? is_negetive_point { get; set; }
+
+        }
+
         public async Task<DataResponse> GetCourseViewObject(int cid)
         {
             var course = await context.ViewCourseNews.Where(q => q.Id == cid).FirstOrDefaultAsync();
             var sessions = await context.CourseSessions.Where(q => q.CourseId == cid).OrderBy(q => q.DateStart).ToListAsync();
             var syllabi = await context.CourseSyllabus.Where(q => q.CourseId == cid).ToListAsync();
-            var exams=await context.trn_exam.Where(q=>q.course_id==cid).ToListAsync();
+            //var exams =await context.trn_exam.Where(q=>q.course_id==cid).ToListAsync();
+            var exams = await (from e in context.trn_exam
+                               where e.course_id == cid
+                               select new dto_trn_exam()
+                               {
+                                   id = e.id,
+                                   course_id = e.course_id,
+                                   exam_date = e.exam_date,
+                                   exam_date_persian = e.exam_date_persian,
+                                   location_title = e.location_title,
+                                   location_address = e.location_address,
+                                   location_phone = e.location_phone,
+                                   remark = e.remark,
+                                   status_id = e.status_id,
+                                   created_by = e.created_by,
+                                   confirmed_by = e.confirmed_by,
+                                   created_date = e.created_date,
+                                   confirmed_date = e.confirmed_date,
+                                   exam_type_id = e.exam_type_id,
+                                   signed_by_ins1_date = e.signed_by_ins1_date,
+                                   signed_by_ins2_date = e.signed_by_ins2_date,
+                                   signed_by_director_date = e.signed_by_director_date,
+                                   signed_by_staff_date = e.signed_by_staff_date,
+                                   duration = e.duration,
+                                   date_start = e.date_start,
+                                   date_end_scheduled = e.date_end_scheduled,
+                                   date_end_actual = e.date_end_actual,
+                                   date_start_scheduled = e.date_start_scheduled,
+                                   is_negetive_point = e.is_negetive_point
+
+                               }).ToListAsync();
+
             var exam_ids = exams.Select(q => q.id).ToList();
             var groups = await context.trn_exam_group.Where(q => exam_ids.Contains(q.exam_id)).ToListAsync();
             var people = await context.trn_exam_person.Where(q => exam_ids.Contains(q.exam_id)).ToListAsync();
             var templates = await context.view_trn_exam_question_template.Where(q => exam_ids.Contains(q.exam_id)).ToListAsync();
             var _exams = new List<ExamViewModel>();
-            foreach(var exam in exams)
+            foreach (var exam in exams)
             {
-                var _exam =JsonConvert.DeserializeObject< ExamViewModel>( JsonConvert.SerializeObject(exam));
-                _exam.groups = new List<int>(); //groups.Where(q => q.exam_id == exam.id).Select.ToList();
-                _exam.people = new List<int>(); //people.Where
+                var _exam = JsonConvert.DeserializeObject<ExamViewModel>(JsonConvert.SerializeObject(exam));
+                _exam.groups = groups.Where(q => q.exam_id == exam.id).Select(q =>q.group_id).ToList();
+                _exam.people = people.Where(q => q.exam_id == exam.id).Select(q => q.person_id).ToList();
                 _exam.template = templates.Where(q => q.exam_id == exam.id).ToList();
                 _exams.Add(_exam);
             }
@@ -1548,7 +1609,7 @@ namespace AirpocketTRN.Services
                     course,
                     sessions,
                     syllabi,
-                    exams=_exams,
+                    exams = _exams,
 
                 },
                 IsSuccess = true,
@@ -2611,9 +2672,9 @@ namespace AirpocketTRN.Services
 
             var exiting_exams = await context.trn_exam.Where(q => q.course_id == dto.Id).ToListAsync();
             var exam_ids = exiting_exams.Select(q => q.id).ToList();
-            var existing_templates=await context.trn_exam_question_template.Where(q=>exam_ids.Contains(q.exam_id)).ToListAsync();
+            var existing_templates = await context.trn_exam_question_template.Where(q => exam_ids.Contains(q.exam_id)).ToListAsync();
 
-            if (dto.exams!=null && dto.exams.Count > 0)
+            if (dto.exams != null && dto.exams.Count > 0)
             {
                 var dto_exam = dto.exams.First();
                 var db_exam = await context.trn_exam.FirstOrDefaultAsync(q => q.course_id == dto.Id);
@@ -2622,12 +2683,15 @@ namespace AirpocketTRN.Services
                     db_exam = new trn_exam();
                     entity.trn_exam.Add(db_exam);
                 }
-                //db_exam.date_start = dto_exam.date_start;
-               // db_exam.date_start_scheduled = dto_exam.date_start_scheduled;
-               // db_exam.duration = dto_exam.duration;
-               // db_exam.exam_date = dto_exam.exam_date;
-               // db_exam.
-                foreach(var temp in dto_exam.template)
+                db_exam.date_start = dto_exam.date_start;
+                db_exam.date_start_scheduled = dto_exam.date_start_scheduled;
+                db_exam.duration = dto_exam.duration;
+                db_exam.exam_date = dto_exam.exam_date;
+                db_exam.location_title = dto_exam.location_title;
+                db_exam.location_address = dto_exam.location_address;
+                db_exam.location_phone = dto_exam.location_phone;
+
+                foreach (var temp in dto_exam.template)
                 {
                     var db_temp = existing_templates.FirstOrDefault(q => q.exam_id == db_exam.id && q.question_category_id == temp.category_id);
                     if (db_temp == null)
@@ -2635,27 +2699,27 @@ namespace AirpocketTRN.Services
                         db_temp = new trn_exam_question_template();
                         db_exam.trn_exam_question_template.Add(db_temp);
                     }
-                    db_temp.question_category_id= temp.category_id;
+                    db_temp.question_category_id = temp.category_id;
                     db_temp.total = temp.total;
                 }
 
                 var existing_exam_grps = await context.trn_exam_group.Where(q => q.exam_id == db_exam.id).ToListAsync();
-                var existing_exam_people=await context.trn_exam_person.Where(q=>q.exam_id==db_exam.id).ToListAsync();
+                var existing_exam_people = await context.trn_exam_person.Where(q => q.exam_id == db_exam.id).ToListAsync();
                 if (existing_exam_grps != null && existing_exam_grps.Count > 0)
                     context.trn_exam_group.RemoveRange(existing_exam_grps);
-                if (existing_exam_people!=null && existing_exam_people.Count > 0)
+                if (existing_exam_people != null && existing_exam_people.Count > 0)
                     context.trn_exam_person.RemoveRange(existing_exam_people);
-               // var grps = await context.JobGroups.Where(q => dto_exam.groups.Contains(q.Id)).ToListAsync();
-                foreach(var g in dto_exam.groups)
+                // var grps = await context.JobGroups.Where(q => dto_exam.groups.Contains(q.Id)).ToListAsync();
+                foreach (var g in dto_exam.groups)
                 {
                     db_exam.trn_exam_group.Add(new trn_exam_group() { group_id = g });
                 }
                 foreach (var p in dto_exam.people)
-                    db_exam.trn_exam_person.Add(new trn_exam_person() { person_id=p });
+                    db_exam.trn_exam_person.Add(new trn_exam_person() { person_id = p });
 
             }
 
-           
+
             //pasco
             /* var docs = await context.CourseDocuments.Where(q => q.CourseId == dto.Id).ToListAsync();
              var docids = dto.Documents.Where(q => q.Id > 0).Select(q => q.Id).ToList();
@@ -3254,13 +3318,13 @@ namespace AirpocketTRN.Services
 
         //06-13
         //10-14
-        public async Task<DataResponse> UpdateExamResult (dto_exam_result dto)
+        public async Task<DataResponse> UpdateExamResult(dto_exam_result dto)
         {
             var course_people = await context.CoursePeoples.Where(q => q.CourseId == dto.course_id).ToListAsync();
-            foreach(var x in course_people)
+            foreach (var x in course_people)
             {
                 var sc = dto.scores.FirstOrDefault(q => q.person_id == x.PersonId);
-                if (sc!=null)
+                if (sc != null)
                 {
                     x.ExamResult = sc.score;
                     x.ExamStatus = sc.status_id;
@@ -3278,12 +3342,12 @@ namespace AirpocketTRN.Services
 
         public async Task<DataResponse> UpdateExamSign(dto_exam_sign dto)
         {
-            var course  = await context.Courses.Where(q => q.Id == dto.course_id).FirstAsync();
-            if (course !=null)
+            var course = await context.Courses.Where(q => q.Id == dto.course_id).FirstAsync();
+            if (course != null)
             {
                 course.Date_Exam_Sign_Ins1 = DateTime.Now;
-               
-            }    
+
+            }
             await context.SaveChangesAsync();
 
             return new DataResponse()
@@ -3360,7 +3424,7 @@ namespace AirpocketTRN.Services
 
         public async Task<DataResponse> UpdateCoursePeopleSign(dto_exam_sign dto)
         {
-            var cp = await context.CoursePeoples.Where(q => q.CourseId == dto.course_id && q.PersonId==dto.persin_id).FirstAsync();
+            var cp = await context.CoursePeoples.Where(q => q.CourseId == dto.course_id && q.PersonId == dto.persin_id).FirstAsync();
             if (cp != null)
             {
                 cp.Date_Sign_Ins1 = DateTime.Now;
@@ -4949,8 +5013,8 @@ namespace AirpocketTRN.Services
 
         public async Task<DataResponse> GetExamSummary(int exam_id)
         {
-            
-            var summary = await context.view_trn_exam_summary_details.Where(q => q.main_exam_id==exam_id).OrderBy(q=>q.last_name).ThenBy(q=>q.first_name).ToListAsync();
+
+            var summary = await context.view_trn_exam_summary_details.Where(q => q.main_exam_id == exam_id).OrderBy(q => q.last_name).ThenBy(q => q.first_name).ToListAsync();
             return new DataResponse()
             {
                 Data = summary,
@@ -4971,10 +5035,10 @@ namespace AirpocketTRN.Services
             };
         }
 
-        public async Task<DataResponse> GetExamPeopleAnswersByPerson(int exam_id,int person_id)
+        public async Task<DataResponse> GetExamPeopleAnswersByPerson(int exam_id, int person_id)
         {
-            var summary = await context.view_trn_exam_question_person_details.Where(q => q.exam_id == exam_id && q.person_id==person_id)
-                .OrderBy(q=>q.category).ThenBy(q=>q.question_id)
+            var summary = await context.view_trn_exam_question_person_details.Where(q => q.exam_id == exam_id && q.person_id == person_id)
+                .OrderBy(q => q.category).ThenBy(q => q.question_id)
                 .ToListAsync();
             return new DataResponse()
             {
@@ -4995,23 +5059,23 @@ namespace AirpocketTRN.Services
             var exams = _exams.Select(q => JsonConvert.DeserializeObject<ExamViewModel>(JsonConvert.SerializeObject(q))).ToList();
 
 
-            var exam_ids=exams.Select(q=>q.id).ToList();
+            var exam_ids = exams.Select(q => q.id).ToList();
             var templates = await context.view_trn_exam_question_template.Where(q => exam_ids.Contains(q.exam_id)).ToListAsync();
-            var questions=await context.view_trn_exam_question.Where(q=>exam_ids.Contains(q.exam_id)).ToListAsync();
+            var questions = await context.view_trn_exam_question.Where(q => exam_ids.Contains(q.exam_id)).ToListAsync();
             var exam_summary = await context.view_trn_exam_summary_details.Where(q => exam_ids.Contains(q.exam_id)).ToListAsync();
             foreach (var x in exams)
             {
                 x.date_end_scheduled = ((DateTime)x.exam_date).AddMinutes(Convert.ToDouble(x.duration));
-                if (x.status_id!=0 && x.date_end_actual==null && x.date_start != null)
+                if (x.status_id != 0 && x.date_end_actual == null && x.date_start != null)
                 {
                     x.date_end_actual = ((DateTime)x.date_start).AddMinutes(Convert.ToDouble(x.duration));
                 }
                 x.questions = questions.Where(q => q.exam_id == x.id).OrderBy(q => q.category).ThenBy(q => q.question_id).ToList();
                 x.template = templates.Where(q => q.exam_id == x.id).ToList();
-                x.summary = exam_summary.Where(q => q.exam_id == x.id).OrderBy(q=>q.last_name).ThenBy(q=>q.first_name).ToList();
+                x.summary = exam_summary.Where(q => q.exam_id == x.id).OrderBy(q => q.last_name).ThenBy(q => q.first_name).ToList();
             }
 
-           
+
 
 
             return new DataResponse()
@@ -5695,7 +5759,7 @@ namespace AirpocketTRN.Services
         {
             var certs = await context.ViewTeacherCourses.Where(q =>
                    q.Id == id
-                   && (q.Date_Sign_Ins1==null || q.Date_Exam_Sign_Ins1==null)
+                   && (q.Date_Sign_Ins1 == null || q.Date_Exam_Sign_Ins1 == null)
 
            ).OrderByDescending(q => q.DateStart).ToListAsync();
 
@@ -5729,9 +5793,9 @@ namespace AirpocketTRN.Services
         public async Task<DataResponse> GetDirectorActiveCourses(int id)
         {
             var certs = await context.ViewTeacherCourses.Where(q =>
-                   //q.Id == id
+                    //q.Id == id
                     (q.Date_Sign_Ins1 != null && q.Date_Exam_Sign_Ins1 != null)
-                    && q.Date_Sign_Director==null
+                    && q.Date_Sign_Director == null
 
            ).OrderByDescending(q => q.DateStart).ToListAsync();
 
@@ -5774,11 +5838,11 @@ namespace AirpocketTRN.Services
                 entity = new trn_exam_student_answer()
                 {
                     person_id = dto.person_id,
-                     question_id=dto.question_id,
-                      
-                  
+                    question_id = dto.question_id,
+
+
                 };
-                
+
                 context.trn_exam_student_answer.Add(entity);
             }
 

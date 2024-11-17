@@ -5,6 +5,24 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="ppaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="FormVacation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Reason" Type="int" Nullable="false" />
+          <Property Name="ReasonStr" Type="varchar" MaxLength="500" />
+          <Property Name="DateFrom" Type="datetime2" Precision="7" />
+          <Property Name="DateTo" Type="datetime2" Precision="7" />
+          <Property Name="Remark" Type="varchar" MaxLength="2000" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="DateCreate" Type="datetime2" Precision="7" />
+          <Property Name="OperationRemak" Type="varchar" MaxLength="2000" />
+          <Property Name="SchedulingRemark" Type="varchar" MaxLength="2000" />
+          <Property Name="DateStatus" Type="datetime2" Precision="7" />
+          <Property Name="Status" Type="varchar" MaxLength="255" />
+          <Property Name="OperatorId" Type="int" />
+        </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.AppFuel' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="AppFuel">
@@ -17,6 +35,17 @@ warning 6002: The table/view 'ppa_varesh.dbo.AppFuel' does not have a primary ke
             <PropertyRef Name="BaggageWeight" />
             <PropertyRef Name="CargoWeight" />
             <PropertyRef Name="FlightStatus" />
+            <PropertyRef Name="PaxAdult" />
+            <PropertyRef Name="PaxChild" />
+            <PropertyRef Name="PaxInfant" />
+            <PropertyRef Name="Season" />
+            <PropertyRef Name="SeasonTitle" />
+            <PropertyRef Name="std_hour_0004" />
+            <PropertyRef Name="std_hour_0408" />
+            <PropertyRef Name="std_hour_0812" />
+            <PropertyRef Name="std_hour_1216" />
+            <PropertyRef Name="std_hour_1620" />
+            <PropertyRef Name="std_hour_2024" />
           </Key>
           <Property Name="FlightId" Type="int" Nullable="false" />
           <Property Name="UpLift" Type="decimal" Precision="18" Scale="4" />
@@ -87,8 +116,62 @@ warning 6002: The table/view 'ppa_varesh.dbo.AppFuel' does not have a primary ke
           <Property Name="P2Name" Type="nvarchar" MaxLength="1001" />
           <Property Name="P2Id" Type="int" />
           <Property Name="P2ScheduleName" Type="varchar" MaxLength="500" />
+          <Property Name="PaxAdult" Type="int" Nullable="false" />
+          <Property Name="PaxChild" Type="int" Nullable="false" />
+          <Property Name="PaxInfant" Type="int" Nullable="false" />
+          <Property Name="RevPax" Type="int" />
+          <Property Name="PDate" Type="nvarchar" MaxLength="500" />
+          <Property Name="PYear" Type="int" />
+          <Property Name="PMonthName" Type="nvarchar" MaxLength="255" />
+          <Property Name="PMonth" Type="int" />
+          <Property Name="PDayName" Type="nvarchar" MaxLength="255" />
+          <Property Name="PDay" Type="int" />
+          <Property Name="Season" Type="int" Nullable="false" />
+          <Property Name="SeasonTitle" Type="varchar" MaxLength="7" Nullable="false" />
+          <Property Name="PYearMonthName" Type="nvarchar" MaxLength="511" />
+          <Property Name="STDLocal" Type="datetime" />
+          <Property Name="std_hour_0004" Type="int" Nullable="false" />
+          <Property Name="std_hour_0408" Type="int" Nullable="false" />
+          <Property Name="std_hour_0812" Type="int" Nullable="false" />
+          <Property Name="std_hour_1216" Type="int" Nullable="false" />
+          <Property Name="std_hour_1620" Type="int" Nullable="false" />
+          <Property Name="std_hour_2024" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.ViewFormVacation' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ViewFormVacation">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Reason" />
+            <PropertyRef Name="FirstName" />
+            <PropertyRef Name="LastName" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="PID" />
+            <PropertyRef Name="NID" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Reason" Type="int" Nullable="false" />
+          <Property Name="ReasonStr" Type="varchar" MaxLength="500" />
+          <Property Name="DateFrom" Type="datetime2" Precision="7" />
+          <Property Name="DateTo" Type="datetime2" Precision="7" />
+          <Property Name="Remark" Type="varchar" MaxLength="2000" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="DateCreate" Type="datetime2" Precision="7" />
+          <Property Name="OperationRemak" Type="varchar" MaxLength="2000" />
+          <Property Name="SchedulingRemark" Type="varchar" MaxLength="2000" />
+          <Property Name="DateStatus" Type="datetime2" Precision="7" />
+          <Property Name="Status" Type="varchar" MaxLength="255" />
+          <Property Name="OperatorId" Type="int" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="1003" Nullable="false" />
+          <Property Name="PID" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="NID" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Mobile" Type="nvarchar" MaxLength="500" />
+          <Property Name="JobGroup" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <EntityContainer Name="ppaModelStoreContainer">
+          <EntitySet Name="FormVacation" EntityType="Self.FormVacation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AppFuel" EntityType="Self.AppFuel" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [AppFuel].[FlightId] AS [FlightId], 
@@ -159,8 +242,52 @@ warning 6002: The table/view 'ppa_varesh.dbo.AppFuel' does not have a primary ke
     [AppFuel].[P1ScheduleName] AS [P1ScheduleName], 
     [AppFuel].[P2Name] AS [P2Name], 
     [AppFuel].[P2Id] AS [P2Id], 
-    [AppFuel].[P2ScheduleName] AS [P2ScheduleName]
+    [AppFuel].[P2ScheduleName] AS [P2ScheduleName], 
+    [AppFuel].[PaxAdult] AS [PaxAdult], 
+    [AppFuel].[PaxChild] AS [PaxChild], 
+    [AppFuel].[PaxInfant] AS [PaxInfant], 
+    [AppFuel].[RevPax] AS [RevPax], 
+    [AppFuel].[PDate] AS [PDate], 
+    [AppFuel].[PYear] AS [PYear], 
+    [AppFuel].[PMonthName] AS [PMonthName], 
+    [AppFuel].[PMonth] AS [PMonth], 
+    [AppFuel].[PDayName] AS [PDayName], 
+    [AppFuel].[PDay] AS [PDay], 
+    [AppFuel].[Season] AS [Season], 
+    [AppFuel].[SeasonTitle] AS [SeasonTitle], 
+    [AppFuel].[PYearMonthName] AS [PYearMonthName], 
+    [AppFuel].[STDLocal] AS [STDLocal], 
+    [AppFuel].[std_hour_0004] AS [std_hour_0004], 
+    [AppFuel].[std_hour_0408] AS [std_hour_0408], 
+    [AppFuel].[std_hour_0812] AS [std_hour_0812], 
+    [AppFuel].[std_hour_1216] AS [std_hour_1216], 
+    [AppFuel].[std_hour_1620] AS [std_hour_1620], 
+    [AppFuel].[std_hour_2024] AS [std_hour_2024]
     FROM [dbo].[AppFuel] AS [AppFuel]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="ViewFormVacation" EntityType="Self.ViewFormVacation" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ViewFormVacation].[Id] AS [Id], 
+    [ViewFormVacation].[Reason] AS [Reason], 
+    [ViewFormVacation].[ReasonStr] AS [ReasonStr], 
+    [ViewFormVacation].[DateFrom] AS [DateFrom], 
+    [ViewFormVacation].[DateTo] AS [DateTo], 
+    [ViewFormVacation].[Remark] AS [Remark], 
+    [ViewFormVacation].[UserId] AS [UserId], 
+    [ViewFormVacation].[DateCreate] AS [DateCreate], 
+    [ViewFormVacation].[OperationRemak] AS [OperationRemak], 
+    [ViewFormVacation].[SchedulingRemark] AS [SchedulingRemark], 
+    [ViewFormVacation].[DateStatus] AS [DateStatus], 
+    [ViewFormVacation].[Status] AS [Status], 
+    [ViewFormVacation].[OperatorId] AS [OperatorId], 
+    [ViewFormVacation].[FirstName] AS [FirstName], 
+    [ViewFormVacation].[LastName] AS [LastName], 
+    [ViewFormVacation].[Name] AS [Name], 
+    [ViewFormVacation].[PID] AS [PID], 
+    [ViewFormVacation].[NID] AS [NID], 
+    [ViewFormVacation].[Mobile] AS [Mobile], 
+    [ViewFormVacation].[JobGroup] AS [JobGroup]
+    FROM [dbo].[ViewFormVacation] AS [ViewFormVacation]</DefiningQuery>
           </EntitySet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -169,6 +296,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.AppFuel' does not have a primary ke
       <Schema Namespace="ppaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="ppa_entities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="AppFuels" EntityType="ppaModel.AppFuel" />
+          <EntitySet Name="FormVacations" EntityType="ppaModel.FormVacation" />
+          <EntitySet Name="ViewFormVacations" EntityType="ppaModel.ViewFormVacation" />
         </EntityContainer>
         <EntityType Name="AppFuel">
           <Key>
@@ -180,6 +309,17 @@ warning 6002: The table/view 'ppa_varesh.dbo.AppFuel' does not have a primary ke
             <PropertyRef Name="BaggageWeight" />
             <PropertyRef Name="CargoWeight" />
             <PropertyRef Name="FlightStatus" />
+            <PropertyRef Name="PaxAdult" />
+            <PropertyRef Name="PaxChild" />
+            <PropertyRef Name="PaxInfant" />
+            <PropertyRef Name="Season" />
+            <PropertyRef Name="SeasonTitle" />
+            <PropertyRef Name="std_hour_0004" />
+            <PropertyRef Name="std_hour_0408" />
+            <PropertyRef Name="std_hour_0812" />
+            <PropertyRef Name="std_hour_1216" />
+            <PropertyRef Name="std_hour_1620" />
+            <PropertyRef Name="std_hour_2024" />
           </Key>
           <Property Name="FlightId" Type="Int32" Nullable="false" />
           <Property Name="UpLift" Type="Decimal" Precision="18" Scale="4" />
@@ -250,6 +390,75 @@ warning 6002: The table/view 'ppa_varesh.dbo.AppFuel' does not have a primary ke
           <Property Name="P2Name" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
           <Property Name="P2Id" Type="Int32" />
           <Property Name="P2ScheduleName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="PaxAdult" Type="Int32" Nullable="false" />
+          <Property Name="PaxChild" Type="Int32" Nullable="false" />
+          <Property Name="PaxInfant" Type="Int32" Nullable="false" />
+          <Property Name="RevPax" Type="Int32" />
+          <Property Name="PDate" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="PYear" Type="Int32" />
+          <Property Name="PMonthName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PMonth" Type="Int32" />
+          <Property Name="PDayName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PDay" Type="Int32" />
+          <Property Name="Season" Type="Int32" Nullable="false" />
+          <Property Name="SeasonTitle" Type="String" Nullable="false" MaxLength="7" FixedLength="false" Unicode="false" />
+          <Property Name="PYearMonthName" Type="String" MaxLength="511" FixedLength="false" Unicode="true" />
+          <Property Name="STDLocal" Type="DateTime" Precision="3" />
+          <Property Name="std_hour_0004" Type="Int32" Nullable="false" />
+          <Property Name="std_hour_0408" Type="Int32" Nullable="false" />
+          <Property Name="std_hour_0812" Type="Int32" Nullable="false" />
+          <Property Name="std_hour_1216" Type="Int32" Nullable="false" />
+          <Property Name="std_hour_1620" Type="Int32" Nullable="false" />
+          <Property Name="std_hour_2024" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FormVacation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Reason" Type="Int32" Nullable="false" />
+          <Property Name="ReasonStr" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="DateFrom" Type="DateTime" Precision="7" />
+          <Property Name="DateTo" Type="DateTime" Precision="7" />
+          <Property Name="Remark" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="DateCreate" Type="DateTime" Precision="7" />
+          <Property Name="OperationRemak" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="SchedulingRemark" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="DateStatus" Type="DateTime" Precision="7" />
+          <Property Name="Status" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="OperatorId" Type="Int32" />
+        </EntityType>
+        <EntityType Name="ViewFormVacation">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Reason" />
+            <PropertyRef Name="FirstName" />
+            <PropertyRef Name="LastName" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="PID" />
+            <PropertyRef Name="NID" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Reason" Type="Int32" Nullable="false" />
+          <Property Name="ReasonStr" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="DateFrom" Type="DateTime" Precision="7" />
+          <Property Name="DateTo" Type="DateTime" Precision="7" />
+          <Property Name="Remark" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="DateCreate" Type="DateTime" Precision="7" />
+          <Property Name="OperationRemak" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="SchedulingRemark" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="DateStatus" Type="DateTime" Precision="7" />
+          <Property Name="Status" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="OperatorId" Type="Int32" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="1003" FixedLength="false" Unicode="true" />
+          <Property Name="PID" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="NID" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Mobile" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="JobGroup" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -260,6 +469,26 @@ warning 6002: The table/view 'ppa_varesh.dbo.AppFuel' does not have a primary ke
           <EntitySetMapping Name="AppFuels">
             <EntityTypeMapping TypeName="ppaModel.AppFuel">
               <MappingFragment StoreEntitySet="AppFuel">
+                <ScalarProperty Name="std_hour_2024" ColumnName="std_hour_2024" />
+                <ScalarProperty Name="std_hour_1620" ColumnName="std_hour_1620" />
+                <ScalarProperty Name="std_hour_1216" ColumnName="std_hour_1216" />
+                <ScalarProperty Name="std_hour_0812" ColumnName="std_hour_0812" />
+                <ScalarProperty Name="std_hour_0408" ColumnName="std_hour_0408" />
+                <ScalarProperty Name="std_hour_0004" ColumnName="std_hour_0004" />
+                <ScalarProperty Name="STDLocal" ColumnName="STDLocal" />
+                <ScalarProperty Name="PYearMonthName" ColumnName="PYearMonthName" />
+                <ScalarProperty Name="SeasonTitle" ColumnName="SeasonTitle" />
+                <ScalarProperty Name="Season" ColumnName="Season" />
+                <ScalarProperty Name="PDay" ColumnName="PDay" />
+                <ScalarProperty Name="PDayName" ColumnName="PDayName" />
+                <ScalarProperty Name="PMonth" ColumnName="PMonth" />
+                <ScalarProperty Name="PMonthName" ColumnName="PMonthName" />
+                <ScalarProperty Name="PYear" ColumnName="PYear" />
+                <ScalarProperty Name="PDate" ColumnName="PDate" />
+                <ScalarProperty Name="RevPax" ColumnName="RevPax" />
+                <ScalarProperty Name="PaxInfant" ColumnName="PaxInfant" />
+                <ScalarProperty Name="PaxChild" ColumnName="PaxChild" />
+                <ScalarProperty Name="PaxAdult" ColumnName="PaxAdult" />
                 <ScalarProperty Name="P2ScheduleName" ColumnName="P2ScheduleName" />
                 <ScalarProperty Name="P2Id" ColumnName="P2Id" />
                 <ScalarProperty Name="P2Name" ColumnName="P2Name" />
@@ -329,6 +558,51 @@ warning 6002: The table/view 'ppa_varesh.dbo.AppFuel' does not have a primary ke
                 <ScalarProperty Name="FuelTotal" ColumnName="FuelTotal" />
                 <ScalarProperty Name="UpLift" ColumnName="UpLift" />
                 <ScalarProperty Name="FlightId" ColumnName="FlightId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FormVacations">
+            <EntityTypeMapping TypeName="ppaModel.FormVacation">
+              <MappingFragment StoreEntitySet="FormVacation">
+                <ScalarProperty Name="OperatorId" ColumnName="OperatorId" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="DateStatus" ColumnName="DateStatus" />
+                <ScalarProperty Name="SchedulingRemark" ColumnName="SchedulingRemark" />
+                <ScalarProperty Name="OperationRemak" ColumnName="OperationRemak" />
+                <ScalarProperty Name="DateCreate" ColumnName="DateCreate" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="DateTo" ColumnName="DateTo" />
+                <ScalarProperty Name="DateFrom" ColumnName="DateFrom" />
+                <ScalarProperty Name="ReasonStr" ColumnName="ReasonStr" />
+                <ScalarProperty Name="Reason" ColumnName="Reason" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ViewFormVacations">
+            <EntityTypeMapping TypeName="ppaModel.ViewFormVacation">
+              <MappingFragment StoreEntitySet="ViewFormVacation">
+                <ScalarProperty Name="JobGroup" ColumnName="JobGroup" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="NID" ColumnName="NID" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="OperatorId" ColumnName="OperatorId" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="DateStatus" ColumnName="DateStatus" />
+                <ScalarProperty Name="SchedulingRemark" ColumnName="SchedulingRemark" />
+                <ScalarProperty Name="OperationRemak" ColumnName="OperationRemak" />
+                <ScalarProperty Name="DateCreate" ColumnName="DateCreate" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="DateTo" ColumnName="DateTo" />
+                <ScalarProperty Name="DateFrom" ColumnName="DateFrom" />
+                <ScalarProperty Name="ReasonStr" ColumnName="ReasonStr" />
+                <ScalarProperty Name="Reason" ColumnName="Reason" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -43,12 +43,10 @@ namespace ApiAPSB.Models
         public virtual DbSet<AppLeg> AppLegs { get; set; }
         public virtual DbSet<geo_apt_sunrise> geo_apt_sunrise { get; set; }
         public virtual DbSet<OFPImport> OFPImports { get; set; }
-        public virtual DbSet<ViewEFBASR> ViewEFBASRs { get; set; }
         public virtual DbSet<Person> People { get; set; }
         public virtual DbSet<ViewEmployee> ViewEmployees { get; set; }
         public virtual DbSet<DayGP> DayGPs { get; set; }
         public virtual DbSet<ViewLegCrew> ViewLegCrews { get; set; }
-        public virtual DbSet<EFBASR> EFBASRs { get; set; }
         public virtual DbSet<XFlightCrew> XFlightCrews { get; set; }
         public virtual DbSet<EFBVoyageReport> EFBVoyageReports { get; set; }
         public virtual DbSet<ViewFDPRest> ViewFDPRests { get; set; }
@@ -77,5 +75,7 @@ namespace ApiAPSB.Models
         public virtual DbSet<Option> Options { get; set; }
         public virtual DbSet<form_discretion_item> form_discretion_item { get; set; }
         public virtual DbSet<discretion_form> discretion_form { get; set; }
+        public virtual DbSet<EFBASR> EFBASRs { get; set; }
+        public virtual DbSet<ViewEFBASR> ViewEFBASRs { get; set; }
     }
 }
