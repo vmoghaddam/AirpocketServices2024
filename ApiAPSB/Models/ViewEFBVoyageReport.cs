@@ -153,5 +153,18 @@ namespace ApiAPSB.Models
         public Nullable<bool> IsActionRequired { get; set; }
         public string OtherForm { get; set; }
         public Nullable<bool> AttForm_ACCIDET { get; set; }
+        public Nullable<int> ReporterId1 { get; set; }
+        public Nullable<int> FormNo1 { get; set; }
+        public Nullable<System.DateTime> DateOccurrence1 { get; set; }
+        public string Result1 { get; set; }
+        public Nullable<bool> AttForm_ASR1 { get; set; }
+        public Nullable<bool> AttForm_CSR1 { get; set; }
+        public Nullable<bool> AttForm_CR1 { get; set; }
+        public Nullable<bool> AttForm_Other1 { get; set; }
+        public string ActionTaken1 { get; set; }
+        public Nullable<bool> IsForInformation1 { get; set; }
+        public Nullable<bool> IsActionRequired1 { get; set; }
+        public string OtherForm1 { get; set; }
+        public Nullable<bool> AttForm_ACCIDET1 { get; set; }
     }
 }

@@ -20,10 +20,11 @@
           <Property Name="Longitude" Type="decimal" Precision="20" Scale="15" />
           <Property Name="SortIndex" Type="int" />
           <Property Name="IsInt" Type="bit" />
-          <Property Name="Country" Type="varchar" MaxLength="50" />
-          <Property Name="Category" Type="varchar" MaxLength="50" />
+          <Property Name="Country" Type="varchar" MaxLength="255" />
           <Property Name="UTC" Type="int" />
+          <Property Name="Category" Type="varchar" MaxLength="255" />
           <Property Name="TimeZone" Type="varchar" MaxLength="500" />
+          <Property Name="Name2" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="DayGP">
           <Key>
@@ -40,7 +41,7 @@
           <Property Name="LocalDate" Type="datetime" />
           <Property Name="PeriodFixTime" Type="nvarchar" MaxLength="500" />
           <Property Name="PDate2" Type="int" />
-          <Property Name="PMonthName2" Type="varchar" MaxLength="255" />
+          <Property Name="Night" Type="datetime2" Precision="7" />
         </EntityType>
         <EntityType Name="discretion_form">
           <Key>
@@ -178,6 +179,13 @@
           <Property Name="OPSStaffUser" Type="varchar" MaxLength="500" />
           <Property Name="OPSStatusId" Type="int" />
           <Property Name="OPSStaffStatusId" Type="int" />
+          <Property Name="DateSign" Type="datetime2" Precision="7" />
+          <Property Name="EmployeeId" Type="int" />
+          <Property Name="ReporterId" Type="int" />
+          <Property Name="Status" Type="int" />
+          <Property Name="FormNo" Type="varchar" MaxLength="255" />
+          <Property Name="DateStatus" Type="datetime" />
+          <Property Name="StatusEmployeeId" Type="int" />
           <Property Name="LOCTaxiway" Type="varchar" MaxLength="255" />
           <Property Name="LOCEnRoute" Type="varchar" MaxLength="255" />
           <Property Name="LOCAPP" Type="varchar" MaxLength="255" />
@@ -186,12 +194,10 @@
           <Property Name="EGPWSTypeId" Type="int" />
           <Property Name="EGPWSAuralAlert" Type="varchar" MaxLength="255" />
           <Property Name="EGPWSActionTaken" Type="varchar" MaxLength="255" />
-          <Property Name="CFITAirapaceId" Type="int" />
           <Property Name="CFITATCId" Type="int" />
           <Property Name="CFITFrequency" Type="varchar" MaxLength="255" />
           <Property Name="CFITHeading" Type="varchar" MaxLength="255" />
           <Property Name="CFITALT" Type="varchar" MaxLength="255" />
-          <Property Name="CFITIncidentId" Type="int" />
           <Property Name="CFITGPWS" Type="varchar" MaxLength="255" />
           <Property Name="AATIncidentId" Type="int" />
           <Property Name="AATRelativeALT" Type="varchar" MaxLength="255" />
@@ -447,7 +453,7 @@
           <Property Name="LastFlightId" Type="int" />
           <Property Name="UPD" Type="int" />
           <Property Name="IsMain" Type="bit" />
-          <Property Name="Key" Type="varchar" MaxLength="1000" />
+          <Property Name="Key" Type="varchar" MaxLength="500" />
           <Property Name="CP" Type="bit" />
           <Property Name="CustomerId" Type="int" />
           <Property Name="Remark" Type="varchar" MaxLength="1000" />
@@ -455,17 +461,17 @@
           <Property Name="InitStart" Type="datetime" />
           <Property Name="InitEnd" Type="datetime" />
           <Property Name="InitRestTo" Type="datetime" />
-          <Property Name="InitFlts" Type="varchar" MaxLength="1000" />
-          <Property Name="InitRoute" Type="varchar" MaxLength="1000" />
-          <Property Name="InitFromIATA" Type="varchar" MaxLength="1000" />
-          <Property Name="InitToIATA" Type="varchar" MaxLength="1000" />
-          <Property Name="InitNo" Type="varchar" MaxLength="1000" />
-          <Property Name="InitKey" Type="varchar" MaxLength="1000" />
+          <Property Name="InitFlts" Type="varchar" MaxLength="500" />
+          <Property Name="InitRoute" Type="varchar" MaxLength="500" />
+          <Property Name="InitFromIATA" Type="varchar" MaxLength="255" />
+          <Property Name="InitToIATA" Type="varchar" MaxLength="255" />
+          <Property Name="InitNo" Type="varchar" MaxLength="500" />
+          <Property Name="InitKey" Type="varchar" MaxLength="500" />
           <Property Name="InitHomeBase" Type="int" />
-          <Property Name="InitRank" Type="varchar" MaxLength="1000" />
+          <Property Name="InitRank" Type="varchar" MaxLength="255" />
           <Property Name="InitIndex" Type="int" />
-          <Property Name="InitGroup" Type="varchar" MaxLength="1000" />
-          <Property Name="InitScheduleName" Type="varchar" MaxLength="1000" />
+          <Property Name="InitGroup" Type="varchar" MaxLength="255" />
+          <Property Name="InitScheduleName" Type="varchar" MaxLength="500" />
           <Property Name="InitFlights" Type="varchar" MaxLength="2000" />
           <Property Name="Remark2" Type="nvarchar" MaxLength="500" />
           <Property Name="CanceledNo" Type="varchar" MaxLength="500" />
@@ -478,14 +484,14 @@
           <Property Name="MaxFDP" Type="decimal" Precision="18" Scale="4" />
           <Property Name="BL" Type="int" />
           <Property Name="FX" Type="int" />
-          <Property Name="ActualStart" Type="datetime2" Precision="7" />
-          <Property Name="ActualEnd" Type="datetime2" Precision="7" />
-          <Property Name="ActualRestTo" Type="datetime2" Precision="7" />
+          <Property Name="ActualStart" Type="datetime" />
+          <Property Name="ActualEnd" Type="datetime" />
+          <Property Name="ActualRestTo" Type="datetime" />
           <Property Name="IsOver" Type="bit" />
           <Property Name="STD" Type="datetime" />
           <Property Name="STA" Type="datetime" />
           <Property Name="OutOfHomeBase" Type="bit" />
-          <Property Name="InitPosition" Type="varchar" MaxLength="1000" />
+          <Property Name="InitPosition" Type="varchar" MaxLength="500" />
           <Property Name="PLNEnd" Type="datetime" />
           <Property Name="PLNRest" Type="datetime" />
           <Property Name="PosFrom" Type="varchar" MaxLength="255" />
@@ -668,6 +674,7 @@
           <Property Name="ChrInfant" Type="int" />
           <Property Name="ATCPlan" Type="varchar" MaxLength="3000" />
           <Property Name="ATL" Type="varchar" MaxLength="1000" />
+          <Property Name="CargoCost" Type="bigint" />
           <Property Name="TTL" Type="int" />
           <Property Name="DOW" Type="int" />
           <Property Name="ZFW" Type="decimal" Precision="18" Scale="4" />
@@ -699,7 +706,6 @@
           <Property Name="ODSec" Type="int" />
           <Property Name="MAXZFW" Type="int" />
           <Property Name="MAXLNW" Type="int" />
-          <Property Name="CargoCost" Type="bigint" />
           <Property Name="Ready" Type="datetime" />
           <Property Name="Start" Type="datetime" />
           <Property Name="CargoPieces" Type="int" />
@@ -1446,27 +1452,27 @@
           <Property Name="RecurrentExpireDate" Type="datetime" />
           <Property Name="FMTIssueDate" Type="datetime" />
           <Property Name="FMTExpireDate" Type="datetime" />
-          <Property Name="OtherAirline" Type="bit" />
           <Property Name="PFirstName" Type="nvarchar" MaxLength="500" />
           <Property Name="PLastName" Type="nvarchar" MaxLength="500" />
           <Property Name="MultiType" Type="varchar" MaxLength="1000" />
-          <Property Name="CTUIssueDate" Type="datetime2" Precision="7" />
-          <Property Name="LRCExpireDate" Type="datetime2" Precision="7" />
-          <Property Name="LRCIssueDate" Type="datetime2" Precision="7" />
-          <Property Name="RSPExpireDate" Type="datetime2" Precision="7" />
-          <Property Name="RSPIssueDate" Type="datetime2" Precision="7" />
-          <Property Name="SAExpireDate" Type="datetime2" Precision="7" />
-          <Property Name="SAIssueDate" Type="datetime2" Precision="7" />
-          <Property Name="Type737ConversionIssueDate" Type="datetime2" Precision="7" />
-          <Property Name="Type737ExpireDate" Type="datetime2" Precision="7" />
-          <Property Name="Type737IssueDate" Type="datetime2" Precision="7" />
-          <Property Name="TypeAirbusConversionIssueDate" Type="datetime2" Precision="7" />
-          <Property Name="TypeAirbusExpireDate" Type="datetime2" Precision="7" />
-          <Property Name="TypeAirbusIssueDate" Type="datetime2" Precision="7" />
-          <Property Name="TypeMDConversionIssueDate" Type="datetime2" Precision="7" />
-          <Property Name="TypeMDExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="OtherAirline" Type="bit" />
           <Property Name="TypeMDIssueDate" Type="datetime2" Precision="7" />
+          <Property Name="TypeMDExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="Type737IssueDate" Type="datetime2" Precision="7" />
+          <Property Name="Type737ExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="TypeAirbusIssueDate" Type="datetime2" Precision="7" />
+          <Property Name="TypeAirbusExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="TypeMDConversionIssueDate" Type="datetime2" Precision="7" />
+          <Property Name="Type737ConversionIssueDate" Type="datetime2" Precision="7" />
+          <Property Name="TypeAirbusConversionIssueDate" Type="datetime2" Precision="7" />
+          <Property Name="LRCIssueDate" Type="datetime2" Precision="7" />
+          <Property Name="LRCExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="RSPIssueDate" Type="datetime2" Precision="7" />
+          <Property Name="RSPExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="CTUIssueDate" Type="datetime2" Precision="7" />
           <Property Name="CTUExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="SAIssueDate" Type="datetime2" Precision="7" />
+          <Property Name="SAExpireDate" Type="datetime2" Precision="7" />
           <Property Name="HFIssueDate" Type="datetime2" Precision="7" />
           <Property Name="HFExpireDate" Type="datetime2" Precision="7" />
           <Property Name="ASDIssueDate" Type="datetime2" Precision="7" />
@@ -1772,6 +1778,7 @@
           <Property Name="SafetyPilotExpireDate" Type="datetime2" Precision="7" />
           <Property Name="RouteCheckIssueDate" Type="datetime2" Precision="7" />
           <Property Name="RouteCheckExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="Category" Type="varchar" MaxLength="255" />
           <Property Name="PROFICIENCY_ASSESSMENT_IsuueDate" Type="datetime2" Precision="7" />
           <Property Name="PROFICIENCY_ASSESSMENT_ExpireDate" Type="datetime2" Precision="7" />
           <Property Name="MPIssueDate" Type="datetime2" Precision="7" />
@@ -1784,7 +1791,6 @@
           <Property Name="TRG01ExpireDate" Type="datetime2" Precision="7" />
           <Property Name="TRG16IssueDate" Type="datetime2" Precision="7" />
           <Property Name="TRG16ExpireDate" Type="datetime2" Precision="7" />
-          <Property Name="Category" Type="varchar" MaxLength="255" />
           <Property Name="FDMFAMIssueDate" Type="datetime2" Precision="7" />
           <Property Name="FDMFAMExpireDate" Type="datetime2" Precision="7" />
           <Property Name="Phase1IssueDate" Type="datetime2" Precision="7" />
@@ -1803,8 +1809,6 @@
           <Property Name="TypeFoker100IssueDate" Type="datetime2" Precision="7" />
           <Property Name="TypeFoker50ExpireDate" Type="datetime2" Precision="7" />
           <Property Name="TypeFoker100ExpireDate" Type="datetime2" Precision="7" />
-          <Property Name="FTSL1IssueDate" Type="datetime2" Precision="7" />
-          <Property Name="FTSL1ExpireDate" Type="datetime2" Precision="7" />
           <Property Name="SMSL2IssueDate" Type="datetime2" Precision="7" />
           <Property Name="SMSL2ExpireDate" Type="datetime2" Precision="7" />
           <Property Name="SMSL3IssueDate" Type="datetime2" Precision="7" />
@@ -1823,6 +1827,8 @@
           <Property Name="ASD_AWZ_ExpireDate" Type="datetime2" Precision="7" />
           <Property Name="ASD_SRY_IssueDate" Type="datetime2" Precision="7" />
           <Property Name="ASD_SRY_ExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="FTSL1IssueDate" Type="datetime2" Precision="7" />
+          <Property Name="FTSL1ExpireDate" Type="datetime2" Precision="7" />
         </EntityType>
         <EntityType Name="PersonCustomer">
           <Key>
@@ -1851,9 +1857,11 @@
           <Property Name="C3GroupId" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPAGRIFFIN.dbo.AppCrewFlight' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_varesh.dbo.AppCrewFlight' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="AppCrewFlight">
           <Key>
+            
+            
             
             
             
@@ -1883,14 +1891,14 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.AppCrewFlight' does not have a prim
           <Property Name="IsPositioning" Type="bit" />
           <Property Name="PositionId" Type="int" />
           <Property Name="Position" Type="varchar" MaxLength="7" />
-          <Property Name="Name" Type="nvarchar" MaxLength="1001" />
-          <Property Name="ScheduleName" Type="nvarchar" MaxLength="758" />
+          <Property Name="Name" Type="nvarchar" MaxLength="1003" Nullable="false" />
+          <Property Name="ScheduleName" Type="varchar" MaxLength="500" />
           <Property Name="GroupId" Type="int" />
           <Property Name="JobGroup" Type="nvarchar" MaxLength="500" />
           <Property Name="JobGroupCode" Type="varchar" MaxLength="500" />
           <Property Name="SexId" Type="int" Nullable="false" />
           <Property Name="Sex" Type="nvarchar" MaxLength="1000" />
-          <Property Name="GroupOrder" Type="int" />
+          <Property Name="GroupOrder" Type="int" Nullable="false" />
           <Property Name="IsCockpit" Type="int" Nullable="false" />
           <Property Name="STDDay" Type="date" />
           <Property Name="STADay" Type="date" />
@@ -1988,7 +1996,7 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.AppCrewFlight' does not have a prim
           <Property Name="P2ScheduleName" Type="nvarchar" MaxLength="1001" Nullable="false" />
           <Property Name="PIC" Type="nvarchar" MaxLength="1001" />
           <Property Name="PICId" Type="int" />
-          <Property Name="SIC" Type="varchar" MaxLength="500" />
+          <Property Name="SIC" Type="nvarchar" MaxLength="2004" />
           <Property Name="SICId" Type="int" />
           <Property Name="JLDatePICApproved" Type="datetime" />
           <Property Name="IStart" Type="datetime" />
@@ -2023,23 +2031,24 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.AppCrewFlight' does not have a prim
           <Property Name="TANKERINGDIFF" Type="int" />
           <Property Name="ACTUALTOTALFUEL" Type="int" />
           <Property Name="LTR2" Type="varchar" MaxLength="255" />
-          <Property Name="dep_dawn" Type="datetime2" Precision="7" />
-          <Property Name="dep_dusk" Type="datetime2" Precision="7" />
-          <Property Name="arr_dawn" Type="datetime2" Precision="7" />
-          <Property Name="arr_dusk" Type="datetime2" Precision="7" />
+          <Property Name="dep_dawn" Type="datetime" />
+          <Property Name="dep_dusk" Type="datetime" />
+          <Property Name="arr_dawn" Type="datetime" />
+          <Property Name="arr_dusk" Type="datetime" />
           <Property Name="FlightTypeOPS" Type="varchar" MaxLength="500" />
           <Property Name="AttForms" Type="varchar" MaxLength="500" />
           <Property Name="PaxFemale" Type="int" />
           <Property Name="PaxMale" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPAGRIFFIN.dbo.AppCrewFlightJL' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_varesh.dbo.AppCrewFlightJL' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="AppCrewFlightJL">
           <Key>
             <PropertyRef Name="FDPId" />
             <PropertyRef Name="DutyType" />
             <PropertyRef Name="DutyTypeTitle" />
             <PropertyRef Name="FDPItemId" />
+            <PropertyRef Name="Name" />
             <PropertyRef Name="SexId" />
             <PropertyRef Name="GroupOrder" />
             <PropertyRef Name="IsCockpit" />
@@ -2050,7 +2059,6 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.AppCrewFlightJL' does not have a pr
             <PropertyRef Name="IsJL" />
             <PropertyRef Name="IsJLApproved" />
             <PropertyRef Name="OFPTANKERINGFUEL" />
-            <PropertyRef Name="Name" />
           </Key>
           <Property Name="FDPId" Type="int" Nullable="false" />
           <Property Name="Id" Type="int" />
@@ -2062,8 +2070,8 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.AppCrewFlightJL' does not have a pr
           <Property Name="IsPositioning" Type="bit" />
           <Property Name="PositionId" Type="int" />
           <Property Name="Position" Type="varchar" MaxLength="7" />
-          <Property Name="Name" Type="nvarchar" MaxLength="1001" Nullable="false" />
-          <Property Name="ScheduleName" Type="nvarchar" MaxLength="758" />
+          <Property Name="Name" Type="nvarchar" MaxLength="1003" Nullable="false" />
+          <Property Name="ScheduleName" Type="varchar" MaxLength="500" />
           <Property Name="GroupId" Type="int" />
           <Property Name="JobGroup" Type="nvarchar" MaxLength="500" />
           <Property Name="JobGroupCode" Type="varchar" MaxLength="500" />
@@ -2191,7 +2199,7 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.AppCrewFlightJL' does not have a pr
           <Property Name="LTR2" Type="varchar" MaxLength="255" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPAGRIFFIN.dbo.AppFDPRest' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_varesh.dbo.AppFDPRest' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="AppFDPRest">
           <Key>
             <PropertyRef Name="Id" />
@@ -2286,8 +2294,8 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.AppFDPRest' does not have a primary
           <Property Name="TemplateId" Type="int" />
           <Property Name="Remark" Type="varchar" MaxLength="1000" />
           <Property Name="Remark2" Type="nvarchar" MaxLength="500" />
-          <Property Name="InitFlts" Type="varchar" MaxLength="1000" />
-          <Property Name="InitRoute" Type="varchar" MaxLength="1000" />
+          <Property Name="InitFlts" Type="varchar" MaxLength="500" />
+          <Property Name="InitRoute" Type="varchar" MaxLength="500" />
           <Property Name="CanceledNo" Type="varchar" MaxLength="500" />
           <Property Name="CanceledRoute" Type="varchar" MaxLength="500" />
           <Property Name="Extension" Type="int" />
@@ -2312,7 +2320,7 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.AppFDPRest' does not have a primary
           <Property Name="DayEnd" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPAGRIFFIN.dbo.AppLeg' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_varesh.dbo.AppLeg' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="AppLeg">
           <Key>
             <PropertyRef Name="ID" />
@@ -2332,10 +2340,6 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.AppLeg' does not have a primary key
           <Property Name="Landing" Type="datetime" />
           <Property Name="TakeOff" Type="datetime" />
           <Property Name="BlockOff" Type="datetime" />
-          <Property Name="BlockOffStationLocal" Type="datetime" />
-          <Property Name="BlockOnStationLocal" Type="datetime" />
-          <Property Name="LandingStationLocal" Type="datetime" />
-          <Property Name="TakeoffStationLocal" Type="datetime" />
           <Property Name="BlockOnLocal" Type="datetime" />
           <Property Name="LandingLocal" Type="datetime" />
           <Property Name="TakeOffLocal" Type="datetime" />
@@ -2491,20 +2495,24 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.AppLeg' does not have a primary key
           <Property Name="BlockOnStation" Type="datetime" />
           <Property Name="LandingStation" Type="datetime" />
           <Property Name="TakeoffStation" Type="datetime" />
-          <Property Name="dep_dawn" Type="datetime2" Precision="7" />
-          <Property Name="dep_dusk" Type="datetime2" Precision="7" />
-          <Property Name="arr_dawn" Type="datetime2" Precision="7" />
-          <Property Name="arr_dusk" Type="datetime2" Precision="7" />
+          <Property Name="dep_dawn" Type="datetime" />
+          <Property Name="dep_dusk" Type="datetime" />
+          <Property Name="arr_dawn" Type="datetime" />
+          <Property Name="arr_dusk" Type="datetime" />
           <Property Name="FlightTypeOPS" Type="varchar" MaxLength="500" />
           <Property Name="AttForms" Type="varchar" MaxLength="500" />
+          <Property Name="BlockOffStationLocal" Type="datetime" />
+          <Property Name="BlockOnStationLocal" Type="datetime" />
+          <Property Name="LandingStationLocal" Type="datetime" />
+          <Property Name="TakeoffStationLocal" Type="datetime" />
+          <Property Name="RouteCountry" Type="nvarchar" MaxLength="500" />
           <Property Name="PaxFemale" Type="int" />
           <Property Name="PaxMale" Type="int" />
-          <Property Name="RouteCountry" Type="varchar" MaxLength="1" />
           <Property Name="IsDomestic" Type="bit" />
           <Property Name="AircraftModel" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPAGRIFFIN.dbo.AppLegJL' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_varesh.dbo.AppLegJL' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="AppLegJL">
           <Key>
             <PropertyRef Name="ID" />
@@ -2677,7 +2685,7 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.AppLegJL' does not have a primary k
           <Property Name="PaxMale" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPAGRIFFIN.dbo.AppLegOPS' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_varesh.dbo.AppLegOPS' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="AppLegOPS">
           <Key>
             <PropertyRef Name="ID" />
@@ -2854,16 +2862,16 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.AppLegOPS' does not have a primary 
           <Property Name="PF" Type="varchar" MaxLength="255" />
           <Property Name="IPName" Type="nvarchar" MaxLength="1001" />
           <Property Name="IPId" Type="int" />
-          <Property Name="IPScheduleName" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="IPScheduleName" Type="varchar" MaxLength="500" Nullable="false" />
           <Property Name="P1Name" Type="nvarchar" MaxLength="1001" />
           <Property Name="P1Id" Type="int" />
-          <Property Name="P1ScheduleName" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="P1ScheduleName" Type="varchar" MaxLength="500" Nullable="false" />
           <Property Name="P2Name" Type="nvarchar" MaxLength="1001" />
           <Property Name="P2Id" Type="int" />
-          <Property Name="P2ScheduleName" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="P2ScheduleName" Type="varchar" MaxLength="500" Nullable="false" />
           <Property Name="PIC" Type="nvarchar" MaxLength="1001" />
           <Property Name="PICId" Type="int" />
-          <Property Name="SIC" Type="varchar" MaxLength="500" />
+          <Property Name="SIC" Type="nvarchar" MaxLength="2004" />
           <Property Name="SICId" Type="int" />
           <Property Name="JLDatePICApproved" Type="datetime" />
           <Property Name="JLSignedBy" Type="varchar" MaxLength="500" />
@@ -2887,7 +2895,7 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.AppLegOPS' does not have a primary 
           <Property Name="PaxFemale" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPAGRIFFIN.dbo.view_discretion_form' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_varesh.dbo.view_discretion_form' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="view_discretion_form">
           <Key>
             <PropertyRef Name="id" />
@@ -2926,7 +2934,7 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.view_discretion_form' does not have
           <Property Name="STDDay" Type="date" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPAGRIFFIN.dbo.ViewEFBASR' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_varesh.dbo.ViewEFBASR' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewEFBASR">
           <Key>
             <PropertyRef Name="Id" />
@@ -2938,6 +2946,9 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.ViewEFBASR' does not have a primary
             <PropertyRef Name="NightTime" />
             <PropertyRef Name="IsJL" />
             <PropertyRef Name="IsJLApproved" />
+            
+            
+            
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="FlightId" Type="int" Nullable="false" />
@@ -3040,7 +3051,7 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.ViewEFBASR' does not have a primary
           <Property Name="JLDate" Type="datetime" />
           <Property Name="JLDateApproved" Type="datetime" />
           <Property Name="JLNo" Type="varchar" MaxLength="200" />
-          <Property Name="SerialNo" Type="varchar" MaxLength="255" />
+          <Property Name="SerialNo" Type="varchar" MaxLength="1000" />
           <Property Name="RVSM_GND_CPT" Type="decimal" Precision="18" Scale="4" />
           <Property Name="LTR" Type="varchar" MaxLength="255" />
           <Property Name="RVSM_GND_STBY" Type="decimal" Precision="18" Scale="4" />
@@ -3062,16 +3073,16 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.ViewEFBASR' does not have a primary
           <Property Name="PF" Type="varchar" MaxLength="255" />
           <Property Name="IPName" Type="nvarchar" MaxLength="1001" />
           <Property Name="IPId" Type="int" />
-          <Property Name="IPScheduleName" Type="varchar" MaxLength="500" />
+          <Property Name="IPScheduleName" Type="varchar" MaxLength="1" Nullable="false" />
           <Property Name="P1Name" Type="nvarchar" MaxLength="1001" />
           <Property Name="P1Id" Type="int" />
-          <Property Name="P1ScheduleName" Type="varchar" MaxLength="500" />
+          <Property Name="P1ScheduleName" Type="varchar" MaxLength="1" Nullable="false" />
           <Property Name="P2Name" Type="nvarchar" MaxLength="1001" />
           <Property Name="P2Id" Type="int" />
-          <Property Name="P2ScheduleName" Type="varchar" MaxLength="500" />
+          <Property Name="P2ScheduleName" Type="varchar" MaxLength="1" Nullable="false" />
           <Property Name="PIC" Type="nvarchar" MaxLength="1001" />
           <Property Name="PICId" Type="int" />
-          <Property Name="SIC" Type="nvarchar" MaxLength="2004" />
+          <Property Name="SIC" Type="varchar" MaxLength="500" />
           <Property Name="SICId" Type="int" />
           <Property Name="JLDatePICApproved" Type="datetime" />
           <Property Name="OccurrenceDate" Type="datetime" />
@@ -3152,57 +3163,14 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.ViewEFBASR' does not have a primary
           <Property Name="User" Type="varchar" MaxLength="255" />
           <Property Name="BSHeading" Type="float" />
           <Property Name="BSTurningId" Type="int" />
-          <Property Name="JLSignedBy" Type="varchar" MaxLength="255" />
-          <Property Name="OPSRemark" Type="nvarchar" MaxLength="4000" />
-          <Property Name="OPSRemarkDate" Type="datetime" />
-          <Property Name="OPSId" Type="int" />
-          <Property Name="OPSConfirmDate" Type="datetime" />
-          <Property Name="OPSStaffRemark" Type="varchar" MaxLength="4000" />
-          <Property Name="OPSStaffDateVisit" Type="datetime" />
-          <Property Name="OPSStaffConfirmDate" Type="datetime" />
-          <Property Name="OPSStaffId" Type="int" />
-          <Property Name="OPSStaffRemarkDate" Type="datetime" />
-          <Property Name="OPSUser" Type="varchar" MaxLength="500" />
-          <Property Name="OPSStaffUser" Type="varchar" MaxLength="500" />
-          <Property Name="OPSStatusId" Type="int" />
-          <Property Name="OPSStaffStatusId" Type="int" />
-          <Property Name="LOCTaxiway" Type="varchar" MaxLength="255" />
-          <Property Name="LOCEnRoute" Type="varchar" MaxLength="255" />
-          <Property Name="LOCAPP" Type="varchar" MaxLength="255" />
-          <Property Name="ACConfigAPU" Type="bit" />
-          <Property Name="ACConfigENG" Type="bit" />
-          <Property Name="EGPWSTypeId" Type="int" />
-          <Property Name="EGPWSAuralAlert" Type="varchar" MaxLength="255" />
-          <Property Name="EGPWSActionTaken" Type="varchar" MaxLength="255" />
-          <Property Name="CFITAirapaceId" Type="int" />
-          <Property Name="CFITATCId" Type="int" />
-          <Property Name="CFITFrequency" Type="varchar" MaxLength="255" />
-          <Property Name="CFITHeading" Type="varchar" MaxLength="255" />
-          <Property Name="CFITALT" Type="varchar" MaxLength="255" />
-          <Property Name="CFITIncidentId" Type="int" />
-          <Property Name="CFITGPWS" Type="varchar" MaxLength="255" />
-          <Property Name="AATIncidentId" Type="int" />
-          <Property Name="AATRelativeALT" Type="varchar" MaxLength="255" />
-          <Property Name="ATTRelativePos" Type="varchar" MaxLength="255" />
-          <Property Name="BSSkyCondition" Type="int" />
-          <Property Name="BSRandom" Type="bit" />
-          <Property Name="BSWindShield" Type="bit" />
-          <Property Name="BSENG" Type="bit" />
-          <Property Name="BSWing" Type="bit" />
-          <Property Name="BSFuselage" Type="bit" />
-          <Property Name="BSLDG" Type="bit" />
-          <Property Name="BSTail" Type="bit" />
-          <Property Name="BSLights" Type="bit" />
-          <Property Name="BSOther" Type="bit" />
-          <Property Name="BSEffectFlt" Type="int" />
-          <Property Name="WTAPDisconnected" Type="bit" />
-          <Property Name="WTSpeed" Type="bit" />
-          <Property Name="WTStall" Type="bit" />
-          <Property Name="MetSurfaceId" Type="int" />
-          <Property Name="MetSurfaceConditionId" Type="int" />
+          <Property Name="DateSign" Type="datetime2" Precision="7" />
+          <Property Name="EmployeeId" Type="int" />
+          <Property Name="Status" Type="int" />
+          <Property Name="ReporterId" Type="int" />
+          <Property Name="FormNo" Type="varchar" MaxLength="1000" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPAGRIFFIN.dbo.ViewEFBDSPReleases' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_varesh.dbo.ViewEFBDSPReleases' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewEFBDSPReleases">
           <Key>
             <PropertyRef Name="FlightId" />
@@ -3298,8 +3266,6 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.ViewEFBDSPReleases' does not have a
           <Property Name="DSPPID" Type="nvarchar" MaxLength="500" />
           <Property Name="DSPNID" Type="nvarchar" MaxLength="500" />
           <Property Name="DSPMobile" Type="nvarchar" MaxLength="500" />
-          <Property Name="JLSignedBy" Type="varchar" MaxLength="255" />
-          <Property Name="JLDatePICApproved" Type="datetime" />
           <Property Name="PICId" Type="int" />
           <Property Name="PIC" Type="varchar" MaxLength="500" />
           <Property Name="OperationalFlightPlanFOO" Type="bit" />
@@ -3341,9 +3307,11 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.ViewEFBDSPReleases' does not have a
           <Property Name="SgnCPTLicNo" Type="varchar" MaxLength="500" />
           <Property Name="JLDSPSignDate" Type="datetime" />
           <Property Name="SGNDSPName" Type="varchar" MaxLength="500" />
+          <Property Name="JLDatePICApproved" Type="datetime" />
+          <Property Name="JLSignedBy" Type="varchar" MaxLength="500" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPAGRIFFIN.dbo.ViewEFBVoyageReport' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_varesh.dbo.ViewEFBVoyageReport' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewEFBVoyageReport">
           <Key>
             <PropertyRef Name="Id" />
@@ -3354,9 +3322,6 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.ViewEFBVoyageReport' does not have 
             <PropertyRef Name="NightTime" />
             <PropertyRef Name="IsJL" />
             <PropertyRef Name="IsJLApproved" />
-            
-            
-            
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="Route" Type="nvarchar" MaxLength="255" />
@@ -3469,24 +3434,37 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.ViewEFBVoyageReport' does not have 
           <Property Name="PF" Type="varchar" MaxLength="255" />
           <Property Name="IPName" Type="nvarchar" MaxLength="1001" />
           <Property Name="IPId" Type="int" />
-          <Property Name="IPScheduleName" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="IPScheduleName" Type="varchar" MaxLength="500" />
           <Property Name="P1Name" Type="nvarchar" MaxLength="1001" />
           <Property Name="P1Id" Type="int" />
-          <Property Name="P1ScheduleName" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="P1ScheduleName" Type="varchar" MaxLength="500" />
           <Property Name="P2Name" Type="nvarchar" MaxLength="1001" />
           <Property Name="P2Id" Type="int" />
-          <Property Name="P2ScheduleName" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="P2ScheduleName" Type="varchar" MaxLength="500" />
           <Property Name="PIC" Type="nvarchar" MaxLength="1001" />
           <Property Name="PICId" Type="int" />
-          <Property Name="SIC" Type="varchar" MaxLength="500" />
+          <Property Name="SIC" Type="nvarchar" MaxLength="2004" />
           <Property Name="SICId" Type="int" />
           <Property Name="JLDatePICApproved" Type="datetime" />
           <Property Name="DepDelay" Type="int" />
           <Property Name="DateUpdate" Type="varchar" MaxLength="255" />
-          <Property Name="User" Type="varchar" MaxLength="255" />
+          <Property Name="User" Type="varchar" MaxLength="16" />
+          <Property Name="ReporterId" Type="int" />
+          <Property Name="FormNo" Type="int" />
+          <Property Name="DateOccurrence" Type="datetime2" Precision="7" />
+          <Property Name="Result" Type="nvarchar" MaxLength="255" />
+          <Property Name="AttForm_ASR" Type="bit" />
+          <Property Name="AttForm_CSR" Type="bit" />
+          <Property Name="AttForm_CR" Type="bit" />
+          <Property Name="AttForm_Other" Type="bit" />
+          <Property Name="ActionTaken" Type="nvarchar" MaxLength="4000" />
+          <Property Name="IsForInformation" Type="bit" />
+          <Property Name="IsActionRequired" Type="bit" />
+          <Property Name="OtherForm" Type="nvarchar" MaxLength="1000" />
+          <Property Name="AttForm_ACCIDET" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPAGRIFFIN.dbo.ViewEmployee' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_varesh.dbo.ViewEmployee' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewEmployee">
           <Key>
             <PropertyRef Name="Id" />
@@ -3496,7 +3474,6 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.ViewEmployee' does not have a prima
             <PropertyRef Name="ExpCompany" />
             <PropertyRef Name="IsActive" />
             <PropertyRef Name="IsDeleted" />
-            
             <PropertyRef Name="MarriageId" />
             <PropertyRef Name="NID" />
             <PropertyRef Name="SexId" />
@@ -3583,7 +3560,7 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.ViewEmployee' does not have a prima
           <Property Name="C3GroupId" Type="int" />
           <Property Name="JobGroup" Type="nvarchar" MaxLength="500" />
           <Property Name="JobGroupCode" Type="varchar" MaxLength="500" />
-          <Property Name="JobGroupRoot" Type="varchar" MaxLength="19" Nullable="false" />
+          <Property Name="JobGroupRoot" Type="nvarchar" MaxLength="500" />
           <Property Name="MarriageId" Type="int" Nullable="false" />
           <Property Name="NID" Type="nvarchar" MaxLength="500" Nullable="false" />
           <Property Name="SexId" Type="int" Nullable="false" />
@@ -3784,8 +3761,8 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.ViewEmployee' does not have a prima
           <Property Name="FlightLate" Type="int" Nullable="false" />
           <Property Name="InActive" Type="bit" />
           <Property Name="JobGroupMain" Type="nvarchar" MaxLength="500" />
-          <Property Name="JobGroupMainCode" Type="varchar" MaxLength="50" />
-          <Property Name="JobGroupCode2" Type="varchar" MaxLength="50" />
+          <Property Name="JobGroupMainCode" Type="varchar" MaxLength="500" />
+          <Property Name="JobGroupCode2" Type="varchar" MaxLength="500" />
           <Property Name="JobGroupMainId" Type="int" />
           <Property Name="CodeX" Type="varchar" MaxLength="500" />
           <Property Name="RemainTypeMD" Type="int" />
@@ -3885,7 +3862,7 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.ViewEmployee' does not have a prima
           <Property Name="LicNo" Type="nvarchar" MaxLength="200" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPAGRIFFIN.dbo.ViewFDPRest' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_varesh.dbo.ViewFDPRest' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewFDPRest">
           <Key>
             <PropertyRef Name="Id" />
@@ -3979,8 +3956,8 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.ViewFDPRest' does not have a primar
           <Property Name="TemplateId" Type="int" />
           <Property Name="Remark" Type="varchar" MaxLength="1000" />
           <Property Name="Remark2" Type="nvarchar" MaxLength="500" />
-          <Property Name="InitFlts" Type="varchar" MaxLength="1000" />
-          <Property Name="InitRoute" Type="varchar" MaxLength="1000" />
+          <Property Name="InitFlts" Type="varchar" MaxLength="500" />
+          <Property Name="InitRoute" Type="varchar" MaxLength="500" />
           <Property Name="CanceledNo" Type="varchar" MaxLength="500" />
           <Property Name="CanceledRoute" Type="varchar" MaxLength="500" />
           <Property Name="Extension" Type="int" />
@@ -3999,11 +3976,11 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.ViewFDPRest' does not have a primar
           <Property Name="PosFDPId" Type="int" />
           <Property Name="PosRemark" Type="varchar" MaxLength="500" />
           <Property Name="PosTicketUrl" Type="varchar" MaxLength="500" />
-          <Property Name="Key" Type="varchar" MaxLength="1000" />
+          <Property Name="Key" Type="varchar" MaxLength="500" />
           <Property Name="OutOfHomeBase" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPAGRIFFIN.dbo.ViewFlightCrewNew' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_varesh.dbo.ViewFlightCrewNew' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewFlightCrewNew">
           <Key>
             <PropertyRef Name="FDPId" />
@@ -4011,10 +3988,10 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.ViewFlightCrewNew' does not have a 
             <PropertyRef Name="PositionId" />
             <PropertyRef Name="Name" />
             <PropertyRef Name="SexId" />
+            <PropertyRef Name="GroupOrder" />
             <PropertyRef Name="FDPTitle" />
             <PropertyRef Name="IsCockpit" />
             <PropertyRef Name="PID" />
-            <PropertyRef Name="GroupOrder" />
           </Key>
           <Property Name="FDPId" Type="int" Nullable="false" />
           <Property Name="FDPItemId" Type="int" Nullable="false" />
@@ -4038,17 +4015,16 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.ViewFlightCrewNew' does not have a 
           <Property Name="Address" Type="nvarchar" MaxLength="2000" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPAGRIFFIN.dbo.ViewLegCrew' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_varesh.dbo.ViewLegCrew' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewLegCrew">
           <Key>
             <PropertyRef Name="FDPId" />
             <PropertyRef Name="FDPItemId" />
-            <PropertyRef Name="IsCockpit" />
-            
-            <PropertyRef Name="FlightStatus" />
-            <PropertyRef Name="PID" />
             <PropertyRef Name="Name" />
             <PropertyRef Name="GroupOrder" />
+            <PropertyRef Name="IsCockpit" />
+            <PropertyRef Name="FlightStatus" />
+            <PropertyRef Name="PID" />
           </Key>
           <Property Name="CrewId" Type="int" />
           <Property Name="FlightId" Type="int" />
@@ -4056,8 +4032,8 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.ViewLegCrew' does not have a primar
           <Property Name="FDPItemId" Type="int" Nullable="false" />
           <Property Name="IsPositioning" Type="bit" />
           <Property Name="PositionId" Type="int" />
-          <Property Name="Position" Type="varchar" MaxLength="7" />
-          <Property Name="Name" Type="nvarchar" MaxLength="1001" Nullable="false" />
+          <Property Name="Position" Type="varchar" MaxLength="255" />
+          <Property Name="Name" Type="nvarchar" MaxLength="1003" Nullable="false" />
           <Property Name="ScheduleName" Type="varchar" MaxLength="500" />
           <Property Name="GroupId" Type="int" />
           <Property Name="JobGroup" Type="nvarchar" MaxLength="500" />
@@ -4073,8 +4049,8 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.ViewLegCrew' does not have a primar
           <Property Name="Landing" Type="datetime" />
           <Property Name="Duty" Type="int" />
           <Property Name="ScheduledFlightTime" Type="int" />
-          <Property Name="FixTime" Type="int" Nullable="false" />
           <Property Name="SITATime" Type="int" />
+          <Property Name="FixTime" Type="int" />
           <Property Name="FlightTimeActual" Type="int" />
           <Property Name="ArrivalLocal" Type="datetime" />
           <Property Name="DepartureLocal" Type="datetime" />
@@ -4143,19 +4119,23 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.ViewLegCrew' does not have a primar
           <Property Name="JL_BlockTime" Type="int" />
           <Property Name="Takeoff" Type="datetime" />
           <Property Name="PID" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="NetFixTime" Type="int" />
+          <Property Name="ValidTypes" Type="nvarchar(max)" />
+          <Property Name="BaseAirport" Type="nvarchar" MaxLength="255" />
+          <Property Name="BaseAirportId" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPAGRIFFIN.dbo.ViewLegTime' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_varesh.dbo.ViewLegTime' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewLegTime">
           <Key>
             <PropertyRef Name="ID" />
             <PropertyRef Name="FlightId" />
             <PropertyRef Name="FlightStatus" />
-            
             <PropertyRef Name="progress" />
             <PropertyRef Name="taskId" />
             <PropertyRef Name="BaggageWeight" />
             <PropertyRef Name="CargoWeight" />
+            
           </Key>
           <Property Name="ID" Type="int" Nullable="false" />
           <Property Name="FlightId" Type="int" Nullable="false" />
@@ -4180,7 +4160,9 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.ViewLegTime' does not have a primar
           <Property Name="TypeId" Type="int" />
           <Property Name="FlightNumber" Type="nvarchar" MaxLength="50" />
           <Property Name="FromAirport" Type="int" />
+          <Property Name="FromAirportICAO" Type="nvarchar" MaxLength="255" />
           <Property Name="ToAirport" Type="int" />
+          <Property Name="ToAirportICAO" Type="nvarchar" MaxLength="255" />
           <Property Name="STAPlanned" Type="datetime" />
           <Property Name="STDPlanned" Type="datetime" />
           <Property Name="FlightHPlanned" Type="int" />
@@ -4188,9 +4170,7 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.ViewLegTime' does not have a primar
           <Property Name="FlightPlan" Type="nvarchar" MaxLength="500" />
           <Property Name="CustomerId" Type="int" />
           <Property Name="FromAirportIATA" Type="nvarchar" MaxLength="255" />
-          <Property Name="FromAirportICAO" Type="nvarchar" MaxLength="255" />
           <Property Name="ToAirportIATA" Type="nvarchar" MaxLength="255" />
-          <Property Name="ToAirportICAO" Type="nvarchar" MaxLength="255" />
           <Property Name="Register" Type="nvarchar" MaxLength="50" />
           <Property Name="MSN" Type="int" />
           <Property Name="FlightStatus" Type="nvarchar" MaxLength="60" Nullable="false" />
@@ -4223,7 +4203,7 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.ViewLegTime' does not have a primar
           <Property Name="FlightTime" Type="int" />
           <Property Name="ScheduledFlightTime" Type="int" />
           <Property Name="FlightTimeActual" Type="int" />
-          <Property Name="FixTime" Type="int" Nullable="false" />
+          <Property Name="FixTime" Type="int" />
           <Property Name="SITATime" Type="int" />
           <Property Name="Duty" Type="int" />
           <Property Name="EstimatedDelay" Type="int" />
@@ -4251,7 +4231,7 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.ViewLegTime' does not have a primar
           <Property Name="TotalSeat" Type="int" />
           <Property Name="BaggageWeight" Type="int" Nullable="false" />
           <Property Name="CargoWeight" Type="int" Nullable="false" />
-          <Property Name="Freight" Type="int" />
+          <Property Name="Freight" Type="int" Nullable="false" />
           <Property Name="FlightDate" Type="datetime" />
           <Property Name="CargoCount" Type="int" />
           <Property Name="BaggageCount" Type="int" />
@@ -4270,8 +4250,8 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.ViewLegTime' does not have a primar
           <Property Name="ChrInfant" Type="int" />
           <Property Name="CargoCost" Type="bigint" />
           <Property Name="CPRegister" Type="varchar" MaxLength="500" />
-          <Property Name="DepCountry" Type="varchar" MaxLength="50" />
-          <Property Name="ArrCountry" Type="varchar" MaxLength="50" />
+          <Property Name="DepCountry" Type="varchar" MaxLength="255" />
+          <Property Name="ArrCountry" Type="varchar" MaxLength="255" />
           <Property Name="OFPMINTOFFUEL" Type="int" />
           <Property Name="OFPOFFBLOCKFUEL" Type="int" />
           <Property Name="OFPTRIPFUEL" Type="int" />
@@ -4281,7 +4261,7 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.ViewLegTime' does not have a primar
           <Property Name="OFPTOTALFUEL" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPAGRIFFIN.dbo.ViewQACSR' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_varesh.dbo.ViewQACSR' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewQACSR">
           <Key>
             <PropertyRef Name="Id" />
@@ -4291,7 +4271,7 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.ViewQACSR' does not have a primary 
           <Property Name="BOX" Type="nvarchar" MaxLength="200" />
           <Property Name="RefNumber" Type="nvarchar" MaxLength="200" />
           <Property Name="Reporter" Type="nvarchar" MaxLength="500" />
-          <Property Name="EmployeeName" Type="nvarchar" MaxLength="1001" />
+          <Property Name="EmployeeName" Type="nvarchar" MaxLength="1003" />
           <Property Name="ReportFiledBy" Type="nvarchar" MaxLength="200" />
           <Property Name="ReporterId" Type="int" />
           <Property Name="DateOccurrence" Type="datetime" />
@@ -4301,7 +4281,7 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.ViewQACSR' does not have a primary 
           <Property Name="Register" Type="nvarchar" MaxLength="50" />
           <Property Name="FlightDate" Type="date" />
           <Property Name="EventLocation" Type="nvarchar" MaxLength="200" />
-          <Property Name="TypeRegisteration" Type="nvarchar" MaxLength="101" />
+          <Property Name="TypeRegisteration" Type="nvarchar" MaxLength="50" />
           <Property Name="WeatherCondition" Type="nvarchar" MaxLength="200" />
           <Property Name="PaxTotal" Type="int" />
           <Property Name="PhaseId" Type="int" />
@@ -4318,14 +4298,15 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.ViewQACSR' does not have a primary 
           <Property Name="status" Type="int" />
           <Property Name="dateStatus" Type="datetime" />
           <Property Name="StatusEmployeeId" Type="int" />
-          <Property Name="StatusEmployeeName" Type="nvarchar" MaxLength="1001" />
+          <Property Name="StatusEmployeeName" Type="nvarchar" MaxLength="1003" />
           <Property Name="DelayReason" Type="nvarchar" MaxLength="255" />
           <Property Name="Delay" Type="int" />
           <Property Name="Result" Type="nvarchar" MaxLength="4000" />
           <Property Name="FormNo" Type="varchar" MaxLength="1000" />
+          <Property Name="EventTitles" Type="nvarchar(max)" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPAGRIFFIN.dbo.ViewQACSREvent' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_varesh.dbo.ViewQACSREvent' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewQACSREvent">
           <Key>
             <PropertyRef Name="Id" />
@@ -4339,7 +4320,7 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.ViewQACSREvent' does not have a pri
           <Property Name="QACSRId" Type="int" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPAGRIFFIN.dbo.ViewQAMaintenance' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_varesh.dbo.ViewQAMaintenance' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewQAMaintenance">
           <Key>
             <PropertyRef Name="Id" />
@@ -4372,14 +4353,14 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.ViewQAMaintenance' does not have a 
           <Property Name="status" Type="int" />
           <Property Name="dateStatus" Type="datetime" />
           <Property Name="StatusEmployeeId" Type="int" />
-          <Property Name="StatusEmployeeName" Type="nvarchar" MaxLength="1001" />
+          <Property Name="StatusEmployeeName" Type="nvarchar" MaxLength="1003" />
           <Property Name="Result" Type="nvarchar" MaxLength="4000" />
           <Property Name="DelayReason" Type="nvarchar" MaxLength="255" />
           <Property Name="Delay" Type="int" />
           <Property Name="FormNo" Type="varchar" MaxLength="1000" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPAGRIFFIN.dbo.XAppLeg' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_varesh.dbo.XAppLeg' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="XAppLeg">
           <Key>
             <PropertyRef Name="ID" />
@@ -4390,7 +4371,7 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XAppLeg' does not have a primary ke
           <Property Name="PICId" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="XFlightCrew">
           <Key>
             <PropertyRef Name="Name" />
@@ -4400,12 +4381,14 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
             <PropertyRef Name="SexId" />
             <PropertyRef Name="GroupOrder" />
             <PropertyRef Name="IsCockpit" />
+            <PropertyRef Name="MainGroup" />
           </Key>
           <Property Name="CrewId" Type="int" />
           <Property Name="FlightId" Type="int" />
           <Property Name="IsPositioning" Type="bit" />
           <Property Name="PositionId" Type="int" />
-          <Property Name="Position" Type="varchar" MaxLength="1000" />
+          <Property Name="flt_position_id" Type="int" />
+          <Property Name="Position" Type="varchar" MaxLength="255" />
           <Property Name="Name" Type="nvarchar" MaxLength="1001" Nullable="false" />
           <Property Name="PFirstName" Type="nvarchar" MaxLength="500" />
           <Property Name="PLastName" Type="nvarchar" MaxLength="500" />
@@ -4423,6 +4406,7 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
           <Property Name="Code" Type="varchar" MaxLength="500" />
           <Property Name="DateConfirmed" Type="datetime" />
           <Property Name="IsConfirmed" Type="bit" />
+          <Property Name="MainGroup" Type="varchar" MaxLength="7" Nullable="false" />
         </EntityType>
         <Association Name="FK__OFPB_Main__RootI__3DC8FF7D">
           <End Role="OFPB_Root" Type="Self.OFPB_Root" Multiplicity="0..1">
@@ -5098,10 +5082,6 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
     [AppLeg].[Landing] AS [Landing], 
     [AppLeg].[TakeOff] AS [TakeOff], 
     [AppLeg].[BlockOff] AS [BlockOff], 
-    [AppLeg].[BlockOffStationLocal] AS [BlockOffStationLocal], 
-    [AppLeg].[BlockOnStationLocal] AS [BlockOnStationLocal], 
-    [AppLeg].[LandingStationLocal] AS [LandingStationLocal], 
-    [AppLeg].[TakeoffStationLocal] AS [TakeoffStationLocal], 
     [AppLeg].[BlockOnLocal] AS [BlockOnLocal], 
     [AppLeg].[LandingLocal] AS [LandingLocal], 
     [AppLeg].[TakeOffLocal] AS [TakeOffLocal], 
@@ -5263,9 +5243,13 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
     [AppLeg].[arr_dusk] AS [arr_dusk], 
     [AppLeg].[FlightTypeOPS] AS [FlightTypeOPS], 
     [AppLeg].[AttForms] AS [AttForms], 
+    [AppLeg].[BlockOffStationLocal] AS [BlockOffStationLocal], 
+    [AppLeg].[BlockOnStationLocal] AS [BlockOnStationLocal], 
+    [AppLeg].[LandingStationLocal] AS [LandingStationLocal], 
+    [AppLeg].[TakeoffStationLocal] AS [TakeoffStationLocal], 
+    [AppLeg].[RouteCountry] AS [RouteCountry], 
     [AppLeg].[PaxFemale] AS [PaxFemale], 
     [AppLeg].[PaxMale] AS [PaxMale], 
-    [AppLeg].[RouteCountry] AS [RouteCountry], 
     [AppLeg].[IsDomestic] AS [IsDomestic], 
     [AppLeg].[AircraftModel] AS [AircraftModel]
     FROM [dbo].[AppLeg] AS [AppLeg]</DefiningQuery>
@@ -5866,54 +5850,11 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
     [ViewEFBASR].[User] AS [User], 
     [ViewEFBASR].[BSHeading] AS [BSHeading], 
     [ViewEFBASR].[BSTurningId] AS [BSTurningId], 
-    [ViewEFBASR].[JLSignedBy] AS [JLSignedBy], 
-    [ViewEFBASR].[OPSRemark] AS [OPSRemark], 
-    [ViewEFBASR].[OPSRemarkDate] AS [OPSRemarkDate], 
-    [ViewEFBASR].[OPSId] AS [OPSId], 
-    [ViewEFBASR].[OPSConfirmDate] AS [OPSConfirmDate], 
-    [ViewEFBASR].[OPSStaffRemark] AS [OPSStaffRemark], 
-    [ViewEFBASR].[OPSStaffDateVisit] AS [OPSStaffDateVisit], 
-    [ViewEFBASR].[OPSStaffConfirmDate] AS [OPSStaffConfirmDate], 
-    [ViewEFBASR].[OPSStaffId] AS [OPSStaffId], 
-    [ViewEFBASR].[OPSStaffRemarkDate] AS [OPSStaffRemarkDate], 
-    [ViewEFBASR].[OPSUser] AS [OPSUser], 
-    [ViewEFBASR].[OPSStaffUser] AS [OPSStaffUser], 
-    [ViewEFBASR].[OPSStatusId] AS [OPSStatusId], 
-    [ViewEFBASR].[OPSStaffStatusId] AS [OPSStaffStatusId], 
-    [ViewEFBASR].[LOCTaxiway] AS [LOCTaxiway], 
-    [ViewEFBASR].[LOCEnRoute] AS [LOCEnRoute], 
-    [ViewEFBASR].[LOCAPP] AS [LOCAPP], 
-    [ViewEFBASR].[ACConfigAPU] AS [ACConfigAPU], 
-    [ViewEFBASR].[ACConfigENG] AS [ACConfigENG], 
-    [ViewEFBASR].[EGPWSTypeId] AS [EGPWSTypeId], 
-    [ViewEFBASR].[EGPWSAuralAlert] AS [EGPWSAuralAlert], 
-    [ViewEFBASR].[EGPWSActionTaken] AS [EGPWSActionTaken], 
-    [ViewEFBASR].[CFITAirapaceId] AS [CFITAirapaceId], 
-    [ViewEFBASR].[CFITATCId] AS [CFITATCId], 
-    [ViewEFBASR].[CFITFrequency] AS [CFITFrequency], 
-    [ViewEFBASR].[CFITHeading] AS [CFITHeading], 
-    [ViewEFBASR].[CFITALT] AS [CFITALT], 
-    [ViewEFBASR].[CFITIncidentId] AS [CFITIncidentId], 
-    [ViewEFBASR].[CFITGPWS] AS [CFITGPWS], 
-    [ViewEFBASR].[AATIncidentId] AS [AATIncidentId], 
-    [ViewEFBASR].[AATRelativeALT] AS [AATRelativeALT], 
-    [ViewEFBASR].[ATTRelativePos] AS [ATTRelativePos], 
-    [ViewEFBASR].[BSSkyCondition] AS [BSSkyCondition], 
-    [ViewEFBASR].[BSRandom] AS [BSRandom], 
-    [ViewEFBASR].[BSWindShield] AS [BSWindShield], 
-    [ViewEFBASR].[BSENG] AS [BSENG], 
-    [ViewEFBASR].[BSWing] AS [BSWing], 
-    [ViewEFBASR].[BSFuselage] AS [BSFuselage], 
-    [ViewEFBASR].[BSLDG] AS [BSLDG], 
-    [ViewEFBASR].[BSTail] AS [BSTail], 
-    [ViewEFBASR].[BSLights] AS [BSLights], 
-    [ViewEFBASR].[BSOther] AS [BSOther], 
-    [ViewEFBASR].[BSEffectFlt] AS [BSEffectFlt], 
-    [ViewEFBASR].[WTAPDisconnected] AS [WTAPDisconnected], 
-    [ViewEFBASR].[WTSpeed] AS [WTSpeed], 
-    [ViewEFBASR].[WTStall] AS [WTStall], 
-    [ViewEFBASR].[MetSurfaceId] AS [MetSurfaceId], 
-    [ViewEFBASR].[MetSurfaceConditionId] AS [MetSurfaceConditionId]
+    [ViewEFBASR].[DateSign] AS [DateSign], 
+    [ViewEFBASR].[EmployeeId] AS [EmployeeId], 
+    [ViewEFBASR].[Status] AS [Status], 
+    [ViewEFBASR].[ReporterId] AS [ReporterId], 
+    [ViewEFBASR].[FormNo] AS [FormNo]
     FROM [dbo].[ViewEFBASR] AS [ViewEFBASR]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ViewEFBDSPReleases" EntityType="Self.ViewEFBDSPReleases" store:Type="Views" store:Schema="dbo">
@@ -6009,8 +5950,6 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
     [ViewEFBDSPReleases].[DSPPID] AS [DSPPID], 
     [ViewEFBDSPReleases].[DSPNID] AS [DSPNID], 
     [ViewEFBDSPReleases].[DSPMobile] AS [DSPMobile], 
-    [ViewEFBDSPReleases].[JLSignedBy] AS [JLSignedBy], 
-    [ViewEFBDSPReleases].[JLDatePICApproved] AS [JLDatePICApproved], 
     [ViewEFBDSPReleases].[PICId] AS [PICId], 
     [ViewEFBDSPReleases].[PIC] AS [PIC], 
     [ViewEFBDSPReleases].[OperationalFlightPlanFOO] AS [OperationalFlightPlanFOO], 
@@ -6051,7 +5990,9 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
     [ViewEFBDSPReleases].[SgnDSPLicNo] AS [SgnDSPLicNo], 
     [ViewEFBDSPReleases].[SgnCPTLicNo] AS [SgnCPTLicNo], 
     [ViewEFBDSPReleases].[JLDSPSignDate] AS [JLDSPSignDate], 
-    [ViewEFBDSPReleases].[SGNDSPName] AS [SGNDSPName]
+    [ViewEFBDSPReleases].[SGNDSPName] AS [SGNDSPName], 
+    [ViewEFBDSPReleases].[JLDatePICApproved] AS [JLDatePICApproved], 
+    [ViewEFBDSPReleases].[JLSignedBy] AS [JLSignedBy]
     FROM [dbo].[ViewEFBDSPReleases] AS [ViewEFBDSPReleases]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ViewEFBVoyageReport" EntityType="Self.ViewEFBVoyageReport" store:Type="Views" store:Schema="dbo">
@@ -6181,7 +6122,20 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
     [ViewEFBVoyageReport].[JLDatePICApproved] AS [JLDatePICApproved], 
     [ViewEFBVoyageReport].[DepDelay] AS [DepDelay], 
     [ViewEFBVoyageReport].[DateUpdate] AS [DateUpdate], 
-    [ViewEFBVoyageReport].[User] AS [User]
+    [ViewEFBVoyageReport].[User] AS [User], 
+    [ViewEFBVoyageReport].[ReporterId] AS [ReporterId], 
+    [ViewEFBVoyageReport].[FormNo] AS [FormNo], 
+    [ViewEFBVoyageReport].[DateOccurrence] AS [DateOccurrence], 
+    [ViewEFBVoyageReport].[Result] AS [Result], 
+    [ViewEFBVoyageReport].[AttForm_ASR] AS [AttForm_ASR], 
+    [ViewEFBVoyageReport].[AttForm_CSR] AS [AttForm_CSR], 
+    [ViewEFBVoyageReport].[AttForm_CR] AS [AttForm_CR], 
+    [ViewEFBVoyageReport].[AttForm_Other] AS [AttForm_Other], 
+    [ViewEFBVoyageReport].[ActionTaken] AS [ActionTaken], 
+    [ViewEFBVoyageReport].[IsForInformation] AS [IsForInformation], 
+    [ViewEFBVoyageReport].[IsActionRequired] AS [IsActionRequired], 
+    [ViewEFBVoyageReport].[OtherForm] AS [OtherForm], 
+    [ViewEFBVoyageReport].[AttForm_ACCIDET] AS [AttForm_ACCIDET]
     FROM [dbo].[ViewEFBVoyageReport] AS [ViewEFBVoyageReport]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ViewEmployee" EntityType="Self.ViewEmployee" store:Type="Views" store:Schema="dbo">
@@ -6668,8 +6622,8 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
     [ViewLegCrew].[Landing] AS [Landing], 
     [ViewLegCrew].[Duty] AS [Duty], 
     [ViewLegCrew].[ScheduledFlightTime] AS [ScheduledFlightTime], 
-    [ViewLegCrew].[FixTime] AS [FixTime], 
     [ViewLegCrew].[SITATime] AS [SITATime], 
+    [ViewLegCrew].[FixTime] AS [FixTime], 
     [ViewLegCrew].[FlightTimeActual] AS [FlightTimeActual], 
     [ViewLegCrew].[ArrivalLocal] AS [ArrivalLocal], 
     [ViewLegCrew].[DepartureLocal] AS [DepartureLocal], 
@@ -6737,7 +6691,11 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
     [ViewLegCrew].[JL_FlightTime] AS [JL_FlightTime], 
     [ViewLegCrew].[JL_BlockTime] AS [JL_BlockTime], 
     [ViewLegCrew].[Takeoff] AS [Takeoff], 
-    [ViewLegCrew].[PID] AS [PID]
+    [ViewLegCrew].[PID] AS [PID], 
+    [ViewLegCrew].[NetFixTime] AS [NetFixTime], 
+    [ViewLegCrew].[ValidTypes] AS [ValidTypes], 
+    [ViewLegCrew].[BaseAirport] AS [BaseAirport], 
+    [ViewLegCrew].[BaseAirportId] AS [BaseAirportId]
     FROM [dbo].[ViewLegCrew] AS [ViewLegCrew]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ViewLegTime" EntityType="Self.ViewLegTime" store:Type="Views" store:Schema="dbo">
@@ -6765,7 +6723,9 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
     [ViewLegTime].[TypeId] AS [TypeId], 
     [ViewLegTime].[FlightNumber] AS [FlightNumber], 
     [ViewLegTime].[FromAirport] AS [FromAirport], 
+    [ViewLegTime].[FromAirportICAO] AS [FromAirportICAO], 
     [ViewLegTime].[ToAirport] AS [ToAirport], 
+    [ViewLegTime].[ToAirportICAO] AS [ToAirportICAO], 
     [ViewLegTime].[STAPlanned] AS [STAPlanned], 
     [ViewLegTime].[STDPlanned] AS [STDPlanned], 
     [ViewLegTime].[FlightHPlanned] AS [FlightHPlanned], 
@@ -6773,9 +6733,7 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
     [ViewLegTime].[FlightPlan] AS [FlightPlan], 
     [ViewLegTime].[CustomerId] AS [CustomerId], 
     [ViewLegTime].[FromAirportIATA] AS [FromAirportIATA], 
-    [ViewLegTime].[FromAirportICAO] AS [FromAirportICAO], 
     [ViewLegTime].[ToAirportIATA] AS [ToAirportIATA], 
-    [ViewLegTime].[ToAirportICAO] AS [ToAirportICAO], 
     [ViewLegTime].[Register] AS [Register], 
     [ViewLegTime].[MSN] AS [MSN], 
     [ViewLegTime].[FlightStatus] AS [FlightStatus], 
@@ -6904,7 +6862,8 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
     [ViewQACSR].[DelayReason] AS [DelayReason], 
     [ViewQACSR].[Delay] AS [Delay], 
     [ViewQACSR].[Result] AS [Result], 
-    [ViewQACSR].[FormNo] AS [FormNo]
+    [ViewQACSR].[FormNo] AS [FormNo], 
+    [ViewQACSR].[EventTitles] AS [EventTitles]
     FROM [dbo].[ViewQACSR] AS [ViewQACSR]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ViewQACSREvent" EntityType="Self.ViewQACSREvent" store:Type="Views" store:Schema="dbo">
@@ -6965,6 +6924,7 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
     [XFlightCrew].[FlightId] AS [FlightId], 
     [XFlightCrew].[IsPositioning] AS [IsPositioning], 
     [XFlightCrew].[PositionId] AS [PositionId], 
+    [XFlightCrew].[flt_position_id] AS [flt_position_id], 
     [XFlightCrew].[Position] AS [Position], 
     [XFlightCrew].[Name] AS [Name], 
     [XFlightCrew].[PFirstName] AS [PFirstName], 
@@ -6982,7 +6942,8 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
     [XFlightCrew].[IsCockpit] AS [IsCockpit], 
     [XFlightCrew].[Code] AS [Code], 
     [XFlightCrew].[DateConfirmed] AS [DateConfirmed], 
-    [XFlightCrew].[IsConfirmed] AS [IsConfirmed]
+    [XFlightCrew].[IsConfirmed] AS [IsConfirmed], 
+    [XFlightCrew].[MainGroup] AS [MainGroup]
     FROM [dbo].[XFlightCrew] AS [XFlightCrew]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK__OFPB_Main__RootI__3DC8FF7D" Association="Self.FK__OFPB_Main__RootI__3DC8FF7D">
@@ -7181,12 +7142,12 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
             <End Role="form_discretion_item" EntitySet="form_discretion_item" />
           </AssociationSet>
           <EntitySet Name="discretion_form" EntityType="dbModel.discretion_form" />
+          <EntitySet Name="ViewEFBASRs" EntityType="dbModel.ViewEFBASR" />
           <EntitySet Name="EFBASRs" EntityType="dbModel.EFBASR" />
           <AssociationSet Name="fk_asr_flt" Association="dbModel.fk_asr_flt">
             <End Role="FlightInformation" EntitySet="FlightInformations" />
             <End Role="EFBASR" EntitySet="EFBASRs" />
           </AssociationSet>
-          <EntitySet Name="ViewEFBASRs" EntityType="dbModel.ViewEFBASR" />
           </EntityContainer>
         <EntityType Name="AppCrewFlight">
           <Key>
@@ -7204,14 +7165,14 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
           <Property Name="IsPositioning" Type="Boolean" />
           <Property Name="PositionId" Type="Int32" />
           <Property Name="Position" Type="String" MaxLength="7" FixedLength="false" Unicode="false" />
-          <Property Name="Name" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
-          <Property Name="ScheduleName" Type="String" MaxLength="758" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" MaxLength="1003" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ScheduleName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="GroupId" Type="Int32" />
           <Property Name="JobGroup" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="JobGroupCode" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="SexId" Type="Int32" Nullable="false" />
           <Property Name="Sex" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="GroupOrder" Type="Int32" />
+          <Property Name="GroupOrder" Type="Int32" Nullable="false" />
           <Property Name="IsCockpit" Type="Int32" Nullable="false" />
           <Property Name="STDDay" Type="DateTime" Precision="0" />
           <Property Name="STADay" Type="DateTime" Precision="0" />
@@ -7309,7 +7270,7 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
           <Property Name="P2ScheduleName" Type="String" Nullable="false" MaxLength="1001" FixedLength="false" Unicode="true" />
           <Property Name="PIC" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
           <Property Name="PICId" Type="Int32" />
-          <Property Name="SIC" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="SIC" Type="String" MaxLength="2004" FixedLength="false" Unicode="true" />
           <Property Name="SICId" Type="Int32" />
           <Property Name="JLDatePICApproved" Type="DateTime" Precision="3" />
           <Property Name="IStart" Type="DateTime" Precision="3" />
@@ -7344,10 +7305,10 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
           <Property Name="TANKERINGDIFF" Type="Int32" />
           <Property Name="ACTUALTOTALFUEL" Type="Int32" />
           <Property Name="LTR2" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="dep_dawn" Type="DateTime" Precision="7" />
-          <Property Name="dep_dusk" Type="DateTime" Precision="7" />
-          <Property Name="arr_dawn" Type="DateTime" Precision="7" />
-          <Property Name="arr_dusk" Type="DateTime" Precision="7" />
+          <Property Name="dep_dawn" Type="DateTime" Precision="3" />
+          <Property Name="dep_dusk" Type="DateTime" Precision="3" />
+          <Property Name="arr_dawn" Type="DateTime" Precision="3" />
+          <Property Name="arr_dusk" Type="DateTime" Precision="3" />
           <Property Name="FlightTypeOPS" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="AttForms" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="PaxFemale" Type="Int32" />
@@ -7472,7 +7433,7 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
           <Property Name="FlightTime" Type="Int32" />
           <Property Name="ScheduledFlightTime" Type="Int32" />
           <Property Name="FlightTimeActual" Type="Int32" />
-          <Property Name="FixTime" Type="Int32" Nullable="false" />
+          <Property Name="FixTime" Type="Int32" />
           <Property Name="SITATime" Type="Int32" />
           <Property Name="Duty" Type="Int32" />
           <Property Name="EstimatedDelay" Type="Int32" />
@@ -7500,7 +7461,7 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
           <Property Name="TotalSeat" Type="Int32" />
           <Property Name="BaggageWeight" Type="Int32" Nullable="false" />
           <Property Name="CargoWeight" Type="Int32" Nullable="false" />
-          <Property Name="Freight" Type="Int32" />
+          <Property Name="Freight" Type="Int32" Nullable="false" />
           <Property Name="FlightDate" Type="DateTime" Precision="3" />
           <Property Name="CargoCount" Type="Int32" />
           <Property Name="BaggageCount" Type="Int32" />
@@ -7519,8 +7480,8 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
           <Property Name="ChrInfant" Type="Int32" />
           <Property Name="CargoCost" Type="Int64" />
           <Property Name="CPRegister" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="DepCountry" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ArrCountry" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DepCountry" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ArrCountry" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="OFPMINTOFFUEL" Type="Int32" />
           <Property Name="OFPOFFBLOCKFUEL" Type="Int32" />
           <Property Name="OFPTRIPFUEL" Type="Int32" />
@@ -8062,16 +8023,16 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
           <Property Name="PF" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="IPName" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
           <Property Name="IPId" Type="Int32" />
-          <Property Name="IPScheduleName" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="IPScheduleName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="P1Name" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
           <Property Name="P1Id" Type="Int32" />
-          <Property Name="P1ScheduleName" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="P1ScheduleName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="P2Name" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
           <Property Name="P2Id" Type="Int32" />
-          <Property Name="P2ScheduleName" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="P2ScheduleName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="PIC" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
           <Property Name="PICId" Type="Int32" />
-          <Property Name="SIC" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="SIC" Type="String" MaxLength="2004" FixedLength="false" Unicode="true" />
           <Property Name="SICId" Type="Int32" />
           <Property Name="JLDatePICApproved" Type="DateTime" Precision="3" />
           <Property Name="JLSignedBy" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
@@ -8326,7 +8287,7 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
           <Property Name="DSPPID" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="DSPNID" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="DSPMobile" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="JLSignedBy" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="JLSignedBy" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="JLDatePICApproved" Type="DateTime" Precision="3" />
           <Property Name="PICId" Type="Int32" />
           <Property Name="PIC" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
@@ -8470,8 +8431,8 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
           <Property Name="IsPositioning" Type="Boolean" />
           <Property Name="PositionId" Type="Int32" />
           <Property Name="Position" Type="String" MaxLength="7" FixedLength="false" Unicode="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="1001" FixedLength="false" Unicode="true" />
-          <Property Name="ScheduleName" Type="String" MaxLength="758" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="1003" FixedLength="false" Unicode="true" />
+          <Property Name="ScheduleName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="GroupId" Type="Int32" />
           <Property Name="JobGroup" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="JobGroupCode" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
@@ -8692,8 +8653,8 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
           <Property Name="TemplateId" Type="Int32" />
           <Property Name="Remark" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
           <Property Name="Remark2" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="InitFlts" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
-          <Property Name="InitRoute" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="InitFlts" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="InitRoute" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="CanceledNo" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="CanceledRoute" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="Extension" Type="Int32" />
@@ -8891,13 +8852,13 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
           <Property Name="BlockOnStation" Type="DateTime" Precision="3" />
           <Property Name="LandingStation" Type="DateTime" Precision="3" />
           <Property Name="TakeoffStation" Type="DateTime" Precision="3" />
-          <Property Name="dep_dawn" Type="DateTime" Precision="7" />
-          <Property Name="dep_dusk" Type="DateTime" Precision="7" />
-          <Property Name="arr_dawn" Type="DateTime" Precision="7" />
-          <Property Name="arr_dusk" Type="DateTime" Precision="7" />
+          <Property Name="dep_dawn" Type="DateTime" Precision="3" />
+          <Property Name="dep_dusk" Type="DateTime" Precision="3" />
+          <Property Name="arr_dawn" Type="DateTime" Precision="3" />
+          <Property Name="arr_dusk" Type="DateTime" Precision="3" />
           <Property Name="FlightTypeOPS" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="AttForms" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="RouteCountry" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="RouteCountry" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="PaxFemale" Type="Int32" />
           <Property Name="PaxMale" Type="Int32" />
           <Property Name="BlockOffStationLocal" Type="DateTime" Precision="3" />
@@ -9646,7 +9607,7 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
           <Property Name="C3GroupId" Type="Int32" />
           <Property Name="JobGroup" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="JobGroupCode" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="JobGroupRoot" Type="String" MaxLength="19" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="JobGroupRoot" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="MarriageId" Type="Int32" Nullable="false" />
           <Property Name="NID" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="SexId" Type="Int32" Nullable="false" />
@@ -9847,8 +9808,8 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
           <Property Name="FlightLate" Type="Int32" Nullable="false" />
           <Property Name="InActive" Type="Boolean" />
           <Property Name="JobGroupMain" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="JobGroupMainCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="JobGroupCode2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="JobGroupMainCode" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="JobGroupCode2" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="JobGroupMainId" Type="Int32" />
           <Property Name="CodeX" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="RemainTypeMD" Type="Int32" />
@@ -9978,6 +9939,7 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
           <Property Name="PDate2" Type="Int32" />
           <Property Name="Night" Type="DateTime" Precision="7" />
           <Property Name="PMonthName2" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Night1" Type="DateTime" Precision="7" />
         </EntityType>
         <EntityType Name="ViewLegCrew">
           <Key>
@@ -9995,8 +9957,8 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
           <Property Name="FDPItemId" Type="Int32" Nullable="false" />
           <Property Name="IsPositioning" Type="Boolean" />
           <Property Name="PositionId" Type="Int32" />
-          <Property Name="Position" Type="String" MaxLength="7" FixedLength="false" Unicode="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="Position" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="1003" FixedLength="false" Unicode="true" />
           <Property Name="ScheduleName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="GroupId" Type="Int32" />
           <Property Name="JobGroup" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
@@ -10013,7 +9975,7 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
           <Property Name="Duty" Type="Int32" />
           <Property Name="ScheduledFlightTime" Type="Int32" />
           <Property Name="SITATime" Type="Int32" />
-          <Property Name="FixTime" Type="Int32" Nullable="false" />
+          <Property Name="FixTime" Type="Int32" />
           <Property Name="FlightTimeActual" Type="Int32" />
           <Property Name="ArrivalLocal" Type="DateTime" Precision="3" />
           <Property Name="DepartureLocal" Type="DateTime" Precision="3" />
@@ -10086,6 +10048,10 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
           <Property Name="BaseAirport" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="BaseAirportId" Type="Int32" />
           <Property Name="STDDayLocal" Type="DateTime" Precision="0" />
+          <Property Name="NetFixTime1" Type="Int32" />
+          <Property Name="ValidTypes1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="BaseAirport1" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="BaseAirportId1" Type="Int32" />
         </EntityType>
         <EntityType Name="XFlightCrew">
           <Key>
@@ -10097,13 +10063,14 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
             <PropertyRef Name="GroupOrder" />
             <PropertyRef Name="IsCockpit" />
             <PropertyRef Name="MainGroup" />
+            <PropertyRef Name="MainGroup1" />
           </Key>
           <Property Name="CrewId" Type="Int32" />
           <Property Name="FlightId" Type="Int32" />
           <Property Name="IsPositioning" Type="Boolean" />
           <Property Name="PositionId" Type="Int32" />
           <Property Name="flt_position_id" Type="Int32" />
-          <Property Name="Position" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="Position" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="1001" FixedLength="false" Unicode="true" />
           <Property Name="PFirstName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="PLastName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
@@ -10122,6 +10089,8 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
           <Property Name="DateConfirmed" Type="DateTime" Precision="3" />
           <Property Name="IsConfirmed" Type="Boolean" />
           <Property Name="MainGroup" Type="String" Nullable="false" MaxLength="7" FixedLength="false" Unicode="false" />
+          <Property Name="flt_position_id1" Type="Int32" />
+          <Property Name="MainGroup1" Type="String" Nullable="false" MaxLength="7" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="EFBVoyageReport">
           <Key>
@@ -10269,8 +10238,8 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
           <Property Name="TemplateId" Type="Int32" />
           <Property Name="Remark" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
           <Property Name="Remark2" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="InitFlts" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
-          <Property Name="InitRoute" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="InitFlts" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="InitRoute" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="CanceledNo" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="CanceledRoute" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="Extension" Type="Int32" />
@@ -10289,7 +10258,7 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
           <Property Name="PosFDPId" Type="Int32" />
           <Property Name="PosRemark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="PosTicketUrl" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="Key" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="Key" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="OutOfHomeBase" Type="Boolean" />
         </EntityType>
         <Association Name="fk_vr_flt">
@@ -10319,13 +10288,14 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
           <Property Name="Longitude" Type="Decimal" Precision="20" Scale="15" />
           <Property Name="SortIndex" Type="Int32" />
           <Property Name="IsInt" Type="Boolean" />
-          <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Country" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="UTC" Type="Int32" />
-          <Property Name="Category" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Category" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="TimeZone" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="Name2" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="FlightInformations" Relationship="dbModel.fk_flightinformation_fromairport" FromRole="Airport" ToRole="FlightInformation" />
           <NavigationProperty Name="FlightInformations1" Relationship="dbModel.fk_flightinformation_toairport" FromRole="Airport" ToRole="FlightInformation" />
+          <Property Name="Name21" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="fk_flightinformation_fromairport">
           <End Type="dbModel.Airport" Role="Airport" Multiplicity="0..1" />
@@ -10557,7 +10527,7 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
           <Property Name="LastFlightId" Type="Int32" />
           <Property Name="UPD" Type="Int32" />
           <Property Name="IsMain" Type="Boolean" />
-          <Property Name="Key" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="Key" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="CP" Type="Boolean" />
           <Property Name="CustomerId" Type="Int32" />
           <Property Name="Remark" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
@@ -10565,17 +10535,17 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
           <Property Name="InitStart" Type="DateTime" Precision="3" />
           <Property Name="InitEnd" Type="DateTime" Precision="3" />
           <Property Name="InitRestTo" Type="DateTime" Precision="3" />
-          <Property Name="InitFlts" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
-          <Property Name="InitRoute" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
-          <Property Name="InitFromIATA" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
-          <Property Name="InitToIATA" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
-          <Property Name="InitNo" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
-          <Property Name="InitKey" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="InitFlts" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="InitRoute" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="InitFromIATA" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="InitToIATA" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="InitNo" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="InitKey" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="InitHomeBase" Type="Int32" />
-          <Property Name="InitRank" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="InitRank" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="InitIndex" Type="Int32" />
-          <Property Name="InitGroup" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
-          <Property Name="InitScheduleName" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="InitGroup" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="InitScheduleName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="InitFlights" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
           <Property Name="Remark2" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="CanceledNo" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
@@ -10588,14 +10558,14 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
           <Property Name="MaxFDP" Type="Decimal" Precision="18" Scale="4" />
           <Property Name="BL" Type="Int32" />
           <Property Name="FX" Type="Int32" />
-          <Property Name="ActualStart" Type="DateTime" Precision="7" />
-          <Property Name="ActualEnd" Type="DateTime" Precision="7" />
-          <Property Name="ActualRestTo" Type="DateTime" Precision="7" />
+          <Property Name="ActualStart" Type="DateTime" Precision="3" />
+          <Property Name="ActualEnd" Type="DateTime" Precision="3" />
+          <Property Name="ActualRestTo" Type="DateTime" Precision="3" />
           <Property Name="IsOver" Type="Boolean" />
           <Property Name="STD" Type="DateTime" Precision="3" />
           <Property Name="STA" Type="DateTime" Precision="3" />
           <Property Name="OutOfHomeBase" Type="Boolean" />
-          <Property Name="InitPosition" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="InitPosition" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="PLNEnd" Type="DateTime" Precision="3" />
           <Property Name="PLNRest" Type="DateTime" Precision="3" />
           <Property Name="PosFrom" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
@@ -10789,7 +10759,7 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
           <Property Name="status" Type="Int32" />
           <Property Name="dateStatus" Type="DateTime" Precision="3" />
           <Property Name="StatusEmployeeId" Type="Int32" />
-          <Property Name="StatusEmployeeName" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="StatusEmployeeName" Type="String" MaxLength="1003" FixedLength="false" Unicode="true" />
           <Property Name="Result" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
           <Property Name="DelayReason" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Delay" Type="Int32" />
@@ -10804,7 +10774,7 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
           <Property Name="BOX" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="RefNumber" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="Reporter" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="EmployeeName" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="EmployeeName" Type="String" MaxLength="1003" FixedLength="false" Unicode="true" />
           <Property Name="ReportFiledBy" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="ReporterId" Type="Int32" />
           <Property Name="DateOccurrence" Type="DateTime" Precision="3" />
@@ -10814,7 +10784,7 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
           <Property Name="Register" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="FlightDate" Type="DateTime" Precision="0" />
           <Property Name="EventLocation" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="TypeRegisteration" Type="String" MaxLength="101" FixedLength="false" Unicode="true" />
+          <Property Name="TypeRegisteration" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="WeatherCondition" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="PaxTotal" Type="Int32" />
           <Property Name="PhaseId" Type="Int32" />
@@ -10831,12 +10801,13 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
           <Property Name="status" Type="Int32" />
           <Property Name="dateStatus" Type="DateTime" Precision="3" />
           <Property Name="StatusEmployeeId" Type="Int32" />
-          <Property Name="StatusEmployeeName" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="StatusEmployeeName" Type="String" MaxLength="1003" FixedLength="false" Unicode="true" />
           <Property Name="DelayReason" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Delay" Type="Int32" />
           <Property Name="Result" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
           <Property Name="FormNo" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
           <Property Name="EventTitles" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EventTitles1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="OFPB_MainNavLog">
           <Key>
@@ -11289,21 +11260,21 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
           <Property Name="PF" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="IPName" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
           <Property Name="IPId" Type="Int32" />
-          <Property Name="IPScheduleName" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IPScheduleName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="P1Name" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
           <Property Name="P1Id" Type="Int32" />
-          <Property Name="P1ScheduleName" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="P1ScheduleName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="P2Name" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
           <Property Name="P2Id" Type="Int32" />
-          <Property Name="P2ScheduleName" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="P2ScheduleName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="PIC" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
           <Property Name="PICId" Type="Int32" />
-          <Property Name="SIC" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="SIC" Type="String" MaxLength="2004" FixedLength="false" Unicode="true" />
           <Property Name="SICId" Type="Int32" />
           <Property Name="JLDatePICApproved" Type="DateTime" Precision="3" />
           <Property Name="DepDelay" Type="Int32" />
           <Property Name="DateUpdate" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="User" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="User" Type="String" MaxLength="16" FixedLength="false" Unicode="false" />
           <Property Name="ReporterId" Type="Int32" />
           <Property Name="FormNo" Type="Int32" />
           <Property Name="DateOccurrence" Type="DateTime" Precision="7" />
@@ -11317,6 +11288,19 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
           <Property Name="IsActionRequired" Type="Boolean" />
           <Property Name="OtherForm" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="AttForm_ACCIDET" Type="Boolean" />
+          <Property Name="ReporterId1" Type="Int32" />
+          <Property Name="FormNo1" Type="Int32" />
+          <Property Name="DateOccurrence1" Type="DateTime" Precision="7" />
+          <Property Name="Result1" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="AttForm_ASR1" Type="Boolean" />
+          <Property Name="AttForm_CSR1" Type="Boolean" />
+          <Property Name="AttForm_CR1" Type="Boolean" />
+          <Property Name="AttForm_Other1" Type="Boolean" />
+          <Property Name="ActionTaken1" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="IsForInformation1" Type="Boolean" />
+          <Property Name="IsActionRequired1" Type="Boolean" />
+          <Property Name="OtherForm1" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="AttForm_ACCIDET1" Type="Boolean" />
         </EntityType>
         <EntityType Name="view_ofbb_root_actual">
           <Key>
@@ -12346,160 +12330,6 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
           <Property Name="planned_flt_duty_time" Type="Int32" />
           <Property Name="actual_flt_duty_time" Type="Int32" />
         </EntityType>
-        <EntityType Name="EFBASR">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="FlightId" Type="Int32" Nullable="false" />
-          <Property Name="EventTypeId" Type="Int32" />
-          <Property Name="OccurrenceDate" Type="DateTime" Precision="3" />
-          <Property Name="IsDay" Type="Boolean" />
-          <Property Name="SQUAWK" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="FuelJettisoned" Type="Decimal" Precision="18" Scale="0" />
-          <Property Name="Altitude" Type="Decimal" Precision="18" Scale="0" />
-          <Property Name="Speed" Type="Double" />
-          <Property Name="ACWeight" Type="Decimal" Precision="18" Scale="0" />
-          <Property Name="TechLogPageNO" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="TechLogItemNO" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="FlightPhaseId" Type="Int32" />
-          <Property Name="LOCAirport" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="LOCStand" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="LOCRunway" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="LOCGEOLongtitude" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="LOCGEOAltitude" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="METId" Type="Int32" />
-          <Property Name="ActualWX" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="SigxWXId" Type="Int32" />
-          <Property Name="RunwayConditionId" Type="Int32" />
-          <Property Name="ACConfigAP" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="ACConfigATHR" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="ACConfigGear" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="ACConfigFlap" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="ACConfigSlat" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="ACConfigSpoilers" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Summary" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
-          <Property Name="Result" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
-          <Property Name="OthersInfo" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
-          <Property Name="AATRiskId" Type="Int32" />
-          <Property Name="AATIsActionTaken" Type="Boolean" />
-          <Property Name="AATReportedToATC" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="AATATCInstruction" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="AATFrequency" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="AATHeading" Type="Decimal" Precision="18" Scale="0" />
-          <Property Name="AATClearedAltitude" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="AATMinVerticalSep" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="AATMinHorizontalSep" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="AATTCASAlertId" Type="Int32" />
-          <Property Name="AATTypeRA" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="AATIsRAFollowed" Type="Boolean" />
-          <Property Name="AATVerticalDeviation" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="AATOtherACType" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="AATMarkingColour" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="AATCallSign" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="AATLighting" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="WTHeading" Type="Decimal" Precision="18" Scale="0" />
-          <Property Name="WTTurningId" Type="Int32" />
-          <Property Name="WTGlideSlopePosId" Type="Int32" />
-          <Property Name="WTExtendedCenterlinePosId" Type="Int32" />
-          <Property Name="WTAttitudeChangeId" Type="Int32" />
-          <Property Name="WTAttitudeChangeDeg" Type="Decimal" Precision="18" Scale="0" />
-          <Property Name="WTIsBuffet" Type="Boolean" />
-          <Property Name="WTIsStickShaker" Type="Boolean" />
-          <Property Name="WTSuspect" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="WTDescribeVA" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="WTPrecedingAC" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="WTIsAware" Type="Boolean" />
-          <Property Name="BSBirdType" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="BSNrSeenId" Type="Int32" />
-          <Property Name="BSNrStruckId" Type="Int32" />
-          <Property Name="BSTimeId" Type="Int32" />
-          <Property Name="PICDate" Type="DateTime" Precision="0" />
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DayNightStatusId" Type="Int32" />
-          <Property Name="IncidentTypeId" Type="Int32" />
-          <Property Name="AATXAbove" Type="Int32" />
-          <Property Name="AATYAbove" Type="Int32" />
-          <Property Name="AATXAstern" Type="Int32" />
-          <Property Name="AATYAstern" Type="Int32" />
-          <Property Name="AATHorizontalPlane" Type="Int32" />
-          <Property Name="BSImpactDec" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="IsSecurityEvent" Type="Boolean" />
-          <Property Name="IsAirproxATC" Type="Boolean" />
-          <Property Name="IsTCASRA" Type="Boolean" />
-          <Property Name="IsWakeTur" Type="Boolean" />
-          <Property Name="IsBirdStrike" Type="Boolean" />
-          <Property Name="IsOthers" Type="Boolean" />
-          <Property Name="MachNo" Type="Double" />
-          <Property Name="SigxWXTypeId" Type="Int32" />
-          <Property Name="BSHeading" Type="Double" />
-          <Property Name="BSTurningId" Type="Int32" />
-          <Property Name="DateUpdate" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="User" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="JLSignedBy" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="JLDatePICApproved" Type="DateTime" Precision="3" />
-          <Property Name="PICId" Type="Int32" />
-          <Property Name="PIC" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="OPSRemark" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
-          <Property Name="OPSRemarkDate" Type="DateTime" Precision="3" />
-          <Property Name="OPSId" Type="Int32" />
-          <Property Name="OPSConfirmDate" Type="DateTime" Precision="3" />
-          <Property Name="OPSStaffRemark" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
-          <Property Name="OPSStaffDateVisit" Type="DateTime" Precision="3" />
-          <Property Name="OPSStaffConfirmDate" Type="DateTime" Precision="3" />
-          <Property Name="OPSStaffId" Type="Int32" />
-          <Property Name="OPSStaffRemarkDate" Type="DateTime" Precision="3" />
-          <Property Name="OPSUser" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="OPSStaffUser" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="OPSStatusId" Type="Int32" />
-          <Property Name="OPSStaffStatusId" Type="Int32" />
-          <Property Name="LOCTaxiway" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="LOCEnRoute" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="LOCAPP" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="ACConfigAPU" Type="Boolean" />
-          <Property Name="ACConfigENG" Type="Boolean" />
-          <Property Name="EGPWSTypeId" Type="Int32" />
-          <Property Name="EGPWSAuralAlert" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="EGPWSActionTaken" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="CFITAirapaceId" Type="Int32" />
-          <Property Name="CFITATCId" Type="Int32" />
-          <Property Name="CFITFrequency" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="CFITHeading" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="CFITALT" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="CFITIncidentId" Type="Int32" />
-          <Property Name="CFITGPWS" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="AATIncidentId" Type="Int32" />
-          <Property Name="AATRelativeALT" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="ATTRelativePos" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="BSSkyCondition" Type="Int32" />
-          <Property Name="BSRandom" Type="Boolean" />
-          <Property Name="BSWindShield" Type="Boolean" />
-          <Property Name="BSENG" Type="Boolean" />
-          <Property Name="BSWing" Type="Boolean" />
-          <Property Name="BSFuselage" Type="Boolean" />
-          <Property Name="BSLDG" Type="Boolean" />
-          <Property Name="BSTail" Type="Boolean" />
-          <Property Name="BSLights" Type="Boolean" />
-          <Property Name="BSOther" Type="Boolean" />
-          <Property Name="BSEffectFlt" Type="Int32" />
-          <Property Name="WTAPDisconnected" Type="Boolean" />
-          <Property Name="WTSpeed" Type="Boolean" />
-          <Property Name="WTStall" Type="Boolean" />
-          <Property Name="MetSurfaceId" Type="Int32" />
-          <Property Name="MetSurfaceConditionId" Type="Int32" />
-          <NavigationProperty Name="FlightInformation" Relationship="dbModel.fk_asr_flt" FromRole="EFBASR" ToRole="FlightInformation" />
-        </EntityType>
-        <Association Name="fk_asr_flt">
-          <End Type="dbModel.FlightInformation" Role="FlightInformation" Multiplicity="1" />
-          <End Type="dbModel.EFBASR" Role="EFBASR" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="FlightInformation">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="EFBASR">
-              <PropertyRef Name="FlightId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="ViewEFBASR">
           <Key>
             <PropertyRef Name="Id" />
@@ -12613,7 +12443,7 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
           <Property Name="JLDate" Type="DateTime" Precision="3" />
           <Property Name="JLDateApproved" Type="DateTime" Precision="3" />
           <Property Name="JLNo" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="SerialNo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="SerialNo" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
           <Property Name="RVSM_GND_CPT" Type="Decimal" Precision="18" Scale="4" />
           <Property Name="LTR" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="RVSM_GND_STBY" Type="Decimal" Precision="18" Scale="4" />
@@ -12635,16 +12465,16 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
           <Property Name="PF" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="IPName" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
           <Property Name="IPId" Type="Int32" />
-          <Property Name="IPScheduleName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="IPScheduleName" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="P1Name" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
           <Property Name="P1Id" Type="Int32" />
-          <Property Name="P1ScheduleName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="P1ScheduleName" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="P2Name" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
           <Property Name="P2Id" Type="Int32" />
-          <Property Name="P2ScheduleName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="P2ScheduleName" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="PIC" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
           <Property Name="PICId" Type="Int32" />
-          <Property Name="SIC" Type="String" MaxLength="2004" FixedLength="false" Unicode="true" />
+          <Property Name="SIC" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="SICId" Type="Int32" />
           <Property Name="JLDatePICApproved" Type="DateTime" Precision="3" />
           <Property Name="OccurrenceDate" Type="DateTime" Precision="3" />
@@ -12773,7 +12603,171 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
           <Property Name="WTStall" Type="Boolean" />
           <Property Name="MetSurfaceId" Type="Int32" />
           <Property Name="MetSurfaceConditionId" Type="Int32" />
+          <Property Name="DateSign" Type="DateTime" Precision="7" />
+          <Property Name="EmployeeId" Type="Int32" />
+          <Property Name="Status" Type="Int32" />
+          <Property Name="ReporterId" Type="Int32" />
+          <Property Name="FormNo" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="EFBASR">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="FlightId" Type="Int32" Nullable="false" />
+          <Property Name="EventTypeId" Type="Int32" />
+          <Property Name="OccurrenceDate" Type="DateTime" Precision="3" />
+          <Property Name="IsDay" Type="Boolean" />
+          <Property Name="SQUAWK" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FuelJettisoned" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="Altitude" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="Speed" Type="Double" />
+          <Property Name="ACWeight" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="TechLogPageNO" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="TechLogItemNO" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="FlightPhaseId" Type="Int32" />
+          <Property Name="LOCAirport" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="LOCStand" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="LOCRunway" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="LOCGEOLongtitude" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="LOCGEOAltitude" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="METId" Type="Int32" />
+          <Property Name="ActualWX" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="SigxWXId" Type="Int32" />
+          <Property Name="RunwayConditionId" Type="Int32" />
+          <Property Name="ACConfigAP" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ACConfigATHR" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ACConfigGear" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ACConfigFlap" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ACConfigSlat" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ACConfigSpoilers" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Summary" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="Result" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="OthersInfo" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="AATRiskId" Type="Int32" />
+          <Property Name="AATIsActionTaken" Type="Boolean" />
+          <Property Name="AATReportedToATC" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="AATATCInstruction" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="AATFrequency" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="AATHeading" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="AATClearedAltitude" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="AATMinVerticalSep" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="AATMinHorizontalSep" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="AATTCASAlertId" Type="Int32" />
+          <Property Name="AATTypeRA" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="AATIsRAFollowed" Type="Boolean" />
+          <Property Name="AATVerticalDeviation" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="AATOtherACType" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="AATMarkingColour" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="AATCallSign" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="AATLighting" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="WTHeading" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="WTTurningId" Type="Int32" />
+          <Property Name="WTGlideSlopePosId" Type="Int32" />
+          <Property Name="WTExtendedCenterlinePosId" Type="Int32" />
+          <Property Name="WTAttitudeChangeId" Type="Int32" />
+          <Property Name="WTAttitudeChangeDeg" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="WTIsBuffet" Type="Boolean" />
+          <Property Name="WTIsStickShaker" Type="Boolean" />
+          <Property Name="WTSuspect" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="WTDescribeVA" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="WTPrecedingAC" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="WTIsAware" Type="Boolean" />
+          <Property Name="BSBirdType" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="BSNrSeenId" Type="Int32" />
+          <Property Name="BSNrStruckId" Type="Int32" />
+          <Property Name="BSTimeId" Type="Int32" />
+          <Property Name="PICDate" Type="DateTime" Precision="0" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DayNightStatusId" Type="Int32" />
+          <Property Name="IncidentTypeId" Type="Int32" />
+          <Property Name="AATXAbove" Type="Int32" />
+          <Property Name="AATYAbove" Type="Int32" />
+          <Property Name="AATXAstern" Type="Int32" />
+          <Property Name="AATYAstern" Type="Int32" />
+          <Property Name="AATHorizontalPlane" Type="Int32" />
+          <Property Name="BSImpactDec" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="IsSecurityEvent" Type="Boolean" />
+          <Property Name="IsAirproxATC" Type="Boolean" />
+          <Property Name="IsTCASRA" Type="Boolean" />
+          <Property Name="IsWakeTur" Type="Boolean" />
+          <Property Name="IsBirdStrike" Type="Boolean" />
+          <Property Name="IsOthers" Type="Boolean" />
+          <Property Name="MachNo" Type="Double" />
+          <Property Name="SigxWXTypeId" Type="Int32" />
+          <Property Name="BSHeading" Type="Double" />
+          <Property Name="BSTurningId" Type="Int32" />
+          <Property Name="DateUpdate" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="User" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="JLSignedBy" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="JLDatePICApproved" Type="DateTime" Precision="3" />
+          <Property Name="PICId" Type="Int32" />
+          <Property Name="PIC" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="OPSRemark" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="OPSRemarkDate" Type="DateTime" Precision="3" />
+          <Property Name="OPSId" Type="Int32" />
+          <Property Name="OPSConfirmDate" Type="DateTime" Precision="3" />
+          <Property Name="OPSStaffRemark" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Name="OPSStaffDateVisit" Type="DateTime" Precision="3" />
+          <Property Name="OPSStaffConfirmDate" Type="DateTime" Precision="3" />
+          <Property Name="OPSStaffId" Type="Int32" />
+          <Property Name="OPSStaffRemarkDate" Type="DateTime" Precision="3" />
+          <Property Name="OPSUser" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="OPSStaffUser" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="OPSStatusId" Type="Int32" />
+          <Property Name="OPSStaffStatusId" Type="Int32" />
+          <Property Name="DateSign" Type="DateTime" Precision="7" />
+          <Property Name="EmployeeId" Type="Int32" />
+          <Property Name="ReporterId" Type="Int32" />
+          <Property Name="Status" Type="Int32" />
+          <Property Name="FormNo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="DateStatus" Type="DateTime" Precision="3" />
+          <Property Name="StatusEmployeeId" Type="Int32" />
+          <Property Name="LOCTaxiway" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="LOCEnRoute" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="LOCAPP" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ACConfigAPU" Type="Boolean" />
+          <Property Name="ACConfigENG" Type="Boolean" />
+          <Property Name="EGPWSTypeId" Type="Int32" />
+          <Property Name="EGPWSAuralAlert" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="EGPWSActionTaken" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="CFITATCId" Type="Int32" />
+          <Property Name="CFITFrequency" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="CFITHeading" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="CFITALT" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="CFITGPWS" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="AATIncidentId" Type="Int32" />
+          <Property Name="AATRelativeALT" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ATTRelativePos" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="BSSkyCondition" Type="Int32" />
+          <Property Name="BSRandom" Type="Boolean" />
+          <Property Name="BSWindShield" Type="Boolean" />
+          <Property Name="BSENG" Type="Boolean" />
+          <Property Name="BSWing" Type="Boolean" />
+          <Property Name="BSFuselage" Type="Boolean" />
+          <Property Name="BSLDG" Type="Boolean" />
+          <Property Name="BSTail" Type="Boolean" />
+          <Property Name="BSLights" Type="Boolean" />
+          <Property Name="BSOther" Type="Boolean" />
+          <Property Name="BSEffectFlt" Type="Int32" />
+          <Property Name="WTAPDisconnected" Type="Boolean" />
+          <Property Name="WTSpeed" Type="Boolean" />
+          <Property Name="WTStall" Type="Boolean" />
+          <Property Name="MetSurfaceId" Type="Int32" />
+          <Property Name="MetSurfaceConditionId" Type="Int32" />
+          <NavigationProperty Name="FlightInformation" Relationship="dbModel.fk_asr_flt" FromRole="EFBASR" ToRole="FlightInformation" />
+        </EntityType>
+        <Association Name="fk_asr_flt">
+          <End Type="dbModel.FlightInformation" Role="FlightInformation" Multiplicity="1" />
+          <End Type="dbModel.EFBASR" Role="EFBASR" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FlightInformation">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="EFBASR">
+              <PropertyRef Name="FlightId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -15356,7 +15350,7 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
           <EntitySetMapping Name="DayGPs">
             <EntityTypeMapping TypeName="dbModel.DayGP">
               <MappingFragment StoreEntitySet="DayGP">
-                <ScalarProperty Name="PMonthName2" ColumnName="PMonthName2" />
+                <ScalarProperty Name="Night1" ColumnName="Night" />
                 <ScalarProperty Name="PDate2" ColumnName="PDate2" />
                 <ScalarProperty Name="PeriodFixTime" ColumnName="PeriodFixTime" />
                 <ScalarProperty Name="LocalDate" ColumnName="LocalDate" />
@@ -15374,6 +15368,10 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
           <EntitySetMapping Name="ViewLegCrews">
             <EntityTypeMapping TypeName="dbModel.ViewLegCrew">
               <MappingFragment StoreEntitySet="ViewLegCrew">
+                <ScalarProperty Name="BaseAirportId1" ColumnName="BaseAirportId" />
+                <ScalarProperty Name="BaseAirport1" ColumnName="BaseAirport" />
+                <ScalarProperty Name="ValidTypes1" ColumnName="ValidTypes" />
+                <ScalarProperty Name="NetFixTime1" ColumnName="NetFixTime" />
                 <ScalarProperty Name="STDDayLocal" ColumnName="STDDayLocal" />
                 <ScalarProperty Name="PID" ColumnName="PID" />
                 <ScalarProperty Name="Takeoff" ColumnName="Takeoff" />
@@ -15473,6 +15471,8 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
           <EntitySetMapping Name="XFlightCrews">
             <EntityTypeMapping TypeName="dbModel.XFlightCrew">
               <MappingFragment StoreEntitySet="XFlightCrew">
+                <ScalarProperty Name="MainGroup1" ColumnName="MainGroup" />
+                <ScalarProperty Name="flt_position_id1" ColumnName="flt_position_id" />
                 <ScalarProperty Name="IsConfirmed" ColumnName="IsConfirmed" />
                 <ScalarProperty Name="DateConfirmed" ColumnName="DateConfirmed" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
@@ -15661,6 +15661,7 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
           <EntitySetMapping Name="Airports">
             <EntityTypeMapping TypeName="dbModel.Airport">
               <MappingFragment StoreEntitySet="Airport">
+                <ScalarProperty Name="Name21" ColumnName="Name2" />
                 <ScalarProperty Name="TimeZone" ColumnName="TimeZone" />
                 <ScalarProperty Name="Category" ColumnName="Category" />
                 <ScalarProperty Name="UTC" ColumnName="UTC" />
@@ -16041,6 +16042,7 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
           <EntitySetMapping Name="ViewQACSRs">
             <EntityTypeMapping TypeName="dbModel.ViewQACSR">
               <MappingFragment StoreEntitySet="ViewQACSR">
+                <ScalarProperty Name="EventTitles1" ColumnName="EventTitles" />
                 <ScalarProperty Name="FormNo" ColumnName="FormNo" />
                 <ScalarProperty Name="Result" ColumnName="Result" />
                 <ScalarProperty Name="Delay" ColumnName="Delay" />
@@ -16369,6 +16371,19 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
           <EntitySetMapping Name="ViewEFBVoyageReports">
             <EntityTypeMapping TypeName="dbModel.ViewEFBVoyageReport">
               <MappingFragment StoreEntitySet="ViewEFBVoyageReport">
+                <ScalarProperty Name="AttForm_ACCIDET1" ColumnName="AttForm_ACCIDET" />
+                <ScalarProperty Name="OtherForm1" ColumnName="OtherForm" />
+                <ScalarProperty Name="IsActionRequired1" ColumnName="IsActionRequired" />
+                <ScalarProperty Name="IsForInformation1" ColumnName="IsForInformation" />
+                <ScalarProperty Name="ActionTaken1" ColumnName="ActionTaken" />
+                <ScalarProperty Name="AttForm_Other1" ColumnName="AttForm_Other" />
+                <ScalarProperty Name="AttForm_CR1" ColumnName="AttForm_CR" />
+                <ScalarProperty Name="AttForm_CSR1" ColumnName="AttForm_CSR" />
+                <ScalarProperty Name="AttForm_ASR1" ColumnName="AttForm_ASR" />
+                <ScalarProperty Name="Result1" ColumnName="Result" />
+                <ScalarProperty Name="DateOccurrence1" ColumnName="DateOccurrence" />
+                <ScalarProperty Name="FormNo1" ColumnName="FormNo" />
+                <ScalarProperty Name="ReporterId1" ColumnName="ReporterId" />
                 <ScalarProperty Name="User" ColumnName="User" />
                 <ScalarProperty Name="DateUpdate" ColumnName="DateUpdate" />
                 <ScalarProperty Name="DepDelay" ColumnName="DepDelay" />
@@ -16584,199 +16599,14 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="EFBASRs">
-            <EntityTypeMapping TypeName="dbModel.EFBASR">
-              <MappingFragment StoreEntitySet="EFBASR">
-                <ScalarProperty Name="MetSurfaceConditionId" ColumnName="MetSurfaceConditionId" />
-                <ScalarProperty Name="MetSurfaceId" ColumnName="MetSurfaceId" />
-                <ScalarProperty Name="WTStall" ColumnName="WTStall" />
-                <ScalarProperty Name="WTSpeed" ColumnName="WTSpeed" />
-                <ScalarProperty Name="WTAPDisconnected" ColumnName="WTAPDisconnected" />
-                <ScalarProperty Name="BSEffectFlt" ColumnName="BSEffectFlt" />
-                <ScalarProperty Name="BSOther" ColumnName="BSOther" />
-                <ScalarProperty Name="BSLights" ColumnName="BSLights" />
-                <ScalarProperty Name="BSTail" ColumnName="BSTail" />
-                <ScalarProperty Name="BSLDG" ColumnName="BSLDG" />
-                <ScalarProperty Name="BSFuselage" ColumnName="BSFuselage" />
-                <ScalarProperty Name="BSWing" ColumnName="BSWing" />
-                <ScalarProperty Name="BSENG" ColumnName="BSENG" />
-                <ScalarProperty Name="BSWindShield" ColumnName="BSWindShield" />
-                <ScalarProperty Name="BSRandom" ColumnName="BSRandom" />
-                <ScalarProperty Name="BSSkyCondition" ColumnName="BSSkyCondition" />
-                <ScalarProperty Name="ATTRelativePos" ColumnName="ATTRelativePos" />
-                <ScalarProperty Name="AATRelativeALT" ColumnName="AATRelativeALT" />
-                <ScalarProperty Name="AATIncidentId" ColumnName="AATIncidentId" />
-                <ScalarProperty Name="CFITGPWS" ColumnName="CFITGPWS" />
-                <ScalarProperty Name="CFITIncidentId" ColumnName="CFITIncidentId" />
-                <ScalarProperty Name="CFITALT" ColumnName="CFITALT" />
-                <ScalarProperty Name="CFITHeading" ColumnName="CFITHeading" />
-                <ScalarProperty Name="CFITFrequency" ColumnName="CFITFrequency" />
-                <ScalarProperty Name="CFITATCId" ColumnName="CFITATCId" />
-                <ScalarProperty Name="CFITAirapaceId" ColumnName="CFITAirapaceId" />
-                <ScalarProperty Name="EGPWSActionTaken" ColumnName="EGPWSActionTaken" />
-                <ScalarProperty Name="EGPWSAuralAlert" ColumnName="EGPWSAuralAlert" />
-                <ScalarProperty Name="EGPWSTypeId" ColumnName="EGPWSTypeId" />
-                <ScalarProperty Name="ACConfigENG" ColumnName="ACConfigENG" />
-                <ScalarProperty Name="ACConfigAPU" ColumnName="ACConfigAPU" />
-                <ScalarProperty Name="LOCAPP" ColumnName="LOCAPP" />
-                <ScalarProperty Name="LOCEnRoute" ColumnName="LOCEnRoute" />
-                <ScalarProperty Name="LOCTaxiway" ColumnName="LOCTaxiway" />
-                <ScalarProperty Name="OPSStaffStatusId" ColumnName="OPSStaffStatusId" />
-                <ScalarProperty Name="OPSStatusId" ColumnName="OPSStatusId" />
-                <ScalarProperty Name="OPSStaffUser" ColumnName="OPSStaffUser" />
-                <ScalarProperty Name="OPSUser" ColumnName="OPSUser" />
-                <ScalarProperty Name="OPSStaffRemarkDate" ColumnName="OPSStaffRemarkDate" />
-                <ScalarProperty Name="OPSStaffId" ColumnName="OPSStaffId" />
-                <ScalarProperty Name="OPSStaffConfirmDate" ColumnName="OPSStaffConfirmDate" />
-                <ScalarProperty Name="OPSStaffDateVisit" ColumnName="OPSStaffDateVisit" />
-                <ScalarProperty Name="OPSStaffRemark" ColumnName="OPSStaffRemark" />
-                <ScalarProperty Name="OPSConfirmDate" ColumnName="OPSConfirmDate" />
-                <ScalarProperty Name="OPSId" ColumnName="OPSId" />
-                <ScalarProperty Name="OPSRemarkDate" ColumnName="OPSRemarkDate" />
-                <ScalarProperty Name="OPSRemark" ColumnName="OPSRemark" />
-                <ScalarProperty Name="PIC" ColumnName="PIC" />
-                <ScalarProperty Name="PICId" ColumnName="PICId" />
-                <ScalarProperty Name="JLDatePICApproved" ColumnName="JLDatePICApproved" />
-                <ScalarProperty Name="JLSignedBy" ColumnName="JLSignedBy" />
-                <ScalarProperty Name="User" ColumnName="User" />
-                <ScalarProperty Name="DateUpdate" ColumnName="DateUpdate" />
-                <ScalarProperty Name="BSTurningId" ColumnName="BSTurningId" />
-                <ScalarProperty Name="BSHeading" ColumnName="BSHeading" />
-                <ScalarProperty Name="SigxWXTypeId" ColumnName="SigxWXTypeId" />
-                <ScalarProperty Name="MachNo" ColumnName="MachNo" />
-                <ScalarProperty Name="IsOthers" ColumnName="IsOthers" />
-                <ScalarProperty Name="IsBirdStrike" ColumnName="IsBirdStrike" />
-                <ScalarProperty Name="IsWakeTur" ColumnName="IsWakeTur" />
-                <ScalarProperty Name="IsTCASRA" ColumnName="IsTCASRA" />
-                <ScalarProperty Name="IsAirproxATC" ColumnName="IsAirproxATC" />
-                <ScalarProperty Name="IsSecurityEvent" ColumnName="IsSecurityEvent" />
-                <ScalarProperty Name="BSImpactDec" ColumnName="BSImpactDec" />
-                <ScalarProperty Name="AATHorizontalPlane" ColumnName="AATHorizontalPlane" />
-                <ScalarProperty Name="AATYAstern" ColumnName="AATYAstern" />
-                <ScalarProperty Name="AATXAstern" ColumnName="AATXAstern" />
-                <ScalarProperty Name="AATYAbove" ColumnName="AATYAbove" />
-                <ScalarProperty Name="AATXAbove" ColumnName="AATXAbove" />
-                <ScalarProperty Name="IncidentTypeId" ColumnName="IncidentTypeId" />
-                <ScalarProperty Name="DayNightStatusId" ColumnName="DayNightStatusId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="PICDate" ColumnName="PICDate" />
-                <ScalarProperty Name="BSTimeId" ColumnName="BSTimeId" />
-                <ScalarProperty Name="BSNrStruckId" ColumnName="BSNrStruckId" />
-                <ScalarProperty Name="BSNrSeenId" ColumnName="BSNrSeenId" />
-                <ScalarProperty Name="BSBirdType" ColumnName="BSBirdType" />
-                <ScalarProperty Name="WTIsAware" ColumnName="WTIsAware" />
-                <ScalarProperty Name="WTPrecedingAC" ColumnName="WTPrecedingAC" />
-                <ScalarProperty Name="WTDescribeVA" ColumnName="WTDescribeVA" />
-                <ScalarProperty Name="WTSuspect" ColumnName="WTSuspect" />
-                <ScalarProperty Name="WTIsStickShaker" ColumnName="WTIsStickShaker" />
-                <ScalarProperty Name="WTIsBuffet" ColumnName="WTIsBuffet" />
-                <ScalarProperty Name="WTAttitudeChangeDeg" ColumnName="WTAttitudeChangeDeg" />
-                <ScalarProperty Name="WTAttitudeChangeId" ColumnName="WTAttitudeChangeId" />
-                <ScalarProperty Name="WTExtendedCenterlinePosId" ColumnName="WTExtendedCenterlinePosId" />
-                <ScalarProperty Name="WTGlideSlopePosId" ColumnName="WTGlideSlopePosId" />
-                <ScalarProperty Name="WTTurningId" ColumnName="WTTurningId" />
-                <ScalarProperty Name="WTHeading" ColumnName="WTHeading" />
-                <ScalarProperty Name="AATLighting" ColumnName="AATLighting" />
-                <ScalarProperty Name="AATCallSign" ColumnName="AATCallSign" />
-                <ScalarProperty Name="AATMarkingColour" ColumnName="AATMarkingColour" />
-                <ScalarProperty Name="AATOtherACType" ColumnName="AATOtherACType" />
-                <ScalarProperty Name="AATVerticalDeviation" ColumnName="AATVerticalDeviation" />
-                <ScalarProperty Name="AATIsRAFollowed" ColumnName="AATIsRAFollowed" />
-                <ScalarProperty Name="AATTypeRA" ColumnName="AATTypeRA" />
-                <ScalarProperty Name="AATTCASAlertId" ColumnName="AATTCASAlertId" />
-                <ScalarProperty Name="AATMinHorizontalSep" ColumnName="AATMinHorizontalSep" />
-                <ScalarProperty Name="AATMinVerticalSep" ColumnName="AATMinVerticalSep" />
-                <ScalarProperty Name="AATClearedAltitude" ColumnName="AATClearedAltitude" />
-                <ScalarProperty Name="AATHeading" ColumnName="AATHeading" />
-                <ScalarProperty Name="AATFrequency" ColumnName="AATFrequency" />
-                <ScalarProperty Name="AATATCInstruction" ColumnName="AATATCInstruction" />
-                <ScalarProperty Name="AATReportedToATC" ColumnName="AATReportedToATC" />
-                <ScalarProperty Name="AATIsActionTaken" ColumnName="AATIsActionTaken" />
-                <ScalarProperty Name="AATRiskId" ColumnName="AATRiskId" />
-                <ScalarProperty Name="OthersInfo" ColumnName="OthersInfo" />
-                <ScalarProperty Name="Result" ColumnName="Result" />
-                <ScalarProperty Name="Summary" ColumnName="Summary" />
-                <ScalarProperty Name="ACConfigSpoilers" ColumnName="ACConfigSpoilers" />
-                <ScalarProperty Name="ACConfigSlat" ColumnName="ACConfigSlat" />
-                <ScalarProperty Name="ACConfigFlap" ColumnName="ACConfigFlap" />
-                <ScalarProperty Name="ACConfigGear" ColumnName="ACConfigGear" />
-                <ScalarProperty Name="ACConfigATHR" ColumnName="ACConfigATHR" />
-                <ScalarProperty Name="ACConfigAP" ColumnName="ACConfigAP" />
-                <ScalarProperty Name="RunwayConditionId" ColumnName="RunwayConditionId" />
-                <ScalarProperty Name="SigxWXId" ColumnName="SigxWXId" />
-                <ScalarProperty Name="ActualWX" ColumnName="ActualWX" />
-                <ScalarProperty Name="METId" ColumnName="METId" />
-                <ScalarProperty Name="LOCGEOAltitude" ColumnName="LOCGEOAltitude" />
-                <ScalarProperty Name="LOCGEOLongtitude" ColumnName="LOCGEOLongtitude" />
-                <ScalarProperty Name="LOCRunway" ColumnName="LOCRunway" />
-                <ScalarProperty Name="LOCStand" ColumnName="LOCStand" />
-                <ScalarProperty Name="LOCAirport" ColumnName="LOCAirport" />
-                <ScalarProperty Name="FlightPhaseId" ColumnName="FlightPhaseId" />
-                <ScalarProperty Name="TechLogItemNO" ColumnName="TechLogItemNO" />
-                <ScalarProperty Name="TechLogPageNO" ColumnName="TechLogPageNO" />
-                <ScalarProperty Name="ACWeight" ColumnName="ACWeight" />
-                <ScalarProperty Name="Speed" ColumnName="Speed" />
-                <ScalarProperty Name="Altitude" ColumnName="Altitude" />
-                <ScalarProperty Name="FuelJettisoned" ColumnName="FuelJettisoned" />
-                <ScalarProperty Name="SQUAWK" ColumnName="SQUAWK" />
-                <ScalarProperty Name="IsDay" ColumnName="IsDay" />
-                <ScalarProperty Name="OccurrenceDate" ColumnName="OccurrenceDate" />
-                <ScalarProperty Name="EventTypeId" ColumnName="EventTypeId" />
-                <ScalarProperty Name="FlightId" ColumnName="FlightId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ViewEFBASRs">
             <EntityTypeMapping TypeName="dbModel.ViewEFBASR">
               <MappingFragment StoreEntitySet="ViewEFBASR">
-                <ScalarProperty Name="MetSurfaceConditionId" ColumnName="MetSurfaceConditionId" />
-                <ScalarProperty Name="MetSurfaceId" ColumnName="MetSurfaceId" />
-                <ScalarProperty Name="WTStall" ColumnName="WTStall" />
-                <ScalarProperty Name="WTSpeed" ColumnName="WTSpeed" />
-                <ScalarProperty Name="WTAPDisconnected" ColumnName="WTAPDisconnected" />
-                <ScalarProperty Name="BSEffectFlt" ColumnName="BSEffectFlt" />
-                <ScalarProperty Name="BSOther" ColumnName="BSOther" />
-                <ScalarProperty Name="BSLights" ColumnName="BSLights" />
-                <ScalarProperty Name="BSTail" ColumnName="BSTail" />
-                <ScalarProperty Name="BSLDG" ColumnName="BSLDG" />
-                <ScalarProperty Name="BSFuselage" ColumnName="BSFuselage" />
-                <ScalarProperty Name="BSWing" ColumnName="BSWing" />
-                <ScalarProperty Name="BSENG" ColumnName="BSENG" />
-                <ScalarProperty Name="BSWindShield" ColumnName="BSWindShield" />
-                <ScalarProperty Name="BSRandom" ColumnName="BSRandom" />
-                <ScalarProperty Name="BSSkyCondition" ColumnName="BSSkyCondition" />
-                <ScalarProperty Name="ATTRelativePos" ColumnName="ATTRelativePos" />
-                <ScalarProperty Name="AATRelativeALT" ColumnName="AATRelativeALT" />
-                <ScalarProperty Name="AATIncidentId" ColumnName="AATIncidentId" />
-                <ScalarProperty Name="CFITGPWS" ColumnName="CFITGPWS" />
-                <ScalarProperty Name="CFITIncidentId" ColumnName="CFITIncidentId" />
-                <ScalarProperty Name="CFITALT" ColumnName="CFITALT" />
-                <ScalarProperty Name="CFITHeading" ColumnName="CFITHeading" />
-                <ScalarProperty Name="CFITFrequency" ColumnName="CFITFrequency" />
-                <ScalarProperty Name="CFITATCId" ColumnName="CFITATCId" />
-                <ScalarProperty Name="CFITAirapaceId" ColumnName="CFITAirapaceId" />
-                <ScalarProperty Name="EGPWSActionTaken" ColumnName="EGPWSActionTaken" />
-                <ScalarProperty Name="EGPWSAuralAlert" ColumnName="EGPWSAuralAlert" />
-                <ScalarProperty Name="EGPWSTypeId" ColumnName="EGPWSTypeId" />
-                <ScalarProperty Name="ACConfigENG" ColumnName="ACConfigENG" />
-                <ScalarProperty Name="ACConfigAPU" ColumnName="ACConfigAPU" />
-                <ScalarProperty Name="LOCAPP" ColumnName="LOCAPP" />
-                <ScalarProperty Name="LOCEnRoute" ColumnName="LOCEnRoute" />
-                <ScalarProperty Name="LOCTaxiway" ColumnName="LOCTaxiway" />
-                <ScalarProperty Name="OPSStaffStatusId" ColumnName="OPSStaffStatusId" />
-                <ScalarProperty Name="OPSStatusId" ColumnName="OPSStatusId" />
-                <ScalarProperty Name="OPSStaffUser" ColumnName="OPSStaffUser" />
-                <ScalarProperty Name="OPSUser" ColumnName="OPSUser" />
-                <ScalarProperty Name="OPSStaffRemarkDate" ColumnName="OPSStaffRemarkDate" />
-                <ScalarProperty Name="OPSStaffId" ColumnName="OPSStaffId" />
-                <ScalarProperty Name="OPSStaffConfirmDate" ColumnName="OPSStaffConfirmDate" />
-                <ScalarProperty Name="OPSStaffDateVisit" ColumnName="OPSStaffDateVisit" />
-                <ScalarProperty Name="OPSStaffRemark" ColumnName="OPSStaffRemark" />
-                <ScalarProperty Name="OPSConfirmDate" ColumnName="OPSConfirmDate" />
-                <ScalarProperty Name="OPSId" ColumnName="OPSId" />
-                <ScalarProperty Name="OPSRemarkDate" ColumnName="OPSRemarkDate" />
-                <ScalarProperty Name="OPSRemark" ColumnName="OPSRemark" />
-                <ScalarProperty Name="JLSignedBy" ColumnName="JLSignedBy" />
+                <ScalarProperty Name="FormNo" ColumnName="FormNo" />
+                <ScalarProperty Name="ReporterId" ColumnName="ReporterId" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="DateSign" ColumnName="DateSign" />
                 <ScalarProperty Name="BSTurningId" ColumnName="BSTurningId" />
                 <ScalarProperty Name="BSHeading" ColumnName="BSHeading" />
                 <ScalarProperty Name="User" ColumnName="User" />
@@ -16990,6 +16820,153 @@ warning 6002: The table/view 'EPAGRIFFIN.dbo.XFlightCrew' does not have a primar
                 <ScalarProperty Name="FlightPhaseId" ColumnName="FlightPhaseId" />
                 <ScalarProperty Name="FlightId" ColumnName="FlightId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EFBASRs">
+            <EntityTypeMapping TypeName="dbModel.EFBASR">
+              <MappingFragment StoreEntitySet="EFBASR">
+                <ScalarProperty Name="MetSurfaceConditionId" ColumnName="MetSurfaceConditionId" />
+                <ScalarProperty Name="MetSurfaceId" ColumnName="MetSurfaceId" />
+                <ScalarProperty Name="WTStall" ColumnName="WTStall" />
+                <ScalarProperty Name="WTSpeed" ColumnName="WTSpeed" />
+                <ScalarProperty Name="WTAPDisconnected" ColumnName="WTAPDisconnected" />
+                <ScalarProperty Name="BSEffectFlt" ColumnName="BSEffectFlt" />
+                <ScalarProperty Name="BSOther" ColumnName="BSOther" />
+                <ScalarProperty Name="BSLights" ColumnName="BSLights" />
+                <ScalarProperty Name="BSTail" ColumnName="BSTail" />
+                <ScalarProperty Name="BSLDG" ColumnName="BSLDG" />
+                <ScalarProperty Name="BSFuselage" ColumnName="BSFuselage" />
+                <ScalarProperty Name="BSWing" ColumnName="BSWing" />
+                <ScalarProperty Name="BSENG" ColumnName="BSENG" />
+                <ScalarProperty Name="BSWindShield" ColumnName="BSWindShield" />
+                <ScalarProperty Name="BSRandom" ColumnName="BSRandom" />
+                <ScalarProperty Name="BSSkyCondition" ColumnName="BSSkyCondition" />
+                <ScalarProperty Name="ATTRelativePos" ColumnName="ATTRelativePos" />
+                <ScalarProperty Name="AATRelativeALT" ColumnName="AATRelativeALT" />
+                <ScalarProperty Name="AATIncidentId" ColumnName="AATIncidentId" />
+                <ScalarProperty Name="CFITGPWS" ColumnName="CFITGPWS" />
+                <ScalarProperty Name="CFITALT" ColumnName="CFITALT" />
+                <ScalarProperty Name="CFITHeading" ColumnName="CFITHeading" />
+                <ScalarProperty Name="CFITFrequency" ColumnName="CFITFrequency" />
+                <ScalarProperty Name="CFITATCId" ColumnName="CFITATCId" />
+                <ScalarProperty Name="EGPWSActionTaken" ColumnName="EGPWSActionTaken" />
+                <ScalarProperty Name="EGPWSAuralAlert" ColumnName="EGPWSAuralAlert" />
+                <ScalarProperty Name="EGPWSTypeId" ColumnName="EGPWSTypeId" />
+                <ScalarProperty Name="ACConfigENG" ColumnName="ACConfigENG" />
+                <ScalarProperty Name="ACConfigAPU" ColumnName="ACConfigAPU" />
+                <ScalarProperty Name="LOCAPP" ColumnName="LOCAPP" />
+                <ScalarProperty Name="LOCEnRoute" ColumnName="LOCEnRoute" />
+                <ScalarProperty Name="LOCTaxiway" ColumnName="LOCTaxiway" />
+                <ScalarProperty Name="StatusEmployeeId" ColumnName="StatusEmployeeId" />
+                <ScalarProperty Name="DateStatus" ColumnName="DateStatus" />
+                <ScalarProperty Name="FormNo" ColumnName="FormNo" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="ReporterId" ColumnName="ReporterId" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="DateSign" ColumnName="DateSign" />
+                <ScalarProperty Name="OPSStaffStatusId" ColumnName="OPSStaffStatusId" />
+                <ScalarProperty Name="OPSStatusId" ColumnName="OPSStatusId" />
+                <ScalarProperty Name="OPSStaffUser" ColumnName="OPSStaffUser" />
+                <ScalarProperty Name="OPSUser" ColumnName="OPSUser" />
+                <ScalarProperty Name="OPSStaffRemarkDate" ColumnName="OPSStaffRemarkDate" />
+                <ScalarProperty Name="OPSStaffId" ColumnName="OPSStaffId" />
+                <ScalarProperty Name="OPSStaffConfirmDate" ColumnName="OPSStaffConfirmDate" />
+                <ScalarProperty Name="OPSStaffDateVisit" ColumnName="OPSStaffDateVisit" />
+                <ScalarProperty Name="OPSStaffRemark" ColumnName="OPSStaffRemark" />
+                <ScalarProperty Name="OPSConfirmDate" ColumnName="OPSConfirmDate" />
+                <ScalarProperty Name="OPSId" ColumnName="OPSId" />
+                <ScalarProperty Name="OPSRemarkDate" ColumnName="OPSRemarkDate" />
+                <ScalarProperty Name="OPSRemark" ColumnName="OPSRemark" />
+                <ScalarProperty Name="PIC" ColumnName="PIC" />
+                <ScalarProperty Name="PICId" ColumnName="PICId" />
+                <ScalarProperty Name="JLDatePICApproved" ColumnName="JLDatePICApproved" />
+                <ScalarProperty Name="JLSignedBy" ColumnName="JLSignedBy" />
+                <ScalarProperty Name="User" ColumnName="User" />
+                <ScalarProperty Name="DateUpdate" ColumnName="DateUpdate" />
+                <ScalarProperty Name="BSTurningId" ColumnName="BSTurningId" />
+                <ScalarProperty Name="BSHeading" ColumnName="BSHeading" />
+                <ScalarProperty Name="SigxWXTypeId" ColumnName="SigxWXTypeId" />
+                <ScalarProperty Name="MachNo" ColumnName="MachNo" />
+                <ScalarProperty Name="IsOthers" ColumnName="IsOthers" />
+                <ScalarProperty Name="IsBirdStrike" ColumnName="IsBirdStrike" />
+                <ScalarProperty Name="IsWakeTur" ColumnName="IsWakeTur" />
+                <ScalarProperty Name="IsTCASRA" ColumnName="IsTCASRA" />
+                <ScalarProperty Name="IsAirproxATC" ColumnName="IsAirproxATC" />
+                <ScalarProperty Name="IsSecurityEvent" ColumnName="IsSecurityEvent" />
+                <ScalarProperty Name="BSImpactDec" ColumnName="BSImpactDec" />
+                <ScalarProperty Name="AATHorizontalPlane" ColumnName="AATHorizontalPlane" />
+                <ScalarProperty Name="AATYAstern" ColumnName="AATYAstern" />
+                <ScalarProperty Name="AATXAstern" ColumnName="AATXAstern" />
+                <ScalarProperty Name="AATYAbove" ColumnName="AATYAbove" />
+                <ScalarProperty Name="AATXAbove" ColumnName="AATXAbove" />
+                <ScalarProperty Name="IncidentTypeId" ColumnName="IncidentTypeId" />
+                <ScalarProperty Name="DayNightStatusId" ColumnName="DayNightStatusId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="PICDate" ColumnName="PICDate" />
+                <ScalarProperty Name="BSTimeId" ColumnName="BSTimeId" />
+                <ScalarProperty Name="BSNrStruckId" ColumnName="BSNrStruckId" />
+                <ScalarProperty Name="BSNrSeenId" ColumnName="BSNrSeenId" />
+                <ScalarProperty Name="BSBirdType" ColumnName="BSBirdType" />
+                <ScalarProperty Name="WTIsAware" ColumnName="WTIsAware" />
+                <ScalarProperty Name="WTPrecedingAC" ColumnName="WTPrecedingAC" />
+                <ScalarProperty Name="WTDescribeVA" ColumnName="WTDescribeVA" />
+                <ScalarProperty Name="WTSuspect" ColumnName="WTSuspect" />
+                <ScalarProperty Name="WTIsStickShaker" ColumnName="WTIsStickShaker" />
+                <ScalarProperty Name="WTIsBuffet" ColumnName="WTIsBuffet" />
+                <ScalarProperty Name="WTAttitudeChangeDeg" ColumnName="WTAttitudeChangeDeg" />
+                <ScalarProperty Name="WTAttitudeChangeId" ColumnName="WTAttitudeChangeId" />
+                <ScalarProperty Name="WTExtendedCenterlinePosId" ColumnName="WTExtendedCenterlinePosId" />
+                <ScalarProperty Name="WTGlideSlopePosId" ColumnName="WTGlideSlopePosId" />
+                <ScalarProperty Name="WTTurningId" ColumnName="WTTurningId" />
+                <ScalarProperty Name="WTHeading" ColumnName="WTHeading" />
+                <ScalarProperty Name="AATLighting" ColumnName="AATLighting" />
+                <ScalarProperty Name="AATCallSign" ColumnName="AATCallSign" />
+                <ScalarProperty Name="AATMarkingColour" ColumnName="AATMarkingColour" />
+                <ScalarProperty Name="AATOtherACType" ColumnName="AATOtherACType" />
+                <ScalarProperty Name="AATVerticalDeviation" ColumnName="AATVerticalDeviation" />
+                <ScalarProperty Name="AATIsRAFollowed" ColumnName="AATIsRAFollowed" />
+                <ScalarProperty Name="AATTypeRA" ColumnName="AATTypeRA" />
+                <ScalarProperty Name="AATTCASAlertId" ColumnName="AATTCASAlertId" />
+                <ScalarProperty Name="AATMinHorizontalSep" ColumnName="AATMinHorizontalSep" />
+                <ScalarProperty Name="AATMinVerticalSep" ColumnName="AATMinVerticalSep" />
+                <ScalarProperty Name="AATClearedAltitude" ColumnName="AATClearedAltitude" />
+                <ScalarProperty Name="AATHeading" ColumnName="AATHeading" />
+                <ScalarProperty Name="AATFrequency" ColumnName="AATFrequency" />
+                <ScalarProperty Name="AATATCInstruction" ColumnName="AATATCInstruction" />
+                <ScalarProperty Name="AATReportedToATC" ColumnName="AATReportedToATC" />
+                <ScalarProperty Name="AATIsActionTaken" ColumnName="AATIsActionTaken" />
+                <ScalarProperty Name="AATRiskId" ColumnName="AATRiskId" />
+                <ScalarProperty Name="OthersInfo" ColumnName="OthersInfo" />
+                <ScalarProperty Name="Result" ColumnName="Result" />
+                <ScalarProperty Name="Summary" ColumnName="Summary" />
+                <ScalarProperty Name="ACConfigSpoilers" ColumnName="ACConfigSpoilers" />
+                <ScalarProperty Name="ACConfigSlat" ColumnName="ACConfigSlat" />
+                <ScalarProperty Name="ACConfigFlap" ColumnName="ACConfigFlap" />
+                <ScalarProperty Name="ACConfigGear" ColumnName="ACConfigGear" />
+                <ScalarProperty Name="ACConfigATHR" ColumnName="ACConfigATHR" />
+                <ScalarProperty Name="ACConfigAP" ColumnName="ACConfigAP" />
+                <ScalarProperty Name="RunwayConditionId" ColumnName="RunwayConditionId" />
+                <ScalarProperty Name="SigxWXId" ColumnName="SigxWXId" />
+                <ScalarProperty Name="ActualWX" ColumnName="ActualWX" />
+                <ScalarProperty Name="METId" ColumnName="METId" />
+                <ScalarProperty Name="LOCGEOAltitude" ColumnName="LOCGEOAltitude" />
+                <ScalarProperty Name="LOCGEOLongtitude" ColumnName="LOCGEOLongtitude" />
+                <ScalarProperty Name="LOCRunway" ColumnName="LOCRunway" />
+                <ScalarProperty Name="LOCStand" ColumnName="LOCStand" />
+                <ScalarProperty Name="LOCAirport" ColumnName="LOCAirport" />
+                <ScalarProperty Name="FlightPhaseId" ColumnName="FlightPhaseId" />
+                <ScalarProperty Name="TechLogItemNO" ColumnName="TechLogItemNO" />
+                <ScalarProperty Name="TechLogPageNO" ColumnName="TechLogPageNO" />
+                <ScalarProperty Name="ACWeight" ColumnName="ACWeight" />
+                <ScalarProperty Name="Speed" ColumnName="Speed" />
+                <ScalarProperty Name="Altitude" ColumnName="Altitude" />
+                <ScalarProperty Name="FuelJettisoned" ColumnName="FuelJettisoned" />
+                <ScalarProperty Name="SQUAWK" ColumnName="SQUAWK" />
+                <ScalarProperty Name="IsDay" ColumnName="IsDay" />
+                <ScalarProperty Name="OccurrenceDate" ColumnName="OccurrenceDate" />
+                <ScalarProperty Name="EventTypeId" ColumnName="EventTypeId" />
+                <ScalarProperty Name="FlightId" ColumnName="FlightId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

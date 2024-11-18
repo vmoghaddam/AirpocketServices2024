@@ -275,5 +275,10 @@ namespace ApiAPSB.Models
         public Nullable<bool> WTStall { get; set; }
         public Nullable<int> MetSurfaceId { get; set; }
         public Nullable<int> MetSurfaceConditionId { get; set; }
+        public Nullable<System.DateTime> DateSign { get; set; }
+        public Nullable<int> EmployeeId { get; set; }
+        public Nullable<int> Status { get; set; }
+        public Nullable<int> ReporterId { get; set; }
+        public string FormNo { get; set; }
     }
 }

@@ -116,6 +116,13 @@ namespace ApiAPSB.Models
         public string OPSStaffUser { get; set; }
         public Nullable<int> OPSStatusId { get; set; }
         public Nullable<int> OPSStaffStatusId { get; set; }
+        public Nullable<System.DateTime> DateSign { get; set; }
+        public Nullable<int> EmployeeId { get; set; }
+        public Nullable<int> ReporterId { get; set; }
+        public Nullable<int> Status { get; set; }
+        public string FormNo { get; set; }
+        public Nullable<System.DateTime> DateStatus { get; set; }
+        public Nullable<int> StatusEmployeeId { get; set; }
         public string LOCTaxiway { get; set; }
         public string LOCEnRoute { get; set; }
         public string LOCAPP { get; set; }
@@ -124,12 +131,10 @@ namespace ApiAPSB.Models
         public Nullable<int> EGPWSTypeId { get; set; }
         public string EGPWSAuralAlert { get; set; }
         public string EGPWSActionTaken { get; set; }
-        public Nullable<int> CFITAirapaceId { get; set; }
         public Nullable<int> CFITATCId { get; set; }
         public string CFITFrequency { get; set; }
         public string CFITHeading { get; set; }
         public string CFITALT { get; set; }
-        public Nullable<int> CFITIncidentId { get; set; }
         public string CFITGPWS { get; set; }
         public Nullable<int> AATIncidentId { get; set; }
         public string AATRelativeALT { get; set; }

@@ -38,7 +38,7 @@ namespace ApiAPSB.Models
         public Nullable<int> Duty { get; set; }
         public Nullable<int> ScheduledFlightTime { get; set; }
         public Nullable<int> SITATime { get; set; }
-        public int FixTime { get; set; }
+        public Nullable<int> FixTime { get; set; }
         public Nullable<int> FlightTimeActual { get; set; }
         public Nullable<System.DateTime> ArrivalLocal { get; set; }
         public Nullable<System.DateTime> DepartureLocal { get; set; }
@@ -111,5 +111,9 @@ namespace ApiAPSB.Models
         public string BaseAirport { get; set; }
         public Nullable<int> BaseAirportId { get; set; }
         public Nullable<System.DateTime> STDDayLocal { get; set; }
+        public Nullable<int> NetFixTime1 { get; set; }
+        public string ValidTypes1 { get; set; }
+        public string BaseAirport1 { get; set; }
+        public Nullable<int> BaseAirportId1 { get; set; }
     }
 }

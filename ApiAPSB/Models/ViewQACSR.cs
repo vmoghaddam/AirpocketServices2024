@@ -52,5 +52,6 @@ namespace ApiAPSB.Models
         public string Result { get; set; }
         public string FormNo { get; set; }
         public string EventTitles { get; set; }
+        public string EventTitles1 { get; set; }
     }
 }

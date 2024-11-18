@@ -2690,7 +2690,9 @@ namespace AirpocketTRN.Services
                 db_exam.location_title = dto_exam.location_title;
                 db_exam.location_address = dto_exam.location_address;
                 db_exam.location_phone = dto_exam.location_phone;
+                db_exam.status_id = 0;
                 dto_exam.template = dto_exam.template.Where(q => q.total != null).ToList();
+
 
                 foreach (var temp in dto_exam.template)
                 {

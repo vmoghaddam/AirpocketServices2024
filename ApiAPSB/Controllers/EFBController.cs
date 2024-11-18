@@ -142,12 +142,12 @@ namespace ApiAPSB.Controllers
                 entity.EGPWSTypeId = EFBASR.EGPWSTypeId;
                 entity.EGPWSAuralAlert = EFBASR.EGPWSAuralAlert;
                 entity.EGPWSActionTaken = EFBASR.EGPWSActionTaken;
-                entity.CFITAirapaceId = EFBASR.CFITAirapaceId;
+                //entity.CFITAirapaceId = EFBASR.CFITAirapaceId;
                 entity.CFITATCId = EFBASR.CFITATCId;
                 entity.CFITFrequency = EFBASR.CFITFrequency;
                 entity.CFITHeading = EFBASR.CFITHeading;
                 entity.CFITALT = EFBASR.CFITALT;
-                entity.CFITIncidentId = EFBASR.CFITIncidentId;
+                //entity.CFITIncidentId = EFBASR.CFITIncidentId;
                 entity.CFITGPWS = EFBASR.CFITGPWS;
                 entity.AATIncidentId = EFBASR.AATIncidentId;
                 entity.AATRelativeALT = EFBASR.AATRelativeALT;

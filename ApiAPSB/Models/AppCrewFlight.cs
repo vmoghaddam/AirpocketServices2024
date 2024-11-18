@@ -31,7 +31,7 @@ namespace ApiAPSB.Models
         public string JobGroupCode { get; set; }
         public int SexId { get; set; }
         public string Sex { get; set; }
-        public Nullable<int> GroupOrder { get; set; }
+        public int GroupOrder { get; set; }
         public int IsCockpit { get; set; }
         public Nullable<System.DateTime> STDDay { get; set; }
         public Nullable<System.DateTime> STADay { get; set; }

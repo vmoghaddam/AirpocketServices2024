@@ -75,7 +75,7 @@ namespace ApiAPSB.Models
         public virtual DbSet<Option> Options { get; set; }
         public virtual DbSet<form_discretion_item> form_discretion_item { get; set; }
         public virtual DbSet<discretion_form> discretion_form { get; set; }
-        public virtual DbSet<EFBASR> EFBASRs { get; set; }
         public virtual DbSet<ViewEFBASR> ViewEFBASRs { get; set; }
+        public virtual DbSet<EFBASR> EFBASRs { get; set; }
     }
 }
