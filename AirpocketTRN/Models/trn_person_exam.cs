@@ -46,10 +46,12 @@ namespace AirpocketTRN.Models
         public Nullable<int> main_exam_id { get; set; }
         public Nullable<int> person_id { get; set; }
         public Nullable<System.DateTime> person_sign_date { get; set; }
+        public Nullable<int> passed { get; set; }
+        public Nullable<bool> is_running { get; set; }
     
         public virtual Course Course { get; set; }
+        public virtual trn_exam trn_exam { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<trn_person_exam_question> trn_person_exam_question { get; set; }
-        public virtual trn_exam trn_exam { get; set; }
     }
 }

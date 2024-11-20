@@ -49,28 +49,38 @@ namespace AirpocketTRN.Controllers
             FLYEntities context = new FLYEntities();
             context.Configuration.LazyLoadingEnabled = false;
             var exam = await context.trn_exam.FirstOrDefaultAsync(q => q.id == exam_id);
+            var old_status_id = exam.status_id;
             exam.status_id = status;
             switch (status)
             {
                 case 0:
                     exam.date_start = null;
                     exam.date_end_actual = null;
+                    exam.date_end_scheduled = ((DateTime)exam.exam_date).AddMinutes((int)exam.duration);
+                    exam.is_running = false;
                     break;
                 case 1:
+
                     exam.date_start = DateTime.Now;
+                    exam.date_end_scheduled = ((DateTime)exam.date_start).AddMinutes((int)exam.duration);
                     exam.date_end_actual = null;
+                    exam.is_running = true;
+
+
                     break;
                 case 2:
                     exam.date_end_actual = DateTime.Now;
+                    exam.is_running = false;
                     break;
+
                 default:
                     break;
 
             }
 
-            var sub_exams = await context.trn_person_exam.Where(q => q.main_exam_id == exam_id ).ToListAsync();
-            foreach(var x in sub_exams)
-                x.status_id=exam.status_id;
+            var sub_exams = await context.trn_person_exam.Where(q => q.main_exam_id == exam_id).ToListAsync();
+            foreach (var x in sub_exams)
+                x.status_id = exam.status_id;
 
 
             await context.SaveChangesAsync();
@@ -78,6 +88,139 @@ namespace AirpocketTRN.Controllers
             {
                 IsSuccess = true,
                 Data = status,
+
+            };
+            return Ok(result);
+        }
+
+        [Route("api/trn/exam/pause/")]
+        [AcceptVerbs("Post")]
+        public async Task<IHttpActionResult> post_exam_pause(dynamic dto)
+        {
+            int exam_id = Convert.ToInt32(dto.exam_id);
+             
+            FLYEntities context = new FLYEntities();
+            context.Configuration.LazyLoadingEnabled = false;
+            var exam = await context.trn_exam.FirstOrDefaultAsync(q => q.id == exam_id);
+            exam.is_running = false;
+            exam.passed =Convert.ToInt32( Math.Round( (DateTime.Now - ((DateTime)exam.date_start)).TotalMinutes));
+           
+
+            var sub_exams = await context.trn_person_exam.Where(q => q.main_exam_id == exam_id).ToListAsync();
+            foreach (var x in sub_exams)
+            { 
+                x.is_running = exam.is_running;
+                x.passed = exam.passed;
+            }
+
+
+            await context.SaveChangesAsync();
+            var result = new DataResponse()
+            {
+                IsSuccess = true,
+                Data = exam.is_running,
+
+            };
+            return Ok(result);
+        }
+
+        [Route("api/trn/exam/resume/")]
+        [AcceptVerbs("Post")]
+        public async Task<IHttpActionResult> post_exam_resume(dynamic dto)
+        {
+            int exam_id = Convert.ToInt32(dto.exam_id);
+
+            FLYEntities context = new FLYEntities();
+            context.Configuration.LazyLoadingEnabled = false;
+            var exam = await context.trn_exam.FirstOrDefaultAsync(q => q.id == exam_id);
+            exam.is_running = true;
+            var dif =(int)( exam.duration - exam.passed);
+            exam.date_end_scheduled= (DateTime.Now).AddMinutes(dif);
+
+
+            var sub_exams = await context.trn_person_exam.Where(q => q.main_exam_id == exam_id).ToListAsync();
+            foreach (var x in sub_exams)
+            {
+                x.is_running = exam.is_running;
+                x.date_end_scheduled = exam.date_end_scheduled;
+            }
+
+
+            await context.SaveChangesAsync();
+            var result = new DataResponse()
+            {
+                IsSuccess = true,
+                Data = exam.is_running,
+
+            };
+            return Ok(result);
+        }
+
+
+
+
+        public class dto_exam_person_pause
+        {
+            public List<int> exam_ids { get; set; }
+        }
+
+        [Route("api/trn/exam/person/pause/")]
+        [AcceptVerbs("Post")]
+        public async Task<IHttpActionResult> post_exam_person_pause(dto_exam_person_pause dto)
+        {
+             
+
+            FLYEntities context = new FLYEntities();
+            context.Configuration.LazyLoadingEnabled = false;
+            var exams = await context.trn_person_exam.Where(q => dto.exam_ids.Contains(q.id)).ToListAsync();
+            foreach (var exam   in exams)
+            {
+                exam.is_running = false;
+                exam.passed = Convert.ToInt32(Math.Round((DateTime.Now - ((DateTime)exam.date_start)).TotalMinutes));
+            }
+           
+
+
+            
+
+
+            await context.SaveChangesAsync();
+            var result = new DataResponse()
+            {
+                IsSuccess = true,
+                Data = dto.exam_ids,
+
+            };
+            return Ok(result);
+        }
+
+        [Route("api/trn/exam/person/resume/")]
+        [AcceptVerbs("Post")]
+        public async Task<IHttpActionResult> post_exam_person_resume(dto_exam_person_pause dto)
+        {
+            
+
+            FLYEntities context = new FLYEntities();
+            context.Configuration.LazyLoadingEnabled = false;
+            var exams = await context.trn_person_exam.Where(q => dto.exam_ids.Contains(q.id)).ToListAsync();
+            foreach (var exam in exams)
+            {
+                exam.is_running = true;
+                var dif = (int)(exam.duration - exam.passed);
+                exam.date_end_scheduled = (DateTime.Now).AddMinutes(dif);
+            }
+            
+            
+
+
+             
+
+
+            await context.SaveChangesAsync();
+            var result = new DataResponse()
+            {
+                IsSuccess = true,
+                Data = dto.exam_ids,
 
             };
             return Ok(result);
@@ -158,9 +301,9 @@ namespace AirpocketTRN.Controllers
                         {
                             context.trn_exam_question.Add(new trn_exam_question()
                             {
-                                 exam_id=dto.exam_id,
-                                  question_id=q.id,
-                                   
+                                exam_id = dto.exam_id,
+                                question_id = q.id,
+
                             });
                             person_generated_questions.Add(
                              new trn_person_exam_question()
@@ -182,7 +325,7 @@ namespace AirpocketTRN.Controllers
 
 
 
-                var person_exams = await context.trn_person_exam.Where(q => q.main_exam_id == dto.exam_id && (q.status_id == 0 || q.status_id == 3 || q.status_id == 1)).ToListAsync();
+                var person_exams = await context.trn_person_exam.Where(q => q.main_exam_id == dto.exam_id ).ToListAsync();
                 foreach (var person_exam in person_exams)
                 {
                     var pexists = await context.trn_person_exam_question.Where(q => q.exam_id == person_exam.id).ToListAsync();

@@ -28,8 +28,8 @@ namespace AirpocketTRN.Models
         public Nullable<int> person_id { get; set; }
     
         public virtual trn_questions trn_questions { get; set; }
-        public virtual trn_person_exam trn_person_exam { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<trn_exam_student_answer> trn_exam_student_answer { get; set; }
+        public virtual trn_person_exam trn_person_exam { get; set; }
     }
 }

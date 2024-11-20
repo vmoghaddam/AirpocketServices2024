@@ -144,7 +144,6 @@ namespace AirpocketTRN.Models
         public virtual DbSet<view_trn_exam_question> view_trn_exam_question { get; set; }
         public virtual DbSet<view_trn_profile> view_trn_profile { get; set; }
         public virtual DbSet<trn_person_exam_question> trn_person_exam_question { get; set; }
-        public virtual DbSet<trn_person_exam> trn_person_exam { get; set; }
         public virtual DbSet<view_trn_person_exam> view_trn_person_exam { get; set; }
         public virtual DbSet<view_trm_exam_student_answer> view_trm_exam_student_answer { get; set; }
         public virtual DbSet<view_trn_exam> view_trn_exam { get; set; }
@@ -157,10 +156,11 @@ namespace AirpocketTRN.Models
         public virtual DbSet<ViewEmployeeLight> ViewEmployeeLights { get; set; }
         public virtual DbSet<GRPCourseTypeExpiringGroup> GRPCourseTypeExpiringGroups { get; set; }
         public virtual DbSet<ViewProfile> ViewProfiles { get; set; }
-        public virtual DbSet<trn_exam> trn_exam { get; set; }
         public virtual DbSet<view_trn_exam_summary> view_trn_exam_summary { get; set; }
         public virtual DbSet<view_trn_exam_summary_details> view_trn_exam_summary_details { get; set; }
         public virtual DbSet<view_trn_student_answer> view_trn_student_answer { get; set; }
         public virtual DbSet<trn_exam_question_template> trn_exam_question_template { get; set; }
+        public virtual DbSet<trn_exam> trn_exam { get; set; }
+        public virtual DbSet<trn_person_exam> trn_person_exam { get; set; }
     }
 }

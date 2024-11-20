@@ -48,6 +48,8 @@ namespace AirpocketTRN.Models
         public Nullable<System.DateTime> date_end_actual { get; set; }
         public Nullable<System.DateTime> date_start_scheduled { get; set; }
         public Nullable<bool> is_negetive_point { get; set; }
+        public Nullable<int> passed { get; set; }
+        public Nullable<bool> is_running { get; set; }
     
         public virtual Course Course { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
