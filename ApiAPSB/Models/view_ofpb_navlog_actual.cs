@@ -15,6 +15,11 @@ namespace ApiAPSB.Models
     public partial class view_ofpb_navlog_actual
     {
         public int Id { get; set; }
+        public string NavType { get; set; }
+        public Nullable<int> FuelRemained2 { get; set; }
+        public Nullable<int> DiffFuelRemained { get; set; }
+        public Nullable<int> FuelUsedActual { get; set; }
+        public Nullable<int> CumulativeFuel { get; set; }
         public string WayPoint { get; set; }
         public string FlightLevel { get; set; }
         public Nullable<double> Latitude { get; set; }
@@ -28,7 +33,6 @@ namespace ApiAPSB.Models
         public string Wind { get; set; }
         public string MagneticTrack { get; set; }
         public string Temperature { get; set; }
-        public string ZoneTime { get; set; }
         public string CumulativeTime { get; set; }
         public Nullable<int> FuelRemained { get; set; }
         public Nullable<int> FuelUsed { get; set; }
@@ -36,26 +40,22 @@ namespace ApiAPSB.Models
         public Nullable<int> TrueAirSpeed { get; set; }
         public Nullable<int> GroundSpeed { get; set; }
         public Nullable<int> RootId { get; set; }
-        public string NavType { get; set; }
-        public string ATA { get; set; }
-        public string ETA { get; set; }
         public Nullable<int> FuelRemainedActual { get; set; }
-        public Nullable<int> FuelUsedActual { get; set; }
         public string LatitudeStr { get; set; }
         public string LongitudeStr { get; set; }
-        public Nullable<int> DiffFuelRemained { get; set; }
         public Nullable<int> DiffFuelUsed { get; set; }
         public Nullable<long> date_update { get; set; }
         public string user_update { get; set; }
-        public Nullable<int> FuelRemained2 { get; set; }
         public Nullable<int> FuelUsed2 { get; set; }
-        public Nullable<int> CumulativeFuel { get; set; }
+        public string ATA { get; set; }
+        public string C_ETA { get; set; }
+        public string ETA { get; set; }
+        public string ZoneTime { get; set; }
+        public Nullable<int> ZoneTimeInt { get; set; }
+        public Nullable<int> CumZoneTimeInt { get; set; }
         public string Direction { get; set; }
         public string WindComponent { get; set; }
         public Nullable<int> ZoneFuel { get; set; }
-        public string C_ETA { get; set; }
-        public Nullable<int> ZoneTimeInt { get; set; }
-        public Nullable<int> CumZoneTimeInt { get; set; }
         public Nullable<long> rank { get; set; }
     }
 }
