@@ -2220,7 +2220,7 @@ namespace ApiAPSB.Controllers
             }
 
         }
-        [Route("api/ofps/validate/old/{fids}")]
+        [Route("api/ofps/validate/{fids}")]
         [AcceptVerbs("GET")]
         public IHttpActionResult ValidateOFPs_OLD(string fids)
         {
@@ -2488,8 +2488,8 @@ namespace ApiAPSB.Controllers
         }
 
 
-
-        [Route("api/ofps/validate/{fids}")]
+        //karun
+        [Route("api/ofps/validate/b/{fids}")]
         [AcceptVerbs("GET")]
         public IHttpActionResult ValidateOFPs(string fids)
         {
