@@ -26,7 +26,5 @@ namespace ApiAPSB.Models
         public string PeriodFixTime { get; set; }
         public Nullable<int> PDate2 { get; set; }
         public Nullable<System.DateTime> Night { get; set; }
-        public string PMonthName2 { get; set; }
-        public Nullable<System.DateTime> Night1 { get; set; }
     }
 }

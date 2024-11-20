@@ -63,6 +63,7 @@ namespace ApiAPSB.Models
         public Nullable<int> DelayOffBlock { get; set; }
         public Nullable<System.DateTime> STADay { get; set; }
         public Nullable<System.DateTime> STDDay { get; set; }
+        public Nullable<System.DateTime> STDDayLocal { get; set; }
         public string ArrivalRemark { get; set; }
         public string FlightStatus { get; set; }
         public string Register { get; set; }
@@ -110,10 +111,5 @@ namespace ApiAPSB.Models
         public string ValidTypes { get; set; }
         public string BaseAirport { get; set; }
         public Nullable<int> BaseAirportId { get; set; }
-        public Nullable<System.DateTime> STDDayLocal { get; set; }
-        public Nullable<int> NetFixTime1 { get; set; }
-        public string ValidTypes1 { get; set; }
-        public string BaseAirport1 { get; set; }
-        public Nullable<int> BaseAirportId1 { get; set; }
     }
 }

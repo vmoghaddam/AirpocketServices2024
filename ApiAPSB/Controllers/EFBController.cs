@@ -1,4 +1,5 @@
 ﻿using ApiAPSB.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -12,14 +13,20 @@ namespace ApiAPSB.Controllers
     public class EFBController : ApiController
     {
 
+
+
         [HttpPost]
         [Route("api/asr/save")]
+
         public async Task<DataResponse> SaveEFBASR(ViewEFBASR EFBASR)
         {
+
             var _context = new dbEntities();
+
             try
             {
                 var entity = await _context.EFBASRs.FirstOrDefaultAsync(q => q.FlightId == EFBASR.FlightId);
+
                 if (entity == null)
                 {
                     entity = new EFBASR();
@@ -142,12 +149,12 @@ namespace ApiAPSB.Controllers
                 entity.EGPWSTypeId = EFBASR.EGPWSTypeId;
                 entity.EGPWSAuralAlert = EFBASR.EGPWSAuralAlert;
                 entity.EGPWSActionTaken = EFBASR.EGPWSActionTaken;
-                //entity.CFITAirapaceId = EFBASR.CFITAirapaceId;
+                entity.CFITAirapaceId = EFBASR.CFITAirapaceId;
                 entity.CFITATCId = EFBASR.CFITATCId;
                 entity.CFITFrequency = EFBASR.CFITFrequency;
                 entity.CFITHeading = EFBASR.CFITHeading;
                 entity.CFITALT = EFBASR.CFITALT;
-                //entity.CFITIncidentId = EFBASR.CFITIncidentId;
+                entity.CFITIncidentId = EFBASR.CFITIncidentId;
                 entity.CFITGPWS = EFBASR.CFITGPWS;
                 entity.AATIncidentId = EFBASR.AATIncidentId;
                 entity.AATRelativeALT = EFBASR.AATRelativeALT;
@@ -168,9 +175,20 @@ namespace ApiAPSB.Controllers
                 entity.WTStall = EFBASR.WTStall;
                 entity.MetSurfaceId = EFBASR.MetSurfaceId;
                 entity.MetSurfaceConditionId = EFBASR.MetSurfaceConditionId;
+                entity.MetFlightRuleId = EFBASR.MetFlightRuleId;
+                entity.WTIsStall = EFBASR.WTIsStall;
+                entity.WTIsBuffetExp = EFBASR.WTIsBuffetExp;
+                entity.WTIsSpeed = EFBASR.WTIsSpeed;
+                entity.WTIsAP = EFBASR.WTIsAP;
+                entity.WTIsAltitude = EFBASR.WTIsAltitude;
+                entity.WTIsAttitude = EFBASR.WTIsAttitude;
+                entity.AirspaceId = EFBASR.AirspaceId;
+                entity.AtcId = EFBASR.AtcId;
+                entity.MetAirportATIS = EFBASR.MetAirportATIS;
 
                 var saveResult = await _context.SaveChangesAsync();
-                return new DataResponse() { IsSuccess = true, Data = entity };
+                ViewEFBASR view_efb = await _context.ViewEFBASRs.FirstOrDefaultAsync(q => q.Id == entity.Id);
+                return new DataResponse() { IsSuccess = true, Data = view_efb };
             }
             catch (Exception ex)
             {
@@ -195,6 +213,28 @@ namespace ApiAPSB.Controllers
                 IsSuccess = true
 
             };
+        }
+
+        [Route("api/asr/flight/{fltid}")]
+        [AcceptVerbs("GET")]
+        public IHttpActionResult GetASRByFlight(int fltid)
+        {
+
+            // GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.Re‌​ferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            var context = new dbEntities();
+            var result = context.ViewEFBASRs.FirstOrDefault(q => q.FlightId == fltid);
+            return Ok(new { IsSuccess = true, Data = result, Errors = "null", Messages = "null" });
+        }
+
+        [Route("api/asr/flight/view/{fltid}")]
+        [AcceptVerbs("GET")]
+        public IHttpActionResult GetASRByFlightView(int fltid)
+        {
+
+
+            var context = new dbEntities();
+            var result = context.ViewEFBASRs.FirstOrDefault(q => q.FlightId == fltid);
+            return Ok(result);
         }
     }
 }
