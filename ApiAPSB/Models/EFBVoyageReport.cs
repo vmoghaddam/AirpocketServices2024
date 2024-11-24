@@ -14,6 +14,14 @@ namespace ApiAPSB.Models
     
     public partial class EFBVoyageReport
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public EFBVoyageReport()
+        {
+            this.EFBFlightIrregularities = new HashSet<EFBFlightIrregularity>();
+            this.EFBReasons = new HashSet<EFBReason>();
+            this.EFBDutyDisorders = new HashSet<EFBDutyDisorder>();
+        }
+    
         public int Id { get; set; }
         public Nullable<int> FlightId { get; set; }
         public string Route { get; set; }
@@ -63,5 +71,11 @@ namespace ApiAPSB.Models
         public Nullable<bool> AttForm_ACCIDET { get; set; }
     
         public virtual FlightInformation FlightInformation { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EFBFlightIrregularity> EFBFlightIrregularities { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EFBReason> EFBReasons { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EFBDutyDisorder> EFBDutyDisorders { get; set; }
     }
 }
