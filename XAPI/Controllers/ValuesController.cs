@@ -570,7 +570,7 @@ namespace XAPI.Controllers
                 root.ContingencyPercent = json_obj.ContingencyPercent;
                 root.CostIndex = json_obj.CostIndex;
                 root.CruiseSpeed = json_obj.CruiseSpeed;
-                root.CruisePerformanceFactor = json_obj.CruisePerformanceFactor;
+                root.CruisePerformanceFactor =Convert.ToInt32( Math.Round(json_obj.CruisePerformanceFactor!=null?(double) json_obj.CruisePerformanceFactor:0));
                 root.Destination = json_obj.Destination;
                 root.DestinationElevation = json_obj.DestinationElevation;
                 root.DestinationIATA = json_obj.DestinationIATA;
@@ -658,6 +658,8 @@ namespace XAPI.Controllers
                 var fuels = json_obj.Fuels;
                 root.fuel_additional = fuels.Additional;
                 root.fuel_alt = fuels.Alternate;
+                root.fuel_alt1 = fuels.Alternate1;
+                root.fuel_alt2 = fuels.Alternate2;
                 root.fuel_contigency = fuels.Contingency;
                 root.fuel_extra = fuels.Extra;
                 root.fuel_holding = fuels.Holding;
@@ -1135,7 +1137,7 @@ namespace XAPI.Controllers
                 root.ReferenceNo = json_obj.ReferenceNo;
                 root.AirlineName = json_obj.AirlineName;
                 root.WeightUnit = json_obj.WeightUnit;
-                root.CruisePerformanceFactor = json_obj.CruisePerformanceFactor;
+                root.CruisePerformanceFactor =Convert.ToInt32( json_obj.CruisePerformanceFactor==null?0:(double)json_obj.CruisePerformanceFactor);
                 root.ContingencyPercent = json_obj.ContingencyPercent;
                 root.FlightNo = json_obj.FlightNo;
                 root.GenerationDate = json_obj.GenerationDate;

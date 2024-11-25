@@ -182,7 +182,7 @@ namespace XAPI
         public int? ContingencyPercent { get; set; }
         public int? CostIndex { get; set; }
         public string CruiseSpeed { get; set; }
-        public int? CruisePerformanceFactor { get; set; }
+        public double? CruisePerformanceFactor { get; set; }
         public string Destination { get; set; }
         public int? DestinationElevation { get; set; }
         public string DestinationIATA { get; set; }
