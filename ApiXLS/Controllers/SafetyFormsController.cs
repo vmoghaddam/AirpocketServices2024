@@ -128,23 +128,23 @@ namespace ApiXLS.Controllers
 
         }
 
-        [Route("api/get/sn/{id}")]
-        [AcceptVerbs("Get")]
+        //[Route("api/get/sn/{id}")]
+        //[AcceptVerbs("Get")]
 
-        public async Task<IHttpActionResult> get_safety_notice(int id)
-        {
+        //public async Task<IHttpActionResult> get_safety_notice(int id)
+        //{
 
-            try
-            {
-                var context = new Models.dbEntities();
-                var result = context.ViewBookApplicableEmployees.Where(q => q.Category == "Safety Notice" && q.IsExposed == 1 && q.EmployeeId == id).OrderByDescending(q => q.No).ToList();
+        //    try
+        //    {
+        //        var context = new Models.dbEntities();
+        //        var result = context.ViewBookApplicableEmployees.Where(q => q.Category == "Safety Notice" && q.IsExposed == 1 && q.EmployeeId == id).OrderByDescending(q => q.No).ToList();
 
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                ,AircraftModel.Model AircraftModel
-            }
-        }
+        //        return Ok(result);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ,AircraftModel.Model AircraftModel
+        //    }
+        //}
     }
 }
