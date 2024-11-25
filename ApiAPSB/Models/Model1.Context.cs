@@ -29,7 +29,6 @@ namespace ApiAPSB.Models
         public virtual DbSet<FDPItem> FDPItems { get; set; }
         public virtual DbSet<XAppLeg> XAppLegs { get; set; }
         public virtual DbSet<OFPImportProp> OFPImportProps { get; set; }
-        public virtual DbSet<ViewLegTime> ViewLegTimes { get; set; }
         public virtual DbSet<FlightDocument> FlightDocuments { get; set; }
         public virtual DbSet<FlightInformation> FlightInformations { get; set; }
         public virtual DbSet<EFBValue> EFBValues { get; set; }
@@ -44,38 +43,49 @@ namespace ApiAPSB.Models
         public virtual DbSet<geo_apt_sunrise> geo_apt_sunrise { get; set; }
         public virtual DbSet<OFPImport> OFPImports { get; set; }
         public virtual DbSet<Person> People { get; set; }
-        public virtual DbSet<ViewEmployee> ViewEmployees { get; set; }
         public virtual DbSet<EFBVoyageReport> EFBVoyageReports { get; set; }
-        public virtual DbSet<ViewFDPRest> ViewFDPRests { get; set; }
         public virtual DbSet<AppLegJL> AppLegJLs { get; set; }
         public virtual DbSet<FDP> FDPs { get; set; }
-        public virtual DbSet<view_discretion_form> view_discretion_form { get; set; }
-        public virtual DbSet<OFPB_WindTemperature> OFPB_WindTemperature { get; set; }
-        public virtual DbSet<OFPB_Prop> OFPB_Prop { get; set; }
         public virtual DbSet<ViewQACSREvent> ViewQACSREvents { get; set; }
+        public virtual DbSet<Option> Options { get; set; }
+        public virtual DbSet<Airport> Airports { get; set; }
+        public virtual DbSet<EFBASR> EFBASRs { get; set; }
+        public virtual DbSet<ViewEFBASR> ViewEFBASRs { get; set; }
+        public virtual DbSet<EFBFlightIrregularity> EFBFlightIrregularities { get; set; }
+        public virtual DbSet<EFBReason> EFBReasons { get; set; }
+        public virtual DbSet<EFBDutyDisorder> EFBDutyDisorders { get; set; }
+        public virtual DbSet<qa_notification_history> qa_notification_history { get; set; }
+        public virtual DbSet<qa_notification_receiver> qa_notification_receiver { get; set; }
+        public virtual DbSet<ViewProfile> ViewProfiles { get; set; }
+        public virtual DbSet<OFPB_WindTemperature> OFPB_WindTemperature { get; set; }
+        public virtual DbSet<view_discretion_form> view_discretion_form { get; set; }
+        public virtual DbSet<ViewEmployee> ViewEmployees { get; set; }
+        public virtual DbSet<ViewLegTime> ViewLegTimes { get; set; }
+        public virtual DbSet<OFPB_Prop> OFPB_Prop { get; set; }
+        public virtual DbSet<ViewFDPRest> ViewFDPRests { get; set; }
         public virtual DbSet<ViewQAMaintenance> ViewQAMaintenances { get; set; }
+        public virtual DbSet<form_discretion> form_discretion { get; set; }
         public virtual DbSet<OFPB_MainNavLog> OFPB_MainNavLog { get; set; }
         public virtual DbSet<OFPB_Root> OFPB_Root { get; set; }
-        public virtual DbSet<form_discretion> form_discretion { get; set; }
-        public virtual DbSet<Option> Options { get; set; }
-        public virtual DbSet<form_discretion_item> form_discretion_item { get; set; }
-        public virtual DbSet<discretion_form> discretion_form { get; set; }
-        public virtual DbSet<journeylog_atl> journeylog_atl { get; set; }
         public virtual DbSet<view_ofbb_root_actual> view_ofbb_root_actual { get; set; }
         public virtual DbSet<view_ofpb_navlog> view_ofpb_navlog { get; set; }
         public virtual DbSet<view_ofpb_navlog_actual> view_ofpb_navlog_actual { get; set; }
         public virtual DbSet<view_ofpb_root> view_ofpb_root { get; set; }
         public virtual DbSet<view_ofpb_root_report> view_ofpb_root_report { get; set; }
         public virtual DbSet<view_ofpb_wt> view_ofpb_wt { get; set; }
-        public virtual DbSet<ViewEFBVoyageIrrAll> ViewEFBVoyageIrrAlls { get; set; }
-        public virtual DbSet<ViewEFBVoyageReasonAll> ViewEFBVoyageReasonAlls { get; set; }
-        public virtual DbSet<Airport> Airports { get; set; }
         public virtual DbSet<DayGP> DayGPs { get; set; }
-        public virtual DbSet<ViewEFBVoyageReport> ViewEFBVoyageReports { get; set; }
+        public virtual DbSet<form_discretion_item> form_discretion_item { get; set; }
+        public virtual DbSet<FormVacation> FormVacations { get; set; }
+        public virtual DbSet<journeylog_atl> journeylog_atl { get; set; }
         public virtual DbSet<ViewLegCrew> ViewLegCrews { get; set; }
         public virtual DbSet<ViewQACSR> ViewQACSRs { get; set; }
         public virtual DbSet<XFlightCrew> XFlightCrews { get; set; }
-        public virtual DbSet<EFBASR> EFBASRs { get; set; }
-        public virtual DbSet<ViewEFBASR> ViewEFBASRs { get; set; }
+        public virtual DbSet<discretion_form> discretion_form { get; set; }
+        public virtual DbSet<ViewEFBVoyageIrr> ViewEFBVoyageIrrs { get; set; }
+        public virtual DbSet<ViewEFBVoyageIrrAll> ViewEFBVoyageIrrAlls { get; set; }
+        public virtual DbSet<ViewEFBVoyageReason> ViewEFBVoyageReasons { get; set; }
+        public virtual DbSet<ViewEFBVoyageReasonAll> ViewEFBVoyageReasonAlls { get; set; }
+        public virtual DbSet<ViewEFBVoyageReport> ViewEFBVoyageReports { get; set; }
+        public virtual DbSet<ViewEFBVoyageReportsAll> ViewEFBVoyageReportsAlls { get; set; }
     }
 }

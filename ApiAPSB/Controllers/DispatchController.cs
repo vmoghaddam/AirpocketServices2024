@@ -38,8 +38,7 @@ using System.Threading;
 
 namespace ApiAPSB.Controllers
 {
-    //[EnableCors(origins: "*", headers: "*", methods: "*")]
-    public class DispatchController : ApiController
+      public class DispatchController : ApiController
     {
 
         [Route("api/asr/view/abs/{id}")]
