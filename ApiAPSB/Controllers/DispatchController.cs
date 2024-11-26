@@ -38,7 +38,8 @@ using System.Threading;
 
 namespace ApiAPSB.Controllers
 {
-      public class DispatchController : ApiController
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
+    public class DispatchController : ApiController
     {
 
         [Route("api/asr/view/abs/{id}")]
@@ -861,6 +862,188 @@ namespace ApiAPSB.Controllers
 
             // return new DataResponse() { IsSuccess = false };
         }
+        [Route("api/api/efb/dr/save")]
+
+        [AcceptVerbs("POST")]
+        public async Task<IHttpActionResult> PostDR_TEMP(DSPReleaseViewModel DSPRelease)
+        {
+            var step = "0";
+            try
+            {
+                var _context = new Models.dbEntities();
+
+                var appleg = await _context.XAppLegs.FirstOrDefaultAsync(q => q.FlightId == DSPRelease.FlightId);
+                var appcrewflight = await _context.AppCrewFlights.Where(q => q.FlightId == appleg.FlightId && q.CrewId == appleg.PICId).FirstOrDefaultAsync();
+                var fdpitems = await _context.FDPItems.Where(q => q.FDPId == appcrewflight.FDPId).ToListAsync();
+                var fltIds = fdpitems.Select(q => q.FlightId).ToList();
+                step = "1";
+                var drs = await _context.EFBDSPReleases.Where(q => fltIds.Contains(q.FlightId)).ToListAsync();
+                var signed = drs.FirstOrDefault(q => q.JLDatePICApproved != null);
+                DateTime? pic_signed = signed != null ? signed.JLDatePICApproved : null;
+                string pic_signedby = signed != null ? signed.JLSignedBy : null;
+                step = "2";
+                _context.EFBDSPReleases.RemoveRange(drs);
+                await _context.SaveChangesAsync();
+                var _res = new List<object>();
+                foreach (var flightId in fltIds)
+                {
+                    var release = await _context.EFBDSPReleases.FirstOrDefaultAsync(q => q.FlightId == DSPRelease.FlightId);
+                    if (release == null)
+                    {
+                        release = new EFBDSPRelease();
+                        _context.EFBDSPReleases.Add(release);
+
+                    }
+
+                    release.User = DSPRelease.User;
+                    release.DateUpdate = DateTime.UtcNow.ToString("yyyyMMddHHmm");
+                    release.JLDatePICApproved = pic_signed;
+                    release.JLSignedBy = pic_signedby;
+
+                    release.FlightId = flightId; //DSPRelease.FlightId;
+                    release.ActualWXDSP = DSPRelease.ActualWXDSP;
+                    release.ActualWXCPT = DSPRelease.ActualWXCPT;
+                    release.ActualWXDSPRemark = DSPRelease.ActualWXDSPRemark;
+                    release.ActualWXCPTRemark = DSPRelease.ActualWXCPTRemark;
+                    release.WXForcastDSP = DSPRelease.WXForcastDSP;
+                    release.WXForcastCPT = DSPRelease.WXForcastCPT;
+                    release.WXForcastDSPRemark = DSPRelease.WXForcastDSPRemark;
+                    release.WXForcastCPTRemark = DSPRelease.WXForcastCPTRemark;
+                    release.SigxWXDSP = DSPRelease.SigxWXDSP;
+                    release.SigxWXCPT = DSPRelease.SigxWXCPT;
+                    release.SigxWXDSPRemark = DSPRelease.SigxWXDSPRemark;
+                    release.SigxWXCPTRemark = DSPRelease.SigxWXCPTRemark;
+                    release.WindChartDSP = DSPRelease.WindChartDSP;
+                    release.WindChartCPT = DSPRelease.WindChartCPT;
+                    release.WindChartDSPRemark = DSPRelease.WindChartDSPRemark;
+                    release.WindChartCPTRemark = DSPRelease.WindChartCPTRemark;
+                    release.NotamDSP = DSPRelease.NotamDSP;
+                    release.NotamCPT = DSPRelease.NotamCPT;
+                    release.NotamDSPRemark = DSPRelease.NotamDSPRemark;
+                    release.NotamCPTRemark = DSPRelease.NotamCPTRemark;
+                    release.ComputedFligthPlanDSP = DSPRelease.ComputedFligthPlanDSP;
+                    release.ComputedFligthPlanCPT = DSPRelease.ComputedFligthPlanCPT;
+                    release.ComputedFligthPlanDSPRemark = DSPRelease.ComputedFligthPlanDSPRemark;
+                    release.ComputedFligthPlanCPTRemark = DSPRelease.ComputedFligthPlanCPTRemark;
+                    release.ATCFlightPlanDSP = DSPRelease.ATCFlightPlanDSP;
+                    release.ATCFlightPlanCPT = DSPRelease.ATCFlightPlanCPT;
+                    release.ATCFlightPlanDSPRemark = DSPRelease.ATCFlightPlanDSPRemark;
+                    release.ATCFlightPlanCPTRemark = DSPRelease.ATCFlightPlanCPTRemark;
+                    release.PermissionsDSP = DSPRelease.PermissionsDSP;
+                    release.PermissionsCPT = DSPRelease.PermissionsCPT;
+                    release.PermissionsDSPRemark = DSPRelease.PermissionsDSPRemark;
+                    release.PermissionsCPTRemark = DSPRelease.PermissionsCPTRemark;
+                    release.JeppesenAirwayManualDSP = DSPRelease.JeppesenAirwayManualDSP;
+                    release.JeppesenAirwayManualCPT = DSPRelease.JeppesenAirwayManualCPT;
+                    release.JeppesenAirwayManualDSPRemark = DSPRelease.JeppesenAirwayManualDSPRemark;
+                    release.JeppesenAirwayManualCPTRemark = DSPRelease.JeppesenAirwayManualCPTRemark;
+                    release.MinFuelRequiredDSP = DSPRelease.MinFuelRequiredDSP;
+                    release.MinFuelRequiredCPT = DSPRelease.MinFuelRequiredCPT;
+                    //   release.MinFuelRequiredCFP = DSPRelease.MinFuelRequiredCFP;
+                    //  release.MinFuelRequiredPilotReq = DSPRelease.MinFuelRequiredPilotReq;
+                    release.GeneralDeclarationDSP = DSPRelease.GeneralDeclarationDSP;
+                    release.GeneralDeclarationCPT = DSPRelease.GeneralDeclarationCPT;
+                    release.GeneralDeclarationDSPRemark = DSPRelease.GeneralDeclarationDSPRemark;
+                    release.GeneralDeclarationCPTRemark = DSPRelease.GeneralDeclarationCPTRemark;
+                    release.FlightReportDSP = DSPRelease.FlightReportDSP;
+                    release.FlightReportCPT = DSPRelease.FlightReportCPT;
+                    release.FlightReportDSPRemark = DSPRelease.FlightReportDSPRemark;
+                    release.FlightReportCPTRemark = DSPRelease.FlightReportCPTRemark;
+                    release.TOLndCardsDSP = DSPRelease.TOLndCardsDSP;
+                    release.TOLndCardsCPT = DSPRelease.TOLndCardsCPT;
+                    release.TOLndCardsDSPRemark = DSPRelease.TOLndCardsDSPRemark;
+                    release.TOLndCardsCPTRemark = DSPRelease.TOLndCardsCPTRemark;
+                    release.LoadSheetDSP = DSPRelease.LoadSheetDSP;
+                    release.LoadSheetCPT = DSPRelease.LoadSheetCPT;
+                    release.LoadSheetDSPRemark = DSPRelease.LoadSheetDSPRemark;
+                    release.LoadSheetCPTRemark = DSPRelease.LoadSheetCPTRemark;
+                    release.FlightSafetyReportDSP = DSPRelease.FlightSafetyReportDSP;
+                    release.FlightSafetyReportCPT = DSPRelease.FlightSafetyReportCPT;
+                    release.FlightSafetyReportDSPRemark = DSPRelease.FlightSafetyReportDSPRemark;
+                    release.FlightSafetyReportCPTRemark = DSPRelease.FlightSafetyReportCPTRemark;
+                    release.AVSECIncidentReportDSP = DSPRelease.AVSECIncidentReportDSP;
+                    release.AVSECIncidentReportCPT = DSPRelease.AVSECIncidentReportCPT;
+                    release.AVSECIncidentReportDSPRemark = DSPRelease.AVSECIncidentReportDSPRemark;
+                    release.AVSECIncidentReportCPTRemark = DSPRelease.AVSECIncidentReportCPTRemark;
+                    release.OperationEngineeringDSP = DSPRelease.OperationEngineeringDSP;
+                    release.OperationEngineeringCPT = DSPRelease.OperationEngineeringCPT;
+                    release.OperationEngineeringDSPRemark = DSPRelease.OperationEngineeringDSPRemark;
+                    release.OperationEngineeringCPTRemark = DSPRelease.OperationEngineeringCPTRemark;
+                    release.VoyageReportDSP = DSPRelease.VoyageReportDSP;
+                    release.VoyageReportCPT = DSPRelease.VoyageReportCPT;
+                    release.VoyageReportDSPRemark = DSPRelease.VoyageReportDSPRemark;
+                    release.VoyageReportCPTRemark = DSPRelease.VoyageReportCPTRemark;
+                    release.PIFDSP = DSPRelease.PIFDSP;
+                    release.PIFCPT = DSPRelease.PIFCPT;
+                    release.PIFDSPRemark = DSPRelease.PIFDSPRemark;
+                    release.PIFCPTRemark = DSPRelease.PIFCPTRemark;
+                    release.GoodDeclarationDSP = DSPRelease.GoodDeclarationDSP;
+                    release.GoodDeclarationCPT = DSPRelease.GoodDeclarationCPT;
+                    release.GoodDeclarationDSPRemark = DSPRelease.GoodDeclarationDSPRemark;
+                    release.GoodDeclarationCPTRemark = DSPRelease.GoodDeclarationCPTRemark;
+                    release.IPADDSP = DSPRelease.IPADDSP;
+                    release.IPADCPT = DSPRelease.IPADCPT;
+                    release.IPADDSPRemark = DSPRelease.IPADDSPRemark;
+                    release.IPADCPTRemark = DSPRelease.IPADCPTRemark;
+                    release.DateConfirmed = DSPRelease.DateConfirmed;
+                    release.DispatcherId = DSPRelease.DispatcherId;
+                    release.ATSFlightPlanCMDR = DSPRelease.ATSFlightPlanCMDR;
+                    release.ATSFlightPlanFOO = DSPRelease.ATSFlightPlanFOO;
+                    release.ATSFlightPlanFOORemark = DSPRelease.ATSFlightPlanFOORemark;
+                    release.ATSFlightPlanCMDRRemark = DSPRelease.ATSFlightPlanCMDRRemark;
+                    release.VldCMCCMDR = DSPRelease.VldCMCCMDR;
+                    release.VldCMCCMDRRemark = DSPRelease.VldCMCCMDRRemark;
+                    release.VldCMCFOO = DSPRelease.VldCMCFOO;
+                    release.VldCMCFOORemark = DSPRelease.VldCMCFOORemark;
+                    release.VldEFBCMDR = DSPRelease.VldEFBCMDR;
+                    release.VldEFBCMDRRemark = DSPRelease.VldEFBCMDRRemark;
+                    release.VldEFBFOO = DSPRelease.VldEFBFOO;
+                    release.VldEFBFOORemark = DSPRelease.VldEFBFOORemark;
+                    release.VldFlightCrewCMDR = DSPRelease.VldFlightCrewCMDR;
+                    release.VldFlightCrewCMDRRemark = DSPRelease.VldFlightCrewCMDRRemark;
+                    release.VldFlightCrewFOO = DSPRelease.VldFlightCrewFOO;
+                    release.VldFlightCrewFOORemark = DSPRelease.VldFlightCrewFOORemark;
+                    release.VldMedicalCMDR = DSPRelease.VldMedicalCMDR;
+                    release.VldMedicalCMDRRemark = DSPRelease.VldMedicalCMDRRemark;
+                    release.VldMedicalFOO = DSPRelease.VldMedicalFOO;
+                    release.VldMedicalFOORemark = DSPRelease.VldMedicalFOORemark;
+                    release.VldPassportCMDR = DSPRelease.VldPassportCMDR;
+                    release.VldPassportCMDRRemark = DSPRelease.VldPassportCMDRRemark;
+                    release.VldPassportFOO = DSPRelease.VldPassportFOO;
+                    release.VldPassportFOORemark = DSPRelease.VldPassportFOORemark;
+                    release.VldRampPassCMDR = DSPRelease.VldRampPassCMDR;
+                    release.VldRampPassCMDRRemark = DSPRelease.VldRampPassCMDRRemark;
+                    release.VldRampPassFOO = DSPRelease.VldRampPassFOO;
+                    release.VldRampPassFOORemark = DSPRelease.VldRampPassFOORemark;
+                    release.OperationalFlightPlanFOO = DSPRelease.OperationalFlightPlanFOO;
+                    release.OperationalFlightPlanFOORemark = DSPRelease.OperationalFlightPlanFOORemark;
+                    release.OperationalFlightPlanCMDR = DSPRelease.OperationalFlightPlanCMDR;
+                    release.OperationalFlightPlanCMDRRemark = DSPRelease.OperationalFlightPlanCMDRRemark;
+                    release.SgnDSPLicNo = DSPRelease.SgnDSPLicNo;
+                    release.SgnCPTLicNo = DSPRelease.SgnCPTLicNo;
+                    release.JLDSPSignDate = DSPRelease.JLDSPSignDate;
+                    release.SGNDSPName = DSPRelease.SGNDSPName;
+
+                    _res.Add(release);
+                }
+
+
+                var saveResult = await _context.SaveChangesAsync();
+
+
+                return Ok(new DataResponse() { IsSuccess = true, Data = _res });
+
+            }
+            catch (Exception ex)
+            {
+                var msg = step + "   " + ex.Message;
+                if (ex.InnerException != null)
+                    msg += ex.InnerException.Message;
+                return Ok(msg);
+            }
+
+            // return new DataResponse() { IsSuccess = false };
+        }
         public class SimpleDto
         {
             public List<int> ids { get; set; }
@@ -957,6 +1140,166 @@ namespace ApiAPSB.Controllers
         [Route("api/dr/flight/{fltid}")]
         [AcceptVerbs("GET")]
         public IHttpActionResult GetDRByFlight(int fltid)
+        {
+            // return Ok('X');
+            try
+            {
+                var context = new Models.dbEntities();
+                var result = context.ViewEFBDSPReleases.FirstOrDefault(q => q.FlightId == fltid);
+                var result2 = new
+                {
+                    result.Id,
+                    result.FlightId,
+                    result.ActualWXDSP,
+                    result.ActualWXCPT,
+                    result.ActualWXDSPRemark,
+                    result.ActualWXCPTRemark,
+                    result.WXForcastDSP,
+                    result.WXForcastCPT,
+                    result.WXForcastDSPRemark,
+                    result.WXForcastCPTRemark,
+                    result.SigxWXDSP,
+                    result.SigxWXCPT,
+                    result.SigxWXDSPRemark,
+                    result.SigxWXCPTRemark,
+                    result.WindChartDSP,
+                    result.WindChartCPT,
+                    result.WindChartDSPRemark,
+                    result.WindChartCPTRemark,
+                    result.NotamDSP,
+                    result.NotamCPT,
+                    result.NotamDSPRemark,
+                    result.NotamCPTRemark,
+                    result.ComputedFligthPlanDSP,
+                    result.ComputedFligthPlanCPT,
+                    result.ComputedFligthPlanDSPRemark,
+                    result.ComputedFligthPlanCPTRemark,
+                    result.ATCFlightPlanDSP,
+                    result.ATCFlightPlanCPT,
+                    result.ATCFlightPlanDSPRemark,
+                    result.ATCFlightPlanCPTRemark,
+                    result.PermissionsDSP,
+                    result.PermissionsCPT,
+                    result.PermissionsDSPRemark,
+                    result.PermissionsCPTRemark,
+                    result.JeppesenAirwayManualDSP,
+                    result.JeppesenAirwayManualCPT,
+                    result.JeppesenAirwayManualDSPRemark,
+                    result.JeppesenAirwayManualCPTRemark,
+                    result.MinFuelRequiredDSP,
+                    result.MinFuelRequiredCPT,
+                    result.MinFuelRequiredPilotReq,
+                    result.GeneralDeclarationDSP,
+                    result.GeneralDeclarationCPT,
+                    result.GeneralDeclarationDSPRemark,
+                    result.GeneralDeclarationCPTRemark,
+                    result.FlightReportDSP,
+                    result.FlightReportCPT,
+                    result.FlightReportDSPRemark,
+                    result.FlightReportCPTRemark,
+                    result.TOLndCardsDSP,
+                    result.TOLndCardsCPT,
+                    result.TOLndCardsDSPRemark,
+                    result.TOLndCardsCPTRemark,
+                    result.LoadSheetDSP,
+                    result.LoadSheetCPT,
+                    result.LoadSheetDSPRemark,
+                    result.LoadSheetCPTRemark,
+                    result.FlightSafetyReportDSP,
+                    result.FlightSafetyReportCPT,
+                    result.FlightSafetyReportDSPRemark,
+                    result.FlightSafetyReportCPTRemark,
+                    result.AVSECIncidentReportDSP,
+                    result.AVSECIncidentReportCPT,
+                    result.AVSECIncidentReportDSPRemark,
+                    result.AVSECIncidentReportCPTRemark,
+                    result.OperationEngineeringDSP,
+                    result.OperationEngineeringCPT,
+                    result.OperationEngineeringDSPRemark,
+                    result.OperationEngineeringCPTRemark,
+                    result.VoyageReportDSP,
+                    result.VoyageReportCPT,
+                    result.VoyageReportDSPRemark,
+                    result.VoyageReportCPTRemark,
+                    result.PIFDSP,
+                    result.PIFCPT,
+                    result.PIFDSPRemark,
+                    result.PIFCPTRemark,
+                    result.GoodDeclarationDSP,
+                    result.GoodDeclarationCPT,
+                    result.GoodDeclarationDSPRemark,
+                    result.GoodDeclarationCPTRemark,
+                    result.IPADDSP,
+                    result.IPADCPT,
+                    result.IPADDSPRemark,
+                    result.IPADCPTRemark,
+                    result.DateConfirmed,
+                    result.DispatcherId,
+                    result.DSPName,
+                    result.DSPPID,
+                    result.DSPNID,
+                    result.DSPMobile,
+                    result.JLSignedBy,
+                    result.JLDatePICApproved,
+                    result.PICId,
+                    result.PIC,
+                    result.OperationalFlightPlanFOO,
+                    result.OperationalFlightPlanCMDR,
+                    result.OperationalFlightPlanFOORemark,
+                    result.OperationalFlightPlanCMDRRemark,
+                    result.ATSFlightPlanFOO,
+                    result.ATSFlightPlanCMDR,
+                    result.ATSFlightPlanFOORemark,
+                    result.ATSFlightPlanCMDRRemark,
+                    result.VldEFBFOO,
+                    result.VldEFBCMDR,
+                    result.VldEFBFOORemark,
+                    result.VldEFBCMDRRemark,
+                    result.VldFlightCrewFOO,
+                    result.VldFlightCrewCMDR,
+                    result.VldFlightCrewFOORemark,
+                    result.VldFlightCrewCMDRRemark,
+                    result.VldMedicalFOO,
+                    result.VldMedicalCMDR,
+                    result.VldMedicalFOORemark,
+                    result.VldMedicalCMDRRemark,
+                    result.VldPassportFOO,
+                    result.VldPassportCMDR,
+                    result.VldPassportFOORemark,
+                    result.VldPassportCMDRRemark,
+                    result.VldCMCFOO,
+                    result.VldCMCCMDR,
+                    result.VldCMCFOORemark,
+                    result.VldCMCCMDRRemark,
+                    result.VldRampPassFOO,
+                    result.VldRampPassCMDR,
+                    result.VldRampPassFOORemark,
+                    result.VldRampPassCMDRRemark,
+                    result.Note,
+                    result.MinFuelRequiredCFP,
+                    result.OFPTOTALFUEL,
+                    result.SgnDSPLicNo,
+                    result.SgnCPTLicNo,
+                    result.JLDSPSignDate,
+                    result.SGNDSPName,
+                    //Data = result,
+                    //Errors = new List<string>(),
+                    IsSuccess = true,
+                };
+                return Ok(result2);
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += "   INNER: " + ex.InnerException.Message;
+                return Ok(msg);
+            }
+        }
+
+        [Route("api/api/dr/flight/{fltid}")]
+        [AcceptVerbs("GET")]
+        public IHttpActionResult GetDRByFlight_TEMP(int fltid)
         {
             // return Ok('X');
             try
@@ -1383,139 +1726,139 @@ namespace ApiAPSB.Controllers
             public string lic_no { get; set; }
             public string user_id { get; set; }
         }
-        //[Route("api/dsp/dr/sign/new")]
-        //[AcceptVerbs("Post")]
-        //public IHttpActionResult PostDRDSPSIGNNew(dto_sign dto)
-        //{
-        //    try
-        //    {
-        //        var do_lic = Convert.ToInt32(ConfigurationManager.AppSettings["dsp_lic"]);
-        //        var context = new Models.dbEntities();
+        [Route("api/dsp/dr/sign/new")]
+        [AcceptVerbs("Post")]
+        public IHttpActionResult PostDRDSPSIGNNew(dto_sign dto)
+        {
+            try
+            {
+                var do_lic = Convert.ToInt32(ConfigurationManager.AppSettings["dsp_lic"]);
+                var context = new Models.dbEntities();
 
-        //        int flight_id = Convert.ToInt32(dto.flight_id);
-        //        string lic_no = Convert.ToString(dto.lic_no);
-        //        string userid = Convert.ToString(dto.user_id);
-
-
-        //         ViewEmployee employee = null;
-        //        //try
-        //        //{
-        //            employee = context.ViewEmployees.Where(q => q.UserId == userid || q.PersonId.ToString() == userid).FirstOrDefault();
-        //        //}
-        //        //catch(Exception ex)
-        //        //{
-        //        //    employee = context.ViewEmployees.Where(q => q.PersonId.ToString() == userid).FirstOrDefault();
-        //        //}
-        //        //employee = context.ViewEmployees.Where(q => q.PersonId.ToString() == userid).FirstOrDefault();
-
-        //        //if (employee==null)
-        //        //   employee=context.ViewEmployees.Where(q=>q.PersonId==userid).
-
-        //        if (do_lic == 1)
-        //        {
-        //            if (employee != null)
-        //            {
-        //                if (!employee.LicenceTitle.ToLower().Contains(lic_no.ToLower()))
-        //                {
-        //                    return Ok(
-        //                        new
-        //                        {
-        //                            done = false,
-        //                            code = 100,
-        //                            message = "The license number is wrong."
-        //                        }
-        //                    );
-        //                }
-        //            }
-        //            else
-        //            {
-        //                if (lic_no.ToLower() != "lic4806")
-        //                {
-        //                    return Ok(
-        //                        new
-        //                        {
-        //                            done = false,
-        //                            code = 100,
-        //                            message = "The license number is wrong."
-        //                        }
-        //                    );
-        //                }
-        //            }
-        //        }
+                int flight_id = Convert.ToInt32(dto.flight_id);
+                string lic_no = Convert.ToString(dto.lic_no);
+                string userid = Convert.ToString(dto.user_id);
 
 
+                ViewEmployee employee = null;
+                //try
+                //{
+                employee = context.ViewEmployees.Where(q => q.UserId == userid || q.PersonId.ToString() == userid).FirstOrDefault();
+                //}
+                //catch(Exception ex)
+                //{
+                //    employee = context.ViewEmployees.Where(q => q.PersonId.ToString() == userid).FirstOrDefault();
+                //}
+                //employee = context.ViewEmployees.Where(q => q.PersonId.ToString() == userid).FirstOrDefault();
 
-        //        var appleg = context.XAppLegs.FirstOrDefault(q => q.FlightId == flight_id);
-        //        if (appleg.PICId==null)
-        //        {
-        //            return Ok(
-        //                    new
-        //                    {
-        //                        done = false,
-        //                        code = 100,
-        //                        message = "The Flight Crew not found"
-        //                    }
-        //                );
-        //        }
-        //        var appcrewflight = context.AppCrewFlights.Where(q => q.FlightId == appleg.FlightId && q.CrewId == appleg.PICId).FirstOrDefault();
-        //        var fdpitems = context.FDPItems.Where(q => q.FDPId == appcrewflight.FDPId).ToList();
-        //        var fltIds = fdpitems.Select(q => q.FlightId).ToList();
+                //if (employee==null)
+                //   employee=context.ViewEmployees.Where(q=>q.PersonId==userid).
 
-        //        //var ofp_req_fuel = context.FlightInformations.Where(q => fltIds.Contains(q.ID)).OrderBy(q => q.ChocksOut).FirstOrDefault();
-        //        //if (ofp_req_fuel != null)
-        //        //{
-        //        //    if (ofp_req_fuel.FuelPlanned==null || ofp_req_fuel.OFPTOTALFUEL == null)
-        //        //    {
-        //        //        return Ok(
-        //        //            new
-        //        //            {
-        //        //                done = false,
-        //        //                code = 200,
-        //        //                message = "The OFP FUEL and REQUESTED FUEL can not be empty."
-        //        //            }
-        //        //        );
-        //        //    }
-        //        //}
-
-        //        var drs = context.EFBDSPReleases.Where(q => fltIds.Contains(q.FlightId)).ToList();
-
-        //        var dt = DateTime.UtcNow;
-        //        foreach (var dr in drs)
-        //        {
-        //            dr.JLDSPSignDate = dt;
-        //            dr.SgnDSPLicNo = lic_no.ToUpper();
-        //            dr.DispatcherId = employee != null ? employee.Id : -1;
-        //            dr.SGNDSPName = employee != null ? employee.Name : "Dispatch User";
-        //        }
+                if (do_lic == 1)
+                {
+                    if (employee != null)
+                    {
+                        if (!employee.LicenceTitle.ToLower().Contains(lic_no.ToLower()))
+                        {
+                            return Ok(
+                                new
+                                {
+                                    done = false,
+                                    code = 100,
+                                    message = "The license number is wrong."
+                                }
+                            );
+                        }
+                    }
+                    else
+                    {
+                        if (lic_no.ToLower() != "lic4806")
+                        {
+                            return Ok(
+                                new
+                                {
+                                    done = false,
+                                    code = 100,
+                                    message = "The license number is wrong."
+                                }
+                            );
+                        }
+                    }
+                }
 
 
 
-        //        context.SaveChanges();
-        //        return Ok(new
-        //        {
-        //            done = true,
-        //            dr_ids = drs.Select(q => q.Id).ToList(),
-        //            flt_ids = drs.Select(q => q.FlightId).ToList()
-        //        });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        var msg = ex.Message;
-        //        if (ex.InnerException != null)
-        //            msg += "   INNER: " + ex.InnerException.Message;
-        //        return Ok(new
-        //        {
-        //            done = false,
-        //            code = 1,
-        //            message = msg,
-        //        });
-        //    }
+                var appleg = context.XAppLegs.FirstOrDefault(q => q.FlightId == flight_id);
+                if (appleg.PICId == null)
+                {
+                    return Ok(
+                            new
+                            {
+                                done = false,
+                                code = 100,
+                                message = "The Flight Crew not found"
+                            }
+                        );
+                }
+                var appcrewflight = context.AppCrewFlights.Where(q => q.FlightId == appleg.FlightId && q.CrewId == appleg.PICId).FirstOrDefault();
+                var fdpitems = context.FDPItems.Where(q => q.FDPId == appcrewflight.FDPId).ToList();
+                var fltIds = fdpitems.Select(q => q.FlightId).ToList();
 
-        //}
+                //var ofp_req_fuel = context.FlightInformations.Where(q => fltIds.Contains(q.ID)).OrderBy(q => q.ChocksOut).FirstOrDefault();
+                //if (ofp_req_fuel != null)
+                //{
+                //    if (ofp_req_fuel.FuelPlanned==null || ofp_req_fuel.OFPTOTALFUEL == null)
+                //    {
+                //        return Ok(
+                //            new
+                //            {
+                //                done = false,
+                //                code = 200,
+                //                message = "The OFP FUEL and REQUESTED FUEL can not be empty."
+                //            }
+                //        );
+                //    }
+                //}
+
+                var drs = context.EFBDSPReleases.Where(q => fltIds.Contains(q.FlightId)).ToList();
+
+                var dt = DateTime.UtcNow;
+                foreach (var dr in drs)
+                {
+                    dr.JLDSPSignDate = dt;
+                    dr.SgnDSPLicNo = lic_no.ToUpper();
+                    dr.DispatcherId = employee != null ? employee.Id : -1;
+                    dr.SGNDSPName = employee != null ? employee.Name : "Dispatch User";
+                }
+
+
+
+                context.SaveChanges();
+                return Ok(new
+                {
+                    done = true,
+                    dr_ids = drs.Select(q => q.Id).ToList(),
+                    flt_ids = drs.Select(q => q.FlightId).ToList()
+                });
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += "   INNER: " + ex.InnerException.Message;
+                return Ok(new
+                {
+                    done = false,
+                    code = 1,
+                    message = msg,
+                });
+            }
+
+        }
 
 
         //FLY
-        [Route("api/dsp/dr/sign/new")]
+        [Route("api/dsp/dr/sign/new/fly")]
         [AcceptVerbs("Post")]
         public IHttpActionResult PostDRDSPSIGNNewFly(dto_sign dto)
         {
@@ -1757,27 +2100,135 @@ namespace ApiAPSB.Controllers
                 }
 
                 List<sgn_ofp_result> sgn_result = new List<sgn_ofp_result>();
-                //var ofps = context.OFPImports.Where(q => fids.Contains(q.FlightId)).ToList();
-                var ofps = context.OFPB_Root.Where(q => fids.Contains(q.FlightID)).ToList();
+                var ofps = context.OFPImports.Where(q => fids.Contains(q.FlightId)).ToList();
+                //var ofps = context.OFPB_Root.Where(q => fids.Contains(q.FlightID)).ToList();
                 foreach (var ofp in ofps)
                 {
-                    ofp.DateSign= DateTime.UtcNow;
-                    ofp.SignedbyId= employee != null? (Nullable<int>) employee.Id :null;
+                    //karun
+                    //ofp.DateSign = DateTime.UtcNow;
+                    //ofp.SignedbyId = employee != null ? (Nullable<int>)employee.Id : null;
 
 
-                    //ofp.PIC = employee != null ? employee.Name : lic_no;
-                    //ofp.PICId = employee.Id;
-                    //ofp.JLDatePICApproved = DateTime.UtcNow;
-                    //ofp.JLSignedBy = lic_no;
+                    ofp.PIC = employee != null ? employee.Name : lic_no;
+                    ofp.PICId = employee.Id;
+                    ofp.JLDatePICApproved = DateTime.UtcNow;
+                    ofp.JLSignedBy = lic_no;
+
+
+                    //karun
+                    //sgn_result.Add(new sgn_ofp_result()
+                    //{
+                    //    FlightId = (int)ofp.FlightID,
+                    //    Id = ofp.Id,
+                    //    JLDatePICApproved = (DateTime)ofp.DateSign, //ofp.JLDatePICApproved,
+                    //    JLSignedBy = employee.Name, //ofp.JLSignedBy,
+                    //    PIC = employee.Name, //ofp.PIC,
+                    //    PICId = (int)ofp.SignedbyId, //ofp.PICId
+                    //});
 
                     sgn_result.Add(new sgn_ofp_result()
                     {
-                        FlightId = (int)ofp.FlightID,
+                        FlightId = (int)ofp.FlightId,
                         Id = ofp.Id,
-                        JLDatePICApproved = (DateTime)ofp.DateSign, //ofp.JLDatePICApproved,
-                        JLSignedBy =employee.Name, //ofp.JLSignedBy,
-                        PIC = employee.Name, //ofp.PIC,
-                        PICId = (int)ofp.SignedbyId, //ofp.PICId
+                        JLDatePICApproved = (DateTime)ofp.JLDatePICApproved,
+                        JLSignedBy = ofp.JLSignedBy,
+                        PIC = ofp.PIC,
+                        PICId = (int)ofp.PICId
+                    });
+
+                }
+
+                var flights = context.FlightInformations.Where(q => fids2.Contains(q.ID)).ToList();
+                foreach (var flt in flights)
+                {
+                    flt.JLSignedBy = employee != null ? employee.Name : lic_no;
+                    flt.JLDatePICApproved = DateTime.UtcNow;
+                }
+
+                context.SaveChanges();
+                return Ok(new DataResponse() { IsSuccess = true, Data = sgn_result });
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += "   INNER: " + ex.InnerException.Message;
+                return Ok(new DataResponse() { IsSuccess = false, Messages = new List<string>() { msg } });
+            }
+
+        }
+
+
+
+        [Route("api/api/sign/ofps/new")]
+        [AcceptVerbs("Post")]
+        public IHttpActionResult PostSIGNOfps_OLD(dto_sign dto)
+        {
+            try
+            {
+                var context = new Models.dbEntities();
+
+                var fids = Convert.ToString(dto.flight_id_str).Split('_').Select(q => (Nullable<int>)Convert.ToInt32(q)).ToList();
+                var fids2 = Convert.ToString(dto.flight_id_str).Split('_').Select(q => Convert.ToInt32(q)).ToList();
+
+
+                string lic_no = Convert.ToString(dto.lic_no);
+                string userid = Convert.ToString(dto.user_id);
+
+
+
+                var employee = context.ViewEmployees.Where(q => q.UserId == userid).FirstOrDefault();
+                if (employee != null)
+                {
+                    if (!employee.NDTNumber.ToLower().Contains(lic_no.ToLower()))
+                    {
+
+                        return Ok(new DataResponse() { IsSuccess = false, Messages = new List<string>() { "The license number is wrong." } });
+                    }
+                }
+                else
+                {
+                    if (lic_no.ToLower() != "lic4806")
+                    {
+                        return Ok(new DataResponse() { IsSuccess = false, Messages = new List<string>() { "The license number is wrong." } });
+                    }
+                }
+
+                List<sgn_ofp_result> sgn_result = new List<sgn_ofp_result>();
+                var ofps = context.OFPImports.Where(q => fids.Contains(q.FlightId)).ToList();
+                //var ofps = context.OFPB_Root.Where(q => fids.Contains(q.FlightID)).ToList();
+                foreach (var ofp in ofps)
+                {
+                    //karun
+                    //ofp.DateSign = DateTime.UtcNow;
+                    //ofp.SignedbyId = employee != null ? (Nullable<int>)employee.Id : null;
+
+
+                    ofp.PIC = employee != null ? employee.Name : lic_no;
+                    ofp.PICId = employee.Id;
+                    ofp.JLDatePICApproved = DateTime.UtcNow;
+                    ofp.JLSignedBy = lic_no;
+
+
+                    //karun
+                    //sgn_result.Add(new sgn_ofp_result()
+                    //{
+                    //    FlightId = (int)ofp.FlightID,
+                    //    Id = ofp.Id,
+                    //    JLDatePICApproved = (DateTime)ofp.DateSign, //ofp.JLDatePICApproved,
+                    //    JLSignedBy = employee.Name, //ofp.JLSignedBy,
+                    //    PIC = employee.Name, //ofp.PIC,
+                    //    PICId = (int)ofp.SignedbyId, //ofp.PICId
+                    //});
+
+                    sgn_result.Add(new sgn_ofp_result()
+                    {
+                        FlightId = (int)ofp.FlightId,
+                        Id = ofp.Id,
+                        JLDatePICApproved = (DateTime)ofp.JLDatePICApproved,
+                        JLSignedBy = ofp.JLSignedBy,
+                        PIC = ofp.PIC,
+                        PICId = (int)ofp.PICId
                     });
 
                 }
@@ -1987,6 +2438,94 @@ namespace ApiAPSB.Controllers
         }
 
 
+        [Route("api/api/pic/dr/sign/new")]
+        [AcceptVerbs("Post")]
+        public IHttpActionResult PostDRPICSIGNNew_TEMP(dto_sign dto)
+        {
+            try
+            {
+                var context = new Models.dbEntities();
+
+                int flight_id = Convert.ToInt32(dto.flight_id);
+                string lic_no = Convert.ToString(dto.lic_no);
+                string userid = Convert.ToString(dto.user_id);
+
+
+                var person = context.People.Where(q => q.UserId == userid).FirstOrDefault();
+                var employee = context.PersonCustomers.Where(q => q.PersonId == person.Id).FirstOrDefault();
+                if (employee != null)
+                {
+                    if (!person.NDTNumber.ToLower().Contains(lic_no.ToLower()))
+                    {
+                        return Ok(
+                            new
+                            {
+                                IsSuccess = false,
+                                code = 100,
+                                message = "The license number is wrong."
+                            }
+                        );
+                    }
+                }
+                else
+                {
+                    if (lic_no.ToLower() != "lic4806")
+                    {
+                        return Ok(
+                            new
+                            {
+                                // done = false,
+                                IsSuccess = false,
+                                code = 100,
+                                message = "The license number is wrong."
+                            }
+                        );
+                    }
+                }
+
+
+                var appleg = context.XAppLegs.FirstOrDefault(q => q.FlightId == flight_id);
+                var appcrewflight = context.AppCrewFlights.Where(q => q.FlightId == appleg.FlightId && q.CrewId == appleg.PICId).FirstOrDefault();
+                var fdpitems = context.FDPItems.Where(q => q.FDPId == appcrewflight.FDPId).ToList();
+                var fltIds = fdpitems.Select(q => q.FlightId).ToList();
+
+                var drs = context.EFBDSPReleases.Where(q => fltIds.Contains(q.FlightId)).ToList();
+
+                var dt = DateTime.UtcNow;
+                foreach (var dr in drs)
+                {
+                    dr.JLDatePICApproved = dt;
+                    dr.SgnCPTLicNo = lic_no.ToUpper();
+                    dr.PICId = employee != null ? employee.Id : -1;
+                    dr.PIC = employee != null ? person.LastName + " " + person.FirstName : "PIC";
+                    dr.JLSignedBy = employee != null ? person.LastName + " " + person.FirstName : "PIC";
+                }
+
+
+
+                context.SaveChanges();
+                var rdr = drs.Where(q => q.FlightId == flight_id).FirstOrDefault();
+
+                var result = new { IsSuccess = true, Data = new { rdr.Id, rdr.FlightId, rdr.PICId, rdr.JLSignedBy, rdr.JLDatePICApproved, rdr.PIC, rdr.SgnCPTLicNo } };
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += "   INNER: " + ex.InnerException.Message;
+                //return Ok(new
+                //{
+                //    done = false,
+                //    code = 1,
+                //    message = msg,
+                //});
+                return Ok(new { IsSuccess = false, message = msg });
+            }
+
+        }
+
+
         [Route("api/pic/asr/sign/new")]
         [AcceptVerbs("Post")]
         public IHttpActionResult PostASRPICSIGNNew(dto_sign dto)
@@ -2033,7 +2572,9 @@ namespace ApiAPSB.Controllers
                 }
 
 
-                var appleg = context.XAppLegs.FirstOrDefault(q => q.FlightId == flight_id);
+                //var appleg = context.XAppLegs.FirstOrDefault(q => q.FlightId == flight_id);
+                var appleg = context.AppLegs.FirstOrDefault(q => q.FlightId == flight_id);
+
                 // var appcrewflight = context.AppCrewFlights.Where(q => q.FlightId == appleg.FlightId && q.CrewId == appleg.PICId).FirstOrDefault();
                 // var fdpitems = context.FDPItems.Where(q => q.FDPId == appcrewflight.FDPId).ToList();
                 //  var fltIds = fdpitems.Select(q => q.FlightId).ToList();
@@ -2049,6 +2590,7 @@ namespace ApiAPSB.Controllers
 
 
                 context.SaveChanges();
+                send_asr_notification(asr, employee, appleg);
                 //var rdr = drs.Where(q => q.FlightId == flight_id).FirstOrDefault();
 
                 var result = new { IsSuccess = true, Data = new { asr.Id, asr.FlightId, asr.PICId, asr.JLSignedBy, asr.JLDatePICApproved, asr.PIC } };
@@ -2067,6 +2609,178 @@ namespace ApiAPSB.Controllers
                 //});
                 return Ok(new { IsSuccess = false, message = msg });
             }
+
+        }
+
+        public void send_asr_notification(EFBASR asr, ViewEmployee employee, AppLeg flight)
+        {
+            new Thread(async () =>  
+            {
+                try
+                {
+                    var context = new dbEntities();
+                    var pic = employee; //context.ViewProfiles.Where(q => q.Id == asr.PICId).FirstOrDefault();
+
+                    //var pic_msg1 = "ضمن سپاس از ارسال گزارش، پس از بررسی و اقدامات انجام شده، حصول نتیجه در صورت لزوم به شما ابلاغ خواهد شد. با تشکر، مدیریت ایمنی و تضمین کیفیت هواپیمایی وارش";
+
+
+
+
+
+                    List<string> prts = new List<string>();
+                    prts.Add("New ASR Notification");
+                    //prts.Add("Dear ");
+                    prts.Add("Dear " + asr.PIC);
+                    prts.Add("Please click on the below link to see details.");
+                    prts.Add("https://ava.reportqa.airpocket.app/frmreportview.aspx?type=17&fid=" + asr.FlightId);
+                    prts.Add("Date: " + ((DateTime)flight.STDLocal).ToString("yyyy-MM-dd"));
+                    prts.Add("Route: " + flight.FromAirportIATA + "-" + flight.ToAirportIATA);
+                    prts.Add("Register: " + flight.Register);
+                    prts.Add("PIC: " + asr.PIC);
+                    //  prts.Add("FO: " + flight.P2Name);
+                    //prts.Add("FP: " + flight.);
+                    prts.Add("Event Summary:");
+                    prts.Add(asr.Summary);
+
+
+                    var text = String.Join("\n", prts);
+                    List<qa_notification_history> nots = new List<qa_notification_history>();
+
+                    var not_receivers = context.qa_notification_receiver.Where(q => q.is_active == true).ToList();
+                    var _result = new List<qa_notification_history>();
+                    MelliPayamac m1 = new MelliPayamac();
+                    foreach (var rec in not_receivers)
+                    {
+                        List<string> prts2 = new List<string>();
+                        prts2.Add("New ASR Notification");
+                        prts2.Add("Dear " + rec.rec_name);
+                        prts2.Add("Please click on the below link to see details.");
+
+                        prts2.Add("https://ava.reportqa.airpocket.app/frmreportview.aspx?type=17&fid=" + asr.FlightId);
+                        prts2.Add("Date: " + ((DateTime)flight.STDLocal).ToString("yyyy-MM-dd")  );
+                        prts2.Add("Route: " + flight.FromAirportIATA + "-" + flight.ToAirportIATA);
+                        prts2.Add("Register: EP-" + flight.Register);
+                        prts2.Add("PIC: " + asr.PIC);
+                        // prts2.Add("FO: " + asr.P2Name);
+                        // prts2.Add("FP: " + asr.SIC);
+                        prts2.Add("Event Summary:");
+                        prts2.Add(asr.Summary);
+
+                        var text2 = String.Join("\n", prts2);
+
+
+
+                        //List<string> mail_parts = new List<string>();
+
+                        //mail_parts.Add("<b>" + "New ASR Notification" + "</b><br/>");
+                        //mail_parts.Add("<b>" + "Dear " + rec.rec_name + "</b><br/>");
+                        //mail_parts.Add("Please click on the below link to see details.");
+
+                        //mail_parts.Add("https://ava.report.airpocket.app/frmreportview.aspx?type=17&fid=" + asr.FlightId + "<br/>");
+                        //mail_parts.Add("Date: " + "<b>" + asr.FlightDate.ToString("yyyy-MM-dd") + "</b><br/>");
+                        //mail_parts.Add("Route: " + "<b>" + asr.Route + "</b><br/>");
+                        //mail_parts.Add("Register: " + "<b>" + "EP-" + asr.Register + "</b><br/>");
+                        //mail_parts.Add("PIC: " + "<b>" + asr.PIC + "</b><br/>");
+                        //mail_parts.Add("FO: " + "<b>" + asr.P2Name + "</b><br/>");
+                        //mail_parts.Add("FP: " + "<b>" + asr.SIC + "</b><br/>");
+                        //mail_parts.Add("<b>" + "Event Summary:" + "</b><br/>");
+                        //mail_parts.Add(asr.Summary);
+                        //mail_parts.Add("<br/>");
+                        //mail_parts.Add("<br/>");
+                        //mail_parts.Add("Sent by AIRPOCKET" + "<br/>");
+                        //mail_parts.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm"));
+
+
+                        //var email_body = String.Join("\n", mail_parts);
+                        //if (!string.IsNullOrEmpty(rec.email))
+                        //{
+                        //    MailHelper mail_helper = new MailHelper();
+                        //    mail_helper.SendMailByAirpocket(rec.email, rec.rec_name, "ASR NOTIFICATION (FLT NO " + asr.FlightNumber + ", ROUTE " + asr.Route + ", DATE: " + asr.FlightDate.ToString("yyyy-MM-dd") + ")", email_body);
+
+                        //}
+                        //if (!string.IsNullOrEmpty(rec.email2))
+                        //{
+                        //    MailHelper mail_helper = new MailHelper();
+                        //    mail_helper.SendMailByAirpocket(rec.email2, rec.rec_name, "ASR NOTIFICATION (FLT NO " + asr.FlightNumber + ", ROUTE " + asr.Route + ", DATE: " + asr.FlightDate.ToString("yyyy-MM-dd") + ")", email_body);
+
+                        //}
+
+
+                        var not_history = new qa_notification_history()
+                        {
+                            date_send = DateTime.Now,
+                            entity_id = asr.Id,
+                            entity_type = 8,
+                            message_text = text2,
+                            message_type = 1,
+                            rec_id = rec.rec_id,
+                            rec_mobile = rec.mobile,
+                            rec_name = rec.rec_name,
+                            counter = 0,
+
+                        };
+
+                        var smsResult1 = m1.send(not_history.rec_mobile, null, text2)[0];
+                        not_history.ref_id = smsResult1.ToString();
+                        _result.Add(not_history);
+                        System.Threading.Thread.Sleep(2000);
+
+                    }
+                    var not_history_pic = new qa_notification_history()
+                    {
+                        date_send = DateTime.Now,
+                        entity_id = asr.Id,
+                        entity_type = 8,
+                        //message_text = pic_msg1,
+                        message_text = text,
+                        message_type = 2,
+                        rec_id = asr.PICId,
+                        rec_mobile = pic.Mobile,
+                        rec_name = pic.Name,
+                        counter = 0,
+                    };
+                    var not_history_pic2 = new qa_notification_history()
+                    {
+                        date_send = DateTime.Now,
+                        entity_id = asr.Id,
+                        entity_type = 8,
+                        message_text = text,
+                        message_type = 1,
+                        rec_id = asr.PICId,
+                        rec_mobile = "09124449584", //pic.Mobile,
+                        rec_name = pic.Name,
+                        counter = 0,
+                    };
+
+                    MelliPayamac m1_pic = new MelliPayamac();
+                    var m1_pic_result = m1_pic.send(not_history_pic.rec_mobile, null, not_history_pic.message_text)[0];
+                    not_history_pic.ref_id = m1_pic_result.ToString();
+
+                    MelliPayamac m_pic = new MelliPayamac();
+                    var m_pic_result = m_pic.send(not_history_pic2.rec_mobile, null, not_history_pic2.message_text)[0];
+                    not_history_pic2.ref_id = m_pic_result.ToString();
+
+                    _result.Add(not_history_pic);
+                    _result.Add(not_history_pic2);
+
+                    System.Threading.Thread.Sleep(20000);
+                    foreach (var x in _result)
+                    {
+                        MelliPayamac m_status = new MelliPayamac();
+                        x.status = m_status.get_delivery(x.ref_id);
+
+                        context.qa_notification_history.Add(x);
+                    }
+
+                    context.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+
+                }
+            
+            }).Start();
+            /////////////////////
 
         }
 
@@ -2117,7 +2831,7 @@ namespace ApiAPSB.Controllers
                 }
 
 
-                var appleg = context.XAppLegs.FirstOrDefault(q => q.FlightId == flight_id);
+                var appleg = context.AppLegs.FirstOrDefault(q => q.FlightId == flight_id);
                 // var appcrewflight = context.AppCrewFlights.Where(q => q.FlightId == appleg.FlightId && q.CrewId == appleg.PICId).FirstOrDefault();
                 // var fdpitems = context.FDPItems.Where(q => q.FDPId == appcrewflight.FDPId).ToList();
                 //  var fltIds = fdpitems.Select(q => q.FlightId).ToList();
@@ -2151,6 +2865,178 @@ namespace ApiAPSB.Controllers
                 //});
                 return Ok(new { IsSuccess = false, message = msg });
             }
+
+        }
+
+        public void send_vr_notification(EFBVoyageReport asr, ViewEmployee employee, AppLeg flight)
+        {
+            new Thread(async () =>
+            {
+                try
+                {
+                    var context = new dbEntities();
+                    var pic = employee; //context.ViewProfiles.Where(q => q.Id == asr.PICId).FirstOrDefault();
+
+                    //var pic_msg1 = "ضمن سپاس از ارسال گزارش، پس از بررسی و اقدامات انجام شده، حصول نتیجه در صورت لزوم به شما ابلاغ خواهد شد. با تشکر، مدیریت ایمنی و تضمین کیفیت هواپیمایی وارش";
+
+
+
+
+
+                    List<string> prts = new List<string>();
+                    prts.Add("New Voyage Report Notification");
+                    //prts.Add("Dear ");
+                    prts.Add("Dear " + asr.PIC);
+                    prts.Add("Please click on the below link to see details.");
+                    prts.Add("https://ava.reportqa.airpocket.app/frmreportview.aspx?type=17&fid=" + asr.FlightId);
+                    prts.Add("Date: " + ((DateTime)flight.STDLocal).ToString("yyyy-MM-dd"));
+                    prts.Add("Route: " + flight.FromAirportIATA + "-" + flight.ToAirportIATA);
+                    prts.Add("Register: " + flight.Register);
+                    prts.Add("PIC: " + asr.PIC);
+                    //  prts.Add("FO: " + flight.P2Name);
+                    //prts.Add("FP: " + flight.);
+                    //prts.Add("Event Summary:");
+                    //prts.Add(asr.Report);
+
+
+                    var text = String.Join("\n", prts);
+                    List<qa_notification_history> nots = new List<qa_notification_history>();
+
+                    var not_receivers = context.qa_notification_receiver.Where(q => q.is_active == true).ToList();
+                    var _result = new List<qa_notification_history>();
+                    MelliPayamac m1 = new MelliPayamac();
+                    foreach (var rec in not_receivers)
+                    {
+                        List<string> prts2 = new List<string>();
+                        prts2.Add("New Voyage Report Notification");
+                        prts2.Add("Dear " + rec.rec_name);
+                        prts2.Add("Please click on the below link to see details.");
+
+                        prts2.Add("https://ava.reportqa.airpocket.app/frmreportview.aspx?type=17&fid=" + asr.FlightId);
+                        prts2.Add("Date: " + ((DateTime)flight.STDLocal).ToString("yyyy-MM-dd"));
+                        prts2.Add("Route: " + flight.FromAirportIATA + "-" + flight.ToAirportIATA);
+                        prts2.Add("Register: EP-" + flight.Register);
+                        prts2.Add("PIC: " + asr.PIC);
+                        // prts2.Add("FO: " + asr.P2Name);
+                        // prts2.Add("FP: " + asr.SIC);
+                        //prts2.Add("Event Summary:");
+                       // prts2.Add(asr.Summary);
+
+                        var text2 = String.Join("\n", prts2);
+
+
+
+                        //List<string> mail_parts = new List<string>();
+
+                        //mail_parts.Add("<b>" + "New ASR Notification" + "</b><br/>");
+                        //mail_parts.Add("<b>" + "Dear " + rec.rec_name + "</b><br/>");
+                        //mail_parts.Add("Please click on the below link to see details.");
+
+                        //mail_parts.Add("https://ava.report.airpocket.app/frmreportview.aspx?type=17&fid=" + asr.FlightId + "<br/>");
+                        //mail_parts.Add("Date: " + "<b>" + asr.FlightDate.ToString("yyyy-MM-dd") + "</b><br/>");
+                        //mail_parts.Add("Route: " + "<b>" + asr.Route + "</b><br/>");
+                        //mail_parts.Add("Register: " + "<b>" + "EP-" + asr.Register + "</b><br/>");
+                        //mail_parts.Add("PIC: " + "<b>" + asr.PIC + "</b><br/>");
+                        //mail_parts.Add("FO: " + "<b>" + asr.P2Name + "</b><br/>");
+                        //mail_parts.Add("FP: " + "<b>" + asr.SIC + "</b><br/>");
+                        //mail_parts.Add("<b>" + "Event Summary:" + "</b><br/>");
+                        //mail_parts.Add(asr.Summary);
+                        //mail_parts.Add("<br/>");
+                        //mail_parts.Add("<br/>");
+                        //mail_parts.Add("Sent by AIRPOCKET" + "<br/>");
+                        //mail_parts.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm"));
+
+
+                        //var email_body = String.Join("\n", mail_parts);
+                        //if (!string.IsNullOrEmpty(rec.email))
+                        //{
+                        //    MailHelper mail_helper = new MailHelper();
+                        //    mail_helper.SendMailByAirpocket(rec.email, rec.rec_name, "ASR NOTIFICATION (FLT NO " + asr.FlightNumber + ", ROUTE " + asr.Route + ", DATE: " + asr.FlightDate.ToString("yyyy-MM-dd") + ")", email_body);
+
+                        //}
+                        //if (!string.IsNullOrEmpty(rec.email2))
+                        //{
+                        //    MailHelper mail_helper = new MailHelper();
+                        //    mail_helper.SendMailByAirpocket(rec.email2, rec.rec_name, "ASR NOTIFICATION (FLT NO " + asr.FlightNumber + ", ROUTE " + asr.Route + ", DATE: " + asr.FlightDate.ToString("yyyy-MM-dd") + ")", email_body);
+
+                        //}
+
+
+                        var not_history = new qa_notification_history()
+                        {
+                            date_send = DateTime.Now,
+                            entity_id = asr.Id,
+                            entity_type = 9,
+                            message_text = text2,
+                            message_type = 1,
+                            rec_id = rec.rec_id,
+                            rec_mobile = rec.mobile,
+                            rec_name = rec.rec_name,
+                            counter = 0,
+
+                        };
+
+                        var smsResult1 = m1.send(not_history.rec_mobile, null, text2)[0];
+                        not_history.ref_id = smsResult1.ToString();
+                        _result.Add(not_history);
+                        System.Threading.Thread.Sleep(2000);
+
+                    }
+                    var not_history_pic = new qa_notification_history()
+                    {
+                        date_send = DateTime.Now,
+                        entity_id = asr.Id,
+                        entity_type = 9,
+                        //message_text = pic_msg1,
+                        message_text = text,
+                        message_type = 2,
+                        rec_id = asr.PICId,
+                        rec_mobile = pic.Mobile,
+                        rec_name = pic.Name,
+                        counter = 0,
+                    };
+                    var not_history_pic2 = new qa_notification_history()
+                    {
+                        date_send = DateTime.Now,
+                        entity_id = asr.Id,
+                        entity_type = 9,
+                        message_text = text,
+                        message_type = 1,
+                        rec_id = asr.PICId,
+                        rec_mobile = "09124449584", //pic.Mobile,
+                        rec_name = pic.Name,
+                        counter = 0,
+                    };
+
+                    MelliPayamac m1_pic = new MelliPayamac();
+                    var m1_pic_result = m1_pic.send(not_history_pic.rec_mobile, null, not_history_pic.message_text)[0];
+                    not_history_pic.ref_id = m1_pic_result.ToString();
+
+                    MelliPayamac m_pic = new MelliPayamac();
+                    var m_pic_result = m_pic.send(not_history_pic2.rec_mobile, null, not_history_pic2.message_text)[0];
+                    not_history_pic2.ref_id = m_pic_result.ToString();
+
+                    _result.Add(not_history_pic);
+                    _result.Add(not_history_pic2);
+
+                    System.Threading.Thread.Sleep(20000);
+                    foreach (var x in _result)
+                    {
+                        MelliPayamac m_status = new MelliPayamac();
+                        x.status = m_status.get_delivery(x.ref_id);
+
+                        context.qa_notification_history.Add(x);
+                    }
+
+                    context.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+            }).Start();
+            /////////////////////
 
         }
 
@@ -2486,7 +3372,272 @@ namespace ApiAPSB.Controllers
             }
         }
 
+        [Route("api/api/ofps/validate/{fids}")]
+        [AcceptVerbs("GET")]
+        public IHttpActionResult ValidateOFPs_OLD_TEMP(string fids)
+        {
+            List<_h_error> errors = new List<_h_error>();
+            var rvsm_check = true;
+            List<int?> _fids = fids.Split('_').Select(q => (Nullable<int>)Convert.ToInt32(q)).ToList();
 
+            var _context = new Models.dbEntities();
+            var _msgs = new List<string>();
+            try
+            {
+                var ofpImports = _context.OFPImports.Where(q => _fids.Contains(q.FlightId)).Select(q => new
+                {
+                    q.FlightId,
+                    q.FlightNo,
+                    q.Origin,
+                    q.Destination,
+                    q.Id
+                }).ToList();
+
+                var flight_ids = ofpImports.Select(q => q.FlightId).ToList();
+                var flights = _context.FlightInformations.Where(q => flight_ids.Contains(q.ID)).ToList();
+                var flights2 = _context.AppLegs.Where(q => _fids.Contains(q.ID)).ToList();
+                if (ofpImports.Count == 0)
+                {
+                    foreach (var flt in flights2)
+                        errors.Add(new _h_error()
+                        {
+                            flight_no = flt.FlightNumber,
+                            id = flt.ID,
+                            rvsm_flight = true,
+                            rvsm_grnd = true,
+                            rvsm_prelevel = true,
+                            toc = true,
+                            toc_tod = true,
+                            tod = true,
+                            mvt = flt.BlockOff == null || flt.BlockOn == null || flt.TakeOff == null || flt.Landing == null,
+                            fuel = flt.FuelUplift == null || flt.FuelUsed == null || flt.FuelRemaining == null
+
+
+
+                        });
+                    return Ok(new DataResponse()
+                    {
+                        Data = errors,
+                        IsSuccess = true,
+                        Messages = _msgs
+
+                    });
+                }
+
+
+                var ofpImportIds = ofpImports.Select(q => q.Id).ToList();
+
+                var ofpProps = _context.OFPImportProps.Where(q => (q.PropName.Contains("mpln") || q.PropName.Contains("rvsm")) && ofpImportIds.Contains(q.OFPId)).ToList();
+
+                var groupProps = (from x in ofpProps
+                                  group x by new { x.OFPId } into grp
+                                  select new
+                                  {
+                                      grp.Key.OFPId,
+                                      ofp = ofpImports.FirstOrDefault(q => q.Id == grp.Key.OFPId),
+                                      // flight=flights.FirstOrDefault(q=>q.ID== ofpImports.FirstOrDefault(q => q.Id == grp.Key.OFPId).FlightId),
+                                      items = grp.OrderBy(q => q.Id).Select(q => new _h_prop() { name = q.PropName, value = q.PropValue, id = q.Id }).ToList(),
+
+                                  }).ToList();
+
+
+                foreach (var _flt in groupProps)
+                {
+                    var flt2 = flights2.FirstOrDefault(q => q.ID == _flt.ofp.FlightId);
+                    errors.Add(new _h_error()
+                    {
+                        flight_no = _flt.ofp.FlightNo,
+                        id = _flt.ofp.FlightId,
+                        mvt = flt2.BlockOff == null || flt2.BlockOn == null || flt2.TakeOff == null || flt2.Landing == null,
+                        fuel = flt2.FuelUplift == null || flt2.FuelUsed == null || flt2.FuelRemaining == null
+
+                    });
+
+                }
+
+
+
+
+
+
+
+                foreach (var x in groupProps)
+                {
+                    /*var first_point = x.items.ToList().OrderBy(q => q.id).FirstOrDefault();
+                    if (first_point != null)
+                    {
+                        var origin = first_point.name.Substring(0, 18);
+                        var takeoff_point = x.items.Where(q => q.name.StartsWith(origin) && q.name.Contains("_rem")).FirstOrDefault();
+                        if (string.IsNullOrEmpty(takeoff_point.value))
+                        {
+                            //errors.Add(new _h_error()
+                            //{
+                            //    flight_no = x.ofp.FlightNo,
+                            //    route = x.ofp.Origin + "-" + x.ofp.Destination,
+                            //    takeoff=true,
+                            //});
+                            var _err = errors.Where(q => q.flight_no == x.ofp.FlightNo).FirstOrDefault();
+                            if (_err != null)
+                            {
+                                _err.takeoff = true;
+                            }
+                        }
+                    }*/
+                    var _toc = x.items.Where(q => q.name.Contains("toc_ata")).FirstOrDefault();
+                    var _tod = x.items.Where(q => q.name.Contains("tod_ata")).FirstOrDefault();
+                    if (string.IsNullOrEmpty(_toc.value) || string.IsNullOrEmpty(_tod.value))
+                    {
+                        //errors.Add(new _h_error()
+                        //{
+                        //    flight_no = x.ofp.FlightNo,
+                        //    route = x.ofp.Origin + "-" + x.ofp.Destination,
+                        //    toc = string.IsNullOrEmpty(_toc.value),
+                        //    tod = string.IsNullOrEmpty(_tod.value),
+                        //});
+                        var _err = errors.Where(q => q.flight_no == x.ofp.FlightNo).FirstOrDefault();
+                        if (_err != null)
+                        {
+                            _err.toc = string.IsNullOrEmpty(_toc.value);
+                            _err.tod = string.IsNullOrEmpty(_tod.value);
+                        }
+                    }
+                    else
+                    {
+                        var _toc_idx = x.items.IndexOf(_toc) + 1;
+                        var _tod_idx = x.items.IndexOf(_tod) - 1;
+                        var _toc_tod_items = x.items.Skip(_toc_idx).Take(_tod_idx - _toc_idx).Where(q => q.name.Contains("_ata")).ToList();
+                        var _toc_time = DateTime.Now.Date.AddHours(Convert.ToInt32(_toc.value.Substring(0, 2))).AddMinutes(Convert.ToInt32(_toc.value.Substring(2, 2)));
+                        var _tod_time = DateTime.Now.Date.AddHours(Convert.ToInt32(_tod.value.Substring(0, 2))).AddMinutes(Convert.ToInt32(_tod.value.Substring(2, 2)));
+
+                        // var diff = (_tod_time - _toc_time).TotalMinutes;
+                        var _flight_id = ofpImports.FirstOrDefault(q => q.Id == x.OFPId).FlightId;
+
+                        var _flight = flights.FirstOrDefault(q => q.ID == _flight_id);
+                        var diff = ((DateTime)_flight.STA - (DateTime)_flight.STD).TotalMinutes;
+                        var hrs = (int)Math.Ceiling(diff * 1.0 / 60);
+                        var hrs2 = diff * 1.0 / 60;
+                        var hrs2_int = Math.Truncate(hrs2);
+                        _msgs.Add(diff.ToString());
+                        _msgs.Add(hrs2.ToString());
+                        _msgs.Add(hrs2_int.ToString());
+
+
+                        //var filled = _toc_tod_items.Where(q => !string.IsNullOrEmpty(q.value)).Count();
+                        var filled = x.items.Where(q => q.name.Contains("_ata") && !string.IsNullOrEmpty(q.value)).Count();
+                        _msgs.Add(filled.ToString());
+
+                        if (hrs2 >= 1 && /*filled < hrs - 1*/filled < hrs2_int + 2)
+                        {
+                            //errors.Add(new _h_error()
+                            //{
+                            //    flight_no = x.ofp.FlightNo,
+                            //    route = x.ofp.Origin + "-" + x.ofp.Destination,
+                            //    toc = false,
+                            //    tod = false,
+                            //    toc_tod = true,
+                            //});
+                            var _err = errors.Where(q => q.flight_no == x.ofp.FlightNo).FirstOrDefault();
+                            if (_err != null)
+                            {
+                                _err.toc_tod = true;
+
+                            }
+                        }
+                    }
+                    if (rvsm_check)
+                    {
+                        var rvsm_grnd_props = x.items.Where(q => q.name.Contains("rvsm_gnd")).ToList();
+                        var rvsm_grns_props_null = rvsm_grnd_props.Where(q => string.IsNullOrEmpty(q.value)).Count();
+                        if (rvsm_grns_props_null > 0)
+                        {
+                            //errors.Add(new _h_error()
+                            //{
+                            //    flight_no = x.ofp.FlightNo,
+                            //    route = x.ofp.Origin + "-" + x.ofp.Destination,
+                            //    rvsm_grnd = true,
+
+                            //});
+                            var _err = errors.Where(q => q.flight_no == x.ofp.FlightNo).FirstOrDefault();
+                            if (_err != null)
+                            {
+                                _err.rvsm_grnd = true;
+
+                            }
+                        }
+
+
+                        //var rvsm_prelevel_props = x.items.Where(q => q.name.Contains("rvsm_flt") && q.name.Contains("4")).ToList();
+                        //var rvsm_prelevel_props_null = rvsm_prelevel_props.Where(q => string.IsNullOrEmpty(q.value)).Count();
+                        //if (rvsm_prelevel_props_null > 0)
+                        //{
+                        //    errors.Add(new _h_error()
+                        //    {
+                        //        flight_no = x.ofp.FlightNo,
+                        //        route = x.ofp.Origin + "-" + x.ofp.Destination,
+                        //        rvsm_prelevel = true,
+
+                        //    });
+                        //}
+
+                        var rvsm_flt_l = x.items.Where(q => q.name.EndsWith("rvsm_flt_l")).FirstOrDefault().value;
+                        var rvsm_flt_stby = x.items.Where(q => q.name.EndsWith("rvsm_flt_stby")).FirstOrDefault().value;
+                        var rvsm_flt_r = x.items.Where(q => q.name.EndsWith("rvsm_flt_r")).FirstOrDefault().value;
+                        var rvsm_flt_time = x.items.Where(q => q.name.EndsWith("rvsm_flt_time")).FirstOrDefault().value;
+                        if (string.IsNullOrEmpty(rvsm_flt_l) || string.IsNullOrEmpty(rvsm_flt_stby) || string.IsNullOrEmpty(rvsm_flt_r) || string.IsNullOrEmpty(rvsm_flt_time))
+                        {
+                            //errors.Add(new _h_error()
+                            //{
+                            //    flight_no = x.ofp.FlightNo,
+                            //    route = x.ofp.Origin + "-" + x.ofp.Destination,
+                            //    rvsm_flight = true,
+
+                            //});
+                            var _err = errors.Where(q => q.flight_no == x.ofp.FlightNo).FirstOrDefault();
+                            if (_err != null)
+                            {
+                                _err.rvsm_flight = true;
+
+                            }
+                        }
+
+
+
+
+
+
+
+
+                    }
+
+
+
+
+                }
+
+
+
+                return Ok(new DataResponse()
+                {
+                    Data = errors,
+                    IsSuccess = true,
+                    Messages = _msgs
+
+                });
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += " INNER:" + ex.InnerException.Message;
+
+                return Ok(new DataResponse()
+                {
+                    Data = new List<_h_error>() { new _h_error() { other = msg, flight_no = "-", } },
+                    IsSuccess = true
+
+                });
+            }
+        }
         //karun
         [Route("api/ofps/validate/b/{fids}")]
         [AcceptVerbs("GET")]
@@ -2502,7 +3653,7 @@ namespace ApiAPSB.Controllers
             {
                 var ofp_roots = _context.view_ofpb_root_report.Where(q => _fids.Contains(q.FlightID)).ToList();
                 List<int?> ofp_ids = ofp_roots.Select(q => (Nullable<int>)q.Id).ToList();
-                var ofp_navs = _context.OFPB_MainNavLog.Where(q => ofp_ids.Contains(q.RootId) && q.NavType== "MAIN").ToList();
+                var ofp_navs = _context.OFPB_MainNavLog.Where(q => ofp_ids.Contains(q.RootId) && q.NavType == "MAIN").ToList();
 
 
                 //var ofpImports = _context.OFPImports.Where(q => _fids.Contains(q.FlightId)).Select(q => new
@@ -2559,7 +3710,7 @@ namespace ApiAPSB.Controllers
                     };
                     errors.Add(error);
                     var nav = ofp_navs.Where(q => q.RootId == ofp.Id).ToList();
-                    if (nav == null || nav.Count==0)
+                    if (nav == null || nav.Count == 0)
                     {
                         error.toc = true;
                         error.tod = true;
@@ -2580,18 +3731,18 @@ namespace ApiAPSB.Controllers
                            || string.IsNullOrEmpty(ofp.rvsm_gnd_time);
                         error.rvsm_flight = string.IsNullOrEmpty(ofp.rvsm_flt1_fl) || string.IsNullOrEmpty(ofp.rvsm_flt1_lalt) || string.IsNullOrEmpty(ofp.rvsm_flt1_ralt)
                             || string.IsNullOrEmpty(ofp.rvsm_flt1_stby) || string.IsNullOrEmpty(ofp.rvsm_flt1_time);
- 
+
 
                     }
 
 
                 }
 
-               
 
-               
 
-               
+
+
+
 
 
 

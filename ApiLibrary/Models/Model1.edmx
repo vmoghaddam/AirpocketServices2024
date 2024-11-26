@@ -72,6 +72,15 @@
           <Property Name="Remark" Type="nvarchar" MaxLength="500" />
           <Property Name="ChapterId" Type="int" />
         </EntityType>
+        <EntityType Name="BookFileVisit">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BookFileId" Type="int" Nullable="false" />
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+          <Property Name="DateVisited" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="BookRelatedGroup">
           <Key>
             <PropertyRef Name="Id" />
@@ -128,9 +137,9 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewBookApplicableEmployee' does no
             <PropertyRef Name="PersonId" />
             <PropertyRef Name="Title" />
             <PropertyRef Name="CategoryId" />
-            <PropertyRef Name="IsExposed" />
             <PropertyRef Name="IsSigned" />
             <PropertyRef Name="TypeId" />
+            <PropertyRef Name="IsExposed" />
           </Key>
           <Property Name="EmployeeId" Type="int" Nullable="false" />
           <Property Name="BookId" Type="int" Nullable="false" />
@@ -414,6 +423,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewFolderApplicable' does not have
           <EntitySet Name="Book" EntityType="Self.Book" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BookChapter" EntityType="Self.BookChapter" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BookFile" EntityType="Self.BookFile" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BookFileVisit" EntityType="Self.BookFileVisit" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BookRelatedGroup" EntityType="Self.BookRelatedGroup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="JobGroup" EntityType="Self.JobGroup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HelperBookApplicableEmployee" EntityType="Self.HelperBookApplicableEmployee" store:Type="Views" store:Schema="dbo">
@@ -665,6 +675,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewFolderApplicable' does not have
             <End Role="JobGroup" EntitySet="JobGroups" />
             <End Role="JobGroup1" EntitySet="JobGroups" />
           </AssociationSet>
+          <EntitySet Name="BookFileVisits" EntityType="ppaModel.BookFileVisit" />
           </EntityContainer>
         <EntityType Name="ViewBookFile">
           <Key>
@@ -1071,6 +1082,15 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewFolderApplicable' does not have
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="BookFileVisit">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BookFileId" Type="Int32" Nullable="false" />
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="DateVisited" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1369,6 +1389,16 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewFolderApplicable' does not have
                 <ScalarProperty Name="Code" ColumnName="Code" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BookFileVisits">
+            <EntityTypeMapping TypeName="ppaModel.BookFileVisit">
+              <MappingFragment StoreEntitySet="BookFileVisit">
+                <ScalarProperty Name="DateVisited" ColumnName="DateVisited" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="BookFileId" ColumnName="BookFileId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
