@@ -135,6 +135,16 @@ namespace ApiForm.Controllers
             return Ok(forms);
         }
 
+        //2024-11-26
+        [Route("api/vacation/forms/approved")]
+        [AcceptVerbs("GET")]
+        public IHttpActionResult GetVacationFormsApproved()
+        {
+            ppa_entities context = new ppa_entities();
+            var forms = context.ViewFormVacations.Where(q=>q.ResponsibleActionId==1).OrderByDescending(q => q.DateCreate).ToList();
+            return Ok(forms);
+        }
+
 
         [Route("api/vacation/forms/new")]
         [AcceptVerbs("GET")]

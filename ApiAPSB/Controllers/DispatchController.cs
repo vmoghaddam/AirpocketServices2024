@@ -2884,7 +2884,7 @@ namespace ApiAPSB.Controllers
 
 
                     List<string> prts = new List<string>();
-                    prts.Add("New ASR Notification");
+                    prts.Add("New Voyage Report Notification");
                     //prts.Add("Dear ");
                     prts.Add("Dear " + asr.PIC);
                     prts.Add("Please click on the below link to see details.");
@@ -2895,8 +2895,8 @@ namespace ApiAPSB.Controllers
                     prts.Add("PIC: " + asr.PIC);
                     //  prts.Add("FO: " + flight.P2Name);
                     //prts.Add("FP: " + flight.);
-                    prts.Add("Event Summary:");
-                    prts.Add(asr.Summary);
+                    //prts.Add("Event Summary:");
+                    //prts.Add(asr.Report);
 
 
                     var text = String.Join("\n", prts);
@@ -2908,7 +2908,7 @@ namespace ApiAPSB.Controllers
                     foreach (var rec in not_receivers)
                     {
                         List<string> prts2 = new List<string>();
-                        prts2.Add("New ASR Notification");
+                        prts2.Add("New Voyage Report Notification");
                         prts2.Add("Dear " + rec.rec_name);
                         prts2.Add("Please click on the below link to see details.");
 
@@ -2919,8 +2919,8 @@ namespace ApiAPSB.Controllers
                         prts2.Add("PIC: " + asr.PIC);
                         // prts2.Add("FO: " + asr.P2Name);
                         // prts2.Add("FP: " + asr.SIC);
-                        prts2.Add("Event Summary:");
-                        prts2.Add(asr.Summary);
+                        //prts2.Add("Event Summary:");
+                       // prts2.Add(asr.Summary);
 
                         var text2 = String.Join("\n", prts2);
 
@@ -2966,7 +2966,7 @@ namespace ApiAPSB.Controllers
                         {
                             date_send = DateTime.Now,
                             entity_id = asr.Id,
-                            entity_type = 8,
+                            entity_type = 9,
                             message_text = text2,
                             message_type = 1,
                             rec_id = rec.rec_id,
@@ -2986,7 +2986,7 @@ namespace ApiAPSB.Controllers
                     {
                         date_send = DateTime.Now,
                         entity_id = asr.Id,
-                        entity_type = 8,
+                        entity_type = 9,
                         //message_text = pic_msg1,
                         message_text = text,
                         message_type = 2,
@@ -2999,7 +2999,7 @@ namespace ApiAPSB.Controllers
                     {
                         date_send = DateTime.Now,
                         entity_id = asr.Id,
-                        entity_type = 8,
+                        entity_type = 9,
                         message_text = text,
                         message_type = 1,
                         rec_id = asr.PICId,
