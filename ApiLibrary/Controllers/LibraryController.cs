@@ -21,6 +21,29 @@ namespace ApiLibrary.Controllers
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class LibraryController : ApiController
     {
+        [HttpPost]
+        [Route("api/library/visit/file/{employeeId}/{bookfileId}")]
+        public async Task<IHttpActionResult> PostVisitFile(int employeeId, int bookfileId)
+        {
+
+            ppa_entities context = new ppa_entities();
+            var status = await  context.BookFileVisits.Where(q => q.EmployeeId == employeeId && q.BookFileId == bookfileId).FirstOrDefaultAsync();
+            if (status == null)
+            {
+                status = new BookFileVisit()
+                {
+                    EmployeeId = employeeId,
+                    BookFileId = bookfileId,
+                    DateVisited = DateTime.Now,
+
+                };
+
+                context.BookFileVisits.Add(status);
+
+                await context.SaveChangesAsync();
+            }
+            return Ok(true);
+        }
         [Route("api/library/paths")]
         public async Task<IHttpActionResult> GetPaths()
         {
@@ -421,97 +444,97 @@ namespace ApiLibrary.Controllers
             }
 
         }
-        [HttpPost]
-        [Route("api/dc/pif/save")]
-        public async Task<IHttpActionResult> PostPIFSave(dto_pif dto)
-        {
+        //[HttpPost]
+        //[Route("api/dc/pif/save")]
+        //public async Task<IHttpActionResult> PostPIFSave(dto_pif dto)
+        //{
 
-            ppa_entities context = new ppa_entities();
+        //    ppa_entities context = new ppa_entities();
 
-            var book = await context.Books.FirstOrDefaultAsync(q => q.Id == dto.Id);
-            if (book == null)
-            {
-                book = new Book()
-                {
-                    DateCreate = DateTime.Now
-                };
-                context.Books.Add(book);
-            }
+        //    var book = await context.Books.FirstOrDefaultAsync(q => q.Id == dto.Id);
+        //    if (book == null)
+        //    {
+        //        book = new Book()
+        //        {
+        //            DateCreate = DateTime.Now
+        //        };
+        //        context.Books.Add(book);
+        //    }
 
-            book.Title = dto.Title;
-            book.Abstract = dto.Abstract;
-            book.Sender = dto.Sender;
-            book.CategoryId = dto.CategoryId;
-            book.No = dto.No;
-            book.DateRelease = dto.DateRelease;
-            book.DateDeadline = dto.DateDeadline;
-            book.DateEffective = dto.DateEffective;
-            book.DatePublished = dto.DatePublished;
-            book.DateValidUntil = dto.DateValidUntil;
-            book.FileUrlX = dto.FileUrlX;
-            book.SysUrlX = dto.SysUrlX;
+        //    book.Title = dto.Title;
+        //    book.Abstract = dto.Abstract;
+        //    book.Sender = dto.Sender;
+        //    book.CategoryId = dto.CategoryId;
+        //    book.No = dto.No;
+        //    book.DateRelease = dto.DateRelease;
+        //    book.DateDeadline = dto.DateDeadline;
+        //    book.DateEffective = dto.DateEffective;
+        //    book.DatePublished = dto.DatePublished;
+        //    book.DateValidUntil = dto.DateValidUntil;
+        //    book.FileUrlX = dto.FileUrlX;
+        //    book.SysUrlX = dto.SysUrlX;
 
-            if (dto.Id != -1)
-            {
-                var existing_grps = await context.BookRelatedGroups.Where(q => q.BookId == dto.Id).ToListAsync();
-                if (existing_grps != null && existing_grps.Count > 0)
-                    context.BookRelatedGroups.RemoveRange(existing_grps);
-            }
-            var _grps = new List<Models.JobGroup>();
-            var qry = from q in context.JobGroups
-                      select q;
-            if (dto.CategoryId == 10007)
-            { qry = qry.Where(q => q.FullCode.StartsWith("00101")); _grps = qry.ToList(); }
-            //10008
-            else if (dto.CategoryId == 10008)
-            { qry = qry.Where(q => q.FullCode.StartsWith("00102")); _grps = qry.ToList(); }
-            //dif
-            //95
-            else if (dto.CategoryId == 95)
-            { qry = qry.Where(q => q.FullCode.StartsWith("00103")); _grps = qry.ToList(); }
+        //    if (dto.Id != -1)
+        //    {
+        //        var existing_grps = await context.BookRelatedGroups.Where(q => q.BookId == dto.Id).ToListAsync();
+        //        if (existing_grps != null && existing_grps.Count > 0)
+        //            context.BookRelatedGroups.RemoveRange(existing_grps);
+        //    }
+        //    var _grps = new List<Models.JobGroup>();
+        //    var qry = from q in context.JobGroups
+        //              select q;
+        //    if (dto.CategoryId == 10007)
+        //    { qry = qry.Where(q => q.FullCode.StartsWith("00101")); _grps = qry.ToList(); }
+        //    //10008
+        //    else if (dto.CategoryId == 10008)
+        //    { qry = qry.Where(q => q.FullCode.StartsWith("00102")); _grps = qry.ToList(); }
+        //    //dif
+        //    //95
+        //    else if (dto.CategoryId == 95)
+        //    { qry = qry.Where(q => q.FullCode.StartsWith("00103")); _grps = qry.ToList(); }
 
-            else
-            {
-                
-                foreach (var x in dto.BookGroups)
-                {
-                    var qry2 = from q in context.JobGroups
-                               select q;
-                    if (x.code == "-1")
-                    {
-                        //var grps = this.context.JobGroups.Where(q => q.FullCode.StartsWith(x)).ToList();
-                        var grps =  context.JobGroups.ToList();
-                        _grps = _grps.Concat(grps).ToList();
-                    }
-                    else
-                    {
-                        qry = qry.Where(q => q.FullCode.StartsWith(x.code));
-                        var grps = qry.ToList();
-                        _grps = _grps.Concat(grps).ToList();
+        //    else
+        //    {
 
-                        if (!string.IsNullOrEmpty(x.code2))
-                        {
-                            _grps = _grps.Concat(this.context.JobGroups.Where(w => w.FullCode == x.code2)).ToList();
-                        }
+        //        foreach (var x in dto.BookGroups)
+        //        {
+        //            var qry2 = from q in context.JobGroups
+        //                       select q;
+        //            if (x.code == "-1")
+        //            {
+        //                //var grps = this.context.JobGroups.Where(q => q.FullCode.StartsWith(x)).ToList();
+        //                var grps =  context.JobGroups.ToList();
+        //                _grps = _grps.Concat(grps).ToList();
+        //            }
+        //            else
+        //            {
+        //                qry = qry.Where(q => q.FullCode.StartsWith(x.code));
+        //                var grps = qry.ToList();
+        //                _grps = _grps.Concat(grps).ToList();
 
-                    }
-                }
-            }
+        //                if (!string.IsNullOrEmpty(x.code2))
+        //                {
+        //                    _grps = _grps.Concat(this.context.JobGroups.Where(w => w.FullCode == x.code2)).ToList();
+        //                }
 
-            foreach (var x in _grps)
-                this.context.BookRelatedGroups.Add(new Models.BookRelatedGroup()
-                {
-                    Book = entity,
-                    GroupId = x.Id,
-                    TypeId = null,// x.TypeId,
+        //            }
+        //        }
+        //    }
 
-                });
+        //    foreach (var x in _grps)
+        //        this.context.BookRelatedGroups.Add(new Models.BookRelatedGroup()
+        //        {
+        //            Book = entity,
+        //            GroupId = x.Id,
+        //            TypeId = null,// x.TypeId,
 
-            await context.SaveChangesAsync();
+        //        });
 
-            dto.Id = entity.Id;
-            return Ok(dto);
-        }
+        //    await context.SaveChangesAsync();
+
+        //    dto.Id = entity.Id;
+        //    return Ok(dto);
+        //}
 
 
         //////end of cpntroller

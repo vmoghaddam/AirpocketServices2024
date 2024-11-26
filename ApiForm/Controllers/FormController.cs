@@ -37,9 +37,13 @@ namespace ApiForm.Controllers
 
         [Route("api/vacation/save")]
         [AcceptVerbs("POST")]
-        public IHttpActionResult SaveVacation(VacationFormViewModel log)
+        public  IHttpActionResult SaveVacation(VacationFormViewModel log)
         {
             ppa_entities context = new ppa_entities();
+
+            var requester= context.ViewProfiles.Where(q=>q.Id==log.Id).FirstOrDefault();
+            
+
             var form = new FormVacation()
             {
                 UserId = log.UserId,
@@ -50,6 +54,16 @@ namespace ApiForm.Controllers
                 Reason = log.Reason,
                 Remark = log.Remark,
             };
+            var cockpit_grps = new List<string>() {"TRE","TRI","LTC","NC","P1","P2" };
+            //4811
+            if (cockpit_grps.IndexOf(requester.JobGroup)!=-1)
+                form.ResponsibleId = 4758;
+            else
+                form.ResponsibleId = 4811;
+
+
+
+
             context.FormVacations.Add(form);
             context.SaveChanges();
             var view = context.FormVacations.Where(q => q.Id == form.Id).FirstOrDefault();
@@ -99,6 +113,9 @@ namespace ApiForm.Controllers
             var forms = context.ViewFormVacations.Where(q => q.UserId == id).OrderByDescending(q => q.DateCreate).ToList();
             return Ok(forms);
         }
+
+
+
         [Route("api/vacation/forms/all")]
         [AcceptVerbs("GET")]
         public IHttpActionResult GetVacationFormsAll()
@@ -107,6 +124,18 @@ namespace ApiForm.Controllers
             var forms = context.ViewFormVacations.OrderByDescending(q => q.DateCreate).ToList();
             return Ok(forms);
         }
+
+       //2024-11-26
+        [Route("api/vacation/forms/responsible/all/{id}")]
+        [AcceptVerbs("GET")]
+        public IHttpActionResult GetVacationFormsResponsibleAll(int id)
+        {
+            ppa_entities context = new ppa_entities();
+            var forms = context.ViewFormVacations.Where(q=>q.ResponsibleId==id).OrderByDescending(q => q.DateCreate).ToList();
+            return Ok(forms);
+        }
+
+
         [Route("api/vacation/forms/new")]
         [AcceptVerbs("GET")]
         public IHttpActionResult GetVacationFormsNew()
@@ -130,6 +159,64 @@ namespace ApiForm.Controllers
             ppa_entities context = new ppa_entities();
             var forms = context.ViewFormVacations.Where(q => q.Status == "Rejected").OrderByDescending(q => q.DateCreate).ToList();
             return Ok(forms);
+        }
+
+        public class request_visit_dto
+        {
+            public int employee_id { get; set; }
+            public int form_id { get; set; }
+        }
+        //2024-11-26
+        [Route("api/request/visit")]
+        [AcceptVerbs("POST")]
+        public IHttpActionResult VisitRequest(request_visit_dto dto)
+        {
+            ppa_entities context = new ppa_entities();
+
+            var request  = context.FormVacations.Where(q => q.Id == dto.form_id).FirstOrDefault();
+           
+            if (request == null)
+                return Ok(-1);
+            if (request.ResponsibleId != dto.employee_id)
+                return Ok(-2);
+            request.ResponsibleDateVisit=DateTime.Now;
+ 
+            context.SaveChanges();
+            
+            return Ok(dto.form_id);
+        }
+
+
+        public class request_action_dto
+        {
+            public int employee_id { get; set; }
+            public int form_id { get; set; }
+            /// <summary>
+            /// 1: approved 0:rejected
+            /// </summary>
+            public int action_id { get; set; }
+
+            public string remark { get; set; }
+        }
+        //2024-11-26
+        [Route("api/request/action")]
+        [AcceptVerbs("POST")]
+        public IHttpActionResult ActionRequest(request_action_dto dto)
+        {
+            ppa_entities context = new ppa_entities();
+
+            var request = context.FormVacations.Where(q => q.Id == dto.form_id).FirstOrDefault();
+            if (request == null)
+                return Ok(-1);
+            if (request.ResponsibleId != dto.employee_id)
+                return Ok(-2);
+            request.ResponsibleActionDate = DateTime.Now;
+            request.ResponsibleActionId= dto.action_id;
+            request.ResponsibleRemark = dto.remark;
+
+            context.SaveChanges();
+
+            return Ok(dto.form_id);
         }
 
 

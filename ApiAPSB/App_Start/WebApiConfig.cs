@@ -13,12 +13,13 @@ namespace ApiAPSB
             // Web API configuration and services
 
             // Web API routes
-            var cors = new EnableCorsAttribute(
-       origins: "https://ava.skybag.app",
-       headers: "Authorization, Content-Type",
-       methods: "*"
-   );
-            config.EnableCors(cors);
+            //         var cors = new EnableCorsAttribute(
+            //    origins: "https://ava.skybag.app",
+            //    headers: "Authorization, Content-Type",
+            //    methods: "*"
+            //);
+            //         config.EnableCors(cors);
+            config.EnableCors();
 
             config.MapHttpAttributeRoutes();
 
