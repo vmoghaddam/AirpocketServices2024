@@ -1947,6 +1947,40 @@
           <Property Name="mobile2" Type="varchar" MaxLength="255" />
           <Property Name="email2" Type="varchar" MaxLength="255" />
         </EntityType>
+        <EntityType Name="QAFollowingUp">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Type" Type="int" />
+          <Property Name="EntityId" Type="int" />
+          <Property Name="ReferrerId" Type="int" />
+          <Property Name="ReferredId" Type="int" />
+          <Property Name="ReviewResult" Type="int" />
+          <Property Name="Comment" Type="nvarchar(max)" />
+          <Property Name="DateStatus" Type="datetime" />
+          <Property Name="ParentId" Type="int" />
+          <Property Name="DeadLine" Type="datetime" />
+          <Property Name="Priority" Type="int" />
+          <Property Name="DateVisit" Type="datetime" />
+          <Property Name="ReceiverDateVisit" Type="datetime" />
+          <Property Name="DateNotified" Type="datetime" />
+          <Property Name="NotificationCount" Type="int" />
+          <Property Name="SMS" Type="nvarchar" MaxLength="2000" />
+          <Property Name="SMSRefId" Type="int" />
+        </EntityType>
+        <EntityType Name="QAResponsibilties">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Type" Type="int" Nullable="false" />
+          <Property Name="ReceiverEmployeeId" Type="int" />
+          <Property Name="ConfirmationEmployeeId" Type="int" />
+          <Property Name="EmployeeId" Type="int" />
+          <Property Name="Remarks" Type="nvarchar(max)" />
+          <Property Name="IsResponsible" Type="bit" />
+        </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.AppCrewFlight' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="AppCrewFlight">
@@ -6081,6 +6115,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySet Name="PersonCustomer" EntityType="Self.PersonCustomer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="qa_notification_history" EntityType="Self.qa_notification_history" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="qa_notification_receiver" EntityType="Self.qa_notification_receiver" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="QAFollowingUp" EntityType="Self.QAFollowingUp" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="QAResponsibilties" EntityType="Self.QAResponsibilties" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AppCrewFlight" EntityType="Self.AppCrewFlight" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [AppCrewFlight].[FDPId] AS [FDPId], 
@@ -9817,6 +9853,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySet Name="ViewEFBVoyageReasonAlls" EntityType="dbModel.ViewEFBVoyageReasonAll" />
           <EntitySet Name="ViewEFBVoyageReports" EntityType="dbModel.ViewEFBVoyageReport" />
           <EntitySet Name="ViewEFBVoyageReportsAlls" EntityType="dbModel.ViewEFBVoyageReportsAll" />
+          <EntitySet Name="QAFollowingUps" EntityType="dbModel.QAFollowingUp" />
+          <EntitySet Name="QAResponsibilties" EntityType="dbModel.QAResponsibilty" />
           </EntityContainer>
         <EntityType Name="AppCrewFlight">
           <Key>
@@ -15824,6 +15862,40 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="NID" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="Mobile" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="QAFollowingUp">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Type" Type="Int32" />
+          <Property Name="EntityId" Type="Int32" />
+          <Property Name="ReferrerId" Type="Int32" />
+          <Property Name="ReferredId" Type="Int32" />
+          <Property Name="ReviewResult" Type="Int32" />
+          <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DateStatus" Type="DateTime" Precision="3" />
+          <Property Name="ParentId" Type="Int32" />
+          <Property Name="DeadLine" Type="DateTime" Precision="3" />
+          <Property Name="Priority" Type="Int32" />
+          <Property Name="DateVisit" Type="DateTime" Precision="3" />
+          <Property Name="ReceiverDateVisit" Type="DateTime" Precision="3" />
+          <Property Name="DateNotified" Type="DateTime" Precision="3" />
+          <Property Name="NotificationCount" Type="Int32" />
+          <Property Name="SMS" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="SMSRefId" Type="Int32" />
+        </EntityType>
+        <EntityType Name="QAResponsibilty">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Type" Type="Int32" Nullable="false" />
+          <Property Name="ReceiverEmployeeId" Type="Int32" />
+          <Property Name="ConfirmationEmployeeId" Type="Int32" />
+          <Property Name="EmployeeId" Type="Int32" />
+          <Property Name="Remarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsResponsible" Type="Boolean" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -21362,6 +21434,42 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
                 <ScalarProperty Name="AircraftType" ColumnName="AircraftType" />
                 <ScalarProperty Name="FlightDate" ColumnName="FlightDate" />
                 <ScalarProperty Name="FlightNumber" ColumnName="FlightNumber" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="QAFollowingUps">
+            <EntityTypeMapping TypeName="dbModel.QAFollowingUp">
+              <MappingFragment StoreEntitySet="QAFollowingUp">
+                <ScalarProperty Name="SMSRefId" ColumnName="SMSRefId" />
+                <ScalarProperty Name="SMS" ColumnName="SMS" />
+                <ScalarProperty Name="NotificationCount" ColumnName="NotificationCount" />
+                <ScalarProperty Name="DateNotified" ColumnName="DateNotified" />
+                <ScalarProperty Name="ReceiverDateVisit" ColumnName="ReceiverDateVisit" />
+                <ScalarProperty Name="DateVisit" ColumnName="DateVisit" />
+                <ScalarProperty Name="Priority" ColumnName="Priority" />
+                <ScalarProperty Name="DeadLine" ColumnName="DeadLine" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="DateStatus" ColumnName="DateStatus" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="ReviewResult" ColumnName="ReviewResult" />
+                <ScalarProperty Name="ReferredId" ColumnName="ReferredId" />
+                <ScalarProperty Name="ReferrerId" ColumnName="ReferrerId" />
+                <ScalarProperty Name="EntityId" ColumnName="EntityId" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="QAResponsibilties">
+            <EntityTypeMapping TypeName="dbModel.QAResponsibilty">
+              <MappingFragment StoreEntitySet="QAResponsibilties">
+                <ScalarProperty Name="IsResponsible" ColumnName="IsResponsible" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="ConfirmationEmployeeId" ColumnName="ConfirmationEmployeeId" />
+                <ScalarProperty Name="ReceiverEmployeeId" ColumnName="ReceiverEmployeeId" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

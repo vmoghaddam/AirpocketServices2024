@@ -1242,6 +1242,86 @@ namespace ApiAPSB.Controllers
             return Ok(true);
         }
 
+        [HttpPost]
+        [Route("api/save/followup")]
+        public async Task<DataResponse> SaveFollowUp(dynamic dto)
+        {
+
+            try
+            {
+                //int Id = dto.Id;
+                //var entity = context.QAFollowingUps.SingleOrDefault(q => q.Id == Id);
+                //if (entity == null)
+                //{
+                //    entity = new QAFollowingUp();
+                //    context.QAFollowingUps.Add(entity);
+                //}
+                var context = new dbEntities();
+                int Type = dto.Type;
+                var respEmployee = context.QAResponsibilties.Where(q => q.Type == Type && q.IsResponsible == true).ToList();
+
+                foreach (var x in respEmployee)
+                {
+
+                    var entity = new QAFollowingUp();
+                    context.QAFollowingUps.Add(entity);
+
+                    entity.EntityId = dto.EntityId;
+                    entity.DateStatus = DateTime.Now;
+                    entity.Type = dto.Type;
+                    entity.ReferredId = x.ReceiverEmployeeId;
+                    entity.ReferrerId = null;
+                    entity.ReviewResult = 2;
+                    entity.Priority = dto.Priority;
+                    entity.DeadLine = dto.DeadLine;
+                };
+
+
+                context.SaveChanges();
+                return new DataResponse()
+                {
+                    Data = dto,
+                    IsSuccess = true
+                };
+            }
+            catch (Exception ex)
+            {
+                return new DataResponse()
+                {
+                    Data = ex,
+                    IsSuccess = false
+                };
+            }
+        }
+        [Route("api/qa/feedback/first/{no}/{eid}")]
+        [AcceptVerbs("GET")]
+        public IHttpActionResult GetQAFeedbackFirst(string no, string eid)
+        {
+            var _no = no;
+
+            if (eid != "-1" && _no == "-1")
+            {
+                try
+                {
+                    var _eid = Convert.ToInt32(eid);
+                    var context = new dbEntities();
+                    _no = context.ViewProfiles.Where(q => q.Id == _eid).FirstOrDefault().Mobile;
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+            }
+            var msg = "ضمن سپاس از ارسال گزارش، پس از بررسی و اقدامات انجام شده، حصول نتیجه در صورت لزوم به شما ابلاغ خواهد شد. با تشکر، مدیریت ایمنی و تضمین کیفیت هواپیمایی آوا";
+            MelliPayamac m = new MelliPayamac();
+            var smsResult = m.send(_no, null, msg)[0];
+            var refids = new List<Int64>() { smsResult };
+            System.Threading.Thread.Sleep(5000);
+            //var status = m.getStatus(refids);
+
+            return Ok(new { refids, _no, no, eid });
+        }
 
 
     }

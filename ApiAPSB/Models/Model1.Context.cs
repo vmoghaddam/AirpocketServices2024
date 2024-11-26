@@ -87,5 +87,7 @@ namespace ApiAPSB.Models
         public virtual DbSet<ViewEFBVoyageReasonAll> ViewEFBVoyageReasonAlls { get; set; }
         public virtual DbSet<ViewEFBVoyageReport> ViewEFBVoyageReports { get; set; }
         public virtual DbSet<ViewEFBVoyageReportsAll> ViewEFBVoyageReportsAlls { get; set; }
+        public virtual DbSet<QAFollowingUp> QAFollowingUps { get; set; }
+        public virtual DbSet<QAResponsibilty> QAResponsibilties { get; set; }
     }
 }
