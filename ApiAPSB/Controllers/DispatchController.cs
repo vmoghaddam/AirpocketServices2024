@@ -2848,6 +2848,7 @@ namespace ApiAPSB.Controllers
 
                 context.SaveChanges();
                 //var rdr = drs.Where(q => q.FlightId == flight_id).FirstOrDefault();
+                send_vr_notification(asr,employee, appleg);
 
                 var result = new { IsSuccess = true, Data = new { asr.Id, asr.FlightId, asr.PICId, asr.JLSignedBy, asr.JLDatePICApproved, asr.PIC } };
                 return Ok(result);
@@ -2888,7 +2889,7 @@ namespace ApiAPSB.Controllers
                     //prts.Add("Dear ");
                     prts.Add("Dear " + asr.PIC);
                     prts.Add("Please click on the below link to see details.");
-                    prts.Add("https://ava.reportqa.airpocket.app/frmreportview.aspx?type=17&fid=" + asr.FlightId);
+                    prts.Add("https://ava.reportqa.airpocket.app/frmreportview.aspx?type=19&fid=" + asr.FlightId);
                     prts.Add("Date: " + ((DateTime)flight.STDLocal).ToString("yyyy-MM-dd"));
                     prts.Add("Route: " + flight.FromAirportIATA + "-" + flight.ToAirportIATA);
                     prts.Add("Register: " + flight.Register);
@@ -2912,7 +2913,7 @@ namespace ApiAPSB.Controllers
                         prts2.Add("Dear " + rec.rec_name);
                         prts2.Add("Please click on the below link to see details.");
 
-                        prts2.Add("https://ava.reportqa.airpocket.app/frmreportview.aspx?type=17&fid=" + asr.FlightId);
+                        prts2.Add("https://ava.reportqa.airpocket.app/frmreportview.aspx?type=19&fid=" + asr.FlightId);
                         prts2.Add("Date: " + ((DateTime)flight.STDLocal).ToString("yyyy-MM-dd"));
                         prts2.Add("Route: " + flight.FromAirportIATA + "-" + flight.ToAirportIATA);
                         prts2.Add("Register: EP-" + flight.Register);
