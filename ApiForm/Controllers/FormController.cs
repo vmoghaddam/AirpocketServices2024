@@ -41,7 +41,7 @@ namespace ApiForm.Controllers
         {
             ppa_entities context = new ppa_entities();
 
-            var requester= context.ViewProfiles.Where(q=>q.Id==log.Id).FirstOrDefault();
+            var requester= context.ViewProfiles.Where(q=>q.PersonId==log.UserId).FirstOrDefault();
             
 
             var form = new FormVacation()
