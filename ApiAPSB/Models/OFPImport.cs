@@ -101,6 +101,20 @@ namespace ApiAPSB.Models
         public string ELDS { get; set; }
         public string ELAL { get; set; }
         public string ELBL { get; set; }
+        public Nullable<int> ectm_tat { get; set; }
+        public Nullable<double> ectm_mach { get; set; }
+        public Nullable<int> ectm_pressure_alt { get; set; }
+        public Nullable<int> ectm_computed_airspeed { get; set; }
+        public Nullable<int> ectm_eng1_egt { get; set; }
+        public Nullable<int> ectm_eng1_n1 { get; set; }
+        public Nullable<int> ectm_eng1_n2 { get; set; }
+        public Nullable<double> ectm_eng1_epr { get; set; }
+        public Nullable<int> ectm_eng1_fuel_flow { get; set; }
+        public Nullable<int> ectm_eng2_egt { get; set; }
+        public Nullable<int> ectm_eng2_n1 { get; set; }
+        public Nullable<int> ectm_eng2_n2 { get; set; }
+        public Nullable<double> ectm_eng2_epr { get; set; }
+        public Nullable<int> ectm_eng2_fuel_flow { get; set; }
     
         public virtual FlightInformation FlightInformation { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

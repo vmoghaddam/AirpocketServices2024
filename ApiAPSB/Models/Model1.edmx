@@ -933,6 +933,13 @@
           <Property Name="DateStatus" Type="datetime2" Precision="7" />
           <Property Name="Status" Type="varchar" MaxLength="255" />
           <Property Name="OperatorId" Type="int" />
+          <Property Name="ResponsibleId" Type="int" />
+          <Property Name="ResponsibleDateVisit" Type="datetime2" Precision="7" />
+          <Property Name="ResponsibleActionId" Type="int" />
+          <Property Name="ResponsibleActionDate" Type="datetime2" Precision="7" />
+          <Property Name="ResponsibleRemark" Type="nvarchar" MaxLength="2000" />
+          <Property Name="FDPId" Type="int" />
+          <Property Name="RosterException" Type="nvarchar" MaxLength="2000" />
         </EntityType>
         <EntityType Name="geo_apt_sunrise">
           <Key>
@@ -1338,7 +1345,7 @@
           <Property Name="VDT" Type="varchar" MaxLength="2000" />
           <Property Name="MAXSHEER" Type="varchar" MaxLength="2000" />
           <Property Name="MINDIVFUEL" Type="varchar" MaxLength="2000" />
-          <Property Name="WDTMP" Type="varchar" MaxLength="4000" />
+          <Property Name="WDTMP" Type="varchar" MaxLength="5000" />
           <Property Name="DID" Type="varchar" MaxLength="500" />
           <Property Name="WDCLB" Type="varchar" MaxLength="4000" />
           <Property Name="WDDES" Type="varchar" MaxLength="4000" />
@@ -1359,6 +1366,20 @@
           <Property Name="ELDS" Type="varchar" MaxLength="255" />
           <Property Name="ELAL" Type="varchar" MaxLength="255" />
           <Property Name="ELBL" Type="varchar" MaxLength="255" />
+          <Property Name="ectm_tat" Type="int" />
+          <Property Name="ectm_mach" Type="float" />
+          <Property Name="ectm_pressure_alt" Type="int" />
+          <Property Name="ectm_computed_airspeed" Type="int" />
+          <Property Name="ectm_eng1_egt" Type="int" />
+          <Property Name="ectm_eng1_n1" Type="int" />
+          <Property Name="ectm_eng1_n2" Type="int" />
+          <Property Name="ectm_eng1_epr" Type="float" />
+          <Property Name="ectm_eng1_fuel_flow" Type="int" />
+          <Property Name="ectm_eng2_egt" Type="int" />
+          <Property Name="ectm_eng2_n1" Type="int" />
+          <Property Name="ectm_eng2_n2" Type="int" />
+          <Property Name="ectm_eng2_epr" Type="float" />
+          <Property Name="ectm_eng2_fuel_flow" Type="int" />
         </EntityType>
         <EntityType Name="OFPImportProp">
           <Key>
@@ -9731,15 +9752,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySet Name="AppFDPRests" EntityType="dbModel.AppFDPRest" />
           <EntitySet Name="AppLegs" EntityType="dbModel.AppLeg" />
           <EntitySet Name="geo_apt_sunrise" EntityType="dbModel.geo_apt_sunrise" />
-          <EntitySet Name="OFPImports" EntityType="dbModel.OFPImport" />
-          <AssociationSet Name="fk_ofp_flt" Association="dbModel.fk_ofp_flt">
-            <End Role="FlightInformation" EntitySet="FlightInformations" />
-            <End Role="OFPImport" EntitySet="OFPImports" />
-          </AssociationSet>
-          <AssociationSet Name="fk_ofpp_ofp" Association="dbModel.fk_ofpp_ofp">
-            <End Role="OFPImport" EntitySet="OFPImports" />
-            <End Role="OFPImportProp" EntitySet="OFPImportProps" />
-          </AssociationSet>
           <EntitySet Name="People" EntityType="dbModel.Person" />
           <AssociationSet Name="FK_PERSONCUSTOMER_PERSON" Association="dbModel.FK_PERSONCUSTOMER_PERSON">
             <End Role="Person" EntitySet="People" />
@@ -9855,6 +9867,15 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySet Name="ViewEFBVoyageReportsAlls" EntityType="dbModel.ViewEFBVoyageReportsAll" />
           <EntitySet Name="QAFollowingUps" EntityType="dbModel.QAFollowingUp" />
           <EntitySet Name="QAResponsibilties" EntityType="dbModel.QAResponsibilty" />
+          <EntitySet Name="OFPImports" EntityType="dbModel.OFPImport" />
+          <AssociationSet Name="fk_ofp_flt" Association="dbModel.fk_ofp_flt">
+            <End Role="FlightInformation" EntitySet="FlightInformations" />
+            <End Role="OFPImport" EntitySet="OFPImports" />
+          </AssociationSet>
+          <AssociationSet Name="fk_ofpp_ofp" Association="dbModel.fk_ofpp_ofp">
+            <End Role="OFPImport" EntitySet="OFPImports" />
+            <End Role="OFPImportProp" EntitySet="OFPImportProps" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="AppCrewFlight">
           <Key>
@@ -10381,13 +10402,13 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="CCPreFlightCheckRemark" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
           <Property Name="FlightTypeOPS" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="AttForms" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="OFPImports" Relationship="dbModel.fk_ofp_flt" FromRole="FlightInformation" ToRole="OFPImport" />
           <Property Name="PaxMale" Type="Int32" />
           <Property Name="PaxFemale" Type="Int32" />
           <NavigationProperty Name="EFBVoyageReports" Relationship="dbModel.fk_vr_flt" FromRole="FlightInformation" ToRole="EFBVoyageReport" />
           <NavigationProperty Name="Airport" Relationship="dbModel.fk_flightinformation_fromairport" FromRole="FlightInformation" ToRole="Airport" />
           <NavigationProperty Name="Airport1" Relationship="dbModel.fk_flightinformation_toairport" FromRole="FlightInformation" ToRole="Airport" />
           <NavigationProperty Name="EFBASRs" Relationship="dbModel.fk_asr_flt" FromRole="FlightInformation" ToRole="EFBASR" />
+          <NavigationProperty Name="OFPImports" Relationship="dbModel.fk_ofp_flt" FromRole="FlightInformation" ToRole="OFPImport" />
         </EntityType>
         <Association Name="fk_fdpitem_flight">
           <End Type="dbModel.FlightInformation" Role="FlightInformation" Multiplicity="0..1">
@@ -11463,120 +11484,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="golden_hour" Type="DateTime" Precision="7" />
           <Property Name="day_length" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="OFPImport">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FileName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="FlightNo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="Origin" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="Destination" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="DateFlight" Type="DateTime" Precision="0" />
-          <Property Name="DateCreate" Type="DateTime" Precision="3" />
-          <Property Name="Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="User" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="TextOutput" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="FlightId" Type="Int32" />
-          <Property Name="DateUpdate" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="DateConfirmed" Type="DateTime" Precision="3" />
-          <Property Name="UserConfirmed" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="PICId" Type="Int32" />
-          <Property Name="JLDatePICApproved" Type="DateTime" Precision="3" />
-          <Property Name="JLSignedBy" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="PIC" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="FPFuel" Type="Decimal" Precision="18" Scale="4" />
-          <Property Name="FPTripFuel" Type="Decimal" Precision="18" Scale="4" />
-          <Property Name="MCI" Type="Decimal" Precision="18" Scale="4" />
-          <Property Name="FLL" Type="Decimal" Precision="18" Scale="4" />
-          <Property Name="DOW" Type="Decimal" Precision="18" Scale="4" />
-          <Property Name="Source" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="JPlan" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="JAPlan1" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="JAPlan2" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="JFuel" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="JCSTBL" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="JALDRF" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="JWTDRF" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="THM" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="UNT" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="CRW" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="RTM" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
-          <Property Name="RTA" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
-          <Property Name="RTB" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
-          <Property Name="RTT" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
-          <Property Name="PLD" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="EZFW" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="ETOW" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="ELDW" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="ETD" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="ETA" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="ALT1" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="ALT2" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="TALT1" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="TALT2" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="FuelALT1" Type="Int32" />
-          <Property Name="FuelALT2" Type="Int32" />
-          <Property Name="FuelTOF" Type="Int32" />
-          <Property Name="FuelTAXI" Type="Int32" />
-          <Property Name="FuelOFFBLOCK" Type="Int32" />
-          <Property Name="FuelCONT" Type="Int32" />
-          <Property Name="FuelMINTOF" Type="Int32" />
-          <Property Name="FuelFINALRES" Type="Int32" />
-          <Property Name="FPF" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
-          <Property Name="VDT" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
-          <Property Name="MAXSHEER" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
-          <Property Name="MINDIVFUEL" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
-          <Property Name="WDTMP" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
-          <Property Name="DID" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="WDCLB" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
-          <Property Name="WDDES" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
-          <Property Name="FuelExtra" Type="Int32" />
-          <Property Name="FuelETOPSADDNL" Type="Int32" />
-          <Property Name="FuelOPSEXTRA" Type="Int32" />
-          <Property Name="FuelTANKERING" Type="Int32" />
-          <Property Name="FuelTOTALFUEL" Type="Int32" />
-          <Property Name="FuelACTUALTANKERING" Type="Int32" />
-          <Property Name="DSPNAME" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="CM1" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="CM2" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="MSH" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="ATC" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="FlightInformation" Relationship="dbModel.fk_ofp_flt" FromRole="OFPImport" ToRole="FlightInformation" />
-          <NavigationProperty Name="OFPImportProps" Relationship="dbModel.fk_ofpp_ofp" FromRole="OFPImport" ToRole="OFPImportProp" />
-          <Property Name="MTOW" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="MLDW" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="ELDP" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="ELDS" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="ELAL" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="ELBL" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <Association Name="fk_ofp_flt">
-          <End Type="dbModel.FlightInformation" Role="FlightInformation" Multiplicity="0..1" />
-          <End Type="dbModel.OFPImport" Role="OFPImport" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="FlightInformation">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="OFPImport">
-              <PropertyRef Name="FlightId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="fk_ofpp_ofp">
-          <End Type="dbModel.OFPImport" Role="OFPImport" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="dbModel.OFPImportProp" Role="OFPImportProp" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="OFPImport">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="OFPImportProp">
-              <PropertyRef Name="OFPId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="Person">
           <Key>
             <PropertyRef Name="Id" />
@@ -15401,6 +15308,13 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="DateStatus" Type="DateTime" Precision="7" />
           <Property Name="Status" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="OperatorId" Type="Int32" />
+          <Property Name="ResponsibleId" Type="Int32" />
+          <Property Name="ResponsibleDateVisit" Type="DateTime" Precision="7" />
+          <Property Name="ResponsibleActionId" Type="Int32" />
+          <Property Name="ResponsibleActionDate" Type="DateTime" Precision="7" />
+          <Property Name="ResponsibleRemark" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="FDPId" Type="Int32" />
+          <Property Name="RosterException" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="journeylog_atl">
           <Key>
@@ -15896,6 +15810,134 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="Remarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="IsResponsible" Type="Boolean" />
         </EntityType>
+        <EntityType Name="OFPImport">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FileName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="FlightNo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Origin" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Destination" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="DateFlight" Type="DateTime" Precision="0" />
+          <Property Name="DateCreate" Type="DateTime" Precision="3" />
+          <Property Name="Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="User" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="TextOutput" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="FlightId" Type="Int32" />
+          <Property Name="DateUpdate" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="DateConfirmed" Type="DateTime" Precision="3" />
+          <Property Name="UserConfirmed" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="PICId" Type="Int32" />
+          <Property Name="JLDatePICApproved" Type="DateTime" Precision="3" />
+          <Property Name="JLSignedBy" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="PIC" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="FPFuel" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="FPTripFuel" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="MCI" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="FLL" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="DOW" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="Source" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="JPlan" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="JAPlan1" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="JAPlan2" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="JFuel" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="JCSTBL" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="JALDRF" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="JWTDRF" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="THM" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="UNT" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="CRW" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="RTM" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="RTA" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="RTB" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="RTT" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="PLD" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="EZFW" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ETOW" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ELDW" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ETD" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ETA" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ALT1" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ALT2" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="TALT1" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="TALT2" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="FuelALT1" Type="Int32" />
+          <Property Name="FuelALT2" Type="Int32" />
+          <Property Name="FuelTOF" Type="Int32" />
+          <Property Name="FuelTAXI" Type="Int32" />
+          <Property Name="FuelOFFBLOCK" Type="Int32" />
+          <Property Name="FuelCONT" Type="Int32" />
+          <Property Name="FuelMINTOF" Type="Int32" />
+          <Property Name="FuelFINALRES" Type="Int32" />
+          <Property Name="FPF" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="VDT" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="MAXSHEER" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="MINDIVFUEL" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="WDTMP" Type="String" MaxLength="5000" FixedLength="false" Unicode="false" />
+          <Property Name="DID" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="WDCLB" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Name="WDDES" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Name="FuelExtra" Type="Int32" />
+          <Property Name="FuelETOPSADDNL" Type="Int32" />
+          <Property Name="FuelOPSEXTRA" Type="Int32" />
+          <Property Name="FuelTANKERING" Type="Int32" />
+          <Property Name="FuelTOTALFUEL" Type="Int32" />
+          <Property Name="FuelACTUALTANKERING" Type="Int32" />
+          <Property Name="DSPNAME" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="CM1" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="CM2" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="MSH" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ATC" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Name="MTOW" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="MLDW" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ELDP" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ELDS" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ELAL" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ELBL" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ectm_tat" Type="Int32" />
+          <Property Name="ectm_mach" Type="Double" />
+          <Property Name="ectm_pressure_alt" Type="Int32" />
+          <Property Name="ectm_computed_airspeed" Type="Int32" />
+          <Property Name="ectm_eng1_egt" Type="Int32" />
+          <Property Name="ectm_eng1_n1" Type="Int32" />
+          <Property Name="ectm_eng1_n2" Type="Int32" />
+          <Property Name="ectm_eng1_epr" Type="Double" />
+          <Property Name="ectm_eng1_fuel_flow" Type="Int32" />
+          <Property Name="ectm_eng2_egt" Type="Int32" />
+          <Property Name="ectm_eng2_n1" Type="Int32" />
+          <Property Name="ectm_eng2_n2" Type="Int32" />
+          <Property Name="ectm_eng2_epr" Type="Double" />
+          <Property Name="ectm_eng2_fuel_flow" Type="Int32" />
+          <NavigationProperty Name="FlightInformation" Relationship="dbModel.fk_ofp_flt" FromRole="OFPImport" ToRole="FlightInformation" />
+          <NavigationProperty Name="OFPImportProps" Relationship="dbModel.fk_ofpp_ofp" FromRole="OFPImport" ToRole="OFPImportProp" />
+        </EntityType>
+        <Association Name="fk_ofp_flt">
+          <End Type="dbModel.FlightInformation" Role="FlightInformation" Multiplicity="0..1" />
+          <End Type="dbModel.OFPImport" Role="OFPImport" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FlightInformation">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="OFPImport">
+              <PropertyRef Name="FlightId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_ofpp_ofp">
+          <End Type="dbModel.OFPImport" Role="OFPImport" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="dbModel.OFPImportProp" Role="OFPImportProp" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OFPImport">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OFPImportProp">
+              <PropertyRef Name="OFPId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -17419,93 +17461,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
                 <ScalarProperty Name="iata" ColumnName="iata" />
                 <ScalarProperty Name="airport_id" ColumnName="airport_id" />
                 <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="OFPImports">
-            <EntityTypeMapping TypeName="dbModel.OFPImport">
-              <MappingFragment StoreEntitySet="OFPImport">
-                <ScalarProperty Name="ELBL" ColumnName="ELBL" />
-                <ScalarProperty Name="ELAL" ColumnName="ELAL" />
-                <ScalarProperty Name="ELDS" ColumnName="ELDS" />
-                <ScalarProperty Name="ELDP" ColumnName="ELDP" />
-                <ScalarProperty Name="MLDW" ColumnName="MLDW" />
-                <ScalarProperty Name="MTOW" ColumnName="MTOW" />
-                <ScalarProperty Name="ATC" ColumnName="ATC" />
-                <ScalarProperty Name="MSH" ColumnName="MSH" />
-                <ScalarProperty Name="CM2" ColumnName="CM2" />
-                <ScalarProperty Name="CM1" ColumnName="CM1" />
-                <ScalarProperty Name="DSPNAME" ColumnName="DSPNAME" />
-                <ScalarProperty Name="FuelACTUALTANKERING" ColumnName="FuelACTUALTANKERING" />
-                <ScalarProperty Name="FuelTOTALFUEL" ColumnName="FuelTOTALFUEL" />
-                <ScalarProperty Name="FuelTANKERING" ColumnName="FuelTANKERING" />
-                <ScalarProperty Name="FuelOPSEXTRA" ColumnName="FuelOPSEXTRA" />
-                <ScalarProperty Name="FuelETOPSADDNL" ColumnName="FuelETOPSADDNL" />
-                <ScalarProperty Name="FuelExtra" ColumnName="FuelExtra" />
-                <ScalarProperty Name="WDDES" ColumnName="WDDES" />
-                <ScalarProperty Name="WDCLB" ColumnName="WDCLB" />
-                <ScalarProperty Name="DID" ColumnName="DID" />
-                <ScalarProperty Name="WDTMP" ColumnName="WDTMP" />
-                <ScalarProperty Name="MINDIVFUEL" ColumnName="MINDIVFUEL" />
-                <ScalarProperty Name="MAXSHEER" ColumnName="MAXSHEER" />
-                <ScalarProperty Name="VDT" ColumnName="VDT" />
-                <ScalarProperty Name="FPF" ColumnName="FPF" />
-                <ScalarProperty Name="FuelFINALRES" ColumnName="FuelFINALRES" />
-                <ScalarProperty Name="FuelMINTOF" ColumnName="FuelMINTOF" />
-                <ScalarProperty Name="FuelCONT" ColumnName="FuelCONT" />
-                <ScalarProperty Name="FuelOFFBLOCK" ColumnName="FuelOFFBLOCK" />
-                <ScalarProperty Name="FuelTAXI" ColumnName="FuelTAXI" />
-                <ScalarProperty Name="FuelTOF" ColumnName="FuelTOF" />
-                <ScalarProperty Name="FuelALT2" ColumnName="FuelALT2" />
-                <ScalarProperty Name="FuelALT1" ColumnName="FuelALT1" />
-                <ScalarProperty Name="TALT2" ColumnName="TALT2" />
-                <ScalarProperty Name="TALT1" ColumnName="TALT1" />
-                <ScalarProperty Name="ALT2" ColumnName="ALT2" />
-                <ScalarProperty Name="ALT1" ColumnName="ALT1" />
-                <ScalarProperty Name="ETA" ColumnName="ETA" />
-                <ScalarProperty Name="ETD" ColumnName="ETD" />
-                <ScalarProperty Name="ELDW" ColumnName="ELDW" />
-                <ScalarProperty Name="ETOW" ColumnName="ETOW" />
-                <ScalarProperty Name="EZFW" ColumnName="EZFW" />
-                <ScalarProperty Name="PLD" ColumnName="PLD" />
-                <ScalarProperty Name="RTT" ColumnName="RTT" />
-                <ScalarProperty Name="RTB" ColumnName="RTB" />
-                <ScalarProperty Name="RTA" ColumnName="RTA" />
-                <ScalarProperty Name="RTM" ColumnName="RTM" />
-                <ScalarProperty Name="CRW" ColumnName="CRW" />
-                <ScalarProperty Name="UNT" ColumnName="UNT" />
-                <ScalarProperty Name="THM" ColumnName="THM" />
-                <ScalarProperty Name="JWTDRF" ColumnName="JWTDRF" />
-                <ScalarProperty Name="JALDRF" ColumnName="JALDRF" />
-                <ScalarProperty Name="JCSTBL" ColumnName="JCSTBL" />
-                <ScalarProperty Name="JFuel" ColumnName="JFuel" />
-                <ScalarProperty Name="JAPlan2" ColumnName="JAPlan2" />
-                <ScalarProperty Name="JAPlan1" ColumnName="JAPlan1" />
-                <ScalarProperty Name="JPlan" ColumnName="JPlan" />
-                <ScalarProperty Name="Source" ColumnName="Source" />
-                <ScalarProperty Name="DOW" ColumnName="DOW" />
-                <ScalarProperty Name="FLL" ColumnName="FLL" />
-                <ScalarProperty Name="MCI" ColumnName="MCI" />
-                <ScalarProperty Name="FPTripFuel" ColumnName="FPTripFuel" />
-                <ScalarProperty Name="FPFuel" ColumnName="FPFuel" />
-                <ScalarProperty Name="PIC" ColumnName="PIC" />
-                <ScalarProperty Name="JLSignedBy" ColumnName="JLSignedBy" />
-                <ScalarProperty Name="JLDatePICApproved" ColumnName="JLDatePICApproved" />
-                <ScalarProperty Name="PICId" ColumnName="PICId" />
-                <ScalarProperty Name="UserConfirmed" ColumnName="UserConfirmed" />
-                <ScalarProperty Name="DateConfirmed" ColumnName="DateConfirmed" />
-                <ScalarProperty Name="DateUpdate" ColumnName="DateUpdate" />
-                <ScalarProperty Name="FlightId" ColumnName="FlightId" />
-                <ScalarProperty Name="TextOutput" ColumnName="TextOutput" />
-                <ScalarProperty Name="User" ColumnName="User" />
-                <ScalarProperty Name="Text" ColumnName="Text" />
-                <ScalarProperty Name="DateCreate" ColumnName="DateCreate" />
-                <ScalarProperty Name="DateFlight" ColumnName="DateFlight" />
-                <ScalarProperty Name="Destination" ColumnName="Destination" />
-                <ScalarProperty Name="Origin" ColumnName="Origin" />
-                <ScalarProperty Name="FlightNo" ColumnName="FlightNo" />
-                <ScalarProperty Name="FileName" ColumnName="FileName" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -20991,6 +20946,13 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySetMapping Name="FormVacations">
             <EntityTypeMapping TypeName="dbModel.FormVacation">
               <MappingFragment StoreEntitySet="FormVacation">
+                <ScalarProperty Name="RosterException" ColumnName="RosterException" />
+                <ScalarProperty Name="FDPId" ColumnName="FDPId" />
+                <ScalarProperty Name="ResponsibleRemark" ColumnName="ResponsibleRemark" />
+                <ScalarProperty Name="ResponsibleActionDate" ColumnName="ResponsibleActionDate" />
+                <ScalarProperty Name="ResponsibleActionId" ColumnName="ResponsibleActionId" />
+                <ScalarProperty Name="ResponsibleDateVisit" ColumnName="ResponsibleDateVisit" />
+                <ScalarProperty Name="ResponsibleId" ColumnName="ResponsibleId" />
                 <ScalarProperty Name="OperatorId" ColumnName="OperatorId" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="DateStatus" ColumnName="DateStatus" />
@@ -21470,6 +21432,107 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
                 <ScalarProperty Name="ConfirmationEmployeeId" ColumnName="ConfirmationEmployeeId" />
                 <ScalarProperty Name="ReceiverEmployeeId" ColumnName="ReceiverEmployeeId" />
                 <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OFPImports">
+            <EntityTypeMapping TypeName="dbModel.OFPImport">
+              <MappingFragment StoreEntitySet="OFPImport">
+                <ScalarProperty Name="ectm_eng2_fuel_flow" ColumnName="ectm_eng2_fuel_flow" />
+                <ScalarProperty Name="ectm_eng2_epr" ColumnName="ectm_eng2_epr" />
+                <ScalarProperty Name="ectm_eng2_n2" ColumnName="ectm_eng2_n2" />
+                <ScalarProperty Name="ectm_eng2_n1" ColumnName="ectm_eng2_n1" />
+                <ScalarProperty Name="ectm_eng2_egt" ColumnName="ectm_eng2_egt" />
+                <ScalarProperty Name="ectm_eng1_fuel_flow" ColumnName="ectm_eng1_fuel_flow" />
+                <ScalarProperty Name="ectm_eng1_epr" ColumnName="ectm_eng1_epr" />
+                <ScalarProperty Name="ectm_eng1_n2" ColumnName="ectm_eng1_n2" />
+                <ScalarProperty Name="ectm_eng1_n1" ColumnName="ectm_eng1_n1" />
+                <ScalarProperty Name="ectm_eng1_egt" ColumnName="ectm_eng1_egt" />
+                <ScalarProperty Name="ectm_computed_airspeed" ColumnName="ectm_computed_airspeed" />
+                <ScalarProperty Name="ectm_pressure_alt" ColumnName="ectm_pressure_alt" />
+                <ScalarProperty Name="ectm_mach" ColumnName="ectm_mach" />
+                <ScalarProperty Name="ectm_tat" ColumnName="ectm_tat" />
+                <ScalarProperty Name="ELBL" ColumnName="ELBL" />
+                <ScalarProperty Name="ELAL" ColumnName="ELAL" />
+                <ScalarProperty Name="ELDS" ColumnName="ELDS" />
+                <ScalarProperty Name="ELDP" ColumnName="ELDP" />
+                <ScalarProperty Name="MLDW" ColumnName="MLDW" />
+                <ScalarProperty Name="MTOW" ColumnName="MTOW" />
+                <ScalarProperty Name="ATC" ColumnName="ATC" />
+                <ScalarProperty Name="MSH" ColumnName="MSH" />
+                <ScalarProperty Name="CM2" ColumnName="CM2" />
+                <ScalarProperty Name="CM1" ColumnName="CM1" />
+                <ScalarProperty Name="DSPNAME" ColumnName="DSPNAME" />
+                <ScalarProperty Name="FuelACTUALTANKERING" ColumnName="FuelACTUALTANKERING" />
+                <ScalarProperty Name="FuelTOTALFUEL" ColumnName="FuelTOTALFUEL" />
+                <ScalarProperty Name="FuelTANKERING" ColumnName="FuelTANKERING" />
+                <ScalarProperty Name="FuelOPSEXTRA" ColumnName="FuelOPSEXTRA" />
+                <ScalarProperty Name="FuelETOPSADDNL" ColumnName="FuelETOPSADDNL" />
+                <ScalarProperty Name="FuelExtra" ColumnName="FuelExtra" />
+                <ScalarProperty Name="WDDES" ColumnName="WDDES" />
+                <ScalarProperty Name="WDCLB" ColumnName="WDCLB" />
+                <ScalarProperty Name="DID" ColumnName="DID" />
+                <ScalarProperty Name="WDTMP" ColumnName="WDTMP" />
+                <ScalarProperty Name="MINDIVFUEL" ColumnName="MINDIVFUEL" />
+                <ScalarProperty Name="MAXSHEER" ColumnName="MAXSHEER" />
+                <ScalarProperty Name="VDT" ColumnName="VDT" />
+                <ScalarProperty Name="FPF" ColumnName="FPF" />
+                <ScalarProperty Name="FuelFINALRES" ColumnName="FuelFINALRES" />
+                <ScalarProperty Name="FuelMINTOF" ColumnName="FuelMINTOF" />
+                <ScalarProperty Name="FuelCONT" ColumnName="FuelCONT" />
+                <ScalarProperty Name="FuelOFFBLOCK" ColumnName="FuelOFFBLOCK" />
+                <ScalarProperty Name="FuelTAXI" ColumnName="FuelTAXI" />
+                <ScalarProperty Name="FuelTOF" ColumnName="FuelTOF" />
+                <ScalarProperty Name="FuelALT2" ColumnName="FuelALT2" />
+                <ScalarProperty Name="FuelALT1" ColumnName="FuelALT1" />
+                <ScalarProperty Name="TALT2" ColumnName="TALT2" />
+                <ScalarProperty Name="TALT1" ColumnName="TALT1" />
+                <ScalarProperty Name="ALT2" ColumnName="ALT2" />
+                <ScalarProperty Name="ALT1" ColumnName="ALT1" />
+                <ScalarProperty Name="ETA" ColumnName="ETA" />
+                <ScalarProperty Name="ETD" ColumnName="ETD" />
+                <ScalarProperty Name="ELDW" ColumnName="ELDW" />
+                <ScalarProperty Name="ETOW" ColumnName="ETOW" />
+                <ScalarProperty Name="EZFW" ColumnName="EZFW" />
+                <ScalarProperty Name="PLD" ColumnName="PLD" />
+                <ScalarProperty Name="RTT" ColumnName="RTT" />
+                <ScalarProperty Name="RTB" ColumnName="RTB" />
+                <ScalarProperty Name="RTA" ColumnName="RTA" />
+                <ScalarProperty Name="RTM" ColumnName="RTM" />
+                <ScalarProperty Name="CRW" ColumnName="CRW" />
+                <ScalarProperty Name="UNT" ColumnName="UNT" />
+                <ScalarProperty Name="THM" ColumnName="THM" />
+                <ScalarProperty Name="JWTDRF" ColumnName="JWTDRF" />
+                <ScalarProperty Name="JALDRF" ColumnName="JALDRF" />
+                <ScalarProperty Name="JCSTBL" ColumnName="JCSTBL" />
+                <ScalarProperty Name="JFuel" ColumnName="JFuel" />
+                <ScalarProperty Name="JAPlan2" ColumnName="JAPlan2" />
+                <ScalarProperty Name="JAPlan1" ColumnName="JAPlan1" />
+                <ScalarProperty Name="JPlan" ColumnName="JPlan" />
+                <ScalarProperty Name="Source" ColumnName="Source" />
+                <ScalarProperty Name="DOW" ColumnName="DOW" />
+                <ScalarProperty Name="FLL" ColumnName="FLL" />
+                <ScalarProperty Name="MCI" ColumnName="MCI" />
+                <ScalarProperty Name="FPTripFuel" ColumnName="FPTripFuel" />
+                <ScalarProperty Name="FPFuel" ColumnName="FPFuel" />
+                <ScalarProperty Name="PIC" ColumnName="PIC" />
+                <ScalarProperty Name="JLSignedBy" ColumnName="JLSignedBy" />
+                <ScalarProperty Name="JLDatePICApproved" ColumnName="JLDatePICApproved" />
+                <ScalarProperty Name="PICId" ColumnName="PICId" />
+                <ScalarProperty Name="UserConfirmed" ColumnName="UserConfirmed" />
+                <ScalarProperty Name="DateConfirmed" ColumnName="DateConfirmed" />
+                <ScalarProperty Name="DateUpdate" ColumnName="DateUpdate" />
+                <ScalarProperty Name="FlightId" ColumnName="FlightId" />
+                <ScalarProperty Name="TextOutput" ColumnName="TextOutput" />
+                <ScalarProperty Name="User" ColumnName="User" />
+                <ScalarProperty Name="Text" ColumnName="Text" />
+                <ScalarProperty Name="DateCreate" ColumnName="DateCreate" />
+                <ScalarProperty Name="DateFlight" ColumnName="DateFlight" />
+                <ScalarProperty Name="Destination" ColumnName="Destination" />
+                <ScalarProperty Name="Origin" ColumnName="Origin" />
+                <ScalarProperty Name="FlightNo" ColumnName="FlightNo" />
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
