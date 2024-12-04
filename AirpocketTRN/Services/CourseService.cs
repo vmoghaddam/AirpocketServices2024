@@ -5079,25 +5079,26 @@ namespace AirpocketTRN.Services
             //var press = await context.CourseSessionPresences.Where(q => q.CourseId == cid).ToListAsync();
             var press = await context.ViewCourseSessionPresences.Where(q => q.CourseId == cid).ToListAsync();
             var syllabi = await context.ViewSyllabus.Where(q => q.CourseId == cid).ToListAsync();
-            var _exams = await context.trn_exam.Where(q => q.course_id == cid).ToListAsync();
-            var exams = _exams.Select(q => JsonConvert.DeserializeObject<ExamViewModel>(JsonConvert.SerializeObject(q))).ToList();
+            var exams = new List<trn_exam>();
+            //var _exams = await context.trn_exam.Where(q => q.course_id == cid).ToListAsync();
+            //var exams = _exams.Select(q => JsonConvert.DeserializeObject<ExamViewModel>(JsonConvert.SerializeObject(q))).ToList();
 
 
-            var exam_ids = exams.Select(q => q.id).ToList();
-            var templates = await context.view_trn_exam_question_template.Where(q => exam_ids.Contains(q.exam_id)).ToListAsync();
-            var questions = await context.view_trn_exam_question.Where(q => exam_ids.Contains(q.exam_id)).ToListAsync();
-            var exam_summary = await context.view_trn_exam_summary_details.Where(q => exam_ids.Contains(q.exam_id)).ToListAsync();
-            foreach (var x in exams)
-            {
-                x.date_end_scheduled = ((DateTime)x.exam_date).AddMinutes(Convert.ToDouble(x.duration));
-                if (x.status_id != 0 && x.date_end_actual == null && x.date_start != null)
-                {
-                    x.date_end_actual = ((DateTime)x.date_start).AddMinutes(Convert.ToDouble(x.duration));
-                }
-                x.questions = questions.Where(q => q.exam_id == x.id).OrderBy(q => q.category).ThenBy(q => q.question_id).ToList();
-                x.template = templates.Where(q => q.exam_id == x.id).ToList();
-                x.summary = exam_summary.Where(q => q.exam_id == x.id).OrderBy(q => q.last_name).ThenBy(q => q.first_name).ToList();
-            }
+            //var exam_ids = exams.Select(q => q.id).ToList();
+            //var templates = await context.view_trn_exam_question_template.Where(q => exam_ids.Contains(q.exam_id)).ToListAsync();
+            //var questions = await context.view_trn_exam_question.Where(q => exam_ids.Contains(q.exam_id)).ToListAsync();
+            //var exam_summary = await context.view_trn_exam_summary_details.Where(q => exam_ids.Contains(q.exam_id)).ToListAsync();
+            //foreach (var x in exams)
+            //{
+            //    x.date_end_scheduled = ((DateTime)x.exam_date).AddMinutes(Convert.ToDouble(x.duration));
+            //    if (x.status_id != 0 && x.date_end_actual == null && x.date_start != null)
+            //    {
+            //        x.date_end_actual = ((DateTime)x.date_start).AddMinutes(Convert.ToDouble(x.duration));
+            //    }
+            //    x.questions = questions.Where(q => q.exam_id == x.id).OrderBy(q => q.category).ThenBy(q => q.question_id).ToList();
+            //    x.template = templates.Where(q => q.exam_id == x.id).ToList();
+            //    x.summary = exam_summary.Where(q => q.exam_id == x.id).OrderBy(q => q.last_name).ThenBy(q => q.first_name).ToList();
+            //}
 
 
 
@@ -5542,7 +5543,7 @@ namespace AirpocketTRN.Services
                 IsSuccess = true,
             };
         }
-
+        //12-02
         public async Task<DataResponse> SyncSessionsToRoster(int cid)
         {
             var sessions = await context.ViewCourseSessions.Where(q => q.CourseId == cid).OrderBy(q => q.DateStart).ToListAsync();
@@ -5561,13 +5562,31 @@ namespace AirpocketTRN.Services
                     if (exist == null)
                     {
 
-                        var ofdp = (from x in context.ViewFDPIdeas.AsNoTracking()
-                                    where x.CrewId == emp.Id && x.DutyType == 1165
-                                    && (
-                                      (session.DateStartUtc >= x.DutyStart && session.DateStartUtc <= x.RestUntil) || (session.DateEndUtc >= x.DutyStart && session.DateEndUtc <= x.RestUntil)
-                                      || (x.DutyStart >= session.DateStartUtc && x.DutyStart <= session.DateEndUtc) || (x.RestUntil >= session.DateStartUtc && x.RestUntil <= session.DateEndUtc)
-                                      )
-                                    select x).FirstOrDefault();
+                        //var ofdp = (from x in context.ViewFDPIdeas.AsNoTracking()
+                        //            where x.CrewId == emp.Id && x.DutyType == 1165
+                        //            && (
+                        //              (session.DateStartUtc >= x.DutyStart && session.DateStartUtc <= x.RestUntil) || (session.DateEndUtc >= x.DutyStart && session.DateEndUtc <= x.RestUntil)
+                        //              || (x.DutyStart >= session.DateStartUtc && x.DutyStart <= session.DateEndUtc) || (x.RestUntil >= session.DateStartUtc && x.RestUntil <= session.DateEndUtc)
+                        //              )
+                        //            select x).FirstOrDefault();
+                        //var pre_fpd=context.ViewFDPIdeas.Where(q=>q.CrewId==emp.Id && q.DutyType==1165 && q.DutyStart<session.DateStartUtc).OrderByDescending(q=>q.DutyStart).FirstOrDefault();
+                        var post_fdp= context.ViewFDPIdeas.Where(q => q.CrewId == emp.Id && q.DutyType == 1165 && q.DutyStart > session.DateEndUtc).OrderBy(q => q.DutyStart).FirstOrDefault();
+                        var in_fdp= context.ViewFDPIdeas.Where(q => q.CrewId == emp.Id && q.DutyType == 1165 && 
+                                (
+                                   (q.DutyStart>=session.DateStartUtc && q.DutyEnd <= session.DateEndUtc) ||
+                                   (q.DutyStart>=session.DateStartUtc && q.DutyStart<= session.DateEndUtc) ||
+                                   (q.DutyEnd>=session.DateStartUtc && q.DutyEnd<= session.DateEndUtc) ||
+                                   (session.DateStartUtc>=q.DutyStart && session.DateStartUtc<=q.DutyEnd)
+                                )
+                            
+                            ).OrderBy(q => q.DutyStart).FirstOrDefault();
+                        var ofdp = in_fdp;
+                        if (ofdp == null && post_fdp != null)
+                        {
+                            if (((DateTime)post_fdp.DutyStart - (DateTime)session.DateStartUtc).TotalMinutes < 12 * 60)
+                                ofdp = post_fdp;
+                        }
+
                         if (ofdp == null)
                         {
                             var duty = new FDP();
@@ -5583,6 +5602,8 @@ namespace AirpocketTRN.Services
 
                             duty.InitStart = duty.DateStart;
                             duty.InitEnd = duty.DateEnd;
+                            duty.DateConfirmed = DateTime.Now;
+                            duty.ConfirmedBy = "TRAINING";
                             var rest = new List<int>() { 1167, 1168, 1170, 5000, 5001, 100001, 100003 };
                             duty.InitRestTo = rest.Contains(duty.DutyType) ? ((DateTime)duty.InitEnd).AddHours(12) : duty.DateEnd;
                             //rec.FDP = duty;
@@ -5642,6 +5663,125 @@ namespace AirpocketTRN.Services
         }
 
 
+        //12-03
+        public async Task<DataResponse> SyncSessionsToRosterByDate(int cid)
+        {
+            var sessions = await context.ViewCourseSessions.Where(q => q.CourseId == cid).OrderBy(q => q.DateStart).ToListAsync();
+            var cps = await context.CoursePeoples.Where(q => q.CourseId == cid).ToListAsync();
+            var personIds = cps.Select(q => q.PersonId).ToList();
+            var fltcrew = new List<string>() { "P1", "P2", "ISCCM", "SCCM", "CCM", "TRE", "TRI", "LTC" };
+            var employees = await context.ViewEmployeeAbs.Where(q => personIds.Contains(q.PersonId) && fltcrew.Contains(q.JobGroup)).ToListAsync();
+            var currents = await context.CourseSessionFDPs.Where(q => q.CourseId == cid).ToListAsync();
+            var fdps = new List<FDP>();
+            var errors = new List<object>();
+            foreach (var session in sessions)
+            {
+                foreach (var emp in employees)
+                {
+                    var exist = currents.Where(q => q.EmployeeId == emp.Id && q.SessionKey == session.Key).FirstOrDefault();
+                    if (exist == null)
+                    {
+
+                        //var ofdp = (from x in context.ViewFDPIdeas.AsNoTracking()
+                        //            where x.CrewId == emp.Id && x.DutyType == 1165
+                        //            && (
+                        //              (session.DateStartUtc >= x.DutyStart && session.DateStartUtc <= x.RestUntil) || (session.DateEndUtc >= x.DutyStart && session.DateEndUtc <= x.RestUntil)
+                        //              || (x.DutyStart >= session.DateStartUtc && x.DutyStart <= session.DateEndUtc) || (x.RestUntil >= session.DateStartUtc && x.RestUntil <= session.DateEndUtc)
+                        //              )
+                        //            select x).FirstOrDefault();
+                        //var pre_fpd=context.ViewFDPIdeas.Where(q=>q.CrewId==emp.Id && q.DutyType==1165 && q.DutyStart<session.DateStartUtc).OrderByDescending(q=>q.DutyStart).FirstOrDefault();
+                        var post_fdp = context.ViewFDPIdeas.Where(q => q.CrewId == emp.Id && q.DutyType == 1165 && q.DutyStart > session.DateEndUtc).OrderBy(q => q.DutyStart).FirstOrDefault();
+                        var in_fdp = context.ViewFDPIdeas.Where(q => q.CrewId == emp.Id && q.DutyType == 1165 &&
+                                 (
+                                    (q.DutyStart >= session.DateStartUtc && q.DutyEnd <= session.DateEndUtc) ||
+                                    (q.DutyStart >= session.DateStartUtc && q.DutyStart <= session.DateEndUtc) ||
+                                    (q.DutyEnd >= session.DateStartUtc && q.DutyEnd <= session.DateEndUtc) ||
+                                    (session.DateStartUtc >= q.DutyStart && session.DateStartUtc <= q.DutyEnd)
+                                 )
+
+                            ).OrderBy(q => q.DutyStart).FirstOrDefault();
+                        var ofdp = in_fdp;
+                        if (ofdp == null && post_fdp != null)
+                        {
+                            if (((DateTime)post_fdp.DutyStart - (DateTime)session.DateStartUtc).TotalMinutes < 12 * 60)
+                                ofdp = post_fdp;
+                        }
+
+                        if (ofdp == null)
+                        {
+                            var duty = new FDP();
+                            duty.DateStart = session.DateStartUtc;
+                            duty.DateEnd = session.DateEndUtc;
+
+                            duty.CrewId = emp.Id;
+                            duty.DutyType = 5000;
+                            duty.GUID = Guid.NewGuid();
+                            duty.IsTemplate = false;
+                            duty.Remark = session.CT_Title + "\r\n" + session.Title;
+                            duty.UPD = 1;
+
+                            duty.InitStart = duty.DateStart;
+                            duty.InitEnd = duty.DateEnd;
+                            duty.DateConfirmed = DateTime.Now;
+                            duty.ConfirmedBy = "TRAINING";
+                            var rest = new List<int>() { 1167, 1168, 1170, 5000, 5001, 100001, 100003 };
+                            duty.InitRestTo = rest.Contains(duty.DutyType) ? ((DateTime)duty.InitEnd).AddHours(12) : duty.DateEnd;
+                            //rec.FDP = duty;
+                            var csf = new CourseSessionFDP()
+                            {
+                                FDP = duty,
+                                CourseId = session.CourseId,
+                                SessionKey = session.Key,
+                                EmployeeId = emp.Id,
+
+                            };
+                            context.FDPs.Add(duty);
+                            context.CourseSessionFDPs.Add(csf);
+
+
+                            fdps.Add(duty);
+                        }
+                        else
+                        {
+                            errors.Add(new
+                            {
+                                FDPId = ofdp.Id,
+                                EmployeeId = emp.Id,
+                                SessionItemId = session.Id,
+                                Name = emp.Name,
+                                Flights = ofdp.InitFlts,
+                                Route = ofdp.InitRoute,
+                                // DutyEnd = ofdp.DutyEndLocal,
+                                DutyStart = ofdp.DutyStart,
+                                RestUntil = ofdp.RestUntil,
+                                CourseCode = session.CT_Title,
+                                CourseTitle = session.Title,
+                                SessionDateFrom = session.DateStart,
+                                SessionDateTo = session.DateEnd,
+                                DateCreate = DateTime.Now
+                            });
+                        }
+                    }
+
+                }
+            }
+            var saveResult = await context.SaveAsync();
+            return new DataResponse()
+            {
+                Data = new
+                {
+                    fdps = fdps.Select(q => new
+                    {
+                        q.Id,
+                        q.CrewId
+                    }).ToList(),
+                    errors,
+                    saveErrors = saveResult.Errors,
+                },
+                IsSuccess = saveResult.IsSuccess,
+            };
+        }
+        //12-02
         public async Task<DataResponse> SyncSessionsToRosterTeachers(int cid)
         {
             var sessions = await context.ViewCourseSessions.Where(q => q.CourseId == cid).OrderBy(q => q.DateStart).ToListAsync();
@@ -5666,13 +5806,33 @@ namespace AirpocketTRN.Services
                     if (exist == null)
                     {
 
-                        var ofdp = (from x in context.ViewFDPIdeas.AsNoTracking()
-                                    where x.CrewId == emp.Id && x.DutyType == 1165
-                                    && (
-                                      (session.DateStartUtc >= x.DutyStart && session.DateStartUtc <= x.RestUntil) || (session.DateEndUtc >= x.DutyStart && session.DateEndUtc <= x.RestUntil)
-                                      || (x.DutyStart >= session.DateStartUtc && x.DutyStart <= session.DateEndUtc) || (x.RestUntil >= session.DateStartUtc && x.RestUntil <= session.DateEndUtc)
-                                      )
-                                    select x).FirstOrDefault();
+                        //var ofdp = (from x in context.ViewFDPIdeas.AsNoTracking()
+                        //            where x.CrewId == emp.Id && x.DutyType == 1165
+                        //            && (
+                        //              (session.DateStartUtc >= x.DutyStart && session.DateStartUtc <= x.RestUntil) || (session.DateEndUtc >= x.DutyStart && session.DateEndUtc <= x.RestUntil)
+                        //              || (x.DutyStart >= session.DateStartUtc && x.DutyStart <= session.DateEndUtc) || (x.RestUntil >= session.DateStartUtc && x.RestUntil <= session.DateEndUtc)
+                        //              )
+                        //            select x).FirstOrDefault();
+
+                        var post_fdp = context.ViewFDPIdeas.Where(q => q.CrewId == emp.Id && q.DutyType == 1165 && q.DutyStart > session.DateEndUtc).OrderBy(q => q.DutyStart).FirstOrDefault();
+                        var in_fdp = context.ViewFDPIdeas.Where(q => q.CrewId == emp.Id && q.DutyType == 1165 &&
+                                 (
+                                    (q.DutyStart >= session.DateStartUtc && q.DutyEnd <= session.DateEndUtc) ||
+                                    (q.DutyStart >= session.DateStartUtc && q.DutyStart <= session.DateEndUtc) ||
+                                    (q.DutyEnd >= session.DateStartUtc && q.DutyEnd <= session.DateEndUtc) ||
+                                    (session.DateStartUtc >= q.DutyStart && session.DateStartUtc <= q.DutyEnd)
+                                 )
+
+                            ).OrderBy(q => q.DutyStart).FirstOrDefault();
+                        var ofdp = in_fdp;
+                        if (ofdp == null && post_fdp != null)
+                        {
+                            if (((DateTime)post_fdp.DutyStart - (DateTime)session.DateStartUtc).TotalMinutes < 12 * 60)
+                                ofdp = post_fdp;
+                        }
+
+
+
                         if (ofdp == null)
                         {
                             var duty = new FDP();
@@ -5685,6 +5845,8 @@ namespace AirpocketTRN.Services
                             duty.IsTemplate = false;
                             duty.Remark = session.CT_Title + "\r\n" + session.Title;
                             duty.UPD = 1;
+                            duty.DateConfirmed = DateTime.Now;
+                            duty.ConfirmedBy = "TRAINING";
 
                             duty.InitStart = duty.DateStart;
                             duty.InitEnd = duty.DateEnd;

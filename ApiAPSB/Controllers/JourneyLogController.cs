@@ -550,7 +550,7 @@ namespace ApiAPSB.Controllers
                 foreach (var c in result.crew)
                 {
                     sheet.Range[ln_crew, 1].Text = string.IsNullOrEmpty(c.Position) ? "" : c.Position;
-                    sheet.Range[ln_crew, 2].Text = string.IsNullOrEmpty(c.Name) ? "" : c.Name;
+                    sheet.Range[ln_crew, 2].Text = string.IsNullOrEmpty(c.Name) ? "" : c.Name+(string.IsNullOrEmpty( c.LegsStr)?"":" "+c.LegsStr);
                     sheet.Range[ln_crew, 3].Text = format_to_time(c.TotalBlockTime);
                     ln_crew++;
                 }

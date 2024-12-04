@@ -51,7 +51,6 @@ namespace AirpocketTRN.Models
         public Nullable<int> passed { get; set; }
         public Nullable<bool> is_running { get; set; }
     
-        public virtual Course Course { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<trn_exam_question> trn_exam_question { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -62,5 +61,6 @@ namespace AirpocketTRN.Models
         public virtual ICollection<trn_person_exam> trn_person_exam { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<trn_exam_question_template> trn_exam_question_template { get; set; }
+        public virtual Course Course { get; set; }
     }
 }

@@ -27,7 +27,9 @@ namespace ApiForm.Models
     
         public virtual DbSet<AppFuel> AppFuels { get; set; }
         public virtual DbSet<ViewProfile> ViewProfiles { get; set; }
-        public virtual DbSet<FormVacation> FormVacations { get; set; }
+        public virtual DbSet<ViewCrewDutyTimeLineNew> ViewCrewDutyTimeLineNews { get; set; }
         public virtual DbSet<ViewFormVacation> ViewFormVacations { get; set; }
+        public virtual DbSet<FDP> FDPs { get; set; }
+        public virtual DbSet<FormVacation> FormVacations { get; set; }
     }
 }

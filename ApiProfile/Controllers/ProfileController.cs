@@ -18,6 +18,53 @@ namespace ApiProfile.Controllers
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class ProfileController : ApiController
     {
+
+        [Route("api/profile/resend/auth")]
+
+        [AcceptVerbs("POST")]
+        public async Task<IHttpActionResult> PostAuth()
+        {
+            var context = new Models.dbEntities();
+            var profiles = await context.ViewProfiles.Where(q => q.InActive == false && q.UserId == null).ToListAsync();
+            var ids=profiles.Select(q=>q.PersonId).ToList();    
+            var people=await context.People.Where(q=>ids.Contains(q.Id)).ToListAsync(); 
+            foreach(var person in people)
+            {
+                AspNetUser user = new AspNetUser()
+                {
+                    UserName = person.NID,
+                    Email = (person.FirstName[0] + person.LastName[0] + person.NID).ToUpper() + "@AEROTECH.APP",
+                    NormalizedEmail = (person.FirstName[0] + person.LastName[0] + person.NID).ToUpper() + "@AEROTECH.APP",
+                    NormalizedUserName = person.NID,
+                    EmailConfirmed = false,
+                    PhoneNumberConfirmed = false,
+                    TwoFactorEnabled = false,
+                    LockoutEnabled = false,
+                    AccessFailedCount = 0,
+                    PasswordHash = "ABUOcscaBcucAd+3adgqDoYDGbwJ+vsH31J7wOZWMJi8jlAjxnzNYHrkrPLEUtyNvA==",
+                    SecurityStamp = "dde4f3c0-52cf-4f0a-9655-65e6e2c53a07",
+                    Id = Guid.NewGuid().ToString(),
+
+                };
+                context.AspNetUsers.Add(user);
+                person.UserId = user.Id;
+                var text = "Dear " + person.FirstName.ToUpper() + " " + person.LastName.ToUpper() + ", " + "\n"
+                         + "Your account information:" + "\n"
+                         + "Username: " + person.NID + "\n"
+                         + "Password: " + "123456" + "\n"
+                         + "Please visit the link below to access your panel" + "\n"
+                         + ConfigurationManager.AppSettings["pulsepocket_url"];
+                Magfa m1 = new Magfa();
+                var res = m1.enqueue(1, person.Mobile, text)[0];
+                person.FaxTelNumber = res.ToString();
+
+            }
+            await context.SaveAsync();
+            return Ok(profiles.Select(q=>q.NID).ToList());
+
+        }
+
+
         [Route("api/profile/employee/save")]
 
         [AcceptVerbs("POST")]
@@ -30,17 +77,22 @@ namespace ApiProfile.Controllers
             {
                 return Exceptions.getDuplicateException("Person-01", "NID");
             }
-
+            var do_user = false;
             Models.Person person = null;
             if (dto.PersonId != -1)
                 person = await context.People.Where(q => q.Id == dto.PersonId).FirstOrDefaultAsync();
             else
                 person = await context.People.Where(q => q.NID == dto.Person.NID).FirstOrDefaultAsync();
+
+
             if (person == null)
             {
                 person = new Models.Person();
                 person.DateCreate = DateTime.Now;
                 context.People.Add(person);
+                do_user = true;
+
+
             }
             ViewModels.Person.Fill(person, dto.Person);
             var cid = (int)dto.CustomerId;
@@ -64,10 +116,49 @@ namespace ApiProfile.Controllers
             FillAircraftTypes(context, person, dto);
             FillDocuments(context, person, dto);
 
+
+            if (do_user)
+            {
+                //password: 123456
+                AspNetUser user = new AspNetUser()
+                {
+                    UserName = person.NID,
+                    Email = (person.FirstName[0] + person.LastName[0] + person.NID).ToUpper() + "@AEROTECH.APP",
+                    NormalizedEmail = (person.FirstName[0] + person.LastName[0] + person.NID).ToUpper() + "@AEROTECH.APP",
+                    NormalizedUserName = person.NID,
+                    EmailConfirmed = false,
+                    PhoneNumberConfirmed = false,
+                    TwoFactorEnabled = false,
+                    LockoutEnabled = false,
+                    AccessFailedCount = 0,
+                    PasswordHash = "ABUOcscaBcucAd+3adgqDoYDGbwJ+vsH31J7wOZWMJi8jlAjxnzNYHrkrPLEUtyNvA==",
+                    SecurityStamp = "dde4f3c0-52cf-4f0a-9655-65e6e2c53a07",
+                    Id = Guid.NewGuid().ToString(),
+
+                };
+                context.AspNetUsers.Add(user);
+                person.UserId = user.Id;
+
+
+            }
+
             var saveResult = await context.SaveAsync();
             if (saveResult.Code != HttpStatusCode.OK)
                 return saveResult;
-
+          
+            if (do_user)
+            {
+                var text = "Dear "+person.FirstName.ToUpper()+" "+person.LastName.ToUpper()+", "+ "\n"
+                         +"Your account information:"+ "\n"
+                         +"Username: "+person.NID+"\n"
+                         +"Password: "+"123456" + "\n"
+                         +"Please visit the link below to access your panel" + "\n"
+                         + ConfigurationManager.AppSettings["pulsepocket_url"];
+                Magfa m1 = new Magfa();
+                var res = m1.enqueue(1, person.Mobile, text)[0];
+                person.FaxTelNumber = res.ToString();
+                await context.SaveAsync();
+            }
 
             dto.Id = employee.Id;
             return Ok(dto);
@@ -141,7 +232,7 @@ namespace ApiProfile.Controllers
 
 
         [Route("api/profile/abs/{id}")]
-        public async Task<IHttpActionResult> GetProfileAbs(  int  id)
+        public async Task<IHttpActionResult> GetProfileAbs(int id)
         {
             var context = new Models.dbEntities();
             var profile = await context.ViewProfiles.FirstOrDefaultAsync(q => q.Id == id);
@@ -169,14 +260,15 @@ namespace ApiProfile.Controllers
 
 
                 var context = new Models.dbEntities();
-                
+
                 var employee = await context.ViewOPCs.Where(q => q.NID == nid).FirstOrDefaultAsync();
                 //soosk
                 ///var employee = await unitOfWork.PersonRepository.GetEmployeeDtoByNID(nid, cid);
-                var result = new { 
-                  Person=employee,
+                var result = new
+                {
+                    Person = employee,
                 };
-                return Ok(result );
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -197,10 +289,10 @@ namespace ApiProfile.Controllers
 
                 var context = new Models.dbEntities();
 
-                var sms = await context.ViewCrewPickupSMS.Where(q => q.PersonId==id && q.IsVisited==0).OrderByDescending(q=>q.DateSent).Take(20).ToListAsync();
+                var sms = await context.ViewCrewPickupSMS.Where(q => q.PersonId == id && q.IsVisited == 0).OrderByDescending(q => q.DateSent).Take(20).ToListAsync();
                 //soosk
                 ///var employee = await unitOfWork.PersonRepository.GetEmployeeDtoByNID(nid, cid);
-                 
+
                 return Ok(sms);
             }
             catch (Exception ex)
@@ -482,7 +574,7 @@ namespace ApiProfile.Controllers
                     query = query.Where(q => q.InActive == false);
                 grp = grp.Replace('x', '/');
                 if (grp != "-1")
-                    query = query.Where(q => q.JobGroupRoot == grp || q.PostRoot==grp);
+                    query = query.Where(q => q.JobGroupRoot == grp || q.PostRoot == grp);
                 var profiles = await query.ToListAsync();
 
                 return Ok(profiles);
@@ -594,11 +686,11 @@ namespace ApiProfile.Controllers
                     AircraftTypeId = x.AircraftTypeId,
                     IsActive = true,
                     Remark = "",
-                   // DateLimitBegin = DateTime.Now.AddYears(-5),
-                   // DateLimitEnd = x.DateLimitEnd
+                    // DateLimitBegin = DateTime.Now.AddYears(-5),
+                    // DateLimitEnd = x.DateLimitEnd
 
-                }) ;
-            
+                });
+
 
 
 
@@ -606,7 +698,7 @@ namespace ApiProfile.Controllers
         }
 
 
-        
+
 
 
         public void FillDocuments(dbEntities context, Models.Person person, ViewModels.Employee dto)

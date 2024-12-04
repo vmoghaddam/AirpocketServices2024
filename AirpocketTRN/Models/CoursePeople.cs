@@ -33,8 +33,9 @@ namespace AirpocketTRN.Models
         public Nullable<System.DateTime> Date_Sign_Director { get; set; }
         public Nullable<System.DateTime> Date_Sign_Staff { get; set; }
         public Nullable<System.DateTime> Date_Sign_OPS { get; set; }
+        public Nullable<bool> IsSessionsSynced { get; set; }
     
-        public virtual Person Person { get; set; }
         public virtual Course Course { get; set; }
+        public virtual Person Person { get; set; }
     }
 }

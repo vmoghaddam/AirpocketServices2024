@@ -19,8 +19,9 @@ namespace AirpocketTRN.Models
         public int FDPId { get; set; }
         public string SessionKey { get; set; }
         public int CourseId { get; set; }
+        public Nullable<System.DateTime> Date { get; set; }
     
-        public virtual FDP FDP { get; set; }
         public virtual Course Course { get; set; }
+        public virtual FDP FDP { get; set; }
     }
 }

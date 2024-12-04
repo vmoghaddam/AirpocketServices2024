@@ -216,5 +216,6 @@ namespace ApiProfile.Models
         public Nullable<int> RemainSMS { get; set; }
         public Nullable<int> RemainSMSL1L2L3 { get; set; }
         public Nullable<int> RemainTRG07A { get; set; }
+        public string ImageUrl { get; set; }
     }
 }

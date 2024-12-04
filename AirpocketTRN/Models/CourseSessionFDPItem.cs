@@ -12,15 +12,9 @@ namespace AirpocketTRN.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class ViewFDPIdea
+    public partial class CourseSessionFDPItem
     {
-        public int Id { get; set; }
-        public Nullable<int> CrewId { get; set; }
-        public string InitFlts { get; set; }
-        public string InitRoute { get; set; }
-        public Nullable<System.DateTime> DutyStart { get; set; }
-        public Nullable<System.DateTime> DutyEnd { get; set; }
-        public int DutyType { get; set; }
-        public Nullable<System.DateTime> RestUntil { get; set; }
+        public int csf_id { get; set; }
+        public string session_key { get; set; }
     }
 }

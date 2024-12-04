@@ -38,6 +38,8 @@ namespace ApiForm.Models
         public string Responsible { get; set; }
         public Nullable<System.DateTime> ResponsibleDateVisit { get; set; }
         public Nullable<int> ResponsibleActionId { get; set; }
+        public int PersonId { get; set; }
+        public int EmployeeId { get; set; }
         public string ResponsibleAction { get; set; }
         public Nullable<System.DateTime> ResponsibleActionDate { get; set; }
         public string ResponsibleRemark { get; set; }

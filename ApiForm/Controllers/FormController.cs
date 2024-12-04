@@ -23,8 +23,8 @@ namespace ApiForm.Controllers
         {
             public int Id { get; set; }
             public int UserId { get; set; }
-            public DateTime DateFrom { get; set; }
-            public DateTime DateTo { get; set; }
+            public string DateFrom { get; set; }
+            public string DateTo { get; set; }
             public string ReasonStr { get; set; }
             public int Reason { get; set; }
 
@@ -33,23 +33,29 @@ namespace ApiForm.Controllers
             public string SchedulingRemark { get; set; }
             public string Status { get; set; }
             public int OperatorId { get; set; }
-        }
 
+            public int? FDPId { get; set; }
+        }
+        public DateTime convert_to_date(string str)
+        {
+            var prts = str.Split('-');
+            return new DateTime(Convert.ToInt32(prts[0]), Convert.ToInt32(prts[1]), Convert.ToInt32(prts[2]));
+        }
         [Route("api/vacation/save")]
         [AcceptVerbs("POST")]
         public  IHttpActionResult SaveVacation(VacationFormViewModel log)
         {
             ppa_entities context = new ppa_entities();
 
-            var requester= context.ViewProfiles.Where(q=>q.PersonId==log.UserId).FirstOrDefault();
+            var requester= context.ViewProfiles.Where(q=>q.Id==log.UserId).FirstOrDefault();
             
 
             var form = new FormVacation()
             {
                 UserId = log.UserId,
                 DateCreate = DateTime.Now,
-                DateFrom = log.DateFrom,
-                DateTo = log.DateTo,
+                DateFrom = convert_to_date( log.DateFrom),
+                DateTo = convert_to_date( log.DateTo),
                 ReasonStr = log.ReasonStr,
                 Reason = log.Reason,
                 Remark = log.Remark,
@@ -88,16 +94,30 @@ namespace ApiForm.Controllers
         {
             ppa_entities context = new ppa_entities();
             var form = context.FormVacations.Where(q => q.Id == log.Id).FirstOrDefault();
-            form.OperationRemak = log.OperationRemak;
+           // form.OperationRemak = log.OperationRemak;
             form.OperatorId = log.OperatorId;
-            form.Reason = log.Reason;
-            form.ReasonStr = log.ReasonStr;
-            form.Remark = log.Remark;
+          //  form.Reason = log.Reason;
+          //  form.ReasonStr = log.ReasonStr;
+        //    form.Remark = log.Remark;
             form.SchedulingRemark = log.SchedulingRemark;
             if (!string.IsNullOrEmpty(log.Status) && log.Status != form.Status)
                 form.DateStatus = DateTime.Now;
             form.Status = log.Status;
-            form.UserId = log.UserId;
+            if (form.Status == "Accepted")
+            {
+                form.FDPId = log.FDPId;
+            }
+            else
+            {
+                if (form.FDPId != null)
+                {
+                    var _fdp = context.FDPs.FirstOrDefault(q => q.Id == form.FDPId);
+                    if (_fdp != null)
+                        context.FDPs.Remove(_fdp);
+                }
+                
+            }
+         //   form.UserId = log.UserId;
 
 
 
@@ -225,9 +245,27 @@ namespace ApiForm.Controllers
             request.ResponsibleRemark = dto.remark;
 
             context.SaveChanges();
+            var view=context.ViewFormVacations.Where(q=>q.Id==dto.form_id).FirstOrDefault();
 
-            return Ok(dto.form_id);
+            return Ok(view);
         }
+
+
+        [Route("api/forms/employee/timeline/{form_id}")]
+        [AcceptVerbs("GET")]
+        public IHttpActionResult GetEmployeeTimeline(int form_id)
+        {
+            ppa_entities context = new ppa_entities();
+            var form = context.ViewFormVacations.Where(q => q.Id == form_id).FirstOrDefault();
+            var dt1 = ((DateTime)form.DateFrom).AddDays(-3).Date;
+            var dt2 = ((DateTime)form.DateTo).AddDays(4).Date;
+            var timeline = context.ViewCrewDutyTimeLineNews.Where(q => q.CrewId == form.EmployeeId && q.DateStartLocal >= dt1 && q.DateStartLocal < dt2).OrderBy(q => q.DateStartLocal).ToList();
+
+            return Ok(timeline);
+        }
+
+
+
 
 
     }

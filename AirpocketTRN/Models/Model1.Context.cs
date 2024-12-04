@@ -30,8 +30,6 @@ namespace AirpocketTRN.Models
         public virtual DbSet<FDPItem> FDPItems { get; set; }
         public virtual DbSet<CourseSession> CourseSessions { get; set; }
         public virtual DbSet<CourseSessionPresence> CourseSessionPresences { get; set; }
-        public virtual DbSet<ViewFDPIdea> ViewFDPIdeas { get; set; }
-        public virtual DbSet<CourseSessionFDP> CourseSessionFDPs { get; set; }
         public virtual DbSet<BookFile> BookFiles { get; set; }
         public virtual DbSet<Document> Documents { get; set; }
         public virtual DbSet<CourseType> CourseTypes { get; set; }
@@ -79,7 +77,6 @@ namespace AirpocketTRN.Models
         public virtual DbSet<ViewCertificateHistoryRanked> ViewCertificateHistoryRankeds { get; set; }
         public virtual DbSet<Manager> Managers { get; set; }
         public virtual DbSet<ManagerGroup> ManagerGroups { get; set; }
-        public virtual DbSet<ViewCoursePeople> ViewCoursePeoples { get; set; }
         public virtual DbSet<ViewCertificateHistory> ViewCertificateHistories { get; set; }
         public virtual DbSet<ViewCoursePeopleRankedByStart> ViewCoursePeopleRankedByStarts { get; set; }
         public virtual DbSet<CourseTypeApplicable> CourseTypeApplicables { get; set; }
@@ -129,9 +126,6 @@ namespace AirpocketTRN.Models
         public virtual DbSet<view_trn_line_check> view_trn_line_check { get; set; }
         public virtual DbSet<view_trn_line_crm> view_trn_line_crm { get; set; }
         public virtual DbSet<view_trn_zftt> view_trn_zftt { get; set; }
-        public virtual DbSet<CoursePeople> CoursePeoples { get; set; }
-        public virtual DbSet<Course> Courses { get; set; }
-        public virtual DbSet<ViewCourseNew> ViewCourseNews { get; set; }
         public virtual DbSet<ViewCourseSession> ViewCourseSessions { get; set; }
         public virtual DbSet<ViewTeacherCourse> ViewTeacherCourses { get; set; }
         public virtual DbSet<trn_exam_student_answer> trn_exam_student_answer { get; set; }
@@ -162,5 +156,12 @@ namespace AirpocketTRN.Models
         public virtual DbSet<trn_exam_question_template> trn_exam_question_template { get; set; }
         public virtual DbSet<trn_exam> trn_exam { get; set; }
         public virtual DbSet<trn_person_exam> trn_person_exam { get; set; }
+        public virtual DbSet<ViewFDPIdea> ViewFDPIdeas { get; set; }
+        public virtual DbSet<Course> Courses { get; set; }
+        public virtual DbSet<CoursePeople> CoursePeoples { get; set; }
+        public virtual DbSet<ViewCourseNew> ViewCourseNews { get; set; }
+        public virtual DbSet<ViewCoursePeople> ViewCoursePeoples { get; set; }
+        public virtual DbSet<CourseSessionFDP> CourseSessionFDPs { get; set; }
+        public virtual DbSet<CourseSessionFDPItem> CourseSessionFDPItems { get; set; }
     }
 }

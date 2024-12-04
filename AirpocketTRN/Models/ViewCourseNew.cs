@@ -77,5 +77,8 @@ namespace AirpocketTRN.Models
         public Nullable<System.DateTime> Date_Sign_OPS { get; set; }
         public Nullable<System.DateTime> Date_Exam_Sign_Ins1 { get; set; }
         public Nullable<System.DateTime> Date_Exam_Sign_Ins2 { get; set; }
+        public Nullable<System.DateTime> Date_Sessions_Synced { get; set; }
+        public Nullable<System.DateTime> Date_Sessions_Instructor_Synced { get; set; }
+        public Nullable<int> Attendants { get; set; }
     }
 }

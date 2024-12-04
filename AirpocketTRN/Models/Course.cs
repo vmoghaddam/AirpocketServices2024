@@ -17,15 +17,15 @@ namespace AirpocketTRN.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Course()
         {
+            this.trn_person_exam = new HashSet<trn_person_exam>();
             this.CoursePeoples = new HashSet<CoursePeople>();
             this.CourseDocuments = new HashSet<CourseDocument>();
-            this.CourseSessionFDPs = new HashSet<CourseSessionFDP>();
+            this.trn_exam = new HashSet<trn_exam>();
             this.CourseSessionPresences = new HashSet<CourseSessionPresence>();
             this.CourseSessionPresenceDetails = new HashSet<CourseSessionPresenceDetail>();
             this.CourseSessions = new HashSet<CourseSession>();
             this.CourseSyllabus = new HashSet<CourseSyllabu>();
-            this.trn_person_exam = new HashSet<trn_person_exam>();
-            this.trn_exam = new HashSet<trn_exam>();
+            this.CourseSessionFDPs = new HashSet<CourseSessionFDP>();
         }
     
         public int Id { get; set; }
@@ -87,7 +87,11 @@ namespace AirpocketTRN.Models
         public Nullable<System.DateTime> Date_Sign_OPS { get; set; }
         public Nullable<System.DateTime> Date_Exam_Sign_Ins1 { get; set; }
         public Nullable<System.DateTime> Date_Exam_Sign_Ins2 { get; set; }
+        public Nullable<System.DateTime> Date_Sessions_Synced { get; set; }
+        public Nullable<System.DateTime> Date_Sessions_Instructor_Synced { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<trn_person_exam> trn_person_exam { get; set; }
         public virtual Teacher Teacher { get; set; }
         public virtual CourseType CourseType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -95,7 +99,7 @@ namespace AirpocketTRN.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CourseDocument> CourseDocuments { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CourseSessionFDP> CourseSessionFDPs { get; set; }
+        public virtual ICollection<trn_exam> trn_exam { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CourseSessionPresence> CourseSessionPresences { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -105,8 +109,6 @@ namespace AirpocketTRN.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CourseSyllabu> CourseSyllabus { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<trn_person_exam> trn_person_exam { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<trn_exam> trn_exam { get; set; }
+        public virtual ICollection<CourseSessionFDP> CourseSessionFDPs { get; set; }
     }
 }

@@ -5,6 +5,27 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="dbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AspNetUsers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="256" />
+          <Property Name="EmailConfirmed" Type="bit" Nullable="false" />
+          <Property Name="PasswordHash" Type="nvarchar(max)" />
+          <Property Name="SecurityStamp" Type="nvarchar(max)" />
+          <Property Name="PhoneNumber" Type="nvarchar(max)" />
+          <Property Name="PhoneNumberConfirmed" Type="bit" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="bit" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="datetime" />
+          <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="int" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="ConcurrencyStamp" Type="nvarchar(max)" />
+          <Property Name="NormalizedEmail" Type="nvarchar" MaxLength="256" />
+          <Property Name="NormalizedUserName" Type="nvarchar" MaxLength="256" />
+          <Property Name="LockoutEnd" Type="datetimeoffset" Precision="7" />
+        </EntityType>
         <EntityType Name="CertificateHistory">
           <Key>
             <PropertyRef Name="Id" />
@@ -584,6 +605,20 @@
           <Property Name="SMSL3ExpireDate" Type="datetime2" Precision="7" />
           <Property Name="AMPIssueDate" Type="datetime2" Precision="7" />
           <Property Name="AMPExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="ASD_THR_IssueDate" Type="datetime2" Precision="7" />
+          <Property Name="ASD_THR_ExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="ASD_SYZ_IssueDate" Type="datetime2" Precision="7" />
+          <Property Name="ASD_SYZ_ExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="ASD_MHD_IssueDate" Type="datetime2" Precision="7" />
+          <Property Name="ASD_MHD_ExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="ASD_TBZ_IssueDate" Type="datetime2" Precision="7" />
+          <Property Name="ASD_TBZ_ExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="ASD_AWZ_IssueDate" Type="datetime2" Precision="7" />
+          <Property Name="ASD_AWZ_ExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="ASD_SRY_IssueDate" Type="datetime2" Precision="7" />
+          <Property Name="ASD_SRY_ExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="FTSL1IssueDate" Type="datetime2" Precision="7" />
+          <Property Name="FTSL1ExpireDate" Type="datetime2" Precision="7" />
         </EntityType>
         <EntityType Name="PersonAircraftType">
           <Key>
@@ -656,6 +691,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewCrewPickupSMS' does not have a 
             <PropertyRef Name="Id" />
             <PropertyRef Name="CrewId" />
             <PropertyRef Name="FlightId" />
+            
             <PropertyRef Name="IsVisited" />
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
@@ -664,7 +700,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewCrewPickupSMS' does not have a 
           <Property Name="Pickup" Type="datetime" />
           <Property Name="PickupLocal" Type="datetime" />
           <Property Name="RefId" Type="varchar" MaxLength="200" />
-          <Property Name="Status" Type="varchar" MaxLength="500" />
+          <Property Name="Status" Type="varchar" MaxLength="9" Nullable="false" />
           <Property Name="StatusId" Type="int" />
           <Property Name="Message" Type="varchar" MaxLength="1000" />
           <Property Name="DateStatus" Type="datetime" />
@@ -1183,6 +1219,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewProfile' does not have a primar
           <Property Name="RemainSMS" Type="int" />
           <Property Name="RemainSMSL1L2L3" Type="int" />
           <Property Name="RemainTRG07A" Type="int" />
+          <Property Name="ImageUrl" Type="nvarchar" MaxLength="1000" />
         </EntityType>
         <Association Name="FK_CH_PERSON">
           <End Role="Person" Type="Self.Person" Multiplicity="1" />
@@ -1305,6 +1342,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewProfile' does not have a primar
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="dbModelStoreContainer">
+          <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CertificateHistory" EntityType="Self.CertificateHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Document" EntityType="Self.Document" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
@@ -1764,7 +1802,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewProfile' does not have a primar
     [ViewProfile].[RemainSMSL2L3] AS [RemainSMSL2L3], 
     [ViewProfile].[RemainSMS] AS [RemainSMS], 
     [ViewProfile].[RemainSMSL1L2L3] AS [RemainSMSL1L2L3], 
-    [ViewProfile].[RemainTRG07A] AS [RemainTRG07A]
+    [ViewProfile].[RemainTRG07A] AS [RemainTRG07A], 
+    [ViewProfile].[ImageUrl] AS [ImageUrl]
     FROM [dbo].[ViewProfile] AS [ViewProfile]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_CH_PERSON" Association="Self.FK_CH_PERSON">
@@ -1861,6 +1900,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewProfile' does not have a primar
             <End Role="PersonAircraftType" EntitySet="PersonAircraftTypes" />
           </AssociationSet>
           <EntitySet Name="ViewProfiles" EntityType="dbModel.ViewProfile" />
+          <EntitySet Name="AspNetUsers" EntityType="dbModel.AspNetUser" />
           </EntityContainer>
         <EntityType Name="IdeaUnique">
           <Key>
@@ -2328,7 +2368,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewProfile' does not have a primar
           <Property Name="Pickup" Type="DateTime" Precision="3" />
           <Property Name="PickupLocal" Type="DateTime" Precision="3" />
           <Property Name="RefId" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="Status" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="String" MaxLength="9" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="StatusId" Type="Int32" />
           <Property Name="Message" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
           <Property Name="DateStatus" Type="DateTime" Precision="3" />
@@ -2853,6 +2893,20 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewProfile' does not have a primar
           <Property Name="SMSL3ExpireDate" Type="DateTime" Precision="7" />
           <Property Name="AMPIssueDate" Type="DateTime" Precision="7" />
           <Property Name="AMPExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="ASD_THR_IssueDate" Type="DateTime" Precision="7" />
+          <Property Name="ASD_THR_ExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="ASD_SYZ_IssueDate" Type="DateTime" Precision="7" />
+          <Property Name="ASD_SYZ_ExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="ASD_MHD_IssueDate" Type="DateTime" Precision="7" />
+          <Property Name="ASD_MHD_ExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="ASD_TBZ_IssueDate" Type="DateTime" Precision="7" />
+          <Property Name="ASD_TBZ_ExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="ASD_AWZ_IssueDate" Type="DateTime" Precision="7" />
+          <Property Name="ASD_AWZ_ExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="ASD_SRY_IssueDate" Type="DateTime" Precision="7" />
+          <Property Name="ASD_SRY_ExpireDate" Type="DateTime" Precision="7" />
+          <Property Name="FTSL1IssueDate" Type="DateTime" Precision="7" />
+          <Property Name="FTSL1ExpireDate" Type="DateTime" Precision="7" />
         </EntityType>
         <Association Name="FK_CH_PERSON">
           <End Type="dbModel.Person" Role="Person" Multiplicity="1" />
@@ -3129,6 +3183,28 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewProfile' does not have a primar
           <Property Name="RemainSMS" Type="Int32" />
           <Property Name="RemainSMSL1L2L3" Type="Int32" />
           <Property Name="RemainTRG07A" Type="Int32" />
+          <Property Name="ImageUrl" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="AspNetUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
+          <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="ConcurrencyStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="NormalizedEmail" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="NormalizedUserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="LockoutEnd" Type="DateTimeOffset" Precision="7" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -3564,6 +3640,20 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewProfile' does not have a primar
           <EntitySetMapping Name="People">
             <EntityTypeMapping TypeName="dbModel.Person">
               <MappingFragment StoreEntitySet="Person">
+                <ScalarProperty Name="FTSL1ExpireDate" ColumnName="FTSL1ExpireDate" />
+                <ScalarProperty Name="FTSL1IssueDate" ColumnName="FTSL1IssueDate" />
+                <ScalarProperty Name="ASD_SRY_ExpireDate" ColumnName="ASD_SRY_ExpireDate" />
+                <ScalarProperty Name="ASD_SRY_IssueDate" ColumnName="ASD_SRY_IssueDate" />
+                <ScalarProperty Name="ASD_AWZ_ExpireDate" ColumnName="ASD_AWZ_ExpireDate" />
+                <ScalarProperty Name="ASD_AWZ_IssueDate" ColumnName="ASD_AWZ_IssueDate" />
+                <ScalarProperty Name="ASD_TBZ_ExpireDate" ColumnName="ASD_TBZ_ExpireDate" />
+                <ScalarProperty Name="ASD_TBZ_IssueDate" ColumnName="ASD_TBZ_IssueDate" />
+                <ScalarProperty Name="ASD_MHD_ExpireDate" ColumnName="ASD_MHD_ExpireDate" />
+                <ScalarProperty Name="ASD_MHD_IssueDate" ColumnName="ASD_MHD_IssueDate" />
+                <ScalarProperty Name="ASD_SYZ_ExpireDate" ColumnName="ASD_SYZ_ExpireDate" />
+                <ScalarProperty Name="ASD_SYZ_IssueDate" ColumnName="ASD_SYZ_IssueDate" />
+                <ScalarProperty Name="ASD_THR_ExpireDate" ColumnName="ASD_THR_ExpireDate" />
+                <ScalarProperty Name="ASD_THR_IssueDate" ColumnName="ASD_THR_IssueDate" />
                 <ScalarProperty Name="AMPExpireDate" ColumnName="AMPExpireDate" />
                 <ScalarProperty Name="AMPIssueDate" ColumnName="AMPIssueDate" />
                 <ScalarProperty Name="SMSL3ExpireDate" ColumnName="SMSL3ExpireDate" />
@@ -4056,6 +4146,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewProfile' does not have a primar
           <EntitySetMapping Name="ViewProfiles">
             <EntityTypeMapping TypeName="dbModel.ViewProfile">
               <MappingFragment StoreEntitySet="ViewProfile">
+                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
                 <ScalarProperty Name="RemainTRG07A" ColumnName="RemainTRG07A" />
                 <ScalarProperty Name="RemainSMSL1L2L3" ColumnName="RemainSMSL1L2L3" />
                 <ScalarProperty Name="RemainSMS" ColumnName="RemainSMS" />
@@ -4257,6 +4348,28 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewProfile' does not have a primar
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUsers">
+            <EntityTypeMapping TypeName="dbModel.AspNetUser">
+              <MappingFragment StoreEntitySet="AspNetUsers">
+                <ScalarProperty Name="LockoutEnd" ColumnName="LockoutEnd" />
+                <ScalarProperty Name="NormalizedUserName" ColumnName="NormalizedUserName" />
+                <ScalarProperty Name="NormalizedEmail" ColumnName="NormalizedEmail" />
+                <ScalarProperty Name="ConcurrencyStamp" ColumnName="ConcurrencyStamp" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
+                <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
+                <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
+                <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
+                <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
