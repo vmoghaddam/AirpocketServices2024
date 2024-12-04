@@ -27,5 +27,12 @@ namespace ApiAPSB.Models
         public Nullable<System.DateTime> DateStatus { get; set; }
         public string Status { get; set; }
         public Nullable<int> OperatorId { get; set; }
+        public Nullable<int> ResponsibleId { get; set; }
+        public Nullable<System.DateTime> ResponsibleDateVisit { get; set; }
+        public Nullable<int> ResponsibleActionId { get; set; }
+        public Nullable<System.DateTime> ResponsibleActionDate { get; set; }
+        public string ResponsibleRemark { get; set; }
+        public Nullable<int> FDPId { get; set; }
+        public string RosterException { get; set; }
     }
 }

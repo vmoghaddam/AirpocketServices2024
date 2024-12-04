@@ -570,7 +570,7 @@ namespace XAPI.Controllers
                 root.ContingencyPercent = json_obj.ContingencyPercent;
                 root.CostIndex = json_obj.CostIndex;
                 root.CruiseSpeed = json_obj.CruiseSpeed;
-                root.CruisePerformanceFactor =Convert.ToInt32( Math.Round(json_obj.CruisePerformanceFactor!=null?(double) json_obj.CruisePerformanceFactor:0));
+                root.CruisePerformanceFactor = Convert.ToInt32(Math.Round(json_obj.CruisePerformanceFactor != null ? (double)json_obj.CruisePerformanceFactor : 0));
                 root.Destination = json_obj.Destination;
                 root.DestinationElevation = json_obj.DestinationElevation;
                 root.DestinationIATA = json_obj.DestinationIATA;
@@ -775,13 +775,13 @@ namespace XAPI.Controllers
                         ZoneTime = pt.ZoneTime,
                         CumulativeTime = pt.CumulativeTime,
                         FuelRemained = pt.FuelRemained,
-                        FuelUsed =  pt.ZoneFuel,
+                        FuelUsed = pt.ZoneFuel,
                         MachNo = pt.MachNo,
                         TrueAirSpeed = pt.TrueAirSpeed,
                         GroundSpeed = pt.GroundSpeed,
                         LatitudeStr = pt.LatitudeStr,
                         LongitudeStr = pt.LongitudeStr,
-                         
+
 
                         CumulativeFuel = pt.CumulativeFuel,
 
@@ -1137,7 +1137,7 @@ namespace XAPI.Controllers
                 root.ReferenceNo = json_obj.ReferenceNo;
                 root.AirlineName = json_obj.AirlineName;
                 root.WeightUnit = json_obj.WeightUnit;
-                root.CruisePerformanceFactor =Convert.ToInt32( json_obj.CruisePerformanceFactor==null?0:(double)json_obj.CruisePerformanceFactor);
+                root.CruisePerformanceFactor = Convert.ToInt32(json_obj.CruisePerformanceFactor == null ? 0 : (double)json_obj.CruisePerformanceFactor);
                 root.ContingencyPercent = json_obj.ContingencyPercent;
                 root.FlightNo = json_obj.FlightNo;
                 root.GenerationDate = json_obj.GenerationDate;
@@ -2457,8 +2457,8 @@ namespace XAPI.Controllers
                 //    return Ok("Flight Not Found");
                 if (flight == null)
                     flight = context.ViewLegTimes.First();
-                
-                
+
+
                 var fltobj = context.FlightInformations.Where(q => q.ID == flight.ID).FirstOrDefault();
                 var cplan = context.OFPImports.FirstOrDefault(q => q.FlightId == flight.ID);
                 if (cplan != null)
@@ -3433,6 +3433,48 @@ namespace XAPI.Controllers
 
                 other.Add(new fuelPrm() { prm = "CLR_TAXIIN_STAND", value = "" });
                 props.Add("prop_clr_taxiin_stand");
+
+                other.Add(new fuelPrm() { prm = "ECTM_TAT", value = "" });
+                props.Add("prop_ectm_tat");
+
+                other.Add(new fuelPrm() { prm = "ECTM_MACH", value = "" });
+                props.Add("prop_ectm_mach");
+
+                other.Add(new fuelPrm() { prm = "ECTM_PRESSURE_ALT", value = "" });
+                props.Add("prop_ectm_pressure_alt");
+
+                other.Add(new fuelPrm() { prm = "ECTM_COMPUTED_AIRSPEED", value = "" });
+                props.Add("prop_ectm_computed_airspeed");
+
+                other.Add(new fuelPrm() { prm = "ECTM_ENG1_EGT", value = "" });
+                props.Add("prop_ectm_eng1_egt");
+
+                other.Add(new fuelPrm() { prm = "ECTM_ENG1_N1", value = "" });
+                props.Add("prop_ectm_eng1_n1");
+
+                other.Add(new fuelPrm() { prm = "ECTM_ENG1_N2", value = "" });
+                props.Add("prop_ectm_eng1_n2");
+
+                other.Add(new fuelPrm() { prm = "ECTM_ENG1_EPR", value = "" });
+                props.Add("prop_ectm_eng1_epr");
+
+                other.Add(new fuelPrm() { prm = "ECTM_ENG1_FUEL_FLOW", value = "" });
+                props.Add("prop_ectm_eng1_fuel_flow");
+
+                other.Add(new fuelPrm() { prm = "ECTM_ENG2_EGT", value = "" });
+                props.Add("prop_ectm_eng2_egt");
+
+                other.Add(new fuelPrm() { prm = "ECTM_ENG2_N1", value = "" });
+                props.Add("prop_ectm_eng2_n1");
+
+                other.Add(new fuelPrm() { prm = "ECTM_ENG2_N2", value = "" });
+                props.Add("prop_ectm_eng2_n2");
+
+                other.Add(new fuelPrm() { prm = "ECTM_ENG2_EPR", value = "" });
+                props.Add("prop_ectm_eng2_epr");
+
+                other.Add(new fuelPrm() { prm = "ECTM_ENG2_FUEL_FLOW", value = "" });
+                props.Add("prop_ectm_eng2_fuel_flow");
 
 
                 var dtupd = DateTime.UtcNow.ToString("yyyyMMddHHmm");
