@@ -16,5 +16,7 @@ namespace AirpocketTRN.Models
     {
         public int csf_id { get; set; }
         public string session_key { get; set; }
+    
+        public virtual CourseSessionFDP CourseSessionFDP { get; set; }
     }
 }

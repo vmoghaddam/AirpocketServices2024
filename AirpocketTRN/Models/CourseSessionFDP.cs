@@ -14,6 +14,12 @@ namespace AirpocketTRN.Models
     
     public partial class CourseSessionFDP
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public CourseSessionFDP()
+        {
+            this.CourseSessionFDPItems = new HashSet<CourseSessionFDPItem>();
+        }
+    
         public int Id { get; set; }
         public int EmployeeId { get; set; }
         public int FDPId { get; set; }
@@ -23,5 +29,7 @@ namespace AirpocketTRN.Models
     
         public virtual Course Course { get; set; }
         public virtual FDP FDP { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CourseSessionFDPItem> CourseSessionFDPItems { get; set; }
     }
 }

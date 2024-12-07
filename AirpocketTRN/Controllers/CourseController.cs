@@ -439,7 +439,8 @@ namespace AirpocketTRN.Controllers
         public async Task<IHttpActionResult> PostCourseSessionssync(dynamic dto)
         {
             int cid = Convert.ToInt32(dto.id);
-            var result = await courseService.SyncSessionsToRoster(cid);
+            // var result = await courseService.SyncSessionsToRoster(cid);
+            var result = await courseService.SyncSessionsToRosterByDate(cid);
 
             return Ok(result);
         }

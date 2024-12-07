@@ -159,9 +159,9 @@ namespace AirpocketTRN.Models
         public virtual DbSet<ViewFDPIdea> ViewFDPIdeas { get; set; }
         public virtual DbSet<Course> Courses { get; set; }
         public virtual DbSet<CoursePeople> CoursePeoples { get; set; }
-        public virtual DbSet<ViewCourseNew> ViewCourseNews { get; set; }
         public virtual DbSet<ViewCoursePeople> ViewCoursePeoples { get; set; }
         public virtual DbSet<CourseSessionFDP> CourseSessionFDPs { get; set; }
         public virtual DbSet<CourseSessionFDPItem> CourseSessionFDPItems { get; set; }
+        public virtual DbSet<ViewCourseNew> ViewCourseNews { get; set; }
     }
 }
