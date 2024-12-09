@@ -450,7 +450,7 @@ namespace AirpocketTRN.Controllers
         public async Task<IHttpActionResult> GetCourseSessionssync(int id)
         {
              
-            var result = await courseService.SyncSessionsToRoster(id);
+            var result = await courseService.SyncSessionsToRosterByDate(id);
 
             return Ok(result);
         }

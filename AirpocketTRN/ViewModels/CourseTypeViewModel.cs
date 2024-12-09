@@ -148,7 +148,7 @@ namespace AirpocketTRN.ViewModels
         public string HoldingType { get; set; }
 
         public int? Cost { get; set; }
-
+        public int? session_changed { get; set; }
 
         //pasco
         public bool? InForm { get; set; }

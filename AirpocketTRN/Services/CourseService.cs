@@ -2593,6 +2593,9 @@ namespace AirpocketTRN.Services
             entity.Financial = dto.Financial;
             entity.InForm = dto.InForm;
             entity.Certificate = dto.Certificate;
+
+           
+
             if (dto.Id == -1)
             {
                 if (dto.Sessions.Count > 0)
@@ -2742,6 +2745,26 @@ namespace AirpocketTRN.Services
 
 
             await context.SaveChangesAsync();
+            if (dto.session_changed == 1 && entity.Date_Sessions_Synced!=null)
+            {
+              
+                try
+                {
+                    await SyncSessionsToRosterByDate(entity.Id);
+                   // entity.Date_Sessions_Instructor_Synced = DateTime.Now;
+                  //  entity.Date_Sessions_Synced = DateTime.Now;
+                    await context.SaveChangesAsync();
+
+
+                }
+                catch(Exception ex)
+                {
+                    entity.Date_Sessions_Instructor_Synced = null;
+                    entity.Date_Sessions_Synced = null;
+                    await context.SaveChangesAsync();
+                }
+                
+            }
             dto.Id = entity.Id;
             return new DataResponse()
             {
@@ -5684,15 +5707,26 @@ namespace AirpocketTRN.Services
                                 }).ToList();
             var cps = await context.CoursePeoples.Where(q => q.CourseId == cid).ToListAsync();
             var personIds = cps.Select(q => q.PersonId).ToList();
+
+            if (course.CurrencyId != null)
+                personIds.Add((int)course.CurrencyId);
+            if (course.Instructor2 != null)
+                personIds.Add((int)course.Instructor2);
+
             var fltcrew = new List<string>() { "P1", "P2", "ISCCM", "SCCM", "CCM", "TRE", "TRI", "LTC" };
             var employees = await context.ViewEmployeeAbs.Where(q => personIds.Contains(q.PersonId) && fltcrew.Contains(q.JobGroup)).ToListAsync();
             var eids=employees.Select(q=>(Nullable<int>)q.PersonId).ToList();
+
+           
+
             var course_people = await context.CoursePeoples.Where(q => eids.Contains(q.PersonId)).ToListAsync();
             var currents = await context.CourseSessionFDPs.Where(q => q.CourseId == cid).ToListAsync();
             context.CourseSessionFDPs.RemoveRange(currents);
             var fdps = new List<FDP>();
             var errors = new List<object>();
+            var errors_people = new List<int?>();
             course.Date_Sessions_Synced = DateTime.Now;
+            course.Date_Sessions_Instructor_Synced = course.Date_Sessions_Synced;
             foreach (var session in grp_sessions)
             {
                 foreach (var emp in employees)
@@ -5742,7 +5776,7 @@ namespace AirpocketTRN.Services
                         duty.DateConfirmed = DateTime.Now;
                         duty.ConfirmedBy = "TRAINING";
                         var rest = new List<int>() { 1167, 1168, 1170, 5000, 5001, 100001, 100003 };
-                        duty.InitRestTo = rest.Contains(duty.DutyType) ? ((DateTime)duty.InitEnd).AddHours(12) : duty.DateEnd;
+                        duty.InitRestTo = duty.InitEnd; //rest.Contains(duty.DutyType) ? ((DateTime)duty.InitEnd).AddHours(12) : duty.DateEnd;
                         //rec.FDP = duty;
                         var csf = new CourseSessionFDP()
                         {
@@ -5771,6 +5805,7 @@ namespace AirpocketTRN.Services
                     {
                         errors.Add(new
                         {
+                            PersonId=emp.PersonId,
                             FDPId = ofdp.Id,
                             EmployeeId = emp.Id,
                            // SessionItemId = session.Id,
@@ -5786,10 +5821,18 @@ namespace AirpocketTRN.Services
                             SessionDateTo = session.end,
                             DateCreate = DateTime.Now
                         });
+                        errors_people.Add(emp.PersonId);
                     }
 
 
                 }
+            }
+            foreach(var cp in cps)
+            {
+                cp.IsSessionsSynced = false;
+                var err = errors_people.FirstOrDefault(q => q == cp.PersonId);
+                if (err == null)
+                    cp.IsSessionsSynced = true;
             }
             var saveResult = await context.SaveAsync();
             return new DataResponse()

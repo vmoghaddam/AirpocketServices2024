@@ -80,5 +80,12 @@ namespace AirpocketTRN.Models
         public Nullable<System.DateTime> Date_Sessions_Synced { get; set; }
         public Nullable<System.DateTime> Date_Sessions_Instructor_Synced { get; set; }
         public Nullable<int> Attendants { get; set; }
+        public int Synced { get; set; }
+        public Nullable<int> SyncedErrors { get; set; }
+        public Nullable<int> SesstionsCount { get; set; }
+        public Nullable<int> PLCount { get; set; }
+        public Nullable<int> PLTotal { get; set; }
+        public Nullable<int> PLRemain { get; set; }
+        public Nullable<double> PLStatus { get; set; }
     }
 }
