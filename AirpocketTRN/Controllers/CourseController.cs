@@ -818,6 +818,15 @@ namespace AirpocketTRN.Controllers
             return Ok(result);
         }
 
+        [Route("api/course/people/status/all/save")]
+        [AcceptVerbs("POST")]
+        public async Task<IHttpActionResult> PostUpdateCoursePeopleStatusAll(CoursePeopleStatusViewModel dto)
+        {
+            var result = await courseService.UpdateCoursePeopleStatusAll(dto);
+
+            return Ok(result);
+        }
+
         [Route("api/course/people/status/atlas/save")]
         [AcceptVerbs("POST")]
         public async Task<IHttpActionResult> PostUpdateCoursePeopleStatusAtlas(CoursePeopleStatusViewModel dto)

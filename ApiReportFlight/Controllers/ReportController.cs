@@ -33,13 +33,13 @@ namespace ApiReportFlight.Controllers
             df = df.Date;
             dt = dt.Date.AddDays(1);
             // dataSource: ['All', 'Cockpit', 'Cabin', 'IP', 'P1', 'P2', 'SCCM', 'CCM', 'ISCCM'],
-            var crew_grps = new List<string>() { "TRE", "TRI", "P1", "P2", "ISCCM", "SCCM", "CCM" };
+            var crew_grps = new List<string>() { "TRE", "TRI", "P1", "P2", "ISCCM", "SCCM", "CCM" ,"LTC"}; 
             if (grps == "Cockpit")
-                crew_grps = new List<string>() { "TRE", "TRI", "P1", "P2" };
+                crew_grps = new List<string>() { "TRE", "TRI", "P1", "P2" ,"LTC"};
             else if (grps == "Cabin")
                 crew_grps = new List<string>() { "ISCCM", "SCCM", "CCM" };
             else if (grps == "IP")
-                crew_grps = new List<string>() { "TRE", "TRI" };
+                crew_grps = new List<string>() { "TRE", "TRI","LTC" };
             else if (grps == "P1")
                 crew_grps = new List<string>() { "P1" };
             else if (grps == "P2")
@@ -61,7 +61,7 @@ namespace ApiReportFlight.Controllers
 
 
             var qry_crew = from x in context.ViewCrews
-                           where crew_grps.Contains(x.JobGroup)
+                           where crew_grps.Contains(x.JobGroup) 
                            select x;
             if (!string.IsNullOrEmpty(crew_types))
             {
@@ -84,10 +84,20 @@ namespace ApiReportFlight.Controllers
 
             var crew_ids = ds_crew.Select(q => q.CrewId).ToList();
 
+             
+
+            var crew_flights = (from x in context.ViewCrewFlightApps
+                                where crew_ids.Contains(x.CrewId) && x.STDDay >= df && x.STDDay < dt && x.FlightStatusId!=4
+                                select new { x.CrewId, x.IsPositioning, x.Position ,x.BlockTime,x.FlightTime}
+                             ).ToList();
+
+
 
             var qry_fdps = from x in context.RptFDP2
                            where x.STDDay >= df && x.STDDay < dt && crew_ids.Contains(x.CrewId)
                            select x;
+
+            var final_crew_ids=qry_fdps.Select(q=>q.CrewId).ToList();
 
             var ds_fdps = qry_fdps.ToList();
 
@@ -136,6 +146,21 @@ namespace ApiReportFlight.Controllers
                                      XAirportLND = grp.Sum(q => q.XAirportLND) ?? 0,
                                      XAirportTO = grp.Sum(q => q.XAirportTO) ?? 0,
                                      FDPs = grp.OrderBy(q => q.STD).ToList(),
+                                     DH= crew_flights.Where (q=>q.CrewId== grp.Key.CrewId && q.IsPositioning==true).Count(),
+                                     Instructor= crew_flights.Where(q => q.CrewId == grp.Key.CrewId && q.IsPositioning != true 
+                                       && (q.Position=="IP" || q.Position=="TRE" || q.Position=="TRI" || q.Position=="LTC" || q.Position=="ISCCM")  ).Count(),
+                                     InstructorBlock = crew_flights.Where(q => q.CrewId == grp.Key.CrewId && q.IsPositioning != true
+                                        && (q.Position == "IP" || q.Position == "TRE" || q.Position == "TRI" || q.Position == "LTC" || q.Position == "ISCCM")).Sum(q=>q.BlockTime),
+
+                                     OBS = crew_flights.Where(q => q.CrewId == grp.Key.CrewId && q.IsPositioning != true
+                                       && (q.Position == "OBS")).Count(),
+                                     OBSBlock = crew_flights.Where(q => q.CrewId == grp.Key.CrewId && q.IsPositioning != true
+                                        && (q.Position == "OBS")).Sum(q => q.BlockTime),
+
+                                     Check = crew_flights.Where(q => q.CrewId == grp.Key.CrewId && q.IsPositioning != true
+                                       && (q.Position == "Check")).Count(),
+                                     CheckBlock = crew_flights.Where(q => q.CrewId == grp.Key.CrewId && q.IsPositioning != true
+                                        && (q.Position == "Check")).Sum(q => q.BlockTime),
 
                                  }).OrderBy(q => q.GroupOrder).ThenByDescending(q => q.FixedFlightTime).ThenBy(q => q.LastName).ToList();
 
@@ -161,6 +186,7 @@ namespace ApiReportFlight.Controllers
                             where x.Date >= df && x.Date < dt && crew_ids.Contains(x.CrewId)
                             select x;
             var ds_nofdp = qry_nofdp.ToList();
+            final_crew_ids=final_crew_ids.Concat(ds_nofdp.Select(q=>q.CrewId)).ToList();
 
             var ds_nofdp_total = (from x in ds_nofdp
                                   group x by new { x.CrewId, x.DutyTypeTitle, x.DutyType } into grp
@@ -267,6 +293,14 @@ namespace ApiReportFlight.Controllers
                     crew.XAirportLND = fdp.XAirportLND;
                     crew.XAirportTO = fdp.XAirportTO + fdp.XAirportLND;
                     crew.FDPs = fdp.FDPs.ToList();
+                    crew.Instructor = fdp.Instructor;
+                    crew.InstructorBlock = fdp.InstructorBlock;
+                    crew.OBS = fdp.OBS;
+                    crew.OBSBlock = fdp.OBSBlock;
+                    crew.Check = fdp.Check;
+                    crew.CheckBlock = fdp.CheckBlock;
+                    crew.DH = fdp.DH;
+
                     //crew.FixTimeTotal += fdp.FixedFlightTime;
                 }
             }
@@ -315,7 +349,9 @@ namespace ApiReportFlight.Controllers
             //    result.Add(obj);
             //}
 
-            return Ok(ds_crew.OrderBy(q => q.GroupOrder).ThenByDescending(q => q.FixTimeTotal).ThenBy(q => q.LastName).ToList());
+            var _result=ds_crew.Where(q=> final_crew_ids.Contains(q.CrewId)).ToList();
+             
+            return Ok(_result.OrderBy(q => q.GroupOrder).ThenByDescending(q => q.FixTimeTotal).ThenBy(q => q.LastName).ToList());
 
 
         }
@@ -366,6 +402,16 @@ namespace ApiReportFlight.Controllers
 
             public int Leg2X { get; set; }
             public int Leg4X { get; set; }
+            public int DH { get; set; }
+            public int Instructor { get; set; }
+            public int? InstructorBlock { get; set; }
+
+            public int OBS { get; set; }
+            public int? OBSBlock { get; set; }
+
+
+            public int Check { get; set; }
+            public int? CheckBlock { get; set; }
 
             public int Safety { get; set; }
             public int SafetyBlock { get; set; }
@@ -1882,16 +1928,18 @@ namespace ApiReportFlight.Controllers
                     return 1;
                 case "TRI":
                     return 2;
-                case "P1":
+                case "LTC":
                     return 3;
-                case "P2":
+                case "P1":
                     return 4;
-                case "ISCCM":
+                case "P2":
                     return 5;
+                case "ISCCM":
+                    return 10;
                 case "SCCM":
-                    return 6;
+                    return 11;
                 case "CCM":
-                    return 7;
+                    return 12;
                 default:
                     return 1000;
             }

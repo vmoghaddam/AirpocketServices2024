@@ -3949,6 +3949,121 @@ namespace AirpocketTRN.Services
         }
 
 
+        public async Task<DataResponse> UpdateCoursePeopleStatusAll(CoursePeopleStatusViewModel dto)
+        {
+          
+
+            var course = await context.ViewCourseNews.Where(q => q.Id == dto.CourseId).FirstOrDefaultAsync();
+            var _crs=await context.Courses.FirstOrDefaultAsync(q=>q.Id == dto.CourseId);
+            _crs.StatusId = 3;
+            var view_cps = await context.ViewCoursePeoples.Where(q => q.CourseId == dto.CourseId).ToListAsync();
+            var cps= await context.CoursePeoples.Where(q => q.CourseId == dto.CourseId).ToListAsync();
+            var person_ids = cps.Select(q => (int)q.PersonId).ToList();
+            var profiles=await context.ViewProfiles.Where(q=>person_ids.Contains(q.PersonId)).ToListAsync();
+            var certificate_histories = await context.CertificateHistories.Where(q => q.CourseId == dto.CourseId).ToListAsync();
+            var certificate_type = await context.CertificateTypes.Where(q => q.Id == course.CertificateTypeId).FirstOrDefaultAsync();
+
+            var _date_issue = ((DateTime)course.Date_Sign_Director).Date;
+            var _interval = course.Interval;
+            if (_interval == null)
+                _interval = 0;
+            if (course.Continual == true)
+                _interval = 1200;
+            var _date_exire = _date_issue.AddMonths((int)_interval).AddMonths(1);
+
+            _date_exire = new DateTime(_date_exire.Year, _date_exire.Month, 1);
+            _date_exire = _date_exire.AddDays(-1);
+
+            foreach (var cp in cps)
+            {
+                var vcp = view_cps.FirstOrDefault(q => q.Id == cp.Id);
+                var statusId = vcp.Presence == 100 ? 1 : 0;
+                var profile = profiles.FirstOrDefault(q => q.PersonId == cp.PersonId);
+                var not_applicable = context.CourseTypeApplicables.Where(q => q.IsApplicable == false && (q.TrainingGroup == profile.JobGroupRoot || q.TrainingGroup == profile.PostRoot)
+                 && q.CourseTypeId == course.CourseTypeId).FirstOrDefault();
+                var history = certificate_histories.FirstOrDefault(q=>q.PersonId==cp.PersonId);
+
+                if (history != null)
+                    context.CertificateHistories.Remove(history);
+
+                if (statusId != 1)
+                {
+                    cp.DateIssue = null;
+                    cp.DateExpire = null;
+                    cp.CertificateNo = null;
+
+                    //remove record from history
+
+
+                }
+                else
+                {
+                    cp.DateExpire = _interval == 1200 ? null : (Nullable<DateTime>)_date_exire;
+                    cp.DateIssue =_date_issue;
+                    cp.CertificateNo = cp.Id.ToString();
+                     
+
+                    //add record to history
+                    context.CertificateHistories.Add(new CertificateHistory()
+                    {
+                        CourseId = dto.CourseId,
+                        CertificateType = certificate_type != null ? (!string.IsNullOrEmpty(certificate_type.IssueField) ? certificate_type.IssueField : certificate_type.ExpireField) : "", //field_map.Identifier,
+                        DateCreate = DateTime.Now,
+                        DateExpire = not_applicable == null ? cp.DateExpire : null,
+                        DateIssue = cp.DateIssue,
+                        PersonId = (int)cp.PersonId,
+                        Remark = "Update Course Result"
+
+                    });
+                }
+
+                cp.StatusId = statusId;
+                //cp.StatusRemark = dto.Remark;
+                if (statusId == 1 && (cp.DateIssue != null || cp.DateExpire != null) && /*field_map.DbFieldIssue!=null*/certificate_type != null)
+                {
+                    var cmd_upd_part = new List<string>();
+
+                    if (cp.DateIssue != null && !string.IsNullOrEmpty(certificate_type.IssueField))
+                        cmd_upd_part.Add(/*field_map.DbFieldIssue*/certificate_type.IssueField + "='" + ((DateTime)cp.DateIssue).ToString("yyyy-MM-dd") + "' ");
+                    if (cp.DateExpire != null && !string.IsNullOrEmpty(certificate_type.IssueField))
+                        cmd_upd_part.Add(/*field_map.DbFieldExpire*/certificate_type.ExpireField + "='" + ((DateTime)cp.DateExpire).ToString("yyyy-MM-dd") + "' ");
+                    if (cp.DateExpire == null && !string.IsNullOrEmpty(certificate_type.IssueField))
+                        cmd_upd_part.Add(/*field_map.DbFieldExpire*/certificate_type.ExpireField + "=null ");
+
+                    var cmd_upd = "Update Person set "
+                        + string.Join(",", cmd_upd_part)
+                        + " Where id=" + cp.PersonId;
+
+                    var i = context.Database.ExecuteSqlCommand(cmd_upd);
+
+                }
+
+
+            }
+
+
+            
+          
+
+
+
+          
+
+            
+
+           
+
+
+            await context.SaveChangesAsync();
+
+            return new DataResponse()
+            {
+                IsSuccess = true,
+                Data = dto,
+            };
+        }
+
+
 
         public async Task<DataResponse> SaveCertificateAtlas(ViewModels.CertificateViewModel dto)
         {
@@ -5099,8 +5214,20 @@ namespace AirpocketTRN.Services
             var course = await context.ViewCourseNews.Where(q => q.Id == cid).FirstOrDefaultAsync();
             var sessions = await context.CourseSessions.Where(q => q.CourseId == cid).OrderBy(q => q.DateStart).ToListAsync();
             var people = await context.ViewCoursePeoples.Where(q => q.CourseId == cid).OrderBy(q => q.DateStart).ToListAsync();
+            
             //var press = await context.CourseSessionPresences.Where(q => q.CourseId == cid).ToListAsync();
             var press = await context.ViewCourseSessionPresences.Where(q => q.CourseId == cid).ToListAsync();
+            var sessions_stats = (from x in press
+                                  group x by new { x.Id, x.SessionKey } into grp
+                                  select new
+                                  {
+                                      grp.Key.Id,
+                                      grp.Key.SessionKey,
+                                      present = grp.Where(q => q.IsPresent == 1).Count(),
+                                      total = people.Count(),
+                                      absent = people.Count() - grp.Where(q => q.IsPresent == 1).Count()
+                                  }).ToList();
+             
             var syllabi = await context.ViewSyllabus.Where(q => q.CourseId == cid).ToListAsync();
             var exams = new List<trn_exam>();
             //var _exams = await context.trn_exam.Where(q => q.course_id == cid).ToListAsync();
@@ -5132,6 +5259,7 @@ namespace AirpocketTRN.Services
                 {
                     course,
                     sessions,
+                    sessions_stats,
                     people,
                     press,
                     syllabi,
@@ -6049,10 +6177,10 @@ namespace AirpocketTRN.Services
         {
             var certs = await context.ViewTeacherCourses.Where(q =>
                     //q.Id == id
-                    (q.Date_Sign_Ins1 != null && q.Date_Exam_Sign_Ins1 != null)
-                    && q.Date_Sign_Director == null
+                    (q.Date_Sign_Ins1 != null /*&& q.Date_Exam_Sign_Ins1 != null*/)
+                   // && q.Date_Sign_Director == null
 
-           ).OrderByDescending(q => q.DateStart).ToListAsync();
+           ).OrderBy(q=>q.Date_Sign_Director).OrderByDescending(q => q.DateStart).ToListAsync();
 
 
 
