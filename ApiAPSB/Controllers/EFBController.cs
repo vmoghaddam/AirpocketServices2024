@@ -14,6 +14,7 @@ using System.Web.UI.WebControls;
 
 namespace ApiAPSB.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class EFBController : ApiController
     {
 
