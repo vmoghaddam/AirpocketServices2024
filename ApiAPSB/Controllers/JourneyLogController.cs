@@ -365,6 +365,15 @@ namespace ApiAPSB.Controllers
             return hh.ToString().PadLeft(2, '0') + ":" + mm.ToString().PadLeft(2, '0');
         }
 
+
+        public string get_dh(List<CLJLData> ds,int flt)
+        {
+            var rec = ds.Where(q => q.FlightId == flt && q.IsPositioning == true).FirstOrDefault();
+            if (rec != null)
+                return " dh";
+            return "";
+        }
+
         [Route("api/jl/v2/xls/{fid}")]
 
         //nookp
@@ -472,6 +481,7 @@ namespace ApiAPSB.Controllers
                                select grp).ToList();
                 var query = (from x in _gcrews
                              let xfids = x.Select(q => Convert.ToInt32(q.FlightId)).ToList()
+                             //let _items=x.ToList()
                              select new CLJLData()
                              {
                                  CrewId = x.Key.CrewId,
@@ -485,7 +495,10 @@ namespace ApiAPSB.Controllers
                                  GroupOrder = x.Key.GroupOrder,
                                  IsCockpit = x.Key.IsCockpit,
                                  Legs = legs.Where(q => xfids.Contains((int)q.FlightId)).OrderBy(q => q.STD).Select(q => q.FlightNumber).Distinct().ToList(),
-                                 LegsStr = string.Join("-", legs.Where(q => xfids.Contains((int)q.FlightId)).OrderBy(q => q.STD).Select(q => q.FlightNumber).Distinct().ToList()),
+
+                                 LegsStr = string.Join("-", legs.Where(q => xfids.Contains((int)q.FlightId)).OrderBy(q => q.STD)
+                                 .Select(q => q.FlightNumber + get_dh(x.ToList(),q.FlightId))
+                                 .Distinct().ToList()),
                                  TotalBlockTime = legs.Where(q => xfids.Contains((int)q.FlightId)).Sum(q => q.BlockOff != null && q.BlockOn != null
                                       ? ((DateTime)q.BlockOn - (DateTime)q.BlockOff).TotalMinutes
                                       : (Nullable<double>)null),

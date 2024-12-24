@@ -24,7 +24,9 @@ namespace AirpocketTRN.Models
         public string Remark { get; set; }
         public Nullable<int> DurationActual { get; set; }
         public Nullable<int> Status { get; set; }
+        public Nullable<int> CourseTypeId { get; set; }
     
         public virtual Course Course { get; set; }
+        public virtual CourseType CourseType { get; set; }
     }
 }
