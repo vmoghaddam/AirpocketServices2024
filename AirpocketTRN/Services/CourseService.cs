@@ -1555,7 +1555,7 @@ namespace AirpocketTRN.Services
         {
             var course = await context.ViewCourseNews.Where(q => q.Id == cid).FirstOrDefaultAsync();
             var sessions = await context.CourseSessions.Where(q => q.CourseId == cid).OrderBy(q => q.DateStart).ToListAsync();
-            var syllabi = await context.CourseSyllabus.Where(q => q.CourseId == cid).ToListAsync();
+            var syllabi = await context.ViewSyllabus.Where(q => q.CourseId == cid).ToListAsync();
             //var exams =await context.trn_exam.Where(q=>q.course_id==cid).ToListAsync();
             var exams = await (from e in context.trn_exam
                                where e.course_id == cid
@@ -2542,65 +2542,128 @@ namespace AirpocketTRN.Services
         }
         public async Task<DataResponse> SaveCourse(ViewModels.CourseViewModel dto)
         {
-            Course entity = null;
-
-            if (dto.Id == -1)
+            try
             {
-                entity = new Course();
-                context.Courses.Add(entity);
-            }
+                Course entity = null;
 
-            else
-            {
-                entity = await context.Courses.FirstOrDefaultAsync(q => q.Id == dto.Id);
-
-            }
-
-            if (entity == null)
-                return new DataResponse()
+                if (dto.Id == -1)
                 {
-                    Data = dto,
-                    IsSuccess = false,
-                    Errors = new List<string>() { "entity not found" }
-                };
+                    entity = new Course();
+                    context.Courses.Add(entity);
+                }
 
-            //ViewModels.Location.Fill(entity, dto);
-            entity.CourseTypeId = dto.CourseTypeId;
-            entity.DateStart = (DateTime)DateObject.ConvertToDate(dto.DateStart).Date;
-            entity.DateEnd = (DateTime)DateObject.ConvertToDate(dto.DateEnd).Date;
-            entity.Instructor = dto.Instructor;
-            entity.CurrencyId = dto.CurrencyId;
-            entity.Location = dto.Location;
-            entity.OrganizationId = dto.OrganizationId;
-            entity.Duration = dto.Duration;
-            entity.DurationUnitId = dto.DurationUnitId;
-            entity.Remark = dto.Remark;
-            entity.TrainingDirector = dto.TrainingDirector;
-            entity.Title = dto.Title;
-            entity.Recurrent = dto.Recurrent;
-            entity.Interval = dto.Interval;
-            entity.CalanderTypeId = dto.CalanderTypeId;
-            entity.IsGeneral = dto.IsGeneral;
-            entity.CustomerId = dto.CustomerId;
-            entity.No = dto.No;
-            entity.IsNotificationEnabled = dto.IsNotificationEnabled;
-            entity.StatusId = dto.StatusId;
-            entity.HoldingType = dto.HoldingType;
-            entity.Instructor2 = dto.Instructor2Id;
-            entity.Cost = dto.Cost;
-            entity.HoldingType = dto.HoldingType;
-            entity.SendLetter = dto.SendLetter;
-            entity.Financial = dto.Financial;
-            entity.InForm = dto.InForm;
-            entity.Certificate = dto.Certificate;
-
-           
-
-            if (dto.Id == -1)
-            {
-                if (dto.Sessions.Count > 0)
+                else
                 {
-                    foreach (var s in dto.Sessions)
+                    entity = await context.Courses.FirstOrDefaultAsync(q => q.Id == dto.Id);
+
+                }
+
+                if (entity == null)
+                    return new DataResponse()
+                    {
+                        Data = dto,
+                        IsSuccess = false,
+                        Errors = new List<string>() { "entity not found" }
+                    };
+
+                //ViewModels.Location.Fill(entity, dto);
+                entity.CourseTypeId = dto.CourseTypeId;
+                entity.DateStart = (DateTime)DateObject.ConvertToDate(dto.DateStart).Date;
+                entity.DateEnd = (DateTime)DateObject.ConvertToDate(dto.DateEnd).Date;
+                entity.Instructor = dto.Instructor;
+                entity.CurrencyId = dto.CurrencyId;
+                entity.Location = dto.Location;
+                entity.OrganizationId = dto.OrganizationId;
+                entity.Duration = dto.Duration;
+                entity.DurationUnitId = dto.DurationUnitId;
+                entity.Remark = dto.Remark;
+                entity.TrainingDirector = dto.TrainingDirector;
+                entity.Title = dto.Title;
+                entity.Recurrent = dto.Recurrent;
+                entity.Interval = dto.Interval;
+                entity.CalanderTypeId = dto.CalanderTypeId;
+                entity.IsGeneral = dto.IsGeneral;
+                entity.CustomerId = dto.CustomerId;
+                entity.No = dto.No;
+                entity.IsNotificationEnabled = dto.IsNotificationEnabled;
+                entity.StatusId = dto.StatusId;
+                entity.HoldingType = dto.HoldingType;
+                entity.Instructor2 = dto.Instructor2Id;
+                entity.Cost = dto.Cost;
+                entity.HoldingType = dto.HoldingType;
+                entity.SendLetter = dto.SendLetter;
+                entity.Financial = dto.Financial;
+                entity.InForm = dto.InForm;
+                entity.Certificate = dto.Certificate;
+
+
+
+                if (dto.Id == -1)
+                {
+                    if (dto.Sessions.Count > 0)
+                    {
+                        foreach (var s in dto.Sessions)
+                        {
+                            var dtobj = DateObject.ConvertToDateTimeSession(s);
+                            entity.CourseSessions.Add(new CourseSession()
+                            {
+                                Done = false,
+                                Key = s,
+                                DateStart = dtobj[0].Date,
+                                DateStartUtc = dtobj[0].DateUtc,
+                                DateEnd = dtobj[1].Date,
+                                DateEndUtc = dtobj[1].DateUtc,
+                            });
+                        }
+                    }
+
+                    if (dto.Syllabi.Count > 0)
+                    {
+                        foreach (var x in dto.Syllabi)
+                        {
+                            entity.CourseSyllabus.Add(new CourseSyllabu()
+                            {
+                                Duration = x.Duration,
+                                Title = x.Title,
+                                CourseTypeId = x.TypeId,
+                                InstructorId = x.InstructorId,
+
+                            });
+                        }
+                    }
+                }
+                else
+                {
+                    var _syllabi = await context.CourseSyllabus.Where(q => q.CourseId == dto.Id).ToListAsync();
+                    var _syllabiIds = _syllabi.Select(q => q.Id).ToList();
+                    var _dtoIds = dto.Syllabi.Select(q => q.Id).ToList();
+                    var _deletedSyl = _syllabi.Where(q => !_dtoIds.Contains(q.Id)).ToList();
+                    context.CourseSyllabus.RemoveRange(_deletedSyl);
+
+                    var newSyllabi = dto.Syllabi.Where(q => q.Id < 0).ToList();
+                    foreach (var x in newSyllabi)
+                    {
+                        entity.CourseSyllabus.Add(new CourseSyllabu() { Duration = x.Duration, Title = x.Title, CourseTypeId = x.TypeId, InstructorId = x.InstructorId });
+                    }
+
+
+                    var _sessions = await context.CourseSessions.Where(q => q.CourseId == dto.Id).ToListAsync();
+                    var _sessionKeys = _sessions.Select(q => q.Key).ToList();
+
+
+                    var _deleted = _sessions.Where(q => !dto.Sessions.Contains(q.Key)).ToList();
+                    var _deletedKeys = _deleted.Select(q => q.Key).ToList();
+
+                    var sessionFdps = await context.CourseSessionFDPs.Where(q => q.CourseId == dto.Id && _deletedKeys.Contains(q.SessionKey)).ToListAsync();
+                    var fdpIds = sessionFdps.Select(q => q.FDPId).ToList();
+                    var fdps = await context.FDPs.Where(q => fdpIds.Contains(q.Id)).ToListAsync();
+                    context.FDPs.RemoveRange(fdps);
+
+
+                    context.CourseSessions.RemoveRange(_deleted);
+
+                    var _newSessions = dto.Sessions.Where(q => !_sessionKeys.Contains(q)).ToList();
+                    foreach (var s in _newSessions)
                     {
                         var dtobj = DateObject.ConvertToDateTimeSession(s);
                         entity.CourseSessions.Add(new CourseSession()
@@ -2615,162 +2678,113 @@ namespace AirpocketTRN.Services
                     }
                 }
 
-                if (dto.Syllabi.Count > 0)
+                var exiting_exams = await context.trn_exam.Where(q => q.course_id == dto.Id).ToListAsync();
+                var exam_ids = exiting_exams.Select(q => q.id).ToList();
+                var existing_templates = await context.trn_exam_question_template.Where(q => exam_ids.Contains(q.exam_id)).ToListAsync();
+
+                if (dto.exams != null && dto.exams.Count > 0)
                 {
-                    foreach (var x in dto.Syllabi)
+                    var dto_exam = dto.exams.First();
+                    var db_exam = await context.trn_exam.FirstOrDefaultAsync(q => q.course_id == dto.Id);
+                    if (db_exam == null)
                     {
-                        entity.CourseSyllabus.Add(new CourseSyllabu()
+                        db_exam = new trn_exam();
+                        entity.trn_exam.Add(db_exam);
+                    }
+                    db_exam.date_start = dto_exam.date_start;
+                    db_exam.date_start_scheduled = dto_exam.date_start_scheduled;
+                    db_exam.duration = dto_exam.duration;
+                    db_exam.exam_date = dto_exam.exam_date;
+                    db_exam.location_title = dto_exam.location_title;
+                    db_exam.location_address = dto_exam.location_address;
+                    db_exam.location_phone = dto_exam.location_phone;
+                    db_exam.status_id = 0;
+                    dto_exam.template = dto_exam.template.Where(q => q.total != null).ToList();
+
+
+                    foreach (var temp in dto_exam.template)
+                    {
+                        var db_temp = existing_templates.FirstOrDefault(q => q.exam_id == db_exam.id && q.question_category_id == temp.category_id);
+                        if (db_temp == null)
                         {
-                            Duration = x.Duration,
-                            Title = x.Title,
-                        });
+                            db_temp = new trn_exam_question_template();
+                            db_exam.trn_exam_question_template.Add(db_temp);
+                        }
+                        db_temp.question_category_id = temp.category_id;
+                        db_temp.total = temp.total;
                     }
-                }
-            }
-            else
-            {
-                var _syllabi = await context.CourseSyllabus.Where(q => q.CourseId == dto.Id).ToListAsync();
-                var _syllabiIds = _syllabi.Select(q => q.Id).ToList();
-                var _dtoIds = dto.Syllabi.Select(q => q.Id).ToList();
-                var _deletedSyl = _syllabi.Where(q => !_dtoIds.Contains(q.Id)).ToList();
-                context.CourseSyllabus.RemoveRange(_deletedSyl);
 
-                var newSyllabi = dto.Syllabi.Where(q => q.Id < 0).ToList();
-                foreach (var x in newSyllabi)
-                {
-                    entity.CourseSyllabus.Add(new CourseSyllabu() { Duration = x.Duration, Title = x.Title });
-                }
-
-
-                var _sessions = await context.CourseSessions.Where(q => q.CourseId == dto.Id).ToListAsync();
-                var _sessionKeys = _sessions.Select(q => q.Key).ToList();
-
-
-                var _deleted = _sessions.Where(q => !dto.Sessions.Contains(q.Key)).ToList();
-                var _deletedKeys = _deleted.Select(q => q.Key).ToList();
-
-                var sessionFdps = await context.CourseSessionFDPs.Where(q => q.CourseId == dto.Id && _deletedKeys.Contains(q.SessionKey)).ToListAsync();
-                var fdpIds = sessionFdps.Select(q => q.FDPId).ToList();
-                var fdps = await context.FDPs.Where(q => fdpIds.Contains(q.Id)).ToListAsync();
-                context.FDPs.RemoveRange(fdps);
-
-
-                context.CourseSessions.RemoveRange(_deleted);
-
-                var _newSessions = dto.Sessions.Where(q => !_sessionKeys.Contains(q)).ToList();
-                foreach (var s in _newSessions)
-                {
-                    var dtobj = DateObject.ConvertToDateTimeSession(s);
-                    entity.CourseSessions.Add(new CourseSession()
+                    var existing_exam_grps = await context.trn_exam_group.Where(q => q.exam_id == db_exam.id).ToListAsync();
+                    var existing_exam_people = await context.trn_exam_person.Where(q => q.exam_id == db_exam.id).ToListAsync();
+                    if (existing_exam_grps != null && existing_exam_grps.Count > 0)
+                        context.trn_exam_group.RemoveRange(existing_exam_grps);
+                    if (existing_exam_people != null && existing_exam_people.Count > 0)
+                        context.trn_exam_person.RemoveRange(existing_exam_people);
+                    // var grps = await context.JobGroups.Where(q => dto_exam.groups.Contains(q.Id)).ToListAsync();
+                    foreach (var g in dto_exam.groups)
                     {
-                        Done = false,
-                        Key = s,
-                        DateStart = dtobj[0].Date,
-                        DateStartUtc = dtobj[0].DateUtc,
-                        DateEnd = dtobj[1].Date,
-                        DateEndUtc = dtobj[1].DateUtc,
-                    });
-                }
-            }
-
-            var exiting_exams = await context.trn_exam.Where(q => q.course_id == dto.Id).ToListAsync();
-            var exam_ids = exiting_exams.Select(q => q.id).ToList();
-            var existing_templates = await context.trn_exam_question_template.Where(q => exam_ids.Contains(q.exam_id)).ToListAsync();
-
-            if (dto.exams != null && dto.exams.Count > 0)
-            {
-                var dto_exam = dto.exams.First();
-                var db_exam = await context.trn_exam.FirstOrDefaultAsync(q => q.course_id == dto.Id);
-                if (db_exam == null)
-                {
-                    db_exam = new trn_exam();
-                    entity.trn_exam.Add(db_exam);
-                }
-                db_exam.date_start = dto_exam.date_start;
-                db_exam.date_start_scheduled = dto_exam.date_start_scheduled;
-                db_exam.duration = dto_exam.duration;
-                db_exam.exam_date = dto_exam.exam_date;
-                db_exam.location_title = dto_exam.location_title;
-                db_exam.location_address = dto_exam.location_address;
-                db_exam.location_phone = dto_exam.location_phone;
-                db_exam.status_id = 0;
-                dto_exam.template = dto_exam.template.Where(q => q.total != null).ToList();
-
-
-                foreach (var temp in dto_exam.template)
-                {
-                    var db_temp = existing_templates.FirstOrDefault(q => q.exam_id == db_exam.id && q.question_category_id == temp.category_id);
-                    if (db_temp == null)
-                    {
-                        db_temp = new trn_exam_question_template();
-                        db_exam.trn_exam_question_template.Add(db_temp);
+                        db_exam.trn_exam_group.Add(new trn_exam_group() { group_id = g });
                     }
-                    db_temp.question_category_id = temp.category_id;
-                    db_temp.total = temp.total;
+                    foreach (var p in dto_exam.people)
+                        db_exam.trn_exam_person.Add(new trn_exam_person() { person_id = p });
+
                 }
 
-                var existing_exam_grps = await context.trn_exam_group.Where(q => q.exam_id == db_exam.id).ToListAsync();
-                var existing_exam_people = await context.trn_exam_person.Where(q => q.exam_id == db_exam.id).ToListAsync();
-                if (existing_exam_grps != null && existing_exam_grps.Count > 0)
-                    context.trn_exam_group.RemoveRange(existing_exam_grps);
-                if (existing_exam_people != null && existing_exam_people.Count > 0)
-                    context.trn_exam_person.RemoveRange(existing_exam_people);
-                // var grps = await context.JobGroups.Where(q => dto_exam.groups.Contains(q.Id)).ToListAsync();
-                foreach (var g in dto_exam.groups)
+
+                //pasco
+                /* var docs = await context.CourseDocuments.Where(q => q.CourseId == dto.Id).ToListAsync();
+                 var docids = dto.Documents.Where(q => q.Id > 0).Select(q => q.Id).ToList();
+                 var deleted = docs.Where(q => !docids.Contains(q.Id)).ToList();
+                 context.CourseDocuments.RemoveRange(deleted);
+
+                 var newdocs = dto.Documents.Where(q => q.Id < 0).ToList();
+
+                 foreach (var x in newdocs)
+                     entity.CourseDocuments.Add(new CourseDocument()
+                     {
+                         FileUrl = x.FileUrl,
+                         Remark = x.Remark,
+                         TypeId = x.TypeId,
+                     });*/
+                /////////////////////////////////////////
+
+
+                await context.SaveChangesAsync();
+                if (dto.session_changed == 1 && entity.Date_Sessions_Synced != null)
                 {
-                    db_exam.trn_exam_group.Add(new trn_exam_group() { group_id = g });
-                }
-                foreach (var p in dto_exam.people)
-                    db_exam.trn_exam_person.Add(new trn_exam_person() { person_id = p });
 
+                    try
+                    {
+                        await SyncSessionsToRosterByDate(entity.Id);
+                        // entity.Date_Sessions_Instructor_Synced = DateTime.Now;
+                        //  entity.Date_Sessions_Synced = DateTime.Now;
+                        await context.SaveChangesAsync();
+
+
+                    }
+                    catch (Exception ex)
+                    {
+                        entity.Date_Sessions_Instructor_Synced = null;
+                        entity.Date_Sessions_Synced = null;
+                        await context.SaveChangesAsync();
+                    }
+
+                }
+                dto.Id = entity.Id;
+                return new DataResponse()
+                {
+                    IsSuccess = true,
+                    Data = dto,
+                };
             }
-
-
-            //pasco
-            /* var docs = await context.CourseDocuments.Where(q => q.CourseId == dto.Id).ToListAsync();
-             var docids = dto.Documents.Where(q => q.Id > 0).Select(q => q.Id).ToList();
-             var deleted = docs.Where(q => !docids.Contains(q.Id)).ToList();
-             context.CourseDocuments.RemoveRange(deleted);
-
-             var newdocs = dto.Documents.Where(q => q.Id < 0).ToList();
-
-             foreach (var x in newdocs)
-                 entity.CourseDocuments.Add(new CourseDocument()
-                 {
-                     FileUrl = x.FileUrl,
-                     Remark = x.Remark,
-                     TypeId = x.TypeId,
-                 });*/
-            /////////////////////////////////////////
-
-
-            await context.SaveChangesAsync();
-            if (dto.session_changed == 1 && entity.Date_Sessions_Synced!=null)
+            catch(Exception ex)
             {
-              
-                try
+                return new DataResponse()
                 {
-                    await SyncSessionsToRosterByDate(entity.Id);
-                   // entity.Date_Sessions_Instructor_Synced = DateTime.Now;
-                  //  entity.Date_Sessions_Synced = DateTime.Now;
-                    await context.SaveChangesAsync();
-
-
-                }
-                catch(Exception ex)
-                {
-                    entity.Date_Sessions_Instructor_Synced = null;
-                    entity.Date_Sessions_Synced = null;
-                    await context.SaveChangesAsync();
-                }
-                
+                    IsSuccess = false,
+                    Data = dto,
+                };
             }
-            dto.Id = entity.Id;
-            return new DataResponse()
-            {
-                IsSuccess = true,
-                Data = dto,
-            };
         }
 
         public async Task<DataResponse> SaveCertificate(ViewModels.CertificateViewModel dto)
@@ -3310,12 +3324,15 @@ namespace AirpocketTRN.Services
             int Done = Convert.ToInt32(dto.Done);
             int Instructor = Convert.ToInt32(dto.Instructor);
             string Session = Convert.ToString(dto.Session);
+            int TypeId = Convert.ToInt32(dto.TypeId);
+            int InsId = Convert.ToInt32(dto.InstructorId);
             var syllabus = await context.CourseSyllabus.Where(q => q.Id == Id).FirstOrDefaultAsync();
             syllabus.Remark = Remark;
             syllabus.Status = Done;
             syllabus.InstructorId = Instructor;
             syllabus.SessionKey = Session;
-
+            syllabus.CourseTypeId = TypeId;
+            syllabus.InstructorId = InsId;
 
 
             await context.SaveChangesAsync();
@@ -5229,26 +5246,35 @@ namespace AirpocketTRN.Services
                                   }).ToList();
              
             var syllabi = await context.ViewSyllabus.Where(q => q.CourseId == cid).ToListAsync();
-            var exams = new List<trn_exam>();
-            //var _exams = await context.trn_exam.Where(q => q.course_id == cid).ToListAsync();
-            //var exams = _exams.Select(q => JsonConvert.DeserializeObject<ExamViewModel>(JsonConvert.SerializeObject(q))).ToList();
+            //var exams = new List<trn_exam>();
+            var _exams = await context.trn_exam.Where(q => q.course_id == cid).ToListAsync();
+            var exams = _exams.Select(q => JsonConvert.DeserializeObject<ExamViewModel>(JsonConvert.SerializeObject(q))).ToList();
 
 
-            //var exam_ids = exams.Select(q => q.id).ToList();
-            //var templates = await context.view_trn_exam_question_template.Where(q => exam_ids.Contains(q.exam_id)).ToListAsync();
-            //var questions = await context.view_trn_exam_question.Where(q => exam_ids.Contains(q.exam_id)).ToListAsync();
-            //var exam_summary = await context.view_trn_exam_summary_details.Where(q => exam_ids.Contains(q.exam_id)).ToListAsync();
-            //foreach (var x in exams)
-            //{
-            //    x.date_end_scheduled = ((DateTime)x.exam_date).AddMinutes(Convert.ToDouble(x.duration));
-            //    if (x.status_id != 0 && x.date_end_actual == null && x.date_start != null)
-            //    {
-            //        x.date_end_actual = ((DateTime)x.date_start).AddMinutes(Convert.ToDouble(x.duration));
-            //    }
-            //    x.questions = questions.Where(q => q.exam_id == x.id).OrderBy(q => q.category).ThenBy(q => q.question_id).ToList();
-            //    x.template = templates.Where(q => q.exam_id == x.id).ToList();
-            //    x.summary = exam_summary.Where(q => q.exam_id == x.id).OrderBy(q => q.last_name).ThenBy(q => q.first_name).ToList();
-            //}
+            var exam_ids = exams.Select(q => q.id).ToList();
+            var exam_ids_null = exams.Select(q =>(Nullable<int>) q.id).ToList();
+            var templates = await context.view_trn_exam_question_template.Where(q => exam_ids.Contains(q.exam_id)).ToListAsync();
+            var questions = await context.view_trn_exam_question.Where(q => exam_ids.Contains(q.exam_id)).ToListAsync();
+            var exam_summary = await context.view_trn_exam_summary_details.Where(q => exam_ids_null.Contains(q.main_exam_id)).ToListAsync();
+            try
+            {
+                foreach (var x in exams)
+                {
+                    x.date_end_scheduled = ((DateTime)x.exam_date).AddMinutes(Convert.ToDouble(x.duration));
+                    if (x.status_id != 0 && x.date_end_actual == null && x.date_start != null)
+                    {
+                        x.date_end_actual = ((DateTime)x.date_start).AddMinutes(Convert.ToDouble(x.duration));
+                    }
+                    x.questions = questions.Where(q => q.exam_id == x.id).OrderBy(q => q.category).ThenBy(q => q.question_id).ToList();
+                    x.template = templates.Where(q => q.exam_id == x.id).ToList();
+                    x.summary = exam_summary.Where(q => q.main_exam_id == x.id).OrderBy(q => q.last_name).ThenBy(q => q.first_name).ToList();
+                }
+            }
+            catch(Exception exxx)
+            {
+
+            }
+           
 
 
 
