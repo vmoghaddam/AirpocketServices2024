@@ -18,7 +18,7 @@ namespace ApiForm.Models
         public string group { get; set; }
         public Nullable<int> receiver_id { get; set; }
         public string receiver_name { get; set; }
-        public Nullable<int> receiver_mobile { get; set; }
+        public string receiver_mobile { get; set; }
         public Nullable<bool> is_active { get; set; }
     }
 }

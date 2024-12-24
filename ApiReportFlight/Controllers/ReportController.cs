@@ -2532,7 +2532,7 @@ namespace ApiReportFlight.Controllers
         public IHttpActionResult GetFlightsPaxDaily(DateTime df, DateTime dt)
         {
 
-            var Date = new DateTime(2025, 1, 1);
+            var Date = new DateTime(2025, 2, 1);
             if (df >= Date || dt >= Date)
                 return Ok();
 

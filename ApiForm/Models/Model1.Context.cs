@@ -32,7 +32,8 @@ namespace ApiForm.Models
         public virtual DbSet<FDP> FDPs { get; set; }
         public virtual DbSet<FormVacation> FormVacations { get; set; }
         public virtual DbSet<ViewEmployee> ViewEmployees { get; set; }
-        public virtual DbSet<request_receiver> request_receiver { get; set; }
         public virtual DbSet<qa_notification_history> qa_notification_history { get; set; }
+        public virtual DbSet<ViewCrew> ViewCrews { get; set; }
+        public virtual DbSet<request_receiver> request_receiver { get; set; }
     }
 }
