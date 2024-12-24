@@ -2590,7 +2590,10 @@ namespace ApiAPSB.Controllers
 
 
                 context.SaveChanges();
-                send_asr_notification(asr, employee, appleg);
+                if (ConfigurationManager.AppSettings["sms_provider"] == "magfa")
+                    send_asr_notification_magfa(asr, employee, appleg);
+                else
+                    send_asr_notification(asr, employee, appleg);
                 //var rdr = drs.Where(q => q.FlightId == flight_id).FirstOrDefault();
 
                 var result = new { IsSuccess = true, Data = new { asr.Id, asr.FlightId, asr.PICId, asr.JLSignedBy, asr.JLDatePICApproved, asr.PIC } };
@@ -2612,9 +2615,9 @@ namespace ApiAPSB.Controllers
 
         }
 
-        public void send_asr_notification(EFBASR asr, ViewEmployee employee, AppLeg flight)
+        public void send_asr_notification_magfa(EFBASR asr, ViewEmployee employee, AppLeg flight)
         {
-            new Thread(async () =>  
+            new Thread(async () =>
             {
                 try
                 {
@@ -2632,7 +2635,180 @@ namespace ApiAPSB.Controllers
                     //prts.Add("Dear ");
                     prts.Add("Dear " + asr.PIC);
                     prts.Add("Please click on the below link to see details.");
-                    prts.Add("https://ava.reportqa.airpocket.app/frmreportview.aspx?type=17&fid=" + asr.FlightId);
+                    prts.Add("https://fleet.caspianairlines.com/reportefb/frmreportview.aspx?type=17&fid=" + asr.FlightId);
+                    prts.Add("Date: " + ((DateTime)flight.STDLocal).ToString("yyyy-MM-dd"));
+                    prts.Add("Route: " + flight.FromAirportIATA + "-" + flight.ToAirportIATA);
+                    prts.Add("Register: " + flight.Register);
+                    prts.Add("PIC: " + asr.PIC);
+                    //  prts.Add("FO: " + flight.P2Name);
+                    //prts.Add("FP: " + flight.);
+                    prts.Add("Event Summary:");
+                    prts.Add(asr.Summary);
+
+
+                    var text = String.Join("\n", prts);
+                    List<qa_notification_history> nots = new List<qa_notification_history>();
+
+                    var not_receivers = context.qa_notification_receiver.Where(q => q.is_active == true).ToList();
+                    var _result = new List<qa_notification_history>();
+                    Magfa m1 = new Magfa();
+                    foreach (var rec in not_receivers)
+                    {
+                        List<string> prts2 = new List<string>();
+                        prts2.Add("New ASR Notification");
+                        prts2.Add("Dear " + rec.rec_name);
+                        prts2.Add("Please click on the below link to see details.");
+
+                        prts2.Add("https://fleet.caspianairlines.com/reportefb/frmreportview.aspx?type=17&fid=" + asr.FlightId);
+                        prts2.Add("Date: " + ((DateTime)flight.STDLocal).ToString("yyyy-MM-dd"));
+                        prts2.Add("Route: " + flight.FromAirportIATA + "-" + flight.ToAirportIATA);
+                        prts2.Add("Register: EP-" + flight.Register);
+                        prts2.Add("PIC: " + asr.PIC);
+                        // prts2.Add("FO: " + asr.P2Name);
+                        // prts2.Add("FP: " + asr.SIC);
+                        prts2.Add("Event Summary:");
+                        prts2.Add(asr.Summary);
+
+                        var text2 = String.Join("\n", prts2);
+
+
+
+                        //List<string> mail_parts = new List<string>();
+
+                        //mail_parts.Add("<b>" + "New ASR Notification" + "</b><br/>");
+                        //mail_parts.Add("<b>" + "Dear " + rec.rec_name + "</b><br/>");
+                        //mail_parts.Add("Please click on the below link to see details.");
+
+                        //mail_parts.Add("https://ava.report.airpocket.app/frmreportview.aspx?type=17&fid=" + asr.FlightId + "<br/>");
+                        //mail_parts.Add("Date: " + "<b>" + asr.FlightDate.ToString("yyyy-MM-dd") + "</b><br/>");
+                        //mail_parts.Add("Route: " + "<b>" + asr.Route + "</b><br/>");
+                        //mail_parts.Add("Register: " + "<b>" + "EP-" + asr.Register + "</b><br/>");
+                        //mail_parts.Add("PIC: " + "<b>" + asr.PIC + "</b><br/>");
+                        //mail_parts.Add("FO: " + "<b>" + asr.P2Name + "</b><br/>");
+                        //mail_parts.Add("FP: " + "<b>" + asr.SIC + "</b><br/>");
+                        //mail_parts.Add("<b>" + "Event Summary:" + "</b><br/>");
+                        //mail_parts.Add(asr.Summary);
+                        //mail_parts.Add("<br/>");
+                        //mail_parts.Add("<br/>");
+                        //mail_parts.Add("Sent by AIRPOCKET" + "<br/>");
+                        //mail_parts.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm"));
+
+
+                        //var email_body = String.Join("\n", mail_parts);
+                        //if (!string.IsNullOrEmpty(rec.email))
+                        //{
+                        //    MailHelper mail_helper = new MailHelper();
+                        //    mail_helper.SendMailByAirpocket(rec.email, rec.rec_name, "ASR NOTIFICATION (FLT NO " + asr.FlightNumber + ", ROUTE " + asr.Route + ", DATE: " + asr.FlightDate.ToString("yyyy-MM-dd") + ")", email_body);
+
+                        //}
+                        //if (!string.IsNullOrEmpty(rec.email2))
+                        //{
+                        //    MailHelper mail_helper = new MailHelper();
+                        //    mail_helper.SendMailByAirpocket(rec.email2, rec.rec_name, "ASR NOTIFICATION (FLT NO " + asr.FlightNumber + ", ROUTE " + asr.Route + ", DATE: " + asr.FlightDate.ToString("yyyy-MM-dd") + ")", email_body);
+
+                        //}
+
+
+                        var not_history = new qa_notification_history()
+                        {
+                            date_send = DateTime.Now,
+                            entity_id = asr.Id,
+                            entity_type = 8,
+                            message_text = text2,
+                            message_type = 1,
+                            rec_id = rec.rec_id,
+                            rec_mobile = rec.mobile,
+                            rec_name = rec.rec_name,
+                            counter = 0,
+
+                        };
+
+                        var smsResult1 = m1.enqueue(1, not_history.rec_mobile, text2)[0];
+                        not_history.ref_id = smsResult1.ToString();
+                        _result.Add(not_history);
+                        System.Threading.Thread.Sleep(2000);
+
+                    }
+                    var not_history_pic = new qa_notification_history()
+                    {
+                        date_send = DateTime.Now,
+                        entity_id = asr.Id,
+                        entity_type = 8,
+                        //message_text = pic_msg1,
+                        message_text = text,
+                        message_type = 2,
+                        rec_id = asr.PICId,
+                        rec_mobile = pic.Mobile,
+                        rec_name = pic.Name,
+                        counter = 0,
+                    };
+                    var not_history_pic2 = new qa_notification_history()
+                    {
+                        date_send = DateTime.Now,
+                        entity_id = asr.Id,
+                        entity_type = 8,
+                        message_text = text,
+                        message_type = 1,
+                        rec_id = asr.PICId,
+                        rec_mobile = "09124449584", //pic.Mobile,
+                        rec_name = pic.Name,
+                        counter = 0,
+                    };
+
+                    Magfa m1_pic = new Magfa();
+                    var m1_pic_result = m1_pic.enqueue(1, not_history_pic.rec_mobile, not_history_pic.message_text)[0];
+                    not_history_pic.ref_id = m1_pic_result.ToString();
+
+                    Magfa m_pic = new Magfa();
+                    var m_pic_result = m_pic.enqueue(1, not_history_pic2.rec_mobile, not_history_pic2.message_text)[0];
+                    not_history_pic2.ref_id = m_pic_result.ToString();
+
+                    _result.Add(not_history_pic);
+                    _result.Add(not_history_pic2);
+
+                    System.Threading.Thread.Sleep(20000);
+                    foreach (var x in _result)
+                    {
+                        Magfa m_status = new Magfa();
+                        //x.status = m_status.getStatus(new List<Int64>().Add(x.ref_id));
+
+                        context.qa_notification_history.Add(x);
+                    }
+
+                    context.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+            }).Start();
+            /////////////////////
+
+        }
+
+
+        public void send_asr_notification(EFBASR asr, ViewEmployee employee, AppLeg flight)
+        {
+            new Thread(async () =>
+            {
+                try
+                {
+                    var context = new dbEntities();
+                    var pic = employee; //context.ViewProfiles.Where(q => q.Id == asr.PICId).FirstOrDefault();
+
+                    //var pic_msg1 = "ضمن سپاس از ارسال گزارش، پس از بررسی و اقدامات انجام شده، حصول نتیجه در صورت لزوم به شما ابلاغ خواهد شد. با تشکر، مدیریت ایمنی و تضمین کیفیت هواپیمایی وارش";
+
+
+
+
+
+                    List<string> prts = new List<string>();
+                    prts.Add("New ASR Notification");
+                    //prts.Add("Dear ");
+                    prts.Add("Dear " + asr.PIC);
+                    prts.Add("Please click on the below link to see details.");
+                    prts.Add("https://fleet.caspianairlines.com/reportefb/frmreportview.aspx?type=17&fid=" + asr.FlightId);
                     prts.Add("Date: " + ((DateTime)flight.STDLocal).ToString("yyyy-MM-dd"));
                     prts.Add("Route: " + flight.FromAirportIATA + "-" + flight.ToAirportIATA);
                     prts.Add("Register: " + flight.Register);
@@ -2656,8 +2832,8 @@ namespace ApiAPSB.Controllers
                         prts2.Add("Dear " + rec.rec_name);
                         prts2.Add("Please click on the below link to see details.");
 
-                        prts2.Add("https://ava.reportqa.airpocket.app/frmreportview.aspx?type=17&fid=" + asr.FlightId);
-                        prts2.Add("Date: " + ((DateTime)flight.STDLocal).ToString("yyyy-MM-dd")  );
+                        prts2.Add("https://fleet.caspianairlines.com/reportefb/frmreportview.aspx?type=17&fid=" + asr.FlightId);
+                        prts2.Add("Date: " + ((DateTime)flight.STDLocal).ToString("yyyy-MM-dd"));
                         prts2.Add("Route: " + flight.FromAirportIATA + "-" + flight.ToAirportIATA);
                         prts2.Add("Register: EP-" + flight.Register);
                         prts2.Add("PIC: " + asr.PIC);
@@ -2778,7 +2954,7 @@ namespace ApiAPSB.Controllers
                 {
 
                 }
-            
+
             }).Start();
             /////////////////////
 
@@ -2848,7 +3024,12 @@ namespace ApiAPSB.Controllers
 
                 context.SaveChanges();
                 //var rdr = drs.Where(q => q.FlightId == flight_id).FirstOrDefault();
-                send_vr_notification(asr,employee, appleg);
+                send_vr_notification(asr, employee, appleg);
+
+                if (ConfigurationManager.AppSettings["sms_provider"] == "magfa")
+                    send_vr_notification_magfa(asr, employee, appleg);
+                else
+                    send_vr_notification(asr, employee, appleg);
 
                 var result = new { IsSuccess = true, Data = new { asr.Id, asr.FlightId, asr.PICId, asr.JLSignedBy, asr.JLDatePICApproved, asr.PIC } };
                 return Ok(result);
@@ -2866,6 +3047,178 @@ namespace ApiAPSB.Controllers
                 //});
                 return Ok(new { IsSuccess = false, message = msg });
             }
+
+        }
+
+        public void send_vr_notification_magfa(EFBVoyageReport asr, ViewEmployee employee, AppLeg flight)
+        {
+            new Thread(async () =>
+            {
+                try
+                {
+                    var context = new dbEntities();
+                    var pic = employee; //context.ViewProfiles.Where(q => q.Id == asr.PICId).FirstOrDefault();
+
+                    //var pic_msg1 = "ضمن سپاس از ارسال گزارش، پس از بررسی و اقدامات انجام شده، حصول نتیجه در صورت لزوم به شما ابلاغ خواهد شد. با تشکر، مدیریت ایمنی و تضمین کیفیت هواپیمایی وارش";
+
+
+
+
+
+                    List<string> prts = new List<string>();
+                    prts.Add("New Voyage Report Notification");
+                    //prts.Add("Dear ");
+                    prts.Add("Dear " + asr.PIC);
+                    prts.Add("Please click on the below link to see details.");
+                    prts.Add("https://fleet.caspianairlines.com/reportefb/frmreportview.aspx?type=19&fid=" + asr.FlightId);
+                    prts.Add("Date: " + ((DateTime)flight.STDLocal).ToString("yyyy-MM-dd"));
+                    prts.Add("Route: " + flight.FromAirportIATA + "-" + flight.ToAirportIATA);
+                    prts.Add("Register: " + flight.Register);
+                    prts.Add("PIC: " + asr.PIC);
+                    //  prts.Add("FO: " + flight.P2Name);
+                    //prts.Add("FP: " + flight.);
+                    //prts.Add("Event Summary:");
+                    //prts.Add(asr.Report);
+
+
+                    var text = String.Join("\n", prts);
+                    List<qa_notification_history> nots = new List<qa_notification_history>();
+
+                    var not_receivers = context.qa_notification_receiver.Where(q => q.is_active == true).ToList();
+                    var _result = new List<qa_notification_history>();
+                    Magfa m1 = new Magfa();
+                    foreach (var rec in not_receivers)
+                    {
+                        List<string> prts2 = new List<string>();
+                        prts2.Add("New Voyage Report Notification");
+                        prts2.Add("Dear " + rec.rec_name);
+                        prts2.Add("Please click on the below link to see details.");
+
+                        prts2.Add("https://fleet.caspianairlines.com/reportefb/frmreportview.aspx?type=19&fid=" + asr.FlightId);
+                        prts2.Add("Date: " + ((DateTime)flight.STDLocal).ToString("yyyy-MM-dd"));
+                        prts2.Add("Route: " + flight.FromAirportIATA + "-" + flight.ToAirportIATA);
+                        prts2.Add("Register: EP-" + flight.Register);
+                        prts2.Add("PIC: " + asr.PIC);
+                        // prts2.Add("FO: " + asr.P2Name);
+                        // prts2.Add("FP: " + asr.SIC);
+                        //prts2.Add("Event Summary:");
+                        // prts2.Add(asr.Summary);
+
+                        var text2 = String.Join("\n", prts2);
+
+
+
+                        //List<string> mail_parts = new List<string>();
+
+                        //mail_parts.Add("<b>" + "New ASR Notification" + "</b><br/>");
+                        //mail_parts.Add("<b>" + "Dear " + rec.rec_name + "</b><br/>");
+                        //mail_parts.Add("Please click on the below link to see details.");
+
+                        //mail_parts.Add("https://ava.report.airpocket.app/frmreportview.aspx?type=17&fid=" + asr.FlightId + "<br/>");
+                        //mail_parts.Add("Date: " + "<b>" + asr.FlightDate.ToString("yyyy-MM-dd") + "</b><br/>");
+                        //mail_parts.Add("Route: " + "<b>" + asr.Route + "</b><br/>");
+                        //mail_parts.Add("Register: " + "<b>" + "EP-" + asr.Register + "</b><br/>");
+                        //mail_parts.Add("PIC: " + "<b>" + asr.PIC + "</b><br/>");
+                        //mail_parts.Add("FO: " + "<b>" + asr.P2Name + "</b><br/>");
+                        //mail_parts.Add("FP: " + "<b>" + asr.SIC + "</b><br/>");
+                        //mail_parts.Add("<b>" + "Event Summary:" + "</b><br/>");
+                        //mail_parts.Add(asr.Summary);
+                        //mail_parts.Add("<br/>");
+                        //mail_parts.Add("<br/>");
+                        //mail_parts.Add("Sent by AIRPOCKET" + "<br/>");
+                        //mail_parts.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm"));
+
+
+                        //var email_body = String.Join("\n", mail_parts);
+                        //if (!string.IsNullOrEmpty(rec.email))
+                        //{
+                        //    MailHelper mail_helper = new MailHelper();
+                        //    mail_helper.SendMailByAirpocket(rec.email, rec.rec_name, "ASR NOTIFICATION (FLT NO " + asr.FlightNumber + ", ROUTE " + asr.Route + ", DATE: " + asr.FlightDate.ToString("yyyy-MM-dd") + ")", email_body);
+
+                        //}
+                        //if (!string.IsNullOrEmpty(rec.email2))
+                        //{
+                        //    MailHelper mail_helper = new MailHelper();
+                        //    mail_helper.SendMailByAirpocket(rec.email2, rec.rec_name, "ASR NOTIFICATION (FLT NO " + asr.FlightNumber + ", ROUTE " + asr.Route + ", DATE: " + asr.FlightDate.ToString("yyyy-MM-dd") + ")", email_body);
+
+                        //}
+
+
+                        var not_history = new qa_notification_history()
+                        {
+                            date_send = DateTime.Now,
+                            entity_id = asr.Id,
+                            entity_type = 9,
+                            message_text = text2,
+                            message_type = 1,
+                            rec_id = rec.rec_id,
+                            rec_mobile = rec.mobile,
+                            rec_name = rec.rec_name,
+                            counter = 0,
+
+                        };
+
+                        var smsResult1 = m1.enqueue(1,not_history.rec_mobile, text2)[0];
+                        not_history.ref_id = smsResult1.ToString();
+                        _result.Add(not_history);
+                        System.Threading.Thread.Sleep(2000);
+
+                    }
+                    var not_history_pic = new qa_notification_history()
+                    {
+                        date_send = DateTime.Now,
+                        entity_id = asr.Id,
+                        entity_type = 9,
+                        //message_text = pic_msg1,
+                        message_text = text,
+                        message_type = 2,
+                        rec_id = asr.PICId,
+                        rec_mobile = pic.Mobile,
+                        rec_name = pic.Name,
+                        counter = 0,
+                    };
+                    var not_history_pic2 = new qa_notification_history()
+                    {
+                        date_send = DateTime.Now,
+                        entity_id = asr.Id,
+                        entity_type = 9,
+                        message_text = text,
+                        message_type = 1,
+                        rec_id = asr.PICId,
+                        rec_mobile = "09124449584", //pic.Mobile,
+                        rec_name = pic.Name,
+                        counter = 0,
+                    };
+
+                    Magfa m1_pic = new Magfa();
+                    var m1_pic_result = m1_pic.enqueue(1,not_history_pic.rec_mobile, not_history_pic.message_text)[0];
+                    not_history_pic.ref_id = m1_pic_result.ToString();
+
+                    Magfa m_pic = new Magfa();
+                    var m_pic_result = m_pic.enqueue(1,not_history_pic2.rec_mobile, not_history_pic2.message_text)[0];
+                    not_history_pic2.ref_id = m_pic_result.ToString();
+
+                    _result.Add(not_history_pic);
+                    _result.Add(not_history_pic2);
+
+                    System.Threading.Thread.Sleep(20000);
+                    foreach (var x in _result)
+                    {
+                        Magfa m_status = new Magfa();
+                        //x.status = m_status.get_delivery(x.ref_id);
+
+                        context.qa_notification_history.Add(x);
+                    }
+
+                    context.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+            }).Start();
+            /////////////////////
 
         }
 
@@ -2921,7 +3274,7 @@ namespace ApiAPSB.Controllers
                         // prts2.Add("FO: " + asr.P2Name);
                         // prts2.Add("FP: " + asr.SIC);
                         //prts2.Add("Event Summary:");
-                       // prts2.Add(asr.Summary);
+                        // prts2.Add(asr.Summary);
 
                         var text2 = String.Join("\n", prts2);
 

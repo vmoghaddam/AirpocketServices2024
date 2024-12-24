@@ -17,7 +17,9 @@ namespace AirpocketAPI.Models
     {
         public FLYEntities()
             : base("name=FLYEntities")
-        {
+
+        {            
+                ((IObjectContextAdapter)this).ObjectContext.CommandTimeout = 180; // seconds
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

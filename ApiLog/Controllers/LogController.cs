@@ -1044,6 +1044,7 @@ namespace ApiLog.Controllers
                (
                   (q.STD >= dateFrom && q.STD <= dateTo)
                    || (q.STA >= dateFrom && q.STA <= dateTo)
+                   && ((q.STA <= new DateTime(2025, 1, 1)) || (q.STD <= new DateTime(2025, 2, 1)))
                )
                ).Select(q => new
                {

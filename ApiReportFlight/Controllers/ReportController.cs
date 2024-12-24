@@ -2878,6 +2878,11 @@ namespace ApiReportFlight.Controllers
         [AcceptVerbs("GET")]
         public IHttpActionResult GetFlightsPaxDaily(DateTime df, DateTime dt)
         {
+
+            var Date = new DateTime(2025, 2, 1);
+            if (df >= Date || dt >= Date)
+                return Ok();
+
             var cmd = "select * from viewflightpax ";
             try
             {
