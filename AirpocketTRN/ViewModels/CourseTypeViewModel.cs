@@ -168,9 +168,63 @@ namespace AirpocketTRN.ViewModels
         public int Id { get; set; }
         public string Title { get; set; }
         public int Duration { get; set; }
-        public int TypeId { get; set; }
-        public int InstructorId { get; set; }
+        public int CourseTypeId { get; set; }
+        public int CurrencyId { get; set; }
+        public List<string> Sessions { get; set; }
+        public string Remark { get; set; }
+        public int Interval { get; set; }
+        
 
+
+    }
+    public partial class ViewSyllabiDto
+    {
+        public int Id { get; set; }
+        public int CourseTypeId { get; set; }
+        
+        public Nullable<int> CertificateTypeId { get; set; }
+        public string CertificateType { get; set; }
+        
+        public System.DateTime DateStart { get; set; }
+        public Nullable<System.DateTime> DateEnd { get; set; }
+        public string Instructor { get; set; }
+       
+        public Nullable<int> Duration { get; set; }
+        public Nullable<int> DurationUnitId { get; set; }
+        public Nullable<int> StatusId { get; set; }
+        public string Status { get; set; }
+        public string Remark { get; set; }
+        
+        public string Title { get; set; }
+       
+       
+        public List<CourseSession> Sessions { get; set; }
+        
+        public Nullable<int> CurrencyId { get; set; }
+       
+        public Nullable<int> Instructor2Id { get; set; }
+        
+        public string Instructor2 { get; set; }
+        
+        public Nullable<System.DateTime> Date_Sign_Ins1 { get; set; }
+        public Nullable<System.DateTime> Date_Sign_Ins2 { get; set; }
+        public Nullable<System.DateTime> Date_Sign_Director { get; set; }
+        public Nullable<System.DateTime> Date_Sign_Staff { get; set; }
+        public Nullable<System.DateTime> Date_Sign_OPS { get; set; }
+        public Nullable<System.DateTime> Date_Exam_Sign_Ins1 { get; set; }
+        public Nullable<System.DateTime> Date_Exam_Sign_Ins2 { get; set; }
+        public Nullable<System.DateTime> Date_Sessions_Synced { get; set; }
+        public Nullable<System.DateTime> Date_Sessions_Instructor_Synced { get; set; }
+        
+        public int Synced { get; set; }
+        public Nullable<int> SyncedErrors { get; set; }
+        public Nullable<int> SesstionsCount { get; set; }
+        public Nullable<int> PLCount { get; set; }
+        public Nullable<int> PLTotal { get; set; }
+        public Nullable<int> PLRemain { get; set; }
+        public Nullable<double> PLStatus { get; set; }
+        public Nullable<int> ParentId { get; set; }
+        public string ParentTitle { get; set; }
     }
     public class CourseDoc
     {

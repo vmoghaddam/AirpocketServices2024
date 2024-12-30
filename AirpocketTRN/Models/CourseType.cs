@@ -18,8 +18,8 @@ namespace AirpocketTRN.Models
         public CourseType()
         {
             this.CourseTypeJobGroups = new HashSet<CourseTypeJobGroup>();
-            this.Courses = new HashSet<Course>();
             this.CourseSyllabus = new HashSet<CourseSyllabu>();
+            this.Courses = new HashSet<Course>();
         }
     
         public int Id { get; set; }
@@ -40,8 +40,8 @@ namespace AirpocketTRN.Models
         public virtual ICollection<CourseTypeJobGroup> CourseTypeJobGroups { get; set; }
         public virtual CertificateType CertificateType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Course> Courses { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CourseSyllabu> CourseSyllabus { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Course> Courses { get; set; }
     }
 }

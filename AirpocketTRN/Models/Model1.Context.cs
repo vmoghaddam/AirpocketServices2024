@@ -154,14 +154,15 @@ namespace AirpocketTRN.Models
         public virtual DbSet<trn_exam> trn_exam { get; set; }
         public virtual DbSet<trn_person_exam> trn_person_exam { get; set; }
         public virtual DbSet<ViewFDPIdea> ViewFDPIdeas { get; set; }
-        public virtual DbSet<Course> Courses { get; set; }
         public virtual DbSet<CoursePeople> CoursePeoples { get; set; }
         public virtual DbSet<CourseSessionFDP> CourseSessionFDPs { get; set; }
         public virtual DbSet<CourseSessionFDPItem> CourseSessionFDPItems { get; set; }
-        public virtual DbSet<ViewCourseNew> ViewCourseNews { get; set; }
         public virtual DbSet<ViewTeacherCourse> ViewTeacherCourses { get; set; }
         public virtual DbSet<ViewCoursePeople> ViewCoursePeoples { get; set; }
         public virtual DbSet<ViewSyllabu> ViewSyllabus { get; set; }
         public virtual DbSet<CourseSyllabu> CourseSyllabus { get; set; }
+        public virtual DbSet<ViewCourseNew> ViewCourseNews { get; set; }
+        public virtual DbSet<ViewCourseNewAll> ViewCourseNewAlls { get; set; }
+        public virtual DbSet<Course> Courses { get; set; }
     }
 }

@@ -49,6 +49,17 @@ namespace ApiForm.Controllers
         public IHttpActionResult SaveVacation(VacationFormViewModel log)
         {
             ppa_entities context = new ppa_entities();
+            var _dt_from = convert_to_date(log.DateFrom);
+            var m_first = new DateTime(_dt_from.Year, _dt_from.Month, 1);
+            var m_last= new DateTime(_dt_from.Year, _dt_from.Month, DateTime.DaysInMonth(_dt_from.Year, _dt_from.Month));
+
+            if (log.Reason==2)
+            {
+                var exist = context.FormVacations.Where(q => q.Reason == 2 && q.DateFrom >= m_first && q.DateTo <= m_last && q.Status == "Accepted").FirstOrDefault();
+                if (exist!=null)
+                    return Ok(new FormVacation() { Id=-1000, Remark="Your request is not acceptable. You can request an OFF once in a month."});
+
+            }
 
             var requester = context.ViewProfiles.Where(q => q.Id == log.UserId).FirstOrDefault();
 
@@ -141,6 +152,10 @@ namespace ApiForm.Controllers
             var forms = context.ViewFormVacations.Where(q => q.UserId == id).OrderByDescending(q => q.DateCreate).ToList();
             return Ok(forms);
         }
+
+
+
+       
 
 
 

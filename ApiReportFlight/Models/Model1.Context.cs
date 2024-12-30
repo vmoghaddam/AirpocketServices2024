@@ -48,5 +48,7 @@ namespace ApiReportFlight.Models
         public virtual DbSet<rpt_pax_total> rpt_pax_total { get; set; }
         public virtual DbSet<summary_flight_pax> summary_flight_pax { get; set; }
         public virtual DbSet<RptFDPItem> RptFDPItems { get; set; }
+        public virtual DbSet<Ac_MSN> Ac_MSN { get; set; }
+        public virtual DbSet<RptFDPReg> RptFDPRegs { get; set; }
     }
 }

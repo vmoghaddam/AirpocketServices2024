@@ -27,9 +27,9 @@ namespace AirpocketTRN.Models
         public int CourseId { get; set; }
         public Nullable<System.DateTime> Date { get; set; }
     
-        public virtual Course Course { get; set; }
         public virtual FDP FDP { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CourseSessionFDPItem> CourseSessionFDPItems { get; set; }
+        public virtual Course Course { get; set; }
     }
 }

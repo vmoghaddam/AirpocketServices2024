@@ -12,7 +12,7 @@ namespace AirpocketTRN.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class ViewCourseNew
+    public partial class ViewCourseNewAll
     {
         public int Id { get; set; }
         public int CourseTypeId { get; set; }

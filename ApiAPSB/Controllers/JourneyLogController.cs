@@ -988,7 +988,7 @@ namespace ApiAPSB.Controllers
                     sheet.Range[ln_leg, 24].Text = leg.FlightTime == null ? "" : format_to_time(leg.FlightTime);
                     sheet.Range[ln_leg, 25].Text = leg.BlockTime == null ? "" : format_to_time(leg.BlockTime);
                     //sheet.Range[ln_leg, 16].Text = leg.BlockOff == null || leg.BlockOn == null ? "" : format_to_time(leg.NightTime);
-
+                   
 
                     //sheet.Range[ln_leg, 17].Text = leg.RemDuty == null ? "" : format_to_time(leg.RemDuty);
                     //sheet.Range[ln_leg, 18].Text = string.IsNullOrEmpty(leg.DelayCode) ? "" : leg.DelayCode;
