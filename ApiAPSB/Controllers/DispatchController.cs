@@ -3024,8 +3024,7 @@ namespace ApiAPSB.Controllers
 
                 context.SaveChanges();
                 //var rdr = drs.Where(q => q.FlightId == flight_id).FirstOrDefault();
-                send_vr_notification(asr, employee, appleg);
-
+              
                 if (ConfigurationManager.AppSettings["sms_provider"] == "magfa")
                     send_vr_notification_magfa(asr, employee, appleg);
                 else
@@ -3449,6 +3448,8 @@ namespace ApiAPSB.Controllers
             public bool mvt { get; set; }
             public bool fuel { get; set; }
             public int? id { get; set; }
+            public bool first_point { get; set; }
+            public bool last_point { get; set; }
             public bool has_error
             {
                 get
@@ -3572,6 +3573,9 @@ namespace ApiAPSB.Controllers
                     }*/
                     var _toc = x.items.Where(q => q.name.Contains("toc_ata")).FirstOrDefault();
                     var _tod = x.items.Where(q => q.name.Contains("tod_ata")).FirstOrDefault();
+                    
+                  
+                   
                     if (string.IsNullOrEmpty(_toc.value) || string.IsNullOrEmpty(_tod.value))
                     {
                         //errors.Add(new _h_error()

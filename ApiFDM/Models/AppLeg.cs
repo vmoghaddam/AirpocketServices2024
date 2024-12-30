@@ -150,8 +150,6 @@ namespace ApiFDM.Models
         public Nullable<decimal> FPTripFuel { get; set; }
         public string ATL { get; set; }
         public string ATCPlan { get; set; }
-        public Nullable<System.DateTime> ChocksOut { get; set; }
-        public Nullable<System.DateTime> ChocksIn { get; set; }
         public Nullable<decimal> FuelPlanned { get; set; }
         public Nullable<int> OFPExtra { get; set; }
         public Nullable<int> OFPCONTFUEL { get; set; }
@@ -161,7 +159,7 @@ namespace ApiFDM.Models
         public Nullable<int> OFPTAXIFUEL { get; set; }
         public Nullable<int> OFPETOPSADDNLFUEL { get; set; }
         public Nullable<int> OFPOPSEXTRAFUEL { get; set; }
-        public Nullable<int> OFPTANKERINGFUEL { get; set; }
+        public int OFPTANKERINGFUEL { get; set; }
         public Nullable<int> OFPTOTALFUEL { get; set; }
         public Nullable<int> OFPMINTOFFUEL { get; set; }
         public Nullable<int> OFPOFFBLOCKFUEL { get; set; }
@@ -183,9 +181,16 @@ namespace ApiFDM.Models
         public Nullable<System.DateTime> arr_dusk { get; set; }
         public string FlightTypeOPS { get; set; }
         public string AttForms { get; set; }
+        public Nullable<System.DateTime> BlockOffStationLocal { get; set; }
+        public Nullable<System.DateTime> BlockOnStationLocal { get; set; }
+        public Nullable<System.DateTime> LandingStationLocal { get; set; }
+        public Nullable<System.DateTime> TakeoffStationLocal { get; set; }
         public string RouteCountry { get; set; }
-        public Nullable<int> PaxMale { get; set; }
         public Nullable<int> PaxFemale { get; set; }
-        public string AircraftType2 { get; set; }
+        public Nullable<int> PaxMale { get; set; }
+        public Nullable<bool> IsDomestic { get; set; }
+        public string AircraftModel { get; set; }
+        public Nullable<System.DateTime> ChocksOut { get; set; }
+        public Nullable<System.DateTime> ChocksIn { get; set; }
     }
 }

@@ -28,8 +28,13 @@ namespace ApiFDM.Models
         }
     
         public virtual DbSet<CrewSecretCode> CrewSecretCodes { get; set; }
+        public virtual DbSet<AppLeg> AppLegs { get; set; }
+        public virtual DbSet<ViewFDM> ViewFDMs { get; set; }
+        public virtual DbSet<FDMAirportMonthly> FDMAirportMonthlies { get; set; }
+        public virtual DbSet<FDMAVG> FDMAVGs { get; set; }
         public virtual DbSet<FDMCptAirportEventMonthly> FDMCptAirportEventMonthlies { get; set; }
         public virtual DbSet<FDMCptAirportMonthly> FDMCptAirportMonthlies { get; set; }
+        public virtual DbSet<FDMCptAll> FDMCptAlls { get; set; }
         public virtual DbSet<FDMCptAnnually> FDMCptAnnuallies { get; set; }
         public virtual DbSet<FDMCptEventDaily> FDMCptEventDailies { get; set; }
         public virtual DbSet<FDMCptEventMonthly> FDMCptEventMonthlies { get; set; }
@@ -38,34 +43,30 @@ namespace ApiFDM.Models
         public virtual DbSet<FDMCptMonthly> FDMCptMonthlies { get; set; }
         public virtual DbSet<FDMDaily> FDMDailies { get; set; }
         public virtual DbSet<FDMEventDaily> FDMEventDailies { get; set; }
+        public virtual DbSet<FDMEventMonthly> FDMEventMonthlies { get; set; }
         public virtual DbSet<FDMFoEventMonthly> FDMFoEventMonthlies { get; set; }
         public virtual DbSet<FDMFoMonthly> FDMFoMonthlies { get; set; }
+        public virtual DbSet<FDMMonthly> FDMMonthlies { get; set; }
+        public virtual DbSet<FDMPhaseDetailByEvent> FDMPhaseDetailByEvents { get; set; }
+        public virtual DbSet<FDMPhaseDetailByFlight> FDMPhaseDetailByFlights { get; set; }
+        public virtual DbSet<FDMPhaseDetailCrewByEvent> FDMPhaseDetailCrewByEvents { get; set; }
+        public virtual DbSet<FDMPhaseDetailDaily> FDMPhaseDetailDailies { get; set; }
         public virtual DbSet<FDMPhaseMonthly> FDMPhaseMonthlies { get; set; }
+        public virtual DbSet<FDMPhaseMonthlyNoCrew> FDMPhaseMonthlyNoCrews { get; set; }
+        public virtual DbSet<FDMPhaseRouteMonthly> FDMPhaseRouteMonthlies { get; set; }
         public virtual DbSet<FDMRegCptDaily_> FDMRegCptDaily_ { get; set; }
         public virtual DbSet<FDMRegCptMonthly> FDMRegCptMonthlies { get; set; }
         public virtual DbSet<FDMRegDaily> FDMRegDailies { get; set; }
         public virtual DbSet<FDMRegEventMonthly> FDMRegEventMonthlies { get; set; }
         public virtual DbSet<FDMRegFoMonthly> FDMRegFoMonthlies { get; set; }
-        public virtual DbSet<FDM> FDMs { get; set; }
-        public virtual DbSet<FDMAVG> FDMAVGs { get; set; }
-        public virtual DbSet<ViewFDM> ViewFDMs { get; set; }
-        public virtual DbSet<FDMCptMonthlyTBL> FDMCptMonthlyTBLs { get; set; }
-        public virtual DbSet<FDMAirportMonthly> FDMAirportMonthlies { get; set; }
         public virtual DbSet<FDMRegMonthly> FDMRegMonthlies { get; set; }
-        public virtual DbSet<FDMEventMonthly> FDMEventMonthlies { get; set; }
+        public virtual DbSet<FDMCptMonthlyTBL> FDMCptMonthlyTBLs { get; set; }
+        public virtual DbSet<FDMEventParameter> FDMEventParameters { get; set; }
         public virtual DbSet<ViewLegTime> ViewLegTimes { get; set; }
-        public virtual DbSet<AppLeg> AppLegs { get; set; }
         public virtual DbSet<Ac_MSN> Ac_MSN { get; set; }
         public virtual DbSet<Airport> Airports { get; set; }
         public virtual DbSet<FlightInformation> FlightInformations { get; set; }
-        public virtual DbSet<FDMPhaseDetailDaily> FDMPhaseDetailDailies { get; set; }
-        public virtual DbSet<FDMPhaseRouteMonthly> FDMPhaseRouteMonthlies { get; set; }
-        public virtual DbSet<FDMPhaseDetailByFlight> FDMPhaseDetailByFlights { get; set; }
-        public virtual DbSet<FDMEventParameter> FDMEventParameters { get; set; }
-        public virtual DbSet<FDMMonthly> FDMMonthlies { get; set; }
-        public virtual DbSet<FDMPhaseMonthlyNoCrew> FDMPhaseMonthlyNoCrews { get; set; }
-        public virtual DbSet<FDMPhaseDetailByEvent> FDMPhaseDetailByEvents { get; set; }
-        public virtual DbSet<FDMPhaseDetailCrewByEvent> FDMPhaseDetailCrewByEvents { get; set; }
+        public virtual DbSet<FDM> FDMs { get; set; }
     
         public virtual int FillFDMCptMonthlyTBL(Nullable<int> yearFrom, Nullable<int> monthFrom, Nullable<int> yearTo, Nullable<int> monthTo)
         {

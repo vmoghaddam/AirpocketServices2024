@@ -75,7 +75,7 @@ namespace ApiFDM.Models
         public string ValidationPerson { get; set; }
         public string ConfirmationPerson { get; set; }
         public string PIC { get; set; }
-        public Nullable<int> FlightNo { get; set; }
+        public string FlightNo { get; set; }
         public string MainParameter { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
