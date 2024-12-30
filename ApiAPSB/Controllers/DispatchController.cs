@@ -3447,14 +3447,16 @@ namespace ApiAPSB.Controllers
             public bool takeoff { get; set; }
             public bool mvt { get; set; }
             public bool fuel { get; set; }
+            public bool fuel_min { get; set; }
             public int? id { get; set; }
-            public bool first_point { get; set; }
-            public bool last_point { get; set; }
+            public bool takeoff_point { get; set; }
+            public bool landing_point { get; set; }
             public bool has_error
             {
                 get
                 {
-                    return toc || tod || toc_tod || rvsm_flight || rvsm_flight || rvsm_prelevel || takeoff || fuel || mvt;
+                    return toc || tod || toc_tod || rvsm_flight || rvsm_flight || rvsm_prelevel || takeoff || fuel || mvt || takeoff_point || landing_point
+                        || fuel_min;
 
                 }
             }
@@ -3551,6 +3553,35 @@ namespace ApiAPSB.Controllers
 
                 foreach (var x in groupProps)
                 {
+                    var takeoff_ata = x.items.Where(q=>q.name.Contains("mpln")).OrderBy(q => q.id).Take(4).Where(q=>q.name.Contains("_ata_")).FirstOrDefault();
+                    var landing_ata = x.items.Where(q => q.name.Contains("mpln")).OrderByDescending(q => q.id).Take(4).Where(q => q.name.Contains("_ata_")).FirstOrDefault();
+
+                    var takeoff_usd = x.items.Where(q => q.name.Contains("mpln")).OrderBy(q => q.id).Take(4).Where(q => q.name.Contains("_usd_")).FirstOrDefault();
+                    var landing_usd = x.items.Where(q => q.name.Contains("mpln")).OrderByDescending(q => q.id).Take(4).Where(q => q.name.Contains("_usd_")).FirstOrDefault();
+
+                    
+
+                    if (takeoff_ata ==null || string.IsNullOrEmpty(takeoff_ata.value) || takeoff_usd==null || string.IsNullOrEmpty(takeoff_usd.value))
+                    {
+                        var _err = errors.Where(q => q.flight_no == x.ofp.FlightNo).FirstOrDefault();
+                        if (_err != null)
+                        {
+                            _err.takeoff_point = true;
+
+                        }
+                    }
+
+                    if (landing_ata == null || string.IsNullOrEmpty(landing_ata.value) || landing_usd == null || string.IsNullOrEmpty(landing_usd.value))
+                    {
+                        var _err = errors.Where(q => q.flight_no == x.ofp.FlightNo).FirstOrDefault();
+                        if (_err != null)
+                        {
+                            _err.landing_point = true;
+
+                        }
+                    }
+
+
                     /*var first_point = x.items.ToList().OrderBy(q => q.id).FirstOrDefault();
                     if (first_point != null)
                     {
@@ -3768,7 +3799,8 @@ namespace ApiAPSB.Controllers
                             toc_tod = true,
                             tod = true,
                             mvt = flt.BlockOff == null || flt.BlockOn == null || flt.TakeOff == null || flt.Landing == null,
-                            fuel = flt.FuelUplift == null || flt.FuelUsed == null || flt.FuelRemaining == null
+                            fuel = flt.FuelUplift == null || flt.FuelUsed == null || flt.FuelRemaining == null,
+                            fuel_min=true
 
 
 
@@ -3807,7 +3839,8 @@ namespace ApiAPSB.Controllers
                         flight_no = _flt.ofp.FlightNo,
                         id = _flt.ofp.FlightId,
                         mvt = flt2.BlockOff == null || flt2.BlockOn == null || flt2.TakeOff == null || flt2.Landing == null,
-                        fuel = flt2.FuelUplift == null || flt2.FuelUsed == null || flt2.FuelRemaining == null
+                        fuel = flt2.FuelUplift == null || flt2.FuelUsed == null || flt2.FuelRemaining == null,
+                        fuel_min=flt2.FuelTotal<flt2.OFPMINTOFFUEL
 
                     });
 
