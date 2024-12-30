@@ -259,21 +259,15 @@ namespace ApiFDM.Controllers
                     flight.Duration = float.Parse(row[2]);
                     flight.Value = row[3];
                     flight.Limit = row[4];
-                    flight.FromAirport = row[5];
-                    flight.FromAirportIATA =row[6];
-                    flight.ToAirport = row[7];
-                    flight.ToAirportIATA = row[7];
+                    flight.Phase = row[5];
+                    flight.FlightNo = row[6];
+                    flight.FromAirportIATA =row[7];
+                    flight.ToAirportIATA = row[8];
                     flight.TO_Datetime = row[9];
                     flight.TD_Datetime = row[10];
-                    flight.FlightNo = row[11];
-                    flight.Aircraft = row[12];
-                    flight.IP = row[13];
-                    flight.P1 = row[14];
-                    flight.P2 = row[15];
-                    flight.FlyBy = row[16];
-                    flight.Phase = row[17];
-                    flight.MainParameter = row[18];
-                    flight.Context = row[19];
+                    flight.Aircraft = row[11];
+                    flight.MainParameter = row[12];
+                    flight.Context = row[13];
                     
                     flights.Add(flight);
                 }
@@ -377,7 +371,7 @@ namespace ApiFDM.Controllers
                 int year = DateTime.Parse(date).Year;
                 int month = DateTime.Parse(date).Month;
                 context.SaveChanges();
-                UpdateFdmTbl(year, month, year, month);
+                //UpdateFdmTbl(year, month, year, month);
                 return failedItems;
 
             }
@@ -385,16 +379,24 @@ namespace ApiFDM.Controllers
             {
                 var ds = new List<FailedItmes>();
                 var msg = ex.Message;
+
                 if (ex.InnerException != null)
-                    msg += " INNSER: " + ex.InnerException.Message;
-                var exist = new FailedItmes();
-                exist.Status = 500;
-                exist.FileName = fn;
-                exist.Message = msg;
-                var inner = ex.ToString();
+                    msg += " INNER: " + ex.InnerException.Message;
+
+                // Capture the full exception details including stack trace
+                var fullDetails = ex.ToString();
+
+                var exist = new FailedItmes
+                {
+                    Status = 500,
+                    FileName = fn,
+                    Message = msg + "\nDETAILS: " + fullDetails // Append full details to the message
+                };
+
                 ds.Add(exist);
                 return ds;
             }
+
         }
 
 
@@ -428,35 +430,48 @@ namespace ApiFDM.Controllers
                     var flight = new MD();
                     var row = rows[i];
 
-                    flight.EventId = Int32.Parse(row[0]);
-                    flight.EventDefId = Int32.Parse(row[1]);
-                    flight.Severity = row[2];
-                    flight.EventName = row[3];
-                    flight.Duration = float.Parse(row[4]);
-                    flight.FromAirport = row[5];
-                    flight.FromAirportIATA = row[6];
-                    flight.ToAirport = row[7];
+                    //flight.EventId = Int32.Parse(row[0]);
+                    //flight.EventDefId = Int32.Parse(row[1]);
+                    //flight.Severity = row[2];
+                    //flight.EventName = row[3];
+                    //flight.Duration = float.Parse(row[4]);
+                    //flight.FromAirport = row[5];
+                    //flight.FromAirportIATA = row[6];
+                    //flight.ToAirport = row[7];
+                    //flight.ToAirportIATA = row[8];
+                    //flight.TO_DateTime = row[9];
+                    //flight.TD_DateTime = row[10];
+                    //flight.FlightNo = row[11];
+                    //flight.Aircraft = row[12];
+                    //flight.IP = row[13];
+                    //flight.P1 = row[14];
+                    //flight.P2 = row[15];
+                    //flight.PIC = row[16];
+                    //flight.Phase = row[17];
+
+
+                    //flight.AircraftType = row[18];
+                    //flight.ExceedValue = row[19];
+                    //flight.LimitValue = row[20];
+                    //flight.MainParameter = row[21];
+                    //flight.Context = row[22];
+
+
+                    flight.Severity = row[0];
+                    flight.EventName = row[1];
+                    flight.Duration = float.Parse(row[2]);
+                    flight.ExceedValue = row[3];
+                    flight.LimitValue = row[4];
+                    flight.Phase = row[5];
+                    flight.FlightNo = row[6];
+                    flight.FromAirportIATA = row[7];
                     flight.ToAirportIATA = row[8];
                     flight.TO_DateTime = row[9];
                     flight.TD_DateTime = row[10];
-                    flight.FlightNo = row[11];
-                    flight.Aircraft = row[12];
-                    flight.IP = row[13];
-                    flight.P1 = row[14];
-                    flight.P2 = row[15];
-                    flight.PIC = row[16];
-                    flight.Phase = row[17];
+                    flight.Aircraft = row[11];
+                    flight.MainParameter = row[12];
+                    flight.Context = row[13];
 
-
-                    flight.AircraftType = row[18];
-                    flight.ExceedValue = row[19];
-                    flight.LimitValue = row[20];
-                    flight.MainParameter = row[21];
-                    flight.Context = row[22];
-                 
-                 
-                  
-                
                     //flight.Date = row[5];
                     //flight.FlightNo = row[6];
                     //flight.Reg = row[7];
@@ -584,6 +599,10 @@ namespace ApiFDM.Controllers
                 var exist = new FailedItmes();
                 exist.Status = 500;
                 exist.FileName = fn;
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += "   INNER: " + ex.InnerException.Message;
+                exist.Message = msg;
                 var inner = ex.ToString();
                 failedItems.Add(exist);
                 return failedItems;

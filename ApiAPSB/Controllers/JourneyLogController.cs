@@ -366,7 +366,7 @@ namespace ApiAPSB.Controllers
         }
 
 
-        public string get_dh(List<CLJLData> ds,int flt)
+        public string get_dh(List<CLJLData> ds, int flt)
         {
             var rec = ds.Where(q => q.FlightId == flt && q.IsPositioning == true).FirstOrDefault();
             if (rec != null)
@@ -497,7 +497,7 @@ namespace ApiAPSB.Controllers
                                  Legs = legs.Where(q => xfids.Contains((int)q.FlightId)).OrderBy(q => q.STD).Select(q => q.FlightNumber).Distinct().ToList(),
 
                                  LegsStr = string.Join("-", legs.Where(q => xfids.Contains((int)q.FlightId)).OrderBy(q => q.STD)
-                                 .Select(q => q.FlightNumber + get_dh(x.ToList(),q.FlightId))
+                                 .Select(q => q.FlightNumber + get_dh(x.ToList(), q.FlightId))
                                  .Distinct().ToList()),
                                  TotalBlockTime = legs.Where(q => xfids.Contains((int)q.FlightId)).Sum(q => q.BlockOff != null && q.BlockOn != null
                                       ? ((DateTime)q.BlockOn - (DateTime)q.BlockOff).TotalMinutes
@@ -563,7 +563,7 @@ namespace ApiAPSB.Controllers
                 foreach (var c in result.crew)
                 {
                     sheet.Range[ln_crew, 1].Text = string.IsNullOrEmpty(c.Position) ? "" : c.Position;
-                    sheet.Range[ln_crew, 2].Text = string.IsNullOrEmpty(c.Name) ? "" : c.Name+(string.IsNullOrEmpty( c.LegsStr)?"":" "+c.LegsStr);
+                    sheet.Range[ln_crew, 2].Text = string.IsNullOrEmpty(c.Name) ? "" : c.Name + (string.IsNullOrEmpty(c.LegsStr) ? "" : " " + c.LegsStr);
                     sheet.Range[ln_crew, 3].Text = format_to_time(c.TotalBlockTime);
                     ln_crew++;
                 }
@@ -725,12 +725,16 @@ namespace ApiAPSB.Controllers
                 var clegs = crewlegs.Select(q => (int)q.FlightId).ToList();
                 var legs = context.AppLegJLs.Where(q => clegs.Contains(q.FlightId)).OrderBy(q => q.STD).ToList();
                 var fdp = context.ViewFDPRests.FirstOrDefault(q => q.Id == appFlight.FDPId);
+                var reporting_time_local = legs[0].STDLocal.Value.AddMinutes(-60);
+                var reporting_time_utc = legs[0].STD.Value.AddMinutes(-60);
                 foreach (var x in legs)
                 {
                     if (x.BlockOn != null)
                     {
-                        x.RemDuty = Convert.ToInt32(Math.Round((double)fdp.MaxFDPExtended)) - Convert.ToInt32(Math.Round(((DateTime)x.BlockOn - (DateTime)fdp.ReportingTime).TotalMinutes));
-                        x.ElapsedDuty = Convert.ToInt32(Math.Round(((DateTime)x.BlockOn - (DateTime)fdp.ReportingTime).TotalMinutes));
+                        //fdp reporting time => reporting time utc
+                        x.RemDuty = Convert.ToInt32(Math.Round((double)fdp.MaxFDPExtended)) - Convert.ToInt32(Math.Round(((DateTime)x.BlockOn - (DateTime)reporting_time_utc).TotalMinutes));
+                        //fdp reporting time => reporting time utc
+                        x.ElapsedDuty = Convert.ToInt32(Math.Round(((DateTime)x.BlockOn - (DateTime)reporting_time_utc).TotalMinutes));
                     }
                     else
                     {
@@ -849,8 +853,8 @@ namespace ApiAPSB.Controllers
                     STDLocal = legs.First().STDLocal,
                     STA = legs.Last().STA,
                     STALocal = legs.Last().STALocal,
-                    OffBlockLocal=legs.First().BlockOffLocal,
-                    OnBlockLocal=legs.Last().BlockOnLocal,
+                    OffBlockLocal = legs.First().BlockOffLocal,
+                    OnBlockLocal = legs.Last().BlockOnLocal,
                     fdp.ReportingTime,
                     fdp.ReportingTimeLocal,
                     fdp.DutyEnd,
@@ -889,39 +893,50 @@ namespace ApiAPSB.Controllers
                 err_code = "2";
                 // sheet.Range[1, 17].Text = fdp.Id.ToString();
 
-                sheet.Range[14,9].Text = "FUEL INFO (kg)";
+                sheet.Range[14, 9].Text = "FUEL INFO (kg)";
 
                 sheet.Range[8, 5].Text = ((DateTime)result.Date).ToString("MM/dd/yyyy");
                 sheet.Range[4, 5].Text = string.IsNullOrEmpty(result.AcType) ? "" : result.AcType;
-                sheet.Range[6, 5].Text = string.IsNullOrEmpty(result.Reg) ? "" :  result.Reg;
+                sheet.Range[6, 5].Text = string.IsNullOrEmpty(result.Reg) ? "" : result.Reg;
+                //offblock local => stdlocal
+                sheet.Range[11, 7].Text = ((DateTime)result.STDLocal).ToString("HH:mm");
+                sheet.Range[12, 7].Text = result.OnBlockLocal != null ? ((DateTime)result.OnBlockLocal).ToString("HH:mm") : ((DateTime)result.STALocal).ToString("HH:mm");
 
-                sheet.Range[11, 7].Text =result.OffBlockLocal!=null? ((DateTime)result.OffBlockLocal).ToString("HH:mm"):((DateTime)result.STDLocal).ToString("HH:mm");
-                sheet.Range[12, 7].Text = result.OnBlockLocal != null? ((DateTime)result.OnBlockLocal).ToString("HH:mm") : ((DateTime)result.STALocal).ToString("HH:mm");
-
-
-                sheet.Range[11, 14].Text = ((DateTime)result.ReportingTimeLocal).ToString("HH:mm");
-               // var _start =
+                //reporting time local => stdlocal - 60 min
+                sheet.Range[11, 14].Text = ((DateTime)reporting_time_local).ToString("HH:mm");
+                // var _start =
                 sheet.Range[12, 14].Text = ((result.OnBlockLocal == null ? (DateTime)result.STALocal : (DateTime)result.OnBlockLocal)).AddMinutes(30).ToString("HH:mm");
 
-                    // ((DateTime)result.DutyEndLoccal).ToString("HH:mm");
+                // ((DateTime)result.DutyEndLoccal).ToString("HH:mm");
 
 
-                var _duty =Convert.ToInt32( Math.Round( (   
-                    
-                       (result.OnBlockLocal != null ? ((DateTime)result.OnBlockLocal)  : ((DateTime)result.STALocal) )
-                      
-                      //- (result.OffBlockLocal != null ? ((DateTime)result.OffBlockLocal)  : ((DateTime)result.STDLocal) )
+                var _duty = Convert.ToInt32(Math.Round((
+
+                       (result.OnBlockLocal != null ? ((DateTime)result.OnBlockLocal) : ((DateTime)result.STALocal))
+
+                        //- (result.OffBlockLocal != null ? ((DateTime)result.OffBlockLocal)  : ((DateTime)result.STDLocal) )
                         - ((DateTime)result.ReportingTimeLocal)
-                        ).TotalMinutes) );
+                        ).TotalMinutes));
 
                 sheet.Range[11, 20].Text = format_to_time(result.MaxFDP);
                 //var scheduled_fdp =Convert.ToInt32( Math.Round( (((DateTime)result.STALocal) - ((DateTime)result.ReportingTimeLocal)).TotalMinutes));
-                sheet.Range[12, 20].Text = format_to_time(_duty+30); //format_to_time(result.FDP+30);
+                sheet.Range[12, 20].Text = format_to_time(_duty + 30); //format_to_time(result.FDP+30);
 
                 sheet.Range[12, 23].Text = format_to_time(_duty);  //format_to_time(result.FDP  );
 
+                TimeSpan flightTime = TimeSpan.FromMinutes(result.flight);
+                sheet.Range[23, 24].Text = result.OnBlockLocal != null
+                    ? flightTime.ToString(@"hh\:mm")
+                    : ((DateTime)result.STALocal).ToString("HH:mm");
+
+                TimeSpan blockTime = TimeSpan.FromMinutes(result.block);
+                sheet.Range[23, 25].Text = result.OnBlockLocal != null
+                    ? blockTime.ToString(@"hh\:mm")
+                    : ((DateTime)result.STALocal).ToString("HH:mm");
 
 
+                //sheet.Range[23, 24].Text = result.OnBlockLocal != null ? ((DateTime)result.flight).ToString("HH:mm") : ((DateTime)result.STALocal).ToString("HH:mm");
+                //sheet.Range[23, 25].Text = result.OnBlockLocal != null ? ((DateTime)result.block).ToString("HH:mm") : ((DateTime)result.STALocal).ToString("HH:mm");
 
 
 
@@ -938,7 +953,7 @@ namespace ApiAPSB.Controllers
                 var cn_crew = 1;
                 foreach (var c in result.crew)
                 {
-                    sheet.Range[ln_crew, col_crew].Text = string.IsNullOrEmpty(c.Position) ? "" : get_position( c.Position);
+                    sheet.Range[ln_crew, col_crew].Text = string.IsNullOrEmpty(c.Position) ? "" : get_position(c.Position);
                     sheet.Range[ln_crew, col_crew + 2].Text = string.IsNullOrEmpty(c.Name) ? "" : c.Name + " (" + c.JobGroup + ")";
                     //sheet.Range[ln_crew, 3].Text = format_to_time(c.TotalBlockTime);
                     ln_crew++;
@@ -959,7 +974,7 @@ namespace ApiAPSB.Controllers
                     sheet.Range[ln_leg, 4].Text = leg.FromAirportIATA;
                     sheet.Range[ln_leg, 5].Text = leg.ToAirportIATA;
                     sheet.Range[ln_leg, 6].Text = leg.FlightNumber;
-                    sheet.Range[ln_leg, 7].Text = string.IsNullOrEmpty(leg.FlightType) ? "S" : (leg.FlightType.StartsWith("S")?"S":"N");
+                    sheet.Range[ln_leg, 7].Text = string.IsNullOrEmpty(leg.FlightType) ? "S" : (leg.FlightType.StartsWith("S") ? "S" : "N");
                     sheet.Range[ln_leg, 8].Text = string.IsNullOrEmpty(leg.PF) ? "" : leg.PF;
 
                     sheet.Range[ln_leg, 9].Text = leg.FuelRemaining == null ? "" : Convert.ToInt32(leg.FuelRemaining).ToString();
@@ -987,6 +1002,10 @@ namespace ApiAPSB.Controllers
                     sheet.Range[ln_leg, 23].Text = leg.BlockOn == null ? "" : ((DateTime)leg.BlockOn).ToString("HH:mm");
                     sheet.Range[ln_leg, 24].Text = leg.FlightTime == null ? "" : format_to_time(leg.FlightTime);
                     sheet.Range[ln_leg, 25].Text = leg.BlockTime == null ? "" : format_to_time(leg.BlockTime);
+                    //sheet.Range[ln_leg, 26].Text = leg.RemDuty == null ? "" : ((DateTime)leg.RemDuty).ToString("HH:mm");
+                    sheet.Range[ln_leg, 26].Text = leg.RemDuty == null ? "" : TimeSpan.FromMinutes((int)leg.RemDuty).ToString(@"hh\:mm");
+
+
                     //sheet.Range[ln_leg, 16].Text = leg.BlockOff == null || leg.BlockOn == null ? "" : format_to_time(leg.NightTime);
 
 
