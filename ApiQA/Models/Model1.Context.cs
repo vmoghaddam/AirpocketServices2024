@@ -86,6 +86,7 @@ namespace ApiQA.Models
         public virtual DbSet<survey_question> survey_question { get; set; }
         public virtual DbSet<survey_result> survey_result { get; set; }
         public virtual DbSet<survey_driver> survey_driver { get; set; }
+        public virtual DbSet<qa_form_visited_history> qa_form_visited_history { get; set; }
     
         public virtual int QAByEmployeeCount(Nullable<int> type, Nullable<int> entityId)
         {

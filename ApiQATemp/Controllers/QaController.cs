@@ -36,6 +36,75 @@ namespace ApiQA.Controllers
 
 
         [HttpGet]
+        [Route("api/qa/get/visited/form/{employee_id}/{form_type}")]
+        public async Task<DataResponse> GetVisitedForm(int employee_id, int form_type)
+        {
+            try
+            {
+
+                var visited = context.qa_form_visited_history.Where(q => q.employee_id == employee_id && q.form_type_id == form_type).ToList();
+
+
+                return new DataResponse()
+                {
+                    Data = visited,
+                    IsSuccess = true
+                };
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += "   Inner: " + ex.InnerException.Message;
+                return new DataResponse()
+                {
+                    Data = msg,
+                    IsSuccess = false
+                };
+            }
+        }
+
+        [HttpGet]
+        [Route("api/qa/update/visited/form/{employee_id}/{form_type}/{form_id}")]
+        public async Task<DataResponse> UpdateVisitedForm(int employee_id, int form_type, int form_id)
+        {
+            try
+            {
+
+                var visited = await context.qa_form_visited_history.FirstOrDefaultAsync(q => q.employee_id == employee_id && q.form_type_id == form_type && q.form_id == form_id);
+                if (visited == null)
+                {
+                    var entity = new qa_form_visited_history();
+                    entity.form_id = form_id;
+                    entity.form_type_id = form_type;
+                    entity.employee_id = employee_id;
+                    context.qa_form_visited_history.Add(entity);
+                    context.SaveChanges();
+                }
+
+
+                return new DataResponse()
+                {
+                    Data = visited,
+                    IsSuccess = true
+                };
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += "   Inner: " + ex.InnerException.Message;
+                return new DataResponse()
+                {
+                    Data = msg,
+                    IsSuccess = false
+                };
+            }
+        }
+
+
+
+        [HttpGet]
         [Route("api/get/station")]
         public async Task<DataResponse> GetStation()
         {

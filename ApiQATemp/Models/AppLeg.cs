@@ -175,5 +175,20 @@ namespace ApiQATemp.Models
         public Nullable<System.DateTime> BlockOnStation { get; set; }
         public Nullable<System.DateTime> LandingStation { get; set; }
         public Nullable<System.DateTime> TakeoffStation { get; set; }
+        public Nullable<System.DateTime> dep_dawn { get; set; }
+        public Nullable<System.DateTime> dep_dusk { get; set; }
+        public Nullable<System.DateTime> arr_dawn { get; set; }
+        public Nullable<System.DateTime> arr_dusk { get; set; }
+        public string FlightTypeOPS { get; set; }
+        public string AttForms { get; set; }
+        public Nullable<System.DateTime> BlockOffStationLocal { get; set; }
+        public Nullable<System.DateTime> BlockOnStationLocal { get; set; }
+        public Nullable<System.DateTime> LandingStationLocal { get; set; }
+        public Nullable<System.DateTime> TakeoffStationLocal { get; set; }
+        public string RouteCountry { get; set; }
+        public Nullable<int> PaxFemale { get; set; }
+        public Nullable<int> PaxMale { get; set; }
+        public Nullable<bool> IsDomestic { get; set; }
+        public string AircraftModel { get; set; }
     }
 }

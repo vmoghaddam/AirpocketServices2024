@@ -11,10 +11,13 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Security.AccessControl;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using System.Web.Http.Validation;
+using static ApiLibrary.Controllers.LibraryController;
 
 namespace ApiLibrary.Controllers
 {
@@ -27,7 +30,7 @@ namespace ApiLibrary.Controllers
         {
 
             ppa_entities context = new ppa_entities();
-            var status = await  context.BookFileVisits.Where(q => q.EmployeeId == employeeId && q.BookFileId == bookfileId).FirstOrDefaultAsync();
+            var status = await context.BookFileVisits.Where(q => q.EmployeeId == employeeId && q.BookFileId == bookfileId).FirstOrDefaultAsync();
             if (status == null)
             {
                 status = new BookFileVisit()
@@ -121,6 +124,290 @@ namespace ApiLibrary.Controllers
             }
 
         }
+
+        public class Folder
+        {
+            public int Id { get; set; }
+            public int? ParentId { get; set; }
+            public string Title { get; set; }
+            public string FullCode { get; set; }
+            public int EmployeeId { get; set; }
+            public int? Items { get; set; }
+            public int? Files { get; set; }
+            public int? NotVisited { get; set; }
+            public int? NotDownloaded { get; set; }
+            public int? CustomerId { get; set; }
+            public int? EmployeeCustomerId { get; set; }
+
+            public List<Folder> items { get; set; }
+
+        }
+
+        [Route("api/library/employee/unvisited/tree/{eid}")]
+        public async Task<IHttpActionResult> GetLibraryEmployeeUnvisitedTree(int eid)
+        {
+            try
+            {
+                using (ppa_entities context = new ppa_entities())
+                {
+                    // Fetch applicable items
+                    var items = await context.ViewBookApplicableEmployees
+                        .Where(q => q.EmployeeId == eid)
+                        .Select(f => new Folder
+                        {
+                            Id = f.BookId,
+                            ParentId = f.FolderId,
+                            Title = f.Title,
+                            FullCode = " ",
+                            EmployeeId = f.EmployeeId,
+                            Items = null,
+                            Files = null,
+                            NotVisited = null,
+                            NotDownloaded = null,
+                            CustomerId = null,
+                            EmployeeCustomerId = null,
+                        })
+                        .OrderBy(q => q.Title)
+                        .ToListAsync();
+
+                    // Fetch file records
+                    var ids = items.Select(q => q.Id).ToList();
+
+                    var files = await context.ViewBookFileVisiteds
+                        .Where(q => q.EmployeeId == eid && ids.Contains(q.BookId) && q.IsVisited == 0)
+                        .Select(f => new Folder
+                        {
+                            Id = f.Id,
+                            ParentId = f.BookId,
+                            Title = f.SysUrl,
+                            FullCode = " ",
+                            EmployeeId = f.EmployeeId,
+                            Items = null,
+                            Files = null,
+                            NotVisited = null,
+                            NotDownloaded = null,
+                            CustomerId = null,
+                            EmployeeCustomerId = null,
+                        })
+                        .ToListAsync();
+
+                    // Fetch folders
+                    var dbFolders = await context.ViewFolderApplicables
+                        .Where(q => q.EmployeeId == eid)
+                        .Select(f => new
+                        {
+                            f.Id,
+                            f.ParentId,
+                            f.Title,
+                            f.FullCode,
+                            f.EmployeeId,
+                            f.NotVisited,
+                            f.NotDownloaded,
+                            f.CustomerId,
+                            f.EmployeeCustomerId
+                        })
+                        .ToListAsync();
+
+                    // Map flat data to Folder objects
+                    var folders = dbFolders.Select(f => new Folder
+                    {
+                        Id = f.Id,
+                        ParentId = f.ParentId,
+                        Title = f.Title,
+                        FullCode = f.FullCode,
+                        EmployeeId = f.EmployeeId,
+                        NotVisited = f.NotVisited,
+                        NotDownloaded = f.NotDownloaded,
+                        CustomerId = f.CustomerId,
+                        EmployeeCustomerId = f.EmployeeCustomerId,
+                        items = new List<Folder>() // Initialize child list
+                    }).ToList();
+
+                    folders.AddRange(items);
+
+                    // Build lookup for parent-child relationships
+                    var lookup = folders.ToLookup(folder => folder.ParentId);
+
+                    // Recursive function to build tree
+                    Folder AddChildren(Folder parent)
+                    {
+                        parent.items = lookup[parent.Id].Select(AddChildren).ToList();
+                        return parent;
+                    }
+
+                    // Find the root node
+                    var root = folders.FirstOrDefault(folder => folder.Id == 1);
+                    if (root == null)
+                        return NotFound();
+
+                    // Build the tree structure
+                    var tree = AddChildren(root);
+
+                    // Recursive function to add files to the last subchild
+                    void AddFilesToLastSubchild(Folder folder)
+                    {
+                        if (!folder.items.Any())
+                        {
+                            // If the folder has no children, it's a leaf node
+                            var relatedFiles = files.Where(f => f.ParentId == folder.Id).ToList();
+                            folder.items.AddRange(relatedFiles);
+                        }
+                        else
+                        {
+                            // Recursively process child nodes
+                            foreach (var child in folder.items)
+                            {
+                                AddFilesToLastSubchild(child);
+                            }
+                        }
+                    }
+
+                    // Add files to the last subchild nodes
+                    AddFilesToLastSubchild(tree);
+
+                    return Ok(tree);
+                }
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+
+        [Route("api/library/employee/unvisited/{eid}")]
+        public async Task<IHttpActionResult> GetLibraryEmployeeUnvisited(int eid)
+        {
+            try
+            {
+                using (ppa_entities context = new ppa_entities())
+                {
+
+
+                    var unvisited = await context.ViewBookApplicableEmployees.Where(q => q.EmployeeId == eid && q.IsVisited == false).ToListAsync();
+                    var ids = unvisited.Select(q => q.BookId).ToList();
+                    var books = await context.ViewBookFiles.Where(q => ids.Contains(q.BookId)).ToListAsync();
+                    var safety_notice = books.Where(q => q.Title.Contains("Safety Notice")).ToList();
+                    var warning = books.Where(q => !q.Title.Contains("Safety Notice")).ToList();
+                    var result = new { safety_notice_count = safety_notice.Count, count = warning.Count, books = warning};
+                    return Ok(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+
+        //[Route("api/library/employee/unvisited/{eid}")]
+
+        //// [Authorize]
+        //public async Task<IHttpActionResult> GetLibraryEmployeeUnvisited(int eid)
+        //{
+        //    try
+        //    {
+        //        ppa_entities context = new ppa_entities();
+        //        var items = await context.ViewBookApplicableEmployees
+        //            .Where(q => q.EmployeeId == eid)
+        //            .Select(f => new Folder
+        //            {
+        //                Id = f.BookId,
+        //                ParentId = f.FolderId,
+        //                Title = f.Title,
+        //                FullCode = " ",
+        //                EmployeeId = f.EmployeeId,
+        //                Items = null,
+        //                Files = null,
+        //                NotVisited = null,
+        //                NotDownloaded = null,
+        //                CustomerId = null,
+        //                EmployeeCustomerId = null,
+        //            })
+        //            .OrderBy(q => q.Title)
+        //            .ToListAsync();
+
+        //        var ids = items.Select(q => q.Id).ToList();
+        //        var files = await context.ViewBookFileVisiteds.Where(q => q.EmployeeId == eid && q.IsVisited == 0).Select(f => new Folder
+        //        {
+        //            Id = f.Id,
+        //            ParentId = f.BookId,
+        //            Title = f.Title,
+        //            FullCode = " ",
+        //            EmployeeId = f.EmployeeId,
+        //            Items = null,
+        //            Files = null,
+        //            NotVisited = null,
+        //            NotDownloaded = null,
+        //            CustomerId = null,
+        //            EmployeeCustomerId = null,
+        //        }).ToListAsync();
+
+        //        var dbFolders = await context.ViewFolderApplicables
+        //            .Where(q => q.EmployeeId == eid)
+        //   .Select(f => new
+        //   {
+        //       f.Id,
+        //       f.ParentId,
+        //       f.Title,
+        //       f.FullCode,
+        //       f.EmployeeId,
+        //       f.Items,
+        //       f.Files,
+        //       f.NotVisited,
+        //       f.NotDownloaded,
+        //       f.CustomerId,
+        //       f.EmployeeCustomerId
+        //   })
+        //   .ToListAsync();
+
+        //        // Step 2: Map the flat data to Folder objects
+        //        var folders = dbFolders.Select(f => new Folder
+        //        {
+        //            Id = f.Id,
+        //            ParentId = f.ParentId,
+        //            Title = f.Title,
+        //            FullCode = f.FullCode,
+        //            EmployeeId = f.EmployeeId,
+        //            Items = f.Items,
+        //            Files = f.Files,
+        //            NotVisited = f.NotVisited,
+        //            NotDownloaded = f.NotDownloaded,
+        //            CustomerId = f.CustomerId,
+        //            EmployeeCustomerId = f.EmployeeCustomerId,
+        //            items = new List<Folder>() // Initialize the Child property
+        //        }).ToList();
+
+        //        folders.AddRange(items);
+        //        folders.AddRange(files);
+
+        //        var lookup = folders.ToLookup(folder => folder.ParentId);
+
+        //        Folder AddChildren(Folder parent)
+        //        {
+        //            parent.items = lookup[parent.Id].Select(AddChildren).ToList();
+        //            return parent;
+        //        }
+
+        //        var root = folders.FirstOrDefault(folder => folder.Id == 1);
+
+        //        if (root == null)
+        //            return NotFound();
+
+        //        var tree = AddChildren(root);
+
+
+
+        //        return Ok(tree);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new HttpResponseException(HttpStatusCode.Unauthorized);
+        //    }
+
+        //}
+
+
 
         public class Item
         {

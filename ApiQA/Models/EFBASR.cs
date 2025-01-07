@@ -123,6 +123,50 @@ namespace ApiQA.Models
         public string FormNo { get; set; }
         public Nullable<System.DateTime> DateStatus { get; set; }
         public Nullable<int> StatusEmployeeId { get; set; }
+        public string LOCTaxiway { get; set; }
+        public string LOCEnRoute { get; set; }
+        public string LOCAPP { get; set; }
+        public string ACConfigAPU { get; set; }
+        public string ACConfigENG { get; set; }
+        public Nullable<int> EGPWSTypeId { get; set; }
+        public string EGPWSAuralAlert { get; set; }
+        public string EGPWSActionTaken { get; set; }
+        public Nullable<int> CFITATCId { get; set; }
+        public string CFITFrequency { get; set; }
+        public string CFITHeading { get; set; }
+        public string CFITALT { get; set; }
+        public string CFITGPWS { get; set; }
+        public Nullable<int> AATIncidentId { get; set; }
+        public string AATRelativeALT { get; set; }
+        public string ATTRelativePos { get; set; }
+        public Nullable<int> BSSkyCondition { get; set; }
+        public Nullable<int> BSRandom { get; set; }
+        public Nullable<int> BSWindShield { get; set; }
+        public Nullable<int> BSENG { get; set; }
+        public Nullable<int> BSWing { get; set; }
+        public Nullable<int> BSFuselage { get; set; }
+        public Nullable<int> BSLDG { get; set; }
+        public Nullable<int> BSTail { get; set; }
+        public Nullable<int> BSLights { get; set; }
+        public Nullable<int> BSOther { get; set; }
+        public Nullable<int> BSEffectFlt { get; set; }
+        public Nullable<bool> WTAPDisconnected { get; set; }
+        public Nullable<bool> WTSpeed { get; set; }
+        public Nullable<bool> WTStall { get; set; }
+        public Nullable<int> MetSurfaceId { get; set; }
+        public Nullable<int> MetSurfaceConditionId { get; set; }
+        public Nullable<int> MetFlightRuleId { get; set; }
+        public Nullable<int> WTIsStall { get; set; }
+        public Nullable<int> WTIsBuffetExp { get; set; }
+        public Nullable<int> WTIsSpeed { get; set; }
+        public Nullable<int> WTIsAP { get; set; }
+        public Nullable<int> WTIsAltitude { get; set; }
+        public Nullable<int> WTIsAttitude { get; set; }
+        public Nullable<int> CFITAirapaceId { get; set; }
+        public Nullable<int> CFITIncidentId { get; set; }
+        public string MetAirportATIS { get; set; }
+        public Nullable<int> AirspaceId { get; set; }
+        public Nullable<int> AtcId { get; set; }
     
         public virtual FlightInformation FlightInformation { get; set; }
     }

@@ -202,7 +202,7 @@ namespace ApiAPSB.Controllers
 
                 entity.FlightId = EFBASR.FlightId;
                 entity.EventTypeId = EFBASR.EventTypeId;
-                entity.OccurrenceDate = Helper.ConvertToDate(EFBASR.OccurrenceDate);// DateTime.Parse(EFBASR.OccurrenceDate);
+                entity.OccurrenceDate = DateTime.Now; //DateTime.Parse(EFBASR.OccurrenceDate);//Helper.ConvertToDate(EFBASR.OccurrenceDate);// DateTime.Parse(EFBASR.OccurrenceDate);
                 entity.IsDay = EFBASR.IsDay;
                 entity.SQUAWK = EFBASR.SQUAWK;
                 entity.FuelJettisoned = EFBASR.FuelJettisoned;

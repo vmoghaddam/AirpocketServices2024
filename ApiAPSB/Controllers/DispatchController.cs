@@ -2635,7 +2635,7 @@ namespace ApiAPSB.Controllers
                     //prts.Add("Dear ");
                     prts.Add("Dear " + asr.PIC);
                     prts.Add("Please click on the below link to see details.");
-                    prts.Add("https://fleet.caspianairlines.com/reportefb/frmreportview.aspx?type=17&fid=" + asr.FlightId);
+                    prts.Add("https://fleet.flypersiaairlines.ir/reportefb/frmreportview.aspx?type=17&fid=" + asr.FlightId);
                     prts.Add("Date: " + ((DateTime)flight.STDLocal).ToString("yyyy-MM-dd"));
                     prts.Add("Route: " + flight.FromAirportIATA + "-" + flight.ToAirportIATA);
                     prts.Add("Register: " + flight.Register);
@@ -2659,7 +2659,7 @@ namespace ApiAPSB.Controllers
                         prts2.Add("Dear " + rec.rec_name);
                         prts2.Add("Please click on the below link to see details.");
 
-                        prts2.Add("https://fleet.caspianairlines.com/reportefb/frmreportview.aspx?type=17&fid=" + asr.FlightId);
+                        prts2.Add("https://fleet.flypersiaairlines.ir/reportefb/frmreportview.aspx?type=17&fid=" + asr.FlightId);
                         prts2.Add("Date: " + ((DateTime)flight.STDLocal).ToString("yyyy-MM-dd"));
                         prts2.Add("Route: " + flight.FromAirportIATA + "-" + flight.ToAirportIATA);
                         prts2.Add("Register: EP-" + flight.Register);
@@ -2808,7 +2808,7 @@ namespace ApiAPSB.Controllers
                     //prts.Add("Dear ");
                     prts.Add("Dear " + asr.PIC);
                     prts.Add("Please click on the below link to see details.");
-                    prts.Add("https://fleet.caspianairlines.com/reportefb/frmreportview.aspx?type=17&fid=" + asr.FlightId);
+                    prts.Add("https://fleet.flypersiaairlines.ir/reportefb/frmreportview.aspx?type=17&fid=" + asr.FlightId);
                     prts.Add("Date: " + ((DateTime)flight.STDLocal).ToString("yyyy-MM-dd"));
                     prts.Add("Route: " + flight.FromAirportIATA + "-" + flight.ToAirportIATA);
                     prts.Add("Register: " + flight.Register);
@@ -2832,7 +2832,7 @@ namespace ApiAPSB.Controllers
                         prts2.Add("Dear " + rec.rec_name);
                         prts2.Add("Please click on the below link to see details.");
 
-                        prts2.Add("https://fleet.caspianairlines.com/reportefb/frmreportview.aspx?type=17&fid=" + asr.FlightId);
+                        prts2.Add("https://fleet.flypersiaairlines.ir/reportefb/frmreportview.aspx?type=17&fid=" + asr.FlightId);
                         prts2.Add("Date: " + ((DateTime)flight.STDLocal).ToString("yyyy-MM-dd"));
                         prts2.Add("Route: " + flight.FromAirportIATA + "-" + flight.ToAirportIATA);
                         prts2.Add("Register: EP-" + flight.Register);
@@ -3024,7 +3024,7 @@ namespace ApiAPSB.Controllers
 
                 context.SaveChanges();
                 //var rdr = drs.Where(q => q.FlightId == flight_id).FirstOrDefault();
-              
+
                 if (ConfigurationManager.AppSettings["sms_provider"] == "magfa")
                     send_vr_notification_magfa(asr, employee, appleg);
                 else
@@ -3069,7 +3069,7 @@ namespace ApiAPSB.Controllers
                     //prts.Add("Dear ");
                     prts.Add("Dear " + asr.PIC);
                     prts.Add("Please click on the below link to see details.");
-                    prts.Add("https://fleet.caspianairlines.com/reportefb/frmreportview.aspx?type=19&fid=" + asr.FlightId);
+                    prts.Add("https://fleet.flypersiaairlines.ir/reportefb/frmreportview.aspx?type=19&fid=" + asr.FlightId);
                     prts.Add("Date: " + ((DateTime)flight.STDLocal).ToString("yyyy-MM-dd"));
                     prts.Add("Route: " + flight.FromAirportIATA + "-" + flight.ToAirportIATA);
                     prts.Add("Register: " + flight.Register);
@@ -3093,7 +3093,7 @@ namespace ApiAPSB.Controllers
                         prts2.Add("Dear " + rec.rec_name);
                         prts2.Add("Please click on the below link to see details.");
 
-                        prts2.Add("https://fleet.caspianairlines.com/reportefb/frmreportview.aspx?type=19&fid=" + asr.FlightId);
+                        prts2.Add("https://fleet.flypersiaairlines.ir/reportefb/frmreportview.aspx?type=19&fid=" + asr.FlightId);
                         prts2.Add("Date: " + ((DateTime)flight.STDLocal).ToString("yyyy-MM-dd"));
                         prts2.Add("Route: " + flight.FromAirportIATA + "-" + flight.ToAirportIATA);
                         prts2.Add("Register: EP-" + flight.Register);
@@ -3157,7 +3157,7 @@ namespace ApiAPSB.Controllers
 
                         };
 
-                        var smsResult1 = m1.enqueue(1,not_history.rec_mobile, text2)[0];
+                        var smsResult1 = m1.enqueue(1, not_history.rec_mobile, text2)[0];
                         not_history.ref_id = smsResult1.ToString();
                         _result.Add(not_history);
                         System.Threading.Thread.Sleep(2000);
@@ -3190,11 +3190,11 @@ namespace ApiAPSB.Controllers
                     };
 
                     Magfa m1_pic = new Magfa();
-                    var m1_pic_result = m1_pic.enqueue(1,not_history_pic.rec_mobile, not_history_pic.message_text)[0];
+                    var m1_pic_result = m1_pic.enqueue(1, not_history_pic.rec_mobile, not_history_pic.message_text)[0];
                     not_history_pic.ref_id = m1_pic_result.ToString();
 
                     Magfa m_pic = new Magfa();
-                    var m_pic_result = m_pic.enqueue(1,not_history_pic2.rec_mobile, not_history_pic2.message_text)[0];
+                    var m_pic_result = m_pic.enqueue(1, not_history_pic2.rec_mobile, not_history_pic2.message_text)[0];
                     not_history_pic2.ref_id = m_pic_result.ToString();
 
                     _result.Add(not_history_pic);
@@ -3500,8 +3500,8 @@ namespace ApiAPSB.Controllers
                             toc_tod = true,
                             tod = true,
                             mvt = flt.BlockOff == null || flt.BlockOn == null || flt.TakeOff == null || flt.Landing == null,
-                            fuel = flt.FuelUplift == null || flt.FuelUsed == null || flt.FuelRemaining == null
-
+                            fuel = flt.FuelUplift == null || flt.FuelUsed == null || flt.FuelRemaining == null,
+                             fuel_min = true
 
 
                         });
@@ -3539,8 +3539,8 @@ namespace ApiAPSB.Controllers
                         flight_no = _flt.ofp.FlightNo,
                         id = _flt.ofp.FlightId,
                         mvt = flt2.BlockOff == null || flt2.BlockOn == null || flt2.TakeOff == null || flt2.Landing == null,
-                        fuel = flt2.FuelUplift == null || flt2.FuelUsed == null || flt2.FuelRemaining == null
-
+                        fuel = flt2.FuelUplift == null || flt2.FuelUsed == null || flt2.FuelRemaining == null,
+                          fuel_min = flt2.FuelTotal < flt2.OFPMINTOFFUEL
                     });
 
                 }
@@ -3553,15 +3553,20 @@ namespace ApiAPSB.Controllers
 
                 foreach (var x in groupProps)
                 {
-                    var takeoff_ata = x.items.Where(q=>q.name.Contains("mpln")).OrderBy(q => q.id).Take(4).Where(q=>q.name.Contains("_ata_")).FirstOrDefault();
+                    var takeoff_ata = x.items.Where(q => q.name.Contains("mpln")).OrderBy(q => q.id).Take(4).Where(q => q.name.Contains("_ata_")).FirstOrDefault();
                     var landing_ata = x.items.Where(q => q.name.Contains("mpln")).OrderByDescending(q => q.id).Take(4).Where(q => q.name.Contains("_ata_")).FirstOrDefault();
 
                     var takeoff_usd = x.items.Where(q => q.name.Contains("mpln")).OrderBy(q => q.id).Take(4).Where(q => q.name.Contains("_usd_")).FirstOrDefault();
                     var landing_usd = x.items.Where(q => q.name.Contains("mpln")).OrderByDescending(q => q.id).Take(4).Where(q => q.name.Contains("_usd_")).FirstOrDefault();
 
-                    
+                    var _toc = x.items.Where(q => q.name.Contains("toc_ata")).FirstOrDefault();
+                    var _toc_usd = x.items.Where(q => q.name.Contains("toc_usd")).FirstOrDefault();
 
-                    if (takeoff_ata ==null || string.IsNullOrEmpty(takeoff_ata.value) || takeoff_usd==null || string.IsNullOrEmpty(takeoff_usd.value))
+                    var _tod = x.items.Where(q => q.name.Contains("tod_ata")).FirstOrDefault();
+                    var _tod_usd = x.items.Where(q => q.name.Contains("tod_usd")).FirstOrDefault();
+
+
+                    if (takeoff_ata == null || string.IsNullOrEmpty(takeoff_ata.value) || takeoff_usd == null || string.IsNullOrEmpty(takeoff_usd.value))
                     {
                         var _err = errors.Where(q => q.flight_no == x.ofp.FlightNo).FirstOrDefault();
                         if (_err != null)
@@ -3580,6 +3585,27 @@ namespace ApiAPSB.Controllers
 
                         }
                     }
+
+                    if (_toc_usd == null || string.IsNullOrEmpty(_toc_usd.value))
+                    {
+                        var _err = errors.Where(q => q.flight_no == x.ofp.FlightNo).FirstOrDefault();
+                        if (_err != null)
+                        {
+                            _err.toc = true;
+
+                        }
+                    }
+
+                    if (_tod_usd == null || string.IsNullOrEmpty(_tod_usd.value))
+                    {
+                        var _err = errors.Where(q => q.flight_no == x.ofp.FlightNo).FirstOrDefault();
+                        if (_err != null)
+                        {
+                            _err.tod = true;
+
+                        }
+                    }
+
 
 
                     /*var first_point = x.items.ToList().OrderBy(q => q.id).FirstOrDefault();
@@ -3602,11 +3628,9 @@ namespace ApiAPSB.Controllers
                             }
                         }
                     }*/
-                    var _toc = x.items.Where(q => q.name.Contains("toc_ata")).FirstOrDefault();
-                    var _tod = x.items.Where(q => q.name.Contains("tod_ata")).FirstOrDefault();
-                    
-                  
-                   
+
+
+
                     if (string.IsNullOrEmpty(_toc.value) || string.IsNullOrEmpty(_tod.value))
                     {
                         //errors.Add(new _h_error()
@@ -3800,7 +3824,7 @@ namespace ApiAPSB.Controllers
                             tod = true,
                             mvt = flt.BlockOff == null || flt.BlockOn == null || flt.TakeOff == null || flt.Landing == null,
                             fuel = flt.FuelUplift == null || flt.FuelUsed == null || flt.FuelRemaining == null,
-                            fuel_min=true
+                            fuel_min = true
 
 
 
@@ -3840,7 +3864,7 @@ namespace ApiAPSB.Controllers
                         id = _flt.ofp.FlightId,
                         mvt = flt2.BlockOff == null || flt2.BlockOn == null || flt2.TakeOff == null || flt2.Landing == null,
                         fuel = flt2.FuelUplift == null || flt2.FuelUsed == null || flt2.FuelRemaining == null,
-                        fuel_min=flt2.FuelTotal<flt2.OFPMINTOFFUEL
+                        fuel_min = flt2.FuelTotal < flt2.OFPMINTOFFUEL
 
                     });
 
