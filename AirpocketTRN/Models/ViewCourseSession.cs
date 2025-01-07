@@ -17,6 +17,7 @@ namespace AirpocketTRN.Models
         public int Id { get; set; }
         public int CourseId { get; set; }
         public Nullable<System.DateTime> DateStart { get; set; }
+        public Nullable<System.DateTime> Date { get; set; }
         public Nullable<System.DateTime> DateEnd { get; set; }
         public Nullable<System.DateTime> DateStartUtc { get; set; }
         public Nullable<System.DateTime> DateEndUtc { get; set; }
@@ -35,6 +36,7 @@ namespace AirpocketTRN.Models
         public string PDayName { get; set; }
         public string No { get; set; }
         public string Instructor { get; set; }
+        public Nullable<int> InstructorId { get; set; }
         public string Title { get; set; }
         public string CT_Title { get; set; }
         public Nullable<int> CustomerId { get; set; }
@@ -45,5 +47,6 @@ namespace AirpocketTRN.Models
         public Nullable<bool> IsGeneral { get; set; }
         public Nullable<int> StatusId { get; set; }
         public string Status { get; set; }
+        public Nullable<int> ParentId { get; set; }
     }
 }

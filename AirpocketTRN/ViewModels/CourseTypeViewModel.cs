@@ -289,6 +289,8 @@ namespace AirpocketTRN.ViewModels
         public string Expire { get; set; }
         public string No { get; set; }
         public string Group { get; set; }
+
+        public List<int?> PersonIds { get; set; }
     }
 
     public class TeacherDto
