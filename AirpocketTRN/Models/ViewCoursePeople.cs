@@ -99,5 +99,6 @@ namespace AirpocketTRN.Models
         public Nullable<int> SessionsCount { get; set; }
         public Nullable<int> PresenceCount { get; set; }
         public Nullable<double> Presence { get; set; }
+        public Nullable<int> ParentId { get; set; }
     }
 }

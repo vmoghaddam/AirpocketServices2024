@@ -2332,6 +2332,11 @@ namespace ApiScheduling.Controllers
                                                           );
             }
        
+            if (_interupted !=null && _interupted.DutyType != 1165)
+            {
+                if (_interupted.InitStart >= duty.InitEnd)
+                    _interupted = null;
+            }
 
             if (_interupted != null)
             {
@@ -3234,6 +3239,12 @@ namespace ApiScheduling.Controllers
                                     }
 
                                     break;
+                                case 1169:
+                                case 100008:
+                                    if (_interupted.InitStart< fdp.InitEnd)
+                                        sendError = true;
+                                    break;
+
                                 default:
                                     sendError = true;
                                     break;

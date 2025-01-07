@@ -50,7 +50,6 @@ namespace AirpocketTRN.Models
         public virtual DbSet<ViewCourseTypeJobGroup> ViewCourseTypeJobGroups { get; set; }
         public virtual DbSet<CourseSessionPresenceDetail> CourseSessionPresenceDetails { get; set; }
         public virtual DbSet<ViewCourseSessionPresenceDetail> ViewCourseSessionPresenceDetails { get; set; }
-        public virtual DbSet<ViewCourseSessionPresence> ViewCourseSessionPresences { get; set; }
         public virtual DbSet<CourseSMSHistory> CourseSMSHistories { get; set; }
         public virtual DbSet<ViewCoursePeoplePassedRanked> ViewCoursePeoplePassedRankeds { get; set; }
         public virtual DbSet<TeacherDocument> TeacherDocuments { get; set; }
@@ -124,7 +123,6 @@ namespace AirpocketTRN.Models
         public virtual DbSet<view_trn_line_check> view_trn_line_check { get; set; }
         public virtual DbSet<view_trn_line_crm> view_trn_line_crm { get; set; }
         public virtual DbSet<view_trn_zftt> view_trn_zftt { get; set; }
-        public virtual DbSet<ViewCourseSession> ViewCourseSessions { get; set; }
         public virtual DbSet<trn_exam_student_answer> trn_exam_student_answer { get; set; }
         public virtual DbSet<trn_exam_question> trn_exam_question { get; set; }
         public virtual DbSet<trn_question_category> trn_question_category { get; set; }
@@ -164,5 +162,7 @@ namespace AirpocketTRN.Models
         public virtual DbSet<ViewCourseNew> ViewCourseNews { get; set; }
         public virtual DbSet<ViewCourseNewAll> ViewCourseNewAlls { get; set; }
         public virtual DbSet<Course> Courses { get; set; }
+        public virtual DbSet<ViewCourseSessionPresence> ViewCourseSessionPresences { get; set; }
+        public virtual DbSet<ViewCourseSession> ViewCourseSessions { get; set; }
     }
 }
