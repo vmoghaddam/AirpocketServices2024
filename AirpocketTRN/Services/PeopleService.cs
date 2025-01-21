@@ -48,6 +48,7 @@ namespace AirpocketTRN.Services
             var groups = grps.Split('-').ToList();
             IQueryable<ViewEmployeeAb> query = context.Set<ViewEmployeeAb>()
                 //.Where(q=>groups.Contains(q.JobGroupCode))
+                .Where(q=>q.JobGroup!="FSG")
                 .AsNoTracking();
             return query;
         }

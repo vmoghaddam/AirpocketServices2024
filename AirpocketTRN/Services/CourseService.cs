@@ -912,7 +912,7 @@ namespace AirpocketTRN.Services
             }
 
             var session_query = from x in context.ViewCourseSessions
-                                where x.Year == year && x.Month == month
+                                where x.Year == year && x.Month == month && x.ParentId==null
                                 select x;
             if (mng_id != -1)
                 session_query = session_query.Where(q => filter_course_ids.Contains(q.CourseId));
@@ -920,23 +920,49 @@ namespace AirpocketTRN.Services
             var session_query_list = await (session_query).ToListAsync();
             var sessions = (from x in session_query_list
                             group x by new { ((DateTime)x.DateStart).Date } into grp
+                            let _ds= grp.Select(q => new
+                            {
+                                q.CourseId,
+                                q.DateStart,
+                                q.DateEnd,
+                                q.Instructor,
+                                q.No,
+                                q.Organization,
+                                q.Title,
+                                q.Location,
+                                q.Status,
+                                q.StatusId
+                            })
                             select new
                             {
                                 Date = grp.Key.Date,
-                                Items = grp.Select(q => new
-                                {
-                                    q.CourseId,
-                                    q.DateStart,
-                                    q.DateEnd,
-                                    q.Instructor,
-                                    q.No,
-                                    q.Organization,
-                                    q.Title,
-                                    q.Location,
-                                    q.Status,
-                                    q.StatusId
-                                }).OrderBy(w => w.DateStart).ThenBy(w => w.Title).ToList()
+                                Items =_ds.OrderBy(w => w.DateStart).ThenBy(w => w.Title).ToList(),
+                                courses=  (from y in _ds
+                                          group y by new { y.CourseId, y.Title, y.Instructor, y.Status, y.No } into grp2
+                                          select new
+                                          {
+                                              grp2.Key.Title,
+                                              grp2.Key.CourseId,
+                                              grp2.Key.Instructor,
+                                              grp2.Key.Status,
+                                              grp2.Key.No,
+                                              DateStart = _ds.Min(q=>q.DateStart),
+                                              DateEnd=_ds.Max(q=>q.DateEnd)
+                                          }).OrderBy(q=>q.DateStart).ThenBy(q=>q.Title).ToList()
+
                             }).OrderBy(q => q.Date).ToList();
+            //var courses=  from y in session_query_list
+            //              group y by new { y.CourseId, y.Title, y.Instructor, y.Status, y.No } into grp2
+            //                       select new
+            //                       {
+            //                           grp2.Key.Title,
+            //                           grp2.Key.CourseId,
+            //                           grp2.Key.Instructor,
+            //                           grp2.Key.Status,
+            //                           grp2.Key.No,
+            //                           DateStart = grp2.Where(q => q.Key.)
+            //                       }
+            
 
             var expiring_employees_query = from q in context.ViewCertificateHistoryRankeds
                                            where q.ExpireYear == year && q.ExpireMonth == month
@@ -1433,6 +1459,102 @@ namespace AirpocketTRN.Services
             };
 
         }
+        public async Task<DataResponse> GetStat()
+        {
+            var query =await (from x in context.C_view_trncard
+                         where x.Remain <= 30 && x.Remain != -10000
+                         select x).ToListAsync();
+            var query_grp_type = (from x in query
+                                 group x by new { x.title, x.trncard_title/*, is_expired = Math.Sign(Convert.ToInt32(x.Remain))*/ } into grp
+                                 select new
+                                 {
+                                     grp.Key.title,
+                                     title_card = grp.Key.trncard_title,
+                                     //grp.Key.is_expired,
+                                     rows=grp.ToList(),
+                                     count = grp.Count(),
+                                    has_expired=grp.Where(q=>q.Remain<=0).Any(),
+                                    is_expired=grp.Where(q=>q.Remain<=0).Count(),
+                                     is_expiring = grp.Where(q => q.Remain > 0).Count(),
+                                     items =from q in grp
+                                            group q by new {q.jobgroup_root,q.jobgroup } into grp2
+                                            select new
+                                            {
+                                                grp.Key.title,
+                                                title_card = grp.Key.trncard_title,
+                                                jobgroup_root = grp2.Key.jobgroup_root,
+                                                jobgroup = grp2.Key.jobgroup,
+                                                count=grp2.Count(),
+                                                rows=grp.ToList(),
+                                                is_expired = grp2.Where(q => q.Remain <= 0).Count(),
+                                                is_expiring = grp2.Where(q => q.Remain > 0).Count(),
+                                                items =from w in grp2
+                                                      group w by new { caption = Math.Sign(Convert.ToInt32(w.Remain))<0?"Expired":"Expiring"  } into grp3
+                                                      select new
+                                                      {
+                                                          grp.Key.title,
+                                                          title_card = grp.Key.trncard_title,
+                                                          jobgroup_root = grp2.Key.jobgroup_root,
+                                                          jobgroup = grp2.Key.jobgroup,
+                                                          grp3.Key.caption,
+                                                          is_expired = grp3.Where(q => q.Remain <= 0).Count(),
+                                                          is_expiring = grp3.Where(q => q.Remain > 0).Count(),
+                                                          count =grp3.Count(),
+                                                          items=grp3.ToList(),
+                                                      }
+                                            }
+                                 }).ToList();
+
+            var query_grp_people = (from x in query
+                                    group x by new { x.name, x.nid, x.person_id, x.profile_id, x.jobgroup, x.jobgroup_root } into grp
+                                    select new
+                                    {
+                                        grp.Key.person_id,
+                                        grp.Key.profile_id,
+                                        grp.Key.name,
+                                        grp.Key.nid,
+                                        grp.Key.jobgroup_root,
+                                        grp.Key.jobgroup,
+                                        items = grp.ToList(),
+                                    }).ToList();
+
+            var query_grp_group = (from x in query
+                                   group x by new { x.jobgroup, x.jobgroup_root } into grp
+                                   select new
+                                   {
+                                       //grp.Key.person_id,
+                                       // grp.Key.profile_id,
+                                       //grp.Key.name,
+                                       //grp.Key.nid,
+                                       grp.Key.jobgroup_root,
+                                       grp.Key.jobgroup,
+                                       rows = grp.ToList(),
+                                       items = from q in grp
+                                               group q by new { q.name, q.nid, q.person_id, q.profile_id, } into grp2
+                                               select new
+                                               {
+                                                   grp2.Key.person_id,
+                                                   grp2.Key.profile_id,
+                                                   grp2.Key.name,
+                                                   grp2.Key.nid,
+                                                   items=grp2.ToList(),
+                                               }
+                                   }).ToList();
+
+            return new DataResponse()
+            {
+                Data = new
+                {
+                    query,
+                    query_grp_group,
+                    query_grp_people,
+                    query_grp_type
+                },
+                IsSuccess = true,
+            };
+
+        }
+        //2025-01-11
         public async Task<DataResponse> GetCertificateHistory_Expiring()
         {
 
@@ -1696,7 +1818,7 @@ namespace AirpocketTRN.Services
         }
         //09-11
 
-
+        
         public C_view_trncard get_max_sms(C_view_trncard l1, C_view_trncard l2, C_view_trncard l3)
         {
             if (l1 == null)
@@ -1719,7 +1841,7 @@ namespace AirpocketTRN.Services
 
 
         }
-
+        //2025-01-11
         public async Task<DataResponse> GetTrainingCard(int pid)
         {
             pid = (pid - 1237) / 2;
@@ -4445,12 +4567,15 @@ namespace AirpocketTRN.Services
                     
                     if (_interval != 1200)
                     {
-                        var last_history = subjects_certificate_histories_last.Where(q => q.PersonId == scp.PersonId && q.CertificateTypeId== sbj.CertificateTypeId).FirstOrDefault();
-                        if (last_history != null && last_history.DateExpire != null && last_history.DateExpire > sbj_date_exire)
+                        var last_history = subjects_certificate_histories_last.Where(q => q.PersonId == scp.PersonId && q.CertificateTypeId== sbj.CertificateTypeId && q.DateIssue!=_date_issue).FirstOrDefault();
+
+                        if (last_history != null && last_history.DateExpire != null && last_history.DateExpire > _date_issue && last_history.DateIssue != null 
+                            && ((DateTime)last_history.DateIssue).Date!=_date_issue.Date)
                         {
-                            var lh = (DateTime)last_history.DateExpire;
-                            sbj_date_exire = new DateTime(lh.Year, lh.Month, 1);
-                            sbj_date_exire = sbj_date_exire.AddDays(-1);
+                            var dif = ((DateTime)last_history.DateExpire).Subtract(_date_issue).Days;
+                             
+                             
+                            sbj_date_exire = sbj_date_exire.AddDays(dif);
                         }
                     }
 
@@ -5611,7 +5736,7 @@ namespace AirpocketTRN.Services
         public IQueryable<ViewCourseNew> GetCourseQuery()
         {
             IQueryable<ViewCourseNew> query = context.Set<ViewCourseNew>().AsNoTracking();
-            return query;
+            return query.Where(q=>q.ParentId==null);
         }
 
         public IQueryable<ViewJobGroup> GetViewJobGroupQuery()

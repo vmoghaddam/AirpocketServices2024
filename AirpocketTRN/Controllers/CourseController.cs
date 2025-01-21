@@ -580,6 +580,17 @@ namespace AirpocketTRN.Controllers
         }
 
 
+        [Route("api/expiring/new")]
+        [AcceptVerbs("GET")]
+        public async Task<IHttpActionResult> GetStat()
+        {
+            //var result = await courseService.GetPersonMandatoryCoursesByType(type,group);
+            var result = await courseService.GetStat();
+
+            return Ok(result);
+        }
+
+
         [Route("api/course/people/{cid}")]
         [AcceptVerbs("GET")]
         public async Task<IHttpActionResult> GetCoursePeople(int cid)
