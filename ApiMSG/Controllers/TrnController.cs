@@ -128,13 +128,13 @@ namespace ApiMSG.Controllers
                 var smtp = new SmtpClient
                 {
                     //EnableSsl=true,
-                    Host = "mail.flypersia.aero",
+                    Host = "mail.flypersiaairlines.ir",
                     Port = 25, //Convert.ToInt32(dispatchEmailPort),
                     EnableSsl = false,
                     //TargetName = "STARTTLS/Mail.flypersia.aero",
                     DeliveryMethod = SmtpDeliveryMethod.Network,
                     UseDefaultCredentials = false,
-                    Credentials = new NetworkCredential("airpocket@flypersia.aero", "1234@aA"),
+                    Credentials = new NetworkCredential("airpocket@flypersiaairlines.ir", "1234@aA"),
 
                 };
                 smtp.Timeout = 60000;
@@ -185,7 +185,7 @@ namespace ApiMSG.Controllers
 
 
 
-                        var fromAddress = new MailAddress("airpocket@flypersia.aero", "TRAINING DEPARTMENT");
+                        var fromAddress = new MailAddress("airpocket@flypersiaairlines.ir", "TRAINING DEPARTMENT");
                         using (var message = new MailMessage(fromAddress, new MailAddress(_man.Email, _man.Name))
                         {
                             Subject = "Expiry Notification",
@@ -197,7 +197,8 @@ namespace ApiMSG.Controllers
 
                         {
 
-                            message.CC.Add("v.moghaddam59@gmail.com");
+                            // message.CC.Add("v.moghaddam59@gmail.com");
+                            message.CC.Add("itmng@flypersiaairlines.ir");
                             smtp.Send(message);
 
 
