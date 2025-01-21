@@ -29,9 +29,19 @@ namespace ApiChain.Controllers
         [HttpGet]
         public async Task<IHttpActionResult> GetFixTime()
         {
-            var context = new Models.dbEntities();
-            var result = context.FixTimes.ToList();
-            return Ok(result);
+            try
+            {
+                var context = new Models.dbEntities();
+                var result = context.FixTimes.ToList();
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += " INNER: " + ex.InnerException.Message;
+                return Ok(msg);
+            }
         }
 
         public class FixTime

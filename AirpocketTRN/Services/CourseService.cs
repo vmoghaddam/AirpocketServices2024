@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Migrations.Sql;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -5943,81 +5944,94 @@ namespace AirpocketTRN.Services
 
         public async Task<DataResponse> NotifyCoursePeople(int cid, string recs)
         {
-            var recIds = recs.Split('_').Select(q => (Nullable<int>)Convert.ToInt32(q)).ToList();
-            var course = await context.ViewCourseNews.Where(q => q.Id == cid).FirstOrDefaultAsync();
-            var people = await context.ViewCoursePeoples.Where(q => q.CourseId == cid && recIds.Contains(q.PersonId)).OrderBy(q => q.DateStart).ToListAsync();
-            var sessions = await context.CourseSessions.Where(q => q.CourseId == cid).OrderBy(q => q.DateStart).ToListAsync();
-            List<string> strs = new List<string>();
-            strs.Add("COURSE NOTIFICATION");
-            strs.Add(course.Title.ToUpper());
-            if (!string.IsNullOrEmpty(course.Organization))
-                strs.Add(course.Organization);
-            if (!string.IsNullOrEmpty(course.Location))
-                strs.Add(course.Location);
-            if (!string.IsNullOrEmpty(course.HoldingType))
-                strs.Add(course.HoldingType);
-            strs.Add(course.DateStart.ToString("ddd, dd MMM yyyy"));
-            if (course.DateEnd != null)
-                strs.Add(((DateTime)course.DateEnd).ToString("ddd, dd MMM yyyy"));
-
-            if (sessions.Count > 0)
+            try
             {
-                strs.Add("Sessions");
-                foreach (var x in sessions)
+                var recIds = recs.Split('_').Select(q => (Nullable<int>)Convert.ToInt32(q)).ToList();
+                var course = await context.ViewCourseNews.Where(q => q.Id == cid).FirstOrDefaultAsync();
+                var people = await context.ViewCoursePeoples.Where(q => q.CourseId == cid && recIds.Contains(q.PersonId)).OrderBy(q => q.DateStart).ToListAsync();
+                var sessions = await context.CourseSessions.Where(q => q.CourseId == cid).OrderBy(q => q.DateStart).ToListAsync();
+                List<string> strs = new List<string>();
+                strs.Add("COURSE NOTIFICATION");
+                strs.Add(course.Title.ToUpper());
+                if (!string.IsNullOrEmpty(course.Organization))
+                    strs.Add(course.Organization);
+                if (!string.IsNullOrEmpty(course.Location))
+                    strs.Add(course.Location);
+                if (!string.IsNullOrEmpty(course.HoldingType))
+                    strs.Add(course.HoldingType);
+                strs.Add(course.DateStart.ToString("ddd, dd MMM yyyy"));
+                if (course.DateEnd != null)
+                    strs.Add(((DateTime)course.DateEnd).ToString("ddd, dd MMM yyyy"));
+
+                if (sessions.Count > 0)
                 {
-                    if (x.DateStart != null && x.DateEnd != null)
+                    strs.Add("Sessions");
+                    foreach (var x in sessions)
                     {
-                        var dt = ((DateTime)x.DateStart).ToString("ddd, dd MMM yyyy");
-                        strs.Add(dt + " " + ((DateTime)x.DateStart).ToString("HH:mm") + "-" + ((DateTime)x.DateEnd).ToString("HH:mm"));
+                        if (x.DateStart != null && x.DateEnd != null)
+                        {
+                            var dt = ((DateTime)x.DateStart).ToString("ddd, dd MMM yyyy");
+                            strs.Add(dt + " " + ((DateTime)x.DateStart).ToString("HH:mm") + "-" + ((DateTime)x.DateEnd).ToString("HH:mm"));
+                        }
+
                     }
-
                 }
-            }
-            strs.Add("TRAINING DEPARTMENT");
+                strs.Add("TRAINING DEPARTMENT");
 
-            var text = String.Join("\n", strs);
-            Magfa m = new Magfa();
+                var text = String.Join("\n", strs);
+                Magfa m = new Magfa();
 
-            var res = new List<long>();
-            var hists = new List<CourseSMSHistory>();
-            foreach (var p in people)
-            {
-                var rs = m.enqueue(1, p.Mobile, text)[0];
-                var hist = new CourseSMSHistory()
+                var res = new List<long>();
+                var hists = new List<CourseSMSHistory>();
+                foreach (var p in people)
                 {
-                    CourseId = cid,
-                    DateSent = DateTime.Now,
-                    Mobil = p.Mobile,
-                    Msg = text,
-                    PersonId = p.EmployeeId,
-                    PersonName = p.Name,
-                    TypeId = 1,
-                    RefId = rs,
+                    var rs = m.enqueue(1, p.Mobile, text)[0];
+                    var hist = new CourseSMSHistory()
+                    {
+                        CourseId = cid,
+                        DateSent = DateTime.Now,
+                        Mobil = p.Mobile,
+                        Msg = text,
+                        PersonId = p.EmployeeId,
+                        PersonName = p.Name,
+                        TypeId = 1,
+                        RefId = rs,
 
 
 
+                    };
+                    hists.Add(hist);
+                    context.CourseSMSHistories.Add(hist);
+                    res.Add(rs);
+                }
+                await Task.Delay(10000);
+
+
+                var sts = m.getStatus(res);
+                int c = 0;
+                foreach (var st in sts)
+                {
+                    hists[c].DateStatus = DateTime.Now;
+                    hists[c].Statu = st;
+                    c++;
+                }
+                var saveResult = await context.SaveAsync();
+                return new DataResponse()
+                {
+                    Data = hists,
+                    IsSuccess = true,
                 };
-                hists.Add(hist);
-                context.CourseSMSHistories.Add(hist);
-                res.Add(rs);
-            }
-            await Task.Delay(10000);
-
-
-            var sts = m.getStatus(res);
-            int c = 0;
-            foreach (var st in sts)
+            } catch(Exception ex)
             {
-                hists[c].DateStatus = DateTime.Now;
-                hists[c].Statu = st;
-                c++;
+                var msg = ex.Message;
+                var inner = ex.InnerException;
+                var result = msg + "Inner" + inner;
+                return new DataResponse()
+                {
+                    Data = result,
+                    IsSuccess = false
+                };
             }
-            var saveResult = await context.SaveAsync();
-            return new DataResponse()
-            {
-                Data = hists,
-                IsSuccess = true,
-            };
 
         }
 

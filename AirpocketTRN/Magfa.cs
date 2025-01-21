@@ -21,7 +21,7 @@ namespace AirpocketTRN
 
 
         public string username = "airone_74086"; // "flypersia_48000";
-        public string password = "12345678@"; //"YYDWMU5BAJQQHCuG";
+        public string password = "ZQUZuKWMgEm9obOF"; //"YYDWMU5BAJQQHCuG";
         public string domain = "massaging.magfa.com";
         public string senderNumber = "300074086"; //"300048000";
 

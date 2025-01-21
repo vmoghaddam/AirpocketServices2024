@@ -221,8 +221,215 @@ namespace ApiAPSB.Controllers
 
         }
 
+        [Route("api/flight/nocrews")]
+        [AcceptVerbs("GET")]
+        public IHttpActionResult GetNoCrews()
+        {
+            var context = new Models.dbEntities();
+            var query = context.ViewEmployeeLights.Where(q => q.JobGroupCode.StartsWith("00103") || q.JobGroupCode.StartsWith("004") || q.JobGroupCode.StartsWith("005") || q.JobGroupCode.StartsWith("0000109040")).OrderBy(q => q.JobGroup).ThenBy(q => q.LastName).ThenBy(q => q.FirstName).ToListAsync();
+            return Ok(query);
+        }
+
+        [Route("api/roster/fdp/nocrew/save")]
+        [AcceptVerbs("POST")]
+        public async Task<IHttpActionResult> saveFDPNoCrew(dynamic dto)
+        {
+            var context = new Models.dbEntities();
+
+            var userId = Convert.ToInt32(dto.userId);
+            var flightId = Convert.ToInt32(dto.flightId);
+            var code = Convert.ToString(dto.code);
+            var fdp = new FDP()
+            {
+                IsTemplate = false,
+                DutyType = 1165,
+                CrewId = userId,
+                GUID = Guid.NewGuid(),
+                JobGroupId = RosterFDPDto.getRank(code),
+                FirstFlightId = flightId,
+                LastFlightId = flightId,
+
+                Split = 0,
 
 
+
+            };
+
+            fdp.FDPItems.Add(new FDPItem()
+            {
+                FlightId = flightId,
+                IsPositioning = false,
+                IsSector = false,
+                PositionId = RosterFDPDto.getRank(code),
+                RosterPositionId = 1,
+
+            });
+
+            context.FDPs.Add(fdp);
+            var saveResult = await context.SaveChangesAsync();
+
+
+
+
+            return Ok(fdp.Id);
+        }
+
+        public class RosterFDPDtoItem
+        {
+            public int flightId { get; set; }
+            public int dh { get; set; }
+            public DateTime std { get; set; }
+            public DateTime sta { get; set; }
+            public int index { get; set; }
+            public int rankId { get; set; }
+            public string no { get; set; }
+            public string from { get; set; }
+            public string to { get; set; }
+
+
+
+
+        }
+        public class RosterFDPId
+        {
+            public int id { get; set; }
+            public int dh { get; set; }
+        }
+        public class RosterFDPDto
+        {
+            public int Id { get; set; }
+            public string UserName { get; set; }
+            public List<RosterFDPId> ids { get; set; }
+            public int crewId { get; set; }
+            public string rank { get; set; }
+            public int index { get; set; }
+            public List<string> flights { get; set; }
+            public int from { get; set; }
+            public int to { get; set; }
+            public int homeBase { get; set; }
+            public string flts { get; set; }
+            public string route { get; set; }
+            public string key { get; set; }
+            public string group { get; set; }
+            public string scheduleName { get; set; }
+            public string no { get; set; }
+            public int? extension { get; set; }
+            public decimal? maxFDP { get; set; }
+
+            public bool split { get; set; }
+
+            public bool? IsSplitDuty { get; set; }
+            public int? SplitValue { get; set; }
+
+            public int? IsAdmin { get; set; }
+
+            public int? DeletedFDPId { get; set; }
+
+            public List<RosterFDPDtoItem> items { get; set; }
+
+            public double getDuty()
+            {
+                return (this.items.Last().sta.AddMinutes(30) - this.items.First().std.AddMinutes(-60)).TotalMinutes;
+            }
+            public double getFlight()
+            {
+                double flt = 0;
+                foreach (var x in this.items)
+                    flt += (x.sta - x.std).TotalMinutes;
+                return flt;
+            }
+            public static List<RosterFDPDtoItem> getItems(List<string> flts)
+            {
+                List<RosterFDPDtoItem> result = new List<RosterFDPDtoItem>();
+                foreach (var x in flts)
+                {
+                    var parts = x.Split('_');
+                    var item = new RosterFDPDtoItem();
+                    item.flightId = Convert.ToInt32(parts[0]);
+                    item.dh = Convert.ToInt32(parts[1]);
+                    var stdStr = parts[2];
+                    var staStr = parts[3];
+                    item.std = new DateTime(Convert.ToInt32(stdStr.Substring(0, 4)), Convert.ToInt32(stdStr.Substring(4, 2)), Convert.ToInt32(stdStr.Substring(6, 2))
+                        , Convert.ToInt32(stdStr.Substring(8, 2))
+                        , Convert.ToInt32(stdStr.Substring(10, 2))
+                        , 0
+                        ).ToUniversalTime();
+                    item.sta = new DateTime(Convert.ToInt32(staStr.Substring(0, 4)), Convert.ToInt32(staStr.Substring(4, 2)), Convert.ToInt32(staStr.Substring(6, 2))
+                       , Convert.ToInt32(staStr.Substring(8, 2))
+                       , Convert.ToInt32(staStr.Substring(10, 2))
+                       , 0
+                       ).ToUniversalTime();
+                    item.no = parts[4];
+                    item.from = parts[5];
+                    item.to = parts[6];
+
+                    result.Add(item);
+                }
+
+                return result;
+            }
+
+            public static int getRank(string rank)
+            {
+                if (rank.StartsWith("IP"))
+                    return 12000;
+                if (rank.StartsWith("P1"))
+                    return 1160;
+                if (rank.StartsWith("P2"))
+                    return 1161;
+                if (rank.ToUpper().StartsWith("SAFETY"))
+                    return 1162;
+                if (rank.ToUpper().StartsWith("FE"))
+                    return 1165;
+                if (rank.StartsWith("ISCCM"))
+                    return 10002;
+                if (rank.StartsWith("SCCM"))
+                    return 1157;
+                if (rank.StartsWith("CCM"))
+                    return 1158;
+                if (rank.StartsWith("OBS"))
+                    return 1153;
+                if (rank.StartsWith("CHECK"))
+                    return 1154;
+                if (rank.StartsWith("00103"))
+                    return 12001;
+                if (rank.StartsWith("004"))
+                    return 12002;
+                if (rank.StartsWith("005"))
+                    return 12003;
+                if (rank.StartsWith("000"))
+                    return 12002;
+                if (rank.StartsWith("000011003"))
+                    return 12002;
+
+                return -1;
+
+            }
+            public static string getRankStr(int rank)
+            {
+                if (rank == 12000)
+                    return "IP";
+                if (rank == 1160)
+                    return "P1";
+                if (rank == 1161)
+                    return "P2";
+                if (rank == 1162)
+                    return "SAFETY";
+                if (rank == 10002)
+                    return "ISCCM";
+                if (rank == 1157)
+                    return "SCCM";
+                if (rank == 1158)
+                    return "CCM";
+                if (rank == 1153)
+                    return "OBS";
+                if (rank == 1154)
+                    return "CHECK";
+                return "";
+            }
+
+
+        }
 
         [Route("api/appleg/ofp/{flightId}")]
         [AcceptVerbs("GET")]
@@ -1743,7 +1950,7 @@ namespace ApiAPSB.Controllers
                 ViewEmployee employee = null;
                 //try
                 //{
-                employee = context.ViewEmployees.Where(q => q.UserId == userid || q.PersonId.ToString() == userid).FirstOrDefault();
+                employee = context.ViewEmployees.Where(q => q.UserId == userid || q.PersonId.ToString() == userid || q.FatherName==userid).FirstOrDefault();
                 //}
                 //catch(Exception ex)
                 //{
@@ -1826,7 +2033,8 @@ namespace ApiAPSB.Controllers
                 foreach (var dr in drs)
                 {
                     dr.JLDSPSignDate = dt;
-                    dr.SgnDSPLicNo = lic_no.ToUpper();
+                    //dr.SgnDSPLicNo = lic_no.ToUpper();
+                    dr.SgnDSPLicNo = employee.LicenceTitle.ToUpper();
                     dr.DispatcherId = employee != null ? employee.Id : -1;
                     dr.SGNDSPName = employee != null ? employee.Name : "Dispatch User";
                 }
@@ -3501,7 +3709,7 @@ namespace ApiAPSB.Controllers
                             tod = true,
                             mvt = flt.BlockOff == null || flt.BlockOn == null || flt.TakeOff == null || flt.Landing == null,
                             fuel = flt.FuelUplift == null || flt.FuelUsed == null || flt.FuelRemaining == null,
-                             fuel_min = true
+                            fuel_min = true
 
 
                         });
@@ -3540,7 +3748,7 @@ namespace ApiAPSB.Controllers
                         id = _flt.ofp.FlightId,
                         mvt = flt2.BlockOff == null || flt2.BlockOn == null || flt2.TakeOff == null || flt2.Landing == null,
                         fuel = flt2.FuelUplift == null || flt2.FuelUsed == null || flt2.FuelRemaining == null,
-                          fuel_min = flt2.FuelTotal < flt2.OFPMINTOFFUEL
+                        fuel_min = flt2.FuelTotal < flt2.OFPMINTOFFUEL
                     });
 
                 }
@@ -3565,13 +3773,13 @@ namespace ApiAPSB.Controllers
                     var _tod = x.items.Where(q => q.name.Contains("tod_ata")).FirstOrDefault();
                     var _tod_usd = x.items.Where(q => q.name.Contains("tod_usd")).FirstOrDefault();
 
-
+                    ////Caspina disabled takeoff and landing
                     if (takeoff_ata == null || string.IsNullOrEmpty(takeoff_ata.value) || takeoff_usd == null || string.IsNullOrEmpty(takeoff_usd.value))
                     {
                         var _err = errors.Where(q => q.flight_no == x.ofp.FlightNo).FirstOrDefault();
                         if (_err != null)
                         {
-                            _err.takeoff_point = true;
+                            _err.takeoff_point = false;
 
                         }
                     }
@@ -3581,7 +3789,7 @@ namespace ApiAPSB.Controllers
                         var _err = errors.Where(q => q.flight_no == x.ofp.FlightNo).FirstOrDefault();
                         if (_err != null)
                         {
-                            _err.landing_point = true;
+                            _err.landing_point = false;
 
                         }
                     }

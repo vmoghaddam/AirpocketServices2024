@@ -459,9 +459,9 @@ namespace ApiForm.Controllers
                             entity_type = 8,
                             message_text = text,
                             message_type = 2,
-                            rec_id = applicant.PersonId,
-                            rec_mobile = applicant.Mobile,
-                            rec_name = applicant.Name,
+                            rec_id = rec.id,
+                            rec_mobile = rec.receiver_mobile,
+                            rec_name = rec.receiver_name,
                             counter = 0,
                         };
 
