@@ -82,6 +82,7 @@ namespace ApiQATemp.Models
         public virtual DbSet<ViewQaVoyageReport> ViewQaVoyageReports { get; set; }
         public virtual DbSet<QAGetEntites_Result> QAGetEntites_Result { get; set; }
         public virtual DbSet<ViewQAFollowingUp> ViewQAFollowingUps { get; set; }
+        public virtual DbSet<qa_form_visited_history> qa_form_visited_history { get; set; }
     
         public virtual int QAByEmployeeCount(Nullable<int> type, Nullable<int> entityId)
         {

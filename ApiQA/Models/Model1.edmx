@@ -164,6 +164,50 @@
           <Property Name="FormNo" Type="varchar" MaxLength="255" />
           <Property Name="DateStatus" Type="datetime" />
           <Property Name="StatusEmployeeId" Type="int" />
+          <Property Name="LOCTaxiway" Type="varchar" MaxLength="255" />
+          <Property Name="LOCEnRoute" Type="varchar" MaxLength="255" />
+          <Property Name="LOCAPP" Type="varchar" MaxLength="255" />
+          <Property Name="ACConfigAPU" Type="nvarchar" MaxLength="255" />
+          <Property Name="ACConfigENG" Type="nvarchar" MaxLength="255" />
+          <Property Name="EGPWSTypeId" Type="int" />
+          <Property Name="EGPWSAuralAlert" Type="varchar" MaxLength="255" />
+          <Property Name="EGPWSActionTaken" Type="varchar" MaxLength="255" />
+          <Property Name="CFITATCId" Type="int" />
+          <Property Name="CFITFrequency" Type="varchar" MaxLength="255" />
+          <Property Name="CFITHeading" Type="varchar" MaxLength="255" />
+          <Property Name="CFITALT" Type="varchar" MaxLength="255" />
+          <Property Name="CFITGPWS" Type="varchar" MaxLength="255" />
+          <Property Name="AATIncidentId" Type="int" />
+          <Property Name="AATRelativeALT" Type="varchar" MaxLength="255" />
+          <Property Name="ATTRelativePos" Type="varchar" MaxLength="255" />
+          <Property Name="BSSkyCondition" Type="int" />
+          <Property Name="BSRandom" Type="int" />
+          <Property Name="BSWindShield" Type="int" />
+          <Property Name="BSENG" Type="int" />
+          <Property Name="BSWing" Type="int" />
+          <Property Name="BSFuselage" Type="int" />
+          <Property Name="BSLDG" Type="int" />
+          <Property Name="BSTail" Type="int" />
+          <Property Name="BSLights" Type="int" />
+          <Property Name="BSOther" Type="int" />
+          <Property Name="BSEffectFlt" Type="int" />
+          <Property Name="WTAPDisconnected" Type="bit" />
+          <Property Name="WTSpeed" Type="bit" />
+          <Property Name="WTStall" Type="bit" />
+          <Property Name="MetSurfaceId" Type="int" />
+          <Property Name="MetSurfaceConditionId" Type="int" />
+          <Property Name="MetFlightRuleId" Type="int" />
+          <Property Name="WTIsStall" Type="int" />
+          <Property Name="WTIsBuffetExp" Type="int" />
+          <Property Name="WTIsSpeed" Type="int" />
+          <Property Name="WTIsAP" Type="int" />
+          <Property Name="WTIsAltitude" Type="int" />
+          <Property Name="WTIsAttitude" Type="int" />
+          <Property Name="CFITAirapaceId" Type="int" />
+          <Property Name="CFITIncidentId" Type="int" />
+          <Property Name="MetAirportATIS" Type="varchar" MaxLength="255" />
+          <Property Name="AirspaceId" Type="int" />
+          <Property Name="AtcId" Type="int" />
         </EntityType>
         <EntityType Name="FlightInformation">
           <Key>
@@ -468,6 +512,16 @@
           <Property Name="AttForms" Type="varchar" MaxLength="500" />
           <Property Name="PaxMale" Type="int" />
           <Property Name="PaxFemale" Type="int" />
+        </EntityType>
+        <EntityType Name="qa_form_visited_history">
+          <Key>
+            <PropertyRef Name="form_type_id" />
+            <PropertyRef Name="form_id" />
+            <PropertyRef Name="employee_id" />
+          </Key>
+          <Property Name="form_type_id" Type="int" Nullable="false" />
+          <Property Name="form_id" Type="int" Nullable="false" />
+          <Property Name="employee_id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="QAAttachments">
           <Key>
@@ -1076,7 +1130,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.AppLeg' does not have a primary key
           <Property Name="BaggageCount" Type="int" />
           <Property Name="FPFuel" Type="decimal" Precision="18" Scale="0" />
           <Property Name="AirlineOperatorsID" Type="int" />
-          <Property Name="Airline" Type="nvarchar" MaxLength="1000" />
+          <Property Name="Airline" Type="nvarchar" MaxLength="255" />
           <Property Name="CPCrewId" Type="int" />
           <Property Name="CPRegister" Type="varchar" MaxLength="500" />
           <Property Name="CPPositionId" Type="int" />
@@ -3073,6 +3127,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <EntitySet Name="DutyLog" EntityType="Self.DutyLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EFBASR" EntityType="Self.EFBASR" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FlightInformation" EntityType="Self.FlightInformation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="qa_form_visited_history" EntityType="Self.qa_form_visited_history" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="QAAttachments" EntityType="Self.QAAttachments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="QAAuthCards" EntityType="Self.QAAuthCards" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="QACatering" EntityType="Self.QACatering" Schema="dbo" store:Type="Tables" />
@@ -4882,6 +4937,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
             <End Role="survey_participant" EntitySet="survey_participant" />
             <End Role="survey_driver" EntitySet="survey_driver" />
           </AssociationSet>
+          <EntitySet Name="qa_form_visited_history" EntityType="ppaModel.qa_form_visited_history" />
           </EntityContainer>
         <EntityType Name="FlightInformation">
           <Key>
@@ -5280,7 +5336,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <Property Name="BaggageCount" Type="Int32" />
           <Property Name="FPFuel" Type="Decimal" Precision="18" Scale="0" />
           <Property Name="AirlineOperatorsID" Type="Int32" />
-          <Property Name="Airline" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Airline" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="CPCrewId" Type="Int32" />
           <Property Name="CPRegister" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="CPPositionId" Type="Int32" />
@@ -8857,6 +8913,50 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <Property Name="FormNo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="DateStatus" Type="DateTime" Precision="3" />
           <Property Name="StatusEmployeeId" Type="Int32" />
+          <Property Name="LOCTaxiway" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="LOCEnRoute" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="LOCAPP" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ACConfigAPU" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ACConfigENG" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="EGPWSTypeId" Type="Int32" />
+          <Property Name="EGPWSAuralAlert" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="EGPWSActionTaken" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="CFITATCId" Type="Int32" />
+          <Property Name="CFITFrequency" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="CFITHeading" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="CFITALT" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="CFITGPWS" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="AATIncidentId" Type="Int32" />
+          <Property Name="AATRelativeALT" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ATTRelativePos" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="BSSkyCondition" Type="Int32" />
+          <Property Name="BSRandom" Type="Int32" />
+          <Property Name="BSWindShield" Type="Int32" />
+          <Property Name="BSENG" Type="Int32" />
+          <Property Name="BSWing" Type="Int32" />
+          <Property Name="BSFuselage" Type="Int32" />
+          <Property Name="BSLDG" Type="Int32" />
+          <Property Name="BSTail" Type="Int32" />
+          <Property Name="BSLights" Type="Int32" />
+          <Property Name="BSOther" Type="Int32" />
+          <Property Name="BSEffectFlt" Type="Int32" />
+          <Property Name="WTAPDisconnected" Type="Boolean" />
+          <Property Name="WTSpeed" Type="Boolean" />
+          <Property Name="WTStall" Type="Boolean" />
+          <Property Name="MetSurfaceId" Type="Int32" />
+          <Property Name="MetSurfaceConditionId" Type="Int32" />
+          <Property Name="MetFlightRuleId" Type="Int32" />
+          <Property Name="WTIsStall" Type="Int32" />
+          <Property Name="WTIsBuffetExp" Type="Int32" />
+          <Property Name="WTIsSpeed" Type="Int32" />
+          <Property Name="WTIsAP" Type="Int32" />
+          <Property Name="WTIsAltitude" Type="Int32" />
+          <Property Name="WTIsAttitude" Type="Int32" />
+          <Property Name="CFITAirapaceId" Type="Int32" />
+          <Property Name="CFITIncidentId" Type="Int32" />
+          <Property Name="MetAirportATIS" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="AirspaceId" Type="Int32" />
+          <Property Name="AtcId" Type="Int32" />
         </EntityType>
         <Association Name="fk_asr_flt">
           <End Type="ppaModel.FlightInformation" Role="FlightInformation" Multiplicity="1" />
@@ -8989,6 +9089,16 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="qa_form_visited_history">
+          <Key>
+            <PropertyRef Name="form_type_id" />
+            <PropertyRef Name="form_id" />
+            <PropertyRef Name="employee_id" />
+          </Key>
+          <Property Name="form_type_id" Type="Int32" Nullable="false" />
+          <Property Name="form_id" Type="Int32" Nullable="false" />
+          <Property Name="employee_id" Type="Int32" Nullable="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -11655,6 +11765,50 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
           <EntitySetMapping Name="EFBASRs">
             <EntityTypeMapping TypeName="ppaModel.EFBASR">
               <MappingFragment StoreEntitySet="EFBASR">
+                <ScalarProperty Name="AtcId" ColumnName="AtcId" />
+                <ScalarProperty Name="AirspaceId" ColumnName="AirspaceId" />
+                <ScalarProperty Name="MetAirportATIS" ColumnName="MetAirportATIS" />
+                <ScalarProperty Name="CFITIncidentId" ColumnName="CFITIncidentId" />
+                <ScalarProperty Name="CFITAirapaceId" ColumnName="CFITAirapaceId" />
+                <ScalarProperty Name="WTIsAttitude" ColumnName="WTIsAttitude" />
+                <ScalarProperty Name="WTIsAltitude" ColumnName="WTIsAltitude" />
+                <ScalarProperty Name="WTIsAP" ColumnName="WTIsAP" />
+                <ScalarProperty Name="WTIsSpeed" ColumnName="WTIsSpeed" />
+                <ScalarProperty Name="WTIsBuffetExp" ColumnName="WTIsBuffetExp" />
+                <ScalarProperty Name="WTIsStall" ColumnName="WTIsStall" />
+                <ScalarProperty Name="MetFlightRuleId" ColumnName="MetFlightRuleId" />
+                <ScalarProperty Name="MetSurfaceConditionId" ColumnName="MetSurfaceConditionId" />
+                <ScalarProperty Name="MetSurfaceId" ColumnName="MetSurfaceId" />
+                <ScalarProperty Name="WTStall" ColumnName="WTStall" />
+                <ScalarProperty Name="WTSpeed" ColumnName="WTSpeed" />
+                <ScalarProperty Name="WTAPDisconnected" ColumnName="WTAPDisconnected" />
+                <ScalarProperty Name="BSEffectFlt" ColumnName="BSEffectFlt" />
+                <ScalarProperty Name="BSOther" ColumnName="BSOther" />
+                <ScalarProperty Name="BSLights" ColumnName="BSLights" />
+                <ScalarProperty Name="BSTail" ColumnName="BSTail" />
+                <ScalarProperty Name="BSLDG" ColumnName="BSLDG" />
+                <ScalarProperty Name="BSFuselage" ColumnName="BSFuselage" />
+                <ScalarProperty Name="BSWing" ColumnName="BSWing" />
+                <ScalarProperty Name="BSENG" ColumnName="BSENG" />
+                <ScalarProperty Name="BSWindShield" ColumnName="BSWindShield" />
+                <ScalarProperty Name="BSRandom" ColumnName="BSRandom" />
+                <ScalarProperty Name="BSSkyCondition" ColumnName="BSSkyCondition" />
+                <ScalarProperty Name="ATTRelativePos" ColumnName="ATTRelativePos" />
+                <ScalarProperty Name="AATRelativeALT" ColumnName="AATRelativeALT" />
+                <ScalarProperty Name="AATIncidentId" ColumnName="AATIncidentId" />
+                <ScalarProperty Name="CFITGPWS" ColumnName="CFITGPWS" />
+                <ScalarProperty Name="CFITALT" ColumnName="CFITALT" />
+                <ScalarProperty Name="CFITHeading" ColumnName="CFITHeading" />
+                <ScalarProperty Name="CFITFrequency" ColumnName="CFITFrequency" />
+                <ScalarProperty Name="CFITATCId" ColumnName="CFITATCId" />
+                <ScalarProperty Name="EGPWSActionTaken" ColumnName="EGPWSActionTaken" />
+                <ScalarProperty Name="EGPWSAuralAlert" ColumnName="EGPWSAuralAlert" />
+                <ScalarProperty Name="EGPWSTypeId" ColumnName="EGPWSTypeId" />
+                <ScalarProperty Name="ACConfigENG" ColumnName="ACConfigENG" />
+                <ScalarProperty Name="ACConfigAPU" ColumnName="ACConfigAPU" />
+                <ScalarProperty Name="LOCAPP" ColumnName="LOCAPP" />
+                <ScalarProperty Name="LOCEnRoute" ColumnName="LOCEnRoute" />
+                <ScalarProperty Name="LOCTaxiway" ColumnName="LOCTaxiway" />
                 <ScalarProperty Name="StatusEmployeeId" ColumnName="StatusEmployeeId" />
                 <ScalarProperty Name="DateStatus" ColumnName="DateStatus" />
                 <ScalarProperty Name="FormNo" ColumnName="FormNo" />
@@ -11826,6 +11980,15 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewQASecurity' does not have a pri
                 <ScalarProperty Name="driver_name" ColumnName="driver_name" />
                 <ScalarProperty Name="survey_id" ColumnName="survey_id" />
                 <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="qa_form_visited_history">
+            <EntityTypeMapping TypeName="ppaModel.qa_form_visited_history">
+              <MappingFragment StoreEntitySet="qa_form_visited_history">
+                <ScalarProperty Name="employee_id" ColumnName="employee_id" />
+                <ScalarProperty Name="form_id" ColumnName="form_id" />
+                <ScalarProperty Name="form_type_id" ColumnName="form_type_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
