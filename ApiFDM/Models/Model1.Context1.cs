@@ -67,6 +67,9 @@ namespace ApiFDM.Models
         public virtual DbSet<Airport> Airports { get; set; }
         public virtual DbSet<FlightInformation> FlightInformations { get; set; }
         public virtual DbSet<FDM> FDMs { get; set; }
+        public virtual DbSet<fdm_crew> fdm_crew { get; set; }
+        public virtual DbSet<fdm_processed> fdm_processed { get; set; }
+        public virtual DbSet<helper_fdm> helper_fdm { get; set; }
     
         public virtual int FillFDMCptMonthlyTBL(Nullable<int> yearFrom, Nullable<int> monthFrom, Nullable<int> yearTo, Nullable<int> monthTo)
         {
