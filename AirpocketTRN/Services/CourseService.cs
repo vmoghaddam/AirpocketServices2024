@@ -1373,6 +1373,20 @@ namespace AirpocketTRN.Services
             };
         }
 
+        public async Task<DataResponse> GetCoursesByTypeOutSide(int tid, int sid)
+        {
+            var query = context.ViewCourseNews.Where(q => q.CourseTypeId == tid);
+            if (sid != -1)
+                query = query.Where(q => q.StatusId == sid && q.IsInside==false);
+            var result = await query.OrderBy(q => q.CourseType).ThenByDescending(q => q.DateStart).ToListAsync();
+
+            return new DataResponse()
+            {
+                Data = result,
+                IsSuccess = true,
+            };
+        }
+
         public async Task<DataResponse> GetPersonCourses(int pid)
         {
             var result = await context.ViewCoursePeopleRankeds.Where(q => q.PersonId == pid).OrderByDescending(q => q.DateStart).ToListAsync();
@@ -3160,7 +3174,7 @@ namespace AirpocketTRN.Services
             var _dateEnd = (DateTime)DateObject.ConvertToDate(dto.DateEnd).Date;
 
             Course entity = await context.Courses.Where(q => q.DateStart == _dateStart && q.DateEnd == _dateEnd && q.CourseTypeId == dto.CourseTypeId
-            && q.OrganizationId == dto.OrganizationId).FirstOrDefaultAsync();
+            && q.OrganizationId == dto.OrganizationId && q.IsInside==false).FirstOrDefaultAsync();
 
             if (entity == null)
             {
@@ -3185,6 +3199,7 @@ namespace AirpocketTRN.Services
                 entity.No = dto.No;
                 entity.IsNotificationEnabled = dto.IsNotificationEnabled;
                 entity.StatusId = 3;
+                entity.IsInside = false;
             }
             if (dto.PersonId != null)
             {
@@ -3213,7 +3228,7 @@ namespace AirpocketTRN.Services
                 var person = await context.People.Where(q => q.Id == cp.PersonId).FirstOrDefaultAsync();
                 var ct = await context.ViewCourseTypes.Where(q => q.Id == dto.CourseTypeId).FirstOrDefaultAsync();
                 //12-03
-                if (ct != null)
+                if (ct != null && 1==3)
                 {
                     switch (ct.CertificateType)
                     {
@@ -4418,7 +4433,7 @@ namespace AirpocketTRN.Services
             var certificate_type = await context.CertificateTypes.Where(q => q.Id == course.CertificateTypeId).FirstOrDefaultAsync();
             var subjects_cer_types = await context.CertificateTypes.Where(q => subjects_cer_type_ids.Contains(q.Id)).ToListAsync();
 
-            var _date_issue = ((DateTime)course.Date_Sign_Director).Date;
+            var _date_issue = course.Date_Sign_Director!=null?((DateTime)course.Date_Sign_Director).Date: ((DateTime)course.DateEnd).Date;
             var _interval = course.Interval;
             if (_interval == null)
                 _interval = 0;

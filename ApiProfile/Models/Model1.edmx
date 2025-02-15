@@ -667,6 +667,8 @@
           <Property Name="Remark" Type="nvarchar" MaxLength="500" />
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="DocumentTypeId" Type="int" Nullable="false" />
+          <Property Name="DateIssue" Type="datetime2" Precision="7" />
+          <Property Name="DateExpire" Type="datetime2" Precision="7" />
         </EntityType>
         <EntityType Name="PersonDocumentFile">
           <Key>
@@ -977,6 +979,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewPersonDocument' does not have a
           <Property Name="DocumentTypeId" Type="int" />
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="DocumentType" Type="nvarchar" MaxLength="1000" />
+          <Property Name="DateIssue" Type="datetime2" Precision="7" />
+          <Property Name="DateExpire" Type="datetime2" Precision="7" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.ViewPersonDocumentFile' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1583,7 +1587,9 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewProfile' does not have a primar
     [ViewPersonDocument].[Remark] AS [Remark], 
     [ViewPersonDocument].[DocumentTypeId] AS [DocumentTypeId], 
     [ViewPersonDocument].[Id] AS [Id], 
-    [ViewPersonDocument].[DocumentType] AS [DocumentType]
+    [ViewPersonDocument].[DocumentType] AS [DocumentType], 
+    [ViewPersonDocument].[DateIssue] AS [DateIssue], 
+    [ViewPersonDocument].[DateExpire] AS [DateExpire]
     FROM [dbo].[ViewPersonDocument] AS [ViewPersonDocument]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ViewPersonDocumentFile" EntityType="Self.ViewPersonDocumentFile" store:Type="Views" store:Schema="dbo">
@@ -1858,16 +1864,10 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewProfile' does not have a primar
             <End Role="EmployeeLocation" EntitySet="EmployeeLocations" />
           </AssociationSet>
           <EntitySet Name="PersonAircraftTypes" EntityType="dbModel.PersonAircraftType" />
-          <EntitySet Name="PersonDocuments" EntityType="dbModel.PersonDocument" />
           <EntitySet Name="Documents" EntityType="dbModel.Document" />
-          <EntitySet Name="ViewPersonDocuments" EntityType="dbModel.ViewPersonDocument" />
           <AssociationSet Name="FK_DOC_DOC" Association="dbModel.FK_DOC_DOC">
             <End Role="Document" EntitySet="Documents" />
             <End Role="Document1" EntitySet="Documents" />
-          </AssociationSet>
-          <AssociationSet Name="PersonDocumentFile" Association="dbModel.PersonDocumentFile">
-            <End Role="Document" EntitySet="Documents" />
-            <End Role="PersonDocument" EntitySet="PersonDocuments" />
           </AssociationSet>
           <EntitySet Name="ViewPersonDocumentFiles" EntityType="dbModel.ViewPersonDocumentFile" />
           <EntitySet Name="ViewPersonAircraftTypes" EntityType="dbModel.ViewPersonAircraftType" />
@@ -1887,10 +1887,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewProfile' does not have a primar
             <End Role="Person" EntitySet="People" />
             <End Role="CertificateHistory" EntitySet="CertificateHistories" />
           </AssociationSet>
-          <AssociationSet Name="FK_PD_PERS" Association="dbModel.FK_PD_PERS">
-            <End Role="Person" EntitySet="People" />
-            <End Role="PersonDocument" EntitySet="PersonDocuments" />
-          </AssociationSet>
           <AssociationSet Name="FK_PERSONCUSTOMER_PERSON" Association="dbModel.FK_PERSONCUSTOMER_PERSON">
             <End Role="Person" EntitySet="People" />
             <End Role="PersonCustomer" EntitySet="PersonCustomers" />
@@ -1901,6 +1897,16 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewProfile' does not have a primar
           </AssociationSet>
           <EntitySet Name="ViewProfiles" EntityType="dbModel.ViewProfile" />
           <EntitySet Name="AspNetUsers" EntityType="dbModel.AspNetUser" />
+          <EntitySet Name="PersonDocuments" EntityType="dbModel.PersonDocument" />
+          <EntitySet Name="ViewPersonDocuments" EntityType="dbModel.ViewPersonDocument" />
+          <AssociationSet Name="FK_PD_PERS" Association="dbModel.FK_PD_PERS">
+            <End Role="Person" EntitySet="People" />
+            <End Role="PersonDocument" EntitySet="PersonDocuments" />
+          </AssociationSet>
+          <AssociationSet Name="PersonDocumentFile" Association="dbModel.PersonDocumentFile">
+            <End Role="Document" EntitySet="Documents" />
+            <End Role="PersonDocument" EntitySet="PersonDocuments" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="IdeaUnique">
           <Key>
@@ -2022,18 +2028,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewProfile' does not have a primar
           <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Person" Relationship="dbModel.FK_UM_Type_Access_UM_Users" FromRole="PersonAircraftType" ToRole="Person" />
         </EntityType>
-        <EntityType Name="PersonDocument">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="PersonId" Type="Int32" Nullable="false" />
-          <Property Name="Title" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DocumentTypeId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Documents" Relationship="dbModel.PersonDocumentFile" FromRole="PersonDocument" ToRole="Document" />
-          <NavigationProperty Name="Person" Relationship="dbModel.FK_PD_PERS" FromRole="PersonDocument" ToRole="Person" />
-        </EntityType>
         <EntityType Name="Document">
           <Key>
             <PropertyRef Name="Id" />
@@ -2050,18 +2044,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewProfile' does not have a primar
           <NavigationProperty Name="Document2" Relationship="dbModel.FK_DOC_DOC" FromRole="Document1" ToRole="Document" />
           <NavigationProperty Name="PersonDocument" Relationship="dbModel.PersonDocumentFile" FromRole="Document" ToRole="PersonDocument" />
         </EntityType>
-        <EntityType Name="ViewPersonDocument">
-          <Key>
-            <PropertyRef Name="PersonId" />
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="PersonId" Type="Int32" Nullable="false" />
-          <Property Name="Title" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="DocumentTypeId" Type="Int32" />
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="DocumentType" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-        </EntityType>
         <Association Name="FK_DOC_DOC">
           <End Type="dbModel.Document" Role="Document" Multiplicity="0..1" />
           <End Type="dbModel.Document" Role="Document1" Multiplicity="*" />
@@ -2073,10 +2055,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewProfile' does not have a primar
               <PropertyRef Name="ParentId" />
             </Dependent>
           </ReferentialConstraint>
-        </Association>
-        <Association Name="PersonDocumentFile">
-          <End Type="dbModel.Document" Role="Document" Multiplicity="*" />
-          <End Type="dbModel.PersonDocument" Role="PersonDocument" Multiplicity="0..1" />
         </Association>
         <EntityType Name="ViewPersonDocumentFile">
           <Key>
@@ -2884,7 +2862,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewProfile' does not have a primar
           <Property Name="TypeFoker50ExpireDate" Type="DateTime" Precision="7" />
           <Property Name="TypeFoker100ExpireDate" Type="DateTime" Precision="7" />
           <NavigationProperty Name="CertificateHistories" Relationship="dbModel.FK_CH_PERSON" FromRole="Person" ToRole="CertificateHistory" />
-          <NavigationProperty Name="PersonDocuments" Relationship="dbModel.FK_PD_PERS" FromRole="Person" ToRole="PersonDocument" />
           <NavigationProperty Name="PersonCustomers" Relationship="dbModel.FK_PERSONCUSTOMER_PERSON" FromRole="Person" ToRole="PersonCustomer" />
           <NavigationProperty Name="PersonAircraftTypes" Relationship="dbModel.FK_UM_Type_Access_UM_Users" FromRole="Person" ToRole="PersonAircraftType" />
           <Property Name="SMSL2IssueDate" Type="DateTime" Precision="7" />
@@ -2907,6 +2884,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewProfile' does not have a primar
           <Property Name="ASD_SRY_ExpireDate" Type="DateTime" Precision="7" />
           <Property Name="FTSL1IssueDate" Type="DateTime" Precision="7" />
           <Property Name="FTSL1ExpireDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="PersonDocuments" Relationship="dbModel.FK_PD_PERS" FromRole="Person" ToRole="PersonDocument" />
         </EntityType>
         <Association Name="FK_CH_PERSON">
           <End Type="dbModel.Person" Role="Person" Multiplicity="1" />
@@ -2916,20 +2894,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewProfile' does not have a primar
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="CertificateHistory">
-              <PropertyRef Name="PersonId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PD_PERS">
-          <End Type="dbModel.Person" Role="Person" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="dbModel.PersonDocument" Role="PersonDocument" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Person">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="PersonDocument">
               <PropertyRef Name="PersonId" />
             </Dependent>
           </ReferentialConstraint>
@@ -3206,6 +3170,52 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewProfile' does not have a primar
           <Property Name="NormalizedUserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="LockoutEnd" Type="DateTimeOffset" Precision="7" />
         </EntityType>
+        <EntityType Name="PersonDocument">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="PersonId" Type="Int32" Nullable="false" />
+          <Property Name="Title" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DocumentTypeId" Type="Int32" Nullable="false" />
+          <Property Name="DateIssue" Type="DateTime" Precision="7" />
+          <Property Name="DateExpire" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="Person" Relationship="dbModel.FK_PD_PERS" FromRole="PersonDocument" ToRole="Person" />
+          <NavigationProperty Name="Documents" Relationship="dbModel.PersonDocumentFile" FromRole="PersonDocument" ToRole="Document" />
+        </EntityType>
+        <EntityType Name="ViewPersonDocument">
+          <Key>
+            <PropertyRef Name="PersonId" />
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="PersonId" Type="Int32" Nullable="false" />
+          <Property Name="Title" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="DocumentTypeId" Type="Int32" />
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="DocumentType" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="DateIssue" Type="DateTime" Precision="7" />
+          <Property Name="DateExpire" Type="DateTime" Precision="7" />
+        </EntityType>
+        <Association Name="FK_PD_PERS">
+          <End Type="dbModel.Person" Role="Person" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="dbModel.PersonDocument" Role="PersonDocument" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PersonDocument">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PersonDocumentFile">
+          <End Type="dbModel.Document" Role="Document" Multiplicity="*" />
+          <End Type="dbModel.PersonDocument" Role="PersonDocument" Multiplicity="0..1" />
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3320,17 +3330,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewProfile' does not have a primar
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="PersonDocuments">
-            <EntityTypeMapping TypeName="dbModel.PersonDocument">
-              <MappingFragment StoreEntitySet="PersonDocument">
-                <ScalarProperty Name="DocumentTypeId" ColumnName="DocumentTypeId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Remark" ColumnName="Remark" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Documents">
             <EntityTypeMapping TypeName="dbModel.Document">
               <MappingFragment StoreEntitySet="Document">
@@ -3345,27 +3344,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewProfile' does not have a primar
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ViewPersonDocuments">
-            <EntityTypeMapping TypeName="dbModel.ViewPersonDocument">
-              <MappingFragment StoreEntitySet="ViewPersonDocument">
-                <ScalarProperty Name="DocumentType" ColumnName="DocumentType" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="DocumentTypeId" ColumnName="DocumentTypeId" />
-                <ScalarProperty Name="Remark" ColumnName="Remark" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <AssociationSetMapping Name="PersonDocumentFile" TypeName="dbModel.PersonDocumentFile" StoreEntitySet="PersonDocumentFile">
-            <EndProperty Name="PersonDocument">
-              <ScalarProperty Name="Id" ColumnName="PersonDocumentId" />
-            </EndProperty>
-            <EndProperty Name="Document">
-              <ScalarProperty Name="Id" ColumnName="DocumentId" />
-            </EndProperty>
-            <Condition ColumnName="PersonDocumentId" IsNull="false" />
-          </AssociationSetMapping>
           <EntitySetMapping Name="ViewPersonDocumentFiles">
             <EntityTypeMapping TypeName="dbModel.ViewPersonDocumentFile">
               <MappingFragment StoreEntitySet="ViewPersonDocumentFile">
@@ -4374,6 +4352,42 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewProfile' does not have a primar
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="PersonDocuments">
+            <EntityTypeMapping TypeName="dbModel.PersonDocument">
+              <MappingFragment StoreEntitySet="PersonDocument">
+                <ScalarProperty Name="DateExpire" ColumnName="DateExpire" />
+                <ScalarProperty Name="DateIssue" ColumnName="DateIssue" />
+                <ScalarProperty Name="DocumentTypeId" ColumnName="DocumentTypeId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ViewPersonDocuments">
+            <EntityTypeMapping TypeName="dbModel.ViewPersonDocument">
+              <MappingFragment StoreEntitySet="ViewPersonDocument">
+                <ScalarProperty Name="DateExpire" ColumnName="DateExpire" />
+                <ScalarProperty Name="DateIssue" ColumnName="DateIssue" />
+                <ScalarProperty Name="DocumentType" ColumnName="DocumentType" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="DocumentTypeId" ColumnName="DocumentTypeId" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="PersonDocumentFile" TypeName="dbModel.PersonDocumentFile" StoreEntitySet="PersonDocumentFile">
+            <EndProperty Name="PersonDocument">
+              <ScalarProperty Name="Id" ColumnName="PersonDocumentId" />
+            </EndProperty>
+            <EndProperty Name="Document">
+              <ScalarProperty Name="Id" ColumnName="DocumentId" />
+            </EndProperty>
+            <Condition ColumnName="PersonDocumentId" IsNull="false" />
+          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

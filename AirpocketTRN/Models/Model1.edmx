@@ -2621,6 +2621,10 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewCourseNew' does not have a prim
           <Property Name="Year" Type="int" />
           <Property Name="DateStart" Type="date" Nullable="false" />
           <Property Name="DateEnd" Type="date" />
+          <Property Name="PYear" Type="nvarchar" MaxLength="4" />
+          <Property Name="PMonthName" Type="nvarchar" MaxLength="255" />
+          <Property Name="PDateStart" Type="nvarchar" MaxLength="500" />
+          <Property Name="PDateEnd" Type="nvarchar" MaxLength="500" />
           <Property Name="Instructor" Type="nvarchar" MaxLength="1001" />
           <Property Name="Location" Type="nvarchar" MaxLength="500" />
           <Property Name="Department" Type="nvarchar" MaxLength="500" />
@@ -4782,6 +4786,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherCourse' does not have a 
           <Property Name="PLTotal" Type="int" />
           <Property Name="PLRemain" Type="int" />
           <Property Name="PLStatus" Type="float" />
+          <Property Name="ParentId" Type="int" />
+          <Property Name="ParentTitle" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -6447,6 +6453,10 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
     [ViewCourseNew].[Year] AS [Year], 
     [ViewCourseNew].[DateStart] AS [DateStart], 
     [ViewCourseNew].[DateEnd] AS [DateEnd], 
+    [ViewCourseNew].[PYear] AS [PYear], 
+    [ViewCourseNew].[PMonthName] AS [PMonthName], 
+    [ViewCourseNew].[PDateStart] AS [PDateStart], 
+    [ViewCourseNew].[PDateEnd] AS [PDateEnd], 
     [ViewCourseNew].[Instructor] AS [Instructor], 
     [ViewCourseNew].[Location] AS [Location], 
     [ViewCourseNew].[Department] AS [Department], 
@@ -8242,7 +8252,9 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
     [ViewTeacherCourse].[PLCount] AS [PLCount], 
     [ViewTeacherCourse].[PLTotal] AS [PLTotal], 
     [ViewTeacherCourse].[PLRemain] AS [PLRemain], 
-    [ViewTeacherCourse].[PLStatus] AS [PLStatus]
+    [ViewTeacherCourse].[PLStatus] AS [PLStatus], 
+    [ViewTeacherCourse].[ParentId] AS [ParentId], 
+    [ViewTeacherCourse].[ParentTitle] AS [ParentTitle]
     FROM [dbo].[ViewTeacherCourse] AS [ViewTeacherCourse]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ViewTeacherDocument" EntityType="Self.ViewTeacherDocument" store:Type="Views" store:Schema="dbo">
@@ -8887,7 +8899,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
             <End Role="CourseType" EntitySet="CourseTypes" />
             <End Role="CourseSyllabu" EntitySet="CourseSyllabus" />
           </AssociationSet>
-          <EntitySet Name="ViewCourseNews" EntityType="FLYModel.ViewCourseNew" />
           <EntitySet Name="ViewCourseNewAlls" EntityType="FLYModel.ViewCourseNewAll" />
           <EntitySet Name="Courses" EntityType="FLYModel.Course" />
           <AssociationSet Name="FK__trn_exam___cours__6F212F46" Association="FLYModel.FK__trn_exam___cours__6F212F46">
@@ -8940,6 +8951,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           </AssociationSet>
           <EntitySet Name="ViewCourseSessionPresences" EntityType="FLYModel.ViewCourseSessionPresence" />
           <EntitySet Name="ViewCourseSessions" EntityType="FLYModel.ViewCourseSession" />
+          <EntitySet Name="ViewCourseNews" EntityType="FLYModel.ViewCourseNew" />
           </EntityContainer>
         <EntityType Name="ExpFlight">
           <Key>
@@ -13944,6 +13956,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <Property Name="PLTotal" Type="Int32" />
           <Property Name="PLRemain" Type="Int32" />
           <Property Name="PLStatus" Type="Double" />
+          <Property Name="ParentId" Type="Int32" />
+          <Property Name="ParentTitle" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="ViewCoursePeople">
           <Key>
@@ -14103,91 +14117,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="ViewCourseNew">
-          <Key>
-            <PropertyRef Name="Id" />
-            <PropertyRef Name="CourseTypeId" />
-            <PropertyRef Name="DateStart" />
-            <PropertyRef Name="Recurrent" />
-            <PropertyRef Name="PeopleCount" />
-            <PropertyRef Name="Synced" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="CourseTypeId" Type="Int32" Nullable="false" />
-          <Property Name="CourseType" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="CertificateTypeId" Type="Int32" />
-          <Property Name="CertificateType" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="JobGroups" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
-          <Property Name="JobGroupsCode" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
-          <Property Name="Year" Type="Int32" />
-          <Property Name="DateStart" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="DateEnd" Type="DateTime" Precision="0" />
-          <Property Name="Instructor" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
-          <Property Name="Location" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="Department" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="OrganizationId" Type="Int32" />
-          <Property Name="Duration" Type="Int32" />
-          <Property Name="DurationUnitId" Type="Int32" />
-          <Property Name="StatusId" Type="Int32" />
-          <Property Name="Status" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
-          <Property Name="Remark" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
-          <Property Name="TrainingDirector" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="Title" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="Recurrent" Type="Boolean" Nullable="false" />
-          <Property Name="Interval" Type="Int32" />
-          <Property Name="CalanderTypeId" Type="Int32" />
-          <Property Name="IsInside" Type="Boolean" />
-          <Property Name="IsGeneral" Type="Boolean" />
-          <Property Name="CustomerId" Type="Int32" />
-          <Property Name="No" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="IsNotificationEnabled" Type="Boolean" />
-          <Property Name="Sessions" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="PeopleCount" Type="Int32" Nullable="false" />
-          <Property Name="Organization" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="DurationUnit" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="CalendarType" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="Continual" Type="Boolean" />
-          <Property Name="Mandatory" Type="Int32" />
-          <Property Name="CurrencyId" Type="Int32" />
-          <Property Name="InstructorEmployeeId" Type="Int32" />
-          <Property Name="InstructorJobGroup" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="HoldingType" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="InForm" Type="Boolean" />
-          <Property Name="SendLetter" Type="Boolean" />
-          <Property Name="Financial" Type="Boolean" />
-          <Property Name="Certificate" Type="Boolean" />
-          <Property Name="Instructor2Id" Type="Int32" />
-          <Property Name="Instructor2EmployeeId" Type="Int32" />
-          <Property Name="Instructor2JobGroup" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="Instructor2" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
-          <Property Name="Cost" Type="Decimal" Precision="18" Scale="4" />
-          <Property Name="SMSIns1" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
-          <Property Name="SMSIns2" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
-          <Property Name="SMSIns1Status" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="SMSIns2Status" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="SMSInsDate" Type="DateTime" Precision="7" />
-          <Property Name="AttForm" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
-          <Property Name="Intervals" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
-          <Property Name="Date_Sign_Ins1" Type="DateTime" Precision="7" />
-          <Property Name="Date_Sign_Ins2" Type="DateTime" Precision="7" />
-          <Property Name="Date_Sign_Director" Type="DateTime" Precision="7" />
-          <Property Name="Date_Sign_Staff" Type="DateTime" Precision="7" />
-          <Property Name="Date_Sign_OPS" Type="DateTime" Precision="7" />
-          <Property Name="Date_Exam_Sign_Ins1" Type="DateTime" Precision="7" />
-          <Property Name="Date_Exam_Sign_Ins2" Type="DateTime" Precision="7" />
-          <Property Name="Date_Sessions_Synced" Type="DateTime" Precision="7" />
-          <Property Name="Date_Sessions_Instructor_Synced" Type="DateTime" Precision="7" />
-          <Property Name="Attendants" Type="Int32" />
-          <Property Name="Synced" Type="Int32" Nullable="false" />
-          <Property Name="SyncedErrors" Type="Int32" />
-          <Property Name="SesstionsCount" Type="Int32" />
-          <Property Name="PLCount" Type="Int32" />
-          <Property Name="PLTotal" Type="Int32" />
-          <Property Name="PLRemain" Type="Int32" />
-          <Property Name="PLStatus" Type="Double" />
-          <Property Name="ParentId" Type="Int32" />
-          <Property Name="ParentTitle" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="ViewCourseNewAll">
           <Key>
             <PropertyRef Name="Id" />
@@ -14589,6 +14518,95 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <Property Name="StatusId" Type="Int32" />
           <Property Name="Status" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
           <Property Name="ParentId" Type="Int32" />
+        </EntityType>
+        <EntityType Name="ViewCourseNew">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="CourseTypeId" />
+            <PropertyRef Name="DateStart" />
+            <PropertyRef Name="Recurrent" />
+            <PropertyRef Name="PeopleCount" />
+            <PropertyRef Name="Synced" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="CourseTypeId" Type="Int32" Nullable="false" />
+          <Property Name="CourseType" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CertificateTypeId" Type="Int32" />
+          <Property Name="CertificateType" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="JobGroups" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="JobGroupsCode" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
+          <Property Name="Year" Type="Int32" />
+          <Property Name="DateStart" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DateEnd" Type="DateTime" Precision="0" />
+          <Property Name="PYear" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="PMonthName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PDateStart" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="PDateEnd" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Instructor" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="Location" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Department" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="OrganizationId" Type="Int32" />
+          <Property Name="Duration" Type="Int32" />
+          <Property Name="DurationUnitId" Type="Int32" />
+          <Property Name="StatusId" Type="Int32" />
+          <Property Name="Status" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
+          <Property Name="Remark" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="TrainingDirector" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Title" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Recurrent" Type="Boolean" Nullable="false" />
+          <Property Name="Interval" Type="Int32" />
+          <Property Name="CalanderTypeId" Type="Int32" />
+          <Property Name="IsInside" Type="Boolean" />
+          <Property Name="IsGeneral" Type="Boolean" />
+          <Property Name="CustomerId" Type="Int32" />
+          <Property Name="No" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="IsNotificationEnabled" Type="Boolean" />
+          <Property Name="Sessions" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="PeopleCount" Type="Int32" Nullable="false" />
+          <Property Name="Organization" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="DurationUnit" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="CalendarType" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Continual" Type="Boolean" />
+          <Property Name="Mandatory" Type="Int32" />
+          <Property Name="CurrencyId" Type="Int32" />
+          <Property Name="InstructorEmployeeId" Type="Int32" />
+          <Property Name="InstructorJobGroup" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="HoldingType" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="InForm" Type="Boolean" />
+          <Property Name="SendLetter" Type="Boolean" />
+          <Property Name="Financial" Type="Boolean" />
+          <Property Name="Certificate" Type="Boolean" />
+          <Property Name="Instructor2Id" Type="Int32" />
+          <Property Name="Instructor2EmployeeId" Type="Int32" />
+          <Property Name="Instructor2JobGroup" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Instructor2" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="Cost" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="SMSIns1" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="SMSIns2" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="SMSIns1Status" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="SMSIns2Status" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="SMSInsDate" Type="DateTime" Precision="7" />
+          <Property Name="AttForm" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="Intervals" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="Date_Sign_Ins1" Type="DateTime" Precision="7" />
+          <Property Name="Date_Sign_Ins2" Type="DateTime" Precision="7" />
+          <Property Name="Date_Sign_Director" Type="DateTime" Precision="7" />
+          <Property Name="Date_Sign_Staff" Type="DateTime" Precision="7" />
+          <Property Name="Date_Sign_OPS" Type="DateTime" Precision="7" />
+          <Property Name="Date_Exam_Sign_Ins1" Type="DateTime" Precision="7" />
+          <Property Name="Date_Exam_Sign_Ins2" Type="DateTime" Precision="7" />
+          <Property Name="Date_Sessions_Synced" Type="DateTime" Precision="7" />
+          <Property Name="Date_Sessions_Instructor_Synced" Type="DateTime" Precision="7" />
+          <Property Name="Attendants" Type="Int32" />
+          <Property Name="Synced" Type="Int32" Nullable="false" />
+          <Property Name="SyncedErrors" Type="Int32" />
+          <Property Name="SesstionsCount" Type="Int32" />
+          <Property Name="PLCount" Type="Int32" />
+          <Property Name="PLTotal" Type="Int32" />
+          <Property Name="PLRemain" Type="Int32" />
+          <Property Name="PLStatus" Type="Double" />
+          <Property Name="ParentId" Type="Int32" />
+          <Property Name="ParentTitle" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -18462,6 +18480,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <EntitySetMapping Name="ViewTeacherCourses">
             <EntityTypeMapping TypeName="FLYModel.ViewTeacherCourse">
               <MappingFragment StoreEntitySet="ViewTeacherCourse">
+                <ScalarProperty Name="ParentTitle" ColumnName="ParentTitle" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
                 <ScalarProperty Name="PLStatus" ColumnName="PLStatus" />
                 <ScalarProperty Name="PLRemain" ColumnName="PLRemain" />
                 <ScalarProperty Name="PLTotal" ColumnName="PLTotal" />
@@ -18655,87 +18675,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
                 <ScalarProperty Name="Duration" ColumnName="Duration" />
                 <ScalarProperty Name="SessionKey" ColumnName="SessionKey" />
                 <ScalarProperty Name="CourseId" ColumnName="CourseId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ViewCourseNews">
-            <EntityTypeMapping TypeName="FLYModel.ViewCourseNew">
-              <MappingFragment StoreEntitySet="ViewCourseNew">
-                <ScalarProperty Name="ParentTitle" ColumnName="ParentTitle" />
-                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
-                <ScalarProperty Name="PLStatus" ColumnName="PLStatus" />
-                <ScalarProperty Name="PLRemain" ColumnName="PLRemain" />
-                <ScalarProperty Name="PLTotal" ColumnName="PLTotal" />
-                <ScalarProperty Name="PLCount" ColumnName="PLCount" />
-                <ScalarProperty Name="SesstionsCount" ColumnName="SesstionsCount" />
-                <ScalarProperty Name="SyncedErrors" ColumnName="SyncedErrors" />
-                <ScalarProperty Name="Synced" ColumnName="Synced" />
-                <ScalarProperty Name="Attendants" ColumnName="Attendants" />
-                <ScalarProperty Name="Date_Sessions_Instructor_Synced" ColumnName="Date_Sessions_Instructor_Synced" />
-                <ScalarProperty Name="Date_Sessions_Synced" ColumnName="Date_Sessions_Synced" />
-                <ScalarProperty Name="Date_Exam_Sign_Ins2" ColumnName="Date_Exam_Sign_Ins2" />
-                <ScalarProperty Name="Date_Exam_Sign_Ins1" ColumnName="Date_Exam_Sign_Ins1" />
-                <ScalarProperty Name="Date_Sign_OPS" ColumnName="Date_Sign_OPS" />
-                <ScalarProperty Name="Date_Sign_Staff" ColumnName="Date_Sign_Staff" />
-                <ScalarProperty Name="Date_Sign_Director" ColumnName="Date_Sign_Director" />
-                <ScalarProperty Name="Date_Sign_Ins2" ColumnName="Date_Sign_Ins2" />
-                <ScalarProperty Name="Date_Sign_Ins1" ColumnName="Date_Sign_Ins1" />
-                <ScalarProperty Name="Intervals" ColumnName="Intervals" />
-                <ScalarProperty Name="AttForm" ColumnName="AttForm" />
-                <ScalarProperty Name="SMSInsDate" ColumnName="SMSInsDate" />
-                <ScalarProperty Name="SMSIns2Status" ColumnName="SMSIns2Status" />
-                <ScalarProperty Name="SMSIns1Status" ColumnName="SMSIns1Status" />
-                <ScalarProperty Name="SMSIns2" ColumnName="SMSIns2" />
-                <ScalarProperty Name="SMSIns1" ColumnName="SMSIns1" />
-                <ScalarProperty Name="Cost" ColumnName="Cost" />
-                <ScalarProperty Name="Instructor2" ColumnName="Instructor2" />
-                <ScalarProperty Name="Instructor2JobGroup" ColumnName="Instructor2JobGroup" />
-                <ScalarProperty Name="Instructor2EmployeeId" ColumnName="Instructor2EmployeeId" />
-                <ScalarProperty Name="Instructor2Id" ColumnName="Instructor2Id" />
-                <ScalarProperty Name="Certificate" ColumnName="Certificate" />
-                <ScalarProperty Name="Financial" ColumnName="Financial" />
-                <ScalarProperty Name="SendLetter" ColumnName="SendLetter" />
-                <ScalarProperty Name="InForm" ColumnName="InForm" />
-                <ScalarProperty Name="HoldingType" ColumnName="HoldingType" />
-                <ScalarProperty Name="InstructorJobGroup" ColumnName="InstructorJobGroup" />
-                <ScalarProperty Name="InstructorEmployeeId" ColumnName="InstructorEmployeeId" />
-                <ScalarProperty Name="CurrencyId" ColumnName="CurrencyId" />
-                <ScalarProperty Name="Mandatory" ColumnName="Mandatory" />
-                <ScalarProperty Name="Continual" ColumnName="Continual" />
-                <ScalarProperty Name="CalendarType" ColumnName="CalendarType" />
-                <ScalarProperty Name="DurationUnit" ColumnName="DurationUnit" />
-                <ScalarProperty Name="Organization" ColumnName="Organization" />
-                <ScalarProperty Name="PeopleCount" ColumnName="PeopleCount" />
-                <ScalarProperty Name="Sessions" ColumnName="Sessions" />
-                <ScalarProperty Name="IsNotificationEnabled" ColumnName="IsNotificationEnabled" />
-                <ScalarProperty Name="No" ColumnName="No" />
-                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
-                <ScalarProperty Name="IsGeneral" ColumnName="IsGeneral" />
-                <ScalarProperty Name="IsInside" ColumnName="IsInside" />
-                <ScalarProperty Name="CalanderTypeId" ColumnName="CalanderTypeId" />
-                <ScalarProperty Name="Interval" ColumnName="Interval" />
-                <ScalarProperty Name="Recurrent" ColumnName="Recurrent" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="TrainingDirector" ColumnName="TrainingDirector" />
-                <ScalarProperty Name="Remark" ColumnName="Remark" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
-                <ScalarProperty Name="DurationUnitId" ColumnName="DurationUnitId" />
-                <ScalarProperty Name="Duration" ColumnName="Duration" />
-                <ScalarProperty Name="OrganizationId" ColumnName="OrganizationId" />
-                <ScalarProperty Name="Department" ColumnName="Department" />
-                <ScalarProperty Name="Location" ColumnName="Location" />
-                <ScalarProperty Name="Instructor" ColumnName="Instructor" />
-                <ScalarProperty Name="DateEnd" ColumnName="DateEnd" />
-                <ScalarProperty Name="DateStart" ColumnName="DateStart" />
-                <ScalarProperty Name="Year" ColumnName="Year" />
-                <ScalarProperty Name="JobGroupsCode" ColumnName="JobGroupsCode" />
-                <ScalarProperty Name="JobGroups" ColumnName="JobGroups" />
-                <ScalarProperty Name="CertificateType" ColumnName="CertificateType" />
-                <ScalarProperty Name="CertificateTypeId" ColumnName="CertificateTypeId" />
-                <ScalarProperty Name="CourseType" ColumnName="CourseType" />
-                <ScalarProperty Name="CourseTypeId" ColumnName="CourseTypeId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -18957,6 +18896,91 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="DateStart" ColumnName="DateStart" />
                 <ScalarProperty Name="CourseId" ColumnName="CourseId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ViewCourseNews">
+            <EntityTypeMapping TypeName="FLYModel.ViewCourseNew">
+              <MappingFragment StoreEntitySet="ViewCourseNew">
+                <ScalarProperty Name="ParentTitle" ColumnName="ParentTitle" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="PLStatus" ColumnName="PLStatus" />
+                <ScalarProperty Name="PLRemain" ColumnName="PLRemain" />
+                <ScalarProperty Name="PLTotal" ColumnName="PLTotal" />
+                <ScalarProperty Name="PLCount" ColumnName="PLCount" />
+                <ScalarProperty Name="SesstionsCount" ColumnName="SesstionsCount" />
+                <ScalarProperty Name="SyncedErrors" ColumnName="SyncedErrors" />
+                <ScalarProperty Name="Synced" ColumnName="Synced" />
+                <ScalarProperty Name="Attendants" ColumnName="Attendants" />
+                <ScalarProperty Name="Date_Sessions_Instructor_Synced" ColumnName="Date_Sessions_Instructor_Synced" />
+                <ScalarProperty Name="Date_Sessions_Synced" ColumnName="Date_Sessions_Synced" />
+                <ScalarProperty Name="Date_Exam_Sign_Ins2" ColumnName="Date_Exam_Sign_Ins2" />
+                <ScalarProperty Name="Date_Exam_Sign_Ins1" ColumnName="Date_Exam_Sign_Ins1" />
+                <ScalarProperty Name="Date_Sign_OPS" ColumnName="Date_Sign_OPS" />
+                <ScalarProperty Name="Date_Sign_Staff" ColumnName="Date_Sign_Staff" />
+                <ScalarProperty Name="Date_Sign_Director" ColumnName="Date_Sign_Director" />
+                <ScalarProperty Name="Date_Sign_Ins2" ColumnName="Date_Sign_Ins2" />
+                <ScalarProperty Name="Date_Sign_Ins1" ColumnName="Date_Sign_Ins1" />
+                <ScalarProperty Name="Intervals" ColumnName="Intervals" />
+                <ScalarProperty Name="AttForm" ColumnName="AttForm" />
+                <ScalarProperty Name="SMSInsDate" ColumnName="SMSInsDate" />
+                <ScalarProperty Name="SMSIns2Status" ColumnName="SMSIns2Status" />
+                <ScalarProperty Name="SMSIns1Status" ColumnName="SMSIns1Status" />
+                <ScalarProperty Name="SMSIns2" ColumnName="SMSIns2" />
+                <ScalarProperty Name="SMSIns1" ColumnName="SMSIns1" />
+                <ScalarProperty Name="Cost" ColumnName="Cost" />
+                <ScalarProperty Name="Instructor2" ColumnName="Instructor2" />
+                <ScalarProperty Name="Instructor2JobGroup" ColumnName="Instructor2JobGroup" />
+                <ScalarProperty Name="Instructor2EmployeeId" ColumnName="Instructor2EmployeeId" />
+                <ScalarProperty Name="Instructor2Id" ColumnName="Instructor2Id" />
+                <ScalarProperty Name="Certificate" ColumnName="Certificate" />
+                <ScalarProperty Name="Financial" ColumnName="Financial" />
+                <ScalarProperty Name="SendLetter" ColumnName="SendLetter" />
+                <ScalarProperty Name="InForm" ColumnName="InForm" />
+                <ScalarProperty Name="HoldingType" ColumnName="HoldingType" />
+                <ScalarProperty Name="InstructorJobGroup" ColumnName="InstructorJobGroup" />
+                <ScalarProperty Name="InstructorEmployeeId" ColumnName="InstructorEmployeeId" />
+                <ScalarProperty Name="CurrencyId" ColumnName="CurrencyId" />
+                <ScalarProperty Name="Mandatory" ColumnName="Mandatory" />
+                <ScalarProperty Name="Continual" ColumnName="Continual" />
+                <ScalarProperty Name="CalendarType" ColumnName="CalendarType" />
+                <ScalarProperty Name="DurationUnit" ColumnName="DurationUnit" />
+                <ScalarProperty Name="Organization" ColumnName="Organization" />
+                <ScalarProperty Name="PeopleCount" ColumnName="PeopleCount" />
+                <ScalarProperty Name="Sessions" ColumnName="Sessions" />
+                <ScalarProperty Name="IsNotificationEnabled" ColumnName="IsNotificationEnabled" />
+                <ScalarProperty Name="No" ColumnName="No" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="IsGeneral" ColumnName="IsGeneral" />
+                <ScalarProperty Name="IsInside" ColumnName="IsInside" />
+                <ScalarProperty Name="CalanderTypeId" ColumnName="CalanderTypeId" />
+                <ScalarProperty Name="Interval" ColumnName="Interval" />
+                <ScalarProperty Name="Recurrent" ColumnName="Recurrent" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="TrainingDirector" ColumnName="TrainingDirector" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+                <ScalarProperty Name="DurationUnitId" ColumnName="DurationUnitId" />
+                <ScalarProperty Name="Duration" ColumnName="Duration" />
+                <ScalarProperty Name="OrganizationId" ColumnName="OrganizationId" />
+                <ScalarProperty Name="Department" ColumnName="Department" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="Instructor" ColumnName="Instructor" />
+                <ScalarProperty Name="PDateEnd" ColumnName="PDateEnd" />
+                <ScalarProperty Name="PDateStart" ColumnName="PDateStart" />
+                <ScalarProperty Name="PMonthName" ColumnName="PMonthName" />
+                <ScalarProperty Name="PYear" ColumnName="PYear" />
+                <ScalarProperty Name="DateEnd" ColumnName="DateEnd" />
+                <ScalarProperty Name="DateStart" ColumnName="DateStart" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="JobGroupsCode" ColumnName="JobGroupsCode" />
+                <ScalarProperty Name="JobGroups" ColumnName="JobGroups" />
+                <ScalarProperty Name="CertificateType" ColumnName="CertificateType" />
+                <ScalarProperty Name="CertificateTypeId" ColumnName="CertificateTypeId" />
+                <ScalarProperty Name="CourseType" ColumnName="CourseType" />
+                <ScalarProperty Name="CourseTypeId" ColumnName="CourseTypeId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

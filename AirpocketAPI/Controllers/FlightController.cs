@@ -9426,7 +9426,7 @@ new JsonSerializerSettings
             df = ((DateTime)df).Date;
             var query = from x in context.ReportRosters
                         where x.STDDay == df
-                        orderby x.Register, x.STD
+                        orderby x.Register,x.STDLocal, x.STD
                         select x;
 
             var result = query.ToList();
@@ -9455,7 +9455,8 @@ new JsonSerializerSettings
                 q.FM,
                 q.POSITIONING,
                 q.POSITIONINGCABIN,
-                q.POSITIONINGCOCKPIT
+                q.POSITIONINGCOCKPIT,
+                q.PDATE
             }).ToList();
             var hasIP = result.Where(q => !string.IsNullOrEmpty(q.IP)).FirstOrDefault() != null;
             var hasCPT = result.Where(q => !string.IsNullOrEmpty(q.CPT)).FirstOrDefault() != null;

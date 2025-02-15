@@ -159,10 +159,10 @@ namespace AirpocketTRN.Models
         public virtual DbSet<ViewCoursePeople> ViewCoursePeoples { get; set; }
         public virtual DbSet<ViewSyllabu> ViewSyllabus { get; set; }
         public virtual DbSet<CourseSyllabu> CourseSyllabus { get; set; }
-        public virtual DbSet<ViewCourseNew> ViewCourseNews { get; set; }
         public virtual DbSet<ViewCourseNewAll> ViewCourseNewAlls { get; set; }
         public virtual DbSet<Course> Courses { get; set; }
         public virtual DbSet<ViewCourseSessionPresence> ViewCourseSessionPresences { get; set; }
         public virtual DbSet<ViewCourseSession> ViewCourseSessions { get; set; }
+        public virtual DbSet<ViewCourseNew> ViewCourseNews { get; set; }
     }
 }

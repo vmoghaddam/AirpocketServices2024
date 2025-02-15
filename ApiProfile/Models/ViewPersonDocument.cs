@@ -20,5 +20,7 @@ namespace ApiProfile.Models
         public Nullable<int> DocumentTypeId { get; set; }
         public int Id { get; set; }
         public string DocumentType { get; set; }
+        public Nullable<System.DateTime> DateIssue { get; set; }
+        public Nullable<System.DateTime> DateExpire { get; set; }
     }
 }

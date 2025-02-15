@@ -153,6 +153,14 @@ namespace AirpocketTRN.Controllers
 
             return Ok(result);
         }
+        [Route("api/course/bytype/outside/{tid}/{sid}")]
+        [AcceptVerbs("GET")]
+        public async Task<IHttpActionResult> GetCoursesByTypeOutSide(int tid, int sid)
+        {
+            var result = await courseService.GetCoursesByTypeOutSide(tid, sid);
+
+            return Ok(result);
+        }
         [Route("api/certificates/history/{pid}")]
         [AcceptVerbs("GET")]
         public async Task<IHttpActionResult> GetCertificatesHistory(int pid)

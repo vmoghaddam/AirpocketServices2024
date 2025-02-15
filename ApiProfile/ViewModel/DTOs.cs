@@ -1596,6 +1596,9 @@ namespace ApiProfile.ViewModels
         public int DocumentTypeId { get; set; }
         public int Id { get; set; }
         public string DocumentType { get; set; }
+        public DateTime? DateIssue { get; set; }
+        public DateTime? DateExpire { get; set; }
+
         List<Document> documents = null;
         public List<Document> Documents
         {
@@ -1627,6 +1630,8 @@ namespace ApiProfile.ViewModels
             viewpersondocument.DocumentTypeId = (int)entity.DocumentTypeId;
             viewpersondocument.Id = entity.Id;
             viewpersondocument.DocumentType = entity.DocumentType;
+            viewpersondocument.DateExpire = entity.DateExpire;
+            viewpersondocument.DateIssue = entity.DateIssue;
         }
 
         public static ViewModels.PersonDocument GetDto(Models.ViewPersonDocument entity, List<Models.ViewPersonDocumentFile> files)

@@ -24,6 +24,10 @@ namespace AirpocketTRN.Models
         public Nullable<int> Year { get; set; }
         public System.DateTime DateStart { get; set; }
         public Nullable<System.DateTime> DateEnd { get; set; }
+        public string PYear { get; set; }
+        public string PMonthName { get; set; }
+        public string PDateStart { get; set; }
+        public string PDateEnd { get; set; }
         public string Instructor { get; set; }
         public string Location { get; set; }
         public string Department { get; set; }

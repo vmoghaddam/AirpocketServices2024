@@ -31,9 +31,7 @@ namespace ApiProfile.Models
         public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<EmployeeLocation> EmployeeLocations { get; set; }
         public virtual DbSet<PersonAircraftType> PersonAircraftTypes { get; set; }
-        public virtual DbSet<PersonDocument> PersonDocuments { get; set; }
         public virtual DbSet<Document> Documents { get; set; }
-        public virtual DbSet<ViewPersonDocument> ViewPersonDocuments { get; set; }
         public virtual DbSet<ViewPersonDocumentFile> ViewPersonDocumentFiles { get; set; }
         public virtual DbSet<ViewPersonAircraftType> ViewPersonAircraftTypes { get; set; }
         public virtual DbSet<ViewEmployeeLocation> ViewEmployeeLocations { get; set; }
@@ -46,5 +44,7 @@ namespace ApiProfile.Models
         public virtual DbSet<Person> People { get; set; }
         public virtual DbSet<ViewProfile> ViewProfiles { get; set; }
         public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
+        public virtual DbSet<PersonDocument> PersonDocuments { get; set; }
+        public virtual DbSet<ViewPersonDocument> ViewPersonDocuments { get; set; }
     }
 }

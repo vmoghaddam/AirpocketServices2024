@@ -26,9 +26,9 @@ namespace ApiProfile.Controllers
         {
             var context = new Models.dbEntities();
             var profiles = await context.ViewProfiles.Where(q => q.InActive == false && q.UserId == null).ToListAsync();
-            var ids=profiles.Select(q=>q.PersonId).ToList();    
-            var people=await context.People.Where(q=>ids.Contains(q.Id)).ToListAsync(); 
-            foreach(var person in people)
+            var ids = profiles.Select(q => q.PersonId).ToList();
+            var people = await context.People.Where(q => ids.Contains(q.Id)).ToListAsync();
+            foreach (var person in people)
             {
                 AspNetUser user = new AspNetUser()
                 {
@@ -60,7 +60,7 @@ namespace ApiProfile.Controllers
 
             }
             await context.SaveAsync();
-            return Ok(profiles.Select(q=>q.NID).ToList());
+            return Ok(profiles.Select(q => q.NID).ToList());
 
         }
 
@@ -145,14 +145,14 @@ namespace ApiProfile.Controllers
             var saveResult = await context.SaveAsync();
             if (saveResult.Code != HttpStatusCode.OK)
                 return saveResult;
-          
+
             if (do_user)
             {
-                var text = "Dear "+person.FirstName.ToUpper()+" "+person.LastName.ToUpper()+", "+ "\n"
-                         +"Your account information:"+ "\n"
-                         +"Username: "+person.NID+"\n"
-                         +"Password: "+"123456" + "\n"
-                         +"Please visit the link below to access your panel" + "\n"
+                var text = "Dear " + person.FirstName.ToUpper() + " " + person.LastName.ToUpper() + ", " + "\n"
+                         + "Your account information:" + "\n"
+                         + "Username: " + person.NID + "\n"
+                         + "Password: " + "123456" + "\n"
+                         + "Please visit the link below to access your panel" + "\n"
                          + ConfigurationManager.AppSettings["pulsepocket_url"];
                 Magfa m1 = new Magfa();
                 var res = m1.enqueue(1, person.Mobile, text)[0];
@@ -724,6 +724,9 @@ namespace ApiProfile.Controllers
                     Remark = x.Remark,
                     DocumentTypeId = x.DocumentTypeId,
                     Title = x.Title,
+                    DateIssue = x.DateIssue,
+                    DateExpire = x.DateExpire,
+
 
 
                 };

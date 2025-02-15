@@ -18,9 +18,9 @@ namespace ApiProfile.Models
         public Person()
         {
             this.CertificateHistories = new HashSet<CertificateHistory>();
-            this.PersonDocuments = new HashSet<PersonDocument>();
             this.PersonCustomers = new HashSet<PersonCustomer>();
             this.PersonAircraftTypes = new HashSet<PersonAircraftType>();
+            this.PersonDocuments = new HashSet<PersonDocument>();
         }
     
         public int Id { get; set; }
@@ -527,10 +527,10 @@ namespace ApiProfile.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CertificateHistory> CertificateHistories { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PersonDocument> PersonDocuments { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PersonCustomer> PersonCustomers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PersonAircraftType> PersonAircraftTypes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PersonDocument> PersonDocuments { get; set; }
     }
 }
