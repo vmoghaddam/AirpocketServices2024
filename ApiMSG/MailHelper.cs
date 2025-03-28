@@ -1279,7 +1279,58 @@ namespace ApiMSG
 
         }
 
+        public string SendEmail(string email_body,string rec_address,string rec_name,string sender_name,string email_subject,string sender_address)
+        {
+            try
+            {
+                var smtp_host = ConfigurationManager.AppSettings["smtp_host"];
+                var smtp_address = ConfigurationManager.AppSettings["smtp_address"];
+                var smtp_password = ConfigurationManager.AppSettings["smtp_password"];
+                var cc_address = ConfigurationManager.AppSettings["cc_address"];
+                var smtp = new SmtpClient
+                {
+                    //EnableSsl=true,
+                    Host = smtp_host,
+                    Port = 25, //Convert.ToInt32(dispatchEmailPort),
+                    EnableSsl = false,
+                    //TargetName = "STARTTLS/Mail.flypersia.aero",
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false,
+                    Credentials = new NetworkCredential(smtp_address, smtp_password),
 
+                };
+                smtp.Timeout = 60000;
+
+                var fromAddress = new MailAddress(sender_address, sender_name);
+                using (var message = new MailMessage(fromAddress, new MailAddress(rec_address, rec_name))
+                {
+                    Subject = email_subject,
+                    Body = email_body,
+                    IsBodyHtml = true,
+
+
+                })
+
+                {
+
+                    message.CC.Add(cc_address);
+                    // message.CC.Add("itmng@flypersiaairlines.ir");
+                    smtp.Send(message);
+
+
+                }
+
+                return "Email sent.";
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException!=null)
+                    msg+=" Details:"+ex.InnerException.Message;
+                return msg;
+            }
+           
+        }
 
     }
     public class ippanel

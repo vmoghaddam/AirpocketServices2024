@@ -1851,7 +1851,7 @@ namespace ApiPlanning.ViewModels
 
             apt_infos.Add(new apt_info() { Id = 152368, IATA = "AAN", ICAO = "OMAL", UTC = 240, TIMEZONE = "" });
 
-            apt_infos.Add(new apt_info() { Id = 152397, IATA = "BHK", ICAO = "UTSB", UTC = 300, TIMEZONE = "" });
+          /// apt_infos.Add(new apt_info() { Id = 152397, IATA = "BHK", ICAO = "UTSB", UTC = 300, TIMEZONE = "" });
 
 
             apt_infos.Add(new apt_info() { Id = 152349, IATA = "JED", ICAO = "OEJN", UTC = 180, TIMEZONE = "" });
@@ -1866,9 +1866,19 @@ namespace ApiPlanning.ViewModels
 
 
             apt_infos.Add(new apt_info() { Id = 136629, IATA = "BAH", ICAO = "OBBI", UTC = 180, TIMEZONE = "" });
+            apt_infos.Add(new apt_info() { Id = 132875, IATA = "DLM", ICAO = "LTBS", UTC = 180, TIMEZONE = "" });
+            //152384
 
+            apt_infos.Add(new apt_info() { Id = 172003, IATA = "SKD", ICAO = "UTSS", UTC = 300, TIMEZONE = "" });
 
+            //152385
+            apt_infos.Add(new apt_info() { Id = 172004, IATA = "BHK", ICAO = "UTSB", UTC = 300, TIMEZONE = "" });
 
+            apt_infos.Add(new apt_info() { Id = 172005, IATA = "MBA", ICAO = "HKMO", UTC = 180, TIMEZONE = "" });
+
+            apt_infos.Add(new apt_info() { Id = 172006, IATA = "NBO", ICAO = "HKJK", UTC = 180, TIMEZONE = "" });
+
+            apt_infos.Add(new apt_info() { Id = 100011, IATA = "MCX", ICAO = "URML", UTC = 180, TIMEZONE = "" });
 
             return apt_infos;
 

@@ -44,5 +44,9 @@ namespace ApiMSG.Models
         public virtual DbSet<qa_notification_history> qa_notification_history { get; set; }
         public virtual DbSet<view_qa_notifiction_history> view_qa_notifiction_history { get; set; }
         public virtual DbSet<qa_notification_receiver> qa_notification_receiver { get; set; }
+        public virtual DbSet<FDP> FDPs { get; set; }
+        public virtual DbSet<SMSHistory> SMSHistories { get; set; }
+        public virtual DbSet<CrewPickupSM> CrewPickupSMS { get; set; }
+        public virtual DbSet<ViewCrewDuty> ViewCrewDuties { get; set; }
     }
 }

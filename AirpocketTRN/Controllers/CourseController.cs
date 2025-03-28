@@ -41,7 +41,34 @@ namespace AirpocketTRN.Controllers
         }
 
 
+        [Route("api/notam")]
+        [AcceptVerbs("GET")]
+        public async Task<IHttpActionResult> GetNotam()
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                var request = new HttpRequestMessage(HttpMethod.Post, "https://notams.aim.faa.gov/notamSearch/search");
 
+                request.Headers.Add("Accept", "application/json, text/plain, */*");
+                request.Headers.Add("Accept-Language", "en-US,en;q=0.9");
+                request.Headers.Add("Cache-Control", "no-cache");
+                request.Headers.Add("Pragma", "no-cache");
+                request.Headers.Add("Sec-Fetch-Dest", "empty");
+                request.Headers.Add("Sec-Fetch-Mode", "cors");
+                request.Headers.Add("Sec-Fetch-Site", "same-origin");
+
+                string body = "searchType=0&designatorsForLocation=OIII,OIMM%2COIMM&designatorForAccountable=&latDegrees=&latMinutes=0&latSeconds=0&longDegrees=&longMinutes=0&longSeconds=0&radius=10&sortColumns=5+false&sortDirection=true&designatorForNotamNumberSearch=&notamNumber=&radiusSearchOnDesignator=false&radiusSearchDesignator=&latitudeDirection=N&longitudeDirection=W&freeFormText=&flightPathText=&flightPathDivertAirfields=&flightPathBuffer=4&flightPathIncludeNavaids=true&flightPathIncludeArtcc=false&flightPathIncludeTfr=true&flightPathIncludeRegulatory=false&flightPathResultsType=All+NOTAMs&archiveDate=&archiveDesignator=&offset=0&notamsOnly=false&filters=&minRunwayLength=&minRunwayWidth=&runwaySurfaceTypes=&predefinedAbraka=&predefinedDabra=&flightPathAddlBuffer=&recaptchaToken=YOUR_RECAPTCHA_TOKEN";
+
+                request.Content = new StringContent(body, Encoding.UTF8, "application/x-www-form-urlencoded");
+
+                HttpResponseMessage response = await client.SendAsync(request);
+                string responseBody = await response.Content.ReadAsStringAsync();
+
+                // Console.WriteLine(responseBody);
+                var jsn=JsonConvert.DeserializeObject<NotamResponse>(responseBody);
+                return Ok(jsn);
+            }
+        }
 
         [Route("api/trn/stat/coursepeople")]
         [AcceptVerbs("GET")]

@@ -1,0 +1,358 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ppaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.AppFuel' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="AppFuel">
+          <Key>
+            <PropertyRef Name="FlightId" />
+            <PropertyRef Name="UsedFuelAvg" />
+            <PropertyRef Name="UsedFuelAvgReg" />
+            <PropertyRef Name="FuelUnitID" />
+            <PropertyRef Name="FuelUnit" />
+            <PropertyRef Name="BaggageWeight" />
+            <PropertyRef Name="CargoWeight" />
+            <PropertyRef Name="FlightStatus" />
+          </Key>
+          <Property Name="FlightId" Type="int" Nullable="false" />
+          <Property Name="UpLift" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="FuelTotal" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="ExtraFuel" Type="decimal" Precision="20" Scale="4" />
+          <Property Name="Remaining" Type="decimal" Precision="21" Scale="4" />
+          <Property Name="UsedFuel" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="UsedFuelAvg" Type="numeric" Precision="1" Scale="1" Nullable="false" />
+          <Property Name="UsedFuelAvgReg" Type="numeric" Precision="1" Scale="1" Nullable="false" />
+          <Property Name="Taxi" Type="int" />
+          <Property Name="FPTripFuel" Type="int" />
+          <Property Name="FPFuel" Type="int" />
+          <Property Name="FuelUsedEng1" Type="int" />
+          <Property Name="FuelUsedEng2" Type="int" />
+          <Property Name="FuelUsedEng" Type="int" />
+          <Property Name="DifTripFuel" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="DifTripFuelPercent" Type="numeric" Precision="37" Scale="16" />
+          <Property Name="DifTotalFuel" Type="decimal" Precision="20" Scale="4" />
+          <Property Name="DifTotalFuelPercent" Type="numeric" Precision="38" Scale="16" />
+          <Property Name="FPVar" Type="numeric" Precision="38" Scale="13" />
+          <Property Name="TotalPax" Type="int" />
+          <Property Name="FuelUnitID" Type="int" Nullable="false" />
+          <Property Name="FuelUnit" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="BaggageWeight" Type="int" Nullable="false" />
+          <Property Name="CargoWeight" Type="int" Nullable="false" />
+          <Property Name="Freight" Type="int" />
+          <Property Name="STD" Type="datetime" />
+          <Property Name="STA" Type="datetime" />
+          <Property Name="BlockOn" Type="datetime" />
+          <Property Name="BlockOff" Type="datetime" />
+          <Property Name="TakeOff" Type="datetime" />
+          <Property Name="Landing" Type="datetime" />
+          <Property Name="FlightDate" Type="datetime" />
+          <Property Name="FlightNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="RegisterID" Type="int" />
+          <Property Name="Register" Type="nvarchar" MaxLength="50" />
+          <Property Name="TypeId" Type="int" />
+          <Property Name="AircraftType" Type="nvarchar" MaxLength="255" />
+          <Property Name="FromAirportId" Type="int" />
+          <Property Name="ToAirportId" Type="int" />
+          <Property Name="FromAirport" Type="nvarchar" MaxLength="255" />
+          <Property Name="ToAirport" Type="nvarchar" MaxLength="255" />
+          <Property Name="FromAirportIATA" Type="nvarchar" MaxLength="255" />
+          <Property Name="ToAirportIATA" Type="nvarchar" MaxLength="255" />
+          <Property Name="FlightStatus" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="FlightStatusID" Type="int" />
+          <Property Name="STDDay" Type="date" />
+          <Property Name="STADay" Type="date" />
+          <Property Name="DelayBlockOff" Type="int" />
+          <Property Name="BlockTime" Type="int" />
+          <Property Name="FlightTime" Type="int" />
+          <Property Name="FuelDensity" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="CARGO" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="PF" Type="varchar" MaxLength="255" />
+          <Property Name="PIC" Type="nvarchar" MaxLength="1001" />
+          <Property Name="PICId" Type="int" />
+          <Property Name="SIC" Type="nvarchar" MaxLength="2004" />
+          <Property Name="SICId" Type="int" />
+          <Property Name="ALT1" Type="varchar" MaxLength="255" />
+          <Property Name="ALT2" Type="varchar" MaxLength="255" />
+          <Property Name="ALT3" Type="varchar" MaxLength="255" />
+          <Property Name="IPName" Type="nvarchar" MaxLength="1001" />
+          <Property Name="IPId" Type="int" />
+          <Property Name="IPScheduleName" Type="varchar" MaxLength="500" />
+          <Property Name="P1Name" Type="nvarchar" MaxLength="1001" />
+          <Property Name="P1Id" Type="int" />
+          <Property Name="P1ScheduleName" Type="varchar" MaxLength="500" />
+          <Property Name="P2Name" Type="nvarchar" MaxLength="1001" />
+          <Property Name="P2Id" Type="int" />
+          <Property Name="P2ScheduleName" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityContainer Name="ppaModelStoreContainer">
+          <EntitySet Name="AppFuel" EntityType="Self.AppFuel" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [AppFuel].[FlightId] AS [FlightId], 
+    [AppFuel].[UpLift] AS [UpLift], 
+    [AppFuel].[FuelTotal] AS [FuelTotal], 
+    [AppFuel].[ExtraFuel] AS [ExtraFuel], 
+    [AppFuel].[Remaining] AS [Remaining], 
+    [AppFuel].[UsedFuel] AS [UsedFuel], 
+    [AppFuel].[UsedFuelAvg] AS [UsedFuelAvg], 
+    [AppFuel].[UsedFuelAvgReg] AS [UsedFuelAvgReg], 
+    [AppFuel].[Taxi] AS [Taxi], 
+    [AppFuel].[FPTripFuel] AS [FPTripFuel], 
+    [AppFuel].[FPFuel] AS [FPFuel], 
+    [AppFuel].[FuelUsedEng1] AS [FuelUsedEng1], 
+    [AppFuel].[FuelUsedEng2] AS [FuelUsedEng2], 
+    [AppFuel].[FuelUsedEng] AS [FuelUsedEng], 
+    [AppFuel].[DifTripFuel] AS [DifTripFuel], 
+    [AppFuel].[DifTripFuelPercent] AS [DifTripFuelPercent], 
+    [AppFuel].[DifTotalFuel] AS [DifTotalFuel], 
+    [AppFuel].[DifTotalFuelPercent] AS [DifTotalFuelPercent], 
+    [AppFuel].[FPVar] AS [FPVar], 
+    [AppFuel].[TotalPax] AS [TotalPax], 
+    [AppFuel].[FuelUnitID] AS [FuelUnitID], 
+    [AppFuel].[FuelUnit] AS [FuelUnit], 
+    [AppFuel].[BaggageWeight] AS [BaggageWeight], 
+    [AppFuel].[CargoWeight] AS [CargoWeight], 
+    [AppFuel].[Freight] AS [Freight], 
+    [AppFuel].[STD] AS [STD], 
+    [AppFuel].[STA] AS [STA], 
+    [AppFuel].[BlockOn] AS [BlockOn], 
+    [AppFuel].[BlockOff] AS [BlockOff], 
+    [AppFuel].[TakeOff] AS [TakeOff], 
+    [AppFuel].[Landing] AS [Landing], 
+    [AppFuel].[FlightDate] AS [FlightDate], 
+    [AppFuel].[FlightNumber] AS [FlightNumber], 
+    [AppFuel].[RegisterID] AS [RegisterID], 
+    [AppFuel].[Register] AS [Register], 
+    [AppFuel].[TypeId] AS [TypeId], 
+    [AppFuel].[AircraftType] AS [AircraftType], 
+    [AppFuel].[FromAirportId] AS [FromAirportId], 
+    [AppFuel].[ToAirportId] AS [ToAirportId], 
+    [AppFuel].[FromAirport] AS [FromAirport], 
+    [AppFuel].[ToAirport] AS [ToAirport], 
+    [AppFuel].[FromAirportIATA] AS [FromAirportIATA], 
+    [AppFuel].[ToAirportIATA] AS [ToAirportIATA], 
+    [AppFuel].[FlightStatus] AS [FlightStatus], 
+    [AppFuel].[FlightStatusID] AS [FlightStatusID], 
+    [AppFuel].[STDDay] AS [STDDay], 
+    [AppFuel].[STADay] AS [STADay], 
+    [AppFuel].[DelayBlockOff] AS [DelayBlockOff], 
+    [AppFuel].[BlockTime] AS [BlockTime], 
+    [AppFuel].[FlightTime] AS [FlightTime], 
+    [AppFuel].[FuelDensity] AS [FuelDensity], 
+    [AppFuel].[CARGO] AS [CARGO], 
+    [AppFuel].[PF] AS [PF], 
+    [AppFuel].[PIC] AS [PIC], 
+    [AppFuel].[PICId] AS [PICId], 
+    [AppFuel].[SIC] AS [SIC], 
+    [AppFuel].[SICId] AS [SICId], 
+    [AppFuel].[ALT1] AS [ALT1], 
+    [AppFuel].[ALT2] AS [ALT2], 
+    [AppFuel].[ALT3] AS [ALT3], 
+    [AppFuel].[IPName] AS [IPName], 
+    [AppFuel].[IPId] AS [IPId], 
+    [AppFuel].[IPScheduleName] AS [IPScheduleName], 
+    [AppFuel].[P1Name] AS [P1Name], 
+    [AppFuel].[P1Id] AS [P1Id], 
+    [AppFuel].[P1ScheduleName] AS [P1ScheduleName], 
+    [AppFuel].[P2Name] AS [P2Name], 
+    [AppFuel].[P2Id] AS [P2Id], 
+    [AppFuel].[P2ScheduleName] AS [P2ScheduleName]
+    FROM [dbo].[AppFuel] AS [AppFuel]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ppaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="ppa_entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AppFuels" EntityType="ppaModel.AppFuel" />
+        </EntityContainer>
+        <EntityType Name="AppFuel">
+          <Key>
+            <PropertyRef Name="FlightId" />
+            <PropertyRef Name="UsedFuelAvg" />
+            <PropertyRef Name="UsedFuelAvgReg" />
+            <PropertyRef Name="FuelUnitID" />
+            <PropertyRef Name="FuelUnit" />
+            <PropertyRef Name="BaggageWeight" />
+            <PropertyRef Name="CargoWeight" />
+            <PropertyRef Name="FlightStatus" />
+          </Key>
+          <Property Name="FlightId" Type="Int32" Nullable="false" />
+          <Property Name="UpLift" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="FuelTotal" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="ExtraFuel" Type="Decimal" Precision="20" Scale="4" />
+          <Property Name="Remaining" Type="Decimal" Precision="21" Scale="4" />
+          <Property Name="UsedFuel" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="UsedFuelAvg" Type="Decimal" Nullable="false" Precision="1" Scale="1" />
+          <Property Name="UsedFuelAvgReg" Type="Decimal" Nullable="false" Precision="1" Scale="1" />
+          <Property Name="Taxi" Type="Int32" />
+          <Property Name="FPTripFuel" Type="Int32" />
+          <Property Name="FPFuel" Type="Int32" />
+          <Property Name="FuelUsedEng1" Type="Int32" />
+          <Property Name="FuelUsedEng2" Type="Int32" />
+          <Property Name="FuelUsedEng" Type="Int32" />
+          <Property Name="DifTripFuel" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="DifTripFuelPercent" Type="Decimal" Precision="37" Scale="16" />
+          <Property Name="DifTotalFuel" Type="Decimal" Precision="20" Scale="4" />
+          <Property Name="DifTotalFuelPercent" Type="Decimal" Precision="38" Scale="16" />
+          <Property Name="FPVar" Type="Decimal" Precision="38" Scale="13" />
+          <Property Name="TotalPax" Type="Int32" />
+          <Property Name="FuelUnitID" Type="Int32" Nullable="false" />
+          <Property Name="FuelUnit" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="BaggageWeight" Type="Int32" Nullable="false" />
+          <Property Name="CargoWeight" Type="Int32" Nullable="false" />
+          <Property Name="Freight" Type="Int32" />
+          <Property Name="STD" Type="DateTime" Precision="3" />
+          <Property Name="STA" Type="DateTime" Precision="3" />
+          <Property Name="BlockOn" Type="DateTime" Precision="3" />
+          <Property Name="BlockOff" Type="DateTime" Precision="3" />
+          <Property Name="TakeOff" Type="DateTime" Precision="3" />
+          <Property Name="Landing" Type="DateTime" Precision="3" />
+          <Property Name="FlightDate" Type="DateTime" Precision="3" />
+          <Property Name="FlightNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RegisterID" Type="Int32" />
+          <Property Name="Register" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TypeId" Type="Int32" />
+          <Property Name="AircraftType" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FromAirportId" Type="Int32" />
+          <Property Name="ToAirportId" Type="Int32" />
+          <Property Name="FromAirport" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ToAirport" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FromAirportIATA" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ToAirportIATA" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FlightStatus" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FlightStatusID" Type="Int32" />
+          <Property Name="STDDay" Type="DateTime" Precision="0" />
+          <Property Name="STADay" Type="DateTime" Precision="0" />
+          <Property Name="DelayBlockOff" Type="Int32" />
+          <Property Name="BlockTime" Type="Int32" />
+          <Property Name="FlightTime" Type="Int32" />
+          <Property Name="FuelDensity" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="CARGO" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="PF" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="PIC" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="PICId" Type="Int32" />
+          <Property Name="SIC" Type="String" MaxLength="2004" FixedLength="false" Unicode="true" />
+          <Property Name="SICId" Type="Int32" />
+          <Property Name="ALT1" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ALT2" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ALT3" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="IPName" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="IPId" Type="Int32" />
+          <Property Name="IPScheduleName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="P1Name" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="P1Id" Type="Int32" />
+          <Property Name="P1ScheduleName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="P2Name" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="P2Id" Type="Int32" />
+          <Property Name="P2ScheduleName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+        </EntityType>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ppaModelStoreContainer" CdmEntityContainer="ppa_entities">
+          <EntitySetMapping Name="AppFuels">
+            <EntityTypeMapping TypeName="ppaModel.AppFuel">
+              <MappingFragment StoreEntitySet="AppFuel">
+                <ScalarProperty Name="P2ScheduleName" ColumnName="P2ScheduleName" />
+                <ScalarProperty Name="P2Id" ColumnName="P2Id" />
+                <ScalarProperty Name="P2Name" ColumnName="P2Name" />
+                <ScalarProperty Name="P1ScheduleName" ColumnName="P1ScheduleName" />
+                <ScalarProperty Name="P1Id" ColumnName="P1Id" />
+                <ScalarProperty Name="P1Name" ColumnName="P1Name" />
+                <ScalarProperty Name="IPScheduleName" ColumnName="IPScheduleName" />
+                <ScalarProperty Name="IPId" ColumnName="IPId" />
+                <ScalarProperty Name="IPName" ColumnName="IPName" />
+                <ScalarProperty Name="ALT3" ColumnName="ALT3" />
+                <ScalarProperty Name="ALT2" ColumnName="ALT2" />
+                <ScalarProperty Name="ALT1" ColumnName="ALT1" />
+                <ScalarProperty Name="SICId" ColumnName="SICId" />
+                <ScalarProperty Name="SIC" ColumnName="SIC" />
+                <ScalarProperty Name="PICId" ColumnName="PICId" />
+                <ScalarProperty Name="PIC" ColumnName="PIC" />
+                <ScalarProperty Name="PF" ColumnName="PF" />
+                <ScalarProperty Name="CARGO" ColumnName="CARGO" />
+                <ScalarProperty Name="FuelDensity" ColumnName="FuelDensity" />
+                <ScalarProperty Name="FlightTime" ColumnName="FlightTime" />
+                <ScalarProperty Name="BlockTime" ColumnName="BlockTime" />
+                <ScalarProperty Name="DelayBlockOff" ColumnName="DelayBlockOff" />
+                <ScalarProperty Name="STADay" ColumnName="STADay" />
+                <ScalarProperty Name="STDDay" ColumnName="STDDay" />
+                <ScalarProperty Name="FlightStatusID" ColumnName="FlightStatusID" />
+                <ScalarProperty Name="FlightStatus" ColumnName="FlightStatus" />
+                <ScalarProperty Name="ToAirportIATA" ColumnName="ToAirportIATA" />
+                <ScalarProperty Name="FromAirportIATA" ColumnName="FromAirportIATA" />
+                <ScalarProperty Name="ToAirport" ColumnName="ToAirport" />
+                <ScalarProperty Name="FromAirport" ColumnName="FromAirport" />
+                <ScalarProperty Name="ToAirportId" ColumnName="ToAirportId" />
+                <ScalarProperty Name="FromAirportId" ColumnName="FromAirportId" />
+                <ScalarProperty Name="AircraftType" ColumnName="AircraftType" />
+                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+                <ScalarProperty Name="Register" ColumnName="Register" />
+                <ScalarProperty Name="RegisterID" ColumnName="RegisterID" />
+                <ScalarProperty Name="FlightNumber" ColumnName="FlightNumber" />
+                <ScalarProperty Name="FlightDate" ColumnName="FlightDate" />
+                <ScalarProperty Name="Landing" ColumnName="Landing" />
+                <ScalarProperty Name="TakeOff" ColumnName="TakeOff" />
+                <ScalarProperty Name="BlockOff" ColumnName="BlockOff" />
+                <ScalarProperty Name="BlockOn" ColumnName="BlockOn" />
+                <ScalarProperty Name="STA" ColumnName="STA" />
+                <ScalarProperty Name="STD" ColumnName="STD" />
+                <ScalarProperty Name="Freight" ColumnName="Freight" />
+                <ScalarProperty Name="CargoWeight" ColumnName="CargoWeight" />
+                <ScalarProperty Name="BaggageWeight" ColumnName="BaggageWeight" />
+                <ScalarProperty Name="FuelUnit" ColumnName="FuelUnit" />
+                <ScalarProperty Name="FuelUnitID" ColumnName="FuelUnitID" />
+                <ScalarProperty Name="TotalPax" ColumnName="TotalPax" />
+                <ScalarProperty Name="FPVar" ColumnName="FPVar" />
+                <ScalarProperty Name="DifTotalFuelPercent" ColumnName="DifTotalFuelPercent" />
+                <ScalarProperty Name="DifTotalFuel" ColumnName="DifTotalFuel" />
+                <ScalarProperty Name="DifTripFuelPercent" ColumnName="DifTripFuelPercent" />
+                <ScalarProperty Name="DifTripFuel" ColumnName="DifTripFuel" />
+                <ScalarProperty Name="FuelUsedEng" ColumnName="FuelUsedEng" />
+                <ScalarProperty Name="FuelUsedEng2" ColumnName="FuelUsedEng2" />
+                <ScalarProperty Name="FuelUsedEng1" ColumnName="FuelUsedEng1" />
+                <ScalarProperty Name="FPFuel" ColumnName="FPFuel" />
+                <ScalarProperty Name="FPTripFuel" ColumnName="FPTripFuel" />
+                <ScalarProperty Name="Taxi" ColumnName="Taxi" />
+                <ScalarProperty Name="UsedFuelAvgReg" ColumnName="UsedFuelAvgReg" />
+                <ScalarProperty Name="UsedFuelAvg" ColumnName="UsedFuelAvg" />
+                <ScalarProperty Name="UsedFuel" ColumnName="UsedFuel" />
+                <ScalarProperty Name="Remaining" ColumnName="Remaining" />
+                <ScalarProperty Name="ExtraFuel" ColumnName="ExtraFuel" />
+                <ScalarProperty Name="FuelTotal" ColumnName="FuelTotal" />
+                <ScalarProperty Name="UpLift" ColumnName="UpLift" />
+                <ScalarProperty Name="FlightId" ColumnName="FlightId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
