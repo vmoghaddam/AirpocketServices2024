@@ -154,7 +154,7 @@ namespace ApiMSG.Controllers
                     var _end = (DateTime)x.End;
                     if (x.DutyType == 1165)
                     {
-                        _start = (DateTime)x.STDLocal;
+                        _start =( (DateTime)x.STDLocal).AddMinutes(-45);
                         _end = (DateTime)x.STALocal;
                     }
                     var dayStr = day.ToString("ddd") + " " + day.Year + "-" + day.Month + "-" + day.Day;

@@ -1,5 +1,6 @@
 ﻿using ApiLog.Models;
 using ApiLog.ViewModels;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -1009,7 +1010,420 @@ namespace ApiLog.Controllers
 
         }
 
+        public partial class ViewFlightsGanttNewDto
+        {
+            public int ID { get; set; }
+            public Nullable<int> FlightPlanId { get; set; }
+            public Nullable<int> BaggageCount { get; set; }
+            public Nullable<int> CargoUnitID { get; set; }
+            public string CargoUnit { get; set; }
+            public Nullable<int> CargoWeight { get; set; }
+            public Nullable<int> PaxChild { get; set; }
+            public Nullable<int> PaxInfant { get; set; }
+            public Nullable<int> PaxAdult { get; set; }
+            public Nullable<decimal> FuelArrival { get; set; }
+            public Nullable<decimal> FuelActual { get; set; }
+            public Nullable<decimal> FuelPlanned { get; set; }
+            public Nullable<decimal> GWLand { get; set; }
+            public Nullable<decimal> GWTO { get; set; }
+            public Nullable<int> FlightH { get; set; }
+            public Nullable<byte> FlightM { get; set; }
+            public Nullable<System.DateTime> ChocksIn { get; set; }
+            public Nullable<System.DateTime> Landing { get; set; }
+            public Nullable<System.DateTime> Takeoff { get; set; }
+            public Nullable<System.DateTime> ChocksOut { get; set; }
+            public Nullable<System.DateTime> STD { get; set; }
+            public Nullable<System.DateTime> STA { get; set; }
+            public Nullable<System.DateTime> STDLocal { get; set; }
+            public Nullable<System.DateTime> STALocal { get; set; }
+            public Nullable<System.DateTime> Date { get; set; }
+            public int FlightStatusID { get; set; }
+            public Nullable<int> RegisterID { get; set; }
+            public int FlightTypeID { get; set; }
 
+            public int TypeId { get; set; }
+            public Nullable<int> OTypeId { get; set; }
+            public string FlightNumber { get; set; }
+            public int FromAirport { get; set; }
+            public int ToAirport { get; set; }
+            public string FromAirportIATA { get; set; }
+            public string ToAirportIATA { get; set; }
+            public string AircraftType { get; set; }
+            public string OAircraftType { get; set; }
+            public string Register { get; set; }
+
+            public string FlightStatus { get; set; }
+            public int status { get; set; }
+            public string notes { get; set; }
+            public string taskName { get; set; }
+            public Nullable<System.DateTime> startDate { get; set; }
+            public int PlanId { get; set; }
+            public Nullable<int> CargoCount { get; set; }
+            public Nullable<int> BaggageWeight { get; set; }
+            public Nullable<int> FuelUnitID { get; set; }
+            public string FuelUnit { get; set; }
+
+            public string ArrivalRemark { get; set; }
+            public string DepartureRemark { get; set; }
+            public Nullable<int> TotalSeat { get; set; }
+            public Nullable<int> TotalPax { get; set; }
+            public int PaxOver { get; set; }
+            // public Nullable<System.DateTime> DateStatus { get; set; }
+            // public Nullable<int> FlightStatusUserId { get; set; }
+            public Nullable<System.DateTime> STDDay { get; set; }
+            public Nullable<System.DateTime> STADay { get; set; }
+            public Nullable<int> DelayOffBlock { get; set; }
+            //public Nullable<int> DelayTakeoff { get; set; }
+            //public Nullable<int> DelayOnBlock { get; set; }
+            //public Nullable<int> DelayLanding { get; set; }
+            public Nullable<int> CancelReasonId { get; set; }
+            //public string CancelRemark { get; set; }
+            //public Nullable<System.DateTime> CancelDate { get; set; }
+            //public string CancelReason { get; set; }
+            public Nullable<int> RedirectReasonId { get; set; }
+            //public string RedirectRemark { get; set; }
+            //public Nullable<System.DateTime> RedirectDate { get; set; }
+            //public string RedirectReason { get; set; }
+            public Nullable<int> RampReasonId { get; set; }
+            //public string RampRemark { get; set; }
+            //public Nullable<System.DateTime> RampDate { get; set; }
+            //public string RampReason { get; set; }
+            public Nullable<System.DateTime> OSTA { get; set; }
+            public Nullable<int> OToAirportId { get; set; }
+            public string OToAirportIATA { get; set; }
+            public Nullable<decimal> FPFuel { get; set; }
+            public Nullable<decimal> Defuel { get; set; }
+            public Nullable<System.DateTime> Departure { get; set; }
+            public Nullable<System.DateTime> Arrival { get; set; }
+            public Nullable<System.DateTime> DepartureLocal { get; set; }
+            public Nullable<System.DateTime> ArrivalLocal { get; set; }
+            public Nullable<int> BlockTime { get; set; }
+            public Nullable<int> FlightTime { get; set; }
+            public Nullable<int> FlightTimeActual { get; set; }
+            public Nullable<decimal> UsedFuel { get; set; }
+            //public Nullable<int> JLBLHH { get; set; }
+            //public Nullable<int> JLBLMM { get; set; }
+            //public Nullable<int> PFLR { get; set; }
+            public Nullable<int> ChrAdult { get; set; }
+            public Nullable<int> ChrChild { get; set; }
+            public Nullable<int> ChrInfant { get; set; }
+            public Nullable<int> ChrCapacity { get; set; }
+            public string ChrTitle { get; set; }
+            public string ChrCode { get; set; }
+            public int DefaultChrId { get; set; }
+            public Nullable<long> CargoCost { get; set; }
+            public Nullable<decimal> FuelDensity { get; set; }
+            public string SerialNo { get; set; }
+            public Nullable<decimal> LTR { get; set; }
+            public Nullable<decimal> FuelDeparture { get; set; }
+            // public Nullable<System.DateTime> Ready { get; set; }
+            // public Nullable<System.DateTime> Start { get; set; }
+            public Nullable<int> CargoPieces { get; set; }
+            public Nullable<int> CPDH { get; set; }
+        }
+        public async Task<CustomActionResult> GetUpdatedFlightsNew(int airport, DateTime baseDate, DateTime? fromDate, DateTime? toDate, int customer, int tzoffset, int userid)
+        {
+            var airline = ConfigurationManager.AppSettings["airline"];
+            ppa_pgsEntities ext_context = null;
+            if (airline=="AVA")
+                ext_context= new ppa_pgsEntities();
+            var context = new ppa_entities();
+            baseDate = baseDate.ToUniversalTime();
+            fromDate = ((DateTime)fromDate).ToUniversalTime();
+            toDate = ((DateTime)toDate).ToUniversalTime();
+
+            // var flightsQuery = this.context.ViewFlightsGantts.Where(q => q.CustomerId == cid && q.STDLocal >= dateFrom && q.STDLocal <= dateTo && q.RegisterID != null);
+
+            var query = from x in context.ViewFlightsGantts
+                        where x.STD >= fromDate && x.STA <= toDate && x.CustomerId == customer && x.DateStatus > baseDate && x.FlightStatusUserId != userid
+                        select x;
+            if (airport != -1)
+            {
+                query = query.Where(q => q.FromAirport == airport || q.ToAirport == airport);
+            }
+
+            var flightsQuery = context.ViewFlightsGantts.Where(q => q.CustomerId == customer && q.STD >= fromDate && q.STD <= toDate && q.RegisterID != null);
+
+            if (airport != -1)
+                flightsQuery = flightsQuery.Where(q => q.FromAirport == airport || q.ToAirport == airport);
+
+
+
+
+
+            var _flights = await query.ToListAsync();
+            if (airline == "AVA")
+            {
+                
+                var ext_flights = (from x in ext_context.ViewFlightsGantts
+                                   where x.Register== "83-SAP" && x.STD >= fromDate && x.STA <= toDate && x.CustomerId == customer && x.DateStatus > baseDate && x.FlightStatusUserId != userid
+                                   select x).ToList();
+                if ( ext_flights.Count > 0)
+                    _flights = _flights.Concat(ext_flights).ToList();
+            }
+            if (_flights.Count > 0)
+            {
+                var fq_result=flightsQuery.ToList();
+                if (airline == "AVA")
+                {
+                    
+                    var ext_flights = ext_context.ViewFlightsGantts.Where(q => q.CustomerId == customer && q.STD >= fromDate && q.STD <= toDate && q.Register=="83-SAP").ToList();
+                    fq_result = fq_result.Concat(ext_flights).ToList();
+
+                }
+                var fromAirport = (from x in fq_result
+                                   group x by new { x.FromAirport, x.FromAirportIATA, x.FromAirportName } into g
+                                   select new BaseSummary()
+                                   {
+                                       BaseId = g.Key.FromAirport,
+                                       BaseIATA = g.Key.FromAirportIATA,
+                                       BaseName = g.Key.FromAirportName,
+                                       Total = g.Count(),
+                                       TakeOff = g.Where(q => q.Takeoff != null).Count(),
+                                       Landing = 0, //g.Where(q => q.Landing != null).Count(),
+                                       Canceled = g.Where(q => q.FlightStatusID == 4).Count(),
+                                       Redirected = g.Where(q => q.FlightStatusID == 17).Count(),
+                                       Diverted = g.Where(q => q.FlightStatusID == 7).Count(),
+                                       TotalDelays = g.Where(q => q.ChocksOut != null).Sum(q => q.DelayOffBlock),
+                                       DepartedPax = g.Where(q => q.Takeoff != null).Sum(q => q.TotalPax),
+                                       ArrivedPax = 0,// g.Where(q => q.Landing != null).Sum(q => q.TotalPax),
+
+                                   }).ToList();
+                var toAirport = (from x in fq_result
+                                 group x by new { x.ToAirport, x.ToAirportIATA, x.ToAirportName } into g
+                                 select new BaseSummary()
+                                 {
+                                     BaseId = g.Key.ToAirport,
+                                     BaseIATA = g.Key.ToAirportIATA,
+                                     BaseName = g.Key.ToAirportName,
+                                     Total = g.Count(),
+                                     TakeOff = 0,//g.Where(q => q.Takeoff != null).Count(),
+                                     Landing = g.Where(q => q.Landing != null).Count(),
+                                     Canceled = 0,//g.Where(q => q.FlightStatusID == 4).Count(),
+                                     Redirected = 0,// g.Where(q => q.FlightStatusID == 17).Count(),
+                                     Diverted = 0,// g.Where(q => q.FlightStatusID == 7).Count(),
+                                     TotalDelays = 0,// g.Where(q => q.ChocksOut != null).Sum(q => q.DelayOffBlock),
+                                     DepartedPax = 0,// g.Where(q => q.Takeoff != null).Sum(q => q.TotalPax),
+                                     ArrivedPax = g.Where(q => q.Landing != null).Sum(q => q.TotalPax),
+
+                                 }).ToList();
+
+                var baseSum = new List<BaseSummary>();
+                foreach (var x in fromAirport)
+                {
+                    var to = toAirport.FirstOrDefault(q => q.BaseId == x.BaseId);
+                    if (to != null)
+                    {
+                        x.ArrivedPax += to.ArrivedPax;
+                        x.Canceled += to.Canceled;
+                        x.DepartedPax += to.DepartedPax;
+                        x.Diverted += to.Diverted;
+                        x.Landing += to.Landing;
+                        x.Redirected += to.Redirected;
+                        x.TakeOff += to.TakeOff;
+                        x.Total += to.Total;
+                        x.TotalDelays += to.TotalDelays;
+
+                    }
+
+                    baseSum.Add(x);
+                }
+                /////////////////////////////////////////////////////
+                var flightsdto = new List<ViewModels.ViewFlightsGanttDto>();
+                foreach (var x in _flights)
+                {
+                    ViewModels.ViewFlightsGanttDto dto = new ViewFlightsGanttDto();
+                    ViewModels.ViewFlightsGanttDto.FillDto(x, dto, 0, 1);
+                    flightsdto.Add(dto);
+                }
+
+
+                var result = new
+                {
+                    flights = flightsdto,
+                    summary = baseSum,
+                    baseDate = DateTime.UtcNow,
+                };
+                //  return new CustomActionResult(HttpStatusCode.OK, flights.Select(q => ViewFlightInformationDto.GetDto(q, tzoffset)).ToList());
+                return new CustomActionResult(HttpStatusCode.OK, result);
+            }
+            else
+            {
+                var result = new
+                {
+                    flights = new List<ViewModels.ViewFlightsGanttDto>(),
+                    summary = -1,
+                    baseDate = DateTime.UtcNow,
+                };
+                return new CustomActionResult(HttpStatusCode.OK, result);
+            }
+
+
+        }
+
+        [Route("api/flights/updated/new/")]
+        [AcceptVerbs("POST", "GET")]
+        public async Task<IHttpActionResult> GetFlightsGanttByCustomerIdNew(dynamic dto)
+        {
+
+
+            var result = await GetUpdatedFlightsNew(
+                 (int)dto.airport,
+                 (DateTime)dto.baseDate,
+                 (DateTime)dto.from,
+                 (DateTime)dto.to,
+                 (int)dto.customer,
+                 (int)dto.tzoffset,
+                 (int)dto.userid
+                );
+            var data = result.data;
+            return Ok(data);
+
+
+
+
+
+        }
+
+        [Route("api/flights/gantt/utc/customer/reg/{cid}/{from}/{to}/{tzoffset}/{register}")]
+        public async Task<IHttpActionResult> GetFlightsGanttByCustomerIdUTCNewByRegister(int cid, string from, string to, int tzoffset, string register)
+        {
+            DateTime dateFrom = Helper.BuildDateTimeFromYAFormat(from);
+            DateTime dateTo = Helper.BuildDateTimeFromYAFormat(to);
+            var context = new ppa_entities();
+            var flightsQuery = context.ViewFlightsGanttNews.Where(q =>
+              (
+                ((q.STD >= dateFrom && q.STD <= dateTo)
+                  || (q.STA >= dateFrom && q.STA <= dateTo)
+                  && ((q.STA <= new DateTime(2025, 1, 1)) || (q.STD <= new DateTime(2025, 2, 1)))
+                  )
+                  && q.Register == register
+              )
+              ).Select(q => new ViewFlightsGanttNewDto()
+              {
+                  ID = q.ID,
+                  FlightPlanId = q.FlightPlanId,
+                  BaggageCount = q.BaggageCount,
+                  CargoUnitID = q.CargoUnitID,
+                  CargoUnit = q.CargoUnit,
+                  CargoWeight = q.CargoWeight,
+                  PaxChild = q.PaxChild,
+                  PaxInfant = q.PaxInfant,
+                  PaxAdult = q.PaxAdult,
+                  FuelArrival = q.FuelArrival,
+                  FuelActual = q.FuelActual,
+                  FuelPlanned = q.FuelPlanned,
+                  GWLand = q.GWLand,
+                  GWTO = q.GWTO,
+                  FlightH = q.FlightH,
+                  FlightM = q.FlightM,
+                  ChocksIn = q.ChocksIn,
+                  Landing = q.Landing,
+                  Takeoff = q.Takeoff,
+                  ChocksOut = q.ChocksOut,
+                  STD = q.STD,
+                  STA = q.STA,
+                  STDLocal = q.STDLocal,
+                  STALocal = q.STALocal,
+                  Date = q.Date,
+                  FlightStatusID = q.FlightStatusID,
+                  RegisterID = q.RegisterID,
+                  FlightTypeID = q.FlightTypeID,
+                  //q.FlightType,
+                  TypeId = q.TypeId,
+                  OTypeId = q.OTypeId,
+                  FlightNumber = q.FlightNumber,
+                  FromAirport = q.FromAirport,
+                  ToAirport = q.ToAirport,
+                  FromAirportIATA = q.FromAirportIATA,
+                  ToAirportIATA = q.ToAirportIATA,
+                  AircraftType = q.AircraftType,
+                  OAircraftType = q.OAircraftType,
+                  Register = q.Register,
+                  // q.MSN,
+                  FlightStatus = q.FlightStatus,
+                  status = q.status,
+                  notes = q.notes,
+                  taskName = q.taskName,
+                  startDate = q.startDate,
+                  PlanId = q.PlanId,
+                  CargoCount = q.CargoCount,
+                  BaggageWeight = q.BaggageWeight,
+                  FuelUnitID = q.FuelUnitID,
+                  FuelUnit = q.FuelUnit,
+                  ArrivalRemark = q.ArrivalRemark,
+                  DepartureRemark = q.DepartureRemark,
+                  TotalSeat = q.TotalSeat,
+                  // q.EstimatedDelay,
+                  TotalPax = q.TotalPax,
+                  PaxOver = q.PaxOver,
+                  //q.DateStatus,
+                  //q.FlightStatusUserId,
+                  STDDay = q.STDDay,
+                  STADay = q.STADay,
+                  DelayOffBlock = q.DelayOffBlock,
+                  // q.DelayTakeoff,
+                  // q.DelayOnBlock,
+                  // q.DelayLanding,
+                  CancelReasonId = q.CancelReasonId,
+                  //q.CancelRemark,
+                  // q.CancelDate,
+                  //q.CancelReason,
+                  RedirectReasonId = q.RedirectReasonId,
+                  // q.RedirectRemark,
+                  // q.RedirectDate,
+                  // q.RedirectReason,
+                  RampReasonId = q.RampReasonId,
+                  //q.RampRemark,
+                  //q.RampDate,
+                  //q.RampReason,
+                  OSTA = q.OSTA,
+                  OToAirportId = q.OToAirportId,
+                  OToAirportIATA = q.OToAirportIATA,
+                  FPFuel = q.FPFuel,
+                  Defuel = q.Defuel,
+                  Departure = q.Departure,
+                  Arrival = q.Arrival,
+                  DepartureLocal = q.DepartureLocal,
+                  ArrivalLocal = q.ArrivalLocal,
+                  BlockTime = q.BlockTime,
+                  FlightTime = q.FlightTime,
+                  FlightTimeActual = q.FlightTimeActual,
+                  UsedFuel = q.UsedFuel,
+                  // q.JLBLHH,
+                  // q.JLBLMM,
+                  // q.PFLR,
+                  ChrAdult = q.ChrAdult,
+                  ChrChild = q.ChrChild,
+                  ChrInfant = q.ChrInfant,
+                  ChrCapacity = q.ChrCapacity,
+                  ChrTitle = q.ChrTitle,
+                  ChrCode = q.ChrCode,
+                  DefaultChrId = q.DefaultChrId,
+                  CargoCost = q.CargoCost,
+                  FuelDensity = q.FuelDensity,
+                  SerialNo = q.SerialNo,
+                  LTR = q.LTR,
+                  FuelDeparture = q.FuelDeparture,
+                  // q.Ready,
+                  // q.Start,
+                  CargoPieces = q.CargoPieces,
+                  CPDH = q.CPDH
+              })
+                   .AsNoTracking();
+            int utc = 1;
+            int? doUtc = utc;
+            // if (cid != -1)
+            //    flightsQuery = flightsQuery.Where(q => q.CustomerId == cid);
+
+
+
+            var flights = cid == 100 ? await flightsQuery.ToListAsync() : await flightsQuery.Where(q => q.CPDH == 0).ToListAsync();
+            return Ok(flights);
+
+
+
+        }
 
         [Route("api/flights/gantt/utc/customer/{cid}/{from}/{to}/{tzoffset}")]
         [AcceptVerbs("POST", "GET")]
@@ -1017,6 +1431,8 @@ namespace ApiLog.Controllers
         {
             try
             {
+                var airline = ConfigurationManager.AppSettings["airline"];
+
                 DateTime dateFrom = Helper.BuildDateTimeFromYAFormat(from);
                 DateTime dateTo = Helper.BuildDateTimeFromYAFormat(to);
 
@@ -1046,116 +1462,116 @@ namespace ApiLog.Controllers
                    || (q.STA >= dateFrom && q.STA <= dateTo)
                    && ((q.STA <= new DateTime(2025, 1, 1)) || (q.STD <= new DateTime(2025, 2, 1)))
                )
-               ).Select(q => new
+               ).Select(q => new ViewFlightsGanttNewDto()
                {
-                   q.ID,
-                   q.FlightPlanId,
-                   q.BaggageCount,
-                   q.CargoUnitID,
-                   q.CargoUnit,
-                   q.CargoWeight,
-                   q.PaxChild,
-                   q.PaxInfant,
-                   q.PaxAdult,
-                   q.FuelArrival,
-                   q.FuelActual,
-                   q.FuelPlanned,
-                   q.GWLand,
-                   q.GWTO,
-                   q.FlightH,
-                   q.FlightM,
-                   q.ChocksIn,
-                   q.Landing,
-                   q.Takeoff,
-                   q.ChocksOut,
-                   q.STD,
-                   q.STA,
-                   q.STDLocal,
-                   q.STALocal,
-                   q.Date,
-                   q.FlightStatusID,
-                   q.RegisterID,
-                   q.FlightTypeID,
+                   ID = q.ID,
+                   FlightPlanId = q.FlightPlanId,
+                   BaggageCount = q.BaggageCount,
+                   CargoUnitID = q.CargoUnitID,
+                   CargoUnit = q.CargoUnit,
+                   CargoWeight = q.CargoWeight,
+                   PaxChild = q.PaxChild,
+                   PaxInfant = q.PaxInfant,
+                   PaxAdult = q.PaxAdult,
+                   FuelArrival = q.FuelArrival,
+                   FuelActual = q.FuelActual,
+                   FuelPlanned = q.FuelPlanned,
+                   GWLand = q.GWLand,
+                   GWTO = q.GWTO,
+                   FlightH = q.FlightH,
+                   FlightM = q.FlightM,
+                   ChocksIn = q.ChocksIn,
+                   Landing = q.Landing,
+                   Takeoff = q.Takeoff,
+                   ChocksOut = q.ChocksOut,
+                   STD = q.STD,
+                   STA = q.STA,
+                   STDLocal = q.STDLocal,
+                   STALocal = q.STALocal,
+                   Date = q.Date,
+                   FlightStatusID = q.FlightStatusID,
+                   RegisterID = q.RegisterID,
+                   FlightTypeID = q.FlightTypeID,
                    //q.FlightType,
-                   q.TypeId,
-                   q.OTypeId,
-                   q.FlightNumber,
-                   q.FromAirport,
-                   q.ToAirport,
-                   q.FromAirportIATA,
-                   q.ToAirportIATA,
-                   q.AircraftType,
-                   q.OAircraftType,
-                   q.Register,
+                   TypeId = q.TypeId,
+                   OTypeId = q.OTypeId,
+                   FlightNumber = q.FlightNumber,
+                   FromAirport = q.FromAirport,
+                   ToAirport = q.ToAirport,
+                   FromAirportIATA = q.FromAirportIATA,
+                   ToAirportIATA = q.ToAirportIATA,
+                   AircraftType = q.AircraftType,
+                   OAircraftType = q.OAircraftType,
+                   Register = q.Register,
                    // q.MSN,
-                   q.FlightStatus,
-                   q.status,
-                   q.notes,
-                   q.taskName,
-                   q.startDate,
-                   q.PlanId,
-                   q.CargoCount,
-                   q.BaggageWeight,
-                   q.FuelUnitID,
-                   q.FuelUnit,
-                   q.ArrivalRemark,
-                   q.DepartureRemark,
-                   q.TotalSeat,
+                   FlightStatus = q.FlightStatus,
+                   status = q.status,
+                   notes = q.notes,
+                   taskName = q.taskName,
+                   startDate = q.startDate,
+                   PlanId = q.PlanId,
+                   CargoCount = q.CargoCount,
+                   BaggageWeight = q.BaggageWeight,
+                   FuelUnitID = q.FuelUnitID,
+                   FuelUnit = q.FuelUnit,
+                   ArrivalRemark = q.ArrivalRemark,
+                   DepartureRemark = q.DepartureRemark,
+                   TotalSeat = q.TotalSeat,
                    // q.EstimatedDelay,
-                   q.TotalPax,
-                   q.PaxOver,
+                   TotalPax = q.TotalPax,
+                   PaxOver = q.PaxOver,
                    //q.DateStatus,
                    //q.FlightStatusUserId,
-                   q.STDDay,
-                   q.STADay,
-                   q.DelayOffBlock,
+                   STDDay = q.STDDay,
+                   STADay = q.STADay,
+                   DelayOffBlock = q.DelayOffBlock,
                    // q.DelayTakeoff,
                    // q.DelayOnBlock,
                    // q.DelayLanding,
-                   q.CancelReasonId,
+                   CancelReasonId = q.CancelReasonId,
                    //q.CancelRemark,
                    // q.CancelDate,
                    //q.CancelReason,
-                   q.RedirectReasonId,
+                   RedirectReasonId = q.RedirectReasonId,
                    // q.RedirectRemark,
                    // q.RedirectDate,
                    // q.RedirectReason,
-                   q.RampReasonId,
+                   RampReasonId = q.RampReasonId,
                    //q.RampRemark,
                    //q.RampDate,
                    //q.RampReason,
-                   q.OSTA,
-                   q.OToAirportId,
-                   q.OToAirportIATA,
-                   q.FPFuel,
-                   q.Defuel,
-                   q.Departure,
-                   q.Arrival,
-                   q.DepartureLocal,
-                   q.ArrivalLocal,
-                   q.BlockTime,
-                   q.FlightTime,
-                   q.FlightTimeActual,
-                   q.UsedFuel,
+                   OSTA = q.OSTA,
+                   OToAirportId = q.OToAirportId,
+                   OToAirportIATA = q.OToAirportIATA,
+                   FPFuel = q.FPFuel,
+                   Defuel = q.Defuel,
+                   Departure = q.Departure,
+                   Arrival = q.Arrival,
+                   DepartureLocal = q.DepartureLocal,
+                   ArrivalLocal = q.ArrivalLocal,
+                   BlockTime = q.BlockTime,
+                   FlightTime = q.FlightTime,
+                   FlightTimeActual = q.FlightTimeActual,
+                   UsedFuel = q.UsedFuel,
                    // q.JLBLHH,
                    // q.JLBLMM,
                    // q.PFLR,
-                   q.ChrAdult,
-                   q.ChrChild,
-                   q.ChrInfant,
-                   q.ChrCapacity,
-                   q.ChrTitle,
-                   q.ChrCode,
-                   q.DefaultChrId,
-                   q.CargoCost,
-                   q.FuelDensity,
-                   q.SerialNo,
-                   q.LTR,
-                   q.FuelDeparture,
+                   ChrAdult = q.ChrAdult,
+                   ChrChild = q.ChrChild,
+                   ChrInfant = q.ChrInfant,
+                   ChrCapacity = q.ChrCapacity,
+                   ChrTitle = q.ChrTitle,
+                   ChrCode = q.ChrCode,
+                   DefaultChrId = q.DefaultChrId,
+                   CargoCost = q.CargoCost,
+                   FuelDensity = q.FuelDensity,
+                   SerialNo = q.SerialNo,
+                   LTR = q.LTR,
+                   FuelDeparture = q.FuelDeparture,
                    // q.Ready,
                    // q.Start,
-                   q.CargoPieces,
-                   q.CPDH
+                   CargoPieces = q.CargoPieces,
+                   CPDH = q.CPDH
                })
                     .AsNoTracking();
 
@@ -1167,10 +1583,20 @@ namespace ApiLog.Controllers
 
 
 
-                var flights = cid==100? await flightsQuery.ToListAsync() : await flightsQuery.Where(q=>q.CPDH==0).ToListAsync() ;
+                var flights = cid == 100 ? await flightsQuery.ToListAsync() : await flightsQuery.Where(q => q.CPDH == 0).ToListAsync();
 
+                
+                if (airline == "AVA")
+                {
+                    var url = "https://pgs.logext.aerok.tech/api/flights/gantt/utc/customer/reg/4/"+from+"/"+to+"/0/83-SAP";
+                    using (WebClient webClient = new WebClient())
+                    {
+                        var str = webClient.DownloadString(url);
+                        var res = JsonConvert.DeserializeObject<List<ViewFlightsGanttNewDto>>(str);
+                        flights = flights.Concat(res).ToList();
 
-
+                    }
+                }
 
 
 
@@ -1551,7 +1977,7 @@ namespace ApiLog.Controllers
                     MOC = x.MOC,
                     WCR = x.WCR,
                     ToAirportId = x.ToAirportId,
-                    FlightId2=x.FlightId2,
+                    FlightId2 = x.FlightId2,
                 });
             }
 
@@ -1576,7 +2002,7 @@ namespace ApiLog.Controllers
             var recs = await context.ViewFlightPaxes.Where(q => q.FlightId == id).ToListAsync();
             List<ViewFlightPax> result = new List<ViewFlightPax>();
 
-            
+
 
             var main_route = recs.Where(q => q.AirportId == flight.FromAirportId && q.ToAirportId == flight.ToAirportId).FirstOrDefault();
             if (main_route == null)
@@ -1626,7 +2052,7 @@ namespace ApiLog.Controllers
                     result.Add(next_route);
             }
 
-            var pre_flight= await context.ViewFlightPaxes.Where(q => q.FlightId2 == id).FirstOrDefaultAsync();
+            var pre_flight = await context.ViewFlightPaxes.Where(q => q.FlightId2 == id).FirstOrDefaultAsync();
             if (pre_flight != null)
                 result.Add(pre_flight);
             return Ok(result);
