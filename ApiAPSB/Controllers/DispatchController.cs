@@ -381,12 +381,14 @@ namespace ApiAPSB.Controllers
                     return 1162;
                 if (rank.ToUpper().StartsWith("FE"))
                     return 1165;
-                if (rank.StartsWith("ISCCM"))
+                if (rank.StartsWith("ISCCM") || rank.StartsWith("CCI"))
                     return 10002;
                 if (rank.StartsWith("SCCM"))
                     return 1157;
                 if (rank.StartsWith("CCM"))
                     return 1158;
+                if (rank.StartsWith("CCE"))
+                    return 1159;
                 if (rank.StartsWith("OBS"))
                     return 1153;
                 if (rank.StartsWith("CHECK"))

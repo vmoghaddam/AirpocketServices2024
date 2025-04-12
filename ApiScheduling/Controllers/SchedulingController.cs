@@ -799,16 +799,16 @@ namespace ApiScheduling.Controllers
                         _query = _query.Where(q => q.JobGroup == "TRI");
                         break;
                     case "6":
-                        _query = _query.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM");
+                        _query = _query.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCI");
                         break;
                     case "7":
-                        _query = _query.Where(q => q.JobGroup == "ISCCM");
+                        _query = _query.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "CCI");
                         break;
                     case "8":
                         _query = _query.Where(q => q.JobGroup == "SCCM");
                         break;
                     case "9":
-                        _query = _query.Where(q => q.JobGroup == "CCM");
+                        _query = _query.Where(q => q.JobGroup == "CCM" || q.JobGroup == "CCE");
                         break;
                     default:
                         break;
@@ -3270,9 +3270,10 @@ namespace ApiScheduling.Controllers
                                 });
                             else
                             {
-                                var _strt = ((DateTime)fdp.InitStart).AddMinutes(60);
+                                //2025-04-12
+                                var _strt = ((DateTime)fdp.InitStart).AddMinutes(default_reporting);
                                 var rdif = Math.Abs((DateTime.UtcNow - _strt).TotalMinutes);
-                                if (rdif < 10 * 60)
+                                if (rdif < 10 * 60 && !alldh)
                                     return new CustomActionResult(HttpStatusCode.OK, new { Code = 304, data =  /*_interupted*/new { Id = _interupted.Id } });
                             }
                         }

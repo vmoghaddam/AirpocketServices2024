@@ -250,7 +250,7 @@ namespace AirpocketTRN.Services
             var l1_length = 3;
             var lo_length = 2;
             var jobgroups = await context.JobGroups.ToListAsync();
-            var _exg = new List<string>() { "TRE", "TRI", "P1", "P2", "ISCCM", "SCCM", "CCM" };
+            var _exg = new List<string>() { "TRE", "TRI", "P1", "P2", "ISCCM", "SCCM", "CCM","CCE","CCI" };
             var expiring_employees = await context.ViewCertificateHistoryRankeds.Where(q => /*q.InActive == false &&*/ q.IsCritical == 1 /*&& !_exg.Contains(q.JobGroup)*/).ToListAsync();
 
 
@@ -6473,7 +6473,7 @@ namespace AirpocketTRN.Services
             var sessions = await context.ViewCourseSessions.Where(q => q.CourseId == cid).OrderBy(q => q.DateStart).ToListAsync();
             var cps = await context.CoursePeoples.Where(q => q.CourseId == cid).ToListAsync();
             var personIds = cps.Select(q => q.PersonId).ToList();
-            var fltcrew = new List<string>() { "P1", "P2", "ISCCM", "SCCM", "CCM", "TRE", "TRI", "LTC" };
+            var fltcrew = new List<string>() { "P1", "P2", "ISCCM", "SCCM", "CCM", "TRE", "TRI", "LTC","CCE","CCI" };
             var employees = await context.ViewEmployeeAbs.Where(q => personIds.Contains(q.PersonId) && fltcrew.Contains(q.JobGroup)).ToListAsync();
             var currents = await context.CourseSessionFDPs.Where(q => q.CourseId == cid).ToListAsync();
             var fdps = new List<FDP>();
@@ -6624,7 +6624,7 @@ namespace AirpocketTRN.Services
             // personIds = personIds.Concat(ins_ids).ToList();
 
 
-            var fltcrew = new List<string>() { "P1", "P2", "ISCCM", "SCCM", "CCM", "TRE", "TRI", "LTC" };
+            var fltcrew = new List<string>() { "P1", "P2", "ISCCM", "SCCM", "CCM", "TRE", "TRI", "LTC","CCE","CCI" };
             var employees = await context.ViewEmployeeAbs.Where(q => personIds.Contains(q.PersonId) && fltcrew.Contains(q.JobGroup)).ToListAsync();
             var eids = employees.Select(q => (Nullable<int>)q.Id).ToList();
 
@@ -6793,7 +6793,7 @@ namespace AirpocketTRN.Services
            // personIds = personIds.Concat(ins_ids).ToList();
 
 
-            var fltcrew = new List<string>() { "P1", "P2", "ISCCM", "SCCM", "CCM", "TRE", "TRI", "LTC" };
+            var fltcrew = new List<string>() { "P1", "P2", "ISCCM", "SCCM", "CCM", "TRE", "TRI", "LTC","CCE","CCI" };
             var employees = await context.ViewEmployeeAbs.Where(q => personIds.Contains(q.PersonId) && fltcrew.Contains(q.JobGroup)).ToListAsync();
             var eids = employees.Select(q => (Nullable<int>)q.PersonId).ToList();
 
@@ -6977,7 +6977,7 @@ namespace AirpocketTRN.Services
 
             // var cps = await context.CoursePeoples.Where(q => q.CourseId == cid).ToListAsync();
             //var personIds = cps.Select(q => q.PersonId).ToList();
-            var fltcrew = new List<string>() { "P1", "P2", "ISCCM", "SCCM", "CCM", "TRE", "TRI", "LTC" };
+            var fltcrew = new List<string>() { "P1", "P2", "ISCCM", "SCCM", "CCM", "TRE", "TRI", "LTC","CCE","CCI" };
             var employees = await context.ViewEmployeeAbs.Where(q => emps.Contains(q.PersonId) && fltcrew.Contains(q.JobGroup)).ToListAsync();
             var currents = await context.CourseSessionFDPs.Where(q => q.CourseId == cid).ToListAsync();
             var fdps = new List<FDP>();

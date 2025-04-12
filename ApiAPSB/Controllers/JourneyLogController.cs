@@ -698,8 +698,10 @@ namespace ApiAPSB.Controllers
                 case "SCCM":
                     return "FP";
                 case "CCM":
+                case "CCE":
                     return "FA";
                 case "ISCCM":
+                case "CCI":
                     return "IFP";
                 default:
                     return str;

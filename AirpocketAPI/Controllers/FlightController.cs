@@ -3989,7 +3989,7 @@ namespace AirpocketAPI.Controllers
             var utcdiff = 210;
             df = df.AddMinutes(0);
             dt = dt.AddDays(1);
-            var cgrps = new List<string>() { "TRI", "TRE", "P1", "P2", "CCM", "SCCM", "ISCCM" };
+            var cgrps = new List<string>() { "TRI", "TRE", "P1", "P2", "CCM", "SCCM", "ISCCM","CCI","CCE" };
             var query_duty = (from x in context.ViewCrewDutyTimeLineNewGDates
                               where x.GDate >= df && x.GDate < dt && cgrps.Contains(x.JobGroup)
                               select x).ToList();
@@ -4038,7 +4038,7 @@ namespace AirpocketAPI.Controllers
 
                         break;
                     case "ISCCM-SCCM":
-                        ds_crew = crews.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM").ToList();
+                        ds_crew = crews.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup== "CCI" || q.JobGroup== "CCE").ToList();
                         sheet = workbook.Worksheets.Add("ISCCM-SCCM");
                         break;
                     default:
@@ -5164,10 +5164,10 @@ namespace AirpocketAPI.Controllers
                              orderby x.OrderIndex, x.ScheduleName
                              select x;
 
-            var am_sccm_thr = stbyam_thr.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM").ToList();
-            var am_sccm_mhd = stbyam_mhd.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM").ToList();
-            var pm_sccm_thr = stbypm_thr.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM").ToList();
-            var pm_sccm_mhd = stbypm_mhd.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM").ToList();
+            var am_sccm_thr = stbyam_thr.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCE" || q.JobGroup == "CCI").ToList();
+            var am_sccm_mhd = stbyam_mhd.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCE" || q.JobGroup == "CCI").ToList();
+            var pm_sccm_thr = stbypm_thr.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCE" || q.JobGroup == "CCI").ToList();
+            var pm_sccm_mhd = stbypm_mhd.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCE" || q.JobGroup == "CCI").ToList();
 
 
             var am_ccm_thr = stbyam_thr.Where(q => q.JobGroup == "CCM").ToList();
@@ -5463,10 +5463,10 @@ namespace AirpocketAPI.Controllers
                              orderby x.OrderIndex, x.ScheduleName
                              select x;
 
-            var am_sccm_thr = stbyam_thr.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM").ToList();
-            var am_sccm_mhd = stbyam_mhd.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM").ToList();
-            var pm_sccm_thr = stbypm_thr.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM").ToList();
-            var pm_sccm_mhd = stbypm_mhd.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM").ToList();
+            var am_sccm_thr = stbyam_thr.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup=="CCI" || q.JobGroup=="CCE").ToList();
+            var am_sccm_mhd = stbyam_mhd.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCI" || q.JobGroup == "CCE").ToList();
+            var pm_sccm_thr = stbypm_thr.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCI" || q.JobGroup == "CCE").ToList();
+            var pm_sccm_mhd = stbypm_mhd.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCI" || q.JobGroup == "CCE").ToList();
 
 
             var am_ccm_thr = stbyam_thr.Where(q => q.JobGroup == "CCM").ToList();
@@ -6053,10 +6053,10 @@ namespace AirpocketAPI.Controllers
 
 
 
-            var am_cabin_thr = stbyam_thr.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCM").OrderBy(q => getOrder(q.JobGroup)).ToList();
-            var am_cabin_mhd = stbyam_mhd.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCM").OrderBy(q => getOrder(q.JobGroup)).ToList();
-            var pm_cabin_thr = stbypm_thr.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCM").OrderBy(q => getOrder(q.JobGroup)).ToList();
-            var pm_cabin_mhd = stbypm_mhd.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCM").OrderBy(q => getOrder(q.JobGroup)).ToList();
+            var am_cabin_thr = stbyam_thr.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCM" || q.JobGroup == "CCI" || q.JobGroup == "CCE").OrderBy(q => getOrder(q.JobGroup)).ToList();
+            var am_cabin_mhd = stbyam_mhd.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCM" || q.JobGroup == "CCI" || q.JobGroup == "CCE").OrderBy(q => getOrder(q.JobGroup)).ToList();
+            var pm_cabin_thr = stbypm_thr.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCM" || q.JobGroup == "CCI" || q.JobGroup == "CCE").OrderBy(q => getOrder(q.JobGroup)).ToList();
+            var pm_cabin_mhd = stbypm_mhd.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCM" || q.JobGroup == "CCI" || q.JobGroup == "CCE").OrderBy(q => getOrder(q.JobGroup)).ToList();
 
 
             //  var am_ccm_thr = stbyam_thr.Where(q => q.JobGroup == "CCM").ToList();
@@ -6364,8 +6364,8 @@ namespace AirpocketAPI.Controllers
             // var am_ccm_mhd = stbyam_mhd.Where(q => q.JobGroup == "P2").ToList();
             //var pm_ccm_thr = stbypm_thr.Where(q => q.JobGroup == "P2").ToList();
             // var pm_ccm_mhd = stbypm_mhd.Where(q => q.JobGroup == "P2").ToList();
-            var am_cabin = stbyam_thr.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCM").ToList();
-            var pm_cabin = stbypm_thr.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCM").ToList();
+            var am_cabin = stbyam_thr.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCM" || q.JobGroup == "CCI" || q.JobGroup == "CCE").ToList();
+            var pm_cabin = stbypm_thr.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCM" || q.JobGroup == "CCI" || q.JobGroup == "CCE").ToList();
 
             Workbook workbook = new Workbook();
             var mappedPathSource = System.Web.Hosting.HostingEnvironment.MapPath("~/upload/" + "drcnew" + ".xlsx");
@@ -6671,9 +6671,9 @@ namespace AirpocketAPI.Controllers
             // var am_ccm_mhd = stbyam_mhd.Where(q => q.JobGroup == "P2").ToList();
             //var pm_ccm_thr = stbypm_thr.Where(q => q.JobGroup == "P2").ToList();
             // var pm_ccm_mhd = stbypm_mhd.Where(q => q.JobGroup == "P2").ToList();
-            var am_cabin = stbyam_thr.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCM").ToList();
-            var pm_cabin = stbypm_thr.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCM").ToList();
-            var daily_cabin = stbydaily.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCM").ToList();
+            var am_cabin = stbyam_thr.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCM" || q.JobGroup == "CCI" || q.JobGroup == "CCE").ToList();
+            var pm_cabin = stbypm_thr.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCM" || q.JobGroup == "CCI" || q.JobGroup == "CCE").ToList();
+            var daily_cabin = stbydaily.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCM" || q.JobGroup == "CCI" || q.JobGroup == "CCE").ToList();
 
             Workbook workbook = new Workbook();
             var mappedPathSource = System.Web.Hosting.HostingEnvironment.MapPath("~/upload/" + "drc-02" + ".xlsx");
@@ -7421,9 +7421,9 @@ namespace AirpocketAPI.Controllers
             var am_cockpit = stbyam_thr.Where(q => q.JobGroup == "IP" || q.JobGroup == "TRE" || q.JobGroup == "TRI" || q.JobGroup == "P1" || q.JobGroup == "P2").ToList();
             var pm_cockpit = stbypm_thr.Where(q => q.JobGroup == "IP" || q.JobGroup == "TRE" || q.JobGroup == "TRI" || q.JobGroup == "P1" || q.JobGroup == "P2").ToList();
             var daily_cockpit = stbydaily.Where(q => q.JobGroup == "IP" || q.JobGroup == "TRE" || q.JobGroup == "TRI" || q.JobGroup == "P1" || q.JobGroup == "P2").ToList();
-            var am_cabin = stbyam_thr.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCM").ToList();
-            var pm_cabin = stbypm_thr.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCM").ToList();
-            var daily_cabin = stbydaily.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCM").ToList();
+            var am_cabin = stbyam_thr.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCM" || q.JobGroup == "CCI" || q.JobGroup == "CCE").ToList();
+            var pm_cabin = stbypm_thr.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCM" || q.JobGroup == "CCI" || q.JobGroup == "CCE").ToList();
+            var daily_cabin = stbydaily.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCM" || q.JobGroup == "CCI" || q.JobGroup == "CCE").ToList();
 
             ln = ln + 1;
             sheet.Range[ln, 5].Text = string.Join(", ", am_cockpit.Select(q => q.ScheduleName + "(" + q.JobGroup + ")"));
@@ -7842,9 +7842,9 @@ namespace AirpocketAPI.Controllers
             var am_cockpit = stbyam_thr.Where(q => q.JobGroup == "IP" || q.JobGroup == "TRE" || q.JobGroup == "TRI" || q.JobGroup == "P1" || q.JobGroup == "P2").ToList();
             var pm_cockpit = stbypm_thr.Where(q => q.JobGroup == "IP" || q.JobGroup == "TRE" || q.JobGroup == "TRI" || q.JobGroup == "P1" || q.JobGroup == "P2").ToList();
             var daily_cockpit = stbydaily.Where(q => q.JobGroup == "IP" || q.JobGroup == "TRE" || q.JobGroup == "TRI" || q.JobGroup == "P1" || q.JobGroup == "P2").ToList();
-            var am_cabin = stbyam_thr.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCM").ToList();
-            var pm_cabin = stbypm_thr.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCM").ToList();
-            var daily_cabin = stbydaily.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCM").ToList();
+            var am_cabin = stbyam_thr.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCM" || q.JobGroup == "CCI" || q.JobGroup == "CCE").ToList();
+            var pm_cabin = stbypm_thr.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCM" || q.JobGroup == "CCI" || q.JobGroup == "CCE").ToList();
+            var daily_cabin = stbydaily.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCM" || q.JobGroup == "CCI" || q.JobGroup == "CCE").ToList();
 
             ln = ln + 1;
             //sheet.Range[ln, 5].Text = string.Join(", ", am_cockpit.Select(q => q.ScheduleName + "(" + q.JobGroup + ")"));
@@ -8052,8 +8052,8 @@ namespace AirpocketAPI.Controllers
             // var am_ccm_mhd = stbyam_mhd.Where(q => q.JobGroup == "P2").ToList();
             //var pm_ccm_thr = stbypm_thr.Where(q => q.JobGroup == "P2").ToList();
             // var pm_ccm_mhd = stbypm_mhd.Where(q => q.JobGroup == "P2").ToList();
-            var am_cabin = stbyam_thr.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCM").ToList();
-            var pm_cabin = stbypm_thr.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCM").ToList();
+            var am_cabin = stbyam_thr.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCM" || q.JobGroup == "CCI" || q.JobGroup == "CCE").ToList();
+            var pm_cabin = stbypm_thr.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCM" || q.JobGroup == "CCI" || q.JobGroup == "CCE").ToList();
 
             Workbook workbook = new Workbook();
             var mappedPathSource = System.Web.Hosting.HostingEnvironment.MapPath("~/upload/" + "drsec" + ".xlsx");

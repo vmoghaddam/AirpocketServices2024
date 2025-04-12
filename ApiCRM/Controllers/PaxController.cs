@@ -67,7 +67,7 @@ namespace ApiCRM.Controllers
             ppa_entities context = new ppa_entities();
             var result = await context.view_crm_pax_flight.Where(q => q.id == id).FirstOrDefaultAsync();
             var questions = await context.crm_question_result.Where(q => q.flight_pax_id == id).Select(q=>new { q.score,q.question_id }).ToListAsync();
-            var positions = new List<string>() { "CCM", "SCCM","ISCCM" };
+            var positions = new List<string>() { "CCM", "SCCM","ISCCM","CCI","CCE" };
 
             var crews = await context.view_crew_score.Where(q => q.flight_id == result.flight_id && q.flight_pax_id==result.id && positions.Contains(q.Position)).OrderBy(q => q.GroupOrder)
 

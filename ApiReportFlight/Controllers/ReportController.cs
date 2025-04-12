@@ -33,23 +33,23 @@ namespace ApiReportFlight.Controllers
             df = df.Date;
             dt = dt.Date.AddDays(1);
             // dataSource: ['All', 'Cockpit', 'Cabin', 'IP', 'P1', 'P2', 'SCCM', 'CCM', 'ISCCM'],
-            var crew_grps = new List<string>() { "TRE", "TRI", "P1", "P2", "ISCCM", "SCCM", "CCM" ,"LTC"}; 
+            var crew_grps = new List<string>() { "TRE", "TRI", "P1", "P2", "ISCCM", "SCCM", "CCM" ,"LTC","CCE","CCI"}; 
             if (grps == "Cockpit")
                 crew_grps = new List<string>() { "TRE", "TRI", "P1", "P2" ,"LTC"};
             else if (grps == "Cabin")
-                crew_grps = new List<string>() { "ISCCM", "SCCM", "CCM" };
+                crew_grps = new List<string>() { "ISCCM", "SCCM", "CCM" ,"CCI","CCE"};
             else if (grps == "IP")
                 crew_grps = new List<string>() { "TRE", "TRI","LTC" };
             else if (grps == "P1")
                 crew_grps = new List<string>() { "P1" };
             else if (grps == "P2")
                 crew_grps = new List<string>() { "P2" };
-            else if (grps == "ISCCM")
-                crew_grps = new List<string>() { "ISCCM" };
+            else if (grps == "ISCCM" || grps=="CCI")
+                crew_grps = new List<string>() { "ISCCM","CCI" };
             else if (grps == "SCCM")
                 crew_grps = new List<string>() { "SCCM" };
-            else if (grps == "CCM")
-                crew_grps = new List<string>() { "CCM" };
+            else if (grps == "CCM" || grps=="CCE")
+                crew_grps = new List<string>() { "CCM" ,"CCE"};
 
             string crew_types = "";// "21,22,26" ;
             if (actype == "AIRBUS")
@@ -148,9 +148,9 @@ namespace ApiReportFlight.Controllers
                                      FDPs = grp.OrderBy(q => q.STD).ToList(),
                                      DH= crew_flights.Where (q=>q.CrewId== grp.Key.CrewId && q.IsPositioning==true).Count(),
                                      Instructor= crew_flights.Where(q => q.CrewId == grp.Key.CrewId && q.IsPositioning != true 
-                                       && (q.Position=="IP" || q.Position=="TRE" || q.Position=="TRI" || q.Position=="LTC" || q.Position=="ISCCM")  ).Count(),
+                                       && (q.Position=="IP" || q.Position=="TRE" || q.Position=="TRI" || q.Position=="LTC" || q.Position=="ISCCM" || q.Position=="CCI")  ).Count(),
                                      InstructorBlock = crew_flights.Where(q => q.CrewId == grp.Key.CrewId && q.IsPositioning != true
-                                        && (q.Position == "IP" || q.Position == "TRE" || q.Position == "TRI" || q.Position == "LTC" || q.Position == "ISCCM")).Sum(q=>q.BlockTime),
+                                        && (q.Position == "IP" || q.Position == "TRE" || q.Position == "TRI" || q.Position == "LTC" || q.Position == "ISCCM" || q.Position=="CCI") ).Sum(q=>q.BlockTime),
 
                                      OBS = crew_flights.Where(q => q.CrewId == grp.Key.CrewId && q.IsPositioning != true
                                        && (q.Position == "OBS")).Count(),
@@ -370,23 +370,23 @@ namespace ApiReportFlight.Controllers
             df = df.Date;
             dt = dt.Date.AddDays(1);
             // dataSource: ['All', 'Cockpit', 'Cabin', 'IP', 'P1', 'P2', 'SCCM', 'CCM', 'ISCCM'],
-            var crew_grps = new List<string>() { "TRE", "TRI", "P1", "P2", "ISCCM", "SCCM", "CCM", "LTC" };
+            var crew_grps = new List<string>() { "TRE", "TRI", "P1", "P2", "ISCCM", "SCCM", "CCM", "LTC","CCI","CCE" };
             if (grps == "Cockpit")
                 crew_grps = new List<string>() { "TRE", "TRI", "P1", "P2", "LTC" };
             else if (grps == "Cabin")
-                crew_grps = new List<string>() { "ISCCM", "SCCM", "CCM" };
+                crew_grps = new List<string>() { "ISCCM", "SCCM", "CCM","CCI","CCE" };
             else if (grps == "IP")
                 crew_grps = new List<string>() { "TRE", "TRI", "LTC" };
             else if (grps == "P1")
                 crew_grps = new List<string>() { "P1" };
             else if (grps == "P2")
                 crew_grps = new List<string>() { "P2" };
-            else if (grps == "ISCCM")
-                crew_grps = new List<string>() { "ISCCM" };
+            else if (grps == "ISCCM" || grps=="CCI")
+                crew_grps = new List<string>() { "ISCCM" ,"CCI"};
             else if (grps == "SCCM")
                 crew_grps = new List<string>() { "SCCM" };
             else if (grps == "CCM")
-                crew_grps = new List<string>() { "CCM" };
+                crew_grps = new List<string>() { "CCM","CCE" };
 
             string crew_types = "";// "21,22,26" ;
             if (actype == "AIRBUS")
@@ -507,9 +507,9 @@ namespace ApiReportFlight.Controllers
                                      FDPs = grp.OrderBy(q => q.STD).ToList(),
                                      DH = crew_flights.Where(q => q.CrewId == grp.Key.CrewId && q.IsPositioning == true).Count(),
                                      Instructor = crew_flights.Where(q => q.CrewId == grp.Key.CrewId && q.IsPositioning != true
-                                        && (q.Position == "IP" || q.Position == "TRE" || q.Position == "TRI" || q.Position == "LTC" || q.Position == "ISCCM")).Count(),
+                                        && (q.Position == "IP" || q.Position == "TRE" || q.Position == "TRI" || q.Position == "LTC" || q.Position == "ISCCM" || q.Position == "CCI")).Count(),
                                      InstructorBlock = crew_flights.Where(q => q.CrewId == grp.Key.CrewId && q.IsPositioning != true
-                                        && (q.Position == "IP" || q.Position == "TRE" || q.Position == "TRI" || q.Position == "LTC" || q.Position == "ISCCM")).Sum(q => q.BlockTime),
+                                        && (q.Position == "IP" || q.Position == "TRE" || q.Position == "TRI" || q.Position == "LTC" || q.Position == "ISCCM" || q.Position == "CCI")).Sum(q => q.BlockTime),
 
                                      OBS = crew_flights.Where(q => q.CrewId == grp.Key.CrewId && q.IsPositioning != true
                                        && (q.Position == "OBS")).Count(),
@@ -578,9 +578,9 @@ namespace ApiReportFlight.Controllers
                                      FDPs = grp.OrderBy(q => q.STD).ToList(),
                                      DH = crew_flights.Where(q => q.CrewId == grp.Key.CrewId && q.IsPositioning == true).Count(),
                                      Instructor = crew_flights.Where(q => q.CrewId == grp.Key.CrewId && q.IsPositioning != true
-                                        && (q.Position == "IP" || q.Position == "TRE" || q.Position == "TRI" || q.Position == "LTC" || q.Position == "ISCCM")).Count(),
+                                        && (q.Position == "IP" || q.Position == "TRE" || q.Position == "TRI" || q.Position == "LTC" || q.Position == "ISCCM" || q.Position == "CCI")).Count(),
                                      InstructorBlock = crew_flights.Where(q => q.CrewId == grp.Key.CrewId && q.IsPositioning != true
-                                        && (q.Position == "IP" || q.Position == "TRE" || q.Position == "TRI" || q.Position == "LTC" || q.Position == "ISCCM")).Sum(q => q.BlockTime),
+                                        && (q.Position == "IP" || q.Position == "TRE" || q.Position == "TRI" || q.Position == "LTC" || q.Position == "ISCCM" || q.Position == "CCI")).Sum(q => q.BlockTime),
 
                                      OBS = crew_flights.Where(q => q.CrewId == grp.Key.CrewId && q.IsPositioning != true
                                        && (q.Position == "OBS")).Count(),
@@ -2379,11 +2379,14 @@ namespace ApiReportFlight.Controllers
                 case "P2":
                     return 5;
                 case "ISCCM":
+                case "CCI":
                     return 10;
                 case "SCCM":
                     return 11;
                 case "CCM":
                     return 12;
+                case "CCE":
+                    return 13;
                 default:
                     return 1000;
             }
@@ -2529,13 +2532,21 @@ namespace ApiReportFlight.Controllers
                             _query_x = _query_x.Where(q => q.JobGroup == "P2");
                             break;
                         case "ISCCM":
+
                             _query_x = _query_x.Where(q => q.JobGroup == "ISCCM");
+                            break;
+                        case "CCI":
+
+                            _query_x = _query_x.Where(q => q.JobGroup == "CCI");
                             break;
                         case "SCCM":
                             _query_x = _query_x.Where(q => q.JobGroup == "SCCM");
                             break;
                         case "CCM":
                             _query_x = _query_x.Where(q => q.JobGroup == "CCM");
+                            break;
+                        case "CCE":
+                            _query_x = _query_x.Where(q => q.JobGroup == "CCE");
                             break;
                         case "CABIN":
                             _query_x = _query_x.Where(q => ds_cabin.Contains(q.JobGroup));
@@ -2639,19 +2650,19 @@ namespace ApiReportFlight.Controllers
                             _baseQ = _baseQ.Where(q => q.JobGroup == "TRI");
                             break;
                         case "6":
-                            _baseQ = _baseQ.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM");
+                            _baseQ = _baseQ.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup=="CCI");
                             break;
                         case "11":
-                            _baseQ = _baseQ.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCM");
+                            _baseQ = _baseQ.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCM" || q.JobGroup=="CCI" || q.JobGroup=="CCE");
                             break;
                         case "7":
-                            _baseQ = _baseQ.Where(q => q.JobGroup == "ISCCM");
+                            _baseQ = _baseQ.Where(q => q.JobGroup == "ISCCM" || q.JobGroup=="CCI");
                             break;
                         case "8":
                             _baseQ = _baseQ.Where(q => q.JobGroup == "SCCM");
                             break;
                         case "9":
-                            _baseQ = _baseQ.Where(q => q.JobGroup == "CCM");
+                            _baseQ = _baseQ.Where(q => q.JobGroup == "CCM" ||  q.JobGroup=="CCE");
                             break;
                         default:
                             break;

@@ -1576,7 +1576,7 @@ namespace ApiLog.Controllers
                     .AsNoTracking();
 
 
-                int utc = 1;
+                int utc = 0;
                 int? doUtc = utc;
                 // if (cid != -1)
                 //    flightsQuery = flightsQuery.Where(q => q.CustomerId == cid);
@@ -1617,13 +1617,13 @@ namespace ApiLog.Controllers
 
                 var groundRegs = new List<string>();
 
-                //var flightsdto = new List<ViewModels.ViewFlightsGanttDto>();
-                //foreach (var x in flights)
-                //{
-                //    ViewModels.ViewFlightsGanttDto dto = new ViewFlightsGanttDto();
-                //    ViewModels.ViewFlightsGanttDto.FillDto(x, dto, tzoffset, doUtc);
-                //    flightsdto.Add(dto);
-                //}
+              //  var flightsdto = new List<ViewModels.ViewFlightsGanttDto>();
+              //  foreach (var x in flights)
+              //  {
+              //      ViewModels.ViewFlightsGanttDto dto = new ViewFlightsGanttDto();
+              //      ViewModels.ViewFlightsGanttDto.FillDto(x, dto, tzoffset, doUtc);
+              //      flightsdto.Add(dto);
+              //  }
                 var flightsdto = flights;
 
                 var resgroups = from x in flights

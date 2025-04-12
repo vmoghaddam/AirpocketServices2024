@@ -298,7 +298,7 @@ namespace ApiForm.Controllers
                     var applicant = context.ViewCrews.FirstOrDefault(q => q.Id == vacation.UserId);
 
                     var cockpit_grps = new List<string>() { "TRE", "TRI", "LTC", "NC", "P1", "P2" };
-                    var cabin_grps = new List<string>() { "ISCCM", "SCCM", "CCM" };
+                    var cabin_grps = new List<string>() { "ISCCM", "SCCM", "CCM" ,"CCI","CCE"};
                     var ac_grps = new List<string>() { "737", "MD", "AB" };
                     var type = "";
 
