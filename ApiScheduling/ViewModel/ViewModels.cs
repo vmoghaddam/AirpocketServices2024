@@ -302,7 +302,7 @@ namespace ApiScheduling.ViewModel
                 return 1162;
             if (rank.ToUpper().StartsWith("FE"))
                 return 1165;
-            if (rank.StartsWith("CCI"))
+            if (rank.StartsWith("ISCCM") || rank.StartsWith("CCI"))
                 return 10002;
             if (rank.StartsWith("SCCM"))
                 return 1157;

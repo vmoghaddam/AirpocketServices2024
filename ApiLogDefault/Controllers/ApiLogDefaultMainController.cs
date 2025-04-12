@@ -48,7 +48,7 @@ namespace ApiLogDefault.Controllers
                 {
                     return Ok(new List<Models.XFlightCrew>());
                 }
-                var role = roles.Where(q => q == "show flight crew"
+                var role = roles.Where(q => q == "show flight crew" || q == "show flight crews"
               || q == "crew scheduling"
                 || q == "crew scheduler"
             || q == "dispatch"
