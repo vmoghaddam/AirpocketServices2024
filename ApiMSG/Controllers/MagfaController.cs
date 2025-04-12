@@ -158,7 +158,7 @@ namespace ApiMSG.Controllers
                     response_asr asr = JsonConvert.DeserializeObject<response_asr>(str);
                     var pic = context.ViewProfiles.Where(q => q.Id == asr.PICId).FirstOrDefault();
 
-                    var pic_msg1 = "ضمن سپاس از ارسال گزارش، پس از بررسی و اقدامات انجام شده، حصول نتیجه در صورت لزوم به شما ابلاغ خواهد شد. با تشکر، مدیریت ایمنی و تضمین کیفیت هواپیمایی وارش";
+                    //var pic_msg1 = "ضمن سپاس از ارسال گزارش، پس از بررسی و اقدامات انجام شده، حصول نتیجه در صورت لزوم به شما ابلاغ خواهد شد. با تشکر، مدیریت ایمنی و تضمین کیفیت هواپیمایی وارش";
 
 
 
@@ -185,7 +185,7 @@ namespace ApiMSG.Controllers
 
                     var not_receivers = context.qa_notification_receiver.Where(q => q.is_active == true).ToList();
 
-                    Magfa m1 = new Magfa();
+                    MagfaNew m1 = new MagfaNew();
                     foreach (var rec in not_receivers)
                     {
                         List<string> prts2 = new List<string>();
@@ -263,18 +263,18 @@ namespace ApiMSG.Controllers
                         System.Threading.Thread.Sleep(2000);
 
                     }
-                    var not_history_pic = new qa_notification_history()
-                    {
-                        date_send = DateTime.Now,
-                        entity_id = id,
-                        entity_type = 8,
-                        message_text = pic_msg1,
-                        message_type = 2,
-                        rec_id = asr.PICId,
-                        rec_mobile = pic.Mobile,
-                        rec_name = pic.Name,
-                        counter = 0,
-                    };
+                    //var not_history_pic = new qa_notification_history()
+                    //{
+                    //    date_send = DateTime.Now,
+                    //    entity_id = id,
+                    //    entity_type = 8,
+                    //    message_text = pic_msg1,
+                    //    message_type = 2,
+                    //    rec_id = asr.PICId,
+                    //    rec_mobile = pic.Mobile,
+                    //    rec_name = pic.Name,
+                    //    counter = 0,
+                    //};
                     var not_history_pic2 = new qa_notification_history()
                     {
                         date_send = DateTime.Now,
@@ -288,21 +288,21 @@ namespace ApiMSG.Controllers
                         counter = 0,
                     };
 
-                    Magfa m1_pic = new Magfa();
-                    var m1_pic_result = m1_pic.enqueue(1, not_history_pic.rec_mobile, not_history_pic.message_text)[0];
-                    not_history_pic.ref_id = m1_pic_result.ToString();
+                    //MagfaNew m1_pic = new MagfaNew();
+                    //var m1_pic_result = m1_pic.enqueue(1, not_history_pic.rec_mobile, not_history_pic.message_text)[0];
+                    //not_history_pic.ref_id = m1_pic_result.ToString();
 
-                    Magfa m_pic = new Magfa();
+                    MagfaNew m_pic = new MagfaNew();
                     var m_pic_result = m_pic.enqueue(1, not_history_pic2.rec_mobile, not_history_pic2.message_text)[0];
                     not_history_pic2.ref_id = m_pic_result.ToString();
 
-                    _result.Add(not_history_pic);
+                    //_result.Add(not_history_pic);
                     _result.Add(not_history_pic2);
 
                     System.Threading.Thread.Sleep(20000);
                     foreach(var x in _result)
                     {
-                        Magfa m_status = new Magfa();
+                        MagfaNew m_status = new MagfaNew();
                         x.status = m_status.getStatus(Convert.ToInt64(x.ref_id));
 
                         context.qa_notification_history.Add(x);
@@ -386,34 +386,68 @@ namespace ApiMSG.Controllers
 
 
 
-        [Route("api/qa/feedback/first/{no}/{eid}")]
+        [Route("api/qa/feedback/first/{no}/{eid}/{type}")]
         [AcceptVerbs("GET")]
-        public IHttpActionResult GetQAFeedbackFirst(string no, string eid)
+        public IHttpActionResult GetQAFeedbackFirst(string no, string eid, string type)
         {
             var _no = no;
 
-            if (eid != "-1" && _no == "-1")
+           
+
+            try
             {
-                try
-                {
-                    var _eid = Convert.ToInt32(eid);
-                    var context = new ppa_vareshEntities();
-                    _no = context.ViewProfiles.Where(q => q.Id == _eid).FirstOrDefault().Mobile;
-                }
-                catch (Exception ex)
-                {
+                var context = new ppa_vareshEntities();
+                List<qa_notification_history> _result = new List<qa_notification_history>();
+                
 
+                using (WebClient webClient = new WebClient())
+                {
+                    webClient.Encoding = Encoding.UTF8;
+                    try
+                    {
+                        if (eid != "-1" && _no == "-1")
+                        {
+                            var _eid = Convert.ToInt32(eid);
+                            _no = context.ViewProfiles.Where(q => q.Id == _eid).FirstOrDefault().Mobile;
+                        }
+                    } catch(Exception ex) {
+                        return Ok(ex);
+                    }
+                    var msg1 = "ضمن سپاس از ارسال گزارش، پس از بررسی و اقدامات انجام شده، حصول نتیجه در صورت لزوم به شما ابلاغ خواهد شد. با تشکر، مدیریت ایمنی و تضمین کیفیت هواپیمایی وارش";
+                    var msg2 = "You have a new " + type + " Report. Please check your AIRPOCKET.";
+
+
+
+
+
+                    MagfaNew m = new MagfaNew();
+                    var smsResult = m.enqueue(1, _no, msg1)[0];
+                    var refids = new List<Int64>() { smsResult };
+                    
+                    
+                    var not_receivers = context.qa_notification_receiver.Where(q => q.is_active == true).ToList();
+
+                    foreach (var rec in not_receivers)
+                    {
+                        var smsResult1 = m.enqueue(1, rec.mobile, msg2)[0];
+                        var refids1 = new List<Int64>() { smsResult1 };
+                    }
+                   
+
+                   
+                    context.SaveChanges();
+
+                    return Ok(new { refids, _no, no, eid });
                 }
 
+                
+            }catch(Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += "      " + ex.InnerException.Message;
+                return Ok(msg);
             }
-            var msg = "ضمن سپاس از ارسال گزارش، پس از بررسی و اقدامات انجام شده، حصول نتیجه در صورت لزوم به شما ابلاغ خواهد شد. با تشکر، مدیریت ایمنی و تضمین کیفیت هواپیمایی وارش";
-            MagfaNew m = new MagfaNew();
-            var smsResult = m.enqueue(1, _no, msg)[0];
-            var refids = new List<Int64>() { smsResult };
-            System.Threading.Thread.Sleep(5000);
-            //var status = m.getStatus(refids);
-
-            return Ok(new { refids, _no, no, eid });
         }
 
 
