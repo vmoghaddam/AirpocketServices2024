@@ -1417,10 +1417,10 @@ namespace ApiScheduling.Controllers
                     fdp.FirstFlightId = items.First().flt.ID;
                     fdp.LastFlightId = items.Last().flt.ID;
                     fdp.InitStart = ((DateTime)items.First().flt.STD).AddMinutes(-default_reporting);
-                    fdp.InitEnd = ((DateTime)items.Last().flt.STA).AddMinutes(30);
+                    fdp.InitEnd = ((DateTime)items.Last().flt.STA).AddMinutes(double.Parse(ConfigurationManager.AppSettings["post_flight"]));
 
                     fdp.DateStart = ((DateTime)items.First().flt.STD).AddMinutes(-default_reporting);
-                    fdp.DateEnd = ((DateTime)items.Last().flt.STA).AddMinutes(30);
+                    fdp.DateEnd = ((DateTime)items.Last().flt.STA).AddMinutes(double.Parse(ConfigurationManager.AppSettings["post_flight"]));
 
                     var rst = 12;
                     if (fdp.InitHomeBase != null && fdp.InitHomeBase != items.Last().flt.ToAirportId)
@@ -1448,7 +1448,7 @@ namespace ApiScheduling.Controllers
                         var dt = (DateTime)items[i].flt.STD - (DateTime)items[i - 1].flt.STA;
                         var minuts = dt.TotalMinutes;
                         // – (0:30 + 0:15 + 0:45)
-                        var brk = minuts - 30 - 60; //30:travel time, post flight duty:15, pre flight duty:30
+                        var brk = minuts - double.Parse(ConfigurationManager.AppSettings["post_flight"]) - 60; //30:travel time, post flight duty:15, pre flight duty:30
                         if (brk >= 600)
                         {
                             //var tfi = tflights.FirstOrDefault(q => q.ID == flights[i].ID);
@@ -1689,10 +1689,10 @@ namespace ApiScheduling.Controllers
                 //initno 5824_5825
                 fdp.InitNo = string.Join("_", flights.Select(q => q.FlightNumber).ToList());
                 fdp.InitFlights = string.Join("*", RosterFDPDto.getFlightsStrs(flights, items.Where(q => q.IsPositioning == true).Select(q => q.FlightId).ToList()));
-                fdp.DateEnd = ((DateTime)flights.Last().ChocksIn).AddMinutes(30);
-                fdp.InitEnd = ((DateTime)flights.Last().ChocksIn).AddMinutes(30);
+                fdp.DateEnd = ((DateTime)flights.Last().ChocksIn).AddMinutes(double.Parse(ConfigurationManager.AppSettings["post_flight"]));
+                fdp.InitEnd = ((DateTime)flights.Last().ChocksIn).AddMinutes(double.Parse(ConfigurationManager.AppSettings["post_flight"]));
                 var rst = fdp.InitHomeBase != flights.Last().ToAirportId ? 10 : 12;
-                fdp.InitRestTo = ((DateTime)flights.Last().ChocksIn).AddMinutes(30).AddHours(rst);
+                fdp.InitRestTo = ((DateTime)flights.Last().ChocksIn).AddMinutes(double.Parse(ConfigurationManager.AppSettings["post_flight"])).AddHours(rst);
                 //initflights 540302_0_202302051740_202302051930_5824_THR_KIH*540303_0_202302052030_202302052215_5825_KIH_THR
 
 
@@ -3350,7 +3350,7 @@ namespace ApiScheduling.Controllers
                         InitFromIATA = dto.from.ToString(),
                         InitToIATA = dto.to.ToString(),
                         InitStart = dto.items.First().offblock.AddMinutes(default_reporting),
-                        InitEnd = dto.items.Last().onblock.AddMinutes(30),
+                        InitEnd = dto.items.Last().onblock.AddMinutes(double.Parse(ConfigurationManager.AppSettings["post_flight"])),
                         Split = 0,
                         UserName = dto.UserName,
                         MaxFDP = dto.maxFDP,
@@ -3398,7 +3398,7 @@ namespace ApiScheduling.Controllers
                         var dt = (DateTime)dto.items[i].offblock - (DateTime)dto.items[i - 1].onblock;
                         var minuts = dt.TotalMinutes;
                         // – (0:30 + 0:15 + 0:45)
-                        var brk = minuts - 30 - 60; //30:travel time, post flight duty:15, pre flight duty:30
+                        var brk = minuts - double.Parse(ConfigurationManager.AppSettings["post_flight"]) - 60; //30:travel time, post flight duty:15, pre flight duty:30
                         if (brk >= 600)
                         {
                             //var tfi = tflights.FirstOrDefault(q => q.ID == flights[i].ID);
@@ -4275,7 +4275,7 @@ namespace ApiScheduling.Controllers
             var rp = Convert.ToInt32(ConfigurationManager.AppSettings["reporting"]);
             stat.ReportingTime = ((DateTime)flights.First().DepartureLocal).AddMinutes(-1 * rp);
             stat.Sectors = ids.Count - (dh == null ? 0 : (int)dh);
-            stat.RestFrom = ((DateTime)flights.Last().ArrivalLocal).AddMinutes(30);
+            stat.RestFrom = ((DateTime)flights.Last().ArrivalLocal).AddMinutes(double.Parse(ConfigurationManager.AppSettings["post_flight"]));
             var endDate = ((DateTime)flights.Last().ArrivalLocal);
 
             var _start = stat.ReportingTime.Hour + stat.ReportingTime.Minute * 1.0 / 60;
@@ -4328,7 +4328,7 @@ namespace ApiScheduling.Controllers
                     var dt = (DateTime)flights[i].ChocksOut - (DateTime)flights[i - 1].ChocksIn;
                     var minuts = dt.TotalMinutes;
 
-                    var brk = minuts - 30 - 60;
+                    var brk = minuts - double.Parse(ConfigurationManager.AppSettings["post_flight"]) - 60;
 
                     if (brk >= 180 && brk < 600)
                     {
@@ -4350,7 +4350,7 @@ namespace ApiScheduling.Controllers
             }
             stat.MaxFDPExtended = stat.MaxFDP + stat.Extended;
 
-            stat.Duty = stat.Duration + 30;
+            stat.Duty = stat.Duration + double.Parse(ConfigurationManager.AppSettings["post_flight"]);
 
 
             return stat;
