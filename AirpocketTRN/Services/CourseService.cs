@@ -250,7 +250,7 @@ namespace AirpocketTRN.Services
             var l1_length = 3;
             var lo_length = 2;
             var jobgroups = await context.JobGroups.ToListAsync();
-            var _exg = new List<string>() { "TRE", "TRI", "P1", "P2", "ISCCM", "SCCM", "CCM","CCE","CCI" };
+            var _exg = new List<string>() { "TRE", "TRI", "P1", "P2", "ISCCM", "SCCM", "CCM", "CCE", "CCI" };
             var expiring_employees = await context.ViewCertificateHistoryRankeds.Where(q => /*q.InActive == false &&*/ q.IsCritical == 1 /*&& !_exg.Contains(q.JobGroup)*/).ToListAsync();
 
 
@@ -913,7 +913,7 @@ namespace AirpocketTRN.Services
             }
 
             var session_query = from x in context.ViewCourseSessions
-                                where x.Year == year && x.Month == month && x.ParentId==null
+                                where x.Year == year && x.Month == month && x.ParentId == null
                                 select x;
             if (mng_id != -1)
                 session_query = session_query.Where(q => filter_course_ids.Contains(q.CourseId));
@@ -921,7 +921,7 @@ namespace AirpocketTRN.Services
             var session_query_list = await (session_query).ToListAsync();
             var sessions = (from x in session_query_list
                             group x by new { ((DateTime)x.DateStart).Date } into grp
-                            let _ds= grp.Select(q => new
+                            let _ds = grp.Select(q => new
                             {
                                 q.CourseId,
                                 q.DateStart,
@@ -937,19 +937,19 @@ namespace AirpocketTRN.Services
                             select new
                             {
                                 Date = grp.Key.Date,
-                                Items =_ds.OrderBy(w => w.DateStart).ThenBy(w => w.Title).ToList(),
-                                courses=  (from y in _ds
-                                          group y by new { y.CourseId, y.Title, y.Instructor, y.Status, y.No } into grp2
-                                          select new
-                                          {
-                                              grp2.Key.Title,
-                                              grp2.Key.CourseId,
-                                              grp2.Key.Instructor,
-                                              grp2.Key.Status,
-                                              grp2.Key.No,
-                                              DateStart = _ds.Min(q=>q.DateStart),
-                                              DateEnd=_ds.Max(q=>q.DateEnd)
-                                          }).OrderBy(q=>q.DateStart).ThenBy(q=>q.Title).ToList()
+                                Items = _ds.OrderBy(w => w.DateStart).ThenBy(w => w.Title).ToList(),
+                                courses = (from y in _ds
+                                           group y by new { y.CourseId, y.Title, y.Instructor, y.Status, y.No } into grp2
+                                           select new
+                                           {
+                                               grp2.Key.Title,
+                                               grp2.Key.CourseId,
+                                               grp2.Key.Instructor,
+                                               grp2.Key.Status,
+                                               grp2.Key.No,
+                                               DateStart = _ds.Min(q => q.DateStart),
+                                               DateEnd = _ds.Max(q => q.DateEnd)
+                                           }).OrderBy(q => q.DateStart).ThenBy(q => q.Title).ToList()
 
                             }).OrderBy(q => q.Date).ToList();
             //var courses=  from y in session_query_list
@@ -963,7 +963,7 @@ namespace AirpocketTRN.Services
             //                           grp2.Key.No,
             //                           DateStart = grp2.Where(q => q.Key.)
             //                       }
-            
+
 
             var expiring_employees_query = from q in context.ViewCertificateHistoryRankeds
                                            where q.ExpireYear == year && q.ExpireMonth == month
@@ -1377,7 +1377,7 @@ namespace AirpocketTRN.Services
         {
             var query = context.ViewCourseNews.Where(q => q.CourseTypeId == tid);
             if (sid != -1)
-                query = query.Where(q => q.StatusId == sid && q.IsInside==false);
+                query = query.Where(q => q.StatusId == sid && q.IsInside == false);
             var result = await query.OrderBy(q => q.CourseType).ThenByDescending(q => q.DateStart).ToListAsync();
 
             return new DataResponse()
@@ -1476,49 +1476,49 @@ namespace AirpocketTRN.Services
         }
         public async Task<DataResponse> GetStat()
         {
-            var query =await (from x in context.C_view_trncard
-                         where x.Remain <= 30 && x.Remain != -10000
-                         select x).ToListAsync();
+            var query = await (from x in context.C_view_trncard
+                               where x.Remain <= 30 && x.Remain != -10000
+                               select x).ToListAsync();
             var query_grp_type = (from x in query
-                                 group x by new { x.title, x.trncard_title/*, is_expired = Math.Sign(Convert.ToInt32(x.Remain))*/ } into grp
-                                 select new
-                                 {
-                                     grp.Key.title,
-                                     title_card = grp.Key.trncard_title,
-                                     //grp.Key.is_expired,
-                                     rows=grp.ToList(),
-                                     count = grp.Count(),
-                                    has_expired=grp.Where(q=>q.Remain<=0).Any(),
-                                    is_expired=grp.Where(q=>q.Remain<=0).Count(),
-                                     is_expiring = grp.Where(q => q.Remain > 0).Count(),
-                                     items =from q in grp
-                                            group q by new {q.jobgroup_root,q.jobgroup } into grp2
-                                            select new
-                                            {
-                                                grp.Key.title,
-                                                title_card = grp.Key.trncard_title,
-                                                jobgroup_root = grp2.Key.jobgroup_root,
-                                                jobgroup = grp2.Key.jobgroup,
-                                                count=grp2.Count(),
-                                                rows=grp.ToList(),
-                                                is_expired = grp2.Where(q => q.Remain <= 0).Count(),
-                                                is_expiring = grp2.Where(q => q.Remain > 0).Count(),
-                                                items =from w in grp2
-                                                      group w by new { caption = Math.Sign(Convert.ToInt32(w.Remain))<0?"Expired":"Expiring"  } into grp3
-                                                      select new
-                                                      {
-                                                          grp.Key.title,
-                                                          title_card = grp.Key.trncard_title,
-                                                          jobgroup_root = grp2.Key.jobgroup_root,
-                                                          jobgroup = grp2.Key.jobgroup,
-                                                          grp3.Key.caption,
-                                                          is_expired = grp3.Where(q => q.Remain <= 0).Count(),
-                                                          is_expiring = grp3.Where(q => q.Remain > 0).Count(),
-                                                          count =grp3.Count(),
-                                                          items=grp3.ToList(),
-                                                      }
-                                            }
-                                 }).ToList();
+                                  group x by new { x.title, x.trncard_title/*, is_expired = Math.Sign(Convert.ToInt32(x.Remain))*/ } into grp
+                                  select new
+                                  {
+                                      grp.Key.title,
+                                      title_card = grp.Key.trncard_title,
+                                      //grp.Key.is_expired,
+                                      rows = grp.ToList(),
+                                      count = grp.Count(),
+                                      has_expired = grp.Where(q => q.Remain <= 0).Any(),
+                                      is_expired = grp.Where(q => q.Remain <= 0).Count(),
+                                      is_expiring = grp.Where(q => q.Remain > 0).Count(),
+                                      items = from q in grp
+                                              group q by new { q.jobgroup_root, q.jobgroup } into grp2
+                                              select new
+                                              {
+                                                  grp.Key.title,
+                                                  title_card = grp.Key.trncard_title,
+                                                  jobgroup_root = grp2.Key.jobgroup_root,
+                                                  jobgroup = grp2.Key.jobgroup,
+                                                  count = grp2.Count(),
+                                                  rows = grp.ToList(),
+                                                  is_expired = grp2.Where(q => q.Remain <= 0).Count(),
+                                                  is_expiring = grp2.Where(q => q.Remain > 0).Count(),
+                                                  items = from w in grp2
+                                                          group w by new { caption = Math.Sign(Convert.ToInt32(w.Remain)) < 0 ? "Expired" : "Expiring" } into grp3
+                                                          select new
+                                                          {
+                                                              grp.Key.title,
+                                                              title_card = grp.Key.trncard_title,
+                                                              jobgroup_root = grp2.Key.jobgroup_root,
+                                                              jobgroup = grp2.Key.jobgroup,
+                                                              grp3.Key.caption,
+                                                              is_expired = grp3.Where(q => q.Remain <= 0).Count(),
+                                                              is_expiring = grp3.Where(q => q.Remain > 0).Count(),
+                                                              count = grp3.Count(),
+                                                              items = grp3.ToList(),
+                                                          }
+                                              }
+                                  }).ToList();
 
             var query_grp_people = (from x in query
                                     group x by new { x.name, x.nid, x.person_id, x.profile_id, x.jobgroup, x.jobgroup_root } into grp
@@ -1552,7 +1552,7 @@ namespace AirpocketTRN.Services
                                                    grp2.Key.profile_id,
                                                    grp2.Key.name,
                                                    grp2.Key.nid,
-                                                   items=grp2.ToList(),
+                                                   items = grp2.ToList(),
                                                }
                                    }).ToList();
 
@@ -1833,7 +1833,7 @@ namespace AirpocketTRN.Services
         }
         //09-11
 
-        
+
         public C_view_trncard get_max_sms(C_view_trncard l1, C_view_trncard l2, C_view_trncard l3)
         {
             if (l1 == null)
@@ -3011,7 +3011,7 @@ namespace AirpocketTRN.Services
                         var _subject_db_sessions = _syllabi_sessions.Where(q => q.CourseId == subject.Id).Select(q => q.Key).ToList();
                         var _subject_sessions = subject.Sessions.Where(q => !_subject_db_sessions.Contains(q)).ToList();
                         var _subject_sessions_deleted_key = _subject_db_sessions.Where(q => !subject.Sessions.Contains(q)).ToList();
-                        var _subject_sessions_deleted_obj = _syllabi_sessions.Where(q => _subject_sessions_deleted_key.Contains(q.Key) && q.CourseId==crs_subject.Id).ToList();
+                        var _subject_sessions_deleted_obj = _syllabi_sessions.Where(q => _subject_sessions_deleted_key.Contains(q.Key) && q.CourseId == crs_subject.Id).ToList();
                         context.CourseSessions.RemoveRange(_subject_sessions_deleted_obj);
                         List<CourseSession> _temp_sessions = new List<CourseSession>();
                         foreach (var s in subject.Sessions)
@@ -3065,49 +3065,53 @@ namespace AirpocketTRN.Services
 
                 if (dto.exams != null && dto.exams.Count > 0)
                 {
+
                     var dto_exam = dto.exams.First();
-                    var db_exam = await context.trn_exam.FirstOrDefaultAsync(q => q.course_id == dto.Id);
-                    if (db_exam == null)
+                    if (dto_exam.date_start!=null)
                     {
-                        db_exam = new trn_exam();
-                        entity.trn_exam.Add(db_exam);
-                    }
-                    db_exam.date_start = dto_exam.date_start;
-                    db_exam.date_start_scheduled = dto_exam.date_start_scheduled;
-                    db_exam.duration = dto_exam.duration;
-                    db_exam.exam_date = dto_exam.exam_date;
-                    db_exam.location_title = dto_exam.location_title;
-                    db_exam.location_address = dto_exam.location_address;
-                    db_exam.location_phone = dto_exam.location_phone;
-                    db_exam.status_id = 0;
-                    dto_exam.template = dto_exam.template.Where(q => q.total != null).ToList();
-
-
-                    foreach (var temp in dto_exam.template)
-                    {
-                        var db_temp = existing_templates.FirstOrDefault(q => q.exam_id == db_exam.id && q.question_category_id == temp.category_id);
-                        if (db_temp == null)
+                        var db_exam = await context.trn_exam.FirstOrDefaultAsync(q => q.course_id == dto.Id);
+                        if (db_exam == null)
                         {
-                            db_temp = new trn_exam_question_template();
-                            db_exam.trn_exam_question_template.Add(db_temp);
+                            db_exam = new trn_exam();
+                            entity.trn_exam.Add(db_exam);
                         }
-                        db_temp.question_category_id = temp.category_id;
-                        db_temp.total = temp.total;
-                    }
+                        db_exam.date_start = dto_exam.date_start;
+                        db_exam.date_start_scheduled = dto_exam.date_start_scheduled;
+                        db_exam.duration = dto_exam.duration;
+                        db_exam.exam_date = dto_exam.exam_date;
+                        db_exam.location_title = dto_exam.location_title;
+                        db_exam.location_address = dto_exam.location_address;
+                        db_exam.location_phone = dto_exam.location_phone;
+                        db_exam.status_id = 0;
+                        dto_exam.template = dto_exam.template.Where(q => q.total != null).ToList();
 
-                    var existing_exam_grps = await context.trn_exam_group.Where(q => q.exam_id == db_exam.id).ToListAsync();
-                    var existing_exam_people = await context.trn_exam_person.Where(q => q.exam_id == db_exam.id).ToListAsync();
-                    if (existing_exam_grps != null && existing_exam_grps.Count > 0)
-                        context.trn_exam_group.RemoveRange(existing_exam_grps);
-                    if (existing_exam_people != null && existing_exam_people.Count > 0)
-                        context.trn_exam_person.RemoveRange(existing_exam_people);
-                    // var grps = await context.JobGroups.Where(q => dto_exam.groups.Contains(q.Id)).ToListAsync();
-                    foreach (var g in dto_exam.groups)
-                    {
-                        db_exam.trn_exam_group.Add(new trn_exam_group() { group_id = g });
+
+                        foreach (var temp in dto_exam.template)
+                        {
+                            var db_temp = existing_templates.FirstOrDefault(q => q.exam_id == db_exam.id && q.question_category_id == temp.category_id);
+                            if (db_temp == null)
+                            {
+                                db_temp = new trn_exam_question_template();
+                                db_exam.trn_exam_question_template.Add(db_temp);
+                            }
+                            db_temp.question_category_id = temp.category_id;
+                            db_temp.total = temp.total;
+                        }
+
+                        var existing_exam_grps = await context.trn_exam_group.Where(q => q.exam_id == db_exam.id).ToListAsync();
+                        var existing_exam_people = await context.trn_exam_person.Where(q => q.exam_id == db_exam.id).ToListAsync();
+                        if (existing_exam_grps != null && existing_exam_grps.Count > 0)
+                            context.trn_exam_group.RemoveRange(existing_exam_grps);
+                        if (existing_exam_people != null && existing_exam_people.Count > 0)
+                            context.trn_exam_person.RemoveRange(existing_exam_people);
+                        // var grps = await context.JobGroups.Where(q => dto_exam.groups.Contains(q.Id)).ToListAsync();
+                        foreach (var g in dto_exam.groups)
+                        {
+                            db_exam.trn_exam_group.Add(new trn_exam_group() { group_id = g });
+                        }
+                        foreach (var p in dto_exam.people)
+                            db_exam.trn_exam_person.Add(new trn_exam_person() { person_id = p });
                     }
-                    foreach (var p in dto_exam.people)
-                        db_exam.trn_exam_person.Add(new trn_exam_person() { person_id = p });
 
                 }
 
@@ -3174,7 +3178,7 @@ namespace AirpocketTRN.Services
             var _dateEnd = (DateTime)DateObject.ConvertToDate(dto.DateEnd).Date;
 
             Course entity = await context.Courses.Where(q => q.DateStart == _dateStart && q.DateEnd == _dateEnd && q.CourseTypeId == dto.CourseTypeId
-            && q.OrganizationId == dto.OrganizationId && q.IsInside==false).FirstOrDefaultAsync();
+            && q.OrganizationId == dto.OrganizationId && q.IsInside == false).FirstOrDefaultAsync();
 
             if (entity == null)
             {
@@ -3228,7 +3232,7 @@ namespace AirpocketTRN.Services
                 var person = await context.People.Where(q => q.Id == cp.PersonId).FirstOrDefaultAsync();
                 var ct = await context.ViewCourseTypes.Where(q => q.Id == dto.CourseTypeId).FirstOrDefaultAsync();
                 //12-03
-                if (ct != null && 1==3)
+                if (ct != null && 1 == 3)
                 {
                     switch (ct.CertificateType)
                     {
@@ -4379,10 +4383,10 @@ namespace AirpocketTRN.Services
             var course = await context.ViewCourseNews.Where(q => q.Id == dto.CourseId).FirstOrDefaultAsync();
             var _crs = await context.Courses.FirstOrDefaultAsync(q => q.Id == dto.CourseId);
             List<ViewCourseNew> subjects_views = await context.ViewCourseNews.Where(q => q.ParentId == dto.CourseId).ToListAsync();
-            List<Course> subjects= await context.Courses .Where(q => q.ParentId == dto.CourseId).ToListAsync();
-            var subject_ids = subjects.Select(q =>(Nullable<int>) q.Id).ToList();
-            var subjects_cer_type_ids=subjects_views.Select(q=>q.CertificateTypeId).ToList();
-            
+            List<Course> subjects = await context.Courses.Where(q => q.ParentId == dto.CourseId).ToListAsync();
+            var subject_ids = subjects.Select(q => (Nullable<int>)q.Id).ToList();
+            var subjects_cer_type_ids = subjects_views.Select(q => q.CertificateTypeId).ToList();
+
 
 
 
@@ -4390,19 +4394,19 @@ namespace AirpocketTRN.Services
             _crs.StatusId = 3;
             foreach (var s in subjects)
                 s.StatusId = 3;
-            
+
             List<ViewCoursePeople> view_cps = new List<ViewCoursePeople>();
             List<CoursePeople> cps = new List<CoursePeople>();
             List<ViewCoursePeople> view_cps_subjects = new List<ViewCoursePeople>();
             List<CoursePeople> cps_subjects = new List<CoursePeople>();
-            if (dto.PersonIds!=null && dto.PersonIds.Any())
+            if (dto.PersonIds != null && dto.PersonIds.Any())
             {
                 view_cps = await context.ViewCoursePeoples.Where(q => q.CourseId == dto.CourseId && dto.PersonIds.Contains(q.PersonId)).ToListAsync();
                 cps = await context.CoursePeoples.Where(q => q.CourseId == dto.CourseId && dto.PersonIds.Contains(q.PersonId)).ToListAsync();
                 if (subjects.Count > 0)
                 {
                     view_cps_subjects = await context.ViewCoursePeoples.Where(q => q.ParentId == dto.CourseId && dto.PersonIds.Contains(q.PersonId)).ToListAsync();
-                    var _ids= view_cps_subjects.Select(q=>q.Id).ToList();
+                    var _ids = view_cps_subjects.Select(q => q.Id).ToList();
                     cps_subjects = await context.CoursePeoples.Where(q => _ids.Contains(q.Id) && dto.PersonIds.Contains(q.PersonId)).ToListAsync();
 
                 }
@@ -4414,9 +4418,9 @@ namespace AirpocketTRN.Services
                 cps = await context.CoursePeoples.Where(q => q.CourseId == dto.CourseId).ToListAsync();
                 if (subjects.Count > 0)
                 {
-                    view_cps_subjects = await context.ViewCoursePeoples.Where(q => q.ParentId == dto.CourseId  ).ToListAsync();
+                    view_cps_subjects = await context.ViewCoursePeoples.Where(q => q.ParentId == dto.CourseId).ToListAsync();
                     var _ids = view_cps_subjects.Select(q => q.Id).ToList();
-                    cps_subjects = await context.CoursePeoples.Where(q => _ids.Contains(q.Id)  ).ToListAsync();
+                    cps_subjects = await context.CoursePeoples.Where(q => _ids.Contains(q.Id)).ToListAsync();
                 }
 
             }
@@ -4427,19 +4431,19 @@ namespace AirpocketTRN.Services
 
             var certificate_histories = await context.CertificateHistories.Where(q => q.CourseId == dto.CourseId).ToListAsync();
             var certificate_histories_last = await context.ViewCertificateHistoryRankeds.Where(q => person_ids.Contains(q.PersonId) && q.CertificateTypeId != null && q.CertificateTypeId == course.CertificateTypeId).ToListAsync();
-            var subjects_certificate_histories = await context.CertificateHistories.Where(q =>subject_ids.Contains( q.CourseId)).ToListAsync();
+            var subjects_certificate_histories = await context.CertificateHistories.Where(q => subject_ids.Contains(q.CourseId)).ToListAsync();
             var subjects_certificate_histories_last = await context.ViewCertificateHistoryRankeds.Where(q =>
                q.CertificateTypeId != null && person_ids.Contains(q.PersonId) && subjects_cer_type_ids.Contains(q.CertificateTypeId)).ToListAsync();
             var certificate_type = await context.CertificateTypes.Where(q => q.Id == course.CertificateTypeId).FirstOrDefaultAsync();
             var subjects_cer_types = await context.CertificateTypes.Where(q => subjects_cer_type_ids.Contains(q.Id)).ToListAsync();
 
-            var _date_issue = course.Date_Sign_Director!=null?((DateTime)course.Date_Sign_Director).Date: ((DateTime)course.DateEnd).Date;
+            var _date_issue = course.Date_Sign_Director != null ? ((DateTime)course.Date_Sign_Director).Date : ((DateTime)course.DateEnd).Date;
             var _interval = course.Interval;
             if (_interval == null)
                 _interval = 0;
             if (course.Continual == true)
                 _interval = 1200;
-            
+
 
 
             //Main Course
@@ -4453,7 +4457,7 @@ namespace AirpocketTRN.Services
                 if (_interval != 1200)
                 {
                     var last_history = certificate_histories_last.Where(q => q.PersonId == cp.PersonId).FirstOrDefault();
-                    if (last_history!=null && last_history.DateExpire!=null && last_history.DateExpire > _date_exire)
+                    if (last_history != null && last_history.DateExpire != null && last_history.DateExpire > _date_exire)
                     {
                         var lh = (DateTime)last_history.DateExpire;
                         _date_exire = new DateTime(lh.Year, lh.Month, 1);
@@ -4469,7 +4473,7 @@ namespace AirpocketTRN.Services
                     statusId = cp_subjects.Where(q => q.Presence != 100).Any() ? 0 : 1;
                 }
                 else
-                  statusId = vcp.Presence == 100 ? 1 : 0;
+                    statusId = vcp.Presence == 100 ? 1 : 0;
                 var profile = profiles.FirstOrDefault(q => q.PersonId == cp.PersonId);
                 var not_applicable = context.CourseTypeApplicables.Where(q => q.IsApplicable == false && (q.TrainingGroup == profile.JobGroupRoot || q.TrainingGroup == profile.PostRoot)
                  && q.CourseTypeId == course.CourseTypeId).FirstOrDefault();
@@ -4536,9 +4540,9 @@ namespace AirpocketTRN.Services
 
 
             //subjects
-            foreach(var scp in cps_subjects)
+            foreach (var scp in cps_subjects)
             {
-                var cp=cps.FirstOrDefault(q=>q.PersonId== scp.PersonId);
+                var cp = cps.FirstOrDefault(q => q.PersonId == scp.PersonId);
                 if (cp.StatusId != 1)
                     continue;
 
@@ -4549,8 +4553,8 @@ namespace AirpocketTRN.Services
                 var profile = profiles.FirstOrDefault(q => q.PersonId == scp.PersonId);
                 var not_applicable = context.CourseTypeApplicables.Where(q => q.IsApplicable == false && (q.TrainingGroup == profile.JobGroupRoot || q.TrainingGroup == profile.PostRoot)
                  && q.CourseTypeId == sbj.CourseTypeId).FirstOrDefault();
-                var history = subjects_certificate_histories.FirstOrDefault(q => q.PersonId == scp.PersonId && q.CourseId==sbj.Id);
-              
+                var history = subjects_certificate_histories.FirstOrDefault(q => q.PersonId == scp.PersonId && q.CourseId == sbj.Id);
+
 
                 if (history != null)
                     context.CertificateHistories.Remove(history);
@@ -4580,17 +4584,17 @@ namespace AirpocketTRN.Services
                     /////////////////////////////////
                     ///var _date_exire = _date_issue.AddMonths((int)_interval).AddMonths(1);
 
-                    
+
                     if (_interval != 1200)
                     {
-                        var last_history = subjects_certificate_histories_last.Where(q => q.PersonId == scp.PersonId && q.CertificateTypeId== sbj.CertificateTypeId && q.DateIssue!=_date_issue).FirstOrDefault();
+                        var last_history = subjects_certificate_histories_last.Where(q => q.PersonId == scp.PersonId && q.CertificateTypeId == sbj.CertificateTypeId && q.DateIssue != _date_issue).FirstOrDefault();
 
-                        if (last_history != null && last_history.DateExpire != null && last_history.DateExpire > _date_issue && last_history.DateIssue != null 
-                            && ((DateTime)last_history.DateIssue).Date!=_date_issue.Date)
+                        if (last_history != null && last_history.DateExpire != null && last_history.DateExpire > _date_issue && last_history.DateIssue != null
+                            && ((DateTime)last_history.DateIssue).Date != _date_issue.Date)
                         {
                             var dif = ((DateTime)last_history.DateExpire).Subtract(_date_issue).Days;
-                             
-                             
+
+
                             sbj_date_exire = sbj_date_exire.AddDays(dif);
                         }
                     }
@@ -5752,7 +5756,7 @@ namespace AirpocketTRN.Services
         public IQueryable<ViewCourseNew> GetCourseQuery()
         {
             IQueryable<ViewCourseNew> query = context.Set<ViewCourseNew>().AsNoTracking();
-            return query.Where(q=>q.ParentId==null);
+            return query.Where(q => q.ParentId == null);
         }
 
         public IQueryable<ViewJobGroup> GetViewJobGroupQuery()
@@ -5883,13 +5887,13 @@ namespace AirpocketTRN.Services
             var course = await context.ViewCourseNews.Where(q => q.Id == cid).FirstOrDefaultAsync();
             var subjects = await context.ViewCourseNews.Where(q => q.ParentId == cid).ToListAsync();
             var subject_ids = subjects.Select(q => q.Id).ToList();
-            
-            var main_sessions= await context.ViewCourseSessions.Where(q => q.CourseId == cid).OrderBy(q => q.DateStart).ToListAsync();
+
+            var main_sessions = await context.ViewCourseSessions.Where(q => q.CourseId == cid).OrderBy(q => q.DateStart).ToListAsync();
             List<ViewCourseSession> sessions = main_sessions.ToList();
             if (subjects.Count > 0)
             {
-                
-                 sessions = await context.ViewCourseSessions.Where(q =>subject_ids.Contains(q.CourseId)).ToListAsync();
+
+                sessions = await context.ViewCourseSessions.Where(q => subject_ids.Contains(q.CourseId)).ToListAsync();
 
 
             }
@@ -5915,15 +5919,15 @@ namespace AirpocketTRN.Services
                                                                       sessions = grp3.OrderBy(q => q.DateStart).ToList()
                                                                   }
                                                     }).ToList(),
-                                    courses= from item in grp
-                                             group item by new {item.Title,item.CT_Title, item.CourseId } into c_grp
-                                             select new
-                                             {
-                                                 c_grp.Key.Title,
-                                                 c_grp.Key.CT_Title,
-                                                 c_grp.Key.CourseId,
-                                                 sessions= c_grp.OrderBy(q => q.DateStart).ToList()
-                                             }
+                                     courses = from item in grp
+                                               group item by new { item.Title, item.CT_Title, item.CourseId } into c_grp
+                                               select new
+                                               {
+                                                   c_grp.Key.Title,
+                                                   c_grp.Key.CT_Title,
+                                                   c_grp.Key.CourseId,
+                                                   sessions = c_grp.OrderBy(q => q.DateStart).ToList()
+                                               }
                                  }).ToList();
 
 
@@ -5935,7 +5939,7 @@ namespace AirpocketTRN.Services
                 people = await context.ViewCoursePeoples.Where(q => subject_ids.Contains(q.CourseId)).OrderBy(q => q.DateStart).ToListAsync();
             }
 
-             
+
 
             var people_grps = (from x in people
                                group x by new { x.CourseId, x.Title, x.Instructor, x.Duration, x.Date_Sign_Ins1 } into grps
@@ -5956,10 +5960,10 @@ namespace AirpocketTRN.Services
             {
                 press = await context.ViewCourseSessionPresences.Where(q => subject_ids.Contains(q.CourseId)).ToListAsync();
             }
-                //  var press_grps=from x in press
-                //                 group x by new {x.PersonId,x.EmployeeId,x.FirstName,x.LastName,x.Name,x.NID,x.Mobile,x.JobGroup}
-                var sessions_stats = (from x in press
-                                  group x by new { x.Id, x.SessionKey,x.CourseId,x.Title,x.Instructor,  } into grp
+            //  var press_grps=from x in press
+            //                 group x by new {x.PersonId,x.EmployeeId,x.FirstName,x.LastName,x.Name,x.NID,x.Mobile,x.JobGroup}
+            var sessions_stats = (from x in press
+                                  group x by new { x.Id, x.SessionKey, x.CourseId, x.Title, x.Instructor, } into grp
                                   select new
                                   {
                                       grp.Key.Id,
@@ -5967,12 +5971,12 @@ namespace AirpocketTRN.Services
                                       grp.Key.Title,
                                       grp.Key.Instructor,
                                       grp.Key.CourseId,
-                                      DateStart= sessions.Where(q=>q.Key== grp.Key.SessionKey).FirstOrDefault().DateStart,
+                                      DateStart = sessions.Where(q => q.Key == grp.Key.SessionKey).FirstOrDefault().DateStart,
                                       DateEnd = sessions.Where(q => q.Key == grp.Key.SessionKey).FirstOrDefault().DateEnd,
                                       present = grp.Where(q => q.IsPresent == 1).Count(),
-                                      total = people.Where(q=>q.CourseId== grp.Key.CourseId).Count(),
+                                      total = people.Where(q => q.CourseId == grp.Key.CourseId).Count(),
                                       absent = people.Where(q => q.CourseId == grp.Key.CourseId).Count() - grp.Where(q => q.IsPresent == 1).Count(),
-                                      people=grp.OrderByDescending(q=>q.IsPresent).ThenBy(q=>q.LastName).ThenBy(q=>q.FirstName).ToList()
+                                      people = grp.OrderByDescending(q => q.IsPresent).ThenBy(q => q.LastName).ThenBy(q => q.FirstName).ToList()
                                   }).ToList();
 
             var syllabi = await context.ViewSyllabus.Where(q => q.CourseId == cid).ToListAsync();
@@ -6020,7 +6024,7 @@ namespace AirpocketTRN.Services
                     sessions_grps,
                     people_grps,
                     sessions_stats,
-                    people= participants,
+                    people = participants,
                     press,
                     syllabi,
                     exams
@@ -6161,7 +6165,8 @@ namespace AirpocketTRN.Services
                     Data = hists,
                     IsSuccess = true,
                 };
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 var msg = ex.Message;
                 var inner = ex.InnerException;
@@ -6473,7 +6478,7 @@ namespace AirpocketTRN.Services
             var sessions = await context.ViewCourseSessions.Where(q => q.CourseId == cid).OrderBy(q => q.DateStart).ToListAsync();
             var cps = await context.CoursePeoples.Where(q => q.CourseId == cid).ToListAsync();
             var personIds = cps.Select(q => q.PersonId).ToList();
-            var fltcrew = new List<string>() { "P1", "P2", "ISCCM", "SCCM", "CCM", "TRE", "TRI", "LTC","CCE","CCI" };
+            var fltcrew = new List<string>() { "P1", "P2", "ISCCM", "SCCM", "CCM", "TRE", "TRI", "LTC", "CCE", "CCI" };
             var employees = await context.ViewEmployeeAbs.Where(q => personIds.Contains(q.PersonId) && fltcrew.Contains(q.JobGroup)).ToListAsync();
             var currents = await context.CourseSessionFDPs.Where(q => q.CourseId == cid).ToListAsync();
             var fdps = new List<FDP>();
@@ -6592,18 +6597,18 @@ namespace AirpocketTRN.Services
         public async Task<sync_result> SyncSessionsToRosterByDateTeachers_Subjects(int cid)
         {
             var course = await context.Courses.FirstOrDefaultAsync(q => q.Id == cid);
-           
+
 
             var sessions = await context.ViewCourseSessions.Where(q => q.CourseId == cid /*|| q.ParentId == cid*/).OrderBy(q => q.DateStart).ToListAsync();
-            
+
             var grp_sessions = (from x in sessions
-                                group x by new { ((DateTime)x.DateStart).Date, x.Title, x.CourseId  } into grp
+                                group x by new { ((DateTime)x.DateStart).Date, x.Title, x.CourseId } into grp
                                 select new
                                 {
                                     grp.Key.Date,
                                     grp.Key.Title,
                                     grp.Key.CourseId,
-                                    
+
                                     items = grp.OrderBy(q => q.DateStart).ToList(),
                                     start = ((DateTime)grp.Min(q => q.DateStart)),
                                     end = ((DateTime)grp.Max(q => q.DateEnd)),
@@ -6624,14 +6629,14 @@ namespace AirpocketTRN.Services
             // personIds = personIds.Concat(ins_ids).ToList();
 
 
-            var fltcrew = new List<string>() { "P1", "P2", "ISCCM", "SCCM", "CCM", "TRE", "TRI", "LTC","CCE","CCI" };
+            var fltcrew = new List<string>() { "P1", "P2", "ISCCM", "SCCM", "CCM", "TRE", "TRI", "LTC", "CCE", "CCI" };
             var employees = await context.ViewEmployeeAbs.Where(q => personIds.Contains(q.PersonId) && fltcrew.Contains(q.JobGroup)).ToListAsync();
             var eids = employees.Select(q => (Nullable<int>)q.Id).ToList();
 
 
 
-            
-            var current_fdp_ids = await context.CourseSessionFDPs.Where(q => q.CourseId==cid && eids.Contains(q.EmployeeId)).Select(q => q.FDPId).ToListAsync();
+
+            var current_fdp_ids = await context.CourseSessionFDPs.Where(q => q.CourseId == cid && eids.Contains(q.EmployeeId)).Select(q => q.FDPId).ToListAsync();
             //var currents = await context.CourseSessionFDPs.Where(q =>course_ids.Contains( q.CourseId)).ToListAsync();
             //context.CourseSessionFDPs.RemoveRange(currents);
             var currents = await context.FDPs.Where(q => current_fdp_ids.Contains(q.Id)).ToListAsync();
@@ -6737,7 +6742,7 @@ namespace AirpocketTRN.Services
                     }
                 }
             }
-            
+
             var saveResult = await context.SaveAsync();
 
             var _sync_result = new sync_result()
@@ -6750,7 +6755,7 @@ namespace AirpocketTRN.Services
                 }).ToList(),
                 saveErrors = saveResult.Errors
             };
-            return  _sync_result;
+            return _sync_result;
         }
 
         public async Task<DataResponse> SyncSessionsToRosterByDate(int cid)
@@ -6771,7 +6776,7 @@ namespace AirpocketTRN.Services
                                     grp.Key.Date,
                                     grp.Key.Title,
                                     grp.Key.CourseId,
-                                  //  grp.Key.InstructorId,
+                                    //  grp.Key.InstructorId,
                                     items = grp.OrderBy(q => q.DateStart).ToList(),
                                     start = ((DateTime)grp.Min(q => q.DateStart)),
                                     end = ((DateTime)grp.Max(q => q.DateEnd)),
@@ -6789,18 +6794,18 @@ namespace AirpocketTRN.Services
             if (course.Instructor2 != null)
                 personIds.Add((int)course.Instructor2);
 
-          //  var ins_ids = grp_sessions.Where(q => q.InstructorId != null).Select(q => q.InstructorId).Distinct().ToList();
-           // personIds = personIds.Concat(ins_ids).ToList();
+            //  var ins_ids = grp_sessions.Where(q => q.InstructorId != null).Select(q => q.InstructorId).Distinct().ToList();
+            // personIds = personIds.Concat(ins_ids).ToList();
 
 
-            var fltcrew = new List<string>() { "P1", "P2", "ISCCM", "SCCM", "CCM", "TRE", "TRI", "LTC","CCE","CCI" };
+            var fltcrew = new List<string>() { "P1", "P2", "ISCCM", "SCCM", "CCM", "TRE", "TRI", "LTC", "CCE", "CCI" };
             var employees = await context.ViewEmployeeAbs.Where(q => personIds.Contains(q.PersonId) && fltcrew.Contains(q.JobGroup)).ToListAsync();
             var eids = employees.Select(q => (Nullable<int>)q.PersonId).ToList();
 
 
 
             var course_people = await context.CoursePeoples.Where(q => eids.Contains(q.PersonId)).ToListAsync();
-            var current_fdp_ids= await context.CourseSessionFDPs.Where(q => course_ids.Contains(q.CourseId)).Select(q=>q.FDPId).ToListAsync();
+            var current_fdp_ids = await context.CourseSessionFDPs.Where(q => course_ids.Contains(q.CourseId)).Select(q => q.FDPId).ToListAsync();
             //var currents = await context.CourseSessionFDPs.Where(q =>course_ids.Contains( q.CourseId)).ToListAsync();
             //context.CourseSessionFDPs.RemoveRange(currents);
             var currents = await context.FDPs.Where(q => current_fdp_ids.Contains(q.Id)).ToListAsync();
@@ -6816,7 +6821,7 @@ namespace AirpocketTRN.Services
                 foreach (var emp in employees)
                 {
                     var _proceed = true;
-                     
+
                     if (_proceed)
                     {
 
@@ -6917,17 +6922,17 @@ namespace AirpocketTRN.Services
 
             var _sync_result = new sync_result()
             {
-                 errors = errors,
-                  fdps= fdps.Select(q => new sync_result_fdp()
-                  {
-                     Id=  q.Id,
-                     CrewId=  q.CrewId
-                  }).ToList(),
-                   saveErrors= saveResult.Errors
+                errors = errors,
+                fdps = fdps.Select(q => new sync_result_fdp()
+                {
+                    Id = q.Id,
+                    CrewId = q.CrewId
+                }).ToList(),
+                saveErrors = saveResult.Errors
             };
             foreach (var subject in subjects)
             {
-                var subj_result=await SyncSessionsToRosterByDateTeachers_Subjects(subject.Id);
+                var subj_result = await SyncSessionsToRosterByDateTeachers_Subjects(subject.Id);
                 if (subj_result.fdps != null)
                     _sync_result.fdps = _sync_result.fdps.Concat(subj_result.fdps).ToList();
                 if (subj_result.errors != null)
@@ -6977,7 +6982,7 @@ namespace AirpocketTRN.Services
 
             // var cps = await context.CoursePeoples.Where(q => q.CourseId == cid).ToListAsync();
             //var personIds = cps.Select(q => q.PersonId).ToList();
-            var fltcrew = new List<string>() { "P1", "P2", "ISCCM", "SCCM", "CCM", "TRE", "TRI", "LTC","CCE","CCI" };
+            var fltcrew = new List<string>() { "P1", "P2", "ISCCM", "SCCM", "CCM", "TRE", "TRI", "LTC", "CCE", "CCI" };
             var employees = await context.ViewEmployeeAbs.Where(q => emps.Contains(q.PersonId) && fltcrew.Contains(q.JobGroup)).ToListAsync();
             var currents = await context.CourseSessionFDPs.Where(q => q.CourseId == cid).ToListAsync();
             var fdps = new List<FDP>();

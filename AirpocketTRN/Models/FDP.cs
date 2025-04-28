@@ -17,9 +17,9 @@ namespace AirpocketTRN.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public FDP()
         {
+            this.CourseSessionFDPs = new HashSet<CourseSessionFDP>();
             this.FDP1 = new HashSet<FDP>();
             this.FDPItems = new HashSet<FDPItem>();
-            this.CourseSessionFDPs = new HashSet<CourseSessionFDP>();
         }
     
         public int Id { get; set; }
@@ -97,13 +97,17 @@ namespace AirpocketTRN.Models
         public string PosTicketUrl { get; set; }
         public Nullable<System.DateTime> DutyEndDateLocal { get; set; }
         public string InitTo { get; set; }
+        public Nullable<System.DateTime> offblock { get; set; }
+        public Nullable<System.DateTime> onblock { get; set; }
+        public Nullable<System.DateTime> takeoff { get; set; }
+        public Nullable<System.DateTime> landing { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CourseSessionFDP> CourseSessionFDPs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FDP> FDP1 { get; set; }
         public virtual FDP FDP2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FDPItem> FDPItems { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CourseSessionFDP> CourseSessionFDPs { get; set; }
     }
 }

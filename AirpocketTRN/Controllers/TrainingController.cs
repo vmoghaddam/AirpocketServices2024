@@ -1,11 +1,16 @@
-﻿using AirpocketTRN.Services;
+﻿using AirpocketTRN.Models;
+using AirpocketTRN.Services;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using PdfiumViewer;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace AirpocketTRN.Controllers
 {
@@ -19,6 +24,108 @@ namespace AirpocketTRN.Controllers
             trainingService = new TrainingService();
         }
 
+        string get_part(string str)
+        {
+            switch (str)
+            {
+                case "":
+
+                default:
+                    return string.Empty;
+            }
+        }
+
+        [Route("api/files/get/{nid}")]
+        [AcceptVerbs("Get")]
+
+        public async Task<IHttpActionResult> get_person_folder(string nid)
+        {
+            var context = new FLYEntities();
+            var result=context.view_person_folder.Where(q=>q.nid== nid).ToList();
+            return Ok(result);
+        }
+        [Route("api/files/test")]
+        [AcceptVerbs("Get")]
+
+        public async Task<IHttpActionResult> get_person_test( )
+        {
+            using (var document = PdfDocument.Load(@"C:\Training_Folder\1.pdf"))
+            {
+                // Render the first page (0-based index)
+                using (var image = document.Render(0, 300, 300, true)) // DPI = 300 for good quality
+                {
+                    // Calculate thumbnail height based on aspect ratio
+                    int thumbnailHeight = (int)((double)250 / image.Width * image.Height);
+
+                    using (var thumbnail = new Bitmap(250, 300))
+                    using (var graphics = Graphics.FromImage(thumbnail))
+                    {
+                        graphics.DrawImage(image, 0, 0, 250, thumbnailHeight);
+                        thumbnail.Save(@"C:\Training_Folder\1.jpg", ImageFormat.Jpeg); // or .Png
+                    }
+                }
+            }
+            return Ok(true);
+        }
+
+        [Route("api/files/{nid}/{root}")]
+        [AcceptVerbs("Get")]
+
+        public async Task<IHttpActionResult> get_files(string nid, string root)
+        {
+            string startFolder = /*@"C:\Training_Folder"*/ @"C:\Inetpub\vhosts\airpocket.app\ava.airpocket.app\upload\training_folder" + @"\" + nid;
+            if (root != "-1")
+                startFolder += @"\" + root;
+
+            //var RootDirectory = new DirectoryInfo(startFolder);
+            //var listDir = RootDirectory.GetDirectories("*", SearchOption.AllDirectories)
+            //    .Where(dir => !dir.GetDirectories().Any())
+            //    .ToList();
+
+            DirectoryInfo dir = new DirectoryInfo(startFolder);
+            var fileList = dir.GetFiles("*.*", SearchOption.AllDirectories);
+
+            var fileQuery = (from file in fileList
+
+                             orderby file.Name
+                             select new
+                             {
+                                 file.Extension,
+
+                                 file.FullName,
+                                 file.Name,
+                                 file.CreationTime,
+                                 file.Attributes,
+                                 Directory = file.Directory.FullName,
+                                 grp = file.Directory.FullName.Split('\\')[8],
+                                 // file.DirectoryName,
+                                 // file_name=file.FullName
+                             }).ToList();
+
+
+            var context = new FLYEntities();
+            var profile=context.ViewProfiles.Where(q=>q.NID==nid).FirstOrDefault();
+            foreach (var x in fileQuery)
+            {
+                context.person_folder.Add(new person_folder()
+                {
+                    creation_time = x.CreationTime,
+                    directory = x.Directory,
+                    employee_id = profile!=null?(Nullable<int>)profile.Id:null,
+                    person_id = profile != null ? (Nullable<int>)profile.PersonId:null,
+                    file_extension = x.Extension.Replace(".", ""),
+                    file_full_name = x.FullName,
+                    file_name = x.Name,
+                    folder = x.grp.ToUpper(),
+                    nid = nid,
+                    last_name = profile != null ? profile.FirstName:null,
+                    first_name = profile != null ? profile.LastName:null,
+
+                });
+            }
+            context.SaveChanges();
+            return Ok(fileQuery);
+        }
 
         [Route("api/trn/get/crm/assessment/{flightId}")]
         [AcceptVerbs("Get")]

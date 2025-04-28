@@ -1191,6 +1191,7 @@ namespace ApiScheduling.Controllers
         {
             var utcdiff = Convert.ToInt32(ConfigurationManager.AppSettings["utcdiff"]);
             double default_reporting = Convert.ToInt32(ConfigurationManager.AppSettings["reporting"]);
+            var post_flight = Convert.ToInt32(ConfigurationManager.AppSettings["post_flight"]);
             var context = new Models.dbEntities();
             //var _fdpItemIds = strItems.Split('*').Select(q => Convert.ToInt32(q)).Distinct().ToList();
             //var _fdpIds = strfdps.Split('*').Select(q => Convert.ToInt32(q)).Distinct().ToList();
@@ -1425,7 +1426,7 @@ namespace ApiScheduling.Controllers
                     var rst = 12;
                     if (fdp.InitHomeBase != null && fdp.InitHomeBase != items.Last().flt.ToAirportId)
                         rst = 10;
-                    fdp.InitRestTo = ((DateTime)items.Last().flt.STA).AddMinutes(30).AddHours(rst);
+                    fdp.InitRestTo = ((DateTime)items.Last().flt.STA).AddMinutes(post_flight).AddHours(rst);
                     fdp.InitFlts = string.Join(",", items.Select(q => q.flt).Select(q => q.FlightNumber).ToList());
                     fdp.InitRoute = string.Join(",", items.Select(q => q.flt).Select(q => q.FromAirportIATA).ToList());
                     fdp.InitRoute += "," + items.Last().flt.ToAirportIATA;
@@ -2491,14 +2492,14 @@ namespace ApiScheduling.Controllers
             //}
             fdp.InitRank = RosterFDPDto.getRankStr(rank);
             fdp.InitStart = ((DateTime)flights.First().ChocksOut).AddMinutes(-default_reporting);
-            fdp.InitEnd = ((DateTime)flights.Last().ChocksIn).AddMinutes(30);
+            fdp.InitEnd = ((DateTime)flights.Last().ChocksIn).AddMinutes(double.Parse(ConfigurationManager.AppSettings["post_flight"]));
             fdp.DateStart = ((DateTime)flights.First().ChocksOut).AddMinutes(-default_reporting);
-            fdp.DateEnd = ((DateTime)flights.Last().ChocksIn).AddMinutes(30);
+            fdp.DateEnd = ((DateTime)flights.Last().ChocksIn).AddMinutes(double.Parse(ConfigurationManager.AppSettings["post_flight"]));
             var rst = 12;
             if (fdp.OutOfHomeBase == false)
                 rst = 10;
 
-            fdp.InitRestTo = ((DateTime)flights.Last().ChocksIn).AddMinutes(30).AddHours(rst);
+            fdp.InitRestTo = ((DateTime)flights.Last().ChocksIn).AddMinutes(double.Parse(ConfigurationManager.AppSettings["post_flight"])).AddHours(rst);
             fdp.InitFlts = string.Join(",", flights.Select(q => q.FlightNumber).ToList());
             fdp.InitRoute = string.Join(",", flights.Select(q => q.FromAirportIATA).ToList());
             fdp.InitRoute += "," + flights.Last().ToAirportIATA;
@@ -2573,7 +2574,7 @@ namespace ApiScheduling.Controllers
                     var dt = (DateTime)flights[i].ChocksOut - (DateTime)flights[i - 1].ChocksIn;
                     var minuts = dt.TotalMinutes;
                     // – (0:30 + 0:15 + 0:45)
-                    var brk = minuts - 30 - 60; //30:travel time, post flight duty:15, pre flight duty:30
+                    var brk = minuts - double.Parse(ConfigurationManager.AppSettings["post_flight"]) - 60; //30:travel time, post flight duty:15, pre flight duty:30
                     if (brk >= 600)
                     {
                         //var tfi = tflights.FirstOrDefault(q => q.ID == flights[i].ID);
@@ -2732,6 +2733,7 @@ namespace ApiScheduling.Controllers
             //rest_after_post_flight
             int rest_after_post_flight = Convert.ToInt32(ConfigurationManager.AppSettings["rest_after_post_flight"]);
             int rerrp_check = Convert.ToInt32(ConfigurationManager.AppSettings["rerrp_check"]);
+            int post_flight = Convert.ToInt32(ConfigurationManager.AppSettings["post_flight"]);
             int _ln = 1;
             if (dto.Id == -100)
             {
@@ -2983,7 +2985,7 @@ namespace ApiScheduling.Controllers
                 //     rst += 4;
                 //bini
 
-                var post_flight_rest = rest_after_post_flight == 1 ? 30 : 0;
+                var post_flight_rest = rest_after_post_flight == 1 ? post_flight : 0;
 
 
                 var fdp = new FDP()
@@ -3001,9 +3003,9 @@ namespace ApiScheduling.Controllers
                     InitFromIATA = dto.from.ToString(),
                     InitToIATA = dto.to.ToString(),
                     InitStart = !alldh ? dto.items.First().offblock.AddMinutes(-default_reporting) : dto.items.First().offblock,
-                    InitEnd = !alldh ? dto.items.Last().onblock.AddMinutes(30) : dto.items.Last().onblock,
+                    InitEnd = !alldh ? dto.items.Last().onblock.AddMinutes(post_flight) : dto.items.Last().onblock,
                     DateStart = !alldh ? dto.items.First().offblock.AddMinutes(-default_reporting) : dto.items.First().offblock,
-                    DateEnd = !alldh ? dto.items.Last().onblock.AddMinutes(30) : dto.items.Last().onblock,
+                    DateEnd = !alldh ? dto.items.Last().onblock.AddMinutes(post_flight) : dto.items.Last().onblock,
 
                     InitRestTo = !alldh ? dto.items.Last().onblock.AddMinutes(post_flight_rest).AddHours(rst) : dto.items.Last().onblock,
 
@@ -3190,7 +3192,7 @@ namespace ApiScheduling.Controllers
                                         try
                                         {
                                             var intStart = ((DateTime)_interupted.InitStart).AddMinutes(60);
-                                            var intEnd = ((DateTime)_interupted.InitEnd).AddMinutes(-30);
+                                            var intEnd = ((DateTime)_interupted.InitEnd).AddMinutes(-post_flight);
                                             if (fdp.InitStart > intStart && fdp.InitStart < intEnd)
                                                 sendError = true;
                                             else if (fdp.InitEnd > intStart && fdp.InitEnd < intEnd)

@@ -9483,7 +9483,7 @@ new JsonSerializerSettings
             {
                 List<string> tickets = new List<string>();
                 foreach (var x in ticketQuery)
-                    tickets.Add("[ (" + x.PosAirline + " " + x.PosFrom + "-" + x.PosTo + " " + x.FlightNumber + ") " + x.ScheduleName + "(" + x.JobGroup + ")" + " ]");
+                    tickets.Add("[ (" + x.PosAirline + " " + x.PosFrom + "-" + x.PosTo + " " + x.FlightNumber +" "+((DateTime)x.Start).ToString("HH:mm")+ ") " + x.ScheduleName + "(" + x.JobGroup + ")" + " ]");
                 positioning += "  TICKET(s): " + string.Join(" ", tickets);
             }
             var dutiesQuery = (from x in context.ViewCrewDuties

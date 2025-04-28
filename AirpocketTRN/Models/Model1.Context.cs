@@ -26,8 +26,6 @@ namespace AirpocketTRN.Models
         }
     
         public virtual DbSet<ExpFlight> ExpFlights { get; set; }
-        public virtual DbSet<FDP> FDPs { get; set; }
-        public virtual DbSet<FDPItem> FDPItems { get; set; }
         public virtual DbSet<CourseSession> CourseSessions { get; set; }
         public virtual DbSet<CourseSessionPresence> CourseSessionPresences { get; set; }
         public virtual DbSet<BookFile> BookFiles { get; set; }
@@ -138,12 +136,6 @@ namespace AirpocketTRN.Models
         public virtual DbSet<view_trn_exam> view_trn_exam { get; set; }
         public virtual DbSet<view_trn_exam_question_person> view_trn_exam_question_person { get; set; }
         public virtual DbSet<view_trn_exam_question_person_details> view_trn_exam_question_person_details { get; set; }
-        public virtual DbSet<C_view_trncard> C_view_trncard { get; set; }
-        public virtual DbSet<ViewLegTime> ViewLegTimes { get; set; }
-        public virtual DbSet<ViewFDPRest> ViewFDPRests { get; set; }
-        public virtual DbSet<ViewEmployee> ViewEmployees { get; set; }
-        public virtual DbSet<ViewEmployeeLight> ViewEmployeeLights { get; set; }
-        public virtual DbSet<GRPCourseTypeExpiringGroup> GRPCourseTypeExpiringGroups { get; set; }
         public virtual DbSet<ViewProfile> ViewProfiles { get; set; }
         public virtual DbSet<view_trn_exam_summary> view_trn_exam_summary { get; set; }
         public virtual DbSet<view_trn_exam_summary_details> view_trn_exam_summary_details { get; set; }
@@ -164,5 +156,16 @@ namespace AirpocketTRN.Models
         public virtual DbSet<ViewCourseSessionPresence> ViewCourseSessionPresences { get; set; }
         public virtual DbSet<ViewCourseSession> ViewCourseSessions { get; set; }
         public virtual DbSet<ViewCourseNew> ViewCourseNews { get; set; }
+        public virtual DbSet<person_folder> person_folder { get; set; }
+        public virtual DbSet<view_person_folder> view_person_folder { get; set; }
+        public virtual DbSet<view_person_folder_p1> view_person_folder_p1 { get; set; }
+        public virtual DbSet<C_view_trncard> C_view_trncard { get; set; }
+        public virtual DbSet<FDP> FDPs { get; set; }
+        public virtual DbSet<FDPItem> FDPItems { get; set; }
+        public virtual DbSet<ViewLegTime> ViewLegTimes { get; set; }
+        public virtual DbSet<GRPCourseTypeExpiringGroup> GRPCourseTypeExpiringGroups { get; set; }
+        public virtual DbSet<ViewEmployeeLight> ViewEmployeeLights { get; set; }
+        public virtual DbSet<ViewFDPRest> ViewFDPRests { get; set; }
+        public virtual DbSet<ViewEmployee> ViewEmployees { get; set; }
     }
 }

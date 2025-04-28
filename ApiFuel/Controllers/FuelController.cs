@@ -42,8 +42,40 @@ namespace ApiFuel.Controllers
                     msg += "   " + ex.InnerException.Message;
                 return Ok(msg);
             }
-           
-        }
+
+
+            [Route("api/fuel/report/{register}")]
+            public async Task<IHttpActionResult> GetFuelReportRegister(DateTime dfrom, DateTime dto,string register)
+            {
+                try
+                {
+                    dfrom = dfrom.Date;
+                    dto = dto.Date.AddDays(1);
+                    ppa_entities context = new ppa_entities();
+                    var query = from x in context.AppFuels
+                                where x.STDDay >= dfrom && x.STDDay <= dto
+                                select x;
+
+                    var result = await query.OrderBy(q => q.STD).ToListAsync();
+
+
+                    return Ok(result);
+                }
+                catch (Exception ex)
+                {
+                    var msg = ex.Message;
+                    if (ex.InnerException != null)
+                        msg += "   " + ex.InnerException.Message;
+                    return Ok(msg);
+                }
+
+
+
+
+
+
+
+            }
 
     }
 }
