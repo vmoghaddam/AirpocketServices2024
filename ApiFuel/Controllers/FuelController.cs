@@ -47,10 +47,10 @@ namespace ApiFuel.Controllers
            
         }
 
-
+         
 
         [Route("api/fuel/report/{register}")]
-        public async Task<IHttpActionResult> GetFuelReportRegister(DateTime dfrom, DateTime dto,string register)
+        public async Task<IHttpActionResult> GetFuelReportRegisterX(DateTime dfrom, DateTime dto,string register)
         {
             try
             {
