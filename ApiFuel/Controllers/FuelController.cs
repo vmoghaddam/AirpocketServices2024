@@ -44,43 +44,38 @@ namespace ApiFuel.Controllers
             }
 
 
-           
-        }
-
-
-
-        [Route("api/fuel/report/{register}")]
-        public async Task<IHttpActionResult> GetFuelReportRegister(DateTime dfrom, DateTime dto,string register)
-        {
-            try
+            [Route("api/fuel/report/{register}")]
+            public async Task<IHttpActionResult> GetFuelReportRegister(DateTime dfrom, DateTime dto,string register)
             {
-                dfrom = dfrom.Date;
-                dto = dto.Date.AddDays(1);
-                ppa_entities context = new ppa_entities();
-                var query = from x in context.AppFuels
-                            where x.STDDay >= dfrom && x.STDDay <= dto && x.Register==register 
-                            select x;
+                try
+                {
+                    dfrom = dfrom.Date;
+                    dto = dto.Date.AddDays(1);
+                    ppa_entities context = new ppa_entities();
+                    var query = from x in context.AppFuels
+                                where x.STDDay >= dfrom && x.STDDay <= dto
+                                select x;
 
-                var result = await query.OrderBy(q => q.STD).ToListAsync();
+                    var result = await query.OrderBy(q => q.STD).ToListAsync();
 
 
-                return Ok(result);
+                    return Ok(result);
+                }
+                catch (Exception ex)
+                {
+                    var msg = ex.Message;
+                    if (ex.InnerException != null)
+                        msg += "   " + ex.InnerException.Message;
+                    return Ok(msg);
+                }
+
+
+
+
+
+
+
             }
-            catch (Exception ex)
-            {
-                var msg = ex.Message;
-                if (ex.InnerException != null)
-                    msg += "   " + ex.InnerException.Message;
-                return Ok(msg);
-            }
-
-
-
-        }
-
-
-
-
 
     }
 }
