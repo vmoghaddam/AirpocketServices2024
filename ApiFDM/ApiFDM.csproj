@@ -239,6 +239,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\FDMController.cs" />
+    <Compile Include="Controllers\FDMV2Controller.cs" />
     <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OstadController.cs" />
@@ -260,7 +261,7 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\FDM.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>ModelFDMV2.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\FDMAirportMonthly.cs">
       <DependentUpon>Model1.tt</DependentUpon>
@@ -359,13 +360,13 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\fdm_crew.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>ModelFDMV2.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\fdm_processed.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>ModelFDMV2.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\FlightInformation.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>ModelFDMV2.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\FlightsExcel.cs" />
     <Compile Include="Models\helper_fdm.cs">
@@ -388,11 +389,35 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\ModelFDMV2.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelFDMV2.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ModelFDMV2.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelFDMV2.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ModelFDMV2.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelFDMV2.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Models\ViewFDM.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ViewLegTime.cs">
       <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ViewMSN.cs">
+      <DependentUpon>ModelFDMV2.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\view_fdm_flight_crew.cs">
+      <DependentUpon>ModelFDMV2.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\view_fdm_processed.cs">
+      <DependentUpon>ModelFDMV2.tt</DependentUpon>
     </Compile>
     <Compile Include="Objects\DataResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -413,6 +438,16 @@
     <Content Include="Models\Model1.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Model11.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\ModelFDMV2.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ModelFDMV2.edmx</DependentUpon>
+      <LastGenOutput>ModelFDMV2.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\ModelFDMV2.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ModelFDMV2.edmx</DependentUpon>
+      <LastGenOutput>ModelFDMV2.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -441,6 +476,13 @@
     </EntityDeploy>
     <Content Include="Models\Model1.edmx.diagram" />
     <Content Include="ClassDiagram1.cd" />
+    <EntityDeploy Include="Models\ModelFDMV2.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ModelFDMV2.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\ModelFDMV2.edmx.diagram">
+      <DependentUpon>ModelFDMV2.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

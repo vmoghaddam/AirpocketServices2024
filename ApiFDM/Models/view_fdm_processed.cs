@@ -12,14 +12,8 @@ namespace ApiFDM.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class fdm_processed
+    public partial class view_fdm_processed
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public fdm_processed()
-        {
-            this.fdm_crew = new HashSet<fdm_crew>();
-        }
-    
         public Nullable<int> flight_id { get; set; }
         public Nullable<System.DateTime> date_std { get; set; }
         public Nullable<System.DateTime> date_offblock { get; set; }
@@ -118,9 +112,5 @@ namespace ApiFDM.Models
         public string confirmation_person { get; set; }
         public int id { get; set; }
         public Nullable<int> fdm_id { get; set; }
-    
-        public virtual FDM FDM { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<fdm_crew> fdm_crew { get; set; }
     }
 }
