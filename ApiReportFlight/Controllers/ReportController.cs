@@ -2,10 +2,12 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
@@ -2481,8 +2483,366 @@ namespace ApiReportFlight.Controllers
             return Ok(result);
 
         }
+        public static void ExportDataTableToCsv(DataTable table, string filePath)
+        {
+            var sb = new StringBuilder();
+
+            // نوشتن هدر
+            string[] columnNames = new string[table.Columns.Count];
+            for (int i = 0; i < table.Columns.Count; i++)
+            {
+                columnNames[i] = EscapeCsvValue(table.Columns[i].ColumnName);
+            }
+            sb.AppendLine(string.Join(",", columnNames));
+
+            // نوشتن ردیف‌ها
+            foreach (DataRow row in table.Rows)
+            {
+                string[] fields = new string[table.Columns.Count];
+                for (int i = 0; i < table.Columns.Count; i++)
+                {
+                    fields[i] = EscapeCsvValue(row[i]?.ToString());
+                }
+                sb.AppendLine(string.Join(",", fields));
+            }
+
+            // ذخیره در فایل
+            File.WriteAllText(filePath, sb.ToString(), Encoding.UTF8);
+        }
+
+        // توابع برای ایمن‌سازی داده‌های CSV (مثل قرار دادن رشته‌هایی که شامل کاما یا نقل‌قول هستند داخل "...")
+        private static string EscapeCsvValue(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+                return "";
+
+            value = value.Replace("\"", "\"\"");
+            if (value.Contains(",") || value.Contains("\"") || value.Contains("\n"))
+            {
+                value = $"\"{value}\"";
+            }
+            return value;
+        }
 
 
+        string tohhmm (int? m)
+        {
+            if (m == null)
+                return "0:00";
+            var hh = ((int)m) / 60;
+            var mm= ((int)m) % 60;
+            return hh.ToString()+":"+mm.ToString().PadLeft(2, '0');
+        }
+        int get_order_index(string str)
+        {
+            switch (str)
+            {
+                case "TRE":
+                    return 1;
+                case "TRI":
+                    return 2;
+                case "LTC":
+                    return 3;
+                case "P1":
+                    return 4;
+                case "P2":
+                    return 5;
+                case "ISCCM":
+                    return 6;
+                case "SCCM":
+                    return 7;
+                case "CCM":
+                    return 8;
+                default:
+                    return 1000;
+            }
+        }
+        //2025-05-11
+        [Route("api/fixtime/route/{year}/{period}/{rank}/{actype}")]
+        [AcceptVerbs("GET")]
+        public IHttpActionResult GetFixtimeRoute(int year, string period, string rank,string actype )
+        {
+            var context = new ppa_Entities();
+
+          
+            DataTable table_md = new DataTable();
+            table_md.Columns.Add("rank", typeof(string));
+            table_md.Columns.Add("last_name", typeof(string));
+           
+
+            table_md.Columns.Add("total", typeof(string));
+            table_md.Columns.Add("fix_time", typeof(string));
+            table_md.Columns.Add("block_time", typeof(string));
+            table_md.Columns.Add("stb", typeof(string));
+            table_md.Columns.Add("flt_count", typeof(string));
+            table_md.Columns.Add("taxi", typeof(string));
+            table_md.Columns.Add("req_off", typeof(string));
+            table_md.Columns.Add("ref", typeof(string));
+            table_md.Columns.Add("off", typeof(string));
+
+
+
+
+
+           
+            
+
+
+            var lyear = year - 1;
+            var _periodx = "12/16 - 13/15";
+            string _period = "";
+            switch (period)
+            {
+                case "1":
+                    _period = "12/16 - 01/15";
+                    break;
+                case "2":
+                    _period = "01/16 - 02/15";
+                    break;
+                case "3":
+                    _period = "02/16 - 03/15";
+                    break;
+                case "4":
+                    _period = "03/16 - 04/15";
+                    break;
+                case "5":
+                    _period = "04/16 - 05/15";
+                    break;
+                case "6":
+                    _period = "05/16 - 06/15";
+                    break;
+                case "7":
+                    _period = "06/16 - 07/15";
+                    break;
+                case "8":
+                    _period = "07/16 - 08/15";
+                    break;
+                case "9":
+                    _period = "08/16 - 09/15";
+                    break;
+                case "10":
+                    _period = "09/16 - 10/15";
+                    break;
+                case "11":
+                    _period = "10/16 - 11/15";
+                    break;
+                case "12":
+                    _period = "11/16 - 12/15";
+                    break;
+                default:
+                    break;
+            }
+            var query = from x in context.view_fdp_fixtime
+                        select x;
+            var query2 = from x in context.RptNoFDPMonthlyPersians
+                         select x;
+            if (period != "1")
+            {
+                query = query.Where(x => x.pyear == year && x.period == _period);
+                query2 = query2.Where(x => x.PYear == year && x.PeriodFixTime == _period);
+
+            }
+            else
+            {
+                query = from x in query
+                        where (x.pyear == year && x.period == _period) || (x.pyear == lyear && x.period == _periodx)
+                        select x;
+                query2 = from x in query2
+                         where (x.PYear == year && x.PeriodFixTime == _period) || (x.PYear == lyear && x.PeriodFixTime == _periodx)
+                         select x;
+
+            }
+            switch (rank)
+            {
+                case "All":
+                    break;
+                case "Cockpit":
+                    query = query.Where(q => q.rank == "TRE" || q.rank == "TRI" || q.rank == "LTC" || q.rank == "P1" || q.rank == "P2").Where(q=>q.ac_type==actype);
+                    query2 = query2.Where(q => q.JobGroup == "TRE" || q.JobGroup == "TRI" || q.JobGroup == "LTC" || q.JobGroup == "P1" || q.JobGroup == "P2");
+                    break;
+                case "Cabin":
+                    query = query.Where(q => q.rank == "ISCCM" || q.rank == "SCCM" || q.rank == "CCM");
+                    query2 = query2.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCM");
+                    break;
+                case "IP":
+                    query = query.Where(q => q.rank == "TRE" || q.rank == "TRI" || q.rank == "LTC").Where(q => q.ac_type == actype);
+                   query2 = query2.Where(q => q.JobGroup == "TRE" || q.JobGroup == "TRI" || q.JobGroup == "LTC");
+                    break;
+                case "P1":
+                    query = query.Where(q => q.rank == "P1").Where(q => q.ac_type == actype);
+                   query2 = query2.Where(q => q.JobGroup == "P1");
+                    break;
+                case "P2":
+                    query = query.Where(q => q.rank == "P2").Where(q => q.ac_type == actype);
+                   query2 = query2.Where(q => q.JobGroup == "P2");
+                    break;
+                case "ISCCM":
+                    query = query.Where(q => q.rank == "ISCCM");
+                    query2 = query2.Where(q => q.JobGroup == "ISCCM");
+                    break;
+                case "SCCM":
+                    query = query.Where(q => q.rank == "SCCM");
+                    query2 = query2.Where(q => q.JobGroup == "SCCM");
+                    break;
+                case "CCM":
+                    query = query.Where(q => q.rank == "CCM");
+                    query2 = query2.Where(q => q.JobGroup == "CCM");
+                    break;
+                default:
+                    break;
+            }
+
+            var grps = (from x in query
+                       group x by new { x.crew_id, x.period, x.schedule_name, x.last_name, x.first_name, x.name, x.pyear, x.route,x.ac_type,x.rank } into grp
+                       select new
+                       {
+                           grp.Key.crew_id,
+                           grp.Key.period,
+                           grp.Key.schedule_name,
+                           grp.Key.last_name,
+                           grp.Key.first_name,
+                           grp.Key.name,
+                           grp.Key.pyear,
+                           grp.Key.route,
+                           grp.Key.ac_type,
+                           grp.Key.rank,
+                           block=grp.Sum(q=>q.block),
+                           block_jl=grp.Sum(q=>q.block_jl),
+                           fixtime=grp.Sum(q=>q.fixtime),
+                           legs=grp.Sum(q=>q.flt_count),
+
+                       }).ToList();
+
+            var grps2 = (from x in grps
+                         group x by new { x.crew_id, x.schedule_name, x.last_name, x.first_name, x.name, x.ac_type,x.rank } into grp
+                         select new
+                         {
+                             grp.Key.ac_type,
+                             grp.Key.first_name,
+                             grp.Key.last_name,
+                             grp.Key.name,
+                             grp.Key.schedule_name,
+                             grp.Key.crew_id,
+                             grp.Key.rank,
+                             items = grp.ToList(),
+                             flts=grp.Sum(q=>q.legs),
+                             block=grp.Sum(q=>q.block),
+                             block_jl=grp.Sum(q=>q.block_jl),
+                             fixtime=grp.Sum(q=>q.fixtime),
+                         }).OrderBy(q=> get_order_index(q.rank)).ThenByDescending(q=>q.fixtime).ToList();
+
+            //var routes_md = context.airline_route.Where(q => q.ac_type == "MD").ToList();
+            //var routes_737 = context.airline_route.Where(q => q.ac_type == "737").ToList();
+            var query_routes = grps;
+
+            var routes_md = grps/*.Where(q=>q.ac_type==actype)*/.Select(q => q.route).Distinct().OrderBy(q => q.Length).ThenBy(q => q).ToList();
+            foreach (var route in routes_md)
+            {
+
+
+                table_md.Columns.Add(route, typeof(string));
+            }
+
+            List<RptReposition> repos = new List<RptReposition>();
+            var reposQuery = context.RptRepositions;
+            if (period != "1")
+            {
+                repos = reposQuery.Where(x => x.PYear == year && x.PeriodFixTime == _period).ToList();
+            }
+            else
+            {
+                repos = reposQuery.Where(x => (x.PYear == year && x.PeriodFixTime == _period) || (x.PYear == lyear && x.PeriodFixTime == _periodx)).ToList();
+            }
+            foreach (var rec in repos)
+            {
+                if (rec.PeriodFixTime == "12/16 - 13/15")
+                {
+                    rec.PeriodFixTime = "12/16 - 01/15";
+                    rec.PYear = year;
+                }
+            }
+            //var repos = await this.context.RptRepositions.Where(x => x.PYear == year && x.PeriodFixTime == _period).ToListAsync();
+            var reposGrp = (from x in repos
+                            group x by new { x.CrewId, x.PeriodFixTime } into grp
+                            select new
+                            {
+                                grp.Key.CrewId,
+                                grp.Key.PeriodFixTime,
+                                Pos = grp.Sum(q => q.Pos),
+                                Pos1 = grp.Sum(q => q.Pos1),
+                                Pos2 = grp.Sum(q => q.Pos2),
+                                PosFixTime = grp.Sum(q => q.PosFixTime),
+                            }).ToList();
+            //foreach (var rep in reposGrp)
+            //{
+            //    var rec = fixDs.Where(q => q.CrewId == rep.CrewId).FirstOrDefault();
+            //    if (rec != null)
+            //    {
+            //        rec.Pos = rep.Pos;
+            //        rec.Pos1 = rep.Pos1;
+            //        rec.Pos2 = rep.Pos2;
+            //        rec.PosFixTime = rep.PosFixTime;
+            //        if (rec.PosFixTime != null)
+            //            rec.FixTimeTotal += (int)rec.PosFixTime;
+            //    }
+            //}
+
+            var other_duties =   query2.ToList ();
+
+            int? fix = 0;
+            foreach (var rec in grps2)
+            {
+                fix = rec.fixtime;
+                if (fix == null)
+                    fix = 0;
+                var row = table_md.NewRow();
+                row["rank"] = rec.rank;
+                row["last_name"] = rec.last_name.ToUpper();
+                //for (int i = 10; i <= table_md.Columns.Count - 1; i++)
+                //{
+
+                   
+
+                //    row[i] = 0;
+                //}
+                foreach(var item in rec.items)
+                {
+                    row[item.route] = item.legs==0?"": item.legs.ToString();
+                }
+                var stby = other_duties.Where(q => q.CrewId == rec.crew_id && q.DutyTypeTitle == "StandBy").FirstOrDefault();
+                if (stby != null)
+                {
+                    row["stb"] = stby.Count;
+                    fix += stby.Count * 120;
+                }
+
+                var taxi= reposGrp.FirstOrDefault(q=>q.CrewId==rec.crew_id);
+                if (taxi != null)
+                {
+                    row["taxi"] = taxi.Pos;
+                    fix += taxi.Pos * 60;
+                }
+
+                row["flt_count"] = rec.flts;
+                row["block_time"] =tohhmm( rec.block_jl);
+                row["fix_time"] = tohhmm(rec.fixtime);
+                row["total"] = tohhmm(fix);
+
+
+
+                table_md.Rows.Add(row);
+            }
+            foreach(var c in table_md.Columns)
+            {
+                ((DataColumn)c).ColumnName = ((DataColumn)c).ColumnName.Replace(" ", "\r\n");
+            }
+            ExportDataTableToCsv(table_md, @"C:\Users\vahid\source\repos\AirpocketServices2024\ApiReportFlight\bin\output.csv");
+            return Ok(table_md);
+
+
+
+
+        }
 
 
 

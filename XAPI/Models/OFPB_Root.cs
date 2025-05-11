@@ -254,6 +254,12 @@ namespace XAPI.Models
         public string TaxiOutStr { get; set; }
         public string TotalStr { get; set; }
         public string TripStr { get; set; }
+        public string Pilot1_FPFM { get; set; }
+        public string Pilot2_FPFM { get; set; }
+        public Nullable<int> fuel_remain_offblock { get; set; }
+        public Nullable<int> fuel_remain_takeoff { get; set; }
+        public Nullable<int> fuel_remain_landing { get; set; }
+        public Nullable<int> fuel_remain_onblock { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OFPB_BurnOffAdjustment> OFPB_BurnOffAdjustment { get; set; }

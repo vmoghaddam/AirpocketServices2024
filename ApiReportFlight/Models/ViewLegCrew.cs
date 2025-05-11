@@ -63,6 +63,7 @@ namespace ApiReportFlight.Models
         public Nullable<int> DelayOffBlock { get; set; }
         public Nullable<System.DateTime> STADay { get; set; }
         public Nullable<System.DateTime> STDDay { get; set; }
+        public Nullable<System.DateTime> STDDayLocal { get; set; }
         public string ArrivalRemark { get; set; }
         public string FlightStatus { get; set; }
         public string Register { get; set; }
@@ -110,6 +111,5 @@ namespace ApiReportFlight.Models
         public string ValidTypes { get; set; }
         public string BaseAirport { get; set; }
         public Nullable<int> BaseAirportId { get; set; }
-        public Nullable<System.DateTime> STDDayLocal { get; set; }
     }
 }

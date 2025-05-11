@@ -1630,6 +1630,72 @@ namespace XAPI.Controllers
             }
 
         }
+        [Route("api/loadsheet")]
+        [AcceptVerbs("POST")]
+        public IHttpActionResult PostLoadSheet(load_sheet_dto dto)
+        {
+            //05-02
+            try
+            {
+                if (string.IsNullOrEmpty(dto.key))
+
+                    return Ok(new
+                    {
+                        result = false,
+                        error_message = "Authorization key not found.",
+                        ref_id = -1,
+                    });
+                if (string.IsNullOrEmpty(dto.content))
+
+                    return Ok(new
+                    {
+                        result = false,
+                        error_message = "Plan cannot be empty.",
+                        ref_id = -1,
+                    });
+                if (dto.key != "FaraNegar@1359#")
+
+                    return Ok(new
+                    {
+                        result = false,
+                        error_message = "Authorization key is wrong.",
+                        ref_id = -1,
+                    });
+                var ctx = new PPAEntities();
+                ctx.Database.CommandTimeout = 1000;
+                var entity = new load_sheet_raw()
+                {
+                    content = dto.content,
+                    date_create = DateTime.Now,
+                    airline = "CASPIAN",
+
+
+                };
+                ctx.load_sheet_raw.Add(entity);
+                ctx.SaveChanges();
+
+                return Ok(new
+                {
+                    result = true,
+                    error_message = string.Empty,
+                    ref_id = entity.id,
+                });
+            }
+            catch(Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += " " + ex.InnerException.Message;
+                return Ok(new
+                {
+                    result = false,
+                    error_message =msg,
+                    ref_id = -1,
+                });
+            }
+          
+
+        }
 
         //https://xpi.sbvaresh.ir/api/skyputer
         [Route("api/skyputer")]
@@ -5016,6 +5082,14 @@ namespace XAPI.Controllers
             public string plan { get; set; }
             public string fltno { get; set; }
             public string date { get; set; }
+
+            public string key { get; set; }
+        }
+
+        public class load_sheet_dto
+        {
+            public string content { get; set; }
+
 
             public string key { get; set; }
         }

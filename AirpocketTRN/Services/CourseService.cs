@@ -3745,6 +3745,52 @@ namespace AirpocketTRN.Services
         }
 
 
+        public class cspg_dto
+        {
+            public int cid { get; set; }
+            public string  sid { get; set; }
+            public List<int?> pid { get; set; }
+        }
+        public async Task<DataResponse> SaveCourseSessionPresenceGroup(cspg_dto dto)
+        {
+            int courseId = dto.cid;
+            List<int?> pid = dto.pid;
+            string sid = dto.sid;
+            sid = sid.Replace("Session", "");
+
+
+
+            var exists = await context.CourseSessionPresences.Where(q => q.CourseId == courseId && pid.Contains( q.PersonId) && q.SessionKey == sid).ToListAsync();
+
+            if (exists != null && exists.Count>0)
+            {
+                context.CourseSessionPresences.RemoveRange(exists);
+            }
+            else
+            {
+                foreach ( var p in pid)
+                {
+                    context.CourseSessionPresences.Add(new CourseSessionPresence()
+                    {
+                        PersonId = p,
+                        SessionKey = sid,
+                        CourseId = courseId,
+                        Date = DateTime.Now
+                    });
+                }
+                
+            }
+
+            await context.SaveChangesAsync();
+
+            return new DataResponse()
+            {
+                IsSuccess = true,
+                Data = dto,
+            };
+        }
+
+
         public async Task<DataResponse> SaveCourseSessionPresence(dynamic dto)
         {
             int courseId = Convert.ToInt32(dto.cid);
@@ -7373,7 +7419,7 @@ namespace AirpocketTRN.Services
             var _df = df.Date;
             var _dt = dt.Date.AddDays(1);
             var query = from x in context.ViewCoursePeopleRankedByStarts
-                        where x.DateStart >= _df && x.DateStart <= _dt
+                        where x.DateStart >= _df && x.DateStart <= _dt && x.PersonId== 3366
                         select x;
             if (ct != -1)
             {

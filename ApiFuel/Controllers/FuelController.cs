@@ -1,5 +1,6 @@
 ﻿using ApiFuel.Models;
 using ApiFuel.ViewModels;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -79,7 +80,18 @@ namespace ApiFuel.Controllers
         }
 
 
+        [Route("api/fuel/parse/route")]
+        public async Task<IHttpActionResult> get_parse_route()
+        {
+            ppa_entities context = new ppa_entities();
+            int flight_id = 595707;
+            var ofp=await context.OFPImports.Where(q=>q.FlightId == flight_id).FirstOrDefaultAsync();
+            var main_plan_text = ofp.JPlan;
+            //var main_route= FlightPlanParser.ParseRoute(main_plan_text);
+            List<_Waypoint> waypoints = JsonConvert.DeserializeObject<List<_Waypoint>>(main_plan_text);
+            return Ok(waypoints);
 
+        }
 
 
     }

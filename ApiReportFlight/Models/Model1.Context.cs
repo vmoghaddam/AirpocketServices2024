@@ -27,28 +27,33 @@ namespace ApiReportFlight.Models
     
         public virtual DbSet<ViewFinMonthlyRoute> ViewFinMonthlyRoutes { get; set; }
         public virtual DbSet<ViewFlightDelay> ViewFlightDelays { get; set; }
-        public virtual DbSet<ViewCrew> ViewCrews { get; set; }
         public virtual DbSet<RptNoFDP> RptNoFDPs { get; set; }
-        public virtual DbSet<FDP> FDPs { get; set; }
         public virtual DbSet<ViewCrewFlightApp> ViewCrewFlightApps { get; set; }
-        public virtual DbSet<ViewCourseFDP> ViewCourseFDPs { get; set; }
-        public virtual DbSet<RptFuelOFP> RptFuelOFPs { get; set; }
+        public virtual DbSet<RptNoFDPMonthlyPersian> RptNoFDPMonthlyPersians { get; set; }
+        public virtual DbSet<airline_route> airline_route { get; set; }
+        public virtual DbSet<view_fdp_fixtime> view_fdp_fixtime { get; set; }
+        public virtual DbSet<rpt_pax_total> rpt_pax_total { get; set; }
+        public virtual DbSet<RptFDP2> RptFDP2 { get; set; }
+        public virtual DbSet<RptFDPReg> RptFDPRegs { get; set; }
         public virtual DbSet<RptFlightRVSM> RptFlightRVSMs { get; set; }
+        public virtual DbSet<RptFuelOFP> RptFuelOFPs { get; set; }
+        public virtual DbSet<RptRefuse> RptRefuses { get; set; }
+        public virtual DbSet<summary_flight_pax> summary_flight_pax { get; set; }
+        public virtual DbSet<ViewCourseFDP> ViewCourseFDPs { get; set; }
+        public virtual DbSet<ViewDelayedFlight> ViewDelayedFlights { get; set; }
+        public virtual DbSet<ViewFlightDaily> ViewFlightDailies { get; set; }
+        public virtual DbSet<ViewFlightPax> ViewFlightPaxes { get; set; }
         public virtual DbSet<ViewFormB> ViewFormBs { get; set; }
         public virtual DbSet<ViewFormC> ViewFormCs { get; set; }
+        public virtual DbSet<ViewCrew> ViewCrews { get; set; }
+        public virtual DbSet<FDP> FDPs { get; set; }
         public virtual DbSet<XFlightCrew> XFlightCrews { get; set; }
-        public virtual DbSet<ViewDelayedFlight> ViewDelayedFlights { get; set; }
-        public virtual DbSet<RptFDP2> RptFDP2 { get; set; }
-        public virtual DbSet<ViewFlightDaily> ViewFlightDailies { get; set; }
-        public virtual DbSet<RptRefuse> RptRefuses { get; set; }
+        public virtual DbSet<Ac_MSN> Ac_MSN { get; set; }
+        public virtual DbSet<RptFDPItem> RptFDPItems { get; set; }
         public virtual DbSet<ViewFlightCockpit> ViewFlightCockpits { get; set; }
         public virtual DbSet<ViewLegCrew> ViewLegCrews { get; set; }
-        public virtual DbSet<ViewFlightPax> ViewFlightPaxes { get; set; }
+        public virtual DbSet<ViewRegHistory> ViewRegHistories { get; set; }
         public virtual DbSet<ViewRegHistoryYearly> ViewRegHistoryYearlies { get; set; }
-        public virtual DbSet<rpt_pax_total> rpt_pax_total { get; set; }
-        public virtual DbSet<summary_flight_pax> summary_flight_pax { get; set; }
-        public virtual DbSet<RptFDPItem> RptFDPItems { get; set; }
-        public virtual DbSet<Ac_MSN> Ac_MSN { get; set; }
-        public virtual DbSet<RptFDPReg> RptFDPRegs { get; set; }
+        public virtual DbSet<RptReposition> RptRepositions { get; set; }
     }
 }
