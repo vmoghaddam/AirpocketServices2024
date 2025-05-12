@@ -14,13 +14,13 @@ namespace ApiFDM.Models
     
     public partial class fdm_crew
     {
-        public int event_id { get; set; }
+        public int processed_id { get; set; }
         public int crew_id { get; set; }
         public string first_name { get; set; }
         public string last_name { get; set; }
         public string name { get; set; }
         public string rank { get; set; }
-        public Nullable<int> rank_id { get; set; }
+        public Nullable<int> rank_code { get; set; }
         public string position { get; set; }
         public string remark { get; set; }
         public string reserved1 { get; set; }

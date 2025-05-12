@@ -18,8 +18,13 @@ namespace ApiReportFlight.Models
         public Nullable<int> FlightId { get; set; }
         public Nullable<bool> IsPositioning { get; set; }
         public Nullable<int> PositionId { get; set; }
+        public Nullable<int> flt_position_id { get; set; }
         public string Position { get; set; }
         public string Name { get; set; }
+        public string PFirstName { get; set; }
+        public string PLastName { get; set; }
+        public string PName { get; set; }
+        public string NID { get; set; }
         public string Mobile { get; set; }
         public string ScheduleName { get; set; }
         public Nullable<int> GroupId { get; set; }
@@ -32,11 +37,6 @@ namespace ApiReportFlight.Models
         public string Code { get; set; }
         public Nullable<System.DateTime> DateConfirmed { get; set; }
         public Nullable<bool> IsConfirmed { get; set; }
-        public Nullable<int> flt_position_id { get; set; }
-        public string PFirstName { get; set; }
-        public string PLastName { get; set; }
-        public string PName { get; set; }
-        public string NID { get; set; }
         public string MainGroup { get; set; }
     }
 }

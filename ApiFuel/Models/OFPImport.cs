@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace XAPI.Models
+namespace ApiFuel.Models
 {
     using System;
     using System.Collections.Generic;
@@ -19,7 +19,6 @@ namespace XAPI.Models
         {
             this.OFPImportItems = new HashSet<OFPImportItem>();
             this.OFPImportProps = new HashSet<OFPImportProp>();
-            this.OFPPoints = new HashSet<OFPPoint>();
         }
     
         public int Id { get; set; }
@@ -118,12 +117,9 @@ namespace XAPI.Models
         public Nullable<double> ectm_eng2_epr { get; set; }
         public Nullable<int> ectm_eng2_fuel_flow { get; set; }
     
-        public virtual FlightInformation FlightInformation { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OFPImportItem> OFPImportItems { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OFPImportProp> OFPImportProps { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<OFPPoint> OFPPoints { get; set; }
     }
 }

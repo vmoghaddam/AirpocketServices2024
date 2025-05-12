@@ -17,7 +17,7 @@ namespace ApiFDM.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public FDM()
         {
-            this.FDMEventParameters = new HashSet<FDMEventParameter>();
+            this.fdm_processed = new HashSet<fdm_processed>();
         }
     
         public int Id { get; set; }
@@ -79,6 +79,6 @@ namespace ApiFDM.Models
         public string MainParameter { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<FDMEventParameter> FDMEventParameters { get; set; }
+        public virtual ICollection<fdm_processed> fdm_processed { get; set; }
     }
 }

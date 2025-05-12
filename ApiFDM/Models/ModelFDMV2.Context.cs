@@ -7,16 +7,16 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ApiFuel.Models
+namespace ApiFDM.Models
 {
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class ppa_entities : DbContext
+    public partial class FDMEntities : DbContext
     {
-        public ppa_entities()
-            : base("name=ppa_entities")
+        public FDMEntities()
+            : base("name=FDMEntities")
         {
         }
     
@@ -25,9 +25,12 @@ namespace ApiFuel.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<AppFuel> AppFuels { get; set; }
-        public virtual DbSet<OFPImport> OFPImports { get; set; }
-        public virtual DbSet<OFPImportItem> OFPImportItems { get; set; }
-        public virtual DbSet<OFPImportProp> OFPImportProps { get; set; }
+        public virtual DbSet<FDM> FDMs { get; set; }
+        public virtual DbSet<fdm_crew> fdm_crew { get; set; }
+        public virtual DbSet<fdm_processed> fdm_processed { get; set; }
+        public virtual DbSet<FlightInformation> FlightInformations { get; set; }
+        public virtual DbSet<view_fdm_flight_crew> view_fdm_flight_crew { get; set; }
+        public virtual DbSet<view_fdm_processed> view_fdm_processed { get; set; }
+        public virtual DbSet<ViewMSN> ViewMSNs { get; set; }
     }
 }

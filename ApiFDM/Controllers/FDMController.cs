@@ -3663,40 +3663,40 @@ namespace ApiFDM.Controllers
         }
 
 
-        [HttpGet]
-        [Route("api/fdm/process")]
-        public async Task<DataResponse> FillProcessedTable()
-        {
-            try
-            {
+        //[HttpGet]
+        //[Route("api/fdm/process")]
+        //public async Task<DataResponse> FillProcessedTable()
+        //{
+        //    try
+        //    {
 
-                //var record = context.FDMs.Where(q => q.Date.Value.Year == year && q.Date.Value.Month == month).ToList();
-                //for (int i = 0; i < record.Count; i++)
-                //{
-                //    record[i].IsVisible = true;
-                //    record[i].IsVisibleDate = DateTime.Now;
-                //}
-                //await context.SaveChangesAsync();
-                //return new DataResponse()
-                //{
-                //    IsSuccess = true,
-                //    Data = record
-                //};
+        //        //var record = context.FDMs.Where(q => q.Date.Value.Year == year && q.Date.Value.Month == month).ToList();
+        //        //for (int i = 0; i < record.Count; i++)
+        //        //{
+        //        //    record[i].IsVisible = true;
+        //        //    record[i].IsVisibleDate = DateTime.Now;
+        //        //}
+        //        //await context.SaveChangesAsync();
+        //        //return new DataResponse()
+        //        //{
+        //        //    IsSuccess = true,
+        //        //    Data = record
+        //        //};
 
 
 
-            }
-            catch (Exception ex)
-            {
-                var innerExeption = ex.InnerException;
-                var message = ex.Message;
-                return new DataResponse()
-                {
-                    IsSuccess = false,
-                    Data = "InnerExeption: " + innerExeption + " " + "Message: " + message
-                };
-            }
-        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        var innerExeption = ex.InnerException;
+        //        var message = ex.Message;
+        //        return new DataResponse()
+        //        {
+        //            IsSuccess = false,
+        //            Data = "InnerExeption: " + innerExeption + " " + "Message: " + message
+        //        };
+        //    }
+        //}
 
 
         ////[HttpGet]
