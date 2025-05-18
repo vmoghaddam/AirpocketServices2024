@@ -6840,8 +6840,13 @@ namespace AirpocketTRN.Services
             if (course.Instructor2 != null)
                 personIds.Add((int)course.Instructor2);
 
-            //  var ins_ids = grp_sessions.Where(q => q.InstructorId != null).Select(q => q.InstructorId).Distinct().ToList();
-            // personIds = personIds.Concat(ins_ids).ToList();
+            List<int?> ins_ids = new List<int?>();
+            if (course.CurrencyId != null)
+                ins_ids.Add(course.CurrencyId);
+            if (course.Instructor2 != null)
+                ins_ids.Add(course.Instructor2);
+             //var ins_ids = grp_sessions.Where(q => q.InstructorId != null).Select(q => q.InstructorId).Distinct().ToList();
+             personIds = personIds.Concat(ins_ids).ToList();
 
 
             var fltcrew = new List<string>() { "P1", "P2", "ISCCM", "SCCM", "CCM", "TRE", "TRI", "LTC", "CCE", "CCI" };
