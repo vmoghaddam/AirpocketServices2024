@@ -34,6 +34,7 @@ using System.Drawing;
 using Newtonsoft.Json.Linq;
 using System.Data.SqlClient;
 using System.Threading;
+using static ApiAPSB.Controllers.DiscretionController;
 
 
 namespace ApiAPSB.Controllers
@@ -4446,6 +4447,102 @@ namespace ApiAPSB.Controllers
 
         }
 
+        [Route("api/get/discertion/{fdp_id}")]
+        [AcceptVerbs("GET")]
+        public async Task<DataResponse> GetDiscertion(int fdp_id)
+        {
+
+            dbEntities context = new dbEntities();
+
+            var entity = new discretion_dto2();
+            List<form_discretion_item> items = new List<form_discretion_item>();
+            entity.items = new List<discretion_item_dto>();
+            var result = await context.form_discretion.FirstOrDefaultAsync(q => q.fdp_id == fdp_id);
+            if (result != null)
+            {
+                items = context.form_discretion_item.Where(q => q.form_id == result.id).ToList();
+
+                entity.id = result.id;
+                entity.fdp_id = result.fdp_id;
+                entity.commander_report = result.commander_report;
+                entity.pic_date_sign = result.pic_sign_date;
+                entity.date_create = result.date_create;
+                if (items != null)
+                {
+                    foreach (var item in items)
+                    {
+                        var x = new discretion_item_dto();
+                        x.id = item.id;
+                        x.form_id = item.form_id;
+                        x.remark = item.remark;
+                        x.item_id = item.item_id;
+
+                        entity.items.Add(x);
+                    }
+                }
+            }
+            return new DataResponse()
+            {
+                IsSuccess = true,
+                Data = entity
+            };
+        }
+
+
+        [Route("api/save/discretion")]
+        [AcceptVerbs("POST")]
+        public async Task<DataResponse> SaveDiscretion(discretion_dto dto)
+        {
+            try
+            {
+
+
+                dbEntities context = new dbEntities();
+
+                var itemsToDelete = new List<form_discretion_item>();
+                form_discretion entity = await context.form_discretion.FirstOrDefaultAsync(q => q.id == dto.id);
+                if (entity != null)
+                {
+                    itemsToDelete = context.form_discretion_item
+       .Where(item => item.form_id == entity.id)
+       .ToList();
+                }
+                if (entity == null)
+                {
+                    entity = new form_discretion();
+                    context.form_discretion.Add(entity);
+                }
+
+                entity.fdp_id = dto.fdp_id;
+                entity.commander_report = dto.commander_report;
+                entity.date_create = DateTime.Now;
+                entity.pic_sign_date = DateTime.Now;
+                if (dto.items != null)
+                {
+                    if (itemsToDelete != null)
+                        context.form_discretion_item.RemoveRange(itemsToDelete);
+                    foreach (var item in dto.items)
+                    {
+                        entity.form_discretion_item.Add(item);
+                    }
+                }
+
+                await context.SaveChangesAsync();
+
+                return new DataResponse()
+                {
+                    IsSuccess = true,
+                    Data = entity.id,
+                };
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += " INNER: " + ex.InnerException.Message;
+                return new DataResponse() { IsSuccess = false, Data = msg };
+            }
+        }
 
         public class discretion_flight_row
         {
@@ -4467,7 +4564,7 @@ namespace ApiAPSB.Controllers
         public IHttpActionResult GetDiscretion(int fid)
         {
             var context = new Models.dbEntities();
-
+            try { 
             var app_leg = context.AppLegs.Where(q => q.ID == fid).FirstOrDefault();
             var view = context.view_discretion_form.Where(q => q.flight_id == fid).FirstOrDefault();
             //if (view == null)
@@ -4515,13 +4612,25 @@ namespace ApiAPSB.Controllers
             var duty_end_planned_lcl = ((DateTime)flights.Last().STA).AddMinutes(30).AddMinutes(210);
 
 
-            var duty_start_actual = ((DateTime)flights.First().BlockOff).AddMinutes(-60);
-            var fdp_end_actual = ((DateTime)flights.Last().BlockOn).AddMinutes(0);
-            var duty_end_actual = ((DateTime)flights.Last().BlockOn).AddMinutes(30);
+                var duty_start_actual = flights.First().BlockOff != null ?
+                    ((DateTime)flights.First().BlockOff).AddMinutes(-60) : ((DateTime)flights.First().STD).AddMinutes(-60);
+                var fdp_end_actual = flights.First().BlockOn != null ?
+                    ((DateTime)flights.Last().BlockOn).AddMinutes(0) : ((DateTime)flights.First().STA).AddMinutes(0);
+                var duty_end_actual = flights.First().BlockOn != null ?
+                    ((DateTime)flights.Last().BlockOn).AddMinutes(30) : ((DateTime)flights.First().STA).AddMinutes(30);
 
-            var duty_start_actual_lcl = ((DateTime)flights.First().BlockOff).AddMinutes(-60).AddMinutes(210);
-            var fdp_end_actual_lcl = ((DateTime)flights.Last().BlockOn).AddMinutes(0).AddMinutes(210);
-            var duty_end_actual_lcl = ((DateTime)flights.Last().BlockOn).AddMinutes(30).AddMinutes(210);
+                var duty_start_actual_lcl = flights.First().BlockOff != null ?
+                   ((DateTime)flights.First().BlockOff).AddMinutes(-60).AddMinutes(210) : ((DateTime)flights.First().STD).AddMinutes(-60).AddMinutes(210);
+                var fdp_end_actual_lcl = flights.First().BlockOn != null ?
+                    ((DateTime)flights.Last().BlockOn).AddMinutes(0).AddMinutes(210) : ((DateTime)flights.First().STA).AddMinutes(0).AddMinutes(210);
+                var duty_end_actual_lcl = flights.First().BlockOn != null ?
+                    ((DateTime)flights.Last().BlockOn).AddMinutes(30).AddMinutes(210) : ((DateTime)flights.First().STA).AddMinutes(30).AddMinutes(210);
+
+
+
+            //    var duty_start_actual_lcl = ((DateTime)flights.First().BlockOff).AddMinutes(-60).AddMinutes(210);
+            //var fdp_end_actual_lcl = ((DateTime)flights.Last().BlockOn).AddMinutes(0).AddMinutes(210);
+            //var duty_end_actual_lcl = ((DateTime)flights.Last().BlockOn).AddMinutes(30).AddMinutes(210);
 
 
             var flights_details = new List<discretion_flight_row>();
@@ -4584,7 +4693,7 @@ namespace ApiAPSB.Controllers
 
 
             view.planned_flt_duty_time = Convert.ToInt32(Math.Round((((DateTime)flights.Last().STA) - ((DateTime)flights.First().STD).AddMinutes(-60)).TotalMinutes));
-            view.actual_flt_duty_time = Convert.ToInt32(Math.Round((((DateTime)flights.Last().BlockOn) - ((DateTime)flights.First().BlockOff).AddMinutes(-60)).TotalMinutes));
+            view.actual_flt_duty_time = flights.First().BlockOn != null ? Convert.ToInt32(Math.Round((((DateTime)flights.Last().BlockOn) - ((DateTime)flights.First().BlockOff).AddMinutes(-60)).TotalMinutes)) : Convert.ToInt32(Math.Round((((DateTime)flights.Last().STA) - ((DateTime)flights.First().STD).AddMinutes(-60)).TotalMinutes));
 
             view.max_fdp = Convert.ToInt32(Math.Round((decimal)pic_fdp.MaxFDP));
 
@@ -4597,7 +4706,11 @@ namespace ApiAPSB.Controllers
                 route = string.Join("-", stns),
                 date = ((DateTime)flights.First().STD).ToString("yyyy-MM-dd")
             });
+            }
+            catch (Exception ex) {
 
+                return BadRequest(ex.Message + ' ' + ex.InnerException);
+            }
             //var flight_ids=from x in context.FDPItems
             //               join y in context.FDPs on x.FDPId equals y.Id
             //               where y.CrewId==view.pic_id

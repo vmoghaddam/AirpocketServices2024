@@ -445,7 +445,7 @@ namespace ApiAPSB.Controllers
             dbEntities context = new dbEntities();
             List<item_dto> items = new List<item_dto>();
 
-            var result = context.Options.Where(q => q.ParentId == 300064).ToList();
+            var result = context.Options.Where(q => q.ParentId == 301050).ToList();
             foreach (var x in result)
             {
                 item_dto item = new item_dto();
@@ -464,102 +464,102 @@ namespace ApiAPSB.Controllers
 
 
 
-        [Route("api/get/discertion/{fdp_id}")]
-        [AcceptVerbs("GET")]
-        public async Task<DataResponse> GetDiscertion(int fdp_id)
-        {
+       // [Route("api/get/discertion/{fdp_id}")]
+       // [AcceptVerbs("GET")]
+       // public async Task<DataResponse> GetDiscertion(int fdp_id)
+       // {
 
-            dbEntities context = new dbEntities();
+       //     dbEntities context = new dbEntities();
 
-            var entity = new discretion_dto2();
-            List<form_discretion_item> items = new List<form_discretion_item>();
-            entity.items = new List<discretion_item_dto>();
-            var result = await context.form_discretion.FirstOrDefaultAsync(q => q.fdp_id == fdp_id);
-            if (result != null)
-            {
-                items = context.form_discretion_item.Where(q => q.form_id == result.id).ToList();
+       //     var entity = new discretion_dto2();
+       //     List<form_discretion_item> items = new List<form_discretion_item>();
+       //     entity.items = new List<discretion_item_dto>();
+       //     var result = await context.form_discretion.FirstOrDefaultAsync(q => q.fdp_id == fdp_id);
+       //     if (result != null)
+       //     {
+       //         items = context.form_discretion_item.Where(q => q.form_id == result.id).ToList();
 
-                entity.id = result.id;
-                entity.fdp_id = result.fdp_id;
-                entity.commander_report = result.commander_report;
-                entity.pic_date_sign = result.pic_sign_date;
-                entity.date_create = result.date_create;
-                if (items != null)
-                {
-                    foreach (var item in items)
-                    {
-                        var x = new discretion_item_dto();
-                        x.id = item.id;
-                        x.form_id = item.form_id;
-                        x.remark = item.remark;
-                        x.item_id = item.item_id;
+       //         entity.id = result.id;
+       //         entity.fdp_id = result.fdp_id;
+       //         entity.commander_report = result.commander_report;
+       //         entity.pic_date_sign = result.pic_sign_date;
+       //         entity.date_create = result.date_create;
+       //         if (items != null)
+       //         {
+       //             foreach (var item in items)
+       //             {
+       //                 var x = new discretion_item_dto();
+       //                 x.id = item.id;
+       //                 x.form_id = item.form_id;
+       //                 x.remark = item.remark;
+       //                 x.item_id = item.item_id;
 
-                        entity.items.Add(x);
-                    }
-                }
-            }
-            return new DataResponse()
-            {
-                IsSuccess = true,
-                Data = entity
-            };
-        }
+       //                 entity.items.Add(x);
+       //             }
+       //         }
+       //     }
+       //     return new DataResponse()
+       //     {
+       //         IsSuccess = true,
+       //         Data = entity
+       //     };
+       // }
 
 
-        [Route("api/save/discretion")]
-        [AcceptVerbs("POST")]
-        public async Task<DataResponse> SaveDiscretion(discretion_dto dto)
-        {
-            try
-            {
+       // [Route("api/save/discretion")]
+       // [AcceptVerbs("POST")]
+       // public async Task<DataResponse> SaveDiscretion(discretion_dto dto)
+       // {
+       //     try
+       //     {
                
 
-                dbEntities context = new dbEntities();
+       //         dbEntities context = new dbEntities();
                
-                var itemsToDelete = new List<form_discretion_item>();
-                form_discretion entity = await context.form_discretion.FirstOrDefaultAsync(q => q.id == dto.id);
-                if (entity != null)
-                {
-                    itemsToDelete = context.form_discretion_item
-       .Where(item => item.form_id == entity.id)
-       .ToList();
-                }
-                 if (entity == null)
-                {
-                    entity = new form_discretion();
-                    context.form_discretion.Add(entity);
-                }
+       //         var itemsToDelete = new List<form_discretion_item>();
+       //         form_discretion entity = await context.form_discretion.FirstOrDefaultAsync(q => q.id == dto.id);
+       //         if (entity != null)
+       //         {
+       //             itemsToDelete = context.form_discretion_item
+       //.Where(item => item.form_id == entity.id)
+       //.ToList();
+       //         }
+       //          if (entity == null)
+       //         {
+       //             entity = new form_discretion();
+       //             context.form_discretion.Add(entity);
+       //         }
 
-                entity.fdp_id = dto.fdp_id;
-                entity.commander_report = dto.commander_report;
-                entity.date_create = DateTime.Now;
-                entity.pic_sign_date = DateTime.Now;
-                if (dto.items != null)
-                {
-                    if (itemsToDelete != null)
-                        context.form_discretion_item.RemoveRange(itemsToDelete);
-                    foreach (var item in dto.items)
-                    {
-                        entity.form_discretion_item.Add(item);
-                    }
-                }
+       //         entity.fdp_id = dto.fdp_id;
+       //         entity.commander_report = dto.commander_report;
+       //         entity.date_create = DateTime.Now;
+       //         entity.pic_sign_date = DateTime.Now;
+       //         if (dto.items != null)
+       //         {
+       //             if (itemsToDelete != null)
+       //                 context.form_discretion_item.RemoveRange(itemsToDelete);
+       //             foreach (var item in dto.items)
+       //             {
+       //                 entity.form_discretion_item.Add(item);
+       //             }
+       //         }
 
-                await context.SaveChangesAsync();
+       //         await context.SaveChangesAsync();
 
-                return new DataResponse()
-                {
-                    IsSuccess = true,
-                    Data = entity.id,
-                };
-            }
-            catch (Exception ex)
-            {
-                var msg = ex.Message;
-                if (ex.InnerException != null)
-                    msg += " INNER: " + ex.InnerException.Message;
-                return new DataResponse() { IsSuccess = false, Data = msg };
-            }
-        }
+       //         return new DataResponse()
+       //         {
+       //             IsSuccess = true,
+       //             Data = entity.id,
+       //         };
+       //     }
+       //     catch (Exception ex)
+       //     {
+       //         var msg = ex.Message;
+       //         if (ex.InnerException != null)
+       //             msg += " INNER: " + ex.InnerException.Message;
+       //         return new DataResponse() { IsSuccess = false, Data = msg };
+       //     }
+       // }
 
     }
 }

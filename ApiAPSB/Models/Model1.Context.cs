@@ -90,5 +90,9 @@ namespace ApiAPSB.Models
         public virtual DbSet<QAResponsibilty> QAResponsibilties { get; set; }
         public virtual DbSet<OFPImport> OFPImports { get; set; }
         public virtual DbSet<ViewEmployeeLight> ViewEmployeeLights { get; set; }
+        public virtual DbSet<ViewQAGround> ViewQAGrounds { get; set; }
+        public virtual DbSet<ViewQAHazard> ViewQAHazards { get; set; }
+        public virtual DbSet<ViewQASecurity> ViewQASecurities { get; set; }
+        public virtual DbSet<ViewQaVoyageReport> ViewQaVoyageReports { get; set; }
     }
 }
