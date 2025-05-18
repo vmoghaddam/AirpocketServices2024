@@ -32,5 +32,8 @@ namespace ApiFDM.Models
         public virtual DbSet<view_fdm_flight_crew> view_fdm_flight_crew { get; set; }
         public virtual DbSet<view_fdm_processed> view_fdm_processed { get; set; }
         public virtual DbSet<ViewMSN> ViewMSNs { get; set; }
+        public virtual DbSet<fly_course> fly_course { get; set; }
+        public virtual DbSet<fly_course_session> fly_course_session { get; set; }
+        public virtual DbSet<fly_course_student> fly_course_student { get; set; }
     }
 }
