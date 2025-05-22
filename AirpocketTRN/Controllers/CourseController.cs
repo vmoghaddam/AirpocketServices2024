@@ -984,6 +984,15 @@ namespace AirpocketTRN.Controllers
             return Ok(result.Data);
         }
 
+        [Route("api/certificate/flykish/all")]
+        [AcceptVerbs("GET")]
+        public async Task<IHttpActionResult> GetCertificateFlyKish()
+        {
+            var result = await courseService.GetCertificateAll();
+
+            return Ok(result.Data);
+        }
+
         [Route("api/upload/certificate/{id}/{pid}/{tid}/{cid}")]
         [AcceptVerbs("POST")]
         public async Task<IHttpActionResult> Upload(int id,int pid,int tid,int cid )

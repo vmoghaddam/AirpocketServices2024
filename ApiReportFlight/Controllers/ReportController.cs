@@ -2346,6 +2346,8 @@ namespace ApiReportFlight.Controllers
             public string PID { get; set; }
             public string ValidTypes { get; set; }
             public int? OA { get; set; }
+
+            public int? ERRS { get; set; }
         }
 
         public class CrewSummaryDto
@@ -2946,7 +2948,9 @@ namespace ApiReportFlight.Controllers
                                    JLFlightTime = _grp.Sum(q => q.JL_FlightTime),
                                    JLBlockTime = _grp.Sum(q => q.JL_BlockTime),
                                    FixTime = _grp.Sum(q => q.FixTime),
-                                   OA = _grp.Key.FlightPlanId
+                                   OA = _grp.Key.FlightPlanId,
+                                   ERRS=_grp.Sum(q=>q.SITATime),
+
                                }
                               ).ToList();
                 foreach (var x in _query)
