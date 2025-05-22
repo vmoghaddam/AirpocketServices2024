@@ -5168,6 +5168,9 @@ namespace XAPI.Controllers
                 try
                 {
                     load_sheet_raw raw_text = context.Database.SqlQuery<load_sheet_raw>(query, flight_number, flight_date).FirstOrDefault();
+                    if (raw_text == null)
+                        return Ok(raw_text);
+
                     var text = raw_text.content;
                     var data = new LoadSheetData();
 
@@ -5269,16 +5272,16 @@ namespace XAPI.Controllers
                         time = data.Time,
                         crew = data.Crew,
                         seatingDistribution = seatingAreaDict,
-                        DryOperatingWeight= data.DryOperatingWeight,
-                        ZeroFuelWeight= data.ZeroFuelWeight,
-                        TakeOffFuel=  data.TakeOffFuel ,
-                        TakeOffWeight=   data.TakeOffWeight,
-                        TripFuel=  data.TripFuel,
+                        DryOperatingWeight = data.DryOperatingWeight,
+                        ZeroFuelWeight = data.ZeroFuelWeight,
+                        TakeOffFuel = data.TakeOffFuel,
+                        TakeOffWeight = data.TakeOffWeight,
+                        TripFuel = data.TripFuel,
                         LandingWeight = data.LandingWeight,
                         data.UnderloadBeforeLMC,
                         data.TaxiFuel,
                         data.FuelDensity,
-                    loadDistribution = new Dictionary<string, int?>
+                        loadDistribution = new Dictionary<string, int?>
                         {
                             ["Compartment 1"] = data.CompartmentDistribution.ContainsKey("1") ? data.CompartmentDistribution["1"] : (int?)null,
                             ["Compartment 2"] = data.CompartmentDistribution.ContainsKey("2") ? data.CompartmentDistribution["2"] : (int?)null,
@@ -5309,7 +5312,7 @@ namespace XAPI.Controllers
         new { condition = "LAW", index = data.Indexes.ContainsKey("LILNW") ? data.Indexes["LILNW"] : (double?)null, mac = data.Indexes.ContainsKey("MACLNW") ? data.Indexes["MACLNW"] : (double?)null },
     },
                         stabTrim = "5.10 UP", // placeholder if not parsed yet
-                       
+
                     };
 
                     return Ok(result);

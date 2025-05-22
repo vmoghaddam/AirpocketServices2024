@@ -7424,7 +7424,7 @@ namespace AirpocketTRN.Services
             var _df = df.Date;
             var _dt = dt.Date.AddDays(1);
             var query = from x in context.ViewCoursePeopleRankedByStarts
-                        where x.DateStart >= _df && x.DateStart <= _dt && x.PersonId== 3366
+                        where x.DateStart >= _df && x.DateStart <= _dt
                         select x;
             if (ct != -1)
             {
@@ -7454,7 +7454,7 @@ namespace AirpocketTRN.Services
             {
                 query = query.Where(q => q.RankLast == 1);
             }
-            if (active != -1)
+            if (active == -1)
             {
                 query = query.Where(q => q.CustomerId == 0);
             }
