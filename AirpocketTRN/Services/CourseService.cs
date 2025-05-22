@@ -2434,6 +2434,36 @@ namespace AirpocketTRN.Services
                 IsSuccess = true,
             };
         }
+        //GetCertificateAll
+        public async Task<DataResponse> GetCertificateAll()
+        {
+            //var query = from x in context.ViewEmployeeTrainings select x;
+            //if (root != "000")
+            //    query = query.Where(q => q.JobGroupMainCode == root);
+            //var result = await query.OrderByDescending(q => q.MandatoryExpired).ThenBy(q => q.JobGroup).ThenBy(q => q.LastName).ToListAsync();
+            var obj = context.ViewCoursePeoplePassedRankeds.Where(q =>  q.ImgUrl == "FLY KISH" /*&& (q.Instructor.Contains("TALEBI") || q.Instructor.Contains("SHAFIEI"))*/ ).Select(q=>
+            
+            new
+            {
+                Id=q.Id,
+                Name=q.LastName+" "+q.FirstName,
+                q.Title,
+            }
+            
+            ) .ToList();
+            if (obj != null)
+                return new DataResponse()
+                {
+                    Data = obj,
+                    IsSuccess = true,
+                };
+            else
+                return new DataResponse()
+                {
+                    Data = new ViewCoursePeople() { Id = -1, },
+                    IsSuccess = true,
+                };
+        }
 
         public async Task<DataResponse> GetCertificate(int id)
         {
@@ -7425,6 +7455,7 @@ namespace AirpocketTRN.Services
             var _dt = dt.Date.AddDays(1);
             var query = from x in context.ViewCoursePeopleRankedByStarts
                         where x.DateStart >= _df && x.DateStart <= _dt
+                        // && x.PersonId== 3366
                         select x;
             if (ct != -1)
             {
@@ -7454,7 +7485,7 @@ namespace AirpocketTRN.Services
             {
                 query = query.Where(q => q.RankLast == 1);
             }
-            if (active == -1)
+            if (active != -1)
             {
                 query = query.Where(q => q.CustomerId == 0);
             }
