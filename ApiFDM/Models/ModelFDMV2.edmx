@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ModelFDMV2.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ModelFDMV2.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="FDM">
           <Key>
             <PropertyRef Name="Id" />
@@ -496,6 +496,40 @@
           <Property Name="PaxMale" Type="int" />
           <Property Name="PaxFemale" Type="int" />
         </EntityType>
+        <EntityType Name="fly_course">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="key" Type="nvarchar" MaxLength="2000" />
+          <Property Name="date_start" Type="date" />
+          <Property Name="date_end" Type="date" />
+          <Property Name="title" Type="nvarchar" MaxLength="1000" />
+          <Property Name="duration" Type="int" />
+          <Property Name="days" Type="int" />
+          <Property Name="instructors" Type="nvarchar" MaxLength="2000" />
+          <Property Name="course_type" Type="int" />
+        </EntityType>
+        <EntityType Name="fly_course_session">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="key" Type="nvarchar" MaxLength="2000" />
+          <Property Name="date_start" Type="datetime2" Precision="7" />
+          <Property Name="date_end" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="fly_course_student">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="key" Type="nvarchar" MaxLength="2000" />
+          <Property Name="first_name" Type="nvarchar" MaxLength="1000" />
+          <Property Name="last_name" Type="nvarchar" MaxLength="1000" />
+          <Property Name="row_no" Type="varchar" MaxLength="255" />
+          <Property Name="person_id" Type="int" />
+        </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'EPACSPN25.dbo.view_fdm_flight_crew' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="view_fdm_flight_crew">
@@ -516,7 +550,7 @@ warning 6002: The table/view 'EPACSPN25.dbo.view_fdm_flight_crew' does not have 
           <Property Name="STD" Type="datetime" />
           <Property Name="STA" Type="datetime" />
           <Property Name="CrewId" Type="int" />
-          <Property Name="Name" Type="nvarchar" MaxLength="1001" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="500" Nullable="false" />
           <Property Name="JobGroup" Type="nvarchar" MaxLength="500" Nullable="false" />
           <Property Name="JobGroupCode" Type="varchar" MaxLength="500" Nullable="false" />
           <Property Name="Position" Type="varchar" MaxLength="255" />
@@ -719,6 +753,9 @@ warning 6002: The table/view 'EPACSPN25.dbo.ViewMSN' does not have a primary key
           <EntitySet Name="fdm_crew" EntityType="Self.fdm_crew" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="fdm_processed" EntityType="Self.fdm_processed" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FlightInformation" EntityType="Self.FlightInformation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="fly_course" EntityType="Self.fly_course" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="fly_course_session" EntityType="Self.fly_course_session" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="fly_course_student" EntityType="Self.fly_course_student" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="view_fdm_flight_crew" EntityType="Self.view_fdm_flight_crew" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [view_fdm_flight_crew].[id] AS [id], 
@@ -898,8 +935,7 @@ warning 6002: The table/view 'EPACSPN25.dbo.ViewMSN' does not have a primary key
             <End Role="fdm_crew" EntitySet="fdm_crew" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ModelFDMV2" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1416,7 +1452,7 @@ warning 6002: The table/view 'EPACSPN25.dbo.ViewMSN' does not have a primary key
           <Property Name="STD" Type="DateTime" Precision="3" />
           <Property Name="STA" Type="DateTime" Precision="3" />
           <Property Name="CrewId" Type="Int32" />
-          <Property Name="Name" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="JobGroup" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="JobGroupCode" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Position" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
@@ -1626,7 +1662,44 @@ warning 6002: The table/view 'EPACSPN25.dbo.ViewMSN' does not have a primary key
             <End Role="fdm_processed" EntitySet="fdm_processed" />
             <End Role="fdm_crew" EntitySet="fdm_crew" />
           </AssociationSet>
+          <EntitySet Name="fly_course" EntityType="ModelFDMV2.fly_course" />
+          <EntitySet Name="fly_course_session" EntityType="ModelFDMV2.fly_course_session" />
+          <EntitySet Name="fly_course_student" EntityType="ModelFDMV2.fly_course_student" />
         </EntityContainer>
+        <EntityType Name="fly_course">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="key" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="date_start" Type="DateTime" Precision="0" />
+          <Property Name="date_end" Type="DateTime" Precision="0" />
+          <Property Name="title" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="duration" Type="Int32" />
+          <Property Name="days" Type="Int32" />
+          <Property Name="instructors" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="course_type" Type="Int32" />
+        </EntityType>
+        <EntityType Name="fly_course_session">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="key" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="date_start" Type="DateTime" Precision="7" />
+          <Property Name="date_end" Type="DateTime" Precision="7" />
+        </EntityType>
+        <EntityType Name="fly_course_student">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="key" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="first_name" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="last_name" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="row_no" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="person_id" Type="Int32" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2300,6 +2373,43 @@ warning 6002: The table/view 'EPACSPN25.dbo.ViewMSN' does not have a primary key
                 <ScalarProperty Name="Customer" ColumnName="Customer" />
                 <ScalarProperty Name="isvirtual" ColumnName="isvirtual" />
                 <ScalarProperty Name="AircraftType2" ColumnName="AircraftType2" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="fly_course">
+            <EntityTypeMapping TypeName="ModelFDMV2.fly_course">
+              <MappingFragment StoreEntitySet="fly_course">
+                <ScalarProperty Name="course_type" ColumnName="course_type" />
+                <ScalarProperty Name="instructors" ColumnName="instructors" />
+                <ScalarProperty Name="days" ColumnName="days" />
+                <ScalarProperty Name="duration" ColumnName="duration" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="date_end" ColumnName="date_end" />
+                <ScalarProperty Name="date_start" ColumnName="date_start" />
+                <ScalarProperty Name="key" ColumnName="key" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="fly_course_session">
+            <EntityTypeMapping TypeName="ModelFDMV2.fly_course_session">
+              <MappingFragment StoreEntitySet="fly_course_session">
+                <ScalarProperty Name="date_end" ColumnName="date_end" />
+                <ScalarProperty Name="date_start" ColumnName="date_start" />
+                <ScalarProperty Name="key" ColumnName="key" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="fly_course_student">
+            <EntityTypeMapping TypeName="ModelFDMV2.fly_course_student">
+              <MappingFragment StoreEntitySet="fly_course_student">
+                <ScalarProperty Name="person_id" ColumnName="person_id" />
+                <ScalarProperty Name="row_no" ColumnName="row_no" />
+                <ScalarProperty Name="last_name" ColumnName="last_name" />
+                <ScalarProperty Name="first_name" ColumnName="first_name" />
+                <ScalarProperty Name="key" ColumnName="key" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

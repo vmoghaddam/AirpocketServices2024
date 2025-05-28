@@ -169,5 +169,8 @@ namespace ApiAPSB.Models
         public Nullable<int> ElapsedDuty { get; set; }
         public Nullable<int> PaxFemale { get; set; }
         public Nullable<int> PaxMale { get; set; }
+        public Nullable<int> exctra_bags_weight { get; set; }
+        public Nullable<decimal> email_weight { get; set; }
+        public Nullable<decimal> fob { get; set; }
     }
 }

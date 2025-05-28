@@ -19,6 +19,9 @@ namespace AirpocketTRN
         //public string domain = "magfa";
         //public string senderNumber = "300085972"; //"300048000";
 
+    //        <add key = "magfa_user" value="airone_74086" />
+    //<add key = "magfa_pass" value="ZQUZuKWMgEm9obOF" />
+    //<add key = "magfa_no" value="300074086" />
 
         public string username = "airone_74086"; // "flypersia_48000";
         public string password = "ZQUZuKWMgEm9obOF"; //"YYDWMU5BAJQQHCuG";

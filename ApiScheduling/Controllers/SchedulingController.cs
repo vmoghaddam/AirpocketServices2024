@@ -4332,7 +4332,7 @@ namespace ApiScheduling.Controllers
 
                     var brk = minuts - double.Parse(ConfigurationManager.AppSettings["post_flight"]) - 60;
 
-                    if (brk >= 180 && brk < 600)
+                    if (brk >= 180 /*&& brk < 600*/)
                     {
                         stat.Extended = 0.5 * brk;
                         break;
