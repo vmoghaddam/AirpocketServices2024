@@ -2338,6 +2338,7 @@ namespace ApiReportFlight.Controllers
             public int GroupOrder { get; set; }
             public int Legs { get; set; }
             public int DH { get; set; }
+            public int Diverted { get; set; }
             public int? FlightTime { get; set; }
             public int? BlockTime { get; set; }
             public int? JLFlightTime { get; set; }
@@ -2846,7 +2847,7 @@ namespace ApiReportFlight.Controllers
 
         }
 
-
+        //2025-05-27
 
         [Route("api/crew/flights/{grp}/{type}")]
         [AcceptVerbs("GET")]
@@ -2943,6 +2944,7 @@ namespace ApiReportFlight.Controllers
 
                                    Legs = _grp.Where(q => q.IsPositioning == false).Count(),
                                    DH = _grp.Where(q => q.IsPositioning == true).Count(),
+                                   Diverted=_grp.Where(q=>q.FlightStatusID==7 || q.FlightStatusID==17).Count(),
                                    FlightTime = _grp.Sum(q => q.FlightTime),
                                    BlockTime = _grp.Sum(q => q.BlockTime),
                                    JLFlightTime = _grp.Sum(q => q.JL_FlightTime),
@@ -3351,9 +3353,9 @@ namespace ApiReportFlight.Controllers
         public IHttpActionResult GetFlightsPaxDaily(DateTime df, DateTime dt)
         {
 
-            var Date = new DateTime(2025, 2, 1);
-            if (df >= Date || dt >= Date)
-                return Ok();
+            //var Date = new DateTime(2025, 2, 1);
+            //if (df >= Date || dt >= Date)
+            //    return Ok();
 
             var cmd = "select * from viewflightpax ";
             try

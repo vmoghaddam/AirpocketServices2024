@@ -39,21 +39,21 @@ using System.Net.Mail;
 namespace ApiMSG.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
-    public class OpsController : ApiController
+    public class RocketChatController : ApiController
     {
-
-        [Route("api/notify/ops/scheduling/duties")]
+        [Route("api/msg/rocketchat/notify/duties")]
         [AcceptVerbs("POST")]
-       // public IHttpActionResult GetNotifyTrnGroupExpiring(int m, int n)
-        public IHttpActionResult SMSDuties(/*List<int> Ids, DateTime date, string username = ""*/RosterSMSDto dto)
+        public async  Task<IHttpActionResult> PostNotifyDuties(RosterSMSDto dto)
         {
             try
             {
-                var ids = dto.Ids;
+                var context = new ppa_vareshEntities();
+
+                var Ids = dto.Ids;
                 var date = dto.Date.Date;
                 var username = dto.UserName;
-                var context = new ppa_vareshEntities();
-                var fdps =context.FDPs.Where(q => ids.Contains(q.Id) /*&& q.DutyType != 5000*/).ToList();
+
+                var fdps = context.FDPs.Where(q => Ids.Contains(q.Id) /*&& q.DutyType != 5000*/).ToList();
                 foreach (var f in fdps)
                 {
                     if (f.DateConfirmed == null)
@@ -64,89 +64,64 @@ namespace ApiMSG.Controllers
 
                 }
 
-                var query =  (from x in context.ViewCrewDuties
-                                   where ids.Contains(x.Id) /*&& x.DutyType != 5000*/
-                                   select new
-                                   {
-                                       x.DateLocal
+                var query = (from x in context.ViewDutiyRocketChats
+                             where Ids.Contains(x.Id) /*&& x.DutyType != 5000*/
+                             select new
+                             {
+                                 x.DateLocal
 ,
-                                       x.Start
+                                 x.Start
 ,
-                                       x.End
+                                 x.End
 ,
-                                       x.DutyType
+                                 x.DutyType
 ,
-                                       x.STDLocal
+                                 x.STDLocal
 ,
-                                       x.STALocal
+                                 x.STALocal
 ,
-                                       x.DutyTypeTitle
+                                 x.DutyTypeTitle
 ,
-                                       x.Route
+                                 x.Route
 ,
-                                       x.FltNo
+                                 x.FltNo
 ,
-                                       x.Remark
+                                 x.Remark
 ,
-                                       x.CanceledNo
+                                 x.CanceledNo
 ,
-                                       x.CanceledRoute
+                                 x.CanceledRoute
 ,
-                                       x.Remark2
+                                 x.Remark2
 
 ,
-                                       x.Mobile
+                                 x.Mobile
 ,
-                                       x.Name
+                                 x.Name
 ,
-                                       x.Id
+                                 x.Id
 ,
-                                       x.CrewId
-                                       ,x.Email
-                                   }
+                                 x.CrewId
+                                 ,x.user_id
+                                 ,x.user_name
+                             }
 
                                    ).Distinct().ToList();
                 var _fids = query.Select(q => (Nullable<int>)q.Id).ToList();
                 var histories = context.SMSHistories.Where(q => _fids.Contains(q.ResId)).ToList();
-                Magfa m = new Magfa();
-                Magfa m2 = new Magfa();
+
                 List<IdDel> iddels = new List<IdDel>();
                 var offs = new List<int>() { 100009, 100020, 100021, 100022, 100023 };
-
-                MailHelper mailHelper = new MailHelper();
-
-                //var smtp = new SmtpClient
-                //{
-                //    //EnableSsl=true,
-                //    Host = "aerok.tech",
-                //    Port = 25, //Convert.ToInt32(dispatchEmailPort),
-                //    EnableSsl = false,
-                //    //TargetName = "STARTTLS/Mail.flypersia.aero",
-                //    DeliveryMethod = SmtpDeliveryMethod.Network,
-                //    UseDefaultCredentials = false,
-                //    Credentials = new NetworkCredential("airpocket@flypersiaairlines.ir", "1234@aA"),
-
-                //};
-                //smtp.Timeout = 60000;
-
-
-
                 foreach (var x in query)
                 {
 
                     List<string> strs = new List<string>();
-                    List<string> strs_email = new List<string>();
                     List<string> token2s = new List<string>();
                     var token = "";
                     var token3 = "";
 
-                    strs.Add(ConfigurationManager.AppSettings["airline"] );
+                    strs.Add(ConfigurationManager.AppSettings["airline"] + " Airlines");
                     strs.Add("Dear " + x.Name + ",");
-
-                    strs_email.Add("<b>"+ConfigurationManager.AppSettings["airline"] +"</b>"+"<br/>");
-                    strs_email.Add("Dear " +"<b>"+ x.Name+"</b>" + "," + "<br/>");
-
-
                     token = x.Name;
 
                     var day = (DateTime)x.DateLocal;
@@ -154,7 +129,7 @@ namespace ApiMSG.Controllers
                     var _end = (DateTime)x.End;
                     if (x.DutyType == 1165)
                     {
-                        _start =( (DateTime)x.STDLocal).AddMinutes(-45);
+                        _start = (DateTime)x.STDLocal;
                         _end = (DateTime)x.STALocal;
                     }
                     var dayStr = day.ToString("ddd") + " " + day.Year + "-" + day.Month + "-" + day.Day;
@@ -166,9 +141,6 @@ namespace ApiMSG.Controllers
                         strs.Add(x.DutyTypeTitle);
                         strs.Add(dayStr);
 
-                        strs_email.Add("<b>"+x.DutyTypeTitle+"</b>"+"<br/>");
-                        strs_email.Add(dayStr + "<br/>");
-
                         token2s.Add(x.DutyTypeTitle);
                         token2s.Add(dayStr);
 
@@ -176,10 +148,6 @@ namespace ApiMSG.Controllers
                         {
                             strs.Add(x.Route);
                             strs.Add(x.FltNo);
-
-                            strs_email.Add(x.Route + "<br/>");
-                            strs_email.Add(x.FltNo + "<br/>");
-
 
                             token2s.Add(x.Route);
                             token2s.Add(x.FltNo);
@@ -190,15 +158,10 @@ namespace ApiMSG.Controllers
                             {
                                 strs.Add(x.Remark);
                                 token2s.Add(x.Remark);
-
-                                strs_email.Add(x.Remark+"<br/>");
                             }
                         }
                         strs.Add("Start " + _start.ToString("ddd yy-MMM-dd HH:mm"));
                         strs.Add("End " + _end.ToString("ddd yy-MMM-dd HH:mm"));
-
-                        strs_email.Add("Start " + _start.ToString("ddd yy-MMM-dd HH:mm") + "<br/>");
-                        strs_email.Add("End " + _end.ToString("ddd yy-MMM-dd HH:mm") + "<br/>");
 
                         token2s.Add("Start " + _start.ToString("ddd yy-MMM-dd HH:mm"));
                         token2s.Add("End " + _end.ToString("ddd yy-MMM-dd HH:mm"));
@@ -211,14 +174,6 @@ namespace ApiMSG.Controllers
                         strs.Add(x.CanceledRoute);
                         strs.Add(x.Remark2);
                         strs.Add(x.Remark);
-
-
-                        strs_email.Add("Canceling Notification" + "<br/>");
-                        strs_email.Add(dayStr + "<br/>");
-                        strs_email.Add(x.CanceledNo + "<br/>");
-                        strs_email.Add(x.CanceledRoute + "<br/>");
-                        strs_email.Add(x.Remark2 + "<br/>");
-                        strs_email.Add(x.Remark + "<br/>");
                         ////////////////
                         /// strs.Add("Canceling Notification");
                         token2s.Add(dayStr);
@@ -236,45 +191,12 @@ namespace ApiMSG.Controllers
                     strs.Add("Date Sent: " + datesent);
                     strs.Add("Crew Scheduling Department");
 
-                    strs_email.Add("Date Sent: " + datesent + "<br/>");
-                    strs_email.Add("<b>"+"Crew Scheduling Department"+"</b>");
-
                     var text = String.Join("\n", strs);
+                    /// var result9 = m.enqueue(1, x.Mobile, text)[0];
+                    var result9 = await PostDataAsync(x.user_name, text);
 
 
-                    long result9 = -1000;
-
-                    if (1 == 2)
-                        result9 = m.enqueue(1, x.Mobile, text)[0];
-
-
-                    var email_status = "";
-                    if (3==3 && !string.IsNullOrEmpty( x.Email))
-                    {
-                        var email_body = String.Join("\n", strs_email);
-                       // var fromAddress = new MailAddress("airpocket@flypersiaairlines.ir", "TRAINING DEPARTMENT");
-                       email_status= mailHelper.SendEmail(email_body, x.Email, x.Name, "Crew Scheduling Department", "Crew Scheduling Notification", "rai@aerok.tech");
-                        //using (var message = new MailMessage(fromAddress, new MailAddress(_man.Email, _man.Name))
-                        //{
-                        //    Subject = "Crew Scheduling Notification",
-                        //    Body = email_body,
-                        //    IsBodyHtml = true,
-
-
-                        //})
-
-                        //{
-
-                        //    // message.CC.Add("v.moghaddam59@gmail.com");
-                        //    message.CC.Add("itmng@flypersiaairlines.ir");
-                        //    smtp.Send(message);
-
-
-                        //}
-                    }
-
-                   
-                    var exist = histories.Where(q => q.ResId == x.Id).ToList();
+                     var exist = histories.Where(q => q.ResId == x.Id).ToList();
                     if (exist != null && exist.Count > 0)
                     {
                         // this.context.SMSHistories.Remove(exist);
@@ -286,13 +208,13 @@ namespace ApiMSG.Controllers
                         DateSent = DateTime.Now,
                         RecMobile = x.Mobile,
                         RecName = x.Name,
-                        Ref = result9.ToString(),
+                        Ref = "ROCKET CHAT "+ result9.ToString(),
                         Text = text,
-                        TypeId = 1,
+                        TypeId = 10,
                         ResId = x.Id,
                         ResFlts = !string.IsNullOrEmpty(x.FltNo) ? x.FltNo : x.Remark,
                         ResDate = date,
-                        ResStr =email_status, //"Queue",
+                        ResStr = "ROCKET CHAT ",
 
 
 
@@ -310,8 +232,8 @@ namespace ApiMSG.Controllers
                         FlightId = -1,
                         Message = text,
                         Pickup = null,
-                        RefId = result9.ToString(),
-                        Status =email_status, //"Queue",
+                        RefId = "ROCKET CHAT "+ result9.ToString(),
+                        Status = "ROCKET CHAT ",
                         Type = x.DutyType,
                         FDPId = x.Id,
                         DutyType = x.DutyTypeTitle,
@@ -331,40 +253,70 @@ namespace ApiMSG.Controllers
                         cps.Routes = x.CanceledRoute;
                     }
                     context.CrewPickupSMS.Add(cps);
-                    iddels.Add(new IdDel() { Id = x.Id, Ref = result9.ToString() });
+                    iddels.Add(new IdDel() { Id = x.Id, Ref = result9.ToString(), Username=x.user_name });
 
 
                 }
-                context.SaveChanges();
-                return Ok( iddels);
+
+               //context.SaveChanges();
+
+                return Ok(iddels);
+
             }
             catch (Exception ex)
             {
                 var msg = ex.Message;
                 if (ex.InnerException != null)
-                    msg += "    IN:" + ex.InnerException.Message;
-                return Ok( msg);
+                    msg += "   " + ex.InnerException.Message;
+                return Ok(msg);
             }
+
+
 
         }
 
+        [Route("api/msg/rocketchat/test")]
+        [AcceptVerbs("GET")]
+        public async Task<IHttpActionResult> GetTest()
+        {
+            var context = new ppa_vareshEntities();
+            var users=context.AspNetUsers.Select(q=>q.UserName).ToList();
+            List<IdDel> result=new List<IdDel>();
+            foreach (var user in users)
+            {
+                var result9 = await PostDataAsync(user, "TEST");
+                result.Add(new IdDel() { Username=user, Message=result9});
+            }
+            result=result.Where(q=>q.Message.Contains("Bad Request")).OrderBy(q=>q.Username).ToList();
+            return Ok(result.Select(q=>q.Username).ToList());
+        }
+        public static async Task<string> PostDataAsync(  string username, string text)
+        {
+            string url = "https://chat.avaair.ir/hooks/68248e66e4b014b555ce42c7/XPMrY5PnJmsQgaZJMFGCCapZpmhKJfZHkveWHMir7Hs8Fmpb";
+            var values = new Dictionary<string, string>
+            {
+              { "username", username.ToLower() },
+              { "text", text }
+            };
 
+            var content = new FormUrlEncodedContent(values);
+
+            using (var client = new HttpClient())
+            {
+                try
+                {
+                    var response = await client.PostAsync(url, content);
+                    response.EnsureSuccessStatusCode(); // اگر وضعیت HTTP موفق نباشد، خطا می‌دهد
+                    return await response.Content.ReadAsStringAsync();
+                }
+                catch (HttpRequestException ex)
+                {
+                    return ex.Message ;
+                }
+            }
+        }
     }
 
-    public class RosterSMSDto
-    {
-        public List<int> Ids { get; set; }
-        public DateTime Date { get; set; }
-        public string UserName { get; set; }
-    }
-    public class IdDel
-    {
-        public int Id { get; set; }
-        public string Ref { get; set; }
-        public string Status { get; set; }
-        public string Message { get; set; }
-        public string TypeStr { get; set; }
-        public string Username { get; set; }
 
-    }
+
 }

@@ -688,7 +688,7 @@ namespace ApiCAO.Controllers
                             log.Response = result;
                         }
 
-                        System.Threading.Thread.Sleep(200);
+                        System.Threading.Thread.Sleep(500);
                     }
                     catch (Exception exxxs)
                     {
