@@ -119,8 +119,8 @@ namespace ApiFDM.Models
         public int id { get; set; }
         public Nullable<int> fdm_id { get; set; }
     
-        public virtual FDM FDM { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<fdm_crew> fdm_crew { get; set; }
+        public virtual FDM FDM { get; set; }
     }
 }

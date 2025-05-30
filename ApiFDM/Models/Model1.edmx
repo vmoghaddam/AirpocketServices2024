@@ -92,7 +92,7 @@
           <Property Name="P2" Type="varchar" MaxLength="255" />
           <Property Name="Phase" Type="varchar" MaxLength="255" />
           <Property Name="StateName" Type="varchar" MaxLength="255" />
-          <Property Name="Context" Type="nvarchar(max)" />
+          <Property Name="Context" Type="varchar" MaxLength="1000" />
           <Property Name="Type" Type="varchar" MaxLength="255" />
           <Property Name="TODatetime" Type="datetime2" Precision="0" />
           <Property Name="Units" Type="varchar" MaxLength="255" />
@@ -134,22 +134,22 @@
           <Property Name="Confirmation" Type="bit" />
           <Property Name="ValidationPerson" Type="varchar" MaxLength="500" />
           <Property Name="ConfirmationPerson" Type="varchar" MaxLength="500" />
-          <Property Name="PIC" Type="varchar" MaxLength="255" />
-          <Property Name="FlightNo" Type="varchar" MaxLength="255" />
-          <Property Name="MainParameter" Type="varchar" MaxLength="255" />
+          <Property Name="PIC" Type="varchar" MaxLength="500" />
+          <Property Name="FlightNo" Type="varchar" MaxLength="500" />
+          <Property Name="MainParameter" Type="varchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="fdm_crew">
           <Key>
-            <PropertyRef Name="event_id" />
+            <PropertyRef Name="processed_id" />
             <PropertyRef Name="crew_id" />
           </Key>
-          <Property Name="event_id" Type="int" Nullable="false" />
+          <Property Name="processed_id" Type="int" Nullable="false" />
           <Property Name="crew_id" Type="int" Nullable="false" />
           <Property Name="first_name" Type="varchar" MaxLength="500" />
           <Property Name="last_name" Type="varchar" MaxLength="500" />
           <Property Name="name" Type="varchar" MaxLength="500" />
           <Property Name="rank" Type="varchar" MaxLength="255" />
-          <Property Name="rank_id" Type="int" />
+          <Property Name="rank_code" Type="int" />
           <Property Name="position" Type="varchar" MaxLength="500" />
           <Property Name="remark" Type="varchar" MaxLength="1000" />
           <Property Name="reserved1" Type="varchar" MaxLength="255" />
@@ -164,7 +164,7 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="flight_id" Type="int" Nullable="false" />
+          <Property Name="flight_id" Type="int" />
           <Property Name="date_std" Type="date" />
           <Property Name="date_offblock" Type="date" />
           <Property Name="std" Type="datetime" />
@@ -175,10 +175,10 @@
           <Property Name="onblock" Type="datetime" />
           <Property Name="flight_number" Type="nvarchar" MaxLength="50" />
           <Property Name="register_id" Type="int" />
-          <Property Name="register" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="register" Type="nvarchar" MaxLength="50" />
           <Property Name="ac_type_id" Type="int" />
           <Property Name="ac_type" Type="nvarchar" MaxLength="255" />
-          <Property Name="ac_type2" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="ac_type2" Type="varchar" MaxLength="6" />
           <Property Name="flight_status_id" Type="int" />
           <Property Name="dep_id" Type="int" />
           <Property Name="dep_iata" Type="nvarchar" MaxLength="255" />
@@ -243,24 +243,25 @@
           <Property Name="main_parameter" Type="varchar" MaxLength="255" />
           <Property Name="date" Type="datetime2" Precision="0" />
           <Property Name="file_name" Type="varchar" MaxLength="255" />
-          <Property Name="Removed" Type="bit" />
-          <Property Name="DateRemoved" Type="datetime2" Precision="0" />
-          <Property Name="RemovedBy" Type="nvarchar" MaxLength="255" />
-          <Property Name="DateCreate" Type="datetime2" Precision="0" />
-          <Property Name="Published" Type="bit" />
-          <Property Name="PublishedBy" Type="nvarchar" MaxLength="255" />
-          <Property Name="Deleted" Type="bit" />
-          <Property Name="Approved" Type="bit" />
-          <Property Name="ApprovedBy" Type="nvarchar" MaxLength="255" />
-          <Property Name="DateApproved" Type="datetime2" Precision="0" />
-          <Property Name="IsLocked" Type="bit" />
-          <Property Name="IsLockedDate" Type="datetime2" Precision="7" />
-          <Property Name="IsVisible" Type="bit" />
-          <Property Name="IsVisibleDate" Type="datetime2" Precision="7" />
-          <Property Name="Confirmation" Type="bit" />
-          <Property Name="ValidationPerson" Type="varchar" MaxLength="500" />
-          <Property Name="ConfirmationPerson" Type="varchar" MaxLength="500" />
+          <Property Name="removed" Type="bit" />
+          <Property Name="date_removed" Type="datetime2" Precision="0" />
+          <Property Name="removed_by" Type="nvarchar" MaxLength="255" />
+          <Property Name="date_create" Type="datetime2" Precision="0" />
+          <Property Name="published" Type="bit" />
+          <Property Name="published_by" Type="nvarchar" MaxLength="255" />
+          <Property Name="deleted" Type="bit" />
+          <Property Name="approved" Type="bit" />
+          <Property Name="approved_by" Type="nvarchar" MaxLength="255" />
+          <Property Name="date_approved" Type="datetime2" Precision="0" />
+          <Property Name="is_locked" Type="bit" />
+          <Property Name="is_locked_date" Type="datetime2" Precision="7" />
+          <Property Name="is_visible" Type="bit" />
+          <Property Name="is_visible_date" Type="datetime2" Precision="7" />
+          <Property Name="confirmation" Type="bit" />
+          <Property Name="validation_person" Type="varchar" MaxLength="500" />
+          <Property Name="confirmation_person" Type="varchar" MaxLength="500" />
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fdm_id" Type="int" />
         </EntityType>
         <EntityType Name="FDMCptMonthlyTBL">
           <Key>
@@ -589,9 +590,20 @@
           <Property Name="FuelUsedEng2" Type="int" />
           <Property Name="ACTUALTANKERINGFUEL" Type="int" />
           <Property Name="LTR2" Type="varchar" MaxLength="255" />
+          <Property Name="FuelRemaining" Type="int" />
+          <Property Name="FuelUplift" Type="int" />
+          <Property Name="FuelTotal" Type="int" />
+          <Property Name="FuelRemained" Type="int" />
+          <Property Name="FuelUsed" Type="int" />
+          <Property Name="FuelUpliftLitr" Type="int" />
+          <Property Name="CCPreFlightCheckRemark" Type="varchar" MaxLength="1000" />
+          <Property Name="FlightTypeOPS" Type="varchar" MaxLength="500" />
+          <Property Name="AttForms" Type="varchar" MaxLength="500" />
+          <Property Name="PaxMale" Type="int" />
+          <Property Name="PaxFemale" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPACSPN.dbo.AppLeg' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'EPACSPN25.dbo.AppLeg' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="AppLeg">
           <Key>
             <PropertyRef Name="ID" />
@@ -788,7 +800,7 @@ warning 6002: The table/view 'EPACSPN.dbo.AppLeg' does not have a primary key de
           <Property Name="AircraftModel" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPACSPN.dbo.FDMAirportMonthly' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'EPACSPN25.dbo.FDMAirportMonthly' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="FDMAirportMonthly">
           <Key>
             <PropertyRef Name="Month" />
@@ -813,7 +825,7 @@ warning 6002: The table/view 'EPACSPN.dbo.FDMAirportMonthly' does not have a pri
           <Property Name="Route" Type="nvarchar" MaxLength="513" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPACSPN.dbo.FDMAVG' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'EPACSPN25.dbo.FDMAVG' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="FDMAVG">
           <Key>
             <PropertyRef Name="Validity" />
@@ -822,7 +834,7 @@ warning 6002: The table/view 'EPACSPN.dbo.FDMAVG' does not have a primary key de
           <Property Name="ScorePerEvent" Type="numeric" Precision="24" Scale="12" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPACSPN.dbo.FDMCptAirportEventMonthly' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'EPACSPN25.dbo.FDMCptAirportEventMonthly' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="FDMCptAirportEventMonthly">
           <Key>
             <PropertyRef Name="Year" />
@@ -844,7 +856,7 @@ warning 6002: The table/view 'EPACSPN.dbo.FDMCptAirportEventMonthly' does not ha
           <Property Name="PF" Type="varchar" MaxLength="255" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPACSPN.dbo.FDMCptAirportMonthly' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'EPACSPN25.dbo.FDMCptAirportMonthly' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="FDMCptAirportMonthly">
           <Key>
             <PropertyRef Name="Year" />
@@ -874,7 +886,7 @@ warning 6002: The table/view 'EPACSPN.dbo.FDMCptAirportMonthly' does not have a 
           <Property Name="P2Id" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPACSPN.dbo.FDMCptAll' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'EPACSPN25.dbo.FDMCptAll' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="FDMCptAll">
           <Key>
             <PropertyRef Name="Month" />
@@ -902,7 +914,7 @@ warning 6002: The table/view 'EPACSPN.dbo.FDMCptAll' does not have a primary key
           <Property Name="LowScore" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPACSPN.dbo.FDMCptAnnually' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'EPACSPN25.dbo.FDMCptAnnually' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="FDMCptAnnually">
           <Key>
             <PropertyRef Name="CptName" />
@@ -923,7 +935,7 @@ warning 6002: The table/view 'EPACSPN.dbo.FDMCptAnnually' does not have a primar
           <Property Name="FaultPercentagePerFlight" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPACSPN.dbo.FDMCptEventDaily' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'EPACSPN25.dbo.FDMCptEventDaily' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="FDMCptEventDaily">
           <Key>
             <PropertyRef Name="CptId" />
@@ -942,7 +954,7 @@ warning 6002: The table/view 'EPACSPN.dbo.FDMCptEventDaily' does not have a prim
           <Property Name="Score" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPACSPN.dbo.FDMCptEventMonthly' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'EPACSPN25.dbo.FDMCptEventMonthly' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="FDMCptEventMonthly">
           <Key>
             <PropertyRef Name="CptId" />
@@ -968,7 +980,7 @@ warning 6002: The table/view 'EPACSPN.dbo.FDMCptEventMonthly' does not have a pr
           <Property Name="LowScore" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPACSPN.dbo.FDMCptFoMonthly' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'EPACSPN25.dbo.FDMCptFoMonthly' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="FDMCptFoMonthly">
           <Key>
             <PropertyRef Name="P1Id" />
@@ -999,7 +1011,7 @@ warning 6002: The table/view 'EPACSPN.dbo.FDMCptFoMonthly' does not have a prima
           <Property Name="LowScore" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPACSPN.dbo.FDMCptIpMonthly' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'EPACSPN25.dbo.FDMCptIpMonthly' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="FDMCptIpMonthly">
           <Key>
             <PropertyRef Name="P1Code" />
@@ -1028,7 +1040,7 @@ warning 6002: The table/view 'EPACSPN.dbo.FDMCptIpMonthly' does not have a prima
           <Property Name="LowScore" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPACSPN.dbo.FDMCptMonthly' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'EPACSPN25.dbo.FDMCptMonthly' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="FDMCptMonthly">
           <Key>
             <PropertyRef Name="CptId" />
@@ -1055,7 +1067,7 @@ warning 6002: The table/view 'EPACSPN.dbo.FDMCptMonthly' does not have a primary
           <Property Name="LowScore" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPACSPN.dbo.FDMDaily' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'EPACSPN25.dbo.FDMDaily' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="FDMDaily">
           <Key>
             <PropertyRef Name="year" />
@@ -1075,7 +1087,7 @@ warning 6002: The table/view 'EPACSPN.dbo.FDMDaily' does not have a primary key 
           <Property Name="ScorePerEvent" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPACSPN.dbo.FDMEventDaily' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'EPACSPN25.dbo.FDMEventDaily' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="FDMEventDaily">
           <Key>
             <PropertyRef Name="FlightDate" />
@@ -1088,7 +1100,7 @@ warning 6002: The table/view 'EPACSPN.dbo.FDMEventDaily' does not have a primary
           <Property Name="LowCount" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPACSPN.dbo.FDMEventMonthly' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'EPACSPN25.dbo.FDMEventMonthly' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="FDMEventMonthly">
           <Key>
             <PropertyRef Name="Month" />
@@ -1109,7 +1121,7 @@ warning 6002: The table/view 'EPACSPN.dbo.FDMEventMonthly' does not have a prima
           <Property Name="FlightCount" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPACSPN.dbo.FDMFoEventMonthly' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'EPACSPN25.dbo.FDMFoEventMonthly' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="FDMFoEventMonthly">
           <Key>
             <PropertyRef Name="P2Code" />
@@ -1128,17 +1140,14 @@ warning 6002: The table/view 'EPACSPN.dbo.FDMFoEventMonthly' does not have a pri
           <Property Name="Score" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPACSPN.dbo.FDMFoMonthly' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6013: The table/view 'EPACSPN25.dbo.FDMFoMonthly' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
         <EntityType Name="FDMFoMonthly">
-          <Key>
-            <PropertyRef Name="P2Code" />
-          </Key>
           <Property Name="Month" Type="int" />
           <Property Name="Year" Type="int" />
           <Property Name="YearMonth" Type="int" />
           <Property Name="P2Name" Type="varchar" MaxLength="500" />
           <Property Name="P2Id" Type="int" />
-          <Property Name="P2Code" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="P2Code" Type="varchar" MaxLength="500" />
           <Property Name="FlightCount" Type="int" />
           <Property Name="EventCount" Type="int" />
           <Property Name="HighCount" Type="int" />
@@ -1151,9 +1160,9 @@ warning 6002: The table/view 'EPACSPN.dbo.FDMFoMonthly' does not have a primary 
           <Property Name="HighScore" Type="int" />
           <Property Name="MediumScore" Type="int" />
           <Property Name="LowScore" Type="int" />
-        </EntityType>
+        </EntityType>-->
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPACSPN.dbo.FDMMonthly' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'EPACSPN25.dbo.FDMMonthly' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="FDMMonthly">
           <Key>
             <PropertyRef Name="Year" />
@@ -1173,7 +1182,7 @@ warning 6002: The table/view 'EPACSPN.dbo.FDMMonthly' does not have a primary ke
           <Property Name="ScorePerEvent" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPACSPN.dbo.FDMPhaseDetailByEvent' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'EPACSPN25.dbo.FDMPhaseDetailByEvent' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="FDMPhaseDetailByEvent">
           <Key>
             <PropertyRef Name="Id" />
@@ -1226,7 +1235,7 @@ warning 6002: The table/view 'EPACSPN.dbo.FDMPhaseDetailByEvent' does not have a
           <Property Name="Critical" Type="float" />
           <Property Name="TDDatetime" Type="datetime2" Precision="0" />
           <Property Name="StateName" Type="varchar" MaxLength="255" />
-          <Property Name="Context" Type="nvarchar(max)" />
+          <Property Name="Context" Type="varchar" MaxLength="255" />
           <Property Name="Type" Type="varchar" MaxLength="255" />
           <Property Name="TODatetime" Type="datetime2" Precision="0" />
           <Property Name="Units" Type="varchar" MaxLength="255" />
@@ -1235,10 +1244,10 @@ warning 6002: The table/view 'EPACSPN.dbo.FDMPhaseDetailByEvent' does not have a
           <Property Name="Duration" Type="time" Precision="7" />
           <Property Name="Remark" Type="varchar" MaxLength="500" />
           <Property Name="Validity" Type="int" />
-          <Property Name="MainParameter" Type="varchar" MaxLength="255" />
+          <Property Name="MainParameter" Type="varchar" MaxLength="500" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPACSPN.dbo.FDMPhaseDetailByFlight' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'EPACSPN25.dbo.FDMPhaseDetailByFlight' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="FDMPhaseDetailByFlight">
           <Key>
             <PropertyRef Name="Phase" />
@@ -1266,7 +1275,7 @@ warning 6002: The table/view 'EPACSPN.dbo.FDMPhaseDetailByFlight' does not have 
           <Property Name="RouteIATA" Type="nvarchar" MaxLength="511" />
           <Property Name="Register" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="RegisterID" Type="int" Nullable="false" />
-          <Property Name="AircraftType" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="AircraftType" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="Month" Type="int" Nullable="false" />
           <Property Name="Year" Type="int" Nullable="false" />
           <Property Name="Date" Type="date" />
@@ -1284,7 +1293,7 @@ warning 6002: The table/view 'EPACSPN.dbo.FDMPhaseDetailByFlight' does not have 
           <Property Name="LowScore" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPACSPN.dbo.FDMPhaseDetailCrewByEvent' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'EPACSPN25.dbo.FDMPhaseDetailCrewByEvent' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="FDMPhaseDetailCrewByEvent">
           <Key>
             <PropertyRef Name="Id" />
@@ -1318,7 +1327,7 @@ warning 6002: The table/view 'EPACSPN.dbo.FDMPhaseDetailCrewByEvent' does not ha
           <Property Name="RouteIATA" Type="nvarchar" MaxLength="511" />
           <Property Name="Register" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="RegisterID" Type="int" Nullable="false" />
-          <Property Name="AircraftType" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="AircraftType" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="Month" Type="int" Nullable="false" />
           <Property Name="Year" Type="int" Nullable="false" />
           <Property Name="Date" Type="date" />
@@ -1342,7 +1351,7 @@ warning 6002: The table/view 'EPACSPN.dbo.FDMPhaseDetailCrewByEvent' does not ha
           <Property Name="Critical" Type="float" />
           <Property Name="TDDatetime" Type="datetime2" Precision="0" />
           <Property Name="StateName" Type="varchar" MaxLength="255" />
-          <Property Name="Context" Type="nvarchar(max)" />
+          <Property Name="Context" Type="varchar" MaxLength="255" />
           <Property Name="Type" Type="varchar" MaxLength="255" />
           <Property Name="TODatetime" Type="datetime2" Precision="0" />
           <Property Name="Units" Type="varchar" MaxLength="255" />
@@ -1351,10 +1360,10 @@ warning 6002: The table/view 'EPACSPN.dbo.FDMPhaseDetailCrewByEvent' does not ha
           <Property Name="Duration" Type="time" Precision="7" />
           <Property Name="Remark" Type="varchar" MaxLength="500" />
           <Property Name="Validity" Type="int" />
-          <Property Name="MainParameter" Type="varchar" MaxLength="255" />
+          <Property Name="MainParameter" Type="varchar" MaxLength="500" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPACSPN.dbo.FDMPhaseDetailDaily' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'EPACSPN25.dbo.FDMPhaseDetailDaily' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="FDMPhaseDetailDaily">
           <Key>
             <PropertyRef Name="Phase" />
@@ -1379,7 +1388,7 @@ warning 6002: The table/view 'EPACSPN.dbo.FDMPhaseDetailDaily' does not have a p
           <Property Name="RouteIATA" Type="nvarchar" MaxLength="511" />
           <Property Name="Register" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="RegisterID" Type="int" Nullable="false" />
-          <Property Name="AircraftType" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="AircraftType" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="Month" Type="int" Nullable="false" />
           <Property Name="Year" Type="int" Nullable="false" />
           <Property Name="Date" Type="date" />
@@ -1397,7 +1406,7 @@ warning 6002: The table/view 'EPACSPN.dbo.FDMPhaseDetailDaily' does not have a p
           <Property Name="LowScore" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPACSPN.dbo.FDMPhaseMonthly' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'EPACSPN25.dbo.FDMPhaseMonthly' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="FDMPhaseMonthly">
           <Key>
             <PropertyRef Name="Phase" />
@@ -1423,7 +1432,7 @@ warning 6002: The table/view 'EPACSPN.dbo.FDMPhaseMonthly' does not have a prima
           <Property Name="LowScore" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPACSPN.dbo.FDMPhaseMonthlyNoCrew' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'EPACSPN25.dbo.FDMPhaseMonthlyNoCrew' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="FDMPhaseMonthlyNoCrew">
           <Key>
             <PropertyRef Name="Phase" />
@@ -1444,49 +1453,7 @@ warning 6002: The table/view 'EPACSPN.dbo.FDMPhaseMonthlyNoCrew' does not have a
           <Property Name="LowScore" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPACSPN.dbo.FDMPhaseRouteMonthly' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="FDMPhaseRouteMonthly">
-          <Key>
-            <PropertyRef Name="Phase" />
-            <PropertyRef Name="FromICAO" />
-            <PropertyRef Name="ToICAO" />
-            <PropertyRef Name="FromIATA" />
-            <PropertyRef Name="ToIATA" />
-            <PropertyRef Name="Register" />
-            <PropertyRef Name="RegisterID" />
-            <PropertyRef Name="AircraftType" />
-            <PropertyRef Name="Month" />
-            <PropertyRef Name="Year" />
-            <PropertyRef Name="Name" />
-            <PropertyRef Name="CrewId" />
-          </Key>
-          <Property Name="Phase" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="FromICAO" Type="nvarchar" MaxLength="255" Nullable="false" />
-          <Property Name="ToICAO" Type="nvarchar" MaxLength="255" Nullable="false" />
-          <Property Name="FromIATA" Type="nvarchar" MaxLength="255" Nullable="false" />
-          <Property Name="ToIATA" Type="nvarchar" MaxLength="255" Nullable="false" />
-          <Property Name="RouteICAO" Type="nvarchar" MaxLength="511" />
-          <Property Name="RouteIATA" Type="nvarchar" MaxLength="511" />
-          <Property Name="Register" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="RegisterID" Type="int" Nullable="false" />
-          <Property Name="AircraftType" Type="varchar" MaxLength="6" Nullable="false" />
-          <Property Name="Month" Type="int" Nullable="false" />
-          <Property Name="Year" Type="int" Nullable="false" />
-          <Property Name="YearMonth" Type="int" />
-          <Property Name="Name" Type="nvarchar" MaxLength="1003" Nullable="false" />
-          <Property Name="CrewId" Type="int" Nullable="false" />
-          <Property Name="JobGroup" Type="nvarchar" MaxLength="500" />
-          <Property Name="EventCount" Type="int" />
-          <Property Name="HighCount" Type="int" />
-          <Property Name="MediumCount" Type="int" />
-          <Property Name="LowCount" Type="int" />
-          <Property Name="Score" Type="int" />
-          <Property Name="HighScore" Type="int" />
-          <Property Name="MediumScore" Type="int" />
-          <Property Name="LowScore" Type="int" />
-        </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'EPACSPN.dbo.FDMRegCptDaily ' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'EPACSPN25.dbo.FDMRegCptDaily ' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="FDMRegCptDaily ">
           <Key>
             <PropertyRef Name="CptId" />
@@ -1506,7 +1473,7 @@ warning 6002: The table/view 'EPACSPN.dbo.FDMRegCptDaily ' does not have a prima
           <Property Name="Score" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPACSPN.dbo.FDMRegCptMonthly' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'EPACSPN25.dbo.FDMRegCptMonthly' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="FDMRegCptMonthly">
           <Key>
             <PropertyRef Name="CptName" />
@@ -1529,7 +1496,7 @@ warning 6002: The table/view 'EPACSPN.dbo.FDMRegCptMonthly' does not have a prim
           <Property Name="Score" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPACSPN.dbo.FDMRegDaily' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'EPACSPN25.dbo.FDMRegDaily' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="FDMRegDaily">
           <Key>
             <PropertyRef Name="FlightDate" />
@@ -1545,7 +1512,7 @@ warning 6002: The table/view 'EPACSPN.dbo.FDMRegDaily' does not have a primary k
           <Property Name="Score" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPACSPN.dbo.FDMRegEventMonthly' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'EPACSPN25.dbo.FDMRegEventMonthly' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="FDMRegEventMonthly">
           <Key>
             <PropertyRef Name="registerId" />
@@ -1566,7 +1533,7 @@ warning 6002: The table/view 'EPACSPN.dbo.FDMRegEventMonthly' does not have a pr
           <Property Name="Score" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPACSPN.dbo.FDMRegFoMonthly' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'EPACSPN25.dbo.FDMRegFoMonthly' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="FDMRegFoMonthly">
           <Key>
             <PropertyRef Name="Month" />
@@ -1590,7 +1557,7 @@ warning 6002: The table/view 'EPACSPN.dbo.FDMRegFoMonthly' does not have a prima
           <Property Name="Score" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPACSPN.dbo.FDMRegMonthly' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'EPACSPN25.dbo.FDMRegMonthly' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="FDMRegMonthly">
           <Key>
             <PropertyRef Name="RegisterId" />
@@ -1610,7 +1577,7 @@ warning 6002: The table/view 'EPACSPN.dbo.FDMRegMonthly' does not have a primary
           <Property Name="ScorePerFlight" Type="numeric" Precision="25" Scale="12" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPACSPN.dbo.helper_fdm' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'EPACSPN25.dbo.helper_fdm' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="helper_fdm">
           <Key>
             <PropertyRef Name="flight_id" />
@@ -1676,7 +1643,143 @@ warning 6002: The table/view 'EPACSPN.dbo.helper_fdm' does not have a primary ke
           <Property Name="ip2_rank" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPACSPN.dbo.ViewFDM' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'EPACSPN25.dbo.view_fdm_flight_crew' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_fdm_flight_crew">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="Register" />
+            <PropertyRef Name="ac_type2" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="JobGroup" />
+            <PropertyRef Name="JobGroupCode" />
+            <PropertyRef Name="dep_id" />
+            <PropertyRef Name="arr_id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="RegisterID" Type="int" />
+          <Property Name="Register" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ac_type2" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="STD" Type="datetime" />
+          <Property Name="STA" Type="datetime" />
+          <Property Name="CrewId" Type="int" />
+          <Property Name="Name" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="JobGroup" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="JobGroupCode" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="Position" Type="varchar" MaxLength="255" />
+          <Property Name="dep_id" Type="int" Nullable="false" />
+          <Property Name="dep_iata" Type="nvarchar" MaxLength="255" />
+          <Property Name="dep_icao" Type="nvarchar" MaxLength="255" />
+          <Property Name="arr_id" Type="int" Nullable="false" />
+          <Property Name="arr_iata" Type="nvarchar" MaxLength="255" />
+          <Property Name="arr_icao" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EPACSPN25.dbo.view_fdm_processed' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_fdm_processed">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="flight_id" Type="int" />
+          <Property Name="date_std" Type="date" />
+          <Property Name="date_offblock" Type="date" />
+          <Property Name="std" Type="datetime" />
+          <Property Name="sta" Type="datetime" />
+          <Property Name="takeoff" Type="datetime" />
+          <Property Name="landing" Type="datetime" />
+          <Property Name="offblock" Type="datetime" />
+          <Property Name="onblock" Type="datetime" />
+          <Property Name="flight_number" Type="nvarchar" MaxLength="50" />
+          <Property Name="register_id" Type="int" />
+          <Property Name="register" Type="nvarchar" MaxLength="50" />
+          <Property Name="ac_type_id" Type="int" />
+          <Property Name="ac_type" Type="nvarchar" MaxLength="255" />
+          <Property Name="ac_type2" Type="varchar" MaxLength="4" />
+          <Property Name="flight_status_id" Type="int" />
+          <Property Name="dep_id" Type="int" />
+          <Property Name="dep_iata" Type="nvarchar" MaxLength="255" />
+          <Property Name="dep_icao" Type="nvarchar" MaxLength="255" />
+          <Property Name="arr_id" Type="int" />
+          <Property Name="arr_iata" Type="nvarchar" MaxLength="255" />
+          <Property Name="arr_icao" Type="nvarchar" MaxLength="255" />
+          <Property Name="time_scheduled" Type="int" />
+          <Property Name="time_block" Type="int" />
+          <Property Name="time_flight" Type="int" />
+          <Property Name="pflr" Type="int" />
+          <Property Name="pf" Type="varchar" MaxLength="255" />
+          <Property Name="cpt1_id" Type="int" />
+          <Property Name="cpt1_first_name" Type="nvarchar" MaxLength="500" />
+          <Property Name="cpt1_last_name" Type="nvarchar" MaxLength="500" />
+          <Property Name="cpt1_scheduled_name" Type="varchar" MaxLength="500" />
+          <Property Name="cpt1_rank" Type="nvarchar" MaxLength="500" />
+          <Property Name="cpt2_id" Type="int" />
+          <Property Name="cpt2_first_name" Type="nvarchar" MaxLength="500" />
+          <Property Name="cpt2_last_name" Type="nvarchar" MaxLength="500" />
+          <Property Name="cpt2_scheduled_name" Type="varchar" MaxLength="500" />
+          <Property Name="cpt2_rank" Type="nvarchar" MaxLength="500" />
+          <Property Name="fo1_id" Type="int" />
+          <Property Name="fo1_first_name" Type="nvarchar" MaxLength="500" />
+          <Property Name="fo1_last_name" Type="nvarchar" MaxLength="500" />
+          <Property Name="fo1_scheduled_name" Type="varchar" MaxLength="500" />
+          <Property Name="fo1_rank" Type="nvarchar" MaxLength="500" />
+          <Property Name="fo2_id" Type="int" />
+          <Property Name="fo2_first_name" Type="nvarchar" MaxLength="500" />
+          <Property Name="fo2_last_name" Type="nvarchar" MaxLength="500" />
+          <Property Name="fo2_scheduled_name" Type="varchar" MaxLength="500" />
+          <Property Name="fo2_rank" Type="nvarchar" MaxLength="500" />
+          <Property Name="ip1_id" Type="int" />
+          <Property Name="ip1_first_name" Type="nvarchar" MaxLength="500" />
+          <Property Name="ip1_last_name" Type="nvarchar" MaxLength="500" />
+          <Property Name="ip1_scheduled_name" Type="varchar" MaxLength="500" />
+          <Property Name="ip1_rank" Type="nvarchar" MaxLength="500" />
+          <Property Name="ip2_id" Type="int" />
+          <Property Name="ip2_first_name" Type="nvarchar" MaxLength="500" />
+          <Property Name="ip2_last_name" Type="nvarchar" MaxLength="500" />
+          <Property Name="ip2_scheduled_name" Type="varchar" MaxLength="500" />
+          <Property Name="ip2_rank" Type="nvarchar" MaxLength="500" />
+          <Property Name="severity" Type="varchar" MaxLength="255" />
+          <Property Name="event_name" Type="varchar" MaxLength="255" />
+          <Property Name="value" Type="nvarchar" MaxLength="53" />
+          <Property Name="minor" Type="float" />
+          <Property Name="major" Type="float" />
+          <Property Name="critical" Type="float" />
+          <Property Name="td_date" Type="datetime2" Precision="0" />
+          <Property Name="phase" Type="varchar" MaxLength="255" />
+          <Property Name="state_name" Type="varchar" MaxLength="255" />
+          <Property Name="context" Type="nvarchar(max)" />
+          <Property Name="type" Type="varchar" MaxLength="255" />
+          <Property Name="to_date" Type="datetime2" Precision="0" />
+          <Property Name="units" Type="varchar" MaxLength="255" />
+          <Property Name="value_name" Type="varchar" MaxLength="255" />
+          <Property Name="key" Type="varchar" MaxLength="255" />
+          <Property Name="limit" Type="varchar" MaxLength="53" />
+          <Property Name="duration" Type="time" Precision="7" />
+          <Property Name="remark" Type="varchar" MaxLength="500" />
+          <Property Name="validity" Type="int" />
+          <Property Name="main_parameter" Type="varchar" MaxLength="255" />
+          <Property Name="date" Type="datetime2" Precision="0" />
+          <Property Name="file_name" Type="varchar" MaxLength="255" />
+          <Property Name="removed" Type="bit" />
+          <Property Name="date_removed" Type="datetime2" Precision="0" />
+          <Property Name="removed_by" Type="nvarchar" MaxLength="255" />
+          <Property Name="date_create" Type="datetime2" Precision="0" />
+          <Property Name="published" Type="bit" />
+          <Property Name="published_by" Type="nvarchar" MaxLength="255" />
+          <Property Name="deleted" Type="bit" />
+          <Property Name="approved" Type="bit" />
+          <Property Name="approved_by" Type="nvarchar" MaxLength="255" />
+          <Property Name="date_approved" Type="datetime2" Precision="0" />
+          <Property Name="is_locked" Type="bit" />
+          <Property Name="is_locked_date" Type="datetime2" Precision="7" />
+          <Property Name="is_visible" Type="bit" />
+          <Property Name="is_visible_date" Type="datetime2" Precision="7" />
+          <Property Name="confirmation" Type="bit" />
+          <Property Name="validation_person" Type="varchar" MaxLength="500" />
+          <Property Name="confirmation_person" Type="varchar" MaxLength="500" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fdm_id" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EPACSPN25.dbo.ViewFDM' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewFDM">
           <Key>
             <PropertyRef Name="Id" />
@@ -1709,7 +1812,7 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewFDM' does not have a primary key d
           <Property Name="FlightTime" Type="int" />
           <Property Name="PF" Type="varchar" MaxLength="255" />
           <Property Name="FlightNumber" Type="nvarchar" MaxLength="50" />
-          <Property Name="Context" Type="nvarchar(max)" />
+          <Property Name="Context" Type="varchar" MaxLength="255" />
           <Property Name="Critical" Type="float" />
           <Property Name="Date" Type="datetime2" Precision="0" />
           <Property Name="Duration" Type="time" Precision="7" />
@@ -1738,15 +1841,15 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewFDM' does not have a primary key d
           <Property Name="Confirmation" Type="bit" />
           <Property Name="ValidationPerson" Type="varchar" MaxLength="500" />
           <Property Name="ConfirmationPerson" Type="varchar" MaxLength="500" />
-          <Property Name="MainParameter" Type="varchar" MaxLength="255" />
-          <Property Name="PIC" Type="varchar" MaxLength="255" />
+          <Property Name="MainParameter" Type="varchar" MaxLength="500" />
+          <Property Name="PIC" Type="varchar" MaxLength="50" />
           <Property Name="ResponsibleId" Type="int" />
           <Property Name="Responsible" Type="varchar" MaxLength="500" />
           <Property Name="Status" Type="varchar" MaxLength="9" Nullable="false" />
           <Property Name="ValidityStatus" Type="varchar" MaxLength="8" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'EPACSPN25.dbo.ViewLegTime' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewLegTime">
           <Key>
             <PropertyRef Name="ID" />
@@ -1898,6 +2001,18 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__fdm_proce__fdm_i__6C63F2D5">
+          <End Role="FDM" Type="Self.FDM" Multiplicity="0..1" />
+          <End Role="fdm_processed" Type="Self.fdm_processed" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FDM">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="fdm_processed">
+              <PropertyRef Name="fdm_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_fdm_crew_event">
           <End Role="fdm_processed" Type="Self.fdm_processed" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1908,7 +2023,7 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
               <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="fdm_crew">
-              <PropertyRef Name="event_id" />
+              <PropertyRef Name="processed_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2423,28 +2538,6 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
     [FDMFoEventMonthly].[Score] AS [Score]
     FROM [dbo].[FDMFoEventMonthly] AS [FDMFoEventMonthly]</DefiningQuery>
           </EntitySet>
-          <EntitySet Name="FDMFoMonthly" EntityType="Self.FDMFoMonthly" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [FDMFoMonthly].[Month] AS [Month], 
-    [FDMFoMonthly].[Year] AS [Year], 
-    [FDMFoMonthly].[YearMonth] AS [YearMonth], 
-    [FDMFoMonthly].[P2Name] AS [P2Name], 
-    [FDMFoMonthly].[P2Id] AS [P2Id], 
-    [FDMFoMonthly].[P2Code] AS [P2Code], 
-    [FDMFoMonthly].[FlightCount] AS [FlightCount], 
-    [FDMFoMonthly].[EventCount] AS [EventCount], 
-    [FDMFoMonthly].[HighCount] AS [HighCount], 
-    [FDMFoMonthly].[MediumCount] AS [MediumCount], 
-    [FDMFoMonthly].[LowCount] AS [LowCount], 
-    [FDMFoMonthly].[Score] AS [Score], 
-    [FDMFoMonthly].[ScorePerEvent] AS [ScorePerEvent], 
-    [FDMFoMonthly].[ScorePerFlight] AS [ScorePerFlight], 
-    [FDMFoMonthly].[EventPerFlight] AS [EventPerFlight], 
-    [FDMFoMonthly].[HighScore] AS [HighScore], 
-    [FDMFoMonthly].[MediumScore] AS [MediumScore], 
-    [FDMFoMonthly].[LowScore] AS [LowScore]
-    FROM [dbo].[FDMFoMonthly] AS [FDMFoMonthly]</DefiningQuery>
-          </EntitySet>
           <EntitySet Name="FDMMonthly" EntityType="Self.FDMMonthly" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [FDMMonthly].[Year] AS [Year], 
@@ -2653,34 +2746,6 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
     [FDMPhaseMonthlyNoCrew].[LowScore] AS [LowScore]
     FROM [dbo].[FDMPhaseMonthlyNoCrew] AS [FDMPhaseMonthlyNoCrew]</DefiningQuery>
           </EntitySet>
-          <EntitySet Name="FDMPhaseRouteMonthly" EntityType="Self.FDMPhaseRouteMonthly" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [FDMPhaseRouteMonthly].[Phase] AS [Phase], 
-    [FDMPhaseRouteMonthly].[FromICAO] AS [FromICAO], 
-    [FDMPhaseRouteMonthly].[ToICAO] AS [ToICAO], 
-    [FDMPhaseRouteMonthly].[FromIATA] AS [FromIATA], 
-    [FDMPhaseRouteMonthly].[ToIATA] AS [ToIATA], 
-    [FDMPhaseRouteMonthly].[RouteICAO] AS [RouteICAO], 
-    [FDMPhaseRouteMonthly].[RouteIATA] AS [RouteIATA], 
-    [FDMPhaseRouteMonthly].[Register] AS [Register], 
-    [FDMPhaseRouteMonthly].[RegisterID] AS [RegisterID], 
-    [FDMPhaseRouteMonthly].[AircraftType] AS [AircraftType], 
-    [FDMPhaseRouteMonthly].[Month] AS [Month], 
-    [FDMPhaseRouteMonthly].[Year] AS [Year], 
-    [FDMPhaseRouteMonthly].[YearMonth] AS [YearMonth], 
-    [FDMPhaseRouteMonthly].[Name] AS [Name], 
-    [FDMPhaseRouteMonthly].[CrewId] AS [CrewId], 
-    [FDMPhaseRouteMonthly].[JobGroup] AS [JobGroup], 
-    [FDMPhaseRouteMonthly].[EventCount] AS [EventCount], 
-    [FDMPhaseRouteMonthly].[HighCount] AS [HighCount], 
-    [FDMPhaseRouteMonthly].[MediumCount] AS [MediumCount], 
-    [FDMPhaseRouteMonthly].[LowCount] AS [LowCount], 
-    [FDMPhaseRouteMonthly].[Score] AS [Score], 
-    [FDMPhaseRouteMonthly].[HighScore] AS [HighScore], 
-    [FDMPhaseRouteMonthly].[MediumScore] AS [MediumScore], 
-    [FDMPhaseRouteMonthly].[LowScore] AS [LowScore]
-    FROM [dbo].[FDMPhaseRouteMonthly] AS [FDMPhaseRouteMonthly]</DefiningQuery>
-          </EntitySet>
           <EntitySet Name="FDMRegCptDaily " EntityType="Self.FDMRegCptDaily " store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [FDMRegCptDaily ].[Day] AS [Day], 
@@ -2841,6 +2906,129 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
     [helper_fdm].[ip2_scheduled_name] AS [ip2_scheduled_name], 
     [helper_fdm].[ip2_rank] AS [ip2_rank]
     FROM [dbo].[helper_fdm] AS [helper_fdm]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="view_fdm_flight_crew" EntityType="Self.view_fdm_flight_crew" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_fdm_flight_crew].[id] AS [id], 
+    [view_fdm_flight_crew].[RegisterID] AS [RegisterID], 
+    [view_fdm_flight_crew].[Register] AS [Register], 
+    [view_fdm_flight_crew].[ac_type2] AS [ac_type2], 
+    [view_fdm_flight_crew].[STD] AS [STD], 
+    [view_fdm_flight_crew].[STA] AS [STA], 
+    [view_fdm_flight_crew].[CrewId] AS [CrewId], 
+    [view_fdm_flight_crew].[Name] AS [Name], 
+    [view_fdm_flight_crew].[JobGroup] AS [JobGroup], 
+    [view_fdm_flight_crew].[JobGroupCode] AS [JobGroupCode], 
+    [view_fdm_flight_crew].[Position] AS [Position], 
+    [view_fdm_flight_crew].[dep_id] AS [dep_id], 
+    [view_fdm_flight_crew].[dep_iata] AS [dep_iata], 
+    [view_fdm_flight_crew].[dep_icao] AS [dep_icao], 
+    [view_fdm_flight_crew].[arr_id] AS [arr_id], 
+    [view_fdm_flight_crew].[arr_iata] AS [arr_iata], 
+    [view_fdm_flight_crew].[arr_icao] AS [arr_icao]
+    FROM [dbo].[view_fdm_flight_crew] AS [view_fdm_flight_crew]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="view_fdm_processed" EntityType="Self.view_fdm_processed" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_fdm_processed].[flight_id] AS [flight_id], 
+    [view_fdm_processed].[date_std] AS [date_std], 
+    [view_fdm_processed].[date_offblock] AS [date_offblock], 
+    [view_fdm_processed].[std] AS [std], 
+    [view_fdm_processed].[sta] AS [sta], 
+    [view_fdm_processed].[takeoff] AS [takeoff], 
+    [view_fdm_processed].[landing] AS [landing], 
+    [view_fdm_processed].[offblock] AS [offblock], 
+    [view_fdm_processed].[onblock] AS [onblock], 
+    [view_fdm_processed].[flight_number] AS [flight_number], 
+    [view_fdm_processed].[register_id] AS [register_id], 
+    [view_fdm_processed].[register] AS [register], 
+    [view_fdm_processed].[ac_type_id] AS [ac_type_id], 
+    [view_fdm_processed].[ac_type] AS [ac_type], 
+    [view_fdm_processed].[ac_type2] AS [ac_type2], 
+    [view_fdm_processed].[flight_status_id] AS [flight_status_id], 
+    [view_fdm_processed].[dep_id] AS [dep_id], 
+    [view_fdm_processed].[dep_iata] AS [dep_iata], 
+    [view_fdm_processed].[dep_icao] AS [dep_icao], 
+    [view_fdm_processed].[arr_id] AS [arr_id], 
+    [view_fdm_processed].[arr_iata] AS [arr_iata], 
+    [view_fdm_processed].[arr_icao] AS [arr_icao], 
+    [view_fdm_processed].[time_scheduled] AS [time_scheduled], 
+    [view_fdm_processed].[time_block] AS [time_block], 
+    [view_fdm_processed].[time_flight] AS [time_flight], 
+    [view_fdm_processed].[pflr] AS [pflr], 
+    [view_fdm_processed].[pf] AS [pf], 
+    [view_fdm_processed].[cpt1_id] AS [cpt1_id], 
+    [view_fdm_processed].[cpt1_first_name] AS [cpt1_first_name], 
+    [view_fdm_processed].[cpt1_last_name] AS [cpt1_last_name], 
+    [view_fdm_processed].[cpt1_scheduled_name] AS [cpt1_scheduled_name], 
+    [view_fdm_processed].[cpt1_rank] AS [cpt1_rank], 
+    [view_fdm_processed].[cpt2_id] AS [cpt2_id], 
+    [view_fdm_processed].[cpt2_first_name] AS [cpt2_first_name], 
+    [view_fdm_processed].[cpt2_last_name] AS [cpt2_last_name], 
+    [view_fdm_processed].[cpt2_scheduled_name] AS [cpt2_scheduled_name], 
+    [view_fdm_processed].[cpt2_rank] AS [cpt2_rank], 
+    [view_fdm_processed].[fo1_id] AS [fo1_id], 
+    [view_fdm_processed].[fo1_first_name] AS [fo1_first_name], 
+    [view_fdm_processed].[fo1_last_name] AS [fo1_last_name], 
+    [view_fdm_processed].[fo1_scheduled_name] AS [fo1_scheduled_name], 
+    [view_fdm_processed].[fo1_rank] AS [fo1_rank], 
+    [view_fdm_processed].[fo2_id] AS [fo2_id], 
+    [view_fdm_processed].[fo2_first_name] AS [fo2_first_name], 
+    [view_fdm_processed].[fo2_last_name] AS [fo2_last_name], 
+    [view_fdm_processed].[fo2_scheduled_name] AS [fo2_scheduled_name], 
+    [view_fdm_processed].[fo2_rank] AS [fo2_rank], 
+    [view_fdm_processed].[ip1_id] AS [ip1_id], 
+    [view_fdm_processed].[ip1_first_name] AS [ip1_first_name], 
+    [view_fdm_processed].[ip1_last_name] AS [ip1_last_name], 
+    [view_fdm_processed].[ip1_scheduled_name] AS [ip1_scheduled_name], 
+    [view_fdm_processed].[ip1_rank] AS [ip1_rank], 
+    [view_fdm_processed].[ip2_id] AS [ip2_id], 
+    [view_fdm_processed].[ip2_first_name] AS [ip2_first_name], 
+    [view_fdm_processed].[ip2_last_name] AS [ip2_last_name], 
+    [view_fdm_processed].[ip2_scheduled_name] AS [ip2_scheduled_name], 
+    [view_fdm_processed].[ip2_rank] AS [ip2_rank], 
+    [view_fdm_processed].[severity] AS [severity], 
+    [view_fdm_processed].[event_name] AS [event_name], 
+    [view_fdm_processed].[value] AS [value], 
+    [view_fdm_processed].[minor] AS [minor], 
+    [view_fdm_processed].[major] AS [major], 
+    [view_fdm_processed].[critical] AS [critical], 
+    [view_fdm_processed].[td_date] AS [td_date], 
+    [view_fdm_processed].[phase] AS [phase], 
+    [view_fdm_processed].[state_name] AS [state_name], 
+    [view_fdm_processed].[context] AS [context], 
+    [view_fdm_processed].[type] AS [type], 
+    [view_fdm_processed].[to_date] AS [to_date], 
+    [view_fdm_processed].[units] AS [units], 
+    [view_fdm_processed].[value_name] AS [value_name], 
+    [view_fdm_processed].[key] AS [key], 
+    [view_fdm_processed].[limit] AS [limit], 
+    [view_fdm_processed].[duration] AS [duration], 
+    [view_fdm_processed].[remark] AS [remark], 
+    [view_fdm_processed].[validity] AS [validity], 
+    [view_fdm_processed].[main_parameter] AS [main_parameter], 
+    [view_fdm_processed].[date] AS [date], 
+    [view_fdm_processed].[file_name] AS [file_name], 
+    [view_fdm_processed].[removed] AS [removed], 
+    [view_fdm_processed].[date_removed] AS [date_removed], 
+    [view_fdm_processed].[removed_by] AS [removed_by], 
+    [view_fdm_processed].[date_create] AS [date_create], 
+    [view_fdm_processed].[published] AS [published], 
+    [view_fdm_processed].[published_by] AS [published_by], 
+    [view_fdm_processed].[deleted] AS [deleted], 
+    [view_fdm_processed].[approved] AS [approved], 
+    [view_fdm_processed].[approved_by] AS [approved_by], 
+    [view_fdm_processed].[date_approved] AS [date_approved], 
+    [view_fdm_processed].[is_locked] AS [is_locked], 
+    [view_fdm_processed].[is_locked_date] AS [is_locked_date], 
+    [view_fdm_processed].[is_visible] AS [is_visible], 
+    [view_fdm_processed].[is_visible_date] AS [is_visible_date], 
+    [view_fdm_processed].[confirmation] AS [confirmation], 
+    [view_fdm_processed].[validation_person] AS [validation_person], 
+    [view_fdm_processed].[confirmation_person] AS [confirmation_person], 
+    [view_fdm_processed].[id] AS [id], 
+    [view_fdm_processed].[fdm_id] AS [fdm_id]
+    FROM [dbo].[view_fdm_processed] AS [view_fdm_processed]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ViewFDM" EntityType="Self.ViewFDM" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -3040,6 +3228,10 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
             <End Role="FDM" EntitySet="FDM" />
             <End Role="FDMEventParameters" EntitySet="FDMEventParameters" />
           </AssociationSet>
+          <AssociationSet Name="FK__fdm_proce__fdm_i__6C63F2D5" Association="Self.FK__fdm_proce__fdm_i__6C63F2D5">
+            <End Role="FDM" EntitySet="FDM" />
+            <End Role="fdm_processed" EntitySet="fdm_processed" />
+          </AssociationSet>
           <AssociationSet Name="fk_fdm_crew_event" Association="Self.fk_fdm_crew_event">
             <End Role="fdm_processed" EntitySet="fdm_processed" />
             <End Role="fdm_crew" EntitySet="fdm_crew" />
@@ -3086,7 +3278,6 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
           <EntitySet Name="FDMEventDailies" EntityType="dbModel.FDMEventDaily" />
           <EntitySet Name="FDMEventMonthlies" EntityType="dbModel.FDMEventMonthly" />
           <EntitySet Name="FDMFoEventMonthlies" EntityType="dbModel.FDMFoEventMonthly" />
-          <EntitySet Name="FDMFoMonthlies" EntityType="dbModel.FDMFoMonthly" />
           <EntitySet Name="FDMMonthlies" EntityType="dbModel.FDMMonthly" />
           <EntitySet Name="FDMPhaseDetailByEvents" EntityType="dbModel.FDMPhaseDetailByEvent" />
           <EntitySet Name="FDMPhaseDetailByFlights" EntityType="dbModel.FDMPhaseDetailByFlight" />
@@ -3094,7 +3285,6 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
           <EntitySet Name="FDMPhaseDetailDailies" EntityType="dbModel.FDMPhaseDetailDaily" />
           <EntitySet Name="FDMPhaseMonthlies" EntityType="dbModel.FDMPhaseMonthly" />
           <EntitySet Name="FDMPhaseMonthlyNoCrews" EntityType="dbModel.FDMPhaseMonthlyNoCrew" />
-          <EntitySet Name="FDMPhaseRouteMonthlies" EntityType="dbModel.FDMPhaseRouteMonthly" />
           <EntitySet Name="FDMRegCptDaily_" EntityType="dbModel.FDMRegCptDaily_" />
           <EntitySet Name="FDMRegCptMonthlies" EntityType="dbModel.FDMRegCptMonthly" />
           <EntitySet Name="FDMRegDailies" EntityType="dbModel.FDMRegDaily" />
@@ -3119,14 +3309,20 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
             <End Role="Airport" EntitySet="Airports" />
             <End Role="FlightInformation" EntitySet="FlightInformations" />
           </AssociationSet>
+          <EntitySet Name="helper_fdm" EntityType="dbModel.helper_fdm" />
           <EntitySet Name="FDMs" EntityType="dbModel.FDM" />
           <AssociationSet Name="fdm_event_fk" Association="dbModel.fdm_event_fk">
             <End Role="FDM" EntitySet="FDMs" />
             <End Role="FDMEventParameter" EntitySet="FDMEventParameters" />
           </AssociationSet>
+          <EntitySet Name="view_fdm_flight_crew" EntityType="dbModel.view_fdm_flight_crew" />
+          <EntitySet Name="view_fdm_processed" EntityType="dbModel.view_fdm_processed" />
           <EntitySet Name="fdm_crew" EntityType="dbModel.fdm_crew" />
           <EntitySet Name="fdm_processed" EntityType="dbModel.fdm_processed" />
-          <EntitySet Name="helper_fdm" EntityType="dbModel.helper_fdm" />
+          <AssociationSet Name="FK__fdm_proce__fdm_i__6C63F2D5" Association="dbModel.FK__fdm_proce__fdm_i__6C63F2D5">
+            <End Role="FDM" EntitySet="FDMs" />
+            <End Role="fdm_processed" EntitySet="fdm_processed" />
+          </AssociationSet>
           <AssociationSet Name="fk_fdm_crew_event" Association="dbModel.fk_fdm_crew_event">
             <End Role="fdm_processed" EntitySet="fdm_processed" />
             <End Role="fdm_crew" EntitySet="fdm_crew" />
@@ -3365,7 +3561,7 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
           <Property Name="FlightTime" Type="Int32" />
           <Property Name="PF" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="FlightNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Context" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Context" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="Critical" Type="Double" />
           <Property Name="Date" Type="DateTime" Precision="0" />
           <Property Name="Duration" Type="Time" Precision="7" />
@@ -3394,8 +3590,8 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
           <Property Name="Confirmation" Type="Boolean" />
           <Property Name="ValidationPerson" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="ConfirmationPerson" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="MainParameter" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="PIC" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="MainParameter" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="PIC" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="ResponsibleId" Type="Int32" />
           <Property Name="Responsible" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="Status" Type="String" Nullable="false" MaxLength="9" FixedLength="false" Unicode="false" />
@@ -3711,29 +3907,6 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
           <Property Name="LowCount" Type="Int32" />
           <Property Name="Score" Type="Int32" />
         </EntityType>
-        <EntityType Name="FDMFoMonthly">
-          <Key>
-            <PropertyRef Name="P2Code" />
-          </Key>
-          <Property Name="Month" Type="Int32" />
-          <Property Name="Year" Type="Int32" />
-          <Property Name="YearMonth" Type="Int32" />
-          <Property Name="P2Name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="P2Id" Type="Int32" />
-          <Property Name="P2Code" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="FlightCount" Type="Int32" />
-          <Property Name="EventCount" Type="Int32" />
-          <Property Name="HighCount" Type="Int32" />
-          <Property Name="MediumCount" Type="Int32" />
-          <Property Name="LowCount" Type="Int32" />
-          <Property Name="Score" Type="Int32" />
-          <Property Name="ScorePerEvent" Type="Decimal" Precision="24" Scale="12" />
-          <Property Name="ScorePerFlight" Type="Int32" />
-          <Property Name="EventPerFlight" Type="Int32" />
-          <Property Name="HighScore" Type="Int32" />
-          <Property Name="MediumScore" Type="Int32" />
-          <Property Name="LowScore" Type="Int32" />
-        </EntityType>
         <EntityType Name="FDMMonthly">
           <Key>
             <PropertyRef Name="Year" />
@@ -3804,7 +3977,7 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
           <Property Name="Critical" Type="Double" />
           <Property Name="TDDatetime" Type="DateTime" Precision="0" />
           <Property Name="StateName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="Context" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Context" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="Type" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="TODatetime" Type="DateTime" Precision="0" />
           <Property Name="Units" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
@@ -3813,7 +3986,7 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
           <Property Name="Duration" Type="Time" Precision="7" />
           <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="Validity" Type="Int32" />
-          <Property Name="MainParameter" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="MainParameter" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="FDMPhaseDetailByFlight">
           <Key>
@@ -3842,7 +4015,7 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
           <Property Name="RouteIATA" Type="String" MaxLength="511" FixedLength="false" Unicode="true" />
           <Property Name="Register" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="RegisterID" Type="Int32" Nullable="false" />
-          <Property Name="AircraftType" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="AircraftType" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Month" Type="Int32" Nullable="false" />
           <Property Name="Year" Type="Int32" Nullable="false" />
           <Property Name="Date" Type="DateTime" Precision="0" />
@@ -3892,7 +4065,7 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
           <Property Name="RouteIATA" Type="String" MaxLength="511" FixedLength="false" Unicode="true" />
           <Property Name="Register" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="RegisterID" Type="Int32" Nullable="false" />
-          <Property Name="AircraftType" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="AircraftType" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Month" Type="Int32" Nullable="false" />
           <Property Name="Year" Type="Int32" Nullable="false" />
           <Property Name="Date" Type="DateTime" Precision="0" />
@@ -3916,7 +4089,7 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
           <Property Name="Critical" Type="Double" />
           <Property Name="TDDatetime" Type="DateTime" Precision="0" />
           <Property Name="StateName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="Context" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Context" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="Type" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="TODatetime" Type="DateTime" Precision="0" />
           <Property Name="Units" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
@@ -3925,7 +4098,7 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
           <Property Name="Duration" Type="Time" Precision="7" />
           <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="Validity" Type="Int32" />
-          <Property Name="MainParameter" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="MainParameter" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="FDMPhaseDetailDaily">
           <Key>
@@ -3951,7 +4124,7 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
           <Property Name="RouteIATA" Type="String" MaxLength="511" FixedLength="false" Unicode="true" />
           <Property Name="Register" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="RegisterID" Type="Int32" Nullable="false" />
-          <Property Name="AircraftType" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="AircraftType" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Month" Type="Int32" Nullable="false" />
           <Property Name="Year" Type="Int32" Nullable="false" />
           <Property Name="Date" Type="DateTime" Precision="0" />
@@ -4002,46 +4175,6 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
           <Property Name="Month" Type="Int32" Nullable="false" />
           <Property Name="Year" Type="Int32" Nullable="false" />
           <Property Name="YearMonth" Type="Int32" />
-          <Property Name="EventCount" Type="Int32" />
-          <Property Name="HighCount" Type="Int32" />
-          <Property Name="MediumCount" Type="Int32" />
-          <Property Name="LowCount" Type="Int32" />
-          <Property Name="Score" Type="Int32" />
-          <Property Name="HighScore" Type="Int32" />
-          <Property Name="MediumScore" Type="Int32" />
-          <Property Name="LowScore" Type="Int32" />
-        </EntityType>
-        <EntityType Name="FDMPhaseRouteMonthly">
-          <Key>
-            <PropertyRef Name="Phase" />
-            <PropertyRef Name="FromICAO" />
-            <PropertyRef Name="ToICAO" />
-            <PropertyRef Name="FromIATA" />
-            <PropertyRef Name="ToIATA" />
-            <PropertyRef Name="Register" />
-            <PropertyRef Name="RegisterID" />
-            <PropertyRef Name="AircraftType" />
-            <PropertyRef Name="Month" />
-            <PropertyRef Name="Year" />
-            <PropertyRef Name="Name" />
-            <PropertyRef Name="CrewId" />
-          </Key>
-          <Property Name="Phase" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="FromICAO" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="ToICAO" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="FromIATA" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="ToIATA" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="RouteICAO" Type="String" MaxLength="511" FixedLength="false" Unicode="true" />
-          <Property Name="RouteIATA" Type="String" MaxLength="511" FixedLength="false" Unicode="true" />
-          <Property Name="Register" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="RegisterID" Type="Int32" Nullable="false" />
-          <Property Name="AircraftType" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
-          <Property Name="Month" Type="Int32" Nullable="false" />
-          <Property Name="Year" Type="Int32" Nullable="false" />
-          <Property Name="YearMonth" Type="Int32" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="1003" FixedLength="false" Unicode="true" />
-          <Property Name="CrewId" Type="Int32" Nullable="false" />
-          <Property Name="JobGroup" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="EventCount" Type="Int32" />
           <Property Name="HighCount" Type="Int32" />
           <Property Name="MediumCount" Type="Int32" />
@@ -4696,6 +4829,17 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
           <NavigationProperty Name="Ac_MSN" Relationship="dbModel.FK_FlightInformation_Ac_MSN" FromRole="FlightInformation" ToRole="Ac_MSN" />
           <NavigationProperty Name="Airport" Relationship="dbModel.fk_flightinformation_fromairport" FromRole="FlightInformation" ToRole="Airport" />
           <NavigationProperty Name="Airport1" Relationship="dbModel.fk_flightinformation_toairport" FromRole="FlightInformation" ToRole="Airport" />
+          <Property Name="FuelRemaining" Type="Int32" />
+          <Property Name="FuelUplift" Type="Int32" />
+          <Property Name="FuelTotal" Type="Int32" />
+          <Property Name="FuelRemained" Type="Int32" />
+          <Property Name="FuelUsed" Type="Int32" />
+          <Property Name="FuelUpliftLitr" Type="Int32" />
+          <Property Name="CCPreFlightCheckRemark" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="FlightTypeOPS" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="AttForms" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="PaxMale" Type="Int32" />
+          <Property Name="PaxFemale" Type="Int32" />
         </EntityType>
         <Association Name="FK_FlightInformation_Ac_MSN">
           <End Type="dbModel.Ac_MSN" Role="Ac_MSN" Multiplicity="0..1" />
@@ -4733,209 +4877,6 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="FDM">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Severity" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="EventName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="Value" Type="String" MaxLength="53" FixedLength="false" Unicode="true" />
-          <Property Name="Minor" Type="Double" />
-          <Property Name="Major" Type="Double" />
-          <Property Name="Critical" Type="Double" />
-          <Property Name="TDDatetime" Type="DateTime" Precision="0" />
-          <Property Name="P1" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="P2" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="Phase" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="StateName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="Context" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Type" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="TODatetime" Type="DateTime" Precision="0" />
-          <Property Name="Units" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="ValueName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="FlightId" Type="Int32" />
-          <Property Name="PFLR" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="Limit" Type="String" MaxLength="53" FixedLength="false" Unicode="false" />
-          <Property Name="Date" Type="DateTime" Precision="0" />
-          <Property Name="FileName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="P1Id" Type="Int32" />
-          <Property Name="P2Id" Type="Int32" />
-          <Property Name="RegisterId" Type="Int32" />
-          <Property Name="FromAirport" Type="Int32" />
-          <Property Name="ToAirport" Type="Int32" />
-          <Property Name="IP" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="IPId" Type="Int32" />
-          <Property Name="FromAirportIATA" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="ToAirportIATA" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="Key" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="AircraftType" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="AircraftTypeId" Type="Int32" />
-          <Property Name="Removed" Type="Boolean" />
-          <Property Name="DateRemoved" Type="DateTime" Precision="0" />
-          <Property Name="RemovedBy" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="DateCreate" Type="DateTime" Precision="0" />
-          <Property Name="Published" Type="Boolean" />
-          <Property Name="PublishedBy" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Deleted" Type="Boolean" />
-          <Property Name="Approved" Type="Boolean" />
-          <Property Name="ApprovedBy" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="DateApproved" Type="DateTime" Precision="0" />
-          <Property Name="Duration" Type="Time" Precision="7" />
-          <Property Name="IsLocked" Type="Boolean" />
-          <Property Name="IsLockedDate" Type="DateTime" Precision="7" />
-          <Property Name="IsVisible" Type="Boolean" />
-          <Property Name="IsVisibleDate" Type="DateTime" Precision="7" />
-          <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="Validity" Type="Int32" />
-          <Property Name="Confirmation" Type="Boolean" />
-          <Property Name="ValidationPerson" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="ConfirmationPerson" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="PIC" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="FlightNo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="MainParameter" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="FDMEventParameters" Relationship="dbModel.fdm_event_fk" FromRole="FDM" ToRole="FDMEventParameter" />
-        </EntityType>
-        <Association Name="fdm_event_fk">
-          <End Type="dbModel.FDM" Role="FDM" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="dbModel.FDMEventParameter" Role="FDMEventParameter" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="FDM">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="FDMEventParameter">
-              <PropertyRef Name="event_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="fdm_crew">
-          <Key>
-            <PropertyRef Name="event_id" />
-            <PropertyRef Name="crew_id" />
-          </Key>
-          <Property Name="event_id" Type="Int32" Nullable="false" />
-          <Property Name="crew_id" Type="Int32" Nullable="false" />
-          <Property Name="first_name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="last_name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="rank" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="rank_id" Type="Int32" />
-          <Property Name="position" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="remark" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
-          <Property Name="reserved1" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="reserved2" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="reserved3" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="reserved4" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="reserved5" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="aircraft_type" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="aircraft_type_id" Type="Int32" />
-          <NavigationProperty Name="fdm_processed" Relationship="dbModel.fk_fdm_crew_event" FromRole="fdm_crew" ToRole="fdm_processed" />
-        </EntityType>
-        <EntityType Name="fdm_processed">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="flight_id" Type="Int32" Nullable="false" />
-          <Property Name="date_std" Type="DateTime" Precision="0" />
-          <Property Name="date_offblock" Type="DateTime" Precision="0" />
-          <Property Name="std" Type="DateTime" Precision="3" />
-          <Property Name="sta" Type="DateTime" Precision="3" />
-          <Property Name="takeoff" Type="DateTime" Precision="3" />
-          <Property Name="landing" Type="DateTime" Precision="3" />
-          <Property Name="offblock" Type="DateTime" Precision="3" />
-          <Property Name="onblock" Type="DateTime" Precision="3" />
-          <Property Name="flight_number" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="register_id" Type="Int32" />
-          <Property Name="register" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ac_type_id" Type="Int32" />
-          <Property Name="ac_type" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="ac_type2" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
-          <Property Name="flight_status_id" Type="Int32" />
-          <Property Name="dep_id" Type="Int32" />
-          <Property Name="dep_iata" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="dep_icao" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="arr_id" Type="Int32" />
-          <Property Name="arr_iata" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="arr_icao" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="time_scheduled" Type="Int32" />
-          <Property Name="time_block" Type="Int32" />
-          <Property Name="time_flight" Type="Int32" />
-          <Property Name="pflr" Type="Int32" />
-          <Property Name="pf" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="cpt1_id" Type="Int32" />
-          <Property Name="cpt1_first_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="cpt1_last_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="cpt1_scheduled_name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="cpt1_rank" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="cpt2_id" Type="Int32" />
-          <Property Name="cpt2_first_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="cpt2_last_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="cpt2_scheduled_name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="cpt2_rank" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="fo1_id" Type="Int32" />
-          <Property Name="fo1_first_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="fo1_last_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="fo1_scheduled_name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="fo1_rank" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="fo2_id" Type="Int32" />
-          <Property Name="fo2_first_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="fo2_last_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="fo2_scheduled_name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="fo2_rank" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="ip1_id" Type="Int32" />
-          <Property Name="ip1_first_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="ip1_last_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="ip1_scheduled_name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="ip1_rank" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="ip2_id" Type="Int32" />
-          <Property Name="ip2_first_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="ip2_last_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="ip2_scheduled_name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="ip2_rank" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="severity" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="event_name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="value" Type="String" MaxLength="53" FixedLength="false" Unicode="true" />
-          <Property Name="minor" Type="Double" />
-          <Property Name="major" Type="Double" />
-          <Property Name="critical" Type="Double" />
-          <Property Name="td_date" Type="DateTime" Precision="0" />
-          <Property Name="phase" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="state_name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="context" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="type" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="to_date" Type="DateTime" Precision="0" />
-          <Property Name="units" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="value_name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="key" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="limit" Type="String" MaxLength="53" FixedLength="false" Unicode="false" />
-          <Property Name="duration" Type="Time" Precision="7" />
-          <Property Name="remark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="validity" Type="Int32" />
-          <Property Name="main_parameter" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="date" Type="DateTime" Precision="0" />
-          <Property Name="file_name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="Removed" Type="Boolean" />
-          <Property Name="DateRemoved" Type="DateTime" Precision="0" />
-          <Property Name="RemovedBy" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="DateCreate" Type="DateTime" Precision="0" />
-          <Property Name="Published" Type="Boolean" />
-          <Property Name="PublishedBy" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Deleted" Type="Boolean" />
-          <Property Name="Approved" Type="Boolean" />
-          <Property Name="ApprovedBy" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="DateApproved" Type="DateTime" Precision="0" />
-          <Property Name="IsLocked" Type="Boolean" />
-          <Property Name="IsLockedDate" Type="DateTime" Precision="7" />
-          <Property Name="IsVisible" Type="Boolean" />
-          <Property Name="IsVisibleDate" Type="DateTime" Precision="7" />
-          <Property Name="Confirmation" Type="Boolean" />
-          <Property Name="ValidationPerson" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="ConfirmationPerson" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <NavigationProperty Name="fdm_crew" Relationship="dbModel.fk_fdm_crew_event" FromRole="fdm_processed" ToRole="fdm_crew" />
-        </EntityType>
         <EntityType Name="helper_fdm">
           <Key>
             <PropertyRef Name="flight_id" />
@@ -5000,6 +4941,356 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
           <Property Name="ip2_scheduled_name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="ip2_rank" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="FDM">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Severity" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="EventName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Value" Type="String" MaxLength="53" FixedLength="false" Unicode="true" />
+          <Property Name="Minor" Type="Double" />
+          <Property Name="Major" Type="Double" />
+          <Property Name="Critical" Type="Double" />
+          <Property Name="TDDatetime" Type="DateTime" Precision="0" />
+          <Property Name="P1" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="P2" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Phase" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="StateName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Context" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="Type" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="TODatetime" Type="DateTime" Precision="0" />
+          <Property Name="Units" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ValueName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="FlightId" Type="Int32" />
+          <Property Name="PFLR" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Limit" Type="String" MaxLength="53" FixedLength="false" Unicode="false" />
+          <Property Name="Date" Type="DateTime" Precision="0" />
+          <Property Name="FileName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="P1Id" Type="Int32" />
+          <Property Name="P2Id" Type="Int32" />
+          <Property Name="RegisterId" Type="Int32" />
+          <Property Name="FromAirport" Type="Int32" />
+          <Property Name="ToAirport" Type="Int32" />
+          <Property Name="IP" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="IPId" Type="Int32" />
+          <Property Name="FromAirportIATA" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ToAirportIATA" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Key" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="AircraftType" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="AircraftTypeId" Type="Int32" />
+          <Property Name="Removed" Type="Boolean" />
+          <Property Name="DateRemoved" Type="DateTime" Precision="0" />
+          <Property Name="RemovedBy" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="DateCreate" Type="DateTime" Precision="0" />
+          <Property Name="Published" Type="Boolean" />
+          <Property Name="PublishedBy" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Deleted" Type="Boolean" />
+          <Property Name="Approved" Type="Boolean" />
+          <Property Name="ApprovedBy" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="DateApproved" Type="DateTime" Precision="0" />
+          <Property Name="Duration" Type="Time" Precision="7" />
+          <Property Name="IsLocked" Type="Boolean" />
+          <Property Name="IsLockedDate" Type="DateTime" Precision="7" />
+          <Property Name="IsVisible" Type="Boolean" />
+          <Property Name="IsVisibleDate" Type="DateTime" Precision="7" />
+          <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Validity" Type="Int32" />
+          <Property Name="Confirmation" Type="Boolean" />
+          <Property Name="ValidationPerson" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ConfirmationPerson" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="PIC" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="FlightNo" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="MainParameter" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="FDMEventParameters" Relationship="dbModel.fdm_event_fk" FromRole="FDM" ToRole="FDMEventParameter" />
+          <NavigationProperty Name="fdm_processed" Relationship="dbModel.FK__fdm_proce__fdm_i__6C63F2D5" FromRole="FDM" ToRole="fdm_processed" />
+        </EntityType>
+        <Association Name="fdm_event_fk">
+          <End Type="dbModel.FDM" Role="FDM" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="dbModel.FDMEventParameter" Role="FDMEventParameter" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FDM">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FDMEventParameter">
+              <PropertyRef Name="event_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="view_fdm_flight_crew">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="Register" />
+            <PropertyRef Name="ac_type2" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="JobGroup" />
+            <PropertyRef Name="JobGroupCode" />
+            <PropertyRef Name="dep_id" />
+            <PropertyRef Name="arr_id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="RegisterID" Type="Int32" />
+          <Property Name="Register" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ac_type2" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="STD" Type="DateTime" Precision="3" />
+          <Property Name="STA" Type="DateTime" Precision="3" />
+          <Property Name="CrewId" Type="Int32" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="JobGroup" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="JobGroupCode" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Position" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="dep_id" Type="Int32" Nullable="false" />
+          <Property Name="dep_iata" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="dep_icao" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="arr_id" Type="Int32" Nullable="false" />
+          <Property Name="arr_iata" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="arr_icao" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="view_fdm_processed">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="flight_id" Type="Int32" />
+          <Property Name="date_std" Type="DateTime" Precision="0" />
+          <Property Name="date_offblock" Type="DateTime" Precision="0" />
+          <Property Name="std" Type="DateTime" Precision="3" />
+          <Property Name="sta" Type="DateTime" Precision="3" />
+          <Property Name="takeoff" Type="DateTime" Precision="3" />
+          <Property Name="landing" Type="DateTime" Precision="3" />
+          <Property Name="offblock" Type="DateTime" Precision="3" />
+          <Property Name="onblock" Type="DateTime" Precision="3" />
+          <Property Name="flight_number" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="register_id" Type="Int32" />
+          <Property Name="register" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ac_type_id" Type="Int32" />
+          <Property Name="ac_type" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ac_type2" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="flight_status_id" Type="Int32" />
+          <Property Name="dep_id" Type="Int32" />
+          <Property Name="dep_iata" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="dep_icao" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="arr_id" Type="Int32" />
+          <Property Name="arr_iata" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="arr_icao" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="time_scheduled" Type="Int32" />
+          <Property Name="time_block" Type="Int32" />
+          <Property Name="time_flight" Type="Int32" />
+          <Property Name="pflr" Type="Int32" />
+          <Property Name="pf" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="cpt1_id" Type="Int32" />
+          <Property Name="cpt1_first_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="cpt1_last_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="cpt1_scheduled_name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="cpt1_rank" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="cpt2_id" Type="Int32" />
+          <Property Name="cpt2_first_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="cpt2_last_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="cpt2_scheduled_name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="cpt2_rank" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="fo1_id" Type="Int32" />
+          <Property Name="fo1_first_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="fo1_last_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="fo1_scheduled_name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="fo1_rank" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="fo2_id" Type="Int32" />
+          <Property Name="fo2_first_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="fo2_last_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="fo2_scheduled_name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="fo2_rank" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ip1_id" Type="Int32" />
+          <Property Name="ip1_first_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ip1_last_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ip1_scheduled_name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ip1_rank" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ip2_id" Type="Int32" />
+          <Property Name="ip2_first_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ip2_last_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ip2_scheduled_name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ip2_rank" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="severity" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="event_name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="value" Type="String" MaxLength="53" FixedLength="false" Unicode="true" />
+          <Property Name="minor" Type="Double" />
+          <Property Name="major" Type="Double" />
+          <Property Name="critical" Type="Double" />
+          <Property Name="td_date" Type="DateTime" Precision="0" />
+          <Property Name="phase" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="state_name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="context" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="type" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="to_date" Type="DateTime" Precision="0" />
+          <Property Name="units" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="value_name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="key" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="limit" Type="String" MaxLength="53" FixedLength="false" Unicode="false" />
+          <Property Name="duration" Type="Time" Precision="7" />
+          <Property Name="remark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="validity" Type="Int32" />
+          <Property Name="main_parameter" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="date" Type="DateTime" Precision="0" />
+          <Property Name="file_name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="removed" Type="Boolean" />
+          <Property Name="date_removed" Type="DateTime" Precision="0" />
+          <Property Name="removed_by" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="date_create" Type="DateTime" Precision="0" />
+          <Property Name="published" Type="Boolean" />
+          <Property Name="published_by" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="deleted" Type="Boolean" />
+          <Property Name="approved" Type="Boolean" />
+          <Property Name="approved_by" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="date_approved" Type="DateTime" Precision="0" />
+          <Property Name="is_locked" Type="Boolean" />
+          <Property Name="is_locked_date" Type="DateTime" Precision="7" />
+          <Property Name="is_visible" Type="Boolean" />
+          <Property Name="is_visible_date" Type="DateTime" Precision="7" />
+          <Property Name="confirmation" Type="Boolean" />
+          <Property Name="validation_person" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="confirmation_person" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fdm_id" Type="Int32" />
+        </EntityType>
+        <EntityType Name="fdm_crew">
+          <Key>
+            <PropertyRef Name="processed_id" />
+            <PropertyRef Name="crew_id" />
+          </Key>
+          <Property Name="processed_id" Type="Int32" Nullable="false" />
+          <Property Name="crew_id" Type="Int32" Nullable="false" />
+          <Property Name="first_name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="last_name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="rank" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="rank_code" Type="Int32" />
+          <Property Name="position" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="remark" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="reserved1" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="reserved2" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="reserved3" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="reserved4" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="reserved5" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="aircraft_type" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="aircraft_type_id" Type="Int32" />
+          <NavigationProperty Name="fdm_processed" Relationship="dbModel.fk_fdm_crew_event" FromRole="fdm_crew" ToRole="fdm_processed" />
+        </EntityType>
+        <EntityType Name="fdm_processed">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="flight_id" Type="Int32" />
+          <Property Name="date_std" Type="DateTime" Precision="0" />
+          <Property Name="date_offblock" Type="DateTime" Precision="0" />
+          <Property Name="std" Type="DateTime" Precision="3" />
+          <Property Name="sta" Type="DateTime" Precision="3" />
+          <Property Name="takeoff" Type="DateTime" Precision="3" />
+          <Property Name="landing" Type="DateTime" Precision="3" />
+          <Property Name="offblock" Type="DateTime" Precision="3" />
+          <Property Name="onblock" Type="DateTime" Precision="3" />
+          <Property Name="flight_number" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="register_id" Type="Int32" />
+          <Property Name="register" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ac_type_id" Type="Int32" />
+          <Property Name="ac_type" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ac_type2" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="flight_status_id" Type="Int32" />
+          <Property Name="dep_id" Type="Int32" />
+          <Property Name="dep_iata" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="dep_icao" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="arr_id" Type="Int32" />
+          <Property Name="arr_iata" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="arr_icao" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="time_scheduled" Type="Int32" />
+          <Property Name="time_block" Type="Int32" />
+          <Property Name="time_flight" Type="Int32" />
+          <Property Name="pflr" Type="Int32" />
+          <Property Name="pf" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="cpt1_id" Type="Int32" />
+          <Property Name="cpt1_first_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="cpt1_last_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="cpt1_scheduled_name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="cpt1_rank" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="cpt2_id" Type="Int32" />
+          <Property Name="cpt2_first_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="cpt2_last_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="cpt2_scheduled_name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="cpt2_rank" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="fo1_id" Type="Int32" />
+          <Property Name="fo1_first_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="fo1_last_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="fo1_scheduled_name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="fo1_rank" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="fo2_id" Type="Int32" />
+          <Property Name="fo2_first_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="fo2_last_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="fo2_scheduled_name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="fo2_rank" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ip1_id" Type="Int32" />
+          <Property Name="ip1_first_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ip1_last_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ip1_scheduled_name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ip1_rank" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ip2_id" Type="Int32" />
+          <Property Name="ip2_first_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ip2_last_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ip2_scheduled_name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ip2_rank" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="severity" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="event_name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="value" Type="String" MaxLength="53" FixedLength="false" Unicode="true" />
+          <Property Name="minor" Type="Double" />
+          <Property Name="major" Type="Double" />
+          <Property Name="critical" Type="Double" />
+          <Property Name="td_date" Type="DateTime" Precision="0" />
+          <Property Name="phase" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="state_name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="context" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="type" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="to_date" Type="DateTime" Precision="0" />
+          <Property Name="units" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="value_name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="key" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="limit" Type="String" MaxLength="53" FixedLength="false" Unicode="false" />
+          <Property Name="duration" Type="Time" Precision="7" />
+          <Property Name="remark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="validity" Type="Int32" />
+          <Property Name="main_parameter" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="date" Type="DateTime" Precision="0" />
+          <Property Name="file_name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="removed" Type="Boolean" />
+          <Property Name="date_removed" Type="DateTime" Precision="0" />
+          <Property Name="removed_by" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="date_create" Type="DateTime" Precision="0" />
+          <Property Name="published" Type="Boolean" />
+          <Property Name="published_by" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="deleted" Type="Boolean" />
+          <Property Name="approved" Type="Boolean" />
+          <Property Name="approved_by" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="date_approved" Type="DateTime" Precision="0" />
+          <Property Name="is_locked" Type="Boolean" />
+          <Property Name="is_locked_date" Type="DateTime" Precision="7" />
+          <Property Name="is_visible" Type="Boolean" />
+          <Property Name="is_visible_date" Type="DateTime" Precision="7" />
+          <Property Name="confirmation" Type="Boolean" />
+          <Property Name="validation_person" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="confirmation_person" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fdm_id" Type="Int32" />
+          <NavigationProperty Name="FDM" Relationship="dbModel.FK__fdm_proce__fdm_i__6C63F2D5" FromRole="fdm_processed" ToRole="FDM" />
+          <NavigationProperty Name="fdm_crew" Relationship="dbModel.fk_fdm_crew_event" FromRole="fdm_processed" ToRole="fdm_crew" />
+        </EntityType>
+        <Association Name="FK__fdm_proce__fdm_i__6C63F2D5">
+          <End Type="dbModel.FDM" Role="FDM" Multiplicity="0..1" />
+          <End Type="dbModel.fdm_processed" Role="fdm_processed" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FDM">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="fdm_processed">
+              <PropertyRef Name="fdm_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_fdm_crew_event">
           <End Type="dbModel.fdm_processed" Role="fdm_processed" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -5010,7 +5301,7 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
               <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="fdm_crew">
-              <PropertyRef Name="event_id" />
+              <PropertyRef Name="processed_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5594,30 +5885,6 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="FDMFoMonthlies">
-            <EntityTypeMapping TypeName="dbModel.FDMFoMonthly">
-              <MappingFragment StoreEntitySet="FDMFoMonthly">
-                <ScalarProperty Name="LowScore" ColumnName="LowScore" />
-                <ScalarProperty Name="MediumScore" ColumnName="MediumScore" />
-                <ScalarProperty Name="HighScore" ColumnName="HighScore" />
-                <ScalarProperty Name="EventPerFlight" ColumnName="EventPerFlight" />
-                <ScalarProperty Name="ScorePerFlight" ColumnName="ScorePerFlight" />
-                <ScalarProperty Name="ScorePerEvent" ColumnName="ScorePerEvent" />
-                <ScalarProperty Name="Score" ColumnName="Score" />
-                <ScalarProperty Name="LowCount" ColumnName="LowCount" />
-                <ScalarProperty Name="MediumCount" ColumnName="MediumCount" />
-                <ScalarProperty Name="HighCount" ColumnName="HighCount" />
-                <ScalarProperty Name="EventCount" ColumnName="EventCount" />
-                <ScalarProperty Name="FlightCount" ColumnName="FlightCount" />
-                <ScalarProperty Name="P2Code" ColumnName="P2Code" />
-                <ScalarProperty Name="P2Id" ColumnName="P2Id" />
-                <ScalarProperty Name="P2Name" ColumnName="P2Name" />
-                <ScalarProperty Name="YearMonth" ColumnName="YearMonth" />
-                <ScalarProperty Name="Year" ColumnName="Year" />
-                <ScalarProperty Name="Month" ColumnName="Month" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="FDMMonthlies">
             <EntityTypeMapping TypeName="dbModel.FDMMonthly">
               <MappingFragment StoreEntitySet="FDMMonthly">
@@ -5836,36 +6103,6 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
                 <ScalarProperty Name="YearMonth" ColumnName="YearMonth" />
                 <ScalarProperty Name="Year" ColumnName="Year" />
                 <ScalarProperty Name="Month" ColumnName="Month" />
-                <ScalarProperty Name="Phase" ColumnName="Phase" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="FDMPhaseRouteMonthlies">
-            <EntityTypeMapping TypeName="dbModel.FDMPhaseRouteMonthly">
-              <MappingFragment StoreEntitySet="FDMPhaseRouteMonthly">
-                <ScalarProperty Name="LowScore" ColumnName="LowScore" />
-                <ScalarProperty Name="MediumScore" ColumnName="MediumScore" />
-                <ScalarProperty Name="HighScore" ColumnName="HighScore" />
-                <ScalarProperty Name="Score" ColumnName="Score" />
-                <ScalarProperty Name="LowCount" ColumnName="LowCount" />
-                <ScalarProperty Name="MediumCount" ColumnName="MediumCount" />
-                <ScalarProperty Name="HighCount" ColumnName="HighCount" />
-                <ScalarProperty Name="EventCount" ColumnName="EventCount" />
-                <ScalarProperty Name="JobGroup" ColumnName="JobGroup" />
-                <ScalarProperty Name="CrewId" ColumnName="CrewId" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="YearMonth" ColumnName="YearMonth" />
-                <ScalarProperty Name="Year" ColumnName="Year" />
-                <ScalarProperty Name="Month" ColumnName="Month" />
-                <ScalarProperty Name="AircraftType" ColumnName="AircraftType" />
-                <ScalarProperty Name="RegisterID" ColumnName="RegisterID" />
-                <ScalarProperty Name="Register" ColumnName="Register" />
-                <ScalarProperty Name="RouteIATA" ColumnName="RouteIATA" />
-                <ScalarProperty Name="RouteICAO" ColumnName="RouteICAO" />
-                <ScalarProperty Name="ToIATA" ColumnName="ToIATA" />
-                <ScalarProperty Name="FromIATA" ColumnName="FromIATA" />
-                <ScalarProperty Name="ToICAO" ColumnName="ToICAO" />
-                <ScalarProperty Name="FromICAO" ColumnName="FromICAO" />
                 <ScalarProperty Name="Phase" ColumnName="Phase" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -6214,6 +6451,17 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
           <EntitySetMapping Name="FlightInformations">
             <EntityTypeMapping TypeName="dbModel.FlightInformation">
               <MappingFragment StoreEntitySet="FlightInformation">
+                <ScalarProperty Name="PaxFemale" ColumnName="PaxFemale" />
+                <ScalarProperty Name="PaxMale" ColumnName="PaxMale" />
+                <ScalarProperty Name="AttForms" ColumnName="AttForms" />
+                <ScalarProperty Name="FlightTypeOPS" ColumnName="FlightTypeOPS" />
+                <ScalarProperty Name="CCPreFlightCheckRemark" ColumnName="CCPreFlightCheckRemark" />
+                <ScalarProperty Name="FuelUpliftLitr" ColumnName="FuelUpliftLitr" />
+                <ScalarProperty Name="FuelUsed" ColumnName="FuelUsed" />
+                <ScalarProperty Name="FuelRemained" ColumnName="FuelRemained" />
+                <ScalarProperty Name="FuelTotal" ColumnName="FuelTotal" />
+                <ScalarProperty Name="FuelUplift" ColumnName="FuelUplift" />
+                <ScalarProperty Name="FuelRemaining" ColumnName="FuelRemaining" />
                 <ScalarProperty Name="LTR2" ColumnName="LTR2" />
                 <ScalarProperty Name="ACTUALTANKERINGFUEL" ColumnName="ACTUALTANKERINGFUEL" />
                 <ScalarProperty Name="FuelUsedEng2" ColumnName="FuelUsedEng2" />
@@ -6505,6 +6753,69 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="helper_fdm">
+            <EntityTypeMapping TypeName="dbModel.helper_fdm">
+              <MappingFragment StoreEntitySet="helper_fdm">
+                <ScalarProperty Name="ip2_rank" ColumnName="ip2_rank" />
+                <ScalarProperty Name="ip2_scheduled_name" ColumnName="ip2_scheduled_name" />
+                <ScalarProperty Name="ip2_last_name" ColumnName="ip2_last_name" />
+                <ScalarProperty Name="ip2_first_name" ColumnName="ip2_first_name" />
+                <ScalarProperty Name="ip2_id" ColumnName="ip2_id" />
+                <ScalarProperty Name="ip1_rank" ColumnName="ip1_rank" />
+                <ScalarProperty Name="ip1_scheduled_name" ColumnName="ip1_scheduled_name" />
+                <ScalarProperty Name="ip1_last_name" ColumnName="ip1_last_name" />
+                <ScalarProperty Name="ip1_first_name" ColumnName="ip1_first_name" />
+                <ScalarProperty Name="ip1_id" ColumnName="ip1_id" />
+                <ScalarProperty Name="fo2_rank" ColumnName="fo2_rank" />
+                <ScalarProperty Name="fo2_scheduled_name" ColumnName="fo2_scheduled_name" />
+                <ScalarProperty Name="fo2_last_name" ColumnName="fo2_last_name" />
+                <ScalarProperty Name="fo2_first_name" ColumnName="fo2_first_name" />
+                <ScalarProperty Name="fo2_id" ColumnName="fo2_id" />
+                <ScalarProperty Name="fo1_rank" ColumnName="fo1_rank" />
+                <ScalarProperty Name="fo1_scheduled_name" ColumnName="fo1_scheduled_name" />
+                <ScalarProperty Name="fo1_last_name" ColumnName="fo1_last_name" />
+                <ScalarProperty Name="fo1_first_name" ColumnName="fo1_first_name" />
+                <ScalarProperty Name="fo1_id" ColumnName="fo1_id" />
+                <ScalarProperty Name="cpt2_rank" ColumnName="cpt2_rank" />
+                <ScalarProperty Name="cpt2_scheduled_name" ColumnName="cpt2_scheduled_name" />
+                <ScalarProperty Name="cpt2_last_name" ColumnName="cpt2_last_name" />
+                <ScalarProperty Name="cpt2_first_name" ColumnName="cpt2_first_name" />
+                <ScalarProperty Name="cpt2_id" ColumnName="cpt2_id" />
+                <ScalarProperty Name="cpt1_rank" ColumnName="cpt1_rank" />
+                <ScalarProperty Name="cpt1_scheduled_name" ColumnName="cpt1_scheduled_name" />
+                <ScalarProperty Name="cpt1_last_name" ColumnName="cpt1_last_name" />
+                <ScalarProperty Name="cpt1_first_name" ColumnName="cpt1_first_name" />
+                <ScalarProperty Name="cpt1_id" ColumnName="cpt1_id" />
+                <ScalarProperty Name="pf" ColumnName="pf" />
+                <ScalarProperty Name="pflr" ColumnName="pflr" />
+                <ScalarProperty Name="time_flight" ColumnName="time_flight" />
+                <ScalarProperty Name="time_block" ColumnName="time_block" />
+                <ScalarProperty Name="time_scheduled" ColumnName="time_scheduled" />
+                <ScalarProperty Name="arr_icao" ColumnName="arr_icao" />
+                <ScalarProperty Name="arr_iata" ColumnName="arr_iata" />
+                <ScalarProperty Name="arr_id" ColumnName="arr_id" />
+                <ScalarProperty Name="dep_icao" ColumnName="dep_icao" />
+                <ScalarProperty Name="dep_iata" ColumnName="dep_iata" />
+                <ScalarProperty Name="dep_id" ColumnName="dep_id" />
+                <ScalarProperty Name="flight_status_id" ColumnName="flight_status_id" />
+                <ScalarProperty Name="ac_type2" ColumnName="ac_type2" />
+                <ScalarProperty Name="ac_type" ColumnName="ac_type" />
+                <ScalarProperty Name="ac_type_id" ColumnName="ac_type_id" />
+                <ScalarProperty Name="register" ColumnName="register" />
+                <ScalarProperty Name="register_id" ColumnName="register_id" />
+                <ScalarProperty Name="flight_number" ColumnName="flight_number" />
+                <ScalarProperty Name="onblock" ColumnName="onblock" />
+                <ScalarProperty Name="offblock" ColumnName="offblock" />
+                <ScalarProperty Name="landing" ColumnName="landing" />
+                <ScalarProperty Name="takeoff" ColumnName="takeoff" />
+                <ScalarProperty Name="sta" ColumnName="sta" />
+                <ScalarProperty Name="std" ColumnName="std" />
+                <ScalarProperty Name="date_offblock" ColumnName="date_offblock" />
+                <ScalarProperty Name="date_std" ColumnName="date_std" />
+                <ScalarProperty Name="flight_id" ColumnName="flight_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="FDMs">
             <EntityTypeMapping TypeName="dbModel.FDM">
               <MappingFragment StoreEntitySet="FDM">
@@ -6568,49 +6879,51 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="fdm_crew">
-            <EntityTypeMapping TypeName="dbModel.fdm_crew">
-              <MappingFragment StoreEntitySet="fdm_crew">
-                <ScalarProperty Name="aircraft_type_id" ColumnName="aircraft_type_id" />
-                <ScalarProperty Name="aircraft_type" ColumnName="aircraft_type" />
-                <ScalarProperty Name="reserved5" ColumnName="reserved5" />
-                <ScalarProperty Name="reserved4" ColumnName="reserved4" />
-                <ScalarProperty Name="reserved3" ColumnName="reserved3" />
-                <ScalarProperty Name="reserved2" ColumnName="reserved2" />
-                <ScalarProperty Name="reserved1" ColumnName="reserved1" />
-                <ScalarProperty Name="remark" ColumnName="remark" />
-                <ScalarProperty Name="position" ColumnName="position" />
-                <ScalarProperty Name="rank_id" ColumnName="rank_id" />
-                <ScalarProperty Name="rank" ColumnName="rank" />
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="last_name" ColumnName="last_name" />
-                <ScalarProperty Name="first_name" ColumnName="first_name" />
-                <ScalarProperty Name="crew_id" ColumnName="crew_id" />
-                <ScalarProperty Name="event_id" ColumnName="event_id" />
+          <EntitySetMapping Name="view_fdm_flight_crew">
+            <EntityTypeMapping TypeName="dbModel.view_fdm_flight_crew">
+              <MappingFragment StoreEntitySet="view_fdm_flight_crew">
+                <ScalarProperty Name="arr_icao" ColumnName="arr_icao" />
+                <ScalarProperty Name="arr_iata" ColumnName="arr_iata" />
+                <ScalarProperty Name="arr_id" ColumnName="arr_id" />
+                <ScalarProperty Name="dep_icao" ColumnName="dep_icao" />
+                <ScalarProperty Name="dep_iata" ColumnName="dep_iata" />
+                <ScalarProperty Name="dep_id" ColumnName="dep_id" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="JobGroupCode" ColumnName="JobGroupCode" />
+                <ScalarProperty Name="JobGroup" ColumnName="JobGroup" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CrewId" ColumnName="CrewId" />
+                <ScalarProperty Name="STA" ColumnName="STA" />
+                <ScalarProperty Name="STD" ColumnName="STD" />
+                <ScalarProperty Name="ac_type2" ColumnName="ac_type2" />
+                <ScalarProperty Name="Register" ColumnName="Register" />
+                <ScalarProperty Name="RegisterID" ColumnName="RegisterID" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="fdm_processed">
-            <EntityTypeMapping TypeName="dbModel.fdm_processed">
-              <MappingFragment StoreEntitySet="fdm_processed">
+          <EntitySetMapping Name="view_fdm_processed">
+            <EntityTypeMapping TypeName="dbModel.view_fdm_processed">
+              <MappingFragment StoreEntitySet="view_fdm_processed">
+                <ScalarProperty Name="fdm_id" ColumnName="fdm_id" />
                 <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="ConfirmationPerson" ColumnName="ConfirmationPerson" />
-                <ScalarProperty Name="ValidationPerson" ColumnName="ValidationPerson" />
-                <ScalarProperty Name="Confirmation" ColumnName="Confirmation" />
-                <ScalarProperty Name="IsVisibleDate" ColumnName="IsVisibleDate" />
-                <ScalarProperty Name="IsVisible" ColumnName="IsVisible" />
-                <ScalarProperty Name="IsLockedDate" ColumnName="IsLockedDate" />
-                <ScalarProperty Name="IsLocked" ColumnName="IsLocked" />
-                <ScalarProperty Name="DateApproved" ColumnName="DateApproved" />
-                <ScalarProperty Name="ApprovedBy" ColumnName="ApprovedBy" />
-                <ScalarProperty Name="Approved" ColumnName="Approved" />
-                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
-                <ScalarProperty Name="PublishedBy" ColumnName="PublishedBy" />
-                <ScalarProperty Name="Published" ColumnName="Published" />
-                <ScalarProperty Name="DateCreate" ColumnName="DateCreate" />
-                <ScalarProperty Name="RemovedBy" ColumnName="RemovedBy" />
-                <ScalarProperty Name="DateRemoved" ColumnName="DateRemoved" />
-                <ScalarProperty Name="Removed" ColumnName="Removed" />
+                <ScalarProperty Name="confirmation_person" ColumnName="confirmation_person" />
+                <ScalarProperty Name="validation_person" ColumnName="validation_person" />
+                <ScalarProperty Name="confirmation" ColumnName="confirmation" />
+                <ScalarProperty Name="is_visible_date" ColumnName="is_visible_date" />
+                <ScalarProperty Name="is_visible" ColumnName="is_visible" />
+                <ScalarProperty Name="is_locked_date" ColumnName="is_locked_date" />
+                <ScalarProperty Name="is_locked" ColumnName="is_locked" />
+                <ScalarProperty Name="date_approved" ColumnName="date_approved" />
+                <ScalarProperty Name="approved_by" ColumnName="approved_by" />
+                <ScalarProperty Name="approved" ColumnName="approved" />
+                <ScalarProperty Name="deleted" ColumnName="deleted" />
+                <ScalarProperty Name="published_by" ColumnName="published_by" />
+                <ScalarProperty Name="published" ColumnName="published" />
+                <ScalarProperty Name="date_create" ColumnName="date_create" />
+                <ScalarProperty Name="removed_by" ColumnName="removed_by" />
+                <ScalarProperty Name="date_removed" ColumnName="date_removed" />
+                <ScalarProperty Name="removed" ColumnName="removed" />
                 <ScalarProperty Name="file_name" ColumnName="file_name" />
                 <ScalarProperty Name="date" ColumnName="date" />
                 <ScalarProperty Name="main_parameter" ColumnName="main_parameter" />
@@ -6693,9 +7006,72 @@ warning 6002: The table/view 'EPACSPN.dbo.ViewLegTime' does not have a primary k
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="helper_fdm">
-            <EntityTypeMapping TypeName="dbModel.helper_fdm">
-              <MappingFragment StoreEntitySet="helper_fdm">
+          <EntitySetMapping Name="fdm_crew">
+            <EntityTypeMapping TypeName="dbModel.fdm_crew">
+              <MappingFragment StoreEntitySet="fdm_crew">
+                <ScalarProperty Name="aircraft_type_id" ColumnName="aircraft_type_id" />
+                <ScalarProperty Name="aircraft_type" ColumnName="aircraft_type" />
+                <ScalarProperty Name="reserved5" ColumnName="reserved5" />
+                <ScalarProperty Name="reserved4" ColumnName="reserved4" />
+                <ScalarProperty Name="reserved3" ColumnName="reserved3" />
+                <ScalarProperty Name="reserved2" ColumnName="reserved2" />
+                <ScalarProperty Name="reserved1" ColumnName="reserved1" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="position" ColumnName="position" />
+                <ScalarProperty Name="rank_code" ColumnName="rank_code" />
+                <ScalarProperty Name="rank" ColumnName="rank" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="last_name" ColumnName="last_name" />
+                <ScalarProperty Name="first_name" ColumnName="first_name" />
+                <ScalarProperty Name="crew_id" ColumnName="crew_id" />
+                <ScalarProperty Name="processed_id" ColumnName="processed_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="fdm_processed">
+            <EntityTypeMapping TypeName="dbModel.fdm_processed">
+              <MappingFragment StoreEntitySet="fdm_processed">
+                <ScalarProperty Name="fdm_id" ColumnName="fdm_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="confirmation_person" ColumnName="confirmation_person" />
+                <ScalarProperty Name="validation_person" ColumnName="validation_person" />
+                <ScalarProperty Name="confirmation" ColumnName="confirmation" />
+                <ScalarProperty Name="is_visible_date" ColumnName="is_visible_date" />
+                <ScalarProperty Name="is_visible" ColumnName="is_visible" />
+                <ScalarProperty Name="is_locked_date" ColumnName="is_locked_date" />
+                <ScalarProperty Name="is_locked" ColumnName="is_locked" />
+                <ScalarProperty Name="date_approved" ColumnName="date_approved" />
+                <ScalarProperty Name="approved_by" ColumnName="approved_by" />
+                <ScalarProperty Name="approved" ColumnName="approved" />
+                <ScalarProperty Name="deleted" ColumnName="deleted" />
+                <ScalarProperty Name="published_by" ColumnName="published_by" />
+                <ScalarProperty Name="published" ColumnName="published" />
+                <ScalarProperty Name="date_create" ColumnName="date_create" />
+                <ScalarProperty Name="removed_by" ColumnName="removed_by" />
+                <ScalarProperty Name="date_removed" ColumnName="date_removed" />
+                <ScalarProperty Name="removed" ColumnName="removed" />
+                <ScalarProperty Name="file_name" ColumnName="file_name" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="main_parameter" ColumnName="main_parameter" />
+                <ScalarProperty Name="validity" ColumnName="validity" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="duration" ColumnName="duration" />
+                <ScalarProperty Name="limit" ColumnName="limit" />
+                <ScalarProperty Name="key" ColumnName="key" />
+                <ScalarProperty Name="value_name" ColumnName="value_name" />
+                <ScalarProperty Name="units" ColumnName="units" />
+                <ScalarProperty Name="to_date" ColumnName="to_date" />
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="context" ColumnName="context" />
+                <ScalarProperty Name="state_name" ColumnName="state_name" />
+                <ScalarProperty Name="phase" ColumnName="phase" />
+                <ScalarProperty Name="td_date" ColumnName="td_date" />
+                <ScalarProperty Name="critical" ColumnName="critical" />
+                <ScalarProperty Name="major" ColumnName="major" />
+                <ScalarProperty Name="minor" ColumnName="minor" />
+                <ScalarProperty Name="value" ColumnName="value" />
+                <ScalarProperty Name="event_name" ColumnName="event_name" />
+                <ScalarProperty Name="severity" ColumnName="severity" />
                 <ScalarProperty Name="ip2_rank" ColumnName="ip2_rank" />
                 <ScalarProperty Name="ip2_scheduled_name" ColumnName="ip2_scheduled_name" />
                 <ScalarProperty Name="ip2_last_name" ColumnName="ip2_last_name" />
