@@ -45,7 +45,6 @@ namespace ApiFDM.Models
         public virtual DbSet<FDMEventDaily> FDMEventDailies { get; set; }
         public virtual DbSet<FDMEventMonthly> FDMEventMonthlies { get; set; }
         public virtual DbSet<FDMFoEventMonthly> FDMFoEventMonthlies { get; set; }
-        public virtual DbSet<FDMFoMonthly> FDMFoMonthlies { get; set; }
         public virtual DbSet<FDMMonthly> FDMMonthlies { get; set; }
         public virtual DbSet<FDMPhaseDetailByEvent> FDMPhaseDetailByEvents { get; set; }
         public virtual DbSet<FDMPhaseDetailByFlight> FDMPhaseDetailByFlights { get; set; }
@@ -53,7 +52,6 @@ namespace ApiFDM.Models
         public virtual DbSet<FDMPhaseDetailDaily> FDMPhaseDetailDailies { get; set; }
         public virtual DbSet<FDMPhaseMonthly> FDMPhaseMonthlies { get; set; }
         public virtual DbSet<FDMPhaseMonthlyNoCrew> FDMPhaseMonthlyNoCrews { get; set; }
-        public virtual DbSet<FDMPhaseRouteMonthly> FDMPhaseRouteMonthlies { get; set; }
         public virtual DbSet<FDMRegCptDaily_> FDMRegCptDaily_ { get; set; }
         public virtual DbSet<FDMRegCptMonthly> FDMRegCptMonthlies { get; set; }
         public virtual DbSet<FDMRegDaily> FDMRegDailies { get; set; }
@@ -66,10 +64,12 @@ namespace ApiFDM.Models
         public virtual DbSet<Ac_MSN> Ac_MSN { get; set; }
         public virtual DbSet<Airport> Airports { get; set; }
         public virtual DbSet<FlightInformation> FlightInformations { get; set; }
+        public virtual DbSet<helper_fdm> helper_fdm { get; set; }
         public virtual DbSet<FDM> FDMs { get; set; }
+        public virtual DbSet<view_fdm_flight_crew> view_fdm_flight_crew { get; set; }
+        public virtual DbSet<view_fdm_processed> view_fdm_processed { get; set; }
         public virtual DbSet<fdm_crew> fdm_crew { get; set; }
         public virtual DbSet<fdm_processed> fdm_processed { get; set; }
-        public virtual DbSet<helper_fdm> helper_fdm { get; set; }
     
         public virtual int FillFDMCptMonthlyTBL(Nullable<int> yearFrom, Nullable<int> monthFrom, Nullable<int> yearTo, Nullable<int> monthTo)
         {

@@ -313,5 +313,9 @@ namespace ApiFDM.Models
         public string AttForms { get; set; }
         public Nullable<int> PaxMale { get; set; }
         public Nullable<int> PaxFemale { get; set; }
+    
+        public virtual Ac_MSN Ac_MSN { get; set; }
+        public virtual Airport Airport { get; set; }
+        public virtual Airport Airport1 { get; set; }
     }
 }
