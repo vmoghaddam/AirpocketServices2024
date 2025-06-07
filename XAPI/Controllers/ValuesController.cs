@@ -5292,7 +5292,11 @@ namespace XAPI.Controllers
                         cabinBag = data.PassengerCabinBag,
                         soc = "0/0", // if needed you can extract this from text
                         pantryCode = data.PantryCode,
+                        tow = new { Weight = data.TakeOffWeight, Index = data.Indexes.ContainsKey("LITOW") ? data.Indexes["LITOW"] : (double?)null },
+                        zfw = new { Weight = data.ZeroFuelWeight, Index = data.Indexes.ContainsKey("LIZFW") ? data.Indexes["LIZFW"] : (double?)null },
+                        lnd = new { Weight = data.LandingWeight, Index = data.Indexes.ContainsKey("LILNW") ? data.Indexes["LILNW"] : (double?)null },
                         weights = new List<object>
+
     {
         new { type = "Dry Operating Wt", actual = data.DryOperatingWeight, max = (int?)null },
         new { type = "ZFW", actual = data.ZeroFuelWeight, max = 46720 },
