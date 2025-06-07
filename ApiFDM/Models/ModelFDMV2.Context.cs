@@ -25,15 +25,18 @@ namespace ApiFDM.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<FDM> FDMs { get; set; }
         public virtual DbSet<fdm_crew> fdm_crew { get; set; }
         public virtual DbSet<fdm_processed> fdm_processed { get; set; }
-        public virtual DbSet<FlightInformation> FlightInformations { get; set; }
         public virtual DbSet<view_fdm_flight_crew> view_fdm_flight_crew { get; set; }
         public virtual DbSet<view_fdm_processed> view_fdm_processed { get; set; }
-        public virtual DbSet<ViewMSN> ViewMSNs { get; set; }
         public virtual DbSet<fly_course> fly_course { get; set; }
         public virtual DbSet<fly_course_session> fly_course_session { get; set; }
         public virtual DbSet<fly_course_student> fly_course_student { get; set; }
+        public virtual DbSet<FlightInformation> FlightInformations { get; set; }
+        public virtual DbSet<Ac_MSN> Ac_MSN { get; set; }
+        public virtual DbSet<Airport> Airports { get; set; }
+        public virtual DbSet<FDM> FDMs { get; set; }
+        public virtual DbSet<FDMEventParameter> FDMEventParameters { get; set; }
+        public virtual DbSet<ViewMSN> ViewMSNs { get; set; }
     }
 }

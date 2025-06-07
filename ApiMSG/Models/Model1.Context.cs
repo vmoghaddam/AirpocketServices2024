@@ -48,5 +48,8 @@ namespace ApiMSG.Models
         public virtual DbSet<SMSHistory> SMSHistories { get; set; }
         public virtual DbSet<CrewPickupSM> CrewPickupSMS { get; set; }
         public virtual DbSet<ViewCrewDuty> ViewCrewDuties { get; set; }
+        public virtual DbSet<ViewDutiyRocketChat> ViewDutiyRocketChats { get; set; }
+        public virtual DbSet<ViewEmployeeSimple> ViewEmployeeSimples { get; set; }
+        public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
     }
 }
