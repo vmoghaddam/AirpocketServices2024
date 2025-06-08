@@ -3275,7 +3275,7 @@ namespace ApiScheduling.Controllers
                                 //2025-04-12
                                 var _strt = ((DateTime)fdp.InitStart).AddMinutes(default_reporting);
                                 var rdif = Math.Abs((DateTime.UtcNow - _strt).TotalMinutes);
-                                if (rdif < 10 * 60 && !alldh)
+                                if (rdif < 10 * 60 && !alldh && dto.IsAdmin == 0)
                                     return new CustomActionResult(HttpStatusCode.OK, new { Code = 304, data =  /*_interupted*/new { Id = _interupted.Id } });
                             }
                         }
