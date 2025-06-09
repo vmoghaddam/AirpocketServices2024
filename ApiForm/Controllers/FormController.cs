@@ -48,47 +48,54 @@ namespace ApiForm.Controllers
         [AcceptVerbs("POST")]
         public IHttpActionResult SaveVacation(VacationFormViewModel log)
         {
-            ppa_entities context = new ppa_entities();
-            var _dt_from = convert_to_date(log.DateFrom);
-            var m_first = new DateTime(_dt_from.Year, _dt_from.Month, 1);
-            var m_last= new DateTime(_dt_from.Year, _dt_from.Month, DateTime.DaysInMonth(_dt_from.Year, _dt_from.Month));
-
-            if (log.Reason==2)
+            try
             {
-                var exist = context.FormVacations.Where(q => q.Reason == 2 && q.DateFrom >= m_first && q.DateTo <= m_last && q.Status == "Accepted").FirstOrDefault();
-                if (exist!=null)
-                    return Ok(new FormVacation() { Id=-1000, Remark="Your request is not acceptable. You can request an OFF once in a month."});
+                ppa_entities context = new ppa_entities();
+                var _dt_from = convert_to_date(log.DateFrom);
+                var m_first = new DateTime(_dt_from.Year, _dt_from.Month, 1);
+                var m_last = new DateTime(_dt_from.Year, _dt_from.Month, DateTime.DaysInMonth(_dt_from.Year, _dt_from.Month));
 
+                if (log.Reason == 2)
+                {
+                    var exist = context.FormVacations.Where(q => q.Reason == 2 && q.DateFrom >= m_first && q.DateTo <= m_last && q.Status == "Accepted").FirstOrDefault();
+                    if (exist != null)
+                        return Ok(new FormVacation() { Id = -1000, Remark = "Your request is not acceptable. You can request an OFF once in a month." });
+
+                }
+
+                var requester = context.ViewProfiles.Where(q => q.Id == log.UserId).FirstOrDefault();
+
+
+                var form = new FormVacation()
+                {
+                    UserId = log.UserId,
+                    DateCreate = DateTime.Now,
+                    DateFrom = convert_to_date(log.DateFrom),
+                    DateTo = convert_to_date(log.DateTo).AddHours(23),
+                    ReasonStr = log.ReasonStr,
+                    Reason = log.Reason,
+                    Remark = log.Remark,
+                };
+                var cockpit_grps = new List<string>() { "TRE", "TRI", "LTC", "NC", "P1", "P2" };
+                //4811
+                if (cockpit_grps.IndexOf(requester.JobGroup) != -1)
+                    form.ResponsibleId = 4151;
+                else
+                    form.ResponsibleId = 3928;
+
+
+
+
+                context.FormVacations.Add(form);
+                context.SaveChanges();
+                //send_vacation_notification(form);
+                var view = context.FormVacations.Where(q => q.Id == form.Id).FirstOrDefault();
+                return Ok(view);
             }
-
-            var requester = context.ViewProfiles.Where(q => q.Id == log.UserId).FirstOrDefault();
-
-
-            var form = new FormVacation()
+            catch (Exception ex)
             {
-                UserId = log.UserId,
-                DateCreate = DateTime.Now,
-                DateFrom = convert_to_date(log.DateFrom),
-                DateTo = convert_to_date(log.DateTo).AddHours(23),
-                ReasonStr = log.ReasonStr,
-                Reason = log.Reason,
-                Remark = log.Remark,
-            };
-            var cockpit_grps = new List<string>() { "TRE", "TRI", "LTC", "NC", "P1", "P2" };
-            //4811
-            if (cockpit_grps.IndexOf(requester.JobGroup) != -1)
-                form.ResponsibleId = 4758;
-            else
-                form.ResponsibleId = 4811;
-
-
-
-
-            context.FormVacations.Add(form);
-            context.SaveChanges();
-            send_vacation_notification(form);
-            var view = context.FormVacations.Where(q => q.Id == form.Id).FirstOrDefault();
-            return Ok(view);
+                return BadRequest(ex.Message + ' ' + ex.InnerException);
+            }
         }
 
 
@@ -155,7 +162,7 @@ namespace ApiForm.Controllers
 
 
 
-       
+
 
 
 
@@ -279,13 +286,20 @@ namespace ApiForm.Controllers
         [AcceptVerbs("GET")]
         public IHttpActionResult GetEmployeeTimeline(int form_id)
         {
-            ppa_entities context = new ppa_entities();
-            var form = context.ViewFormVacations.Where(q => q.Id == form_id).FirstOrDefault();
-            var dt1 = ((DateTime)form.DateFrom).AddDays(-3).Date;
-            var dt2 = ((DateTime)form.DateTo).AddDays(4).Date;
-            var timeline = context.ViewCrewDutyTimeLineNews.Where(q => q.CrewId == form.EmployeeId && q.DateStartLocal >= dt1 && q.DateStartLocal < dt2).OrderBy(q => q.DateStartLocal).ToList();
+            try
+            {
+                ppa_entities context = new ppa_entities();
+                var form = context.ViewFormVacations.Where(q => q.Id == form_id).FirstOrDefault();
+                var dt1 = ((DateTime)form.DateFrom).AddDays(-3).Date;
+                var dt2 = ((DateTime)form.DateTo).AddDays(4).Date;
+                var timeline = context.ViewCrewDutyTimeLineNews.Where(q => q.CrewId == form.EmployeeId && q.DateStartLocal >= dt1 && q.DateStartLocal < dt2).OrderBy(q => q.DateStartLocal).ToList();
 
-            return Ok(timeline);
+                return Ok(timeline);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message + ' ' + ex.InnerException);
+            }
         }
 
         public void send_vacation_notification(FormVacation vacation)
@@ -298,7 +312,7 @@ namespace ApiForm.Controllers
                     var applicant = context.ViewCrews.FirstOrDefault(q => q.Id == vacation.UserId);
 
                     var cockpit_grps = new List<string>() { "TRE", "TRI", "LTC", "NC", "P1", "P2" };
-                    var cabin_grps = new List<string>() { "ISCCM", "SCCM", "CCM" ,"CCI","CCE"};
+                    var cabin_grps = new List<string>() { "ISCCM", "SCCM", "CCM", "CCI", "CCE" };
                     var ac_grps = new List<string>() { "737", "MD", "AB" };
                     var type = "";
 
@@ -445,6 +459,10 @@ namespace ApiForm.Controllers
                     var not_receivers = context.request_receiver.Where(q => q.is_active == true && q.group == "Scheduling").ToList();
                     var _result = new List<qa_notification_history>();
                     MelliPayamac m1 = new MelliPayamac();
+
+                    //Varesh
+                    //MagfaNew m1 = new MagfaNew();
+
                     foreach (var rec in not_receivers)
                     {
                         List<string> prts2 = new List<string>();
@@ -511,8 +529,8 @@ namespace ApiForm.Controllers
                         prts.Add("Your Vaction/ Off request accepted.");
                         prts.Add("Please check your PulsePocket to see more details.");
                         prts.Add("https://ava.pulsepocket.app");
-                        
-                         text = String.Join("\n", prts);    
+
+                        text = String.Join("\n", prts);
                     }
                     else
                     {
@@ -526,7 +544,7 @@ namespace ApiForm.Controllers
                     }
 
 
-                    
+
 
                     var not_history_pic = new qa_notification_history()
                     {
