@@ -1,5 +1,6 @@
 ﻿using ApiProfile.Models;
 using ApiProfile.ViewModels;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -64,7 +65,13 @@ namespace ApiProfile.Controllers
 
         }
 
+        DateTime? to_date(string str)
+        {
+            if (string.IsNullOrEmpty(str)) return null;
+            var prts = str.Split('-').Select(q=>Convert.ToInt32(q)).ToList();
+            return new DateTime(prts[0],prts[1],prts[2]);
 
+        }
         [Route("api/profile/employee/save")]
 
         [AcceptVerbs("POST")]
@@ -116,6 +123,18 @@ namespace ApiProfile.Controllers
             FillAircraftTypes(context, person, dto);
             FillDocuments(context, person, dto);
 
+            foreach(var cer in dto.Certificates)
+            {
+                var cer_obj = new CertificateHistory()
+                {
+                     Person= person,
+                      CourseTypeId=cer.course_type_id,
+                       DateIssue=to_date(cer.date_issue_str),
+                       DateExpire=to_date(cer.date_expire_str),
+                       DateCreate=DateTime.Now,
+                };
+                context.CertificateHistories.Add(cer_obj);
+            }
 
             if (do_user)
             {
@@ -218,9 +237,13 @@ namespace ApiProfile.Controllers
                     employee.InActive = emp.InActive;
                     var locs = await context.ViewEmployeeLocations.Where(q => q.EmployeeId == pc.Id).ToListAsync();
                     employee.Locations = ViewModels.EmployeeLocation.GetDtos(locs);
+                    employee.Certificates = await context.view_trn_certificate_history_last.Where(q => q.person_id == entity.Id).ToListAsync();
+                    
 
 
                 }
+
+               
 
 
             }
@@ -578,6 +601,139 @@ namespace ApiProfile.Controllers
                 var profiles = await query.ToListAsync();
 
                 return Ok(profiles);
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += " " + ex.InnerException.Message;
+                return Ok(msg);
+                //throw new HttpResponseException(HttpStatusCode.Unauthorized);
+            }
+
+        }
+
+        //war2
+        [Route("api/profiles/main/new/{cid}/{active}/{grp}")]
+
+        public async Task<IHttpActionResult> GetProfilesByCustomerIdNew(int cid, int active, string grp)
+        {
+            try
+            {
+                var context = new Models.dbEntities();
+                var query = context.view_profile.Where(q => q.CustomerId == cid);
+                if (active == 1)
+                    query = query.Where(q => q.InActive == false);
+                grp = grp.Replace('x', '/');
+                if (grp != "-1")
+                    query = query.Where(q => q.JobGroupRoot == grp || q.PostRoot == grp);
+                var profiles = await query.ToListAsync();
+                var course_types = await context.view_trn_course_type_group.Where(q => q.group_root == grp).ToListAsync();
+                var certificates=await context.view_trn_certificate_history_last.Where(q=>q.group_root==grp).ToListAsync();
+
+                var result = new List<JObject>();
+                foreach (var p in profiles)
+                {
+                    JObject jsonObject = new JObject();
+                    jsonObject["Id"] = p.Id;
+                    jsonObject["PID"] = p.PID;
+                    jsonObject["IsActive"] = p.IsActive;
+                    jsonObject["IsDeleted"] = p.IsDeleted;
+                    jsonObject["CustomerId"] = p.CustomerId;
+                    jsonObject["GroupId"] = p.GroupId;
+                    jsonObject["C1GroupId"] = p.C1GroupId;
+                    jsonObject["JobGroupC1"] = p.JobGroupC1;
+                    jsonObject["JobGroupCodeC1"] = p.JobGroupCodeC1;
+                    jsonObject["C2GroupId"] = p.C2GroupId;
+                    jsonObject["JobGroupC2"] = p.JobGroupC2;
+                    jsonObject["JobGroupCodeC2"] = p.JobGroupCodeC2;
+                    jsonObject["C3GroupId"] = p.C3GroupId;
+                    jsonObject["JobGroup"] = p.JobGroup;
+                    jsonObject["JobGroupCode"] = p.JobGroupCode;
+                    jsonObject["JobGroupRoot"] = p.JobGroupRoot;
+                    jsonObject["PostRoot"] = p.PostRoot;
+                    jsonObject["NID"] = p.NID;
+                    jsonObject["FirstName"] = p.FirstName;
+                    jsonObject["LastName"] = p.LastName;
+                    jsonObject["Name"] = p.Name;
+                    jsonObject["Mobile"] = p.Mobile;
+                    jsonObject["PassportNumber"] = p.PassportNumber;
+                    jsonObject["IDNo"] = p.IDNo;
+                    jsonObject["PersonId"] = p.PersonId;
+                    jsonObject["InActive"] = p.InActive;
+                    jsonObject["JobGroupMain"] = p.JobGroupMain;
+                    jsonObject["JobGroupMainCode"] = p.JobGroupMainCode;
+                    jsonObject["JobGroupCode2"] = p.JobGroupCode2;
+                    jsonObject["JobGroup2RootCode"] = p.JobGroup2RootCode;
+                    jsonObject["RemainNDT"] = p.RemainNDT;
+                    jsonObject["RemainCAO"] = p.RemainCAO;
+                    jsonObject["RemainPassport"] = p.RemainPassport;
+                    jsonObject["date_passport"] = p.date_passport;
+                    jsonObject["RemainCMC"] = p.RemainCMC;
+                    jsonObject["date_cmc"] = p.date_cmc;
+                    jsonObject["RemainLicence"] = p.RemainLicence;
+                    jsonObject["date_licence"] = p.date_licence;
+                    jsonObject["RemainLicenceIR"] = p.RemainLicenceIR;
+                    jsonObject["date_licence_ir"] = p.date_licence_ir;
+                    jsonObject["RemainProficiency"] = p.RemainProficiency;
+                    jsonObject["date_proficiency"] = p.date_proficiency;
+                    jsonObject["RemainProficiencyOPC"] = p.RemainProficiencyOPC;
+                    jsonObject["date_proficiency_opc"] = p.date_proficiency_opc;
+                    jsonObject["RemainLPR"] = p.RemainLPR;
+                    jsonObject["date_lpr"] = p.date_lpr;
+                    jsonObject["RemainMedical"] = p.RemainMedical;
+                    jsonObject["date_medical"] = p.date_medical;
+                    jsonObject["RemainTRI"] = p.RemainTRI;
+                    jsonObject["date_tri"] = p.date_tri;
+                    jsonObject["RemainTRE"] = p.RemainTRE;
+                    jsonObject["date_tre"] = p.date_tre;
+                    jsonObject["RemainLine"] = p.RemainLine;
+                    jsonObject["date_line"] = p.date_line;
+                    jsonObject["RemainEGPWS"] = p.RemainEGPWS;
+                    jsonObject["date_egpws"] = p.date_egpws;
+                    jsonObject["RemainTypeMD"] = p.RemainTypeMD;
+                    jsonObject["date_type_md"] = p.date_type_md;
+                    jsonObject["RemainType737"] = p.RemainType737;
+                    jsonObject["date_type_737"] = p.date_type_737;
+                    jsonObject["RemainTypeAirbus"] = p.RemainTypeAirbus;
+                    jsonObject["date_type_airbus"] = p.date_type_airbus;
+                    jsonObject["BaseAirline"] = p.BaseAirline;
+                    jsonObject["HomeBase"] = p.HomeBase;
+                    jsonObject["IsType737"] = p.IsType737;
+                    jsonObject["IsTypeMD"] = p.IsTypeMD;
+                    jsonObject["IsTypeAirbus"] = p.IsTypeAirbus;
+                    jsonObject["IsTypeFokker"] = p.IsTypeFokker;
+                    jsonObject["UserId"] = p.UserId;
+                    jsonObject["RemainTypeFoker50"] = p.RemainTypeFoker50;
+                    jsonObject["date_type_foker50"] = p.date_type_foker50;
+                    jsonObject["RemainTypeFoker100"] = p.RemainTypeFoker100;
+                    jsonObject["date_type_foker100"] = p.date_type_foker100;
+                    jsonObject["Reserved1"] = p.Reserved1;
+                    jsonObject["Reserved2"] = p.Reserved2;
+                    jsonObject["Reserved3"] = p.Reserved3;
+                    jsonObject["Reserved4"] = p.Reserved4;
+                    jsonObject["Reserved5"] = p.Reserved5;
+                    jsonObject["PostCode"] = p.PostCode;
+                    jsonObject["PostTitle"] = p.PostTitle;
+                    jsonObject["ImageUrl"] = p.ImageUrl;
+                    foreach (var ct in course_types)
+                    {
+                        var certificate=certificates.Where(q=>q.person_id==p.PersonId && q.course_type_id==ct.course_type_id).FirstOrDefault();
+                        jsonObject["remain_" + ct.title.Replace(" ", "_")] = certificate== null? -100000:certificate.remaining;
+                        jsonObject["date_" + ct.title.Replace(" ", "_")] = certificate == null?(Nullable<DateTime>) null:certificate.date_expire;
+                    }
+
+                    result.Add(jsonObject);
+                }
+
+
+
+                // return Ok(result);
+                return Ok(new
+                {
+                     result,
+                     course_types
+                });
             }
             catch (Exception ex)
             {

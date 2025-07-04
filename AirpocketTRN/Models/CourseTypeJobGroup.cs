@@ -22,6 +22,7 @@ namespace AirpocketTRN.Models
         public Nullable<int> Interval { get; set; }
         public Nullable<int> IntervalUnit { get; set; }
         public Nullable<int> Duration { get; set; }
+        public string GroupCode { get; set; }
     
         public virtual CourseType CourseType { get; set; }
         public virtual JobGroup JobGroup { get; set; }
