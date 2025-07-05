@@ -107,6 +107,23 @@ namespace AirpocketTRN.Controllers
             }
            
         }
+        //GetCourseTypeGroupsProfile
+        [Route("api/profile/course/types")]
+        [AcceptVerbs("GET")]
+        public async Task<IHttpActionResult> GetCourseTypeGroupsProfile()
+        {
+            try
+            {
+                var result = await courseService.GetCourseTypeGroupsProfile();
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return Ok(build_exception_message(ex));
+            }
+
+        }
         //GetCourseTypeJobGroups
         [Route("api/course/type/groups/{cid}")]
         [AcceptVerbs("GET")]

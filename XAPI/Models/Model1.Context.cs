@@ -34,7 +34,6 @@ namespace XAPI.Models
         public virtual DbSet<FlightInformation> FlightInformations { get; set; }
         public virtual DbSet<ViewOFPPoint> ViewOFPPoints { get; set; }
         public virtual DbSet<OFPPoint> OFPPoints { get; set; }
-        public virtual DbSet<OFPImport> OFPImports { get; set; }
         public virtual DbSet<OFPB_BurnOffAdjustment> OFPB_BurnOffAdjustment { get; set; }
         public virtual DbSet<OFPB_Distances> OFPB_Distances { get; set; }
         public virtual DbSet<OFPB_Fuels> OFPB_Fuels { get; set; }
@@ -44,5 +43,6 @@ namespace XAPI.Models
         public virtual DbSet<OFPB_Root> OFPB_Root { get; set; }
         public virtual DbSet<OFPB_MainNavLog> OFPB_MainNavLog { get; set; }
         public virtual DbSet<load_sheet_raw> load_sheet_raw { get; set; }
+        public virtual DbSet<OFPImport> OFPImports { get; set; }
     }
 }

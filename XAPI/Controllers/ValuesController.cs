@@ -2581,7 +2581,7 @@ namespace XAPI.Controllers
             }
         }
 
-
+        //2025-06-12
         //https://xpi.sbvaresh.ir/api/skyputer
         [Route("api/skyputer/import/{id}")]
         [AcceptVerbs("GET")]
@@ -2607,6 +2607,15 @@ namespace XAPI.Controllers
                 var parts = rawText.Split(new string[] { "||" }, StringSplitOptions.None).ToList();
                 var atc_prt = parts.FirstOrDefault(q => q.StartsWith("icatc:|"));
                 var atc = atc_prt != null ? atc_prt.Replace("icatc:|", "") : "";
+
+                Match match = Regex.Match(atc, @"RALT/([A-Z0-9 ]+)");
+                List<string> raltValue = new List<string>();
+                if (match.Success)
+                {
+                    raltValue = match.Groups[1].Value.Trim().Split(' ').ToList();
+
+
+                }
 
                 var info = parts.FirstOrDefault(q => q.StartsWith("binfo:|")).Replace("binfo:|", "");
                 var infoRows = info.Split(';').ToList();
@@ -2645,12 +2654,17 @@ namespace XAPI.Controllers
 
                 var MTOW = infoRows.FirstOrDefault(q => q.StartsWith("MTOW")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("MTOW")).Split('=')[1];
                 var MLDW = infoRows.FirstOrDefault(q => q.StartsWith("MLDW")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("MLDW")).Split('=')[1];
+                var MZFW = infoRows.FirstOrDefault(q => q.StartsWith("MLDW")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("MLDW")).Split('=')[1];
+
 
                 var ELDP = infoRows.FirstOrDefault(q => q.StartsWith("ELDP")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("ELDP")).Split('=')[1];
                 var ELDS = infoRows.FirstOrDefault(q => q.StartsWith("ELDS")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("ELDS")).Split('=')[1];
                 var ELAL = infoRows.FirstOrDefault(q => q.StartsWith("ELAL")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("ELAL")).Split('=')[1];
                 var ELBL = infoRows.FirstOrDefault(q => q.StartsWith("ELBL")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("ELBL")).Split('=')[1];
 
+
+                var moda = infoRows.FirstOrDefault(q => q.StartsWith("MODA")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("MODA")).Split('=')[1];
+                var modb = infoRows.FirstOrDefault(q => q.StartsWith("MODB")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("MODB")).Split('=')[1];
                 //ELDP=ELEV: 65;ELDS=ELEV: 3956;ELAL=ELEV: 5058;ELBL=;
 
                 // var vdt= infoRows.FirstOrDefault(q => q.StartsWith/av("VDT")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("VDT")).Split('=')[1];
@@ -2770,6 +2784,8 @@ namespace XAPI.Controllers
                     plan.MTOW = MTOW;
                 if (!string.IsNullOrEmpty(MLDW))
                     plan.MLDW = MLDW;
+                if (!string.IsNullOrEmpty(MZFW))
+                    plan.mzfw = Convert.ToInt32(MZFW);
                 if (!string.IsNullOrEmpty(ELDP))
                     plan.ELDP = ELDP;
                 if (!string.IsNullOrEmpty(ELDS))
@@ -2778,6 +2794,50 @@ namespace XAPI.Controllers
                     plan.ELAL = ELAL;
                 if (!string.IsNullOrEmpty(ELBL))
                     plan.ELBL = ELBL;
+
+                if (!string.IsNullOrEmpty(moda))
+                {
+                    var _moda = moda.Replace("[", "").Replace("]", "").Replace(" ", "");
+                    try
+                    {
+                        plan.mod1_stn = _moda.Split(',')[0];
+                        plan.mod1 =Convert.ToInt32( _moda.Split(',')[1]);
+                    }
+                    catch(Exception ex)
+                    {
+
+                    }
+                    
+                }
+                if (!string.IsNullOrEmpty(modb))
+                {
+                    var _modb = modb.Replace("[", "").Replace("]", "").Replace(" ", "");
+                    try
+                    {
+                        plan.mod2_stn = _modb.Split(',')[0];
+                        plan.mod2 = Convert.ToInt32(_modb.Split(',')[1]);
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+                    
+                }
+                try
+                {
+                    if (raltValue != null && raltValue.Count > 0)
+                    {
+                        plan.ralt = "";
+                        foreach (var s in raltValue)
+                            if (s.StartsWith("O"))
+                                plan.ralt += s + " ";
+                    }
+                }
+                catch(Exception ex)
+                {
+
+                }
+                
 
 
                 plan.Source = "SkyPuter";
@@ -3723,6 +3783,9 @@ namespace XAPI.Controllers
                 fltobj.ALT1 = alt1;
                 fltobj.ALT2 = alt2;
 
+                fltobj.ALT4 = plan.mod1_stn;
+                fltobj.ALT5=plan.mod2_stn;
+
 
                 plan.TextOutput = JsonConvert.SerializeObject(other);
 
@@ -3867,7 +3930,7 @@ namespace XAPI.Controllers
 
                 */
 
-                return Ok(true);
+               return Ok(true);
             }
             catch (DbEntityValidationException e)
             {

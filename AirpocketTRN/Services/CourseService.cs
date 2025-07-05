@@ -34,6 +34,17 @@ namespace AirpocketTRN.Services
             };
         }
 
+        public async Task<DataResponse> GetCourseTypeGroupsProfile()
+        {
+            var result = await context.view_trn_course_type_group.Where(q=>q.show_in_profile==true).OrderBy(q=>q.title).ToListAsync();
+
+            return new DataResponse()
+            {
+                Data = result,
+                IsSuccess = true,
+            };
+        }
+
 
         public async Task<DataResponse> GetGRPCTExpiring()
         {

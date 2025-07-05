@@ -37,5 +37,6 @@ namespace ApiLibrary.Models
         public virtual DbSet<BookRelatedGroup> BookRelatedGroups { get; set; }
         public virtual DbSet<JobGroup> JobGroups { get; set; }
         public virtual DbSet<BookFileVisit> BookFileVisits { get; set; }
+        public virtual DbSet<ViewProfile> ViewProfiles { get; set; }
     }
 }

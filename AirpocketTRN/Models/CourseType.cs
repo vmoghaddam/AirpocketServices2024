@@ -17,9 +17,9 @@ namespace AirpocketTRN.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public CourseType()
         {
-            this.CourseTypeJobGroups = new HashSet<CourseTypeJobGroup>();
-            this.CourseSyllabus = new HashSet<CourseSyllabu>();
             this.Courses = new HashSet<Course>();
+            this.CourseSyllabus = new HashSet<CourseSyllabu>();
+            this.CourseTypeJobGroups = new HashSet<CourseTypeJobGroup>();
         }
     
         public int Id { get; set; }
@@ -35,13 +35,19 @@ namespace AirpocketTRN.Models
         public Nullable<int> CertificateTypeId { get; set; }
         public Nullable<int> IDX { get; set; }
         public Nullable<int> Mandatory { get; set; }
+        public string IssueField { get; set; }
+        public string ExpireField { get; set; }
+        public Nullable<bool> ShowInProfile { get; set; }
+        public Nullable<bool> ShowInList { get; set; }
+        public Nullable<bool> IsMonitoringEnabled { get; set; }
+        public string Abbreviation { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CourseTypeJobGroup> CourseTypeJobGroups { get; set; }
         public virtual CertificateType CertificateType { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Course> Courses { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CourseSyllabu> CourseSyllabus { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Course> Courses { get; set; }
+        public virtual ICollection<CourseTypeJobGroup> CourseTypeJobGroups { get; set; }
     }
 }

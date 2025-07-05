@@ -30,7 +30,6 @@ namespace AirpocketTRN.Models
         public virtual DbSet<CourseSessionPresence> CourseSessionPresences { get; set; }
         public virtual DbSet<BookFile> BookFiles { get; set; }
         public virtual DbSet<Document> Documents { get; set; }
-        public virtual DbSet<CourseType> CourseTypes { get; set; }
         public virtual DbSet<ViewCoursePeopleRanked> ViewCoursePeopleRankeds { get; set; }
         public virtual DbSet<ViewCourseType> ViewCourseTypes { get; set; }
         public virtual DbSet<SumMandatoryCourseExpired> SumMandatoryCourseExpireds { get; set; }
@@ -44,7 +43,6 @@ namespace AirpocketTRN.Models
         public virtual DbSet<AppCertificate> AppCertificates { get; set; }
         public virtual DbSet<Teacher> Teachers { get; set; }
         public virtual DbSet<ViewTeacher> ViewTeachers { get; set; }
-        public virtual DbSet<CourseTypeJobGroup> CourseTypeJobGroups { get; set; }
         public virtual DbSet<ViewCourseTypeJobGroup> ViewCourseTypeJobGroups { get; set; }
         public virtual DbSet<CourseSessionPresenceDetail> CourseSessionPresenceDetails { get; set; }
         public virtual DbSet<ViewCourseSessionPresenceDetail> ViewCourseSessionPresenceDetails { get; set; }
@@ -65,7 +63,6 @@ namespace AirpocketTRN.Models
         public virtual DbSet<ViewMandatoryCourseEmployee> ViewMandatoryCourseEmployees { get; set; }
         public virtual DbSet<ViewCourseAllowedEmployee> ViewCourseAllowedEmployees { get; set; }
         public virtual DbSet<ViewEmployeeAb> ViewEmployeeAbs { get; set; }
-        public virtual DbSet<CertificateHistory> CertificateHistories { get; set; }
         public virtual DbSet<TrnDbAppFieldMapping> TrnDbAppFieldMappings { get; set; }
         public virtual DbSet<ViewCourseSMSHistoryRanked> ViewCourseSMSHistoryRankeds { get; set; }
         public virtual DbSet<CertificateType> CertificateTypes { get; set; }
@@ -167,5 +164,11 @@ namespace AirpocketTRN.Models
         public virtual DbSet<ViewEmployeeLight> ViewEmployeeLights { get; set; }
         public virtual DbSet<ViewFDPRest> ViewFDPRests { get; set; }
         public virtual DbSet<ViewEmployee> ViewEmployees { get; set; }
+        public virtual DbSet<CourseType> CourseTypes { get; set; }
+        public virtual DbSet<CertificateHistory> CertificateHistories { get; set; }
+        public virtual DbSet<view_trn_certificate_history> view_trn_certificate_history { get; set; }
+        public virtual DbSet<CourseTypeJobGroup> CourseTypeJobGroups { get; set; }
+        public virtual DbSet<view_trn_course_type_group> view_trn_course_type_group { get; set; }
+        public virtual DbSet<view_trn_certificate_history_last> view_trn_certificate_history_last { get; set; }
     }
 }

@@ -1726,6 +1726,7 @@ namespace ApiProfile.ViewModels
                 entity.DateInactiveEnd = ((DateTime)employee.DateInactiveEnd).Date.AddHours(23).AddMinutes(59).AddSeconds(59);
         }
 
+        public List<view_trn_certificate_history_last> Certificates { get; set; }
        
     }
 
