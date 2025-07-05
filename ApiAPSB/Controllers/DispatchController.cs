@@ -35,6 +35,7 @@ using Newtonsoft.Json.Linq;
 using System.Data.SqlClient;
 using System.Threading;
 using static ApiAPSB.Controllers.DiscretionController;
+using static System.Net.Mime.MediaTypeNames;
 
 
 namespace ApiAPSB.Controllers
@@ -2995,6 +2996,78 @@ namespace ApiAPSB.Controllers
 
             }).Start();
             /////////////////////
+
+        }
+
+        public class UserInfoDto
+        {
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
+            public string Mobile { get; set; }
+            public string UserName { get; set; }
+            public string NormalizedUserName { get; set; }
+            public string CurrentUsernameAirpocket { get; set; }
+            public string NewUsername { get; set; }
+        }
+
+
+        [Route("odata/users/sms/save")]
+        [AcceptVerbs("GET")]
+        public async Task<List<string>> SMSUsers()
+        {
+            try
+            {
+                MelliPayamac m = new MelliPayamac();
+                var context = new dbEntities();
+                string sql = @"
+SELECT
+    p.FIRSTNAME,
+    p.LastName,
+    p.Mobile,
+    a.UserName,
+    a.NormalizedUserName,
+    u.[Current Username Airpocket ],
+    u.[New username]
+FROM AspNetUsers a
+INNER JOIN _usernames u ON a.UserName = u.[New username]
+INNER JOIN person p ON p.userId = a.id";
+
+                List<UserInfoDto> sqlResult = context.Database.SqlQuery<UserInfoDto>(sql).ToList();
+                var result = new List<string>();
+                foreach (var s in sqlResult)
+                {
+                    List<string> strs = new List<string>();
+                    var token = "";
+
+                    strs.Add("Dear " + s.LastName + " " + s.FirstName);
+                    strs.Add("Your New Username:");
+                    strs.Add(s.UserName);
+                    strs.Add("https://ava.airpocket.app/");
+                    var text = String.Join("\n", strs);
+
+                    //result.Add(s.LastName + " " + s.FirstName + " " + s.Mobile + " " + text);
+
+                    var r =  m.send("09333315290", null, text)[0];
+                    result.Add(s.FirstName + " " + s.LastName + " " + m.send(s.Mobile, null, text)[0]);
+
+
+                }
+
+
+                string resultAsJson = JsonConvert.SerializeObject(sqlResult, Formatting.Indented);
+                return result;
+
+            }
+            catch (Exception ex)
+            {
+               var res = new List<string>();    
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += "    IN:" + ex.InnerException.Message;
+
+                res.Add(msg);
+                return res;
+            }
 
         }
 
