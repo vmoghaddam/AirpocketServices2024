@@ -16,7 +16,7 @@ namespace ApiAPSB.Models
     public partial class dbEntities : DbContext
     {
         public dbEntities()
-            : base(SecureConnectionHelper.GetDecryptedConnectionString())
+            : base("name=dbEntities")
         {
         }
     
@@ -94,7 +94,5 @@ namespace ApiAPSB.Models
         public virtual DbSet<frm_onboard_status> frm_onboard_status { get; set; }
         public virtual DbSet<view_frm_onboard_status> view_frm_onboard_status { get; set; }
         public virtual DbSet<view_frm_onboard_item> view_frm_onboard_item { get; set; }
-        public virtual DbSet<ViewQAGround> ViewQAGrounds { get; set; }
-        public virtual DbSet<ViewQAHazard> ViewQAHazards { get; set; }
     }
 }

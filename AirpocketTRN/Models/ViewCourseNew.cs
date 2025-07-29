@@ -93,5 +93,6 @@ namespace AirpocketTRN.Models
         public Nullable<double> PLStatus { get; set; }
         public Nullable<int> ParentId { get; set; }
         public string ParentTitle { get; set; }
+        public string ExamType { get; set; }
     }
 }

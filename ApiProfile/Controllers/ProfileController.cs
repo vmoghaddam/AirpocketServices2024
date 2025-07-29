@@ -122,19 +122,19 @@ namespace ApiProfile.Controllers
 
             FillAircraftTypes(context, person, dto);
             FillDocuments(context, person, dto);
-
-            foreach(var cer in dto.Certificates)
-            {
-                var cer_obj = new CertificateHistory()
+            if (dto.Certificates != null)
+                foreach (var cer in dto.Certificates)
                 {
-                     Person= person,
-                      CourseTypeId=cer.course_type_id,
-                       DateIssue=to_date(cer.date_issue_str),
-                       DateExpire=to_date(cer.date_expire_str),
-                       DateCreate=DateTime.Now,
-                };
-                context.CertificateHistories.Add(cer_obj);
-            }
+                    var cer_obj = new CertificateHistory()
+                    {
+                        Person = person,
+                        CourseTypeId = cer.course_type_id,
+                        DateIssue = to_date(cer.date_issue_str),
+                        DateExpire = to_date(cer.date_expire_str),
+                        DateCreate = DateTime.Now,
+                    };
+                    context.CertificateHistories.Add(cer_obj);
+                }
 
             if (do_user)
             {
@@ -629,6 +629,24 @@ namespace ApiProfile.Controllers
                     query = query.Where(q => q.JobGroupRoot == grp || q.PostRoot == grp);
                 var profiles = await query.ToListAsync();
                 var course_types = await context.view_trn_course_type_group.Where(q => q.group_root == grp).ToListAsync();
+                var extra = new List<view_trn_course_type_group>();
+                switch (grp)
+                {
+                    case "Cockpit":
+                        extra.Add(new view_trn_course_type_group() { title= "RemainPassport", abbreviation="PASS.", course_type_id=-1  });
+                        extra.Add(new view_trn_course_type_group() { title = "RemainLicence", abbreviation = "LIC.", course_type_id = -1 });
+                        extra.Add(new view_trn_course_type_group() { title = "RemainCMC", abbreviation = "CMC", course_type_id = -1 });
+                        extra.Add(new view_trn_course_type_group() { title = "RemainProficiencyOPC", abbreviation = "OPC", course_type_id = -1 });
+                        extra.Add(new view_trn_course_type_group() { title = "RemainProficiency", abbreviation = "LPC", course_type_id = -1 });
+                        extra.Add(new view_trn_course_type_group() { title = "RemainLPR", abbreviation = "LPR", course_type_id = -1 });
+                        break;
+                    default:
+                        break;
+                }
+
+                course_types = extra.Concat(course_types).ToList();
+
+
                 var certificates=await context.view_trn_certificate_history_last.Where(q=>q.group_root==grp).ToListAsync();
 
                 var result = new List<JObject>();

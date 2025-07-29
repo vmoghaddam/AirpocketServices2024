@@ -35,5 +35,6 @@ namespace AirpocketTRN.Models
         public Nullable<bool> ctg_no_reccurent { get; set; }
         public Nullable<int> ctg_interval { get; set; }
         public Nullable<int> ctg_duration { get; set; }
+        public string group_root { get; set; }
     }
 }

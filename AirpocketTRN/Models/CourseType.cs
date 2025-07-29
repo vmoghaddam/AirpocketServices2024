@@ -17,9 +17,10 @@ namespace AirpocketTRN.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public CourseType()
         {
-            this.Courses = new HashSet<Course>();
             this.CourseSyllabus = new HashSet<CourseSyllabu>();
             this.CourseTypeJobGroups = new HashSet<CourseTypeJobGroup>();
+            this.course_type_subject = new HashSet<course_type_subject>();
+            this.Courses = new HashSet<Course>();
         }
     
         public int Id { get; set; }
@@ -44,10 +45,12 @@ namespace AirpocketTRN.Models
     
         public virtual CertificateType CertificateType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Course> Courses { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CourseSyllabu> CourseSyllabus { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CourseTypeJobGroup> CourseTypeJobGroups { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<course_type_subject> course_type_subject { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Course> Courses { get; set; }
     }
 }

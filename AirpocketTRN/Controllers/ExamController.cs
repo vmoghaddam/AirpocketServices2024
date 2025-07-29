@@ -745,6 +745,31 @@ namespace AirpocketTRN.Controllers
         }
 
 
+        [Route("api/exams/")]
+        [AcceptVerbs("GET")]
+        public async Task<IHttpActionResult> GetExams()
+        {
+            try
+            {
+                FLYEntities context = new FLYEntities();
+                var exams = await context.view_trn_exam.Where(q=>q.exam_date!=null).OrderByDescending(q => q.exam_date).ToListAsync();
+
+                var result = new DataResponse()
+                {
+                    Data = exams
+                     ,
+                    IsSuccess = true,
+                };
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
 
 
     }
