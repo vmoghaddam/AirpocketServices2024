@@ -1740,6 +1740,34 @@ namespace XAPI.Controllers
 
                     }
                     return Ok(true);
+                } else if (dto.plan.Contains("JSKY") || dto.plan.Contains("Jsky"))
+                {
+                    result = "JSKY";
+                    var entity = new OFPSkyPuter()
+                    {
+                        OFP = dto.plan,
+                        DateCreate = DateTime.Now,
+                        UploadStatus = 0,
+
+
+                    };
+                    var ctx = new PPAEntities();
+                    ctx.Database.CommandTimeout = 1000;
+                    ctx.OFPSkyPuters.Add(entity);
+                    ctx.SaveChanges();
+
+
+                    string responsebody = "NO";
+                    using (WebClient client = new WebClient())
+                    {
+                        var reqparm = new System.Collections.Specialized.NameValueCollection();
+                        reqparm.Add("key", dto.key);
+                        reqparm.Add("plan", dto.plan);
+                        byte[] responsebytes = client.UploadValues("https://jsky.xpi.aerotango.app/api/skyputer/jsky", "POST", reqparm);
+                        responsebody = Encoding.UTF8.GetString(responsebytes);
+
+                    }
+                    return Ok(true);
                 }
                 else if (dto.plan.Contains("CASPIAN"))
                 {
@@ -2037,6 +2065,49 @@ namespace XAPI.Controllers
 
         }
 
+
+        [Route("api/skyputer/jsky")]
+        [AcceptVerbs("POST")]
+        public IHttpActionResult PostSkyputerJsky(skyputer dto)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(dto.key))
+                    return Ok("Authorization key not found.");
+                if (string.IsNullOrEmpty(dto.plan))
+                    return Ok("Plan cannot be empty.");
+                if (dto.key != "Skyputer@1359#")
+                    return Ok("Authorization key is wrong.");
+
+
+
+                var entity = new OFPSkyPuter()
+                {
+                    OFP = dto.plan,
+                    DateCreate = DateTime.Now,
+                    UploadStatus = 0,
+
+
+                };
+                var ctx = new PPAEntities();
+                ctx.Database.CommandTimeout = 1000;
+                ctx.OFPSkyPuters.Add(entity);
+                ctx.SaveChanges();
+                new Thread(async () =>
+                {
+                    GetSkyputerImport(entity.Id);
+                }).Start();
+                return Ok(true);
+
+
+
+            }
+            catch (Exception ex)
+            {
+                return Ok(true);
+            }
+
+        }
 
         [Route("api/skyputer/flypersia")]
         [AcceptVerbs("POST")]
@@ -3752,6 +3823,13 @@ namespace XAPI.Controllers
 
                 other.Add(new fuelPrm() { prm = "ECTM_ENG2_FUEL_FLOW", value = "" });
                 props.Add("prop_ectm_eng2_fuel_flow");
+
+                props.Add("prop_ldg_va");
+                props.Add("prop_ldg_vsl");
+                props.Add("prop_ldg_vf15");
+                props.Add("prop_ldg_vapp");
+                props.Add("prop_ldg_vga");
+                props.Add("prop_ldg_conf");
 
 
                 var dtupd = DateTime.UtcNow.ToString("yyyyMMddHHmm");

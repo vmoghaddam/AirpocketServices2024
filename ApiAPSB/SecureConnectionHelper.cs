@@ -13,7 +13,8 @@ namespace ApiAPSB
         public static string GetDecryptedConnectionString()
         {
             string encrypted = ConfigurationManager.AppSettings["EncryptedConnectionString"];
-            string key = Environment.GetEnvironmentVariable("DB_CONN_KEY", EnvironmentVariableTarget.Process);
+           // string key = Environment.GetEnvironmentVariable("DB_CONN_KEY", EnvironmentVariableTarget.Process);
+            string key = "AMD64";
 
             if (string.IsNullOrEmpty(encrypted) || string.IsNullOrEmpty(key))
                 throw new Exception("Missing encrypted string or key.");

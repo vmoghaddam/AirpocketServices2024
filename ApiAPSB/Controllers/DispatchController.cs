@@ -536,7 +536,15 @@ namespace ApiAPSB.Controllers
                         ofp.CM2,
                         ofp.DSPNAME,
                         ofp.ATC,
+                        ofp.mod1,
+                        ofp.mod2,
+                        ofp.mod1_stn,
+                        ofp.mod2_stn,
+                        ofp.ralt,
+                        ofp.mzfw,
 
+                        ofp.MTOW,
+                        ofp.MLDW,
 
 
                         props,

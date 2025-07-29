@@ -7,19 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ApiAPSB.Models
+namespace ApiScheduling.Models
 {
     using System;
     using System.Collections.Generic;
     
     public partial class OFPImport
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public OFPImport()
-        {
-            this.OFPImportProps = new HashSet<OFPImportProp>();
-        }
-    
         public int Id { get; set; }
         public string FileName { get; set; }
         public string FlightNo { get; set; }
@@ -121,9 +115,5 @@ namespace ApiAPSB.Models
         public Nullable<int> mod1 { get; set; }
         public Nullable<int> mod2 { get; set; }
         public string ralt { get; set; }
-    
-        public virtual FlightInformation FlightInformation { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<OFPImportProp> OFPImportProps { get; set; }
     }
 }
