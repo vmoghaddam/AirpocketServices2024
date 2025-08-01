@@ -131,204 +131,225 @@ namespace ApiSand.Controllers
         [Route("api/doc")]
         public async Task<DataResponse> get_doc()
         {
-            string folderPath = @"C:\Users\vahid\Desktop\ava\Hozor Ghiab\initial_cabin_1\test";
-            string[] docxFiles = Directory.GetFiles(folderPath, "*.docx");
+            string mainPath = @"C:\Users\vahid\Desktop\ava\Hozor Ghiab";  // مسیر فولدر مورد نظر رو وارد کن
+
+            // گرفتن فقط فولدرهای سطح اول داخل فولدر
+            string[] subDirectories = Directory.GetDirectories(mainPath, "*", SearchOption.AllDirectories); //Directory.GetDirectories(mainPath);
+
+            // تبدیل آرایه به لیست
+            List<string> subFolderList = new List<string>(subDirectories);
             List<fly_course> courses = new List<fly_course>();
-            Console.WriteLine("فایل‌های موجود در پوشه:");
             List<string> errors = new List<string>();
-            foreach (string file in docxFiles)
+            List<string> errors2 = new List<string>();
+            foreach (var _folderPath in subFolderList)
             {
-                // Console.WriteLine(Path.GetFileName(file)); // فقط نام فایل بدون مسیر
-                //string filePath = @"C:\Users\vahid\Desktop\ava\flykish\" + "فرم  حضورغیاب fly kish Annoucment" + ".docx";
-                string filePath = (file);
-                List<Student2> students = new List<Student2>();
-                // List<Session> sessions = new List<Session>();
-                List<string> days = new List<string>();
-                List<string> sessions = new List<string>();
-                List<string> day_sessions = new List<string>();
-                List<Session> c_sessions = new List<Session>();
-                fly_course course = new fly_course() { key = filePath };
-                try
+                string folderPath = _folderPath; //@"C:\Users\vahid\Desktop\ava\Hozor Ghiab\initial_cabin_1\test";
+                string[] docxFiles = Directory.GetFiles(folderPath, "*.docx");
+               
+                Console.WriteLine("فایل‌های موجود در پوشه:");
+               
+                foreach (string file in docxFiles)
                 {
-                    using (DocX document = DocX.Load(filePath))
+                    if (!file.Contains("Type 310 5"))
                     {
-                        string text = document.Text;
-
-                        string courseTitle = ExtractField(text, @"Course Title:\s*(.+?)\s*Department");
-                        string startingDate = ExtractField(text, @"Starting Date:\s*([^\s]+)");
-                        string endingDate = ExtractField(text, @"Ending Date:\s*([^\s]+)");
-                        string duration = ExtractField(text, @"Duration:\s*(.+?)\s*Hrs");  //……20……/……3……
-                        string instructor = ExtractField(text, @"Instructor's Name:\s*(.+)");
-
-                        course.date_start = ConvertPersianDateToGregorian(startingDate);
-                        course.date_end = ConvertPersianDateToGregorian(endingDate);
-                        var d_prts = duration.Replace(".", "").Replace(" ", "").Split('/');
-                        course.duration = Convert.ToInt32(duration.Replace("…", "").Replace(".", "").Replace(" ", "").Split('/')[0]);
-                        course.days = Convert.ToInt32(duration.Replace("…", "").Replace(".", "").Split('/')[1]);
-                        course.instructors = String.Join(", ", instructor.Split('&').Select(q => q.ToUpper()).ToList());
-
-                        Console.WriteLine("Course Title: " + courseTitle);
-                        Console.WriteLine("Starting Date: " + startingDate);
-                        Console.WriteLine("Ending Date: " + endingDate);
-                        Console.WriteLine("Duration: " + duration);
-                        Console.WriteLine("Instructor's Name: " + instructor);
-                        foreach (var table in document.Tables)
+                       // continue;
+                    }
+                    // Console.WriteLine(Path.GetFileName(file)); // فقط نام فایل بدون مسیر
+                    //string filePath = @"C:\Users\vahid\Desktop\ava\flykish\" + "فرم  حضورغیاب fly kish Annoucment" + ".docx";
+                    string filePath = (file);
+                    List<Student2> students = new List<Student2>();
+                    // List<Session> sessions = new List<Session>();
+                    List<string> days = new List<string>();
+                    List<string> sessions = new List<string>();
+                    List<string> day_sessions = new List<string>();
+                    List<Session> c_sessions = new List<Session>();
+                    fly_course course = new fly_course() { key = filePath };
+                    try
+                    {
+                        using (DocX document = DocX.Load(filePath))
                         {
-                            // بررسی اینکه جدول حداقل 3 ستون دارد (No, Name (per), Name (eng))
-                            int _r = 0;
-                            foreach (var row in table.Rows)
+                            string text = document.Text;
+
+                            string courseTitle = ExtractField(text, @"Course Title:\s*(.+?)\s*Department");
+                            string startingDate = ExtractField(text, @"Starting Date:\s*([^\s]+)");
+                            string endingDate = ExtractField(text, @"Ending Date:\s*([^\s]+)");
+                            string duration = ExtractField(text, @"Duration:\s*(.+?)\s*Hrs");  //……20……/……3……
+                            string instructor = ExtractField(text, @"Instructor's Name:\s*(.+)");
+
+                            course.date_start = ConvertPersianDateToGregorian(startingDate);
+                            course.date_end = ConvertPersianDateToGregorian(endingDate);
+                            var d_prts = duration.Replace(".", "").Replace(" ", "").Split('/');
+                            course.duration = Convert.ToInt32(duration.Replace("…", "").Replace(".", "").Replace(" ", "").Split('/')[0]);
+                            course.days = Convert.ToInt32(duration.Replace("…", "").Replace(".", "").Split('/')[1]);
+                            course.instructors = String.Join(", ", instructor.Split('&').Select(q => q.ToUpper()).ToList());
+
+                            Console.WriteLine("Course Title: " + courseTitle);
+                            Console.WriteLine("Starting Date: " + startingDate);
+                            Console.WriteLine("Ending Date: " + endingDate);
+                            Console.WriteLine("Duration: " + duration);
+                            Console.WriteLine("Instructor's Name: " + instructor);
+                            foreach (var table in document.Tables)
                             {
-                                if (row.Cells.Count >= 3 &&
-                                    int.TryParse(row.Cells[0].Paragraphs[0].Text.Trim(), out int no))
+                                // بررسی اینکه جدول حداقل 3 ستون دارد (No, Name (per), Name (eng))
+                                int _r = 0;
+                                foreach (var row in table.Rows)
                                 {
-                                    string namePer = row.Cells[1].Paragraphs[0].Text.Trim();
-                                    string nameEng = row.Cells[2].Paragraphs[0].Text.Trim();
+                                    if (row.Cells.Count >= 3 &&
+                                        int.TryParse(row.Cells[0].Paragraphs[0].Text.Trim(), out int no))
+                                    {
+                                        string namePer = row.Cells[1].Paragraphs[0].Text.Trim();
+                                        string nameEng = row.Cells[2].Paragraphs[0].Text.Trim();
 
-                                    students.Add(new Student2
-                                    {
-                                        No = no,
-                                        first_name = namePer,
-                                        last_name = nameEng,
-                                        key = filePath
-                                    });
+                                        students.Add(new Student2
+                                        {
+                                            No = no,
+                                            first_name = namePer,
+                                            last_name = nameEng,
+                                            key = filePath
+                                        });
 
-                                    var hrow = table.Rows[_r - 2];
-                                    var srow = table.Rows[_r - 1];
-                                    foreach (var c in hrow.Cells)
-                                    {
-                                        string str = c.Paragraphs[0].Text;
-                                        if (str != "No" && str != "Name" && !string.IsNullOrEmpty(str))
-                                            days.Add(str);
-                                    }
-                                    if (day_sessions.Count == 0)
-                                    {
-                                        foreach (var c in srow.Cells)
+                                        var hrow = table.Rows[_r - 2];
+                                        var srow = table.Rows[_r - 1];
+                                        foreach (var c in hrow.Cells)
                                         {
                                             string str = c.Paragraphs[0].Text;
-                                            if (!string.IsNullOrEmpty(str) && str != "Signature")
-                                            {
-                                                var strs = str.Split('-');
-                                                if (!strs[0].Contains(":"))
-                                                    strs[0] += ":00";
-                                                if (strs[0].Length < 5)
-                                                    strs[0] = "0" + strs[0];
-                                                if (strs.Length > 1)
-                                                {
-                                                    if (!strs[1].Contains(":"))
-                                                        strs[1] += ":00";
-                                                    if (strs[1].Length < 5)
-                                                        strs[1] = "0" + strs[1];
-                                                    sessions.Add(strs[0] + "-" + strs[1]);
-                                                }
-                                                else
-                                                {
-                                                    sessions.Add(strs[0] + "-" + strs[0]);
-                                                }
-                                               
-
-                                               
-                                            }
+                                            if (str != "No" && str != "Name" && !string.IsNullOrEmpty(str))
+                                                days.Add(str);
                                         }
-                                        // List<List<string>> result_sessions = SplitListBySig(sessions);
-
-                                        int _di = 0;
-                                        int _si = 0;
-                                        Int64 _cs = -1;
-                                        foreach (var session in sessions)
+                                        if (day_sessions.Count == 0)
                                         {
-                                            var _i6 = Convert.ToInt64(session.Replace("-", "").Replace(":", ""));
-                                            if (_cs >= _i6)
-                                                _di++;
-                                            var _day = days[_di];
-                                            day_sessions.Add(_day + " " + session);
-                                            var c_session = (new Session()
+                                            foreach (var c in srow.Cells)
                                             {
-                                                DateStart = ConvertPersianDateToGregorian(_day),
-                                                DateEnd = ConvertPersianDateToGregorian(_day),
-                                            });
+                                                string str = c.Paragraphs[0].Text;
+                                                if (!string.IsNullOrEmpty(str) && str != "Signature")
+                                                {
+                                                    var strs = str.Split('-');
+                                                    if (!strs[0].Contains(":"))
+                                                        strs[0] += ":00";
+                                                    if (strs[0].Length < 5)
+                                                        strs[0] = "0" + strs[0];
+                                                    if (strs.Length > 1)
+                                                    {
+                                                        if (!strs[1].Contains(":"))
+                                                            strs[1] += ":00";
+                                                        if (strs[1].Length < 5)
+                                                            strs[1] = "0" + strs[1];
+                                                        sessions.Add(strs[0] + "-" + strs[1]);
+                                                    }
+                                                    else
+                                                    {
+                                                        sessions.Add(strs[0] + "-" + strs[0]);
+                                                    }
 
-                                            if (c_session.DateStart == null)
-                                            {
-                                                c_session.DateStart = ConvertPersianDateToGregorian2(_day);
-                                                c_session.DateEnd = ConvertPersianDateToGregorian2(_day);
+
+
+                                                }
                                             }
-                                            if (c_session.DateStart != null)
-                                            {
-                                                var _ss = session.Split('-')[0];
-                                                var _se = session.Split('-')[1];
-                                                c_session.DateStart = ((DateTime)c_session.DateStart).AddHours(Convert.ToInt32(_ss.Split(':')[0]))
-                                                    .AddMinutes(Convert.ToInt32(_ss.Split(':')[1]));
+                                            // List<List<string>> result_sessions = SplitListBySig(sessions);
 
-                                                c_session.DateEnd = ((DateTime)c_session.DateEnd).AddHours(Convert.ToInt32(_se.Split(':')[0]))
-                                                    .AddMinutes(Convert.ToInt32(_se.Split(':')[1]));
-                                                c_session.key = filePath;
-                                                c_sessions.Add(c_session);
+                                            int _di = 0;
+                                            int _si = 0;
+                                            Int64 _cs = -1;
+                                            sessions = sessions.Select(q => q.Replace(" ", "").Trim()).ToList();
+                                            foreach (var session in sessions)
+                                            {
+                                                var _i6 = Convert.ToInt64(session.Replace("-", "").Replace(":", "").Replace(" ",""));
+                                                if (_cs >= _i6)
+                                                    _di++;
+                                                var _day = days[_di];
+                                                day_sessions.Add(_day + " " + session);
+                                                var c_session = (new Session()
+                                                {
+                                                    DateStart = ConvertPersianDateToGregorian(_day),
+                                                    DateEnd = ConvertPersianDateToGregorian(_day),
+                                                });
+
+                                                if (c_session.DateStart == null)
+                                                {
+                                                    c_session.DateStart = ConvertPersianDateToGregorian2(_day);
+                                                    c_session.DateEnd = ConvertPersianDateToGregorian2(_day);
+                                                }
+                                                if (c_session.DateStart != null)
+                                                {
+                                                    var _ss = session.Split('-')[0];
+                                                    var _se = session.Split('-')[1];
+                                                    c_session.DateStart = ((DateTime)c_session.DateStart).AddHours(Convert.ToInt32(_ss.Split(':')[0]))
+                                                        .AddMinutes(Convert.ToInt32(_ss.Split(':')[1]));
+
+                                                    c_session.DateEnd = ((DateTime)c_session.DateEnd).AddHours(Convert.ToInt32(_se.Split(':')[0]))
+                                                        .AddMinutes(Convert.ToInt32(_se.Split(':')[1]));
+                                                    c_session.key = filePath;
+                                                    c_sessions.Add(c_session);
+
+                                                }
+                                                _cs = Convert.ToInt64(session.Replace("-", "").Replace(":", ""));
 
                                             }
-                                            _cs = Convert.ToInt64(session.Replace("-", "").Replace(":", ""));
-
                                         }
+
+
                                     }
-
-
+                                    _r++;
                                 }
-                                _r++;
                             }
+
+                            course.sessions = c_sessions;
+                            course.students = students;
+                            courses.Add(course);
+
+                            //foreach (var table in document.Tables)
+                            //{
+                            //    // فرض: ردیف اول شامل تاریخ‌ها است، ردیف دوم شامل ساعت‌ها
+                            //    if (table.RowCount >= 3)
+                            //    {
+                            //        var dateRow = table.Rows[0]; // یا 1 اگر سطر اول عنوان است
+                            //        var timeRow = table.Rows[1];
+
+                            //        string currentDate = null;
+
+                            //        for (int i = 0; i < dateRow.Cells.Count; i++)
+                            //        {
+                            //            var dateText = dateRow.Cells[i].Paragraphs[0].Text.Trim();
+                            //            if (Regex.IsMatch(dateText, @"\d{4}-\d{2}-\d{2}")) // تشخیص تاریخ
+                            //            {
+                            //                currentDate = dateText;
+                            //            }
+
+                            //            var timeText = timeRow.Cells[i].Paragraphs[0].Text.Trim();
+                            //            var match = Regex.Match(timeText, @"(\d{2}:\d{2})-(\d{2}:\d{2})");
+                            //            if (currentDate != null && match.Success)
+                            //            {
+                            //                sessions.Add(new Session
+                            //                {
+                            //                    Date = currentDate,
+                            //                    Start = match.Groups[1].Value,
+                            //                    End = match.Groups[2].Value
+                            //                });
+                            //            }
+                            //        }
+
+                            //        break; // اولین جدول کافی است
+                            //    }
+                            //}
+
+
+
+
                         }
-
-                        course.sessions = c_sessions;
-                        course.students = students;
-                        courses.Add(course);
-
-                        //foreach (var table in document.Tables)
-                        //{
-                        //    // فرض: ردیف اول شامل تاریخ‌ها است، ردیف دوم شامل ساعت‌ها
-                        //    if (table.RowCount >= 3)
-                        //    {
-                        //        var dateRow = table.Rows[0]; // یا 1 اگر سطر اول عنوان است
-                        //        var timeRow = table.Rows[1];
-
-                        //        string currentDate = null;
-
-                        //        for (int i = 0; i < dateRow.Cells.Count; i++)
-                        //        {
-                        //            var dateText = dateRow.Cells[i].Paragraphs[0].Text.Trim();
-                        //            if (Regex.IsMatch(dateText, @"\d{4}-\d{2}-\d{2}")) // تشخیص تاریخ
-                        //            {
-                        //                currentDate = dateText;
-                        //            }
-
-                        //            var timeText = timeRow.Cells[i].Paragraphs[0].Text.Trim();
-                        //            var match = Regex.Match(timeText, @"(\d{2}:\d{2})-(\d{2}:\d{2})");
-                        //            if (currentDate != null && match.Success)
-                        //            {
-                        //                sessions.Add(new Session
-                        //                {
-                        //                    Date = currentDate,
-                        //                    Start = match.Groups[1].Value,
-                        //                    End = match.Groups[2].Value
-                        //                });
-                        //            }
-                        //        }
-
-                        //        break; // اولین جدول کافی است
-                        //    }
-                        //}
-
-
-
-
                     }
-                }
-                catch (Exception ex)
-                {
-                    var msg = filePath + "    " + ex.Message;
-                    if (ex.InnerException != null)
-                        msg += "    " + ex.InnerException.Message;
-                    errors.Add(msg);
-                }
+                    catch (Exception ex)
+                    {
+                        var msg = filePath + "    " + ex.Message;
+                        if (ex.InnerException != null)
+                            msg += "    " + ex.InnerException.Message;
+                        errors.Add(msg);
+                        errors.Add("           ");
+                        errors2.Add(filePath);
+                    }
 
+                }
             }
+
             ppa_entities context = new ppa_entities();
             foreach (var c in courses)
             {
@@ -363,7 +384,8 @@ namespace ApiSand.Controllers
                 }
             }
             context.SaveChanges();
-
+            File.WriteAllLines(@"C:\Users\vahid\Desktop\ava\Hozor Ghiab\" + "errors.txt", errors);
+            File.WriteAllLines(@"C:\Users\vahid\Desktop\ava\Hozor Ghiab\" + "errors2.txt", errors2);
             return new DataResponse()
             {
                 Data = new
