@@ -42,8 +42,31 @@ namespace XAPI.Controllers
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class ValuesController : ApiController
     {
+        [Route("api/test")]
+        [AcceptVerbs("GET")]
+        public IHttpActionResult GetTEST()
+        {
+            try
+            {
+                var ctx = new PPAEntities();
+                var result = ctx.FlightInformations.FirstOrDefault();
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException!= null)
+                    msg+=" "+ex.InnerException.Message;
+                return Ok(msg);
+            }
+           
+
+        }
+
         [Route("api/flt")]
         [AcceptVerbs("GET")]
+
         public IHttpActionResult GetFlt(DateTime dt, string origin, string destination, string no, string key)
         {
             if (key != "taban@1359A")
@@ -1681,7 +1704,7 @@ namespace XAPI.Controllers
                     ref_id = entity.id,
                 });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 var msg = ex.Message;
                 if (ex.InnerException != null)
@@ -1689,11 +1712,11 @@ namespace XAPI.Controllers
                 return Ok(new
                 {
                     result = false,
-                    error_message =msg,
+                    error_message = msg,
                     ref_id = -1,
                 });
             }
-          
+
 
         }
 
@@ -2004,6 +2027,65 @@ namespace XAPI.Controllers
                     }
                     return Ok(true);
                 }
+                //VARESH
+                else if (dto.plan.Contains("VARESH"))
+                {
+                    result = "VARESH";
+                    var entity = new OFPSkyPuter()
+                    {
+                        OFP = dto.plan,
+                        DateCreate = DateTime.Now,
+                        UploadStatus = 0,
+
+
+                    };
+                    var ctx = new PPAEntities();
+                    ctx.Database.CommandTimeout = 1000;
+                    ctx.OFPSkyPuters.Add(entity);
+                    ctx.SaveChanges();
+
+
+                    string responsebody = "NO";
+                    using (WebClient client = new WebClient())
+                    {
+                        var reqparm = new System.Collections.Specialized.NameValueCollection();
+                        reqparm.Add("key", dto.key);
+                        reqparm.Add("plan", dto.plan);
+                        byte[] responsebytes = client.UploadValues("https://zxpi.airpocket.online/api/skyputer/varesh", "POST", reqparm);
+                        responsebody = Encoding.UTF8.GetString(responsebytes);
+
+                    }
+                    return Ok(true);
+                }
+                else if (dto.plan.Contains("JSKY") || dto.plan.Contains("Jsky"))
+                {
+                    result = "JSKY";
+                    var entity = new OFPSkyPuter()
+                    {
+                        OFP = dto.plan,
+                        DateCreate = DateTime.Now,
+                        UploadStatus = 0,
+
+
+                    };
+                    var ctx = new PPAEntities();
+                    ctx.Database.CommandTimeout = 1000;
+                    ctx.OFPSkyPuters.Add(entity);
+                    ctx.SaveChanges();
+
+
+                    string responsebody = "NO";
+                    using (WebClient client = new WebClient())
+                    {
+                        var reqparm = new System.Collections.Specialized.NameValueCollection();
+                        reqparm.Add("key", dto.key);
+                        reqparm.Add("plan", dto.plan);
+                        byte[] responsebytes = client.UploadValues("https://jsky.xpi.aerotango.app/api/skyputer/jsky", "POST", reqparm);
+                        responsebody = Encoding.UTF8.GetString(responsebytes);
+
+                    }
+                    return Ok(true);
+                }
                 else
                 {
                     var entity = new OFPSkyPuter()
@@ -2080,7 +2162,48 @@ namespace XAPI.Controllers
             }
 
         }
+        [Route("api/skyputer/jsky")]
+        [AcceptVerbs("POST")]
+        public IHttpActionResult PostSkyputerJsky(skyputer dto)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(dto.key))
+                    return Ok("Authorization key not found.");
+                if (string.IsNullOrEmpty(dto.plan))
+                    return Ok("Plan cannot be empty.");
+                if (dto.key != "Skyputer@1359#")
+                    return Ok("Authorization key is wrong.");
 
+
+
+                var entity = new OFPSkyPuter()
+                {
+                    OFP = dto.plan,
+                    DateCreate = DateTime.Now,
+                    UploadStatus = 0,
+
+
+                };
+                var ctx = new PPAEntities();
+                ctx.Database.CommandTimeout = 1000;
+                ctx.OFPSkyPuters.Add(entity);
+                ctx.SaveChanges();
+                new Thread(async () =>
+                {
+                    GetSkyputerImport(entity.Id);
+                }).Start();
+                return Ok(true);
+
+
+
+            }
+            catch (Exception ex)
+            {
+                return Ok(true);
+            }
+
+        }
         [Route("api/skyputer/chb")]
         [AcceptVerbs("POST")]
         public IHttpActionResult PostSkyputerCHB(skyputer dto)
@@ -2404,6 +2527,53 @@ namespace XAPI.Controllers
 
         }
 
+
+        [Route("api/skyputer/varesh")]
+        [AcceptVerbs("POST")]
+        public IHttpActionResult PostSkyputerVARESH(skyputer dto)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(dto.key))
+                    return Ok("Authorization key not found.");
+                if (string.IsNullOrEmpty(dto.plan))
+                    return Ok("Plan cannot be empty.");
+                if (dto.key != "Skyputer@1359#")
+                    return Ok("Authorization key is wrong.");
+
+
+
+                var entity = new OFPSkyPuter()
+                {
+                    OFP = dto.plan,
+                    DateCreate = DateTime.Now,
+                    UploadStatus = 0,
+
+
+                };
+                var ctx = new PPAEntities();
+                ctx.Database.CommandTimeout = 1000;
+                ctx.OFPSkyPuters.Add(entity);
+                ctx.SaveChanges();
+                new Thread(async () =>
+                {
+                    GetSkyputerImport(entity.Id);
+                }).Start();
+                return Ok(true);
+
+
+
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += " Inner: " + ex.InnerException.Message;
+                return Ok(msg);
+            }
+
+        }
+
         [Route("api/skyputer/karun")]
         [AcceptVerbs("POST")]
         public IHttpActionResult PostSkyputerKARUN(skyputer dto)
@@ -2581,7 +2751,7 @@ namespace XAPI.Controllers
             }
         }
 
-
+        //2025-06-12
         //https://xpi.sbvaresh.ir/api/skyputer
         [Route("api/skyputer/import/{id}")]
         [AcceptVerbs("GET")]
@@ -2607,6 +2777,15 @@ namespace XAPI.Controllers
                 var parts = rawText.Split(new string[] { "||" }, StringSplitOptions.None).ToList();
                 var atc_prt = parts.FirstOrDefault(q => q.StartsWith("icatc:|"));
                 var atc = atc_prt != null ? atc_prt.Replace("icatc:|", "") : "";
+
+                Match match = Regex.Match(atc, @"RALT/([A-Z0-9 ]+)");
+                List<string> raltValue = new List<string>();
+                if (match.Success)
+                {
+                    raltValue = match.Groups[1].Value.Trim().Split(' ').ToList();
+
+
+                }
 
                 var info = parts.FirstOrDefault(q => q.StartsWith("binfo:|")).Replace("binfo:|", "");
                 var infoRows = info.Split(';').ToList();
@@ -2645,12 +2824,17 @@ namespace XAPI.Controllers
 
                 var MTOW = infoRows.FirstOrDefault(q => q.StartsWith("MTOW")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("MTOW")).Split('=')[1];
                 var MLDW = infoRows.FirstOrDefault(q => q.StartsWith("MLDW")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("MLDW")).Split('=')[1];
+                var MZFW = infoRows.FirstOrDefault(q => q.StartsWith("MLDW")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("MLDW")).Split('=')[1];
+
 
                 var ELDP = infoRows.FirstOrDefault(q => q.StartsWith("ELDP")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("ELDP")).Split('=')[1];
                 var ELDS = infoRows.FirstOrDefault(q => q.StartsWith("ELDS")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("ELDS")).Split('=')[1];
                 var ELAL = infoRows.FirstOrDefault(q => q.StartsWith("ELAL")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("ELAL")).Split('=')[1];
                 var ELBL = infoRows.FirstOrDefault(q => q.StartsWith("ELBL")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("ELBL")).Split('=')[1];
 
+
+                var moda = infoRows.FirstOrDefault(q => q.StartsWith("MODA")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("MODA")).Split('=')[1];
+                var modb = infoRows.FirstOrDefault(q => q.StartsWith("MODB")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("MODB")).Split('=')[1];
                 //ELDP=ELEV: 65;ELDS=ELEV: 3956;ELAL=ELEV: 5058;ELBL=;
 
                 // var vdt= infoRows.FirstOrDefault(q => q.StartsWith/av("VDT")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("VDT")).Split('=')[1];
@@ -2770,6 +2954,8 @@ namespace XAPI.Controllers
                     plan.MTOW = MTOW;
                 if (!string.IsNullOrEmpty(MLDW))
                     plan.MLDW = MLDW;
+                if (!string.IsNullOrEmpty(MZFW))
+                    plan.mzfw = Convert.ToInt32(MZFW);
                 if (!string.IsNullOrEmpty(ELDP))
                     plan.ELDP = ELDP;
                 if (!string.IsNullOrEmpty(ELDS))
@@ -2778,6 +2964,50 @@ namespace XAPI.Controllers
                     plan.ELAL = ELAL;
                 if (!string.IsNullOrEmpty(ELBL))
                     plan.ELBL = ELBL;
+
+                if (!string.IsNullOrEmpty(moda))
+                {
+                    var _moda = moda.Replace("[", "").Replace("]", "").Replace(" ", "");
+                    try
+                    {
+                        plan.mod1_stn = _moda.Split(',')[0];
+                        plan.mod1 =Convert.ToInt32( _moda.Split(',')[1]);
+                    }
+                    catch(Exception ex)
+                    {
+
+                    }
+                    
+                }
+                if (!string.IsNullOrEmpty(modb))
+                {
+                    var _modb = modb.Replace("[", "").Replace("]", "").Replace(" ", "");
+                    try
+                    {
+                        plan.mod2_stn = _modb.Split(',')[0];
+                        plan.mod2 = Convert.ToInt32(_modb.Split(',')[1]);
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+                    
+                }
+                try
+                {
+                    if (raltValue != null && raltValue.Count > 0)
+                    {
+                        plan.ralt = "";
+                        foreach (var s in raltValue)
+                            if (s.StartsWith("O"))
+                                plan.ralt += s + " ";
+                    }
+                }
+                catch(Exception ex)
+                {
+
+                }
+                
 
 
                 plan.Source = "SkyPuter";
@@ -3723,6 +3953,9 @@ namespace XAPI.Controllers
                 fltobj.ALT1 = alt1;
                 fltobj.ALT2 = alt2;
 
+                fltobj.ALT4 = plan.mod1_stn;
+                fltobj.ALT5=plan.mod2_stn;
+
 
                 plan.TextOutput = JsonConvert.SerializeObject(other);
 
@@ -3867,7 +4100,7 @@ namespace XAPI.Controllers
 
                 */
 
-                return Ok(true);
+               return Ok(true);
             }
             catch (DbEntityValidationException e)
             {
@@ -5053,6 +5286,311 @@ namespace XAPI.Controllers
 
         }
 
+
+        //[Route("api/get/loadsheet")]
+        //[AcceptVerbs("POST")]
+        //public IHttpActionResult GetLoadSheet(string flight_no, DateTime date)
+        //{
+        //    using (var context = new PPAEntities())
+        //    {
+        //        string date_formatted = " " + date.ToString("ddMMMyy").ToUpper() + " ";
+        //        string flight_number = $"%{flight_no}%";
+        //        string flight_date = $"%{date_formatted}%";
+        //        string query = "SELECT * FROM load_sheet_raw WHERE content LIKE @p0 and content LIKE @p1";
+        //        try
+        //        {
+        //            load_sheet_raw raw_text = context.Database.SqlQuery<load_sheet_raw>(query, flight_number, flight_date).FirstOrDefault();
+        //            var text = raw_text.content;
+        //            var data = new LoadSheetData();
+
+        //            // Line 1: Flight, Reg, Version, Crew, Date/Time
+        //            var flightMatch = Regex.Match(text, @"FLIGHT\s+(?<flight>\S+)\s+(?<reg>\S+)\s+\((?<ver>\w)\)\s+(?<version>\S+)\s+(?<crew>\S+)\s+(?<date>\d{2}[A-Z]{3}\d{2})\s+(?<time>\d{2}:\d{2})");
+        //            if (flightMatch.Success)
+        //            {
+        //                data.Flight = flightMatch.Groups["flight"].Value;
+        //                data.AircraftReg = flightMatch.Groups["reg"].Value;
+        //                data.Version = flightMatch.Groups["version"].Value;
+        //                data.Crew = flightMatch.Groups["crew"].Value;
+        //                data.Date = DateTime.ParseExact(flightMatch.Groups["date"].Value, "ddMMMyy", System.Globalization.CultureInfo.InvariantCulture);
+        //                data.Time = flightMatch.Groups["time"].Value;
+        //            }
+
+        //            // Load in compartments
+        //            var compMatch = Regex.Match(text, @"LOAD IN COMPARTMENTS\s+(?<weight>\d+)\s+1/(?<c1>\d+)\s+2/(?<c2>\d+)\s+4/(?<c4>\d+)");
+        //            if (compMatch.Success)
+        //            {
+        //                data.LoadInCompartment = int.Parse(compMatch.Groups["weight"].Value);
+        //                data.CompartmentDistribution["1"] = int.Parse(compMatch.Groups["c1"].Value);
+        //                data.CompartmentDistribution["2"] = int.Parse(compMatch.Groups["c2"].Value);
+        //                data.CompartmentDistribution["4"] = int.Parse(compMatch.Groups["c4"].Value);
+        //            }
+
+        //            // Passenger / Cabin Bag
+        //            var paxMatch = Regex.Match(text, @"PASSENGER/CABIN BAG\s+(?<bag>\d+)\s+(?<dist>.+?)\s+TTL\s+(?<ttl>\d+)");
+        //            if (paxMatch.Success)
+        //            {
+        //                data.PassengerCabinBag = int.Parse(paxMatch.Groups["bag"].Value);
+        //                data.PaxSeatingDistribution = paxMatch.Groups["dist"].Value.Trim();
+        //                data.PaxTotal = int.Parse(paxMatch.Groups["ttl"].Value);
+        //            }
+
+        //            // Total Traffic Load
+        //            var ttlLoad = Regex.Match(text, @"TOTAL TRAFFIC LOAD\s+(?<ttl>\d+)");
+        //            if (ttlLoad.Success) data.TotalTrafficLoad = int.Parse(ttlLoad.Groups["ttl"].Value);
+
+        //            // Weights
+        //            data.DryOperatingWeight = ExtractInt(text, "DRY OPERATING WEIGHT\\s+(\\d+)");
+        //            data.ZeroFuelWeight = ExtractInt(text, "ZERO FUEL WEIGHT ACTUAL\\s+(\\d+)");
+        //            data.TakeOffFuel = ExtractInt(text, "TAKE OFF FUEL\\s+(\\d+)");
+        //            data.TakeOffWeight = ExtractInt(text, "TAKE OFF WEIGHT  ACTUAL\\s+(\\d+)");
+        //            data.TripFuel = ExtractInt(text, "TRIP FUEL\\s+(\\d+)");
+        //            data.LandingWeight = ExtractInt(text, "LANDING WEIGHT   ACTUAL\\s+(\\d+)");
+
+        //            // Indexes (DOI, DLI, etc.)
+        //            var indexMatch = Regex.Matches(text, @"(?<key>LIZFW|MACZFW|LITOW|MACTOW|LILNW|MACLNW|DOI|DLI)\s+(?<val>\d+.\d+)");
+        //            foreach (Match m in indexMatch)
+        //            {
+        //                data.Indexes[m.Groups["key"].Value] = double.Parse(m.Groups["val"].Value);
+        //            }
+
+        //            // Seating
+        //            var seatMatch = Regex.Match(text, @"SEATING AREA:\s+(.+)");
+        //            if (seatMatch.Success) data.SeatingArea = seatMatch.Groups[1].Value.Trim();
+
+        //            // Pantry
+        //            var pantry = Regex.Match(text, @"PANTRY CODE:([A-Z])");
+        //            if (pantry.Success) data.PantryCode = pantry.Groups[1].Value;
+
+        //            // Underload
+        //            data.UnderloadBeforeLMC = ExtractInt(text, "UNDERLOAD BEFORE LMC\\s+(\\d+)");
+
+        //            // Taxi Fuel
+        //            data.TaxiFuel = ExtractInt(text, "Taxi Fuel:\\s+(\\d+)");
+        //            data.FuelDensity = ExtractDouble(text, "Fuel Density:\\s+([0-9.]+)");
+
+        //            // LDM raw
+        //            var ldmMatch = Regex.Match(text, @"LDM\s+(IV.*?)SI", RegexOptions.Singleline);
+        //            if (ldmMatch.Success) data.RawLDM = ldmMatch.Groups[1].Value.Trim();
+
+
+
+        //            return Ok(data);
+        //        }
+        //        catch (Exception ex)
+        //        {
+
+        //            var msg = ex.Message;
+        //            var inner = ex.InnerException;
+        //            var results = "Message: " + msg + " Inner: " + inner;
+        //            return BadRequest(results);
+
+        //        }
+        //    }
+        //}
+
+        [Route("api/get/loadsheet")]
+        [AcceptVerbs("POST")]
+        public IHttpActionResult GetLoadSheet(string flight_no, DateTime date)
+        {
+            using (var context = new PPAEntities())
+            {
+                string date_formatted = " " + date.ToString("ddMMMyy").ToUpper() + " ";
+                string flight_number = $"%{flight_no}%";
+                string flight_date = $"%{date_formatted}%";
+                string query = "SELECT * FROM load_sheet_raw WHERE content LIKE @p0 and content LIKE @p1";
+                try
+                {
+                    load_sheet_raw raw_text = context.Database.SqlQuery<load_sheet_raw>(query, flight_number, flight_date).FirstOrDefault();
+                    if (raw_text == null)
+                        return Ok(raw_text);
+
+                    var text = raw_text.content;
+                    var data = new LoadSheetData();
+
+                    // Line 1: Flight, Reg, Version, Crew, Date/Time
+                    var flightMatch = Regex.Match(text, @"FLIGHT\s+(?<flight>\S+)\s+(?<reg>\S+)\s+\((?<ver>\w)\)\s+(?<version>\S+)\s+(?<crew>\S+)\s+(?<date>\d{2}[A-Z]{3}\d{2})\s+(?<time>\d{2}:\d{2})");
+                    if (flightMatch.Success)
+                    {
+                        data.Flight = flightMatch.Groups["flight"].Value;
+                        data.AircraftReg = flightMatch.Groups["reg"].Value;
+                        data.Version = flightMatch.Groups["version"].Value;
+                        data.Crew = flightMatch.Groups["crew"].Value;
+                        data.Date = DateTime.ParseExact(flightMatch.Groups["date"].Value, "ddMMMyy", System.Globalization.CultureInfo.InvariantCulture);
+                        data.Time = flightMatch.Groups["time"].Value;
+                    }
+
+                    // Load in compartments
+                    var compMatch = Regex.Match(text, @"LOAD IN COMPARTMENTS\s+(?<weight>\d+)\s+1/(?<c1>\d+)\s+2/(?<c2>\d+)\s+4/(?<c4>\d+)");
+                    if (compMatch.Success)
+                    {
+                        data.LoadInCompartment = int.Parse(compMatch.Groups["weight"].Value);
+                        data.CompartmentDistribution["1"] = int.Parse(compMatch.Groups["c1"].Value);
+                        data.CompartmentDistribution["2"] = int.Parse(compMatch.Groups["c2"].Value);
+                        data.CompartmentDistribution["4"] = int.Parse(compMatch.Groups["c4"].Value);
+                    }
+
+                    // Passenger / Cabin Bag
+                    var paxMatch = Regex.Match(text, @"PASSENGER/CABIN BAG\s+(?<bag>\d+)\s+(?<dist>.+?)\s+TTL\s+(?<ttl>\d+)");
+                    if (paxMatch.Success)
+                    {
+                        data.PassengerCabinBag = int.Parse(paxMatch.Groups["bag"].Value);
+                        data.PaxSeatingDistribution = paxMatch.Groups["dist"].Value.Trim();
+                        data.PaxTotal = int.Parse(paxMatch.Groups["ttl"].Value);
+                    }
+
+                    // Total Traffic Load
+                    var ttlLoad = Regex.Match(text, @"TOTAL TRAFFIC LOAD\s+(?<ttl>\d+)");
+                    if (ttlLoad.Success) data.TotalTrafficLoad = int.Parse(ttlLoad.Groups["ttl"].Value);
+
+                    // Weights
+                    data.DryOperatingWeight = ExtractInt(text, "DRY OPERATING WEIGHT\\s+(\\d+)");
+                    data.ZeroFuelWeight = ExtractInt(text, "ZERO FUEL WEIGHT ACTUAL\\s+(\\d+)");
+                    data.TakeOffFuel = ExtractInt(text, "TAKE OFF FUEL\\s+(\\d+)");
+                    data.TakeOffWeight = ExtractInt(text, "TAKE OFF WEIGHT  ACTUAL\\s+(\\d+)");
+                    data.TripFuel = ExtractInt(text, "TRIP FUEL\\s+(\\d+)");
+                    data.LandingWeight = ExtractInt(text, "LANDING WEIGHT   ACTUAL\\s+(\\d+)");
+
+                    // Indexes (DOI, DLI, etc.)
+                    var indexMatch = Regex.Matches(text, @"(?<key>LIZFW|MACZFW|LITOW|MACTOW|LILNW|MACLNW|DOI|DLI)\s+(?<val>\d+.\d+)");
+                    foreach (Match m in indexMatch)
+                    {
+                        data.Indexes[m.Groups["key"].Value] = double.Parse(m.Groups["val"].Value);
+                    }
+
+                    // Seating
+                    var seatMatch = Regex.Match(text, @"SEATING AREA:\s+(.+)");
+                    if (seatMatch.Success) data.SeatingArea = seatMatch.Groups[1].Value.Trim();
+
+                    // Pantry
+                    var pantry = Regex.Match(text, @"PANTRY CODE:([A-Z])");
+                    if (pantry.Success) data.PantryCode = pantry.Groups[1].Value;
+
+                    // Underload
+                    data.UnderloadBeforeLMC = ExtractInt(text, "UNDERLOAD BEFORE LMC\\s+(\\d+)");
+
+                    // Taxi Fuel
+                    data.TaxiFuel = ExtractInt(text, "Taxi Fuel:\\s+(\\d+)");
+                    data.FuelDensity = ExtractDouble(text, "Fuel Density:\\s+([0-9.]+)");
+
+                    // LDM raw
+                    var ldmMatch = Regex.Match(text, @"LDM\s+(IV.*?)SI", RegexOptions.Singleline);
+                    if (ldmMatch.Success) data.RawLDM = ldmMatch.Groups[1].Value.Trim();
+
+                    //Seating Area
+                    var seatingAreaDict = new Dictionary<string, int?>();
+
+                    var seatingAreaMatch = Regex.Match(text, @"SEATING AREA:\s+(.+)");
+                    if (seatingAreaMatch.Success)
+                    {
+                        var pairs = seatingAreaMatch.Groups[1].Value.Trim().Split(' ');
+
+                        foreach (var pair in pairs)
+                        {
+                            var parts = pair.Split('/');
+                            if (parts.Length == 2 && int.TryParse(parts[1], out int count))
+                            {
+                                seatingAreaDict[parts[0]] = count;
+                            }
+                        }
+                    }
+
+
+                    var result = new
+                    {
+                        flight = data.Flight,
+                        //route = GetRouteFromFlightString(data.Flight), // You can implement this logic
+                        aircraft = data.AircraftReg,
+                        config = data.Version,
+                        date = data.Date.ToString("ddMMMyy").ToUpper(),
+                        time = data.Time,
+                        crew = data.Crew,
+                        seatingDistribution = seatingAreaDict,
+                        DryOperatingWeight = data.DryOperatingWeight,
+                        ZeroFuelWeight = data.ZeroFuelWeight,
+                        TakeOffFuel = data.TakeOffFuel,
+                        TakeOffWeight = data.TakeOffWeight,
+                        TripFuel = data.TripFuel,
+                        LandingWeight = data.LandingWeight,
+                        data.UnderloadBeforeLMC,
+                        data.TaxiFuel,
+                        data.FuelDensity,
+                        loadDistribution = new Dictionary<string, int?>
+                        {
+                            ["Compartment 1"] = data.CompartmentDistribution.ContainsKey("1") ? data.CompartmentDistribution["1"] : (int?)null,
+                            ["Compartment 2"] = data.CompartmentDistribution.ContainsKey("2") ? data.CompartmentDistribution["2"] : (int?)null,
+                            ["Compartment 3"] = null,
+                            ["Compartment 4"] = data.CompartmentDistribution.ContainsKey("4") ? data.CompartmentDistribution["4"] : (int?)null,
+                        },
+                        passengers = data.PaxTotal,
+                        cabinBag = data.PassengerCabinBag,
+                        soc = "0/0", // if needed you can extract this from text
+                        pantryCode = data.PantryCode,
+                        tow = new { Weight = data.TakeOffWeight, Index = data.Indexes.ContainsKey("LITOW") ? data.Indexes["LITOW"] : (double?)null },
+                        zfw = new { Weight = data.ZeroFuelWeight, Index = data.Indexes.ContainsKey("LIZFW") ? data.Indexes["LIZFW"] : (double?)null },
+                        lnd = new { Weight = data.LandingWeight, Index = data.Indexes.ContainsKey("LILNW") ? data.Indexes["LILNW"] : (double?)null },
+                        weights = new List<object>
+
+    {
+        new { type = "Dry Operating Wt", actual = data.DryOperatingWeight, max = (int?)null },
+        new { type = "ZFW", actual = data.ZeroFuelWeight, max = 46720 },
+        new { type = "TOW", actual = data.TakeOffWeight, max = 53000 },
+        new { type = "Landing Weight", actual = data.LandingWeight, max = 49895 },
+        new { type = "Takeoff Fuel", actual = data.TakeOffFuel, max = (int?)null },
+        new { type = "Trip Fuel", actual = data.TripFuel, max = (int?)null },
+    },
+                        taxiFuel = data.TaxiFuel,
+                        fuelDensity = data.FuelDensity,
+                        cg = new List<object>
+    {
+        new { condition = "DOI", index = data.Indexes.ContainsKey("DOI") ? data.Indexes["DOI"] : (double?)null, mac = (double?)null },
+        new { condition = "DLI", index = data.Indexes.ContainsKey("DLI") ? data.Indexes["DLI"] : (double?)null, mac = (double?)null },
+        new { condition = "ZFW", index = data.Indexes.ContainsKey("LIZFW") ? data.Indexes["LIZFW"] : (double?)null, mac = data.Indexes.ContainsKey("MACZFW") ? data.Indexes["MACZFW"] : (double?)null },
+        new { condition = "TOW", index = data.Indexes.ContainsKey("LITOW") ? data.Indexes["LITOW"] : (double?)null, mac = data.Indexes.ContainsKey("MACTOW") ? data.Indexes["MACTOW"] : (double?)null },
+        new { condition = "LAW", index = data.Indexes.ContainsKey("LILNW") ? data.Indexes["LILNW"] : (double?)null, mac = data.Indexes.ContainsKey("MACLNW") ? data.Indexes["MACLNW"] : (double?)null },
+    },
+                        stabTrim = "5.10 UP", // placeholder if not parsed yet
+
+                    };
+
+                    return Ok(result);
+
+
+                }
+                catch (Exception ex)
+                {
+
+                    var msg = ex.Message;
+                    var inner = ex.InnerException;
+                    var results = "Message: " + msg + " Inner: " + inner;
+                    return BadRequest(results);
+
+                }
+            }
+        }
+
+        private static int ExtractInt(string text, string pattern)
+        {
+            var m = Regex.Match(text, pattern);
+            return m.Success ? int.Parse(m.Groups[1].Value) : 0;
+        }
+
+        private static double ExtractDouble(string text, string pattern)
+        {
+            var m = Regex.Match(text, pattern);
+            return m.Success ? double.Parse(m.Groups[1].Value) : 0;
+        }
+
+        private string GetRouteFromFlightString(string flight)
+        {
+            // Very basic parsing, adjust based on actual format
+            var parts = flight.Split(' ');
+            if (parts.Length >= 2)
+            {
+                return parts[0] + " → " + parts[1];
+            }
+            return "";
+        }
+
         //[Route("api/skyputer/get")]
         //[AcceptVerbs("GET")]
         //public IHttpActionResult GetSkyputer(string key, string plan)
@@ -5076,6 +5614,42 @@ namespace XAPI.Controllers
 
 
         //}
+
+        public class LoadSheetData
+        {
+            public string Airline { get; set; }
+            public string Flight { get; set; }
+            public string AircraftReg { get; set; }
+            public string Version { get; set; }
+            public string Crew { get; set; }
+            public DateTime Date { get; set; }
+            public string Time { get; set; }
+
+            public int LoadInCompartment { get; set; }
+            public Dictionary<string, int> CompartmentDistribution { get; set; } = new Dictionary<string, int>();
+
+            public int PassengerCabinBag { get; set; }
+            public string PaxSeatingDistribution { get; set; }
+            public int PaxTotal { get; set; }
+
+            public int TotalTrafficLoad { get; set; }
+            public int DryOperatingWeight { get; set; }
+            public int ZeroFuelWeight { get; set; }
+            public int TakeOffFuel { get; set; }
+            public int TakeOffWeight { get; set; }
+            public int TripFuel { get; set; }
+            public int LandingWeight { get; set; }
+
+            public Dictionary<string, double> Indexes { get; set; } = new Dictionary<string, double>();
+            public string SeatingArea { get; set; }
+            public string PantryCode { get; set; }
+
+            public int UnderloadBeforeLMC { get; set; }
+            public int TaxiFuel { get; set; }
+            public double FuelDensity { get; set; }
+
+            public string RawLDM { get; set; }
+        }
 
         public class skyputer
         {

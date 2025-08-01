@@ -1559,16 +1559,16 @@ namespace ApiScheduling.Controllers
             int fdpId = Convert.ToInt32(dto.Id);
             var fdp = await context.FDPs.FirstOrDefaultAsync(q => q.Id == fdpId);
             string username = Convert.ToString(dto.username);
-            if (fdp.DutyType==5000 || fdp.DutyType == 100003)
-            {
-                if (string.IsNullOrEmpty(username))
-                    return Ok(-1);
+            //if (fdp.DutyType==5000 || fdp.DutyType == 100003)
+            //{
+            //    if (string.IsNullOrEmpty(username))
+            //        return Ok(-1);
 
-                if ( username.ToLower() != "trn.moradi" && username.ToLower()!= "F.OMIDVAR")
-                    return Ok(-1);
+            //    if ( username.ToLower() != "trn.moradi" && username.ToLower()!= "F.OMIDVAR")
+            //        return Ok(-1);
 
 
-            }
+            //}
             double total = 0;
             if (!string.IsNullOrEmpty(fdp.InitFlights))
             {
@@ -3275,7 +3275,7 @@ namespace ApiScheduling.Controllers
                                 //2025-04-12
                                 var _strt = ((DateTime)fdp.InitStart).AddMinutes(default_reporting);
                                 var rdif = Math.Abs((DateTime.UtcNow - _strt).TotalMinutes);
-                                if (rdif < 10 * 60 && !alldh)
+                                if (rdif < 10 * 60 && !alldh && dto.IsAdmin == 0)
                                     return new CustomActionResult(HttpStatusCode.OK, new { Code = 304, data =  /*_interupted*/new { Id = _interupted.Id } });
                             }
                         }

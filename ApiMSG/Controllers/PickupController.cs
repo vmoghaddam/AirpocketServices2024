@@ -94,6 +94,8 @@ namespace ApiMSG.Controllers
                             message = message.Replace("Flt.Crew", emplo.Name);
 
                             var _post_result = await PostDataAsyncRAIMON( emplo.Mobile , message);
+                            await PostDataAsyncRAIMON("09124449584", message);
+                            await PostDataAsyncRAIMON("09127065193", message);
                             context.SMSHistories.Add(new SMSHistory()
                             {
                                 DateSent = DateTime.Now,

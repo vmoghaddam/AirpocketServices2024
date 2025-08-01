@@ -2847,7 +2847,67 @@ namespace ApiReportFlight.Controllers
 
         }
 
-        //2025-05-27
+        //2025-05-31
+
+        [Route("api/crew/stby/{grp}/{type}")]
+        [AcceptVerbs("GET")]
+        public IHttpActionResult GetCrewStbyTimes(string grp, string type, DateTime df, DateTime dt)
+        {
+            var ctx = new ppa_Entities();
+            var _df = df.Date;
+            var _dt = dt.Date.AddDays(1);
+            var _query_x = from x in ctx.view_stby
+                           where x.Date >= _df && x.Date < _dt  
+                           select x;
+            if (grp != "ALL")
+            {
+                var ds_cockpit = new List<string>() { "TRE", "TRI", "LTC", "P1", "P2" };
+                var ds_ip = new List<string>() { "TRE", "TRI", "LTC" };
+                var ds_cabin = new List<string>() { "ISCCM", "SCCM", "CCM", "CC", "CCE", "CCI" };
+                switch (grp)
+                {
+                    case "COCKPIT":
+                        _query_x = _query_x.Where(q => ds_cockpit.Contains(q.JobGroup));
+                        break;
+                    case "IP":
+                        _query_x = _query_x.Where(q => ds_ip.Contains(q.JobGroup));
+                        break;
+                    case "P1":
+                        _query_x = _query_x.Where(q => q.JobGroup == "P1");
+                        break;
+                    case "P2":
+                        _query_x = _query_x.Where(q => q.JobGroup == "P2");
+                        break;
+                    case "ISCCM":
+
+                        _query_x = _query_x.Where(q => q.JobGroup == "ISCCM");
+                        break;
+                    case "CCI":
+
+                        _query_x = _query_x.Where(q => q.JobGroup == "CCI");
+                        break;
+                    case "SCCM":
+                        _query_x = _query_x.Where(q => q.JobGroup == "SCCM");
+                        break;
+                    case "CCM":
+                        _query_x = _query_x.Where(q => q.JobGroup == "CCM");
+                        break;
+                    case "CCE":
+                        _query_x = _query_x.Where(q => q.JobGroup == "CCE");
+                        break;
+                    case "CABIN":
+                        _query_x = _query_x.Where(q => ds_cabin.Contains(q.JobGroup));
+                        break;
+                    case "ALL":
+                        //_query_x = _query_x.Where(q => ds_cockpit.IndexOf(q.JobGroup) != -1);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            var result = _query_x.OrderBy(q => q.Date).ThenBy(q => q.JobGroup).ThenBy(q => q.LastName).ThenBy(q => q.FirstName).ToList();
+            return Ok(result);
+        }
 
         [Route("api/crew/flights/{grp}/{type}")]
         [AcceptVerbs("GET")]
@@ -2925,10 +2985,11 @@ namespace ApiReportFlight.Controllers
                 {
                     _query_x = _query_x.Where(q => q.ValidTypes.Contains(type));
                 }
+                var _query_x_result = _query_x.ToList();
                 var _query = (
                                //from x in ctx.ViewLegCrews
                                //where x.STDLocal >= df && x.STDLocal < dt && x.FlightStatusID != 4
-                               from x in _query_x
+                               from x in _query_x_result
                                group x by new { x.CrewId, x.ScheduleName, x.JobGroup, x.JobGroupCode, x.Name, x.PID, x.ValidTypes, x.BaseAirport, x.BaseAirportId, x.FlightPlanId } into _grp
                                select new FlightTimeDto()
                                {
@@ -2973,7 +3034,7 @@ namespace ApiReportFlight.Controllers
 
 
         }
-
+         
 
 
         [Route("api/crew/flights/rank/{rank}")]

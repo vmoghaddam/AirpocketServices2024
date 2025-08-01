@@ -43,7 +43,7 @@ namespace ApiMSG.Controllers
     {
         [Route("api/msg/rocketchat/notify/duties")]
         [AcceptVerbs("POST")]
-        public async  Task<IHttpActionResult> PostNotifyDuties(RosterSMSDto dto)
+        public async Task<IHttpActionResult> PostNotifyDuties(RosterSMSDto dto)
         {
             try
             {
@@ -102,8 +102,10 @@ namespace ApiMSG.Controllers
                                  x.Id
 ,
                                  x.CrewId
-                                 ,x.user_id
-                                 ,x.user_name
+                                 ,
+                                 x.user_id
+                                 ,
+                                 x.user_name
                              }
 
                                    ).Distinct().ToList();
@@ -196,7 +198,7 @@ namespace ApiMSG.Controllers
                     var result9 = await PostDataAsync(x.user_name, text);
 
 
-                     var exist = histories.Where(q => q.ResId == x.Id).ToList();
+                    var exist = histories.Where(q => q.ResId == x.Id).ToList();
                     if (exist != null && exist.Count > 0)
                     {
                         // this.context.SMSHistories.Remove(exist);
@@ -208,7 +210,7 @@ namespace ApiMSG.Controllers
                         DateSent = DateTime.Now,
                         RecMobile = x.Mobile,
                         RecName = x.Name,
-                        Ref = "ROCKET CHAT "+ result9.ToString(),
+                        Ref = "ROCKET CHAT " + result9.ToString(),
                         Text = text,
                         TypeId = 10,
                         ResId = x.Id,
@@ -232,7 +234,7 @@ namespace ApiMSG.Controllers
                         FlightId = -1,
                         Message = text,
                         Pickup = null,
-                        RefId = "ROCKET CHAT "+ result9.ToString(),
+                        RefId = "ROCKET CHAT " + result9.ToString(),
                         Status = "ROCKET CHAT ",
                         Type = x.DutyType,
                         FDPId = x.Id,
@@ -253,12 +255,12 @@ namespace ApiMSG.Controllers
                         cps.Routes = x.CanceledRoute;
                     }
                     context.CrewPickupSMS.Add(cps);
-                    iddels.Add(new IdDel() { Id = x.Id, Ref = result9.ToString(), Username=x.user_name });
+                    iddels.Add(new IdDel() { Id = x.Id, Ref = result9.ToString(), Username = x.user_name });
 
 
                 }
 
-               //context.SaveChanges();
+                //context.SaveChanges();
 
                 return Ok(iddels);
 
@@ -280,17 +282,31 @@ namespace ApiMSG.Controllers
         public async Task<IHttpActionResult> GetTest()
         {
             var context = new ppa_vareshEntities();
-            var users=context.AspNetUsers.Select(q=>q.UserName).ToList();
-            List<IdDel> result=new List<IdDel>();
+            var ps = context.People.Where(q => q.UserId != null).Select(q => q.UserId).ToList();
+            //var users=context.AspNetUsers.Where(q=>q.LockoutEnabled==false && ps.Contains(q.Id)).Select(q=>q.UserName).ToList();
+            var users = new List<string>() { "p.naji",
+"s.naghizadeh",
+"s.faal",
+"m.asiaban",
+"S.Souri",
+"z.ghafari",
+"n.talebi",
+"m.ramezani",
+"m.kiaei",
+"Me.Zarei",
+"h.aramoon",
+"D.MAHMOUDI",
+"a.alishah"};
+            List<IdDel> result = new List<IdDel>();
             foreach (var user in users)
             {
                 var result9 = await PostDataAsync(user, "TEST");
-                result.Add(new IdDel() { Username=user, Message=result9});
+                result.Add(new IdDel() { Username = user, Message = result9 });
             }
-            result=result.Where(q=>q.Message.Contains("Bad Request")).OrderBy(q=>q.Username).ToList();
-            return Ok(result.Select(q=>q.Username).ToList());
+            result = result.Where(q => q.Message.Contains("Bad Request")).OrderBy(q => q.Username).ToList();
+            return Ok(result.Select(q => q.Username).ToList());
         }
-        public static async Task<string> PostDataAsync(  string username, string text)
+        public static async Task<string> PostDataAsync(string username, string text)
         {
             string url = "https://chat.avaair.ir/hooks/68248e66e4b014b555ce42c7/XPMrY5PnJmsQgaZJMFGCCapZpmhKJfZHkveWHMir7Hs8Fmpb";
             var values = new Dictionary<string, string>
@@ -311,7 +327,7 @@ namespace ApiMSG.Controllers
                 }
                 catch (HttpRequestException ex)
                 {
-                    return ex.Message ;
+                    return ex.Message;
                 }
             }
         }
