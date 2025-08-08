@@ -994,6 +994,7 @@
           <Property Name="ASD_SRY_ExpireDate" Type="datetime2" Precision="7" />
           <Property Name="FTSL1IssueDate" Type="datetime2" Precision="7" />
           <Property Name="FTSL1ExpireDate" Type="datetime2" Precision="7" />
+          <Property Name="PID" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="person_folder">
           <Key>
@@ -1582,6 +1583,7 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="category" Type="nvarchar" MaxLength="1000" />
           <Property Name="remark" Type="nvarchar" MaxLength="1000" />
+          <Property Name="type_id" Type="int" />
         </EntityType>
         <EntityType Name="trn_questions">
           <Key>
@@ -9179,7 +9181,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           </AssociationSet>
           <EntitySet Name="trn_exam_student_answer" EntityType="FLYModel.trn_exam_student_answer" />
           <EntitySet Name="trn_exam_question" EntityType="FLYModel.trn_exam_question" />
-          <EntitySet Name="trn_question_category" EntityType="FLYModel.trn_question_category" />
           <AssociationSet Name="fk_st_ans_wxqu" Association="FLYModel.fk_st_ans_wxqu">
             <End Role="trn_exam_question" EntitySet="trn_exam_question" />
             <End Role="trn_exam_student_answer" EntitySet="trn_exam_student_answer" />
@@ -9192,10 +9193,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <AssociationSet Name="fk_ex_qu_1" Association="FLYModel.fk_ex_qu_1">
             <End Role="trn_questions" EntitySet="trn_questions" />
             <End Role="trn_exam_question" EntitySet="trn_exam_question" />
-          </AssociationSet>
-          <AssociationSet Name="fk_qu_cat" Association="FLYModel.fk_qu_cat">
-            <End Role="trn_question_category" EntitySet="trn_question_category" />
-            <End Role="trn_questions" EntitySet="trn_questions" />
           </AssociationSet>
           <EntitySet Name="trn_exam_group" EntityType="FLYModel.trn_exam_group" />
           <EntitySet Name="trn_exam_person" EntityType="FLYModel.trn_exam_person" />
@@ -9371,6 +9368,11 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
             <End Role="CourseSyllabu" EntitySet="CourseSyllabus" />
           </AssociationSet>
           <EntitySet Name="ViewCourseNews" EntityType="FLYModel.ViewCourseNew" />
+          <EntitySet Name="trn_question_category" EntityType="FLYModel.trn_question_category" />
+          <AssociationSet Name="fk_qu_cat" Association="FLYModel.fk_qu_cat">
+            <End Role="trn_question_category" EntitySet="trn_question_category" />
+            <End Role="trn_questions" EntitySet="trn_questions" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="ExpFlight">
           <Key>
@@ -11244,6 +11246,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <Property Name="FTSL1ExpireDate" Type="DateTime" Precision="7" />
           <NavigationProperty Name="CoursePeoples" Relationship="FLYModel.FK_CoursePeople_Person_Id" FromRole="Person" ToRole="CoursePeople" />
           <NavigationProperty Name="CertificateHistories" Relationship="FLYModel.FK_CH_PERSON" FromRole="Person" ToRole="CertificateHistory" />
+          <Property Name="PID" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="fk_psco_person">
           <End Type="FLYModel.Person" Role="Person" Multiplicity="0..1">
@@ -12274,15 +12277,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <NavigationProperty Name="trn_questions" Relationship="FLYModel.fk_ex_qu_1" FromRole="trn_exam_question" ToRole="trn_questions" />
           <NavigationProperty Name="trn_exam" Relationship="FLYModel.fk_ex_ex_1" FromRole="trn_exam_question" ToRole="trn_exam" />
         </EntityType>
-        <EntityType Name="trn_question_category">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="category" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="remark" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="trn_questions" Relationship="FLYModel.fk_qu_cat" FromRole="trn_question_category" ToRole="trn_questions" />
-        </EntityType>
         <Association Name="fk_st_ans_wxqu">
           <End Type="FLYModel.trn_exam_question" Role="trn_exam_question" Multiplicity="1" />
           <End Type="FLYModel.trn_exam_student_answer" Role="trn_exam_student_answer" Multiplicity="*" />
@@ -12313,8 +12307,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <Property Name="chapter_id" Type="Int32" />
           <NavigationProperty Name="trn_answers" Relationship="FLYModel.FK__trn_answe__quesi__7CE53EB8" FromRole="trn_questions" ToRole="trn_answers" />
           <NavigationProperty Name="trn_exam_question" Relationship="FLYModel.fk_ex_qu_1" FromRole="trn_questions" ToRole="trn_exam_question" />
-          <NavigationProperty Name="trn_question_category" Relationship="FLYModel.fk_qu_cat" FromRole="trn_questions" ToRole="trn_question_category" />
           <NavigationProperty Name="trn_person_exam_question" Relationship="FLYModel.FK__trn_exam___quest__73E5E463" FromRole="trn_questions" ToRole="trn_person_exam_question" />
+          <NavigationProperty Name="trn_question_category" Relationship="FLYModel.fk_qu_cat" FromRole="trn_questions" ToRole="trn_question_category" />
         </EntityType>
         <Association Name="FK__trn_answe__quesi__7CE53EB8">
           <End Type="FLYModel.trn_questions" Role="trn_questions" Multiplicity="0..1" />
@@ -12337,18 +12331,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
             </Principal>
             <Dependent Role="trn_exam_question">
               <PropertyRef Name="question_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="fk_qu_cat">
-          <End Type="FLYModel.trn_question_category" Role="trn_question_category" Multiplicity="0..1" />
-          <End Type="FLYModel.trn_questions" Role="trn_questions" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="trn_question_category">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="trn_questions">
-              <PropertyRef Name="category_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -15272,6 +15254,28 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <Property Name="ParentTitle" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="ExamType" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="trn_question_category">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="category" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="remark" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="type_id" Type="Int32" />
+          <NavigationProperty Name="trn_questions" Relationship="FLYModel.fk_qu_cat" FromRole="trn_question_category" ToRole="trn_questions" />
+        </EntityType>
+        <Association Name="fk_qu_cat">
+          <End Type="FLYModel.trn_question_category" Role="trn_question_category" Multiplicity="0..1" />
+          <End Type="FLYModel.trn_questions" Role="trn_questions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="trn_question_category">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="trn_questions">
+              <PropertyRef Name="category_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -16399,6 +16403,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <EntitySetMapping Name="People">
             <EntityTypeMapping TypeName="FLYModel.Person">
               <MappingFragment StoreEntitySet="Person">
+                <ScalarProperty Name="PID" ColumnName="PID" />
                 <ScalarProperty Name="FTSL1ExpireDate" ColumnName="FTSL1ExpireDate" />
                 <ScalarProperty Name="FTSL1IssueDate" ColumnName="FTSL1IssueDate" />
                 <ScalarProperty Name="ASD_SRY_ExpireDate" ColumnName="ASD_SRY_ExpireDate" />
@@ -17569,15 +17574,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
                 <ScalarProperty Name="response_time" ColumnName="response_time" />
                 <ScalarProperty Name="question_id" ColumnName="question_id" />
                 <ScalarProperty Name="exam_id" ColumnName="exam_id" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="trn_question_category">
-            <EntityTypeMapping TypeName="FLYModel.trn_question_category">
-              <MappingFragment StoreEntitySet="trn_question_category">
-                <ScalarProperty Name="remark" ColumnName="remark" />
-                <ScalarProperty Name="category" ColumnName="category" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -19849,6 +19845,16 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
                 <ScalarProperty Name="CourseType" ColumnName="CourseType" />
                 <ScalarProperty Name="CourseTypeId" ColumnName="CourseTypeId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="trn_question_category">
+            <EntityTypeMapping TypeName="FLYModel.trn_question_category">
+              <MappingFragment StoreEntitySet="trn_question_category">
+                <ScalarProperty Name="type_id" ColumnName="type_id" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="category" ColumnName="category" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -23,6 +23,7 @@ namespace AirpocketTRN.Models
         public int id { get; set; }
         public string category { get; set; }
         public string remark { get; set; }
+        public Nullable<int> type_id { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<trn_questions> trn_questions { get; set; }
