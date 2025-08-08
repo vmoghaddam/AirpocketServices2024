@@ -47,5 +47,6 @@ namespace AirpocketTRN.Models
         public Nullable<int> remaining { get; set; }
         public string date_issue_str { get; set; }
         public string date_expire_str { get; set; }
+        public string group_root { get; set; }
     }
 }

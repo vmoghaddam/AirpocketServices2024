@@ -30,7 +30,9 @@ namespace AirpocketTRN.ViewModels
         {
             get; set;
         }
-
+        public Nullable<bool> ShowInProfile { get; set; }
+        public Nullable<bool> ShowInList { get; set; }
+        public string Abbreviation { get; set; }
         public string Category { get; set; }
         public List<RelatedJobGroupSimple> JobGroups { get; set; }
         public static void Fill(Models.CourseType entity, ViewModels.CourseTypeViewModel coursetype)
@@ -47,6 +49,10 @@ namespace AirpocketTRN.ViewModels
             entity.Duration = coursetype.Duration;
             entity.CertificateTypeId = coursetype.CertificateTypeId;
             entity.Mandatory = coursetype.Mandatory;
+            entity.ShowInList = coursetype.ShowInList;
+            entity.ShowInProfile = coursetype.ShowInProfile;
+            entity.Abbreviation = coursetype.Abbreviation;
+
 
         }
         public static void FillDto(Models.CourseType entity, ViewModels.CourseTypeViewModel coursetype)
@@ -157,6 +163,7 @@ namespace AirpocketTRN.ViewModels
         public bool? Financial { get; set; }
 
         public bool? Certificate { get; set; }
+        public string ExamType { get; set; }
         public List<CourseDoc> Documents { get; set; }
         public List<SyllabusDto> Syllabi { get; set; }
 
@@ -332,6 +339,13 @@ namespace AirpocketTRN.ViewModels
         public string From { get; set; }
         public string To { get; set; }
         public string Key { get; set; }
+    }
+
+
+    public class exam_score
+    {
+        public int id { get; set; }
+        public int? score { get; set; }
     }
 
 

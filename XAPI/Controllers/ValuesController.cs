@@ -42,8 +42,31 @@ namespace XAPI.Controllers
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class ValuesController : ApiController
     {
+        [Route("api/test")]
+        [AcceptVerbs("GET")]
+        public IHttpActionResult GetTEST()
+        {
+            try
+            {
+                var ctx = new PPAEntities();
+                var result = ctx.FlightInformations.FirstOrDefault();
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException!= null)
+                    msg+=" "+ex.InnerException.Message;
+                return Ok(msg);
+            }
+           
+
+        }
+
         [Route("api/flt")]
         [AcceptVerbs("GET")]
+
         public IHttpActionResult GetFlt(DateTime dt, string origin, string destination, string no, string key)
         {
             if (key != "taban@1359A")
@@ -2032,6 +2055,65 @@ namespace XAPI.Controllers
                     }
                     return Ok(true);
                 }
+                //VARESH
+                else if (dto.plan.Contains("VARESH"))
+                {
+                    result = "VARESH";
+                    var entity = new OFPSkyPuter()
+                    {
+                        OFP = dto.plan,
+                        DateCreate = DateTime.Now,
+                        UploadStatus = 0,
+
+
+                    };
+                    var ctx = new PPAEntities();
+                    ctx.Database.CommandTimeout = 1000;
+                    ctx.OFPSkyPuters.Add(entity);
+                    ctx.SaveChanges();
+
+
+                    string responsebody = "NO";
+                    using (WebClient client = new WebClient())
+                    {
+                        var reqparm = new System.Collections.Specialized.NameValueCollection();
+                        reqparm.Add("key", dto.key);
+                        reqparm.Add("plan", dto.plan);
+                        byte[] responsebytes = client.UploadValues("https://zxpi.airpocket.online/api/skyputer/varesh", "POST", reqparm);
+                        responsebody = Encoding.UTF8.GetString(responsebytes);
+
+                    }
+                    return Ok(true);
+                }
+                else if (dto.plan.Contains("JSKY") || dto.plan.Contains("Jsky"))
+                {
+                    result = "JSKY";
+                    var entity = new OFPSkyPuter()
+                    {
+                        OFP = dto.plan,
+                        DateCreate = DateTime.Now,
+                        UploadStatus = 0,
+
+
+                    };
+                    var ctx = new PPAEntities();
+                    ctx.Database.CommandTimeout = 1000;
+                    ctx.OFPSkyPuters.Add(entity);
+                    ctx.SaveChanges();
+
+
+                    string responsebody = "NO";
+                    using (WebClient client = new WebClient())
+                    {
+                        var reqparm = new System.Collections.Specialized.NameValueCollection();
+                        reqparm.Add("key", dto.key);
+                        reqparm.Add("plan", dto.plan);
+                        byte[] responsebytes = client.UploadValues("https://jsky.xpi.aerotango.app/api/skyputer/jsky", "POST", reqparm);
+                        responsebody = Encoding.UTF8.GetString(responsebytes);
+
+                    }
+                    return Ok(true);
+                }
                 else
                 {
                     var entity = new OFPSkyPuter()
@@ -2151,7 +2233,48 @@ namespace XAPI.Controllers
             }
 
         }
+        [Route("api/skyputer/jsky")]
+        [AcceptVerbs("POST")]
+        public IHttpActionResult PostSkyputerJsky(skyputer dto)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(dto.key))
+                    return Ok("Authorization key not found.");
+                if (string.IsNullOrEmpty(dto.plan))
+                    return Ok("Plan cannot be empty.");
+                if (dto.key != "Skyputer@1359#")
+                    return Ok("Authorization key is wrong.");
 
+
+
+                var entity = new OFPSkyPuter()
+                {
+                    OFP = dto.plan,
+                    DateCreate = DateTime.Now,
+                    UploadStatus = 0,
+
+
+                };
+                var ctx = new PPAEntities();
+                ctx.Database.CommandTimeout = 1000;
+                ctx.OFPSkyPuters.Add(entity);
+                ctx.SaveChanges();
+                new Thread(async () =>
+                {
+                    GetSkyputerImport(entity.Id);
+                }).Start();
+                return Ok(true);
+
+
+
+            }
+            catch (Exception ex)
+            {
+                return Ok(true);
+            }
+
+        }
         [Route("api/skyputer/chb")]
         [AcceptVerbs("POST")]
         public IHttpActionResult PostSkyputerCHB(skyputer dto)
@@ -2432,6 +2555,53 @@ namespace XAPI.Controllers
         [Route("api/skyputer/flykish")]
         [AcceptVerbs("POST")]
         public IHttpActionResult PostSkyputerFLYKISH(skyputer dto)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(dto.key))
+                    return Ok("Authorization key not found.");
+                if (string.IsNullOrEmpty(dto.plan))
+                    return Ok("Plan cannot be empty.");
+                if (dto.key != "Skyputer@1359#")
+                    return Ok("Authorization key is wrong.");
+
+
+
+                var entity = new OFPSkyPuter()
+                {
+                    OFP = dto.plan,
+                    DateCreate = DateTime.Now,
+                    UploadStatus = 0,
+
+
+                };
+                var ctx = new PPAEntities();
+                ctx.Database.CommandTimeout = 1000;
+                ctx.OFPSkyPuters.Add(entity);
+                ctx.SaveChanges();
+                new Thread(async () =>
+                {
+                    GetSkyputerImport(entity.Id);
+                }).Start();
+                return Ok(true);
+
+
+
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += " Inner: " + ex.InnerException.Message;
+                return Ok(msg);
+            }
+
+        }
+
+
+        [Route("api/skyputer/varesh")]
+        [AcceptVerbs("POST")]
+        public IHttpActionResult PostSkyputerVARESH(skyputer dto)
         {
             try
             {

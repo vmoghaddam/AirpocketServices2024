@@ -91,6 +91,7 @@ namespace AirpocketTRN.Models
         public Nullable<System.DateTime> Date_Sessions_Synced { get; set; }
         public Nullable<System.DateTime> Date_Sessions_Instructor_Synced { get; set; }
         public Nullable<int> ParentId { get; set; }
+        public string ExamType { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<trn_person_exam> trn_person_exam { get; set; }
@@ -98,6 +99,7 @@ namespace AirpocketTRN.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Course> Course1 { get; set; }
         public virtual Course Course2 { get; set; }
+        public virtual CourseType CourseType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CoursePeople> CoursePeoples { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -114,6 +116,5 @@ namespace AirpocketTRN.Models
         public virtual ICollection<CourseSession> CourseSessions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CourseSyllabu> CourseSyllabus { get; set; }
-        public virtual CourseType CourseType { get; set; }
     }
 }

@@ -9519,7 +9519,7 @@ new JsonSerializerSettings
             var stby_out = new List<out_duty>() { 
              new out_duty(){DutyType=300013,DutyTypeTitle="STBY B737",aircraft_type="B737"},
              new out_duty(){DutyType=300013,DutyTypeTitle="STBY MD", aircraft_type="MD"},
-             new out_duty(){DutyType=300013,DutyTypeTitle="STBY AIRBUS", aircraft_type="AIRBUS"},
+            // new out_duty(){DutyType=300013,DutyTypeTitle="STBY AIRBUS", aircraft_type="AIRBUS"},
             // new out_duty(){DutyType=300013,DutyTypeTitle="STBY ERJ", aircraft_type="ERJ"},
 
             };

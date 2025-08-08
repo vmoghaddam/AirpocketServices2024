@@ -39,8 +39,8 @@ namespace AirpocketTRN.Models
         public virtual ICollection<trn_answers> trn_answers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<trn_exam_question> trn_exam_question { get; set; }
-        public virtual trn_question_category trn_question_category { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<trn_person_exam_question> trn_person_exam_question { get; set; }
+        public virtual trn_question_category trn_question_category { get; set; }
     }
 }

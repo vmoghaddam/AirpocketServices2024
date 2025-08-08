@@ -120,7 +120,6 @@ namespace AirpocketTRN.Models
         public virtual DbSet<view_trn_zftt> view_trn_zftt { get; set; }
         public virtual DbSet<trn_exam_student_answer> trn_exam_student_answer { get; set; }
         public virtual DbSet<trn_exam_question> trn_exam_question { get; set; }
-        public virtual DbSet<trn_question_category> trn_question_category { get; set; }
         public virtual DbSet<trn_questions> trn_questions { get; set; }
         public virtual DbSet<trn_exam_group> trn_exam_group { get; set; }
         public virtual DbSet<trn_exam_person> trn_exam_person { get; set; }
@@ -149,10 +148,8 @@ namespace AirpocketTRN.Models
         public virtual DbSet<ViewSyllabu> ViewSyllabus { get; set; }
         public virtual DbSet<CourseSyllabu> CourseSyllabus { get; set; }
         public virtual DbSet<ViewCourseNewAll> ViewCourseNewAlls { get; set; }
-        public virtual DbSet<Course> Courses { get; set; }
         public virtual DbSet<ViewCourseSessionPresence> ViewCourseSessionPresences { get; set; }
         public virtual DbSet<ViewCourseSession> ViewCourseSessions { get; set; }
-        public virtual DbSet<ViewCourseNew> ViewCourseNews { get; set; }
         public virtual DbSet<person_folder> person_folder { get; set; }
         public virtual DbSet<view_person_folder> view_person_folder { get; set; }
         public virtual DbSet<view_person_folder_p1> view_person_folder_p1 { get; set; }
@@ -170,5 +167,10 @@ namespace AirpocketTRN.Models
         public virtual DbSet<CourseTypeJobGroup> CourseTypeJobGroups { get; set; }
         public virtual DbSet<view_trn_course_type_group> view_trn_course_type_group { get; set; }
         public virtual DbSet<view_trn_certificate_history_last> view_trn_certificate_history_last { get; set; }
+        public virtual DbSet<course_type_subject> course_type_subject { get; set; }
+        public virtual DbSet<view_course_type_subject> view_course_type_subject { get; set; }
+        public virtual DbSet<Course> Courses { get; set; }
+        public virtual DbSet<ViewCourseNew> ViewCourseNews { get; set; }
+        public virtual DbSet<trn_question_category> trn_question_category { get; set; }
     }
 }
