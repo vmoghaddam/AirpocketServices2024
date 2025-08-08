@@ -98,17 +98,17 @@ namespace AirpocketTRN.Controllers
         public async Task<IHttpActionResult> post_exam_pause(dynamic dto)
         {
             int exam_id = Convert.ToInt32(dto.exam_id);
-             
+
             FLYEntities context = new FLYEntities();
             context.Configuration.LazyLoadingEnabled = false;
             var exam = await context.trn_exam.FirstOrDefaultAsync(q => q.id == exam_id);
             exam.is_running = false;
-            exam.passed =Convert.ToInt32( Math.Round( (DateTime.Now - ((DateTime)exam.date_start)).TotalMinutes));
-           
+            exam.passed = Convert.ToInt32(Math.Round((DateTime.Now - ((DateTime)exam.date_start)).TotalMinutes));
+
 
             var sub_exams = await context.trn_person_exam.Where(q => q.main_exam_id == exam_id).ToListAsync();
             foreach (var x in sub_exams)
-            { 
+            {
                 x.is_running = exam.is_running;
                 x.passed = exam.passed;
             }
@@ -134,8 +134,8 @@ namespace AirpocketTRN.Controllers
             context.Configuration.LazyLoadingEnabled = false;
             var exam = await context.trn_exam.FirstOrDefaultAsync(q => q.id == exam_id);
             exam.is_running = true;
-            var dif =(int)( exam.duration - exam.passed);
-            exam.date_end_scheduled= (DateTime.Now).AddMinutes(dif);
+            var dif = (int)(exam.duration - exam.passed);
+            exam.date_end_scheduled = (DateTime.Now).AddMinutes(dif);
 
 
             var sub_exams = await context.trn_person_exam.Where(q => q.main_exam_id == exam_id).ToListAsync();
@@ -168,20 +168,20 @@ namespace AirpocketTRN.Controllers
         [AcceptVerbs("Post")]
         public async Task<IHttpActionResult> post_exam_person_pause(dto_exam_person_pause dto)
         {
-             
+
 
             FLYEntities context = new FLYEntities();
             context.Configuration.LazyLoadingEnabled = false;
             var exams = await context.trn_person_exam.Where(q => dto.exam_ids.Contains(q.id)).ToListAsync();
-            foreach (var exam   in exams)
+            foreach (var exam in exams)
             {
                 exam.is_running = false;
                 exam.passed = Convert.ToInt32(Math.Round((DateTime.Now - ((DateTime)exam.date_start)).TotalMinutes));
             }
-           
 
 
-            
+
+
 
 
             await context.SaveChangesAsync();
@@ -198,7 +198,7 @@ namespace AirpocketTRN.Controllers
         [AcceptVerbs("Post")]
         public async Task<IHttpActionResult> post_exam_person_resume(dto_exam_person_pause dto)
         {
-            
+
 
             FLYEntities context = new FLYEntities();
             context.Configuration.LazyLoadingEnabled = false;
@@ -209,11 +209,11 @@ namespace AirpocketTRN.Controllers
                 var dif = (int)(exam.duration - exam.passed);
                 exam.date_end_scheduled = (DateTime.Now).AddMinutes(dif);
             }
-            
-            
 
 
-             
+
+
+
 
 
             await context.SaveChangesAsync();
@@ -325,7 +325,7 @@ namespace AirpocketTRN.Controllers
 
 
 
-                var person_exams = await context.trn_person_exam.Where(q => q.main_exam_id == dto.exam_id ).ToListAsync();
+                var person_exams = await context.trn_person_exam.Where(q => q.main_exam_id == dto.exam_id).ToListAsync();
                 foreach (var person_exam in person_exams)
                 {
                     var pexists = await context.trn_person_exam_question.Where(q => q.exam_id == person_exam.id).ToListAsync();
@@ -752,7 +752,7 @@ namespace AirpocketTRN.Controllers
             try
             {
                 FLYEntities context = new FLYEntities();
-                var exams = await context.view_trn_exam.Where(q=>q.exam_date!=null).OrderByDescending(q => q.exam_date).ToListAsync();
+                var exams = await context.view_trn_exam.Where(q => q.exam_date != null).OrderByDescending(q => q.exam_date).ToListAsync();
 
                 var result = new DataResponse()
                 {
@@ -769,8 +769,100 @@ namespace AirpocketTRN.Controllers
             }
         }
 
+        [Route("api/trn/exam/question/category/save")]
+        [AcceptVerbs("Post")]
+        public async Task<IHttpActionResult> post_question_category(dynamic dto)
+        {
+            FLYEntities context = new FLYEntities();
 
+            int id = Convert.ToInt32(dto.id);
 
+            var _category = context.trn_question_category.FirstOrDefault(q => q.id == id);
+            if (_category == null)
+            {
+                _category = new trn_question_category();
+                context.trn_question_category.Add(_category);
+            }
+            _category.category = dto.category;
+            _category.remark = dto.remark;
+            _category.type_id = dto.type_id;
 
+            await context.SaveChangesAsync();
+            var result = new DataResponse()
+            {
+                IsSuccess = true,
+                Data = _category,
+
+            };
+            return Ok(result);
+        }
+
+        [Route("api/trn/exam/question/category/get")]
+        [AcceptVerbs("Get")]
+        public async Task<IHttpActionResult> get_question_category(int category_id)
+        {
+            FLYEntities context = new FLYEntities();
+            var _result = context.trn_question_category.Where(q => q.id == category_id).ToList();
+
+            var result = new DataResponse()
+            {
+                IsSuccess = true,
+                Data = _result,
+
+            };
+            return Ok(result);
+        }
+
+        [Route("api/trn/exam/question/save")]
+        [AcceptVerbs("Post")]
+        public async Task<IHttpActionResult> post_question(dynamic dto)
+        {
+            FLYEntities context = new FLYEntities();
+
+            int id = Convert.ToInt32(dto.id);
+
+            var _category = context.trn_questions.FirstOrDefault(q => q.id == id);
+            if (_category == null)
+            {
+                _category = new trn_questions();
+                context.trn_questions.Add(_category);
+            }
+            _category.hardness = dto.hardness;
+            _category.english_title = dto.english_title;
+            _category.is_rtl = dto.is_rtl;
+            _category.remark = dto.remark;
+            _category.response_time = dto.response_time;
+            _category.course_type_id = dto.course_type_id;
+            _category.persian_title = dto.persian_title;
+            _category.type_id = dto.type_id;
+            _category.coefficient = dto.coefficient;
+            _category.category_id = dto.category_id;
+            _category.chapter_id = dto.chapter_id;
+
+            await context.SaveChangesAsync();
+            var result = new DataResponse()
+            {
+                IsSuccess = true,
+                Data = _category,
+
+            };
+            return Ok(result);
+        }
+
+        [Route("api/trn/exam/question/category/get")]
+        [AcceptVerbs("Get")]
+        public async Task<IHttpActionResult> get_question(int category_id)
+        {
+            FLYEntities context = new FLYEntities();
+            var _result = context.trn_questions.Where(q => q.id == category_id).ToList();
+
+            var result = new DataResponse()
+            {
+                IsSuccess = true,
+                Data = _result,
+
+            };
+            return Ok(result);
+        }
     }
 }
