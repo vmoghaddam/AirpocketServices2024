@@ -106,6 +106,7 @@ namespace ApiLog.Models
         public Nullable<int> JLBLHH { get; set; }
         public Nullable<int> JLBLMM { get; set; }
         public Nullable<int> PFLR { get; set; }
+        public int NightTime { get; set; }
         public Nullable<int> ChrAdult { get; set; }
         public Nullable<int> ChrChild { get; set; }
         public Nullable<int> ChrInfant { get; set; }
@@ -122,5 +123,8 @@ namespace ApiLog.Models
         public Nullable<System.DateTime> Start { get; set; }
         public Nullable<int> CargoPieces { get; set; }
         public Nullable<int> CPDH { get; set; }
+        public Nullable<int> exctra_bags_weight { get; set; }
+        public Nullable<decimal> email_weight { get; set; }
+        public Nullable<decimal> fob { get; set; }
     }
 }

@@ -1120,6 +1120,7 @@ namespace ApiLog.Controllers
             // public Nullable<System.DateTime> Start { get; set; }
             public Nullable<int> CargoPieces { get; set; }
             public Nullable<int> CPDH { get; set; }
+            public Nullable<int> NightTime { get; set; }
         }
         public async Task<CustomActionResult> GetUpdatedFlightsNew(int airport, DateTime baseDate, DateTime? fromDate, DateTime? toDate, int customer, int tzoffset, int userid)
         {
@@ -1568,6 +1569,7 @@ namespace ApiLog.Controllers
                    SerialNo = q.SerialNo,
                    LTR = q.LTR,
                    FuelDeparture = q.FuelDeparture,
+                   NightTime = q.NightTime,
                    // q.Ready,
                    // q.Start,
                    CargoPieces = q.CargoPieces,
@@ -1586,17 +1588,17 @@ namespace ApiLog.Controllers
                 var flights = cid == 100 ? await flightsQuery.ToListAsync() : await flightsQuery.Where(q => q.CPDH == 0).ToListAsync();
 
                 
-                if (airline == "AVA")
-                {
-                    var url = "https://pgs.logext.aerok.tech/api/flights/gantt/utc/customer/reg/4/"+from+"/"+to+"/0/83-SAP";
-                    using (WebClient webClient = new WebClient())
-                    {
-                        var str = webClient.DownloadString(url);
-                        var res = JsonConvert.DeserializeObject<List<ViewFlightsGanttNewDto>>(str);
-                        flights = flights.Concat(res).ToList();
+                //if (airline == "AVA")
+                //{
+                //    var url = "https://pgs.logext.aerok.tech/api/flights/gantt/utc/customer/reg/4/"+from+"/"+to+"/0/83-SAP";
+                //    using (WebClient webClient = new WebClient())
+                //    {
+                //        var str = webClient.DownloadString(url);
+                //        var res = JsonConvert.DeserializeObject<List<ViewFlightsGanttNewDto>>(str);
+                //        flights = flights.Concat(res).ToList();
 
-                    }
-                }
+                //    }
+                //}
 
 
 
@@ -1738,7 +1740,332 @@ namespace ApiLog.Controllers
 
         }
 
+        [Route("api/flights/gantt/utc/customer/dsp/{cid}/{from}/{to}/{tzoffset}")]
+        [AcceptVerbs("POST", "GET")]
+        public async Task<IHttpActionResult> GetFlightsGanttByCustomerIdUTCNewDSP(int cid, string from, string to, int tzoffset)
+        {
+            try
+            {
+                var airline = ConfigurationManager.AppSettings["airline"];
 
+                DateTime dateFrom = Helper.BuildDateTimeFromYAFormat(from);
+                DateTime dateTo = Helper.BuildDateTimeFromYAFormat(to);
+
+                // var result = await unitOfWork.FlightRepository.GetFlightGanttFleet(cid, dateFrom, dateTo, tzoffset, null, null, 1);
+                //return Ok(result);
+                var context = new ppa_entities();
+
+                //var flightsQuery = context.ViewFlightsGantts.Where(q => /*q.CustomerId == cid &&*/ q.RegisterID != null &&
+                //(
+                //(q.STDLocal >= dateFrom && q.STDLocal <= dateTo) || (q.DepartureLocal >= dateFrom && q.DepartureLocal <= dateTo)
+                //|| (q.STALocal >= dateFrom && q.STALocal <= dateTo) || (q.ArrivalLocal >= dateFrom && q.ArrivalLocal <= dateTo)
+                //)
+                //);
+
+
+                // var flightsQuery = context.ViewFlightsGanttNews.Where(q => /*q.CustomerId == cid &&*/ q.RegisterID != null &&
+                //(
+                //(q.STD >= dateFrom && q.STD <= dateTo) || (q.Departure >= dateFrom && q.Departure <= dateTo)
+                //|| (q.STA >= dateFrom && q.STA <= dateTo) || (q.Arrival >= dateFrom && q.Arrival <= dateTo)
+                //)
+                //);
+
+                //    var raw_query = await context.Database.SqlQuery<ViewFlightsGanttNew>("select top 1000 * from ViewFlightsGanttNew ").ToListAsync();
+                var flightsQuery = context.ViewFlightsGanttNews.Where(q =>
+               (
+                  (q.STD >= dateFrom && q.STD <= dateTo)
+                   || (q.STA >= dateFrom && q.STA <= dateTo)
+                   && ((q.STA <= new DateTime(2025, 1, 1)) || (q.STD <= new DateTime(2025, 2, 1)))
+               )
+               ).Select(q => new ViewFlightsGanttNewDto()
+               {
+                   ID = q.ID,
+                   FlightPlanId = q.FlightPlanId,
+                   BaggageCount = q.BaggageCount,
+                   CargoUnitID = q.CargoUnitID,
+                   CargoUnit = q.CargoUnit,
+                   CargoWeight = q.CargoWeight,
+                   PaxChild = q.PaxChild,
+                   PaxInfant = q.PaxInfant,
+                   PaxAdult = q.PaxAdult,
+                   FuelArrival = q.FuelArrival,
+                   FuelActual = q.FuelActual,
+                   FuelPlanned = q.FuelPlanned,
+                   GWLand = q.GWLand,
+                   GWTO = q.GWTO,
+                   FlightH = q.FlightH,
+                   FlightM = q.FlightM,
+                   ChocksIn = q.ChocksIn,
+                   Landing = q.Landing,
+                   Takeoff = q.Takeoff,
+                   ChocksOut = q.ChocksOut,
+                   STD = q.STD,
+                   STA = q.STA,
+                   STDLocal = q.STDLocal,
+                   STALocal = q.STALocal,
+                   Date = q.Date,
+                   FlightStatusID = q.FlightStatusID,
+                   RegisterID = q.RegisterID,
+                   FlightTypeID = q.FlightTypeID,
+                   //q.FlightType,
+                   TypeId = q.TypeId,
+                   OTypeId = q.OTypeId,
+                   FlightNumber = q.FlightNumber,
+                   FromAirport = q.FromAirport,
+                   ToAirport = q.ToAirport,
+                   FromAirportIATA = q.FromAirportIATA,
+                   ToAirportIATA = q.ToAirportIATA,
+                   AircraftType = q.AircraftType,
+                   OAircraftType = q.OAircraftType,
+                   Register = q.Register,
+                   // q.MSN,
+                   FlightStatus = q.FlightStatus,
+                   status = q.status,
+                   notes = q.notes,
+                   taskName = q.taskName,
+                   startDate = q.startDate,
+                   PlanId = q.PlanId,
+                   CargoCount = q.CargoCount,
+                   BaggageWeight = q.BaggageWeight,
+                   FuelUnitID = q.FuelUnitID,
+                   FuelUnit = q.FuelUnit,
+                   ArrivalRemark = q.ArrivalRemark,
+                   DepartureRemark = q.DepartureRemark,
+                   TotalSeat = q.TotalSeat,
+                   // q.EstimatedDelay,
+                   TotalPax = q.TotalPax,
+                   PaxOver = q.PaxOver,
+                   //q.DateStatus,
+                   //q.FlightStatusUserId,
+                   STDDay = q.STDDay,
+                   STADay = q.STADay,
+                   DelayOffBlock = q.DelayOffBlock,
+                   // q.DelayTakeoff,
+                   // q.DelayOnBlock,
+                   // q.DelayLanding,
+                   CancelReasonId = q.CancelReasonId,
+                   //q.CancelRemark,
+                   // q.CancelDate,
+                   //q.CancelReason,
+                   RedirectReasonId = q.RedirectReasonId,
+                   // q.RedirectRemark,
+                   // q.RedirectDate,
+                   // q.RedirectReason,
+                   RampReasonId = q.RampReasonId,
+                   //q.RampRemark,
+                   //q.RampDate,
+                   //q.RampReason,
+                   OSTA = q.OSTA,
+                   OToAirportId = q.OToAirportId,
+                   OToAirportIATA = q.OToAirportIATA,
+                   FPFuel = q.FPFuel,
+                   Defuel = q.Defuel,
+                   Departure = q.Departure,
+                   Arrival = q.Arrival,
+                   DepartureLocal = q.DepartureLocal,
+                   ArrivalLocal = q.ArrivalLocal,
+                   BlockTime = q.BlockTime,
+                   FlightTime = q.FlightTime,
+                   FlightTimeActual = q.FlightTimeActual,
+                   UsedFuel = q.UsedFuel,
+                   // q.JLBLHH,
+                   // q.JLBLMM,
+                   // q.PFLR,
+                   ChrAdult = q.ChrAdult,
+                   ChrChild = q.ChrChild,
+                   ChrInfant = q.ChrInfant,
+                   ChrCapacity = q.ChrCapacity,
+                   ChrTitle = q.ChrTitle,
+                   ChrCode = q.ChrCode,
+                   DefaultChrId = q.DefaultChrId,
+                   CargoCost = q.CargoCost,
+                   FuelDensity = q.FuelDensity,
+                   SerialNo = q.SerialNo,
+                   LTR = q.LTR,
+                   FuelDeparture = q.FuelDeparture,
+                   // q.Ready,
+                   // q.Start,
+                   CargoPieces = q.CargoPieces,
+                   CPDH = q.CPDH
+               })
+                    .AsNoTracking();
+
+
+                int utc = 0;
+                int? doUtc = utc;
+                // if (cid != -1)
+                //    flightsQuery = flightsQuery.Where(q => q.CustomerId == cid);
+
+
+
+                var flights = cid == 100 ? await flightsQuery.ToListAsync() : await flightsQuery.Where(q => q.CPDH == 0).ToListAsync();
+
+
+                if (airline == "AVA")
+                {
+                    //var url = "https://pgs.logext.aerok.tech/api/flights/gantt/utc/customer/reg/4/" + from + "/" + to + "/0/83-SAP";
+                    //using (WebClient webClient = new WebClient())
+                    //{
+                    //    var str = webClient.DownloadString(url);
+                    //    var res = JsonConvert.DeserializeObject<List<ViewFlightsGanttNewDto>>(str);
+                    //    flights = flights.Concat(res).ToList();
+
+                    //}
+
+
+                    List<string> regs = new List<string> { "33-LEE", "33-LEF", "83-LED" };
+                    foreach (string reg in regs)
+                    {
+                        var fly_url = "https://fly.logext.myaero.tech/api/flights/gantt/utc/customer/reg/4/" + from + "/" + to + "/0/" + reg;
+                        using (WebClient webClient = new WebClient())
+                        {
+                            var str = webClient.DownloadString(fly_url);
+                            var res = JsonConvert.DeserializeObject<List<ViewFlightsGanttNewDto>>(str);
+                            flights = flights.Concat(res).ToList();
+
+                        }
+                    }
+                }
+
+
+
+                var grounds = (from x in context.ViewRegisterGrounds
+                               where x.CustomerId == cid &&
+                               (
+                                (dateFrom >= x.DateFrom && dateTo <= x.DateEnd) ||
+                                (x.DateFrom >= dateFrom && x.DateEnd <= dateTo) ||
+
+                                (x.DateFrom >= dateFrom && x.DateFrom <= dateTo) ||
+                                (x.DateEnd >= dateFrom && x.DateEnd <= dateTo)
+                               )
+                               select x).ToList();
+                // var grounds = new List<ViewRegisterGround>();
+
+                flights = flights.OrderBy(q => q.STD).ToList();
+
+
+                var groundRegs = new List<string>();
+
+                //  var flightsdto = new List<ViewModels.ViewFlightsGanttDto>();
+                //  foreach (var x in flights)
+                //  {
+                //      ViewModels.ViewFlightsGanttDto dto = new ViewFlightsGanttDto();
+                //      ViewModels.ViewFlightsGanttDto.FillDto(x, dto, tzoffset, doUtc);
+                //      flightsdto.Add(dto);
+                //  }
+                var flightsdto = flights;
+
+                var resgroups = from x in flights
+                                group x by new { x.AircraftType, AircraftTypeId = x.TypeId }
+                                into grp
+                                select new { groupId = grp.Key.AircraftTypeId, Title = grp.Key.AircraftType };
+
+
+                //change other method
+                var ressq = (from x in flights
+                             group x by new { x.RegisterID, x.Register, x.TypeId }
+                         into grp
+                             //orderby grp.Key.TypeId, grp.Key.Register
+                             // orderby grp.Key.Register.Contains("CNL")?"ZZZZ": grp.Key.Register[grp.Key.Register.Length-1].ToString()
+                             orderby getOrderIndex(grp.Key.Register, groundRegs)
+                             select new { resourceId = grp.Key.RegisterID, resourceName = grp.Key.Register, groupId = grp.Key.TypeId }).ToList();
+                //var ress = ressq.OrderBy(q => q.TypeId).Select((q, i) => new { resourceName = q.Register, groupId = q.TypeId, resourceId = (q.RegisterID >= 0 ? q.RegisterID : -1 * (i + 1)) }).ToList();
+
+                //foreach (var x in flightsdto)
+                //{
+
+                //    x.resourceId.Add((int)x.RegisterID);
+
+                //}
+
+
+                var fromAirport = (from x in flights
+                                   group x by new { x.FromAirport, x.FromAirportIATA } into g
+                                   select new BaseSummary()
+                                   {
+                                       BaseId = g.Key.FromAirport,
+                                       BaseIATA = g.Key.FromAirportIATA,
+                                       BaseName = g.Key.FromAirportIATA,
+                                       Total = g.Count(),
+                                       TakeOff = g.Where(q => q.Takeoff != null).Count(),
+                                       Landing = 0, //g.Where(q => q.Landing != null).Count(),
+                                       Canceled = g.Where(q => q.FlightStatusID == 4).Count(),
+                                       Redirected = g.Where(q => q.FlightStatusID == 17).Count(),
+                                       Diverted = g.Where(q => q.FlightStatusID == 7).Count(),
+                                       TotalDelays = g.Where(q => q.ChocksOut != null).Sum(q => q.DelayOffBlock),
+                                       DepartedPax = g.Where(q => q.Takeoff != null).Sum(q => q.TotalPax),
+                                       ArrivedPax = 0,// g.Where(q => q.Landing != null).Sum(q => q.TotalPax),
+
+                                   }).ToList();
+                var toAirport = (from x in flights
+                                 group x by new { x.ToAirport, x.ToAirportIATA } into g
+                                 select new BaseSummary()
+                                 {
+                                     BaseId = g.Key.ToAirport,
+                                     BaseIATA = g.Key.ToAirportIATA,
+                                     BaseName = g.Key.ToAirportIATA,
+                                     Total = g.Count(),
+                                     TakeOff = 0,//g.Where(q => q.Takeoff != null).Count(),
+                                     Landing = g.Where(q => q.Landing != null).Count(),
+                                     Canceled = 0,//g.Where(q => q.FlightStatusID == 4).Count(),
+                                     Redirected = 0,// g.Where(q => q.FlightStatusID == 17).Count(),
+                                     Diverted = 0,// g.Where(q => q.FlightStatusID == 7).Count(),
+                                     TotalDelays = 0,// g.Where(q => q.ChocksOut != null).Sum(q => q.DelayOffBlock),
+                                     DepartedPax = 0,// g.Where(q => q.Takeoff != null).Sum(q => q.TotalPax),
+                                     ArrivedPax = g.Where(q => q.Landing != null).Sum(q => q.TotalPax),
+
+                                 }).ToList();
+
+                var baseSum = new List<BaseSummary>();
+                foreach (var x in fromAirport)
+                {
+                    var _to = toAirport.FirstOrDefault(q => q.BaseId == x.BaseId);
+                    if (_to != null)
+                    {
+                        x.ArrivedPax += _to.ArrivedPax;
+                        x.Canceled += _to.Canceled;
+                        x.DepartedPax += _to.DepartedPax;
+                        x.Diverted += _to.Diverted;
+                        x.Landing += _to.Landing;
+                        x.Redirected += _to.Redirected;
+                        x.TakeOff += _to.TakeOff;
+                        x.Total += _to.Total;
+                        x.TotalDelays += _to.TotalDelays;
+
+                    }
+
+                    baseSum.Add(x);
+                }
+
+
+
+
+                var result = new
+                {
+                    flights = flightsdto,
+                    resourceGroups = resgroups.ToList(),
+                    resources = ressq,
+                    baseSummary = baseSum,
+                    grounds,
+                    // fltgroups,
+                    baseDate = DateTime.UtcNow,
+                };
+                return Ok(result);
+
+
+                ///////////////////////
+                ///////////////////////
+                //////////////////////
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += "   INNER:  " + ex.InnerException.Message;
+                return Ok(msg);
+            }
+
+        }
 
         [Route("api/plan/flights")]
         public async Task<IHttpActionResult> GetFlightsForPlan(DateTime dfrom, DateTime dto)

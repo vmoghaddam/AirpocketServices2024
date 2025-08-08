@@ -2725,7 +2725,7 @@ namespace XAPI.Controllers
 
                 var MTOW = infoRows.FirstOrDefault(q => q.StartsWith("MTOW")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("MTOW")).Split('=')[1];
                 var MLDW = infoRows.FirstOrDefault(q => q.StartsWith("MLDW")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("MLDW")).Split('=')[1];
-                var MZFW = infoRows.FirstOrDefault(q => q.StartsWith("MLDW")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("MLDW")).Split('=')[1];
+                var MZFW = infoRows.FirstOrDefault(q => q.StartsWith("MZFW")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("MZFW")).Split('=')[1];
 
 
                 var ELDP = infoRows.FirstOrDefault(q => q.StartsWith("ELDP")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("ELDP")).Split('=')[1];
@@ -3830,6 +3830,8 @@ namespace XAPI.Controllers
                 props.Add("prop_ldg_vapp");
                 props.Add("prop_ldg_vga");
                 props.Add("prop_ldg_conf");
+                props.Add("prop_ldg_rwy");
+                props.Add("prop_ldg_cond");
 
 
                 var dtupd = DateTime.UtcNow.ToString("yyyyMMddHHmm");

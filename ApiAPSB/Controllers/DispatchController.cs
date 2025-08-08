@@ -2086,6 +2086,7 @@ namespace ApiAPSB.Controllers
             {
                 var do_lic = Convert.ToInt32(ConfigurationManager.AppSettings["dsp_lic"]);
                 var context = new Models.dbEntities();
+                
 
                 int flight_id = Convert.ToInt32(dto.flight_id);
                 string lic_no = Convert.ToString(dto.lic_no);
@@ -2210,6 +2211,141 @@ namespace ApiAPSB.Controllers
             }
 
         }
+
+        [Route("api/dsp/dr/sign/new/fly/ava")]
+        [AcceptVerbs("Post")]
+        public IHttpActionResult PostDRDSPSIGNNewFlyAva(dto_sign dto)
+        {
+            try
+            {
+                var do_lic = Convert.ToInt32(ConfigurationManager.AppSettings["dsp_lic"]);
+                var context = new Models.dbEntities();
+                var secondContext = new Models.dbSecondEntities();
+
+                int flight_id = Convert.ToInt32(dto.flight_id);
+                string lic_no = Convert.ToString(dto.lic_no);
+                string userid = Convert.ToString(dto.user_id);
+
+
+
+                //try
+                //{
+                var person = secondContext.People.Where(q => q.Id.ToString() == userid).FirstOrDefault();
+                var employee = secondContext.PersonCustomers.Where(q => q.PersonId == person.Id).FirstOrDefault();
+
+                var person_lic = string.IsNullOrEmpty(person.NDTNumber) ? person.LicenceTitle : person.NDTNumber;
+                //}
+                //catch(Exception ex)
+                //{
+                //    employee = context.ViewEmployees.Where(q => q.PersonId.ToString() == userid).FirstOrDefault();
+                //}
+                //employee = context.ViewEmployees.Where(q => q.PersonId.ToString() == userid).FirstOrDefault();
+
+                //if (employee==null)
+                //   employee=context.ViewEmployees.Where(q=>q.PersonId==userid).
+
+                if (do_lic == 1)
+                {
+                    if (employee != null)
+                    {
+                        if (string.IsNullOrEmpty(person_lic) || !person_lic.ToLower().Contains(lic_no.ToLower()))
+                        {
+                            return Ok(
+                                new
+                                {
+                                    done = false,
+                                    code = 100,
+                                    message = "The license number is wrong."
+                                }
+                            );
+                        }
+                    }
+                    else
+                    {
+                        if (lic_no.ToLower() != "lic4806")
+                        {
+                            return Ok(
+                                new
+                                {
+                                    done = false,
+                                    code = 100,
+                                    message = "The license number is wrong."
+                                }
+                            );
+                        }
+                    }
+                }
+
+
+
+                var appleg = context.XAppLegs.FirstOrDefault(q => q.FlightId == flight_id);
+                if (appleg.PICId == null)
+                {
+                    return Ok(
+                            new
+                            {
+                                done = false,
+                                code = 100,
+                                message = "The Flight Crew not found"
+                            }
+                        );
+                }
+                var appcrewflight = context.AppCrewFlights.Where(q => q.FlightId == appleg.FlightId && q.CrewId == appleg.PICId).FirstOrDefault();
+                var fdpitems = context.FDPItems.Where(q => q.FDPId == appcrewflight.FDPId).ToList();
+                var fltIds = fdpitems.Select(q => q.FlightId).ToList();
+
+                //var ofp_req_fuel = context.FlightInformations.Where(q => fltIds.Contains(q.ID)).OrderBy(q => q.ChocksOut).FirstOrDefault();
+                //if (ofp_req_fuel != null)
+                //{
+                //    if (ofp_req_fuel.FuelPlanned==null || ofp_req_fuel.OFPTOTALFUEL == null)
+                //    {
+                //        return Ok(
+                //            new
+                //            {
+                //                done = false,
+                //                code = 200,
+                //                message = "The OFP FUEL and REQUESTED FUEL can not be empty."
+                //            }
+                //        );
+                //    }
+                //}
+
+                var drs = context.EFBDSPReleases.Where(q => fltIds.Contains(q.FlightId)).ToList();
+
+                var dt = DateTime.UtcNow;
+                foreach (var dr in drs)
+                {
+                    dr.JLDSPSignDate = dt;
+                    dr.SgnDSPLicNo = person_lic.ToUpper();
+                    dr.DispatcherId = employee != null ? employee.Id : -1;
+                    dr.SGNDSPName = employee != null ? person.LastName + " " + person.FirstName : "Dispatch User";
+                }
+
+
+
+                context.SaveChanges();
+                return Ok(new
+                {
+                    done = true,
+                    dr_ids = drs.Select(q => q.Id).ToList(),
+                    flt_ids = drs.Select(q => q.FlightId).ToList()
+                });
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += "   INNER: " + ex.InnerException.Message;
+                return Ok(new
+                {
+                    done = false,
+                    code = 1,
+                    message = msg,
+                });
+            }
+
+        }
+
         [Route("api/sign/ofps/new/old")]
         [AcceptVerbs("Post")]
         public IHttpActionResult PostSIGNOfps_old(dto_sign dto)

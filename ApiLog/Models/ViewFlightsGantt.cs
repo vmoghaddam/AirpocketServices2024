@@ -297,5 +297,8 @@ namespace ApiLog.Models
         public int FuelUpliftLitr { get; set; }
         public int FuelUsed { get; set; }
         public int FuelTotal { get; set; }
+        public Nullable<int> exctra_bags_weight { get; set; }
+        public Nullable<decimal> email_weight { get; set; }
+        public Nullable<decimal> fob { get; set; }
     }
 }
