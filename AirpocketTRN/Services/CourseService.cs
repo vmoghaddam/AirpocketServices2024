@@ -34,6 +34,17 @@ namespace AirpocketTRN.Services
             };
         }
 
+        public async Task<DataResponse> GetCourseTypeGroupsProfile()
+        {
+            var result = await context.view_trn_course_type_group.Where(q => q.show_in_profile == true).OrderBy(q => q.title).ToListAsync();
+
+            return new DataResponse()
+            {
+                Data = result,
+                IsSuccess = true,
+            };
+        }
+
 
         public async Task<DataResponse> GetGRPCTExpiring()
         {
@@ -1386,6 +1397,21 @@ namespace AirpocketTRN.Services
                 IsSuccess = true,
             };
         }
+        public async Task<DataResponse> GetCourseTypeSubjects(int id)
+        {
+            //var query = from x in context.ViewEmployeeTrainings select x;
+            //if (root != "000")
+            //    query = query.Where(q => q.JobGroupMainCode == root);
+            //var result = await query.OrderByDescending(q => q.MandatoryExpired).ThenBy(q => q.JobGroup).ThenBy(q => q.LastName).ToListAsync();
+            var obj = await context.view_course_type_subject.Where(q => q.parent_id == id).ToListAsync();
+
+            return new DataResponse()
+            {
+                Data = obj,
+                IsSuccess = true,
+            };
+
+        }
 
         public async Task<DataResponse> GetPersonCourses(int pid)
         {
@@ -1627,6 +1653,23 @@ namespace AirpocketTRN.Services
         public async Task<DataResponse> GetCoursePeople(int cid)
         {
             var result = await context.ViewCoursePeoples.OrderBy(q => q.CourseId == cid).ToListAsync();
+
+            return new DataResponse()
+            {
+                Data = result,
+                IsSuccess = true,
+            };
+        }
+
+        public async Task<DataResponse> GetCoursePeopleNames(int cid)
+        {
+            var result = await context.ViewCoursePeoples.Where(q => q.CourseId == cid).Select(q => new
+            {
+                 q.Name,
+                 q.FirstName,
+                 q.LastName,
+                 q.JobGroup
+            }).OrderBy(q=>q.JobGroup).ThenBy(q=>q.Name).ToListAsync();
 
             return new DataResponse()
             {
@@ -2441,16 +2484,16 @@ namespace AirpocketTRN.Services
             //if (root != "000")
             //    query = query.Where(q => q.JobGroupMainCode == root);
             //var result = await query.OrderByDescending(q => q.MandatoryExpired).ThenBy(q => q.JobGroup).ThenBy(q => q.LastName).ToListAsync();
-            var obj = context.ViewCoursePeoplePassedRankeds.Where(q =>  q.ImgUrl == "FLY KISH" /*&& (q.Instructor.Contains("TALEBI") || q.Instructor.Contains("SHAFIEI"))*/ ).Select(q=>
-            
-            new
-            {
-                Id=q.Id,
-                Name=q.LastName+" "+q.FirstName,
-                q.Title,
-            }
-            
-            ) .ToList();
+            var obj = context.ViewCoursePeoplePassedRankeds.Where(q => q.ImgUrl == "FLY KISH" /*&& (q.Instructor.Contains("TALEBI") || q.Instructor.Contains("SHAFIEI"))*/ ).Select(q =>
+
+           new
+           {
+               Id = q.Id,
+               Name = q.LastName + " " + q.FirstName,
+               q.Title,
+           }
+
+            ).ToList();
             if (obj != null)
                 return new DataResponse()
                 {
@@ -2485,6 +2528,9 @@ namespace AirpocketTRN.Services
                     IsSuccess = true,
                 };
         }
+
+
+
 
 
         public async Task<DataResponse> DeleteCourseType(int id)
@@ -2609,6 +2655,7 @@ namespace AirpocketTRN.Services
                 entity.CourseTypeJobGroups.Add(new CourseTypeJobGroup()
                 {
                     JobGroupId = x.Id,
+                    GroupCode = x.FullCode,
                 });
             }
 
@@ -2764,6 +2811,24 @@ namespace AirpocketTRN.Services
                 IsSuccess = true,
             };
         }
+        //07-13
+       
+        public async Task<DataResponse> SaveExamScore(exam_score dto)
+        {
+            //int id = Convert.ToInt32(dto.id);
+            //int score = Convert.ToInt32(dto.score);
+            var course_people = await context.CoursePeoples.FirstOrDefaultAsync(q => q.Id == dto.id);
+            if (course_people != null)
+            {
+                course_people.ExamResult= dto.score;
+            }
+            await context.SaveChangesAsync();
+            return new DataResponse()
+            {
+                IsSuccess = true,
+                Data = dto,
+            };
+        }
         public async Task<DataResponse> SaveCourse(ViewModels.CourseViewModel dto)
         {
             //2024-12-30
@@ -2820,6 +2885,7 @@ namespace AirpocketTRN.Services
                 entity.Financial = dto.Financial;
                 entity.InForm = dto.InForm;
                 entity.Certificate = dto.Certificate;
+                entity.ExamType = dto.ExamType;
 
 
 
@@ -3097,7 +3163,7 @@ namespace AirpocketTRN.Services
                 {
 
                     var dto_exam = dto.exams.First();
-                    if (dto_exam.date_start!=null)
+                    if (dto_exam.date_start != null)
                     {
                         var db_exam = await context.trn_exam.FirstOrDefaultAsync(q => q.course_id == dto.Id);
                         if (db_exam == null)
@@ -3680,7 +3746,57 @@ namespace AirpocketTRN.Services
                 Data = result,
             };
         }
+        public async Task<DataResponse> CopyCoursePeople(dynamic dto)
+        {
+            int source_id = Convert.ToInt32(dto.source_id);
+            int destination_id = Convert.ToInt32(dto.destination_id);
 
+            var source_people = await context.CoursePeoples.Where(q => q.CourseId == source_id).ToListAsync();
+            var destination_people = await context.CoursePeoples.Where(q => q.CourseId == destination_id).ToListAsync();
+            var exam = await context.trn_exam.Where(q => q.course_id == destination_id).FirstOrDefaultAsync();
+            foreach (var x in source_people)
+            {
+                var exist = destination_people.FirstOrDefault(q => q.PersonId == x.PersonId);
+                if (exist == null)
+                {
+                    context.CoursePeoples.Add(new CoursePeople
+                    {
+                        CourseId = destination_id,
+                        PersonId = x.PersonId,
+                        StatusId = -1,
+                    });
+                    if (exam != null)
+                        context.trn_person_exam.Add(new trn_person_exam()
+                        {
+                            person_id = x.PersonId,
+                            course_id = destination_id,
+                            exam_date = exam.exam_date,
+                            location_title = exam.location_title,
+                            date_start = exam.date_start,
+                            duration = exam.duration,
+                            main_exam_id = exam.id,
+                            location_address = exam.location_address,
+                            exam_type_id = exam.exam_type_id,
+                            location_phone = exam.location_phone,
+                            status_id = exam.status_id,
+                            created_by = exam.created_by,
+                            date_start_scheduled = exam.date_start_scheduled,
+                            date_end_scheduled = exam.date_end_scheduled,
+                            created_date = exam.created_date,
+
+
+                        });
+                }
+            }
+
+            await context.SaveChangesAsync();
+            return new DataResponse()
+            {
+                IsSuccess = true,
+                Data = dto,
+            };
+
+        }
         public async Task<DataResponse> SaveCoursePeople(dynamic dto)
         {
             int courseId = Convert.ToInt32(dto.Id);
@@ -3778,7 +3894,7 @@ namespace AirpocketTRN.Services
         public class cspg_dto
         {
             public int cid { get; set; }
-            public string  sid { get; set; }
+            public string sid { get; set; }
             public List<int?> pid { get; set; }
         }
         public async Task<DataResponse> SaveCourseSessionPresenceGroup(cspg_dto dto)
@@ -3790,15 +3906,15 @@ namespace AirpocketTRN.Services
 
 
 
-            var exists = await context.CourseSessionPresences.Where(q => q.CourseId == courseId && pid.Contains( q.PersonId) && q.SessionKey == sid).ToListAsync();
+            var exists = await context.CourseSessionPresences.Where(q => q.CourseId == courseId && pid.Contains(q.PersonId) && q.SessionKey == sid).ToListAsync();
 
-            if (exists != null && exists.Count>0)
+            if (exists != null && exists.Count > 0)
             {
                 context.CourseSessionPresences.RemoveRange(exists);
             }
             else
             {
-                foreach ( var p in pid)
+                foreach (var p in pid)
                 {
                     context.CourseSessionPresences.Add(new CourseSessionPresence()
                     {
@@ -3808,7 +3924,7 @@ namespace AirpocketTRN.Services
                         Date = DateTime.Now
                     });
                 }
-                
+
             }
 
             await context.SaveChangesAsync();
@@ -6875,8 +6991,8 @@ namespace AirpocketTRN.Services
                 ins_ids.Add(course.CurrencyId);
             if (course.Instructor2 != null)
                 ins_ids.Add(course.Instructor2);
-             //var ins_ids = grp_sessions.Where(q => q.InstructorId != null).Select(q => q.InstructorId).Distinct().ToList();
-             personIds = personIds.Concat(ins_ids).ToList();
+            //var ins_ids = grp_sessions.Where(q => q.InstructorId != null).Select(q => q.InstructorId).Distinct().ToList();
+            personIds = personIds.Concat(ins_ids).ToList();
 
 
             var fltcrew = new List<string>() { "P1", "P2", "ISCCM", "SCCM", "CCM", "TRE", "TRI", "LTC", "CCE", "CCI" };

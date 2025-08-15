@@ -24,6 +24,7 @@ namespace AirpocketTRN.Models
         public Nullable<System.DateTime> DateIssueOld { get; set; }
         public Nullable<System.DateTime> DateExpireOld { get; set; }
         public Nullable<int> CourseId { get; set; }
+        public Nullable<int> CourseTypeId { get; set; }
     
         public virtual Person Person { get; set; }
     }

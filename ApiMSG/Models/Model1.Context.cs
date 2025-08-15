@@ -51,5 +51,6 @@ namespace ApiMSG.Models
         public virtual DbSet<ViewDutiyRocketChat> ViewDutiyRocketChats { get; set; }
         public virtual DbSet<ViewEmployeeSimple> ViewEmployeeSimples { get; set; }
         public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
+        public virtual DbSet<Person> People { get; set; }
     }
 }

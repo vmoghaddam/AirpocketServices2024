@@ -17,10 +17,10 @@ namespace ApiProfile.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Person()
         {
-            this.CertificateHistories = new HashSet<CertificateHistory>();
             this.PersonCustomers = new HashSet<PersonCustomer>();
             this.PersonAircraftTypes = new HashSet<PersonAircraftType>();
             this.PersonDocuments = new HashSet<PersonDocument>();
+            this.CertificateHistories = new HashSet<CertificateHistory>();
         }
     
         public int Id { get; set; }
@@ -525,12 +525,12 @@ namespace ApiProfile.Models
         public Nullable<System.DateTime> FTSL1ExpireDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CertificateHistory> CertificateHistories { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PersonCustomer> PersonCustomers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PersonAircraftType> PersonAircraftTypes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PersonDocument> PersonDocuments { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CertificateHistory> CertificateHistories { get; set; }
     }
 }

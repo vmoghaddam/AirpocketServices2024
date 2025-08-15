@@ -42,8 +42,31 @@ namespace XAPI.Controllers
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class ValuesController : ApiController
     {
+        [Route("api/test")]
+        [AcceptVerbs("GET")]
+        public IHttpActionResult GetTEST()
+        {
+            try
+            {
+                var ctx = new PPAEntities();
+                var result = ctx.FlightInformations.FirstOrDefault();
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException!= null)
+                    msg+=" "+ex.InnerException.Message;
+                return Ok(msg);
+            }
+           
+
+        }
+
         [Route("api/flt")]
         [AcceptVerbs("GET")]
+
         public IHttpActionResult GetFlt(DateTime dt, string origin, string destination, string no, string key)
         {
             if (key != "taban@1359A")
@@ -1740,6 +1763,34 @@ namespace XAPI.Controllers
 
                     }
                     return Ok(true);
+                } else if (dto.plan.Contains("JSKY") || dto.plan.Contains("Jsky"))
+                {
+                    result = "JSKY";
+                    var entity = new OFPSkyPuter()
+                    {
+                        OFP = dto.plan,
+                        DateCreate = DateTime.Now,
+                        UploadStatus = 0,
+
+
+                    };
+                    var ctx = new PPAEntities();
+                    ctx.Database.CommandTimeout = 1000;
+                    ctx.OFPSkyPuters.Add(entity);
+                    ctx.SaveChanges();
+
+
+                    string responsebody = "NO";
+                    using (WebClient client = new WebClient())
+                    {
+                        var reqparm = new System.Collections.Specialized.NameValueCollection();
+                        reqparm.Add("key", dto.key);
+                        reqparm.Add("plan", dto.plan);
+                        byte[] responsebytes = client.UploadValues("https://jsky.xpi.aerotango.app/api/skyputer/jsky", "POST", reqparm);
+                        responsebody = Encoding.UTF8.GetString(responsebytes);
+
+                    }
+                    return Ok(true);
                 }
                 else if (dto.plan.Contains("CASPIAN"))
                 {
@@ -2004,6 +2055,65 @@ namespace XAPI.Controllers
                     }
                     return Ok(true);
                 }
+                //VARESH
+                else if (dto.plan.Contains("VARESH"))
+                {
+                    result = "VARESH";
+                    var entity = new OFPSkyPuter()
+                    {
+                        OFP = dto.plan,
+                        DateCreate = DateTime.Now,
+                        UploadStatus = 0,
+
+
+                    };
+                    var ctx = new PPAEntities();
+                    ctx.Database.CommandTimeout = 1000;
+                    ctx.OFPSkyPuters.Add(entity);
+                    ctx.SaveChanges();
+
+
+                    string responsebody = "NO";
+                    using (WebClient client = new WebClient())
+                    {
+                        var reqparm = new System.Collections.Specialized.NameValueCollection();
+                        reqparm.Add("key", dto.key);
+                        reqparm.Add("plan", dto.plan);
+                        byte[] responsebytes = client.UploadValues("https://zxpi.airpocket.online/api/skyputer/varesh", "POST", reqparm);
+                        responsebody = Encoding.UTF8.GetString(responsebytes);
+
+                    }
+                    return Ok(true);
+                }
+                else if (dto.plan.Contains("JSKY") || dto.plan.Contains("Jsky"))
+                {
+                    result = "JSKY";
+                    var entity = new OFPSkyPuter()
+                    {
+                        OFP = dto.plan,
+                        DateCreate = DateTime.Now,
+                        UploadStatus = 0,
+
+
+                    };
+                    var ctx = new PPAEntities();
+                    ctx.Database.CommandTimeout = 1000;
+                    ctx.OFPSkyPuters.Add(entity);
+                    ctx.SaveChanges();
+
+
+                    string responsebody = "NO";
+                    using (WebClient client = new WebClient())
+                    {
+                        var reqparm = new System.Collections.Specialized.NameValueCollection();
+                        reqparm.Add("key", dto.key);
+                        reqparm.Add("plan", dto.plan);
+                        byte[] responsebytes = client.UploadValues("https://jsky.xpi.aerotango.app/api/skyputer/jsky", "POST", reqparm);
+                        responsebody = Encoding.UTF8.GetString(responsebytes);
+
+                    }
+                    return Ok(true);
+                }
                 else
                 {
                     var entity = new OFPSkyPuter()
@@ -2037,6 +2147,49 @@ namespace XAPI.Controllers
 
         }
 
+
+        [Route("api/skyputer/jsky")]
+        [AcceptVerbs("POST")]
+        public IHttpActionResult PostSkyputerJsky(skyputer dto)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(dto.key))
+                    return Ok("Authorization key not found.");
+                if (string.IsNullOrEmpty(dto.plan))
+                    return Ok("Plan cannot be empty.");
+                if (dto.key != "Skyputer@1359#")
+                    return Ok("Authorization key is wrong.");
+
+
+
+                var entity = new OFPSkyPuter()
+                {
+                    OFP = dto.plan,
+                    DateCreate = DateTime.Now,
+                    UploadStatus = 0,
+
+
+                };
+                var ctx = new PPAEntities();
+                ctx.Database.CommandTimeout = 1000;
+                ctx.OFPSkyPuters.Add(entity);
+                ctx.SaveChanges();
+                new Thread(async () =>
+                {
+                    GetSkyputerImport(entity.Id);
+                }).Start();
+                return Ok(true);
+
+
+
+            }
+            catch (Exception ex)
+            {
+                return Ok(true);
+            }
+
+        }
 
         [Route("api/skyputer/flypersia")]
         [AcceptVerbs("POST")]
@@ -2080,7 +2233,48 @@ namespace XAPI.Controllers
             }
 
         }
+        [Route("api/skyputer/jsky")]
+        [AcceptVerbs("POST")]
+        public IHttpActionResult PostSkyputerJsky(skyputer dto)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(dto.key))
+                    return Ok("Authorization key not found.");
+                if (string.IsNullOrEmpty(dto.plan))
+                    return Ok("Plan cannot be empty.");
+                if (dto.key != "Skyputer@1359#")
+                    return Ok("Authorization key is wrong.");
 
+
+
+                var entity = new OFPSkyPuter()
+                {
+                    OFP = dto.plan,
+                    DateCreate = DateTime.Now,
+                    UploadStatus = 0,
+
+
+                };
+                var ctx = new PPAEntities();
+                ctx.Database.CommandTimeout = 1000;
+                ctx.OFPSkyPuters.Add(entity);
+                ctx.SaveChanges();
+                new Thread(async () =>
+                {
+                    GetSkyputerImport(entity.Id);
+                }).Start();
+                return Ok(true);
+
+
+
+            }
+            catch (Exception ex)
+            {
+                return Ok(true);
+            }
+
+        }
         [Route("api/skyputer/chb")]
         [AcceptVerbs("POST")]
         public IHttpActionResult PostSkyputerCHB(skyputer dto)
@@ -2404,6 +2598,53 @@ namespace XAPI.Controllers
 
         }
 
+
+        [Route("api/skyputer/varesh")]
+        [AcceptVerbs("POST")]
+        public IHttpActionResult PostSkyputerVARESH(skyputer dto)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(dto.key))
+                    return Ok("Authorization key not found.");
+                if (string.IsNullOrEmpty(dto.plan))
+                    return Ok("Plan cannot be empty.");
+                if (dto.key != "Skyputer@1359#")
+                    return Ok("Authorization key is wrong.");
+
+
+
+                var entity = new OFPSkyPuter()
+                {
+                    OFP = dto.plan,
+                    DateCreate = DateTime.Now,
+                    UploadStatus = 0,
+
+
+                };
+                var ctx = new PPAEntities();
+                ctx.Database.CommandTimeout = 1000;
+                ctx.OFPSkyPuters.Add(entity);
+                ctx.SaveChanges();
+                new Thread(async () =>
+                {
+                    GetSkyputerImport(entity.Id);
+                }).Start();
+                return Ok(true);
+
+
+
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += " Inner: " + ex.InnerException.Message;
+                return Ok(msg);
+            }
+
+        }
+
         [Route("api/skyputer/karun")]
         [AcceptVerbs("POST")]
         public IHttpActionResult PostSkyputerKARUN(skyputer dto)
@@ -2581,7 +2822,7 @@ namespace XAPI.Controllers
             }
         }
 
-
+        //2025-06-12
         //https://xpi.sbvaresh.ir/api/skyputer
         [Route("api/skyputer/import/{id}")]
         [AcceptVerbs("GET")]
@@ -2607,6 +2848,15 @@ namespace XAPI.Controllers
                 var parts = rawText.Split(new string[] { "||" }, StringSplitOptions.None).ToList();
                 var atc_prt = parts.FirstOrDefault(q => q.StartsWith("icatc:|"));
                 var atc = atc_prt != null ? atc_prt.Replace("icatc:|", "") : "";
+
+                Match match = Regex.Match(atc, @"RALT/([A-Z0-9 ]+)");
+                List<string> raltValue = new List<string>();
+                if (match.Success)
+                {
+                    raltValue = match.Groups[1].Value.Trim().Split(' ').ToList();
+
+
+                }
 
                 var info = parts.FirstOrDefault(q => q.StartsWith("binfo:|")).Replace("binfo:|", "");
                 var infoRows = info.Split(';').ToList();
@@ -2645,12 +2895,17 @@ namespace XAPI.Controllers
 
                 var MTOW = infoRows.FirstOrDefault(q => q.StartsWith("MTOW")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("MTOW")).Split('=')[1];
                 var MLDW = infoRows.FirstOrDefault(q => q.StartsWith("MLDW")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("MLDW")).Split('=')[1];
+                var MZFW = infoRows.FirstOrDefault(q => q.StartsWith("MZFW")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("MZFW")).Split('=')[1];
+
 
                 var ELDP = infoRows.FirstOrDefault(q => q.StartsWith("ELDP")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("ELDP")).Split('=')[1];
                 var ELDS = infoRows.FirstOrDefault(q => q.StartsWith("ELDS")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("ELDS")).Split('=')[1];
                 var ELAL = infoRows.FirstOrDefault(q => q.StartsWith("ELAL")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("ELAL")).Split('=')[1];
                 var ELBL = infoRows.FirstOrDefault(q => q.StartsWith("ELBL")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("ELBL")).Split('=')[1];
 
+
+                var moda = infoRows.FirstOrDefault(q => q.StartsWith("MODA")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("MODA")).Split('=')[1];
+                var modb = infoRows.FirstOrDefault(q => q.StartsWith("MODB")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("MODB")).Split('=')[1];
                 //ELDP=ELEV: 65;ELDS=ELEV: 3956;ELAL=ELEV: 5058;ELBL=;
 
                 // var vdt= infoRows.FirstOrDefault(q => q.StartsWith/av("VDT")) == null ? "" : infoRows.FirstOrDefault(q => q.StartsWith("VDT")).Split('=')[1];
@@ -2770,6 +3025,8 @@ namespace XAPI.Controllers
                     plan.MTOW = MTOW;
                 if (!string.IsNullOrEmpty(MLDW))
                     plan.MLDW = MLDW;
+                if (!string.IsNullOrEmpty(MZFW))
+                    plan.mzfw = Convert.ToInt32(MZFW);
                 if (!string.IsNullOrEmpty(ELDP))
                     plan.ELDP = ELDP;
                 if (!string.IsNullOrEmpty(ELDS))
@@ -2778,6 +3035,50 @@ namespace XAPI.Controllers
                     plan.ELAL = ELAL;
                 if (!string.IsNullOrEmpty(ELBL))
                     plan.ELBL = ELBL;
+
+                if (!string.IsNullOrEmpty(moda))
+                {
+                    var _moda = moda.Replace("[", "").Replace("]", "").Replace(" ", "");
+                    try
+                    {
+                        plan.mod1_stn = _moda.Split(',')[0];
+                        plan.mod1 =Convert.ToInt32( _moda.Split(',')[1]);
+                    }
+                    catch(Exception ex)
+                    {
+
+                    }
+                    
+                }
+                if (!string.IsNullOrEmpty(modb))
+                {
+                    var _modb = modb.Replace("[", "").Replace("]", "").Replace(" ", "");
+                    try
+                    {
+                        plan.mod2_stn = _modb.Split(',')[0];
+                        plan.mod2 = Convert.ToInt32(_modb.Split(',')[1]);
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+                    
+                }
+                try
+                {
+                    if (raltValue != null && raltValue.Count > 0)
+                    {
+                        plan.ralt = "";
+                        foreach (var s in raltValue)
+                            if (s.StartsWith("O"))
+                                plan.ralt += s + " ";
+                    }
+                }
+                catch(Exception ex)
+                {
+
+                }
+                
 
 
                 plan.Source = "SkyPuter";
@@ -3693,6 +3994,15 @@ namespace XAPI.Controllers
                 other.Add(new fuelPrm() { prm = "ECTM_ENG2_FUEL_FLOW", value = "" });
                 props.Add("prop_ectm_eng2_fuel_flow");
 
+                props.Add("prop_ldg_va");
+                props.Add("prop_ldg_vsl");
+                props.Add("prop_ldg_vf15");
+                props.Add("prop_ldg_vapp");
+                props.Add("prop_ldg_vga");
+                props.Add("prop_ldg_conf");
+                props.Add("prop_ldg_rwy");
+                props.Add("prop_ldg_cond");
+
 
                 var dtupd = DateTime.UtcNow.ToString("yyyyMMddHHmm");
 
@@ -3722,6 +4032,9 @@ namespace XAPI.Controllers
 
                 fltobj.ALT1 = alt1;
                 fltobj.ALT2 = alt2;
+
+                fltobj.ALT4 = plan.mod1_stn;
+                fltobj.ALT5=plan.mod2_stn;
 
 
                 plan.TextOutput = JsonConvert.SerializeObject(other);
@@ -3867,7 +4180,7 @@ namespace XAPI.Controllers
 
                 */
 
-                return Ok(true);
+               return Ok(true);
             }
             catch (DbEntityValidationException e)
             {

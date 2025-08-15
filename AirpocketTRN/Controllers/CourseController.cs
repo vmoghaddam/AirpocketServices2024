@@ -107,6 +107,23 @@ namespace AirpocketTRN.Controllers
             }
            
         }
+        //GetCourseTypeGroupsProfile
+        [Route("api/profile/course/types")]
+        [AcceptVerbs("GET")]
+        public async Task<IHttpActionResult> GetCourseTypeGroupsProfile()
+        {
+            try
+            {
+                var result = await courseService.GetCourseTypeGroupsProfile();
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return Ok(build_exception_message(ex));
+            }
+
+        }
         //GetCourseTypeJobGroups
         [Route("api/course/type/groups/{cid}")]
         [AcceptVerbs("GET")]
@@ -154,6 +171,8 @@ namespace AirpocketTRN.Controllers
             return courseService.GetCourseTypesQuery();
         }
 
+       
+
         [Route("api/jobgroup")]
         [EnableQuery]
         // [Authorize]
@@ -186,6 +205,14 @@ namespace AirpocketTRN.Controllers
         {
             var result = await courseService.GetCoursesByTypeOutSide(tid, sid);
 
+            return Ok(result);
+        }
+        [Route("api/course/types/subjects/{id}")]
+        [EnableQuery]
+        // [Authorize]
+        public async Task<IHttpActionResult> GetcourseTypesSubjects(int id)
+        {
+            var result = await courseService.GetCourseTypeSubjects(id);
             return Ok(result);
         }
         [Route("api/certificates/history/{pid}")]
@@ -634,6 +661,15 @@ namespace AirpocketTRN.Controllers
 
             return Ok(result);
         }
+        //GetCoursePeopleNames
+        [Route("api/course/people/names/{cid}")]
+        [AcceptVerbs("GET")]
+        public async Task<IHttpActionResult> GetCoursePeopleNames(int cid)
+        {
+            var result = await courseService.GetCoursePeopleNames(cid);
+
+            return Ok(result);
+        }
 
         [Route("api/course/types/save")]
         [AcceptVerbs("POST")]
@@ -688,6 +724,14 @@ namespace AirpocketTRN.Controllers
         public async Task<IHttpActionResult> PostCourse(ViewModels.CourseViewModel dto)
         {
             var result = await courseService.SaveCourse(dto);
+
+            return Ok(result);
+        }
+        [Route("api/course/save/score")]
+        [AcceptVerbs("POST")]
+        public async Task<IHttpActionResult> PostCourseScore(exam_score dto)
+        {
+            var result = await courseService.SaveExamScore(dto);
 
             return Ok(result);
         }
@@ -746,7 +790,15 @@ namespace AirpocketTRN.Controllers
 
             return Ok(result);
         }
+        //CopyCoursePeople
+        [Route("api/course/people/copy")]
+        [AcceptVerbs("POST")]
+        public async Task<IHttpActionResult> PostCoursePeopleCopy(dynamic dto)
+        {
+            var result = await courseService.CopyCoursePeople(dto);
 
+            return Ok(result);
+        }
         //SaveCourseSessionPresence
         [Route("api/course/session/pres/save")]
         [AcceptVerbs("POST")]

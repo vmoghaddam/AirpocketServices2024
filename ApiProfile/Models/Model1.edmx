@@ -40,6 +40,7 @@
           <Property Name="DateIssueOld" Type="datetime2" Precision="7" />
           <Property Name="DateExpireOld" Type="datetime2" Precision="7" />
           <Property Name="CourseId" Type="int" />
+          <Property Name="CourseTypeId" Type="int" />
         </EntityType>
         <EntityType Name="Document">
           <Key>
@@ -685,6 +686,246 @@
           <Property Name="App" Type="nvarchar" MaxLength="500" Nullable="false" />
           <Property Name="DateSync" Type="datetime" Nullable="false" />
           <Property Name="Remark" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.view_profile' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_profile">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="PID" />
+            <PropertyRef Name="IsActive" />
+            <PropertyRef Name="JobGroup" />
+            <PropertyRef Name="JobGroupCode" />
+            <PropertyRef Name="JobGroupRoot" />
+            <PropertyRef Name="NID" />
+            <PropertyRef Name="FirstName" />
+            <PropertyRef Name="LastName" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="PersonId" />
+            <PropertyRef Name="Reserved1" />
+            <PropertyRef Name="Reserved2" />
+            <PropertyRef Name="Reserved3" />
+            <PropertyRef Name="Reserved4" />
+            <PropertyRef Name="Reserved5" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="PID" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="CustomerId" Type="int" />
+          <Property Name="GroupId" Type="int" />
+          <Property Name="C1GroupId" Type="int" />
+          <Property Name="JobGroupC1" Type="varchar" MaxLength="500" />
+          <Property Name="JobGroupCodeC1" Type="varchar" MaxLength="500" />
+          <Property Name="C2GroupId" Type="int" />
+          <Property Name="JobGroupC2" Type="nvarchar" MaxLength="500" />
+          <Property Name="JobGroupCodeC2" Type="varchar" MaxLength="500" />
+          <Property Name="C3GroupId" Type="int" />
+          <Property Name="JobGroup" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="JobGroupCode" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="JobGroupRoot" Type="varchar" MaxLength="16" Nullable="false" />
+          <Property Name="PostRoot" Type="varchar" MaxLength="10" />
+          <Property Name="NID" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="1003" Nullable="false" />
+          <Property Name="Mobile" Type="nvarchar" MaxLength="500" />
+          <Property Name="PassportNumber" Type="nvarchar" MaxLength="500" />
+          <Property Name="IDNo" Type="nvarchar" MaxLength="500" />
+          <Property Name="PersonId" Type="int" Nullable="false" />
+          <Property Name="InActive" Type="bit" />
+          <Property Name="JobGroupMain" Type="nvarchar" MaxLength="500" />
+          <Property Name="JobGroupMainCode" Type="varchar" MaxLength="500" />
+          <Property Name="JobGroupCode2" Type="varchar" MaxLength="500" />
+          <Property Name="JobGroup2RootCode" Type="varchar" MaxLength="3" />
+          <Property Name="RemainNDT" Type="int" />
+          <Property Name="RemainCAO" Type="int" />
+          <Property Name="RemainPassport" Type="int" />
+          <Property Name="date_passport" Type="date" />
+          <Property Name="RemainCMC" Type="int" />
+          <Property Name="date_cmc" Type="datetime" />
+          <Property Name="RemainLicence" Type="int" />
+          <Property Name="date_licence" Type="datetime" />
+          <Property Name="RemainLicenceIR" Type="int" />
+          <Property Name="date_licence_ir" Type="datetime" />
+          <Property Name="RemainProficiency" Type="int" />
+          <Property Name="date_proficiency" Type="datetime" />
+          <Property Name="RemainProficiencyOPC" Type="int" />
+          <Property Name="date_proficiency_opc" Type="datetime" />
+          <Property Name="RemainLPR" Type="int" />
+          <Property Name="date_lpr" Type="datetime" />
+          <Property Name="RemainMedical" Type="int" />
+          <Property Name="date_medical" Type="date" />
+          <Property Name="RemainTRI" Type="int" />
+          <Property Name="date_tri" Type="datetime" />
+          <Property Name="RemainTRE" Type="int" />
+          <Property Name="date_tre" Type="datetime" />
+          <Property Name="RemainLine" Type="int" />
+          <Property Name="date_line" Type="datetime" />
+          <Property Name="RemainEGPWS" Type="int" />
+          <Property Name="date_egpws" Type="datetime" />
+          <Property Name="RemainTypeMD" Type="int" />
+          <Property Name="date_type_md" Type="datetime2" Precision="7" />
+          <Property Name="RemainType737" Type="int" />
+          <Property Name="date_type_737" Type="datetime2" Precision="7" />
+          <Property Name="RemainTypeAirbus" Type="int" />
+          <Property Name="date_type_airbus" Type="datetime2" Precision="7" />
+          <Property Name="BaseAirline" Type="varchar" MaxLength="500" />
+          <Property Name="HomeBase" Type="nvarchar" MaxLength="255" />
+          <Property Name="IsType737" Type="bit" />
+          <Property Name="IsTypeMD" Type="bit" />
+          <Property Name="IsTypeAirbus" Type="bit" />
+          <Property Name="IsTypeFokker" Type="bit" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" />
+          <Property Name="RemainTypeFoker50" Type="int" />
+          <Property Name="date_type_foker50" Type="datetime2" Precision="7" />
+          <Property Name="RemainTypeFoker100" Type="int" />
+          <Property Name="date_type_foker100" Type="datetime2" Precision="7" />
+          <Property Name="Reserved1" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="Reserved2" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="Reserved3" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="Reserved4" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="Reserved5" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="PostCode" Type="varchar" MaxLength="500" />
+          <Property Name="PostTitle" Type="nvarchar" MaxLength="500" />
+          <Property Name="ImageUrl" Type="nvarchar" MaxLength="1000" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.view_trn_certificate_history' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_trn_certificate_history">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="history_id" />
+            <PropertyRef Name="course_type_id" />
+            <PropertyRef Name="pid" />
+            <PropertyRef Name="is_active" />
+            <PropertyRef Name="group_title" />
+            <PropertyRef Name="group_code" />
+            <PropertyRef Name="nid" />
+            <PropertyRef Name="first_name" />
+            <PropertyRef Name="last_name" />
+            <PropertyRef Name="name" />
+            <PropertyRef Name="person_id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="history_id" Type="int" Nullable="false" />
+          <Property Name="course_type_id" Type="int" Nullable="false" />
+          <Property Name="pid" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="is_active" Type="bit" Nullable="false" />
+          <Property Name="inactive" Type="bit" />
+          <Property Name="group_id" Type="int" />
+          <Property Name="group_title" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="group_code" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="nid" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="first_name" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="last_name" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="1001" Nullable="false" />
+          <Property Name="mobile" Type="nvarchar" MaxLength="500" />
+          <Property Name="person_id" Type="int" Nullable="false" />
+          <Property Name="course_type_title" Type="nvarchar" MaxLength="500" />
+          <Property Name="interval" Type="int" />
+          <Property Name="duration" Type="int" />
+          <Property Name="issue_field" Type="varchar" MaxLength="500" />
+          <Property Name="expire_field" Type="varchar" MaxLength="500" />
+          <Property Name="show_in_profile" Type="bit" />
+          <Property Name="show_in_list" Type="bit" />
+          <Property Name="is_monitoring_enabled" Type="bit" />
+          <Property Name="abbreviation" Type="varchar" MaxLength="255" />
+          <Property Name="has_reccurent" Type="bit" />
+          <Property Name="courset_type_remark" Type="nvarchar" MaxLength="2000" />
+          <Property Name="date_update" Type="datetime" />
+          <Property Name="date_issue" Type="datetime2" Precision="7" />
+          <Property Name="date_expire" Type="datetime2" Precision="7" />
+          <Property Name="course_id" Type="int" />
+          <Property Name="remaining" Type="int" />
+          <Property Name="RankLast" Type="bigint" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.view_trn_certificate_history_last' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_trn_certificate_history_last">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="history_id" />
+            <PropertyRef Name="course_type_id" />
+            <PropertyRef Name="pid" />
+            <PropertyRef Name="is_active" />
+            <PropertyRef Name="group_title" />
+            <PropertyRef Name="group_code" />
+            <PropertyRef Name="group_root" />
+            <PropertyRef Name="nid" />
+            <PropertyRef Name="first_name" />
+            <PropertyRef Name="last_name" />
+            <PropertyRef Name="name" />
+            <PropertyRef Name="person_id" />
+            <PropertyRef Name="date_issue_str" />
+            <PropertyRef Name="date_expire_str" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="history_id" Type="int" Nullable="false" />
+          <Property Name="course_type_id" Type="int" Nullable="false" />
+          <Property Name="pid" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="is_active" Type="bit" Nullable="false" />
+          <Property Name="inactive" Type="bit" />
+          <Property Name="group_id" Type="int" />
+          <Property Name="group_title" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="group_code" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="group_root" Type="varchar" MaxLength="16" Nullable="false" />
+          <Property Name="nid" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="first_name" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="last_name" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="1001" Nullable="false" />
+          <Property Name="mobile" Type="nvarchar" MaxLength="500" />
+          <Property Name="person_id" Type="int" Nullable="false" />
+          <Property Name="course_type_title" Type="nvarchar" MaxLength="500" />
+          <Property Name="interval" Type="int" />
+          <Property Name="duration" Type="int" />
+          <Property Name="issue_field" Type="varchar" MaxLength="500" />
+          <Property Name="expire_field" Type="varchar" MaxLength="500" />
+          <Property Name="show_in_profile" Type="bit" />
+          <Property Name="show_in_list" Type="bit" />
+          <Property Name="is_monitoring_enabled" Type="bit" />
+          <Property Name="abbreviation" Type="varchar" MaxLength="255" />
+          <Property Name="has_reccurent" Type="bit" />
+          <Property Name="courset_type_remark" Type="nvarchar" MaxLength="2000" />
+          <Property Name="date_update" Type="datetime" />
+          <Property Name="date_issue" Type="datetime2" Precision="7" />
+          <Property Name="date_expire" Type="datetime2" Precision="7" />
+          <Property Name="course_id" Type="int" />
+          <Property Name="remaining" Type="int" />
+          <Property Name="date_issue_str" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="date_expire_str" Type="varchar" MaxLength="1" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.view_trn_course_type_group' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_trn_course_type_group">
+          <Key>
+            <PropertyRef Name="course_type_id" />
+            <PropertyRef Name="group_id" />
+            <PropertyRef Name="group_title" />
+            <PropertyRef Name="group_root" />
+          </Key>
+          <Property Name="course_type_id" Type="int" Nullable="false" />
+          <Property Name="group_id" Type="int" Nullable="false" />
+          <Property Name="group_code" Type="varchar" MaxLength="255" />
+          <Property Name="group_title" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="group_root" Type="varchar" MaxLength="16" Nullable="false" />
+          <Property Name="title" Type="nvarchar" MaxLength="500" />
+          <Property Name="interval" Type="int" />
+          <Property Name="duration" Type="int" />
+          <Property Name="issue_field" Type="varchar" MaxLength="500" />
+          <Property Name="expire_field" Type="varchar" MaxLength="500" />
+          <Property Name="issue_value" Type="date" />
+          <Property Name="expire_value" Type="date" />
+          <Property Name="show_in_profile" Type="bit" />
+          <Property Name="show_in_list" Type="bit" />
+          <Property Name="is_monitoring_enabled" Type="bit" />
+          <Property Name="abbreviation" Type="varchar" MaxLength="255" />
+          <Property Name="remark" Type="nvarchar" MaxLength="2000" />
+          <Property Name="has_reccurent" Type="bit" />
+          <Property Name="ctg_mandatory" Type="bit" />
+          <Property Name="ctg_no_reccurent" Type="bit" />
+          <Property Name="ctg_interval" Type="int" />
+          <Property Name="ctg_duration" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.ViewCrewPickupSMS' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1359,6 +1600,191 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewProfile' does not have a primar
           <EntitySet Name="PersonDocument" EntityType="Self.PersonDocument" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PersonDocumentFile" EntityType="Self.PersonDocumentFile" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ThirdPartySyncHistory" EntityType="Self.ThirdPartySyncHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="view_profile" EntityType="Self.view_profile" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_profile].[Id] AS [Id], 
+    [view_profile].[PID] AS [PID], 
+    [view_profile].[IsActive] AS [IsActive], 
+    [view_profile].[IsDeleted] AS [IsDeleted], 
+    [view_profile].[CustomerId] AS [CustomerId], 
+    [view_profile].[GroupId] AS [GroupId], 
+    [view_profile].[C1GroupId] AS [C1GroupId], 
+    [view_profile].[JobGroupC1] AS [JobGroupC1], 
+    [view_profile].[JobGroupCodeC1] AS [JobGroupCodeC1], 
+    [view_profile].[C2GroupId] AS [C2GroupId], 
+    [view_profile].[JobGroupC2] AS [JobGroupC2], 
+    [view_profile].[JobGroupCodeC2] AS [JobGroupCodeC2], 
+    [view_profile].[C3GroupId] AS [C3GroupId], 
+    [view_profile].[JobGroup] AS [JobGroup], 
+    [view_profile].[JobGroupCode] AS [JobGroupCode], 
+    [view_profile].[JobGroupRoot] AS [JobGroupRoot], 
+    [view_profile].[PostRoot] AS [PostRoot], 
+    [view_profile].[NID] AS [NID], 
+    [view_profile].[FirstName] AS [FirstName], 
+    [view_profile].[LastName] AS [LastName], 
+    [view_profile].[Name] AS [Name], 
+    [view_profile].[Mobile] AS [Mobile], 
+    [view_profile].[PassportNumber] AS [PassportNumber], 
+    [view_profile].[IDNo] AS [IDNo], 
+    [view_profile].[PersonId] AS [PersonId], 
+    [view_profile].[InActive] AS [InActive], 
+    [view_profile].[JobGroupMain] AS [JobGroupMain], 
+    [view_profile].[JobGroupMainCode] AS [JobGroupMainCode], 
+    [view_profile].[JobGroupCode2] AS [JobGroupCode2], 
+    [view_profile].[JobGroup2RootCode] AS [JobGroup2RootCode], 
+    [view_profile].[RemainNDT] AS [RemainNDT], 
+    [view_profile].[RemainCAO] AS [RemainCAO], 
+    [view_profile].[RemainPassport] AS [RemainPassport], 
+    [view_profile].[date_passport] AS [date_passport], 
+    [view_profile].[RemainCMC] AS [RemainCMC], 
+    [view_profile].[date_cmc] AS [date_cmc], 
+    [view_profile].[RemainLicence] AS [RemainLicence], 
+    [view_profile].[date_licence] AS [date_licence], 
+    [view_profile].[RemainLicenceIR] AS [RemainLicenceIR], 
+    [view_profile].[date_licence_ir] AS [date_licence_ir], 
+    [view_profile].[RemainProficiency] AS [RemainProficiency], 
+    [view_profile].[date_proficiency] AS [date_proficiency], 
+    [view_profile].[RemainProficiencyOPC] AS [RemainProficiencyOPC], 
+    [view_profile].[date_proficiency_opc] AS [date_proficiency_opc], 
+    [view_profile].[RemainLPR] AS [RemainLPR], 
+    [view_profile].[date_lpr] AS [date_lpr], 
+    [view_profile].[RemainMedical] AS [RemainMedical], 
+    [view_profile].[date_medical] AS [date_medical], 
+    [view_profile].[RemainTRI] AS [RemainTRI], 
+    [view_profile].[date_tri] AS [date_tri], 
+    [view_profile].[RemainTRE] AS [RemainTRE], 
+    [view_profile].[date_tre] AS [date_tre], 
+    [view_profile].[RemainLine] AS [RemainLine], 
+    [view_profile].[date_line] AS [date_line], 
+    [view_profile].[RemainEGPWS] AS [RemainEGPWS], 
+    [view_profile].[date_egpws] AS [date_egpws], 
+    [view_profile].[RemainTypeMD] AS [RemainTypeMD], 
+    [view_profile].[date_type_md] AS [date_type_md], 
+    [view_profile].[RemainType737] AS [RemainType737], 
+    [view_profile].[date_type_737] AS [date_type_737], 
+    [view_profile].[RemainTypeAirbus] AS [RemainTypeAirbus], 
+    [view_profile].[date_type_airbus] AS [date_type_airbus], 
+    [view_profile].[BaseAirline] AS [BaseAirline], 
+    [view_profile].[HomeBase] AS [HomeBase], 
+    [view_profile].[IsType737] AS [IsType737], 
+    [view_profile].[IsTypeMD] AS [IsTypeMD], 
+    [view_profile].[IsTypeAirbus] AS [IsTypeAirbus], 
+    [view_profile].[IsTypeFokker] AS [IsTypeFokker], 
+    [view_profile].[UserId] AS [UserId], 
+    [view_profile].[RemainTypeFoker50] AS [RemainTypeFoker50], 
+    [view_profile].[date_type_foker50] AS [date_type_foker50], 
+    [view_profile].[RemainTypeFoker100] AS [RemainTypeFoker100], 
+    [view_profile].[date_type_foker100] AS [date_type_foker100], 
+    [view_profile].[Reserved1] AS [Reserved1], 
+    [view_profile].[Reserved2] AS [Reserved2], 
+    [view_profile].[Reserved3] AS [Reserved3], 
+    [view_profile].[Reserved4] AS [Reserved4], 
+    [view_profile].[Reserved5] AS [Reserved5], 
+    [view_profile].[PostCode] AS [PostCode], 
+    [view_profile].[PostTitle] AS [PostTitle], 
+    [view_profile].[ImageUrl] AS [ImageUrl]
+    FROM [dbo].[view_profile] AS [view_profile]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="view_trn_certificate_history" EntityType="Self.view_trn_certificate_history" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_trn_certificate_history].[id] AS [id], 
+    [view_trn_certificate_history].[history_id] AS [history_id], 
+    [view_trn_certificate_history].[course_type_id] AS [course_type_id], 
+    [view_trn_certificate_history].[pid] AS [pid], 
+    [view_trn_certificate_history].[is_active] AS [is_active], 
+    [view_trn_certificate_history].[inactive] AS [inactive], 
+    [view_trn_certificate_history].[group_id] AS [group_id], 
+    [view_trn_certificate_history].[group_title] AS [group_title], 
+    [view_trn_certificate_history].[group_code] AS [group_code], 
+    [view_trn_certificate_history].[nid] AS [nid], 
+    [view_trn_certificate_history].[first_name] AS [first_name], 
+    [view_trn_certificate_history].[last_name] AS [last_name], 
+    [view_trn_certificate_history].[name] AS [name], 
+    [view_trn_certificate_history].[mobile] AS [mobile], 
+    [view_trn_certificate_history].[person_id] AS [person_id], 
+    [view_trn_certificate_history].[course_type_title] AS [course_type_title], 
+    [view_trn_certificate_history].[interval] AS [interval], 
+    [view_trn_certificate_history].[duration] AS [duration], 
+    [view_trn_certificate_history].[issue_field] AS [issue_field], 
+    [view_trn_certificate_history].[expire_field] AS [expire_field], 
+    [view_trn_certificate_history].[show_in_profile] AS [show_in_profile], 
+    [view_trn_certificate_history].[show_in_list] AS [show_in_list], 
+    [view_trn_certificate_history].[is_monitoring_enabled] AS [is_monitoring_enabled], 
+    [view_trn_certificate_history].[abbreviation] AS [abbreviation], 
+    [view_trn_certificate_history].[has_reccurent] AS [has_reccurent], 
+    [view_trn_certificate_history].[courset_type_remark] AS [courset_type_remark], 
+    [view_trn_certificate_history].[date_update] AS [date_update], 
+    [view_trn_certificate_history].[date_issue] AS [date_issue], 
+    [view_trn_certificate_history].[date_expire] AS [date_expire], 
+    [view_trn_certificate_history].[course_id] AS [course_id], 
+    [view_trn_certificate_history].[remaining] AS [remaining], 
+    [view_trn_certificate_history].[RankLast] AS [RankLast]
+    FROM [dbo].[view_trn_certificate_history] AS [view_trn_certificate_history]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="view_trn_certificate_history_last" EntityType="Self.view_trn_certificate_history_last" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_trn_certificate_history_last].[id] AS [id], 
+    [view_trn_certificate_history_last].[history_id] AS [history_id], 
+    [view_trn_certificate_history_last].[course_type_id] AS [course_type_id], 
+    [view_trn_certificate_history_last].[pid] AS [pid], 
+    [view_trn_certificate_history_last].[is_active] AS [is_active], 
+    [view_trn_certificate_history_last].[inactive] AS [inactive], 
+    [view_trn_certificate_history_last].[group_id] AS [group_id], 
+    [view_trn_certificate_history_last].[group_title] AS [group_title], 
+    [view_trn_certificate_history_last].[group_code] AS [group_code], 
+    [view_trn_certificate_history_last].[group_root] AS [group_root], 
+    [view_trn_certificate_history_last].[nid] AS [nid], 
+    [view_trn_certificate_history_last].[first_name] AS [first_name], 
+    [view_trn_certificate_history_last].[last_name] AS [last_name], 
+    [view_trn_certificate_history_last].[name] AS [name], 
+    [view_trn_certificate_history_last].[mobile] AS [mobile], 
+    [view_trn_certificate_history_last].[person_id] AS [person_id], 
+    [view_trn_certificate_history_last].[course_type_title] AS [course_type_title], 
+    [view_trn_certificate_history_last].[interval] AS [interval], 
+    [view_trn_certificate_history_last].[duration] AS [duration], 
+    [view_trn_certificate_history_last].[issue_field] AS [issue_field], 
+    [view_trn_certificate_history_last].[expire_field] AS [expire_field], 
+    [view_trn_certificate_history_last].[show_in_profile] AS [show_in_profile], 
+    [view_trn_certificate_history_last].[show_in_list] AS [show_in_list], 
+    [view_trn_certificate_history_last].[is_monitoring_enabled] AS [is_monitoring_enabled], 
+    [view_trn_certificate_history_last].[abbreviation] AS [abbreviation], 
+    [view_trn_certificate_history_last].[has_reccurent] AS [has_reccurent], 
+    [view_trn_certificate_history_last].[courset_type_remark] AS [courset_type_remark], 
+    [view_trn_certificate_history_last].[date_update] AS [date_update], 
+    [view_trn_certificate_history_last].[date_issue] AS [date_issue], 
+    [view_trn_certificate_history_last].[date_expire] AS [date_expire], 
+    [view_trn_certificate_history_last].[course_id] AS [course_id], 
+    [view_trn_certificate_history_last].[remaining] AS [remaining], 
+    [view_trn_certificate_history_last].[date_issue_str] AS [date_issue_str], 
+    [view_trn_certificate_history_last].[date_expire_str] AS [date_expire_str]
+    FROM [dbo].[view_trn_certificate_history_last] AS [view_trn_certificate_history_last]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="view_trn_course_type_group" EntityType="Self.view_trn_course_type_group" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_trn_course_type_group].[course_type_id] AS [course_type_id], 
+    [view_trn_course_type_group].[group_id] AS [group_id], 
+    [view_trn_course_type_group].[group_code] AS [group_code], 
+    [view_trn_course_type_group].[group_title] AS [group_title], 
+    [view_trn_course_type_group].[group_root] AS [group_root], 
+    [view_trn_course_type_group].[title] AS [title], 
+    [view_trn_course_type_group].[interval] AS [interval], 
+    [view_trn_course_type_group].[duration] AS [duration], 
+    [view_trn_course_type_group].[issue_field] AS [issue_field], 
+    [view_trn_course_type_group].[expire_field] AS [expire_field], 
+    [view_trn_course_type_group].[issue_value] AS [issue_value], 
+    [view_trn_course_type_group].[expire_value] AS [expire_value], 
+    [view_trn_course_type_group].[show_in_profile] AS [show_in_profile], 
+    [view_trn_course_type_group].[show_in_list] AS [show_in_list], 
+    [view_trn_course_type_group].[is_monitoring_enabled] AS [is_monitoring_enabled], 
+    [view_trn_course_type_group].[abbreviation] AS [abbreviation], 
+    [view_trn_course_type_group].[remark] AS [remark], 
+    [view_trn_course_type_group].[has_reccurent] AS [has_reccurent], 
+    [view_trn_course_type_group].[ctg_mandatory] AS [ctg_mandatory], 
+    [view_trn_course_type_group].[ctg_no_reccurent] AS [ctg_no_reccurent], 
+    [view_trn_course_type_group].[ctg_interval] AS [ctg_interval], 
+    [view_trn_course_type_group].[ctg_duration] AS [ctg_duration]
+    FROM [dbo].[view_trn_course_type_group] AS [view_trn_course_type_group]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="ViewCrewPickupSMS" EntityType="Self.ViewCrewPickupSMS" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [ViewCrewPickupSMS].[Id] AS [Id], 
@@ -1879,14 +2305,9 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewProfile' does not have a primar
           </AssociationSet>
           <EntitySet Name="ViewEmployeeLights" EntityType="dbModel.ViewEmployeeLight" />
           <EntitySet Name="LoginInfoes" EntityType="dbModel.LoginInfo" />
-          <EntitySet Name="CertificateHistories" EntityType="dbModel.CertificateHistory" />
           <EntitySet Name="ViewOPCs" EntityType="dbModel.ViewOPC" />
           <EntitySet Name="ViewCrewPickupSMS" EntityType="dbModel.ViewCrewPickupSM" />
           <EntitySet Name="People" EntityType="dbModel.Person" />
-          <AssociationSet Name="FK_CH_PERSON" Association="dbModel.FK_CH_PERSON">
-            <End Role="Person" EntitySet="People" />
-            <End Role="CertificateHistory" EntitySet="CertificateHistories" />
-          </AssociationSet>
           <AssociationSet Name="FK_PERSONCUSTOMER_PERSON" Association="dbModel.FK_PERSONCUSTOMER_PERSON">
             <End Role="Person" EntitySet="People" />
             <End Role="PersonCustomer" EntitySet="PersonCustomers" />
@@ -1907,6 +2328,15 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewProfile' does not have a primar
             <End Role="Document" EntitySet="Documents" />
             <End Role="PersonDocument" EntitySet="PersonDocuments" />
           </AssociationSet>
+          <EntitySet Name="CertificateHistories" EntityType="dbModel.CertificateHistory" />
+          <EntitySet Name="view_trn_certificate_history" EntityType="dbModel.view_trn_certificate_history" />
+          <AssociationSet Name="FK_CH_PERSON" Association="dbModel.FK_CH_PERSON">
+            <End Role="Person" EntitySet="People" />
+            <End Role="CertificateHistory" EntitySet="CertificateHistories" />
+          </AssociationSet>
+          <EntitySet Name="view_trn_course_type_group" EntityType="dbModel.view_trn_course_type_group" />
+          <EntitySet Name="view_profile" EntityType="dbModel.view_profile" />
+          <EntitySet Name="view_trn_certificate_history_last" EntityType="dbModel.view_trn_certificate_history_last" />
           </EntityContainer>
         <EntityType Name="IdeaUnique">
           <Key>
@@ -2297,22 +2727,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewProfile' does not have a primar
           <Property Name="Info" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="IP" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="LocationCity" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="CertificateHistory">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DateCreate" Type="DateTime" Precision="3" />
-          <Property Name="CertificateType" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="DateIssue" Type="DateTime" Precision="7" />
-          <Property Name="DateExpire" Type="DateTime" Precision="7" />
-          <Property Name="PersonId" Type="Int32" Nullable="false" />
-          <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="DateIssueOld" Type="DateTime" Precision="7" />
-          <Property Name="DateExpireOld" Type="DateTime" Precision="7" />
-          <Property Name="CourseId" Type="Int32" />
-          <NavigationProperty Name="Person" Relationship="dbModel.FK_CH_PERSON" FromRole="CertificateHistory" ToRole="Person" />
         </EntityType>
         <EntityType Name="ViewOPC">
           <Key>
@@ -2861,7 +3275,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewProfile' does not have a primar
           <Property Name="TypeFoker100IssueDate" Type="DateTime" Precision="7" />
           <Property Name="TypeFoker50ExpireDate" Type="DateTime" Precision="7" />
           <Property Name="TypeFoker100ExpireDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="CertificateHistories" Relationship="dbModel.FK_CH_PERSON" FromRole="Person" ToRole="CertificateHistory" />
           <NavigationProperty Name="PersonCustomers" Relationship="dbModel.FK_PERSONCUSTOMER_PERSON" FromRole="Person" ToRole="PersonCustomer" />
           <NavigationProperty Name="PersonAircraftTypes" Relationship="dbModel.FK_UM_Type_Access_UM_Users" FromRole="Person" ToRole="PersonAircraftType" />
           <Property Name="SMSL2IssueDate" Type="DateTime" Precision="7" />
@@ -2885,19 +3298,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewProfile' does not have a primar
           <Property Name="FTSL1IssueDate" Type="DateTime" Precision="7" />
           <Property Name="FTSL1ExpireDate" Type="DateTime" Precision="7" />
           <NavigationProperty Name="PersonDocuments" Relationship="dbModel.FK_PD_PERS" FromRole="Person" ToRole="PersonDocument" />
+          <NavigationProperty Name="CertificateHistories" Relationship="dbModel.FK_CH_PERSON" FromRole="Person" ToRole="CertificateHistory" />
         </EntityType>
-        <Association Name="FK_CH_PERSON">
-          <End Type="dbModel.Person" Role="Person" Multiplicity="1" />
-          <End Type="dbModel.CertificateHistory" Role="CertificateHistory" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Person">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CertificateHistory">
-              <PropertyRef Name="PersonId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_PERSONCUSTOMER_PERSON">
           <End Type="dbModel.Person" Role="Person" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -3216,6 +3618,267 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewProfile' does not have a primar
           <End Type="dbModel.Document" Role="Document" Multiplicity="*" />
           <End Type="dbModel.PersonDocument" Role="PersonDocument" Multiplicity="0..1" />
         </Association>
+        <EntityType Name="CertificateHistory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DateCreate" Type="DateTime" Precision="3" />
+          <Property Name="CertificateType" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="DateIssue" Type="DateTime" Precision="7" />
+          <Property Name="DateExpire" Type="DateTime" Precision="7" />
+          <Property Name="PersonId" Type="Int32" Nullable="false" />
+          <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="DateIssueOld" Type="DateTime" Precision="7" />
+          <Property Name="DateExpireOld" Type="DateTime" Precision="7" />
+          <Property Name="CourseId" Type="Int32" />
+          <Property Name="CourseTypeId" Type="Int32" />
+          <NavigationProperty Name="Person" Relationship="dbModel.FK_CH_PERSON" FromRole="CertificateHistory" ToRole="Person" />
+        </EntityType>
+        <EntityType Name="view_trn_certificate_history">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="history_id" />
+            <PropertyRef Name="course_type_id" />
+            <PropertyRef Name="pid" />
+            <PropertyRef Name="is_active" />
+            <PropertyRef Name="group_title" />
+            <PropertyRef Name="group_code" />
+            <PropertyRef Name="nid" />
+            <PropertyRef Name="first_name" />
+            <PropertyRef Name="last_name" />
+            <PropertyRef Name="name" />
+            <PropertyRef Name="person_id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="history_id" Type="Int32" Nullable="false" />
+          <Property Name="course_type_id" Type="Int32" Nullable="false" />
+          <Property Name="pid" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="is_active" Type="Boolean" Nullable="false" />
+          <Property Name="inactive" Type="Boolean" />
+          <Property Name="group_id" Type="Int32" />
+          <Property Name="group_title" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="group_code" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="nid" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="first_name" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="last_name" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="mobile" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="person_id" Type="Int32" Nullable="false" />
+          <Property Name="course_type_title" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="interval" Type="Int32" />
+          <Property Name="duration" Type="Int32" />
+          <Property Name="issue_field" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="expire_field" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="show_in_profile" Type="Boolean" />
+          <Property Name="show_in_list" Type="Boolean" />
+          <Property Name="is_monitoring_enabled" Type="Boolean" />
+          <Property Name="abbreviation" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="has_reccurent" Type="Boolean" />
+          <Property Name="courset_type_remark" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="date_update" Type="DateTime" Precision="3" />
+          <Property Name="date_issue" Type="DateTime" Precision="7" />
+          <Property Name="date_expire" Type="DateTime" Precision="7" />
+          <Property Name="course_id" Type="Int32" />
+          <Property Name="remaining" Type="Int32" />
+          <Property Name="RankLast" Type="Int64" />
+        </EntityType>
+        <Association Name="FK_CH_PERSON">
+          <End Type="dbModel.Person" Role="Person" Multiplicity="1" />
+          <End Type="dbModel.CertificateHistory" Role="CertificateHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CertificateHistory">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="view_trn_course_type_group">
+          <Key>
+            <PropertyRef Name="course_type_id" />
+            <PropertyRef Name="group_id" />
+            <PropertyRef Name="group_title" />
+            <PropertyRef Name="group_root" />
+          </Key>
+          <Property Name="course_type_id" Type="Int32" Nullable="false" />
+          <Property Name="group_id" Type="Int32" Nullable="false" />
+          <Property Name="group_code" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="group_title" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="group_root" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="false" />
+          <Property Name="title" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="interval" Type="Int32" />
+          <Property Name="duration" Type="Int32" />
+          <Property Name="issue_field" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="expire_field" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="issue_value" Type="DateTime" Precision="0" />
+          <Property Name="expire_value" Type="DateTime" Precision="0" />
+          <Property Name="show_in_profile" Type="Boolean" />
+          <Property Name="show_in_list" Type="Boolean" />
+          <Property Name="is_monitoring_enabled" Type="Boolean" />
+          <Property Name="abbreviation" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="remark" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="has_reccurent" Type="Boolean" />
+          <Property Name="ctg_mandatory" Type="Boolean" />
+          <Property Name="ctg_no_reccurent" Type="Boolean" />
+          <Property Name="ctg_interval" Type="Int32" />
+          <Property Name="ctg_duration" Type="Int32" />
+        </EntityType>
+        <EntityType Name="view_profile">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="PID" />
+            <PropertyRef Name="IsActive" />
+            <PropertyRef Name="JobGroup" />
+            <PropertyRef Name="JobGroupCode" />
+            <PropertyRef Name="JobGroupRoot" />
+            <PropertyRef Name="NID" />
+            <PropertyRef Name="FirstName" />
+            <PropertyRef Name="LastName" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="PersonId" />
+            <PropertyRef Name="Reserved1" />
+            <PropertyRef Name="Reserved2" />
+            <PropertyRef Name="Reserved3" />
+            <PropertyRef Name="Reserved4" />
+            <PropertyRef Name="Reserved5" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="PID" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="CustomerId" Type="Int32" />
+          <Property Name="GroupId" Type="Int32" />
+          <Property Name="C1GroupId" Type="Int32" />
+          <Property Name="JobGroupC1" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="JobGroupCodeC1" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="C2GroupId" Type="Int32" />
+          <Property Name="JobGroupC2" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="JobGroupCodeC2" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="C3GroupId" Type="Int32" />
+          <Property Name="JobGroup" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="JobGroupCode" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="JobGroupRoot" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="false" />
+          <Property Name="PostRoot" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="NID" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="1003" FixedLength="false" Unicode="true" />
+          <Property Name="Mobile" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="PassportNumber" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IDNo" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="PersonId" Type="Int32" Nullable="false" />
+          <Property Name="InActive" Type="Boolean" />
+          <Property Name="JobGroupMain" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="JobGroupMainCode" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="JobGroupCode2" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="JobGroup2RootCode" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="RemainNDT" Type="Int32" />
+          <Property Name="RemainCAO" Type="Int32" />
+          <Property Name="RemainPassport" Type="Int32" />
+          <Property Name="date_passport" Type="DateTime" Precision="0" />
+          <Property Name="RemainCMC" Type="Int32" />
+          <Property Name="date_cmc" Type="DateTime" Precision="3" />
+          <Property Name="RemainLicence" Type="Int32" />
+          <Property Name="date_licence" Type="DateTime" Precision="3" />
+          <Property Name="RemainLicenceIR" Type="Int32" />
+          <Property Name="date_licence_ir" Type="DateTime" Precision="3" />
+          <Property Name="RemainProficiency" Type="Int32" />
+          <Property Name="date_proficiency" Type="DateTime" Precision="3" />
+          <Property Name="RemainProficiencyOPC" Type="Int32" />
+          <Property Name="date_proficiency_opc" Type="DateTime" Precision="3" />
+          <Property Name="RemainLPR" Type="Int32" />
+          <Property Name="date_lpr" Type="DateTime" Precision="3" />
+          <Property Name="RemainMedical" Type="Int32" />
+          <Property Name="date_medical" Type="DateTime" Precision="0" />
+          <Property Name="RemainTRI" Type="Int32" />
+          <Property Name="date_tri" Type="DateTime" Precision="3" />
+          <Property Name="RemainTRE" Type="Int32" />
+          <Property Name="date_tre" Type="DateTime" Precision="3" />
+          <Property Name="RemainLine" Type="Int32" />
+          <Property Name="date_line" Type="DateTime" Precision="3" />
+          <Property Name="RemainEGPWS" Type="Int32" />
+          <Property Name="date_egpws" Type="DateTime" Precision="3" />
+          <Property Name="RemainTypeMD" Type="Int32" />
+          <Property Name="date_type_md" Type="DateTime" Precision="7" />
+          <Property Name="RemainType737" Type="Int32" />
+          <Property Name="date_type_737" Type="DateTime" Precision="7" />
+          <Property Name="RemainTypeAirbus" Type="Int32" />
+          <Property Name="date_type_airbus" Type="DateTime" Precision="7" />
+          <Property Name="BaseAirline" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="HomeBase" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="IsType737" Type="Boolean" />
+          <Property Name="IsTypeMD" Type="Boolean" />
+          <Property Name="IsTypeAirbus" Type="Boolean" />
+          <Property Name="IsTypeFokker" Type="Boolean" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="RemainTypeFoker50" Type="Int32" />
+          <Property Name="date_type_foker50" Type="DateTime" Precision="7" />
+          <Property Name="RemainTypeFoker100" Type="Int32" />
+          <Property Name="date_type_foker100" Type="DateTime" Precision="7" />
+          <Property Name="Reserved1" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="Reserved2" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="Reserved3" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="Reserved4" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="Reserved5" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="PostCode" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="PostTitle" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ImageUrl" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="view_trn_certificate_history_last">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="history_id" />
+            <PropertyRef Name="course_type_id" />
+            <PropertyRef Name="pid" />
+            <PropertyRef Name="is_active" />
+            <PropertyRef Name="group_title" />
+            <PropertyRef Name="group_code" />
+            <PropertyRef Name="group_root" />
+            <PropertyRef Name="nid" />
+            <PropertyRef Name="first_name" />
+            <PropertyRef Name="last_name" />
+            <PropertyRef Name="name" />
+            <PropertyRef Name="person_id" />
+            <PropertyRef Name="date_issue_str" />
+            <PropertyRef Name="date_expire_str" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="history_id" Type="Int32" Nullable="false" />
+          <Property Name="course_type_id" Type="Int32" Nullable="false" />
+          <Property Name="pid" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="is_active" Type="Boolean" Nullable="false" />
+          <Property Name="inactive" Type="Boolean" />
+          <Property Name="group_id" Type="Int32" />
+          <Property Name="group_title" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="group_code" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="group_root" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="false" />
+          <Property Name="nid" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="first_name" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="last_name" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="mobile" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="person_id" Type="Int32" Nullable="false" />
+          <Property Name="course_type_title" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="interval" Type="Int32" />
+          <Property Name="duration" Type="Int32" />
+          <Property Name="issue_field" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="expire_field" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="show_in_profile" Type="Boolean" />
+          <Property Name="show_in_list" Type="Boolean" />
+          <Property Name="is_monitoring_enabled" Type="Boolean" />
+          <Property Name="abbreviation" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="has_reccurent" Type="Boolean" />
+          <Property Name="courset_type_remark" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="date_update" Type="DateTime" Precision="3" />
+          <Property Name="date_issue" Type="DateTime" Precision="7" />
+          <Property Name="date_expire" Type="DateTime" Precision="7" />
+          <Property Name="course_id" Type="Int32" />
+          <Property Name="remaining" Type="Int32" />
+          <Property Name="date_issue_str" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="date_expire_str" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3536,22 +4199,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewProfile' does not have a primar
                 <ScalarProperty Name="Info" ColumnName="Info" />
                 <ScalarProperty Name="DateCreate" ColumnName="DateCreate" />
                 <ScalarProperty Name="User" ColumnName="User" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CertificateHistories">
-            <EntityTypeMapping TypeName="dbModel.CertificateHistory">
-              <MappingFragment StoreEntitySet="CertificateHistory">
-                <ScalarProperty Name="CourseId" ColumnName="CourseId" />
-                <ScalarProperty Name="DateExpireOld" ColumnName="DateExpireOld" />
-                <ScalarProperty Name="DateIssueOld" ColumnName="DateIssueOld" />
-                <ScalarProperty Name="Remark" ColumnName="Remark" />
-                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
-                <ScalarProperty Name="DateExpire" ColumnName="DateExpire" />
-                <ScalarProperty Name="DateIssue" ColumnName="DateIssue" />
-                <ScalarProperty Name="CertificateType" ColumnName="CertificateType" />
-                <ScalarProperty Name="DateCreate" ColumnName="DateCreate" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -4388,6 +5035,216 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewProfile' does not have a primar
             </EndProperty>
             <Condition ColumnName="PersonDocumentId" IsNull="false" />
           </AssociationSetMapping>
+          <EntitySetMapping Name="CertificateHistories">
+            <EntityTypeMapping TypeName="dbModel.CertificateHistory">
+              <MappingFragment StoreEntitySet="CertificateHistory">
+                <ScalarProperty Name="CourseTypeId" ColumnName="CourseTypeId" />
+                <ScalarProperty Name="CourseId" ColumnName="CourseId" />
+                <ScalarProperty Name="DateExpireOld" ColumnName="DateExpireOld" />
+                <ScalarProperty Name="DateIssueOld" ColumnName="DateIssueOld" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="DateExpire" ColumnName="DateExpire" />
+                <ScalarProperty Name="DateIssue" ColumnName="DateIssue" />
+                <ScalarProperty Name="CertificateType" ColumnName="CertificateType" />
+                <ScalarProperty Name="DateCreate" ColumnName="DateCreate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_trn_certificate_history">
+            <EntityTypeMapping TypeName="dbModel.view_trn_certificate_history">
+              <MappingFragment StoreEntitySet="view_trn_certificate_history">
+                <ScalarProperty Name="RankLast" ColumnName="RankLast" />
+                <ScalarProperty Name="remaining" ColumnName="remaining" />
+                <ScalarProperty Name="course_id" ColumnName="course_id" />
+                <ScalarProperty Name="date_expire" ColumnName="date_expire" />
+                <ScalarProperty Name="date_issue" ColumnName="date_issue" />
+                <ScalarProperty Name="date_update" ColumnName="date_update" />
+                <ScalarProperty Name="courset_type_remark" ColumnName="courset_type_remark" />
+                <ScalarProperty Name="has_reccurent" ColumnName="has_reccurent" />
+                <ScalarProperty Name="abbreviation" ColumnName="abbreviation" />
+                <ScalarProperty Name="is_monitoring_enabled" ColumnName="is_monitoring_enabled" />
+                <ScalarProperty Name="show_in_list" ColumnName="show_in_list" />
+                <ScalarProperty Name="show_in_profile" ColumnName="show_in_profile" />
+                <ScalarProperty Name="expire_field" ColumnName="expire_field" />
+                <ScalarProperty Name="issue_field" ColumnName="issue_field" />
+                <ScalarProperty Name="duration" ColumnName="duration" />
+                <ScalarProperty Name="interval" ColumnName="interval" />
+                <ScalarProperty Name="course_type_title" ColumnName="course_type_title" />
+                <ScalarProperty Name="person_id" ColumnName="person_id" />
+                <ScalarProperty Name="mobile" ColumnName="mobile" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="last_name" ColumnName="last_name" />
+                <ScalarProperty Name="first_name" ColumnName="first_name" />
+                <ScalarProperty Name="nid" ColumnName="nid" />
+                <ScalarProperty Name="group_code" ColumnName="group_code" />
+                <ScalarProperty Name="group_title" ColumnName="group_title" />
+                <ScalarProperty Name="group_id" ColumnName="group_id" />
+                <ScalarProperty Name="inactive" ColumnName="inactive" />
+                <ScalarProperty Name="is_active" ColumnName="is_active" />
+                <ScalarProperty Name="pid" ColumnName="pid" />
+                <ScalarProperty Name="course_type_id" ColumnName="course_type_id" />
+                <ScalarProperty Name="history_id" ColumnName="history_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_trn_course_type_group">
+            <EntityTypeMapping TypeName="dbModel.view_trn_course_type_group">
+              <MappingFragment StoreEntitySet="view_trn_course_type_group">
+                <ScalarProperty Name="ctg_duration" ColumnName="ctg_duration" />
+                <ScalarProperty Name="ctg_interval" ColumnName="ctg_interval" />
+                <ScalarProperty Name="ctg_no_reccurent" ColumnName="ctg_no_reccurent" />
+                <ScalarProperty Name="ctg_mandatory" ColumnName="ctg_mandatory" />
+                <ScalarProperty Name="has_reccurent" ColumnName="has_reccurent" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="abbreviation" ColumnName="abbreviation" />
+                <ScalarProperty Name="is_monitoring_enabled" ColumnName="is_monitoring_enabled" />
+                <ScalarProperty Name="show_in_list" ColumnName="show_in_list" />
+                <ScalarProperty Name="show_in_profile" ColumnName="show_in_profile" />
+                <ScalarProperty Name="expire_value" ColumnName="expire_value" />
+                <ScalarProperty Name="issue_value" ColumnName="issue_value" />
+                <ScalarProperty Name="expire_field" ColumnName="expire_field" />
+                <ScalarProperty Name="issue_field" ColumnName="issue_field" />
+                <ScalarProperty Name="duration" ColumnName="duration" />
+                <ScalarProperty Name="interval" ColumnName="interval" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="group_root" ColumnName="group_root" />
+                <ScalarProperty Name="group_title" ColumnName="group_title" />
+                <ScalarProperty Name="group_code" ColumnName="group_code" />
+                <ScalarProperty Name="group_id" ColumnName="group_id" />
+                <ScalarProperty Name="course_type_id" ColumnName="course_type_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_profile">
+            <EntityTypeMapping TypeName="dbModel.view_profile">
+              <MappingFragment StoreEntitySet="view_profile">
+                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+                <ScalarProperty Name="PostTitle" ColumnName="PostTitle" />
+                <ScalarProperty Name="PostCode" ColumnName="PostCode" />
+                <ScalarProperty Name="Reserved5" ColumnName="Reserved5" />
+                <ScalarProperty Name="Reserved4" ColumnName="Reserved4" />
+                <ScalarProperty Name="Reserved3" ColumnName="Reserved3" />
+                <ScalarProperty Name="Reserved2" ColumnName="Reserved2" />
+                <ScalarProperty Name="Reserved1" ColumnName="Reserved1" />
+                <ScalarProperty Name="date_type_foker100" ColumnName="date_type_foker100" />
+                <ScalarProperty Name="RemainTypeFoker100" ColumnName="RemainTypeFoker100" />
+                <ScalarProperty Name="date_type_foker50" ColumnName="date_type_foker50" />
+                <ScalarProperty Name="RemainTypeFoker50" ColumnName="RemainTypeFoker50" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="IsTypeFokker" ColumnName="IsTypeFokker" />
+                <ScalarProperty Name="IsTypeAirbus" ColumnName="IsTypeAirbus" />
+                <ScalarProperty Name="IsTypeMD" ColumnName="IsTypeMD" />
+                <ScalarProperty Name="IsType737" ColumnName="IsType737" />
+                <ScalarProperty Name="HomeBase" ColumnName="HomeBase" />
+                <ScalarProperty Name="BaseAirline" ColumnName="BaseAirline" />
+                <ScalarProperty Name="date_type_airbus" ColumnName="date_type_airbus" />
+                <ScalarProperty Name="RemainTypeAirbus" ColumnName="RemainTypeAirbus" />
+                <ScalarProperty Name="date_type_737" ColumnName="date_type_737" />
+                <ScalarProperty Name="RemainType737" ColumnName="RemainType737" />
+                <ScalarProperty Name="date_type_md" ColumnName="date_type_md" />
+                <ScalarProperty Name="RemainTypeMD" ColumnName="RemainTypeMD" />
+                <ScalarProperty Name="date_egpws" ColumnName="date_egpws" />
+                <ScalarProperty Name="RemainEGPWS" ColumnName="RemainEGPWS" />
+                <ScalarProperty Name="date_line" ColumnName="date_line" />
+                <ScalarProperty Name="RemainLine" ColumnName="RemainLine" />
+                <ScalarProperty Name="date_tre" ColumnName="date_tre" />
+                <ScalarProperty Name="RemainTRE" ColumnName="RemainTRE" />
+                <ScalarProperty Name="date_tri" ColumnName="date_tri" />
+                <ScalarProperty Name="RemainTRI" ColumnName="RemainTRI" />
+                <ScalarProperty Name="date_medical" ColumnName="date_medical" />
+                <ScalarProperty Name="RemainMedical" ColumnName="RemainMedical" />
+                <ScalarProperty Name="date_lpr" ColumnName="date_lpr" />
+                <ScalarProperty Name="RemainLPR" ColumnName="RemainLPR" />
+                <ScalarProperty Name="date_proficiency_opc" ColumnName="date_proficiency_opc" />
+                <ScalarProperty Name="RemainProficiencyOPC" ColumnName="RemainProficiencyOPC" />
+                <ScalarProperty Name="date_proficiency" ColumnName="date_proficiency" />
+                <ScalarProperty Name="RemainProficiency" ColumnName="RemainProficiency" />
+                <ScalarProperty Name="date_licence_ir" ColumnName="date_licence_ir" />
+                <ScalarProperty Name="RemainLicenceIR" ColumnName="RemainLicenceIR" />
+                <ScalarProperty Name="date_licence" ColumnName="date_licence" />
+                <ScalarProperty Name="RemainLicence" ColumnName="RemainLicence" />
+                <ScalarProperty Name="date_cmc" ColumnName="date_cmc" />
+                <ScalarProperty Name="RemainCMC" ColumnName="RemainCMC" />
+                <ScalarProperty Name="date_passport" ColumnName="date_passport" />
+                <ScalarProperty Name="RemainPassport" ColumnName="RemainPassport" />
+                <ScalarProperty Name="RemainCAO" ColumnName="RemainCAO" />
+                <ScalarProperty Name="RemainNDT" ColumnName="RemainNDT" />
+                <ScalarProperty Name="JobGroup2RootCode" ColumnName="JobGroup2RootCode" />
+                <ScalarProperty Name="JobGroupCode2" ColumnName="JobGroupCode2" />
+                <ScalarProperty Name="JobGroupMainCode" ColumnName="JobGroupMainCode" />
+                <ScalarProperty Name="JobGroupMain" ColumnName="JobGroupMain" />
+                <ScalarProperty Name="InActive" ColumnName="InActive" />
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="IDNo" ColumnName="IDNo" />
+                <ScalarProperty Name="PassportNumber" ColumnName="PassportNumber" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="NID" ColumnName="NID" />
+                <ScalarProperty Name="PostRoot" ColumnName="PostRoot" />
+                <ScalarProperty Name="JobGroupRoot" ColumnName="JobGroupRoot" />
+                <ScalarProperty Name="JobGroupCode" ColumnName="JobGroupCode" />
+                <ScalarProperty Name="JobGroup" ColumnName="JobGroup" />
+                <ScalarProperty Name="C3GroupId" ColumnName="C3GroupId" />
+                <ScalarProperty Name="JobGroupCodeC2" ColumnName="JobGroupCodeC2" />
+                <ScalarProperty Name="JobGroupC2" ColumnName="JobGroupC2" />
+                <ScalarProperty Name="C2GroupId" ColumnName="C2GroupId" />
+                <ScalarProperty Name="JobGroupCodeC1" ColumnName="JobGroupCodeC1" />
+                <ScalarProperty Name="JobGroupC1" ColumnName="JobGroupC1" />
+                <ScalarProperty Name="C1GroupId" ColumnName="C1GroupId" />
+                <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_trn_certificate_history_last">
+            <EntityTypeMapping TypeName="dbModel.view_trn_certificate_history_last">
+              <MappingFragment StoreEntitySet="view_trn_certificate_history_last">
+                <ScalarProperty Name="date_expire_str" ColumnName="date_expire_str" />
+                <ScalarProperty Name="date_issue_str" ColumnName="date_issue_str" />
+                <ScalarProperty Name="remaining" ColumnName="remaining" />
+                <ScalarProperty Name="course_id" ColumnName="course_id" />
+                <ScalarProperty Name="date_expire" ColumnName="date_expire" />
+                <ScalarProperty Name="date_issue" ColumnName="date_issue" />
+                <ScalarProperty Name="date_update" ColumnName="date_update" />
+                <ScalarProperty Name="courset_type_remark" ColumnName="courset_type_remark" />
+                <ScalarProperty Name="has_reccurent" ColumnName="has_reccurent" />
+                <ScalarProperty Name="abbreviation" ColumnName="abbreviation" />
+                <ScalarProperty Name="is_monitoring_enabled" ColumnName="is_monitoring_enabled" />
+                <ScalarProperty Name="show_in_list" ColumnName="show_in_list" />
+                <ScalarProperty Name="show_in_profile" ColumnName="show_in_profile" />
+                <ScalarProperty Name="expire_field" ColumnName="expire_field" />
+                <ScalarProperty Name="issue_field" ColumnName="issue_field" />
+                <ScalarProperty Name="duration" ColumnName="duration" />
+                <ScalarProperty Name="interval" ColumnName="interval" />
+                <ScalarProperty Name="course_type_title" ColumnName="course_type_title" />
+                <ScalarProperty Name="person_id" ColumnName="person_id" />
+                <ScalarProperty Name="mobile" ColumnName="mobile" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="last_name" ColumnName="last_name" />
+                <ScalarProperty Name="first_name" ColumnName="first_name" />
+                <ScalarProperty Name="nid" ColumnName="nid" />
+                <ScalarProperty Name="group_root" ColumnName="group_root" />
+                <ScalarProperty Name="group_code" ColumnName="group_code" />
+                <ScalarProperty Name="group_title" ColumnName="group_title" />
+                <ScalarProperty Name="group_id" ColumnName="group_id" />
+                <ScalarProperty Name="inactive" ColumnName="inactive" />
+                <ScalarProperty Name="is_active" ColumnName="is_active" />
+                <ScalarProperty Name="pid" ColumnName="pid" />
+                <ScalarProperty Name="course_type_id" ColumnName="course_type_id" />
+                <ScalarProperty Name="history_id" ColumnName="history_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -17,8 +17,8 @@ namespace AirpocketTRN.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public JobGroup()
         {
-            this.CourseTypeJobGroups = new HashSet<CourseTypeJobGroup>();
             this.JobGroup1 = new HashSet<JobGroup>();
+            this.CourseTypeJobGroups = new HashSet<CourseTypeJobGroup>();
         }
     
         public int Id { get; set; }
@@ -36,9 +36,9 @@ namespace AirpocketTRN.Models
         public string ParentTitle { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CourseTypeJobGroup> CourseTypeJobGroups { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<JobGroup> JobGroup1 { get; set; }
         public virtual JobGroup JobGroup2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CourseTypeJobGroup> CourseTypeJobGroups { get; set; }
     }
 }

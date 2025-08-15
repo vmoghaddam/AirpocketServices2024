@@ -132,6 +132,11 @@
           <Property Name="PosRemark" Type="varchar" MaxLength="500" />
           <Property Name="PosTicketUrl" Type="varchar" MaxLength="500" />
           <Property Name="DutyEndDateLocal" Type="datetime2" Precision="7" />
+          <Property Name="InitTo" Type="varchar" MaxLength="500" />
+          <Property Name="offblock" Type="datetime" />
+          <Property Name="onblock" Type="datetime" />
+          <Property Name="takeoff" Type="datetime" />
+          <Property Name="landing" Type="datetime" />
         </EntityType>
         <EntityType Name="FDPExtra">
           <Key>
@@ -157,6 +162,10 @@
           <Property Name="RosterPositionId" Type="int" />
           <Property Name="Pickup" Type="datetime" />
           <Property Name="Remark" Type="varchar" MaxLength="255" />
+          <Property Name="offblock" Type="datetime" />
+          <Property Name="takeoff" Type="datetime" />
+          <Property Name="landing" Type="datetime" />
+          <Property Name="onblock" Type="datetime" />
         </EntityType>
         <EntityType Name="FDPMaxDaily">
           <Key>
@@ -177,6 +186,112 @@
           <Property Name="FDPId" Type="int" Nullable="false" />
           <Property Name="FlightId" Type="int" Nullable="false" />
           <Property Name="Remark" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="OFPImport">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FileName" Type="varchar" MaxLength="500" />
+          <Property Name="FlightNo" Type="varchar" MaxLength="255" />
+          <Property Name="Origin" Type="varchar" MaxLength="255" />
+          <Property Name="Destination" Type="varchar" MaxLength="255" />
+          <Property Name="DateFlight" Type="date" />
+          <Property Name="DateCreate" Type="datetime" />
+          <Property Name="Text" Type="varchar(max)" />
+          <Property Name="User" Type="varchar" MaxLength="255" />
+          <Property Name="TextOutput" Type="varchar(max)" />
+          <Property Name="FlightId" Type="int" />
+          <Property Name="DateUpdate" Type="varchar" MaxLength="500" />
+          <Property Name="DateConfirmed" Type="datetime" />
+          <Property Name="UserConfirmed" Type="varchar" MaxLength="500" />
+          <Property Name="PICId" Type="int" />
+          <Property Name="JLDatePICApproved" Type="datetime" />
+          <Property Name="JLSignedBy" Type="varchar" MaxLength="255" />
+          <Property Name="PIC" Type="varchar" MaxLength="500" />
+          <Property Name="FPFuel" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="FPTripFuel" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="MCI" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="FLL" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="DOW" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="Source" Type="varchar" MaxLength="500" />
+          <Property Name="JPlan" Type="varchar(max)" />
+          <Property Name="JAPlan1" Type="varchar(max)" />
+          <Property Name="JAPlan2" Type="varchar(max)" />
+          <Property Name="JFuel" Type="varchar(max)" />
+          <Property Name="JCSTBL" Type="varchar(max)" />
+          <Property Name="JALDRF" Type="varchar(max)" />
+          <Property Name="JWTDRF" Type="varchar(max)" />
+          <Property Name="THM" Type="varchar" MaxLength="500" />
+          <Property Name="UNT" Type="varchar" MaxLength="500" />
+          <Property Name="CRW" Type="varchar" MaxLength="500" />
+          <Property Name="RTM" Type="varchar" MaxLength="2000" />
+          <Property Name="RTA" Type="varchar" MaxLength="2000" />
+          <Property Name="RTB" Type="varchar" MaxLength="2000" />
+          <Property Name="RTT" Type="varchar" MaxLength="2000" />
+          <Property Name="PLD" Type="varchar" MaxLength="500" />
+          <Property Name="EZFW" Type="varchar" MaxLength="500" />
+          <Property Name="ETOW" Type="varchar" MaxLength="500" />
+          <Property Name="ELDW" Type="varchar" MaxLength="500" />
+          <Property Name="ETD" Type="varchar" MaxLength="500" />
+          <Property Name="ETA" Type="varchar" MaxLength="500" />
+          <Property Name="ALT1" Type="varchar" MaxLength="255" />
+          <Property Name="ALT2" Type="varchar" MaxLength="255" />
+          <Property Name="TALT1" Type="varchar" MaxLength="255" />
+          <Property Name="TALT2" Type="varchar" MaxLength="255" />
+          <Property Name="FuelALT1" Type="int" />
+          <Property Name="FuelALT2" Type="int" />
+          <Property Name="FuelTOF" Type="int" />
+          <Property Name="FuelTAXI" Type="int" />
+          <Property Name="FuelOFFBLOCK" Type="int" />
+          <Property Name="FuelCONT" Type="int" />
+          <Property Name="FuelMINTOF" Type="int" />
+          <Property Name="FuelFINALRES" Type="int" />
+          <Property Name="FPF" Type="varchar" MaxLength="2000" />
+          <Property Name="VDT" Type="varchar" MaxLength="2000" />
+          <Property Name="MAXSHEER" Type="varchar" MaxLength="2000" />
+          <Property Name="MINDIVFUEL" Type="varchar" MaxLength="2000" />
+          <Property Name="WDTMP" Type="varchar" MaxLength="5000" />
+          <Property Name="DID" Type="varchar" MaxLength="500" />
+          <Property Name="WDCLB" Type="varchar" MaxLength="4000" />
+          <Property Name="WDDES" Type="varchar" MaxLength="4000" />
+          <Property Name="FuelExtra" Type="int" />
+          <Property Name="FuelETOPSADDNL" Type="int" />
+          <Property Name="FuelOPSEXTRA" Type="int" />
+          <Property Name="FuelTANKERING" Type="int" />
+          <Property Name="FuelTOTALFUEL" Type="int" />
+          <Property Name="FuelACTUALTANKERING" Type="int" />
+          <Property Name="DSPNAME" Type="varchar" MaxLength="500" />
+          <Property Name="CM1" Type="varchar" MaxLength="500" />
+          <Property Name="CM2" Type="varchar" MaxLength="500" />
+          <Property Name="MSH" Type="varchar" MaxLength="500" />
+          <Property Name="ATC" Type="varchar" MaxLength="4000" />
+          <Property Name="MTOW" Type="varchar" MaxLength="255" />
+          <Property Name="MLDW" Type="varchar" MaxLength="255" />
+          <Property Name="ELDP" Type="varchar" MaxLength="255" />
+          <Property Name="ELDS" Type="varchar" MaxLength="255" />
+          <Property Name="ELAL" Type="varchar" MaxLength="255" />
+          <Property Name="ELBL" Type="varchar" MaxLength="255" />
+          <Property Name="ectm_tat" Type="int" />
+          <Property Name="ectm_mach" Type="float" />
+          <Property Name="ectm_pressure_alt" Type="int" />
+          <Property Name="ectm_computed_airspeed" Type="int" />
+          <Property Name="ectm_eng1_egt" Type="int" />
+          <Property Name="ectm_eng1_n1" Type="int" />
+          <Property Name="ectm_eng1_n2" Type="int" />
+          <Property Name="ectm_eng1_epr" Type="float" />
+          <Property Name="ectm_eng1_fuel_flow" Type="int" />
+          <Property Name="ectm_eng2_egt" Type="int" />
+          <Property Name="ectm_eng2_n1" Type="int" />
+          <Property Name="ectm_eng2_n2" Type="int" />
+          <Property Name="ectm_eng2_epr" Type="float" />
+          <Property Name="ectm_eng2_fuel_flow" Type="int" />
+          <Property Name="mzfw" Type="int" />
+          <Property Name="mod1_stn" Type="varchar" MaxLength="255" />
+          <Property Name="mod2_stn" Type="varchar" MaxLength="255" />
+          <Property Name="mod1" Type="int" />
+          <Property Name="mod2" Type="int" />
+          <Property Name="ralt" Type="varchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="recency_route">
           <Key>
@@ -226,7 +341,7 @@
           <Property Name="FDPId" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.AppCrewFlight' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_jsky.dbo.AppCrewFlight' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="AppCrewFlight">
           <Key>
             <PropertyRef Name="FDPId" />
@@ -363,7 +478,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.AppCrewFlight' does not have a prim
           <Property Name="P2ScheduleName" Type="nvarchar" MaxLength="1001" Nullable="false" />
           <Property Name="PIC" Type="nvarchar" MaxLength="1001" />
           <Property Name="PICId" Type="int" />
-          <Property Name="SIC" Type="nvarchar" MaxLength="2004" />
+          <Property Name="SIC" Type="varchar" MaxLength="500" />
           <Property Name="SICId" Type="int" />
           <Property Name="JLDatePICApproved" Type="datetime" />
           <Property Name="IStart" Type="datetime" />
@@ -406,9 +521,11 @@ warning 6002: The table/view 'ppa_varesh.dbo.AppCrewFlight' does not have a prim
           <Property Name="AttForms" Type="varchar" MaxLength="500" />
           <Property Name="PaxFemale" Type="int" />
           <Property Name="PaxMale" Type="int" />
+          <Property Name="BlockOffStation" Type="datetime" />
+          <Property Name="BlockOnStation" Type="datetime" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.AppFTL' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_jsky.dbo.AppFTL' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="AppFTL">
           <Key>
             <PropertyRef Name="CDate" />
@@ -445,7 +562,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.AppFTL' does not have a primary key
           <Property Name="RERRP" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.AppFTLAbs' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_jsky.dbo.AppFTLAbs' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="AppFTLAbs">
           <Key>
             <PropertyRef Name="CDate" />
@@ -471,7 +588,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.AppFTLAbs' does not have a primary 
           <Property Name="LastLocation" Type="varchar" MaxLength="255" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.FTLFlightTimeRatioMonthly' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_jsky.dbo.FTLFlightTimeRatioMonthly' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="FTLFlightTimeRatioMonthly">
           <Key>
             <PropertyRef Name="CrewId" />
@@ -486,7 +603,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.FTLFlightTimeRatioMonthly' does not
           <Property Name="Ratio" Type="numeric" Precision="24" Scale="12" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.HelperMaxFDP' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_jsky.dbo.HelperMaxFDP' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HelperMaxFDP">
           <Key>
             <PropertyRef Name="Id" />
@@ -497,7 +614,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.HelperMaxFDP' does not have a prima
           <Property Name="MaxFDPExtended" Type="float" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.SchFlight' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_jsky.dbo.SchFlight' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="SchFlight">
           <Key>
             <PropertyRef Name="ID" />
@@ -529,67 +646,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.SchFlight' does not have a primary 
           <Property Name="ACType" Type="nvarchar" MaxLength="255" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.view_recency_route' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="view_recency_route">
-          <Key>
-            <PropertyRef Name="id" />
-            <PropertyRef Name="LastName" />
-            <PropertyRef Name="FirstName" />
-            <PropertyRef Name="JobGroup" />
-            <PropertyRef Name="NID" />
-            <PropertyRef Name="Name" />
-            <PropertyRef Name="flight_id" />
-          </Key>
-          <Property Name="id" Type="int" Nullable="false" />
-          <Property Name="crew_id" Type="int" />
-          <Property Name="from_id" Type="int" />
-          <Property Name="to_id" Type="int" />
-          <Property Name="date_flight" Type="datetime2" Precision="7" />
-          <Property Name="is_allowed" Type="bit" />
-          <Property Name="fdpitem_id" Type="int" />
-          <Property Name="date_expire" Type="datetime2" Precision="7" />
-          <Property Name="LastName" Type="nvarchar" MaxLength="500" Nullable="false" />
-          <Property Name="FirstName" Type="nvarchar" MaxLength="500" Nullable="false" />
-          <Property Name="GroupId" Type="int" />
-          <Property Name="JobGroup" Type="nvarchar" MaxLength="500" Nullable="false" />
-          <Property Name="Mobile" Type="nvarchar" MaxLength="500" />
-          <Property Name="NID" Type="nvarchar" MaxLength="500" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="1003" Nullable="false" />
-          <Property Name="FromIATA" Type="nvarchar" MaxLength="255" />
-          <Property Name="FromICAO" Type="nvarchar" MaxLength="255" />
-          <Property Name="ToIATA" Type="nvarchar" MaxLength="255" />
-          <Property Name="ToICAO" Type="nvarchar" MaxLength="255" />
-          <Property Name="RouteIATA" Type="nvarchar" MaxLength="511" />
-          <Property Name="RouteICAO" Type="nvarchar" MaxLength="511" />
-          <Property Name="flight_id" Type="int" Nullable="false" />
-          <Property Name="FlightNumber" Type="nvarchar" MaxLength="50" />
-          <Property Name="Register" Type="nvarchar" MaxLength="50" />
-          <Property Name="STD" Type="datetime" />
-          <Property Name="STA" Type="datetime" />
-          <Property Name="OffBlock" Type="datetime" />
-          <Property Name="TakeOff" Type="datetime" />
-          <Property Name="Landing" Type="datetime" />
-          <Property Name="OnBlock" Type="datetime" />
-          <Property Name="RemainExpire" Type="int" />
-          <Property Name="Rank" Type="bigint" />
-        </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.view_route_count' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="view_route_count">
-          <Key>
-            <PropertyRef Name="FromIATA" />
-            <PropertyRef Name="ToIATA" />
-            <PropertyRef Name="FromICAO" />
-            <PropertyRef Name="ToICAO" />
-          </Key>
-          <Property Name="FromIATA" Type="nvarchar" MaxLength="255" Nullable="false" />
-          <Property Name="ToIATA" Type="nvarchar" MaxLength="255" Nullable="false" />
-          <Property Name="FromICAO" Type="nvarchar" MaxLength="255" Nullable="false" />
-          <Property Name="ToICAO" Type="nvarchar" MaxLength="255" Nullable="false" />
-          <Property Name="FltCount" Type="int" />
-        </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.ViewCourseFDP' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_jsky.dbo.ViewCourseFDP' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewCourseFDP">
           <Key>
             <PropertyRef Name="FDPId" />
@@ -620,7 +677,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewCourseFDP' does not have a prim
           <Property Name="SessionEnd" Type="datetime" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.ViewCrewDuty' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_jsky.dbo.ViewCrewDuty' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewCrewDuty">
           <Key>
             <PropertyRef Name="Id" />
@@ -637,6 +694,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewCrewDuty' does not have a prima
             <PropertyRef Name="IsExtendedBySplitDuty" />
             <PropertyRef Name="IsExtension" />
             <PropertyRef Name="IsConfirmed" />
+            <PropertyRef Name="ValidTypesStr" />
+            <PropertyRef Name="DutyTypeTitleAcType" />
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="CrewId" Type="int" Nullable="false" />
@@ -651,7 +710,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewCrewDuty' does not have a prima
           <Property Name="DateLocal" Type="date" />
           <Property Name="DateLocal2" Type="date" />
           <Property Name="FltNo" Type="varchar" MaxLength="500" />
-          <Property Name="Route" Type="varchar" MaxLength="500" />
+          <Property Name="Route" Type="nvarchar(max)" />
           <Property Name="DutyType" Type="int" Nullable="false" />
           <Property Name="DutyTypeTitle" Type="nvarchar" MaxLength="1000" Nullable="false" />
           <Property Name="STDLocal" Type="datetime" />
@@ -681,7 +740,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewCrewDuty' does not have a prima
           <Property Name="RestUntilLocal" Type="datetime" />
           <Property Name="Remark2" Type="nvarchar" MaxLength="1013" />
           <Property Name="InitFlts" Type="varchar" MaxLength="500" />
-          <Property Name="InitRoute" Type="varchar" MaxLength="500" />
+          <Property Name="InitRoute" Type="nvarchar(max)" />
           <Property Name="CanceledNo" Type="varchar" MaxLength="500" />
           <Property Name="CanceledRoute" Type="varchar" MaxLength="500" />
           <Property Name="DateVisit" Type="datetime" />
@@ -708,9 +767,12 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewCrewDuty' does not have a prima
           <Property Name="PosFDPId" Type="int" />
           <Property Name="PosRemark" Type="varchar" MaxLength="500" />
           <Property Name="PosTicketUrl" Type="varchar" MaxLength="500" />
+          <Property Name="ValidTypesStr" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="DutyTypeTitleAcType" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.ViewCrewDutyNoReg' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_jsky.dbo.ViewCrewDutyNoReg' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewCrewDutyNoReg">
           <Key>
             <PropertyRef Name="Id" />
@@ -742,7 +804,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewCrewDutyNoReg' does not have a 
           <Property Name="IsCabin" Type="int" Nullable="false" />
           <Property Name="DateLocal" Type="date" />
           <Property Name="FltNo" Type="varchar" MaxLength="500" />
-          <Property Name="Route" Type="varchar" MaxLength="500" />
+          <Property Name="Route" Type="nvarchar(max)" />
           <Property Name="DutyType" Type="int" Nullable="false" />
           <Property Name="DutyTypeTitle" Type="nvarchar" MaxLength="1000" Nullable="false" />
           <Property Name="STDLocal" Type="datetime" />
@@ -764,7 +826,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewCrewDutyNoReg' does not have a 
           <Property Name="RestUntilLocal" Type="datetime" />
           <Property Name="Remark2" Type="nvarchar" MaxLength="500" />
           <Property Name="InitFlts" Type="varchar" MaxLength="500" />
-          <Property Name="InitRoute" Type="varchar" MaxLength="500" />
+          <Property Name="InitRoute" Type="nvarchar(max)" />
           <Property Name="CanceledNo" Type="varchar" MaxLength="500" />
           <Property Name="CanceledRoute" Type="varchar" MaxLength="500" />
           <Property Name="ExtendedBySplitDuty" Type="float" Nullable="false" />
@@ -792,7 +854,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewCrewDutyNoReg' does not have a 
           <Property Name="IsVisitedStr" Type="varchar" MaxLength="11" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.ViewCrewDutyPulsePocket' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_jsky.dbo.ViewCrewDutyPulsePocket' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewCrewDutyPulsePocket">
           <Key>
             <PropertyRef Name="Id" />
@@ -810,7 +872,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewCrewDutyPulsePocket' does not h
           <Property Name="GroupId" Type="int" />
           <Property Name="JobGroupCode" Type="varchar" MaxLength="500" />
           <Property Name="FltNo" Type="varchar" MaxLength="500" />
-          <Property Name="Route" Type="varchar" MaxLength="500" />
+          <Property Name="Route" Type="nvarchar(max)" />
           <Property Name="DutyType" Type="int" Nullable="false" />
           <Property Name="DutyTypeTitle" Type="nvarchar" MaxLength="1000" Nullable="false" />
           <Property Name="DateStartLocal" Type="datetime" />
@@ -823,7 +885,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewCrewDutyPulsePocket' does not h
           <Property Name="RestUntilLocal" Type="datetime" />
           <Property Name="Remark2" Type="nvarchar" MaxLength="1013" />
           <Property Name="InitFlts" Type="varchar" MaxLength="500" />
-          <Property Name="InitRoute" Type="varchar" MaxLength="500" />
+          <Property Name="InitRoute" Type="nvarchar(max)" />
           <Property Name="PosFrom" Type="varchar" MaxLength="255" />
           <Property Name="PosTo" Type="varchar" MaxLength="255" />
           <Property Name="PosDep" Type="datetime" />
@@ -834,7 +896,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewCrewDutyPulsePocket' does not h
           <Property Name="PosTicketUrl" Type="varchar" MaxLength="500" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.ViewCrewDutyTimeLineNew' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_jsky.dbo.ViewCrewDutyTimeLineNew' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewCrewDutyTimeLineNew">
           <Key>
             <PropertyRef Name="Id" />
@@ -912,7 +974,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewCrewDutyTimeLineNew' does not h
           <Property Name="DutyDateLocal" Type="date" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.ViewCrewValidFTL' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_jsky.dbo.ViewCrewValidFTL' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewCrewValidFTL">
           <Key>
             <PropertyRef Name="Id" />
@@ -1026,7 +1088,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewCrewValidFTL' does not have a p
           <Property Name="PassportIssued" Type="date" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.ViewEmployeeLight' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_jsky.dbo.ViewEmployeeLight' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewEmployeeLight">
           <Key>
             <PropertyRef Name="Id" />
@@ -1153,7 +1215,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewEmployeeLight' does not have a 
           <Property Name="JobGroupCode2" Type="varchar" MaxLength="500" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.ViewFDPItem2' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_jsky.dbo.ViewFDPItem2' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewFDPItem2">
           <Key>
             <PropertyRef Name="Id" />
@@ -1197,7 +1259,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewFDPItem2' does not have a prima
           <Property Name="RankDesc" Type="bigint" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.ViewFDPLog' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_jsky.dbo.ViewFDPLog' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewFDPLog">
           <Key>
             <PropertyRef Name="Id" />
@@ -1231,7 +1293,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewFDPLog' does not have a primary
           <Property Name="DateAction" Type="datetime" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.ViewFDPRest' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_jsky.dbo.ViewFDPRest' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewFDPRest">
           <Key>
             <PropertyRef Name="Id" />
@@ -1345,9 +1407,11 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewFDPRest' does not have a primar
           <Property Name="PosFDPId" Type="int" />
           <Property Name="PosRemark" Type="varchar" MaxLength="500" />
           <Property Name="PosTicketUrl" Type="varchar" MaxLength="500" />
+          <Property Name="Key" Type="varchar" MaxLength="500" />
+          <Property Name="OutOfHomeBase" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.ViewFlightCrewX' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_jsky.dbo.ViewFlightCrewX' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewFlightCrewX">
           <Key>
             <PropertyRef Name="FDPId" />
@@ -1423,7 +1487,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewFlightCrewX' does not have a pr
           <Property Name="DateConfirmed" Type="datetime" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.ViewLegTime' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_jsky.dbo.ViewLegTime' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewLegTime">
           <Key>
             <PropertyRef Name="ID" />
@@ -1559,59 +1623,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewLegTime' does not have a primar
           <Property Name="OFPTOTALFUEL" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.ViewQaHazardLog' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="ViewQaHazardLog">
-          <Key>
-            <PropertyRef Name="id" />
-            <PropertyRef Name="fort_type_title" />
-          </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="form_type" Type="int" />
-          <Property Name="fort_type_title" Type="varchar" MaxLength="19" Nullable="false" />
-          <Property Name="form_id" Type="int" />
-          <Property Name="form_no" Type="varchar" MaxLength="1000" />
-          <Property Name="id_date" Type="datetime2" Precision="7" />
-          <Property Name="id_department" Type="nvarchar" MaxLength="500" />
-          <Property Name="id_risk_register_number" Type="varchar" MaxLength="500" />
-          <Property Name="id_hazard_description" Type="nvarchar" MaxLength="2000" />
-          <Property Name="id_hazard_consequence" Type="nvarchar" MaxLength="2000" />
-          <Property Name="initial_prob_level" Type="int" />
-          <Property Name="initial_severity_level" Type="varchar" MaxLength="255" />
-          <Property Name="initial_index" Type="varchar" MaxLength="255" />
-          <Property Name="final_prob_level" Type="int" />
-          <Property Name="final_severity_level" Type="varchar" MaxLength="255" />
-          <Property Name="final_index" Type="varchar" MaxLength="255" />
-          <Property Name="approval_relevant_department" Type="varchar" MaxLength="500" />
-          <Property Name="approval_relevant_department_id" Type="int" />
-          <Property Name="approval_relevant_department_date" Type="datetime2" Precision="7" />
-          <Property Name="approval_qa" Type="varchar" MaxLength="500" />
-          <Property Name="approval_qa_id" Type="int" />
-          <Property Name="approval_qa_date" Type="datetime2" Precision="7" />
-          <Property Name="om_form_no" Type="varchar" MaxLength="255" />
-          <Property Name="om_form_date" Type="varchar" MaxLength="255" />
-          <Property Name="om_form_rev" Type="varchar" MaxLength="255" />
-          <Property Name="om_form_issue" Type="varchar" MaxLength="255" />
-          <Property Name="remark" Type="varchar" MaxLength="2000" />
-          <Property Name="id_source" Type="nvarchar" MaxLength="1000" />
-          <Property Name="has_relevant" Type="bit" />
-          <Property Name="initial_acceptability" Type="nvarchar" MaxLength="1000" />
-          <Property Name="initital_description" Type="nvarchar" MaxLength="1000" />
-          <Property Name="initial_responsible_manager" Type="nvarchar" MaxLength="1000" />
-          <Property Name="initial_responsible_sign" Type="datetime2" Precision="7" />
-          <Property Name="initial_qa_approval" Type="varchar" MaxLength="1000" />
-          <Property Name="initial_qa_sign" Type="datetime2" Precision="7" />
-          <Property Name="final_acceptability" Type="nvarchar" MaxLength="1000" />
-          <Property Name="final_date" Type="datetime2" Precision="7" />
-          <Property Name="consequences" Type="nvarchar(max)" />
-          <Property Name="actions" Type="nvarchar(max)" />
-          <Property Name="actions_time_limit" Type="nvarchar(max)" />
-          <Property Name="actions_responsible" Type="nvarchar(max)" />
-          <Property Name="root" Type="nvarchar(max)" />
-          <Property Name="monitor" Type="nvarchar(max)" />
-          <Property Name="monitor_date" Type="nvarchar(max)" />
-        </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ppa_jsky.dbo.XFlightCrew' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="XFlightCrew">
           <Key>
             <PropertyRef Name="Name" />
@@ -1621,6 +1633,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
             <PropertyRef Name="SexId" />
             <PropertyRef Name="GroupOrder" />
             <PropertyRef Name="IsCockpit" />
+            <PropertyRef Name="MainGroup" />
           </Key>
           <Property Name="CrewId" Type="int" />
           <Property Name="FlightId" Type="int" />
@@ -1645,6 +1658,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="Code" Type="varchar" MaxLength="500" />
           <Property Name="DateConfirmed" Type="datetime" />
           <Property Name="IsConfirmed" Type="bit" />
+          <Property Name="MainGroup" Type="varchar" MaxLength="7" Nullable="false" />
         </EntityType>
         <Association Name="cps_fdp">
           <End Role="FDP" Type="Self.FDP" Multiplicity="0..1">
@@ -1737,6 +1751,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySet Name="FDPItem" EntityType="Self.FDPItem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FDPMaxDaily" EntityType="Self.FDPMaxDaily" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OffItem" EntityType="Self.OffItem" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OFPImport" EntityType="Self.OFPImport" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="recency_route" EntityType="Self.recency_route" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TableDutyFDP" EntityType="Self.TableDutyFDP" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TableFlightFDP" EntityType="Self.TableFlightFDP" Schema="dbo" store:Type="Tables" />
@@ -1899,7 +1914,9 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
     [AppCrewFlight].[FlightTypeOPS] AS [FlightTypeOPS], 
     [AppCrewFlight].[AttForms] AS [AttForms], 
     [AppCrewFlight].[PaxFemale] AS [PaxFemale], 
-    [AppCrewFlight].[PaxMale] AS [PaxMale]
+    [AppCrewFlight].[PaxMale] AS [PaxMale], 
+    [AppCrewFlight].[BlockOffStation] AS [BlockOffStation], 
+    [AppCrewFlight].[BlockOnStation] AS [BlockOnStation]
     FROM [dbo].[AppCrewFlight] AS [AppCrewFlight]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="AppFTL" EntityType="Self.AppFTL" store:Type="Views" store:Schema="dbo">
@@ -1997,51 +2014,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
     [SchFlight].[ACType] AS [ACType]
     FROM [dbo].[SchFlight] AS [SchFlight]</DefiningQuery>
           </EntitySet>
-          <EntitySet Name="view_recency_route" EntityType="Self.view_recency_route" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [view_recency_route].[id] AS [id], 
-    [view_recency_route].[crew_id] AS [crew_id], 
-    [view_recency_route].[from_id] AS [from_id], 
-    [view_recency_route].[to_id] AS [to_id], 
-    [view_recency_route].[date_flight] AS [date_flight], 
-    [view_recency_route].[is_allowed] AS [is_allowed], 
-    [view_recency_route].[fdpitem_id] AS [fdpitem_id], 
-    [view_recency_route].[date_expire] AS [date_expire], 
-    [view_recency_route].[LastName] AS [LastName], 
-    [view_recency_route].[FirstName] AS [FirstName], 
-    [view_recency_route].[GroupId] AS [GroupId], 
-    [view_recency_route].[JobGroup] AS [JobGroup], 
-    [view_recency_route].[Mobile] AS [Mobile], 
-    [view_recency_route].[NID] AS [NID], 
-    [view_recency_route].[Name] AS [Name], 
-    [view_recency_route].[FromIATA] AS [FromIATA], 
-    [view_recency_route].[FromICAO] AS [FromICAO], 
-    [view_recency_route].[ToIATA] AS [ToIATA], 
-    [view_recency_route].[ToICAO] AS [ToICAO], 
-    [view_recency_route].[RouteIATA] AS [RouteIATA], 
-    [view_recency_route].[RouteICAO] AS [RouteICAO], 
-    [view_recency_route].[flight_id] AS [flight_id], 
-    [view_recency_route].[FlightNumber] AS [FlightNumber], 
-    [view_recency_route].[Register] AS [Register], 
-    [view_recency_route].[STD] AS [STD], 
-    [view_recency_route].[STA] AS [STA], 
-    [view_recency_route].[OffBlock] AS [OffBlock], 
-    [view_recency_route].[TakeOff] AS [TakeOff], 
-    [view_recency_route].[Landing] AS [Landing], 
-    [view_recency_route].[OnBlock] AS [OnBlock], 
-    [view_recency_route].[RemainExpire] AS [RemainExpire], 
-    [view_recency_route].[Rank] AS [Rank]
-    FROM [dbo].[view_recency_route] AS [view_recency_route]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="view_route_count" EntityType="Self.view_route_count" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [view_route_count].[FromIATA] AS [FromIATA], 
-    [view_route_count].[ToIATA] AS [ToIATA], 
-    [view_route_count].[FromICAO] AS [FromICAO], 
-    [view_route_count].[ToICAO] AS [ToICAO], 
-    [view_route_count].[FltCount] AS [FltCount]
-    FROM [dbo].[view_route_count] AS [view_route_count]</DefiningQuery>
-          </EntitySet>
           <EntitySet Name="ViewCourseFDP" EntityType="Self.ViewCourseFDP" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [ViewCourseFDP].[FDPId] AS [FDPId], 
@@ -2136,7 +2108,10 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
     [ViewCrewDuty].[PosAirline] AS [PosAirline], 
     [ViewCrewDuty].[PosFDPId] AS [PosFDPId], 
     [ViewCrewDuty].[PosRemark] AS [PosRemark], 
-    [ViewCrewDuty].[PosTicketUrl] AS [PosTicketUrl]
+    [ViewCrewDuty].[PosTicketUrl] AS [PosTicketUrl], 
+    [ViewCrewDuty].[ValidTypesStr] AS [ValidTypesStr], 
+    [ViewCrewDuty].[DutyTypeTitleAcType] AS [DutyTypeTitleAcType], 
+    [ViewCrewDuty].[Email] AS [Email]
     FROM [dbo].[ViewCrewDuty] AS [ViewCrewDuty]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ViewCrewDutyNoReg" EntityType="Self.ViewCrewDutyNoReg" store:Type="Views" store:Schema="dbo">
@@ -2670,7 +2645,9 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
     [ViewFDPRest].[PosAirline] AS [PosAirline], 
     [ViewFDPRest].[PosFDPId] AS [PosFDPId], 
     [ViewFDPRest].[PosRemark] AS [PosRemark], 
-    [ViewFDPRest].[PosTicketUrl] AS [PosTicketUrl]
+    [ViewFDPRest].[PosTicketUrl] AS [PosTicketUrl], 
+    [ViewFDPRest].[Key] AS [Key], 
+    [ViewFDPRest].[OutOfHomeBase] AS [OutOfHomeBase]
     FROM [dbo].[ViewFDPRest] AS [ViewFDPRest]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ViewFlightCrewX" EntityType="Self.ViewFlightCrewX" store:Type="Views" store:Schema="dbo">
@@ -2865,54 +2842,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
     [ViewLegTime].[OFPTOTALFUEL] AS [OFPTOTALFUEL]
     FROM [dbo].[ViewLegTime] AS [ViewLegTime]</DefiningQuery>
           </EntitySet>
-          <EntitySet Name="ViewQaHazardLog" EntityType="Self.ViewQaHazardLog" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [ViewQaHazardLog].[id] AS [id], 
-    [ViewQaHazardLog].[form_type] AS [form_type], 
-    [ViewQaHazardLog].[fort_type_title] AS [fort_type_title], 
-    [ViewQaHazardLog].[form_id] AS [form_id], 
-    [ViewQaHazardLog].[form_no] AS [form_no], 
-    [ViewQaHazardLog].[id_date] AS [id_date], 
-    [ViewQaHazardLog].[id_department] AS [id_department], 
-    [ViewQaHazardLog].[id_risk_register_number] AS [id_risk_register_number], 
-    [ViewQaHazardLog].[id_hazard_description] AS [id_hazard_description], 
-    [ViewQaHazardLog].[id_hazard_consequence] AS [id_hazard_consequence], 
-    [ViewQaHazardLog].[initial_prob_level] AS [initial_prob_level], 
-    [ViewQaHazardLog].[initial_severity_level] AS [initial_severity_level], 
-    [ViewQaHazardLog].[initial_index] AS [initial_index], 
-    [ViewQaHazardLog].[final_prob_level] AS [final_prob_level], 
-    [ViewQaHazardLog].[final_severity_level] AS [final_severity_level], 
-    [ViewQaHazardLog].[final_index] AS [final_index], 
-    [ViewQaHazardLog].[approval_relevant_department] AS [approval_relevant_department], 
-    [ViewQaHazardLog].[approval_relevant_department_id] AS [approval_relevant_department_id], 
-    [ViewQaHazardLog].[approval_relevant_department_date] AS [approval_relevant_department_date], 
-    [ViewQaHazardLog].[approval_qa] AS [approval_qa], 
-    [ViewQaHazardLog].[approval_qa_id] AS [approval_qa_id], 
-    [ViewQaHazardLog].[approval_qa_date] AS [approval_qa_date], 
-    [ViewQaHazardLog].[om_form_no] AS [om_form_no], 
-    [ViewQaHazardLog].[om_form_date] AS [om_form_date], 
-    [ViewQaHazardLog].[om_form_rev] AS [om_form_rev], 
-    [ViewQaHazardLog].[om_form_issue] AS [om_form_issue], 
-    [ViewQaHazardLog].[remark] AS [remark], 
-    [ViewQaHazardLog].[id_source] AS [id_source], 
-    [ViewQaHazardLog].[has_relevant] AS [has_relevant], 
-    [ViewQaHazardLog].[initial_acceptability] AS [initial_acceptability], 
-    [ViewQaHazardLog].[initital_description] AS [initital_description], 
-    [ViewQaHazardLog].[initial_responsible_manager] AS [initial_responsible_manager], 
-    [ViewQaHazardLog].[initial_responsible_sign] AS [initial_responsible_sign], 
-    [ViewQaHazardLog].[initial_qa_approval] AS [initial_qa_approval], 
-    [ViewQaHazardLog].[initial_qa_sign] AS [initial_qa_sign], 
-    [ViewQaHazardLog].[final_acceptability] AS [final_acceptability], 
-    [ViewQaHazardLog].[final_date] AS [final_date], 
-    [ViewQaHazardLog].[consequences] AS [consequences], 
-    [ViewQaHazardLog].[actions] AS [actions], 
-    [ViewQaHazardLog].[actions_time_limit] AS [actions_time_limit], 
-    [ViewQaHazardLog].[actions_responsible] AS [actions_responsible], 
-    [ViewQaHazardLog].[root] AS [root], 
-    [ViewQaHazardLog].[monitor] AS [monitor], 
-    [ViewQaHazardLog].[monitor_date] AS [monitor_date]
-    FROM [dbo].[ViewQaHazardLog] AS [ViewQaHazardLog]</DefiningQuery>
-          </EntitySet>
           <EntitySet Name="XFlightCrew" EntityType="Self.XFlightCrew" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [XFlightCrew].[CrewId] AS [CrewId], 
@@ -2937,7 +2866,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
     [XFlightCrew].[IsCockpit] AS [IsCockpit], 
     [XFlightCrew].[Code] AS [Code], 
     [XFlightCrew].[DateConfirmed] AS [DateConfirmed], 
-    [XFlightCrew].[IsConfirmed] AS [IsConfirmed]
+    [XFlightCrew].[IsConfirmed] AS [IsConfirmed], 
+    [XFlightCrew].[MainGroup] AS [MainGroup]
     FROM [dbo].[XFlightCrew] AS [XFlightCrew]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="cps_fdp" Association="Self.cps_fdp">
@@ -3027,6 +2957,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySet Name="view_recency_route" EntityType="dbModel.view_recency_route" />
           <EntitySet Name="view_route_count" EntityType="dbModel.view_route_count" />
           <EntitySet Name="AppFTLAbs" EntityType="dbModel.AppFTLAb" />
+          <EntitySet Name="OFPImports" EntityType="dbModel.OFPImport" />
           </EntityContainer>
         <EntityType Name="ViewFDPLog">
           <Key>
@@ -3099,6 +3030,10 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="Pickup" Type="DateTime" Precision="3" />
           <Property Name="Remark" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="FDP" Relationship="dbModel.fk_fdpitem_fdp" FromRole="FDPItem" ToRole="FDP" />
+          <Property Name="offblock" Type="DateTime" Precision="3" />
+          <Property Name="takeoff" Type="DateTime" Precision="3" />
+          <Property Name="landing" Type="DateTime" Precision="3" />
+          <Property Name="onblock" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="SchFlight">
           <Key>
@@ -3350,7 +3285,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="IsCabin" Type="Int32" Nullable="false" />
           <Property Name="DateLocal" Type="DateTime" Precision="0" />
           <Property Name="FltNo" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="Route" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Route" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="DutyType" Type="Int32" Nullable="false" />
           <Property Name="DutyTypeTitle" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="STDLocal" Type="DateTime" Precision="3" />
@@ -3372,7 +3307,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="RestUntilLocal" Type="DateTime" Precision="3" />
           <Property Name="Remark2" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="InitFlts" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="InitRoute" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="InitRoute" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CanceledNo" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="CanceledRoute" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="ExtendedBySplitDuty" Type="Double" Nullable="false" />
@@ -3621,6 +3556,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
             <PropertyRef Name="GroupOrder" />
             <PropertyRef Name="IsCockpit" />
             <PropertyRef Name="NID" />
+            <PropertyRef Name="MainGroup" />
           </Key>
           <Property Name="CrewId" Type="Int32" />
           <Property Name="FlightId" Type="Int32" />
@@ -3645,6 +3581,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="PLastName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="PName" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
           <Property Name="NID" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="MainGroup" Type="String" Nullable="false" MaxLength="7" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="FTLFlightTimeRatioMonthly">
           <Key>
@@ -4021,6 +3958,11 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <NavigationProperty Name="FDPItems" Relationship="dbModel.fk_fdpitem_fdp" FromRole="FDP" ToRole="FDPItem" />
           <NavigationProperty Name="OffItems" Relationship="dbModel.off_fdp" FromRole="FDP" ToRole="OffItem" />
           <Property Name="DutyEndDateLocal" Type="DateTime" Precision="7" />
+          <Property Name="InitTo" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="offblock" Type="DateTime" Precision="3" />
+          <Property Name="onblock" Type="DateTime" Precision="3" />
+          <Property Name="takeoff" Type="DateTime" Precision="3" />
+          <Property Name="landing" Type="DateTime" Precision="3" />
         </EntityType>
         <Association Name="cps_fdp">
           <End Type="dbModel.FDP" Role="FDP" Multiplicity="0..1">
@@ -4120,6 +4062,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
             <PropertyRef Name="IsExtendedBySplitDuty" />
             <PropertyRef Name="IsExtension" />
             <PropertyRef Name="IsConfirmed" />
+            <PropertyRef Name="ValidTypesStr" />
+            <PropertyRef Name="DutyTypeTitleAcType" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
           <Property Name="CrewId" Type="Int32" Nullable="false" />
@@ -4134,7 +4078,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="DateLocal" Type="DateTime" Precision="0" />
           <Property Name="DateLocal2" Type="DateTime" Precision="0" />
           <Property Name="FltNo" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="Route" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Route" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="DutyType" Type="Int32" Nullable="false" />
           <Property Name="DutyTypeTitle" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="STDLocal" Type="DateTime" Precision="3" />
@@ -4164,7 +4108,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="RestUntilLocal" Type="DateTime" Precision="3" />
           <Property Name="Remark2" Type="String" MaxLength="1013" FixedLength="false" Unicode="true" />
           <Property Name="InitFlts" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="InitRoute" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="InitRoute" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CanceledNo" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="CanceledRoute" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="DateVisit" Type="DateTime" Precision="3" />
@@ -4191,6 +4135,9 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="PosFDPId" Type="Int32" />
           <Property Name="PosRemark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="PosTicketUrl" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ValidTypesStr" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="DutyTypeTitleAcType" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="ViewFDPRest">
           <Key>
@@ -4305,6 +4252,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="PosFDPId" Type="Int32" />
           <Property Name="PosRemark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="PosTicketUrl" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Key" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="OutOfHomeBase" Type="Boolean" />
         </EntityType>
         <EntityType Name="ViewQaHazardLog">
           <Key>
@@ -4373,7 +4322,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="GroupId" Type="Int32" />
           <Property Name="JobGroupCode" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="FltNo" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="Route" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Route" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="DutyType" Type="Int32" Nullable="false" />
           <Property Name="DutyTypeTitle" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="DateStartLocal" Type="DateTime" Precision="3" />
@@ -4386,7 +4335,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="RestUntilLocal" Type="DateTime" Precision="3" />
           <Property Name="Remark2" Type="String" MaxLength="1013" FixedLength="false" Unicode="true" />
           <Property Name="InitFlts" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="InitRoute" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="InitRoute" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="PosFrom" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="PosTo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="PosDep" Type="DateTime" Precision="3" />
@@ -4532,7 +4481,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="P2ScheduleName" Type="String" Nullable="false" MaxLength="1001" FixedLength="false" Unicode="true" />
           <Property Name="PIC" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
           <Property Name="PICId" Type="Int32" />
-          <Property Name="SIC" Type="String" MaxLength="2004" FixedLength="false" Unicode="true" />
+          <Property Name="SIC" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="SICId" Type="Int32" />
           <Property Name="JLDatePICApproved" Type="DateTime" Precision="3" />
           <Property Name="IStart" Type="DateTime" Precision="3" />
@@ -4575,6 +4524,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="AttForms" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="PaxFemale" Type="Int32" />
           <Property Name="PaxMale" Type="Int32" />
+          <Property Name="BlockOffStation" Type="DateTime" Precision="3" />
+          <Property Name="BlockOnStation" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="ViewCourseFDP">
           <Key>
@@ -4698,6 +4649,112 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="Ratio" Type="Double" />
           <Property Name="LastLocation" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="OFPImport">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FileName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="FlightNo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Origin" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Destination" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="DateFlight" Type="DateTime" Precision="0" />
+          <Property Name="DateCreate" Type="DateTime" Precision="3" />
+          <Property Name="Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="User" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="TextOutput" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="FlightId" Type="Int32" />
+          <Property Name="DateUpdate" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="DateConfirmed" Type="DateTime" Precision="3" />
+          <Property Name="UserConfirmed" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="PICId" Type="Int32" />
+          <Property Name="JLDatePICApproved" Type="DateTime" Precision="3" />
+          <Property Name="JLSignedBy" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="PIC" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="FPFuel" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="FPTripFuel" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="MCI" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="FLL" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="DOW" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="Source" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="JPlan" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="JAPlan1" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="JAPlan2" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="JFuel" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="JCSTBL" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="JALDRF" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="JWTDRF" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="THM" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="UNT" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="CRW" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="RTM" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="RTA" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="RTB" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="RTT" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="PLD" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="EZFW" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ETOW" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ELDW" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ETD" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ETA" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ALT1" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ALT2" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="TALT1" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="TALT2" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="FuelALT1" Type="Int32" />
+          <Property Name="FuelALT2" Type="Int32" />
+          <Property Name="FuelTOF" Type="Int32" />
+          <Property Name="FuelTAXI" Type="Int32" />
+          <Property Name="FuelOFFBLOCK" Type="Int32" />
+          <Property Name="FuelCONT" Type="Int32" />
+          <Property Name="FuelMINTOF" Type="Int32" />
+          <Property Name="FuelFINALRES" Type="Int32" />
+          <Property Name="FPF" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="VDT" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="MAXSHEER" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="MINDIVFUEL" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="WDTMP" Type="String" MaxLength="5000" FixedLength="false" Unicode="false" />
+          <Property Name="DID" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="WDCLB" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Name="WDDES" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Name="FuelExtra" Type="Int32" />
+          <Property Name="FuelETOPSADDNL" Type="Int32" />
+          <Property Name="FuelOPSEXTRA" Type="Int32" />
+          <Property Name="FuelTANKERING" Type="Int32" />
+          <Property Name="FuelTOTALFUEL" Type="Int32" />
+          <Property Name="FuelACTUALTANKERING" Type="Int32" />
+          <Property Name="DSPNAME" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="CM1" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="CM2" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="MSH" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ATC" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Name="MTOW" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="MLDW" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ELDP" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ELDS" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ELAL" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ELBL" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ectm_tat" Type="Int32" />
+          <Property Name="ectm_mach" Type="Double" />
+          <Property Name="ectm_pressure_alt" Type="Int32" />
+          <Property Name="ectm_computed_airspeed" Type="Int32" />
+          <Property Name="ectm_eng1_egt" Type="Int32" />
+          <Property Name="ectm_eng1_n1" Type="Int32" />
+          <Property Name="ectm_eng1_n2" Type="Int32" />
+          <Property Name="ectm_eng1_epr" Type="Double" />
+          <Property Name="ectm_eng1_fuel_flow" Type="Int32" />
+          <Property Name="ectm_eng2_egt" Type="Int32" />
+          <Property Name="ectm_eng2_n1" Type="Int32" />
+          <Property Name="ectm_eng2_n2" Type="Int32" />
+          <Property Name="ectm_eng2_epr" Type="Double" />
+          <Property Name="ectm_eng2_fuel_flow" Type="Int32" />
+          <Property Name="mzfw" Type="Int32" />
+          <Property Name="mod1_stn" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="mod2_stn" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="mod1" Type="Int32" />
+          <Property Name="mod2" Type="Int32" />
+          <Property Name="ralt" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4762,6 +4819,10 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySetMapping Name="FDPItems">
             <EntityTypeMapping TypeName="dbModel.FDPItem">
               <MappingFragment StoreEntitySet="FDPItem">
+                <ScalarProperty Name="onblock" ColumnName="onblock" />
+                <ScalarProperty Name="landing" ColumnName="landing" />
+                <ScalarProperty Name="takeoff" ColumnName="takeoff" />
+                <ScalarProperty Name="offblock" ColumnName="offblock" />
                 <ScalarProperty Name="Remark" ColumnName="Remark" />
                 <ScalarProperty Name="Pickup" ColumnName="Pickup" />
                 <ScalarProperty Name="RosterPositionId" ColumnName="RosterPositionId" />
@@ -5250,6 +5311,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySetMapping Name="XFlightCrews">
             <EntityTypeMapping TypeName="dbModel.XFlightCrew">
               <MappingFragment StoreEntitySet="XFlightCrew">
+                <ScalarProperty Name="MainGroup" ColumnName="MainGroup" />
                 <ScalarProperty Name="NID" ColumnName="NID" />
                 <ScalarProperty Name="PName" ColumnName="PName" />
                 <ScalarProperty Name="PLastName" ColumnName="PLastName" />
@@ -5555,6 +5617,11 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySetMapping Name="FDPs">
             <EntityTypeMapping TypeName="dbModel.FDP">
               <MappingFragment StoreEntitySet="FDP">
+                <ScalarProperty Name="landing" ColumnName="landing" />
+                <ScalarProperty Name="takeoff" ColumnName="takeoff" />
+                <ScalarProperty Name="onblock" ColumnName="onblock" />
+                <ScalarProperty Name="offblock" ColumnName="offblock" />
+                <ScalarProperty Name="InitTo" ColumnName="InitTo" />
                 <ScalarProperty Name="DutyEndDateLocal" ColumnName="DutyEndDateLocal" />
                 <ScalarProperty Name="PosTicketUrl" ColumnName="PosTicketUrl" />
                 <ScalarProperty Name="PosRemark" ColumnName="PosRemark" />
@@ -5635,6 +5702,9 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySetMapping Name="ViewCrewDuties">
             <EntityTypeMapping TypeName="dbModel.ViewCrewDuty">
               <MappingFragment StoreEntitySet="ViewCrewDuty">
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="DutyTypeTitleAcType" ColumnName="DutyTypeTitleAcType" />
+                <ScalarProperty Name="ValidTypesStr" ColumnName="ValidTypesStr" />
                 <ScalarProperty Name="PosTicketUrl" ColumnName="PosTicketUrl" />
                 <ScalarProperty Name="PosRemark" ColumnName="PosRemark" />
                 <ScalarProperty Name="PosFDPId" ColumnName="PosFDPId" />
@@ -5711,6 +5781,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySetMapping Name="ViewFDPRests">
             <EntityTypeMapping TypeName="dbModel.ViewFDPRest">
               <MappingFragment StoreEntitySet="ViewFDPRest">
+                <ScalarProperty Name="OutOfHomeBase" ColumnName="OutOfHomeBase" />
+                <ScalarProperty Name="Key" ColumnName="Key" />
                 <ScalarProperty Name="PosTicketUrl" ColumnName="PosTicketUrl" />
                 <ScalarProperty Name="PosRemark" ColumnName="PosRemark" />
                 <ScalarProperty Name="PosFDPId" ColumnName="PosFDPId" />
@@ -5813,56 +5885,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ViewQaHazardLogs">
-            <EntityTypeMapping TypeName="dbModel.ViewQaHazardLog">
-              <MappingFragment StoreEntitySet="ViewQaHazardLog">
-                <ScalarProperty Name="monitor_date" ColumnName="monitor_date" />
-                <ScalarProperty Name="monitor" ColumnName="monitor" />
-                <ScalarProperty Name="root" ColumnName="root" />
-                <ScalarProperty Name="actions_responsible" ColumnName="actions_responsible" />
-                <ScalarProperty Name="actions_time_limit" ColumnName="actions_time_limit" />
-                <ScalarProperty Name="actions" ColumnName="actions" />
-                <ScalarProperty Name="consequences" ColumnName="consequences" />
-                <ScalarProperty Name="final_date" ColumnName="final_date" />
-                <ScalarProperty Name="final_acceptability" ColumnName="final_acceptability" />
-                <ScalarProperty Name="initial_qa_sign" ColumnName="initial_qa_sign" />
-                <ScalarProperty Name="initial_qa_approval" ColumnName="initial_qa_approval" />
-                <ScalarProperty Name="initial_responsible_sign" ColumnName="initial_responsible_sign" />
-                <ScalarProperty Name="initial_responsible_manager" ColumnName="initial_responsible_manager" />
-                <ScalarProperty Name="initital_description" ColumnName="initital_description" />
-                <ScalarProperty Name="initial_acceptability" ColumnName="initial_acceptability" />
-                <ScalarProperty Name="has_relevant" ColumnName="has_relevant" />
-                <ScalarProperty Name="id_source" ColumnName="id_source" />
-                <ScalarProperty Name="remark" ColumnName="remark" />
-                <ScalarProperty Name="om_form_issue" ColumnName="om_form_issue" />
-                <ScalarProperty Name="om_form_rev" ColumnName="om_form_rev" />
-                <ScalarProperty Name="om_form_date" ColumnName="om_form_date" />
-                <ScalarProperty Name="om_form_no" ColumnName="om_form_no" />
-                <ScalarProperty Name="approval_qa_date" ColumnName="approval_qa_date" />
-                <ScalarProperty Name="approval_qa_id" ColumnName="approval_qa_id" />
-                <ScalarProperty Name="approval_qa" ColumnName="approval_qa" />
-                <ScalarProperty Name="approval_relevant_department_date" ColumnName="approval_relevant_department_date" />
-                <ScalarProperty Name="approval_relevant_department_id" ColumnName="approval_relevant_department_id" />
-                <ScalarProperty Name="approval_relevant_department" ColumnName="approval_relevant_department" />
-                <ScalarProperty Name="final_index" ColumnName="final_index" />
-                <ScalarProperty Name="final_severity_level" ColumnName="final_severity_level" />
-                <ScalarProperty Name="final_prob_level" ColumnName="final_prob_level" />
-                <ScalarProperty Name="initial_index" ColumnName="initial_index" />
-                <ScalarProperty Name="initial_severity_level" ColumnName="initial_severity_level" />
-                <ScalarProperty Name="initial_prob_level" ColumnName="initial_prob_level" />
-                <ScalarProperty Name="id_hazard_consequence" ColumnName="id_hazard_consequence" />
-                <ScalarProperty Name="id_hazard_description" ColumnName="id_hazard_description" />
-                <ScalarProperty Name="id_risk_register_number" ColumnName="id_risk_register_number" />
-                <ScalarProperty Name="id_department" ColumnName="id_department" />
-                <ScalarProperty Name="id_date" ColumnName="id_date" />
-                <ScalarProperty Name="form_no" ColumnName="form_no" />
-                <ScalarProperty Name="form_id" ColumnName="form_id" />
-                <ScalarProperty Name="fort_type_title" ColumnName="fort_type_title" />
-                <ScalarProperty Name="form_type" ColumnName="form_type" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ViewCrewDutyPulsePockets">
             <EntityTypeMapping TypeName="dbModel.ViewCrewDutyPulsePocket">
               <MappingFragment StoreEntitySet="ViewCrewDutyPulsePocket">
@@ -5903,6 +5925,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySetMapping Name="AppCrewFlights">
             <EntityTypeMapping TypeName="dbModel.AppCrewFlight">
               <MappingFragment StoreEntitySet="AppCrewFlight">
+                <ScalarProperty Name="BlockOnStation" ColumnName="BlockOnStation" />
+                <ScalarProperty Name="BlockOffStation" ColumnName="BlockOffStation" />
                 <ScalarProperty Name="PaxMale" ColumnName="PaxMale" />
                 <ScalarProperty Name="PaxFemale" ColumnName="PaxFemale" />
                 <ScalarProperty Name="AttForms" ColumnName="AttForms" />
@@ -6103,55 +6127,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="view_recency_route">
-            <EntityTypeMapping TypeName="dbModel.view_recency_route">
-              <MappingFragment StoreEntitySet="view_recency_route">
-                <ScalarProperty Name="Rank" ColumnName="Rank" />
-                <ScalarProperty Name="RemainExpire" ColumnName="RemainExpire" />
-                <ScalarProperty Name="OnBlock" ColumnName="OnBlock" />
-                <ScalarProperty Name="Landing" ColumnName="Landing" />
-                <ScalarProperty Name="TakeOff" ColumnName="TakeOff" />
-                <ScalarProperty Name="OffBlock" ColumnName="OffBlock" />
-                <ScalarProperty Name="STA" ColumnName="STA" />
-                <ScalarProperty Name="STD" ColumnName="STD" />
-                <ScalarProperty Name="Register" ColumnName="Register" />
-                <ScalarProperty Name="FlightNumber" ColumnName="FlightNumber" />
-                <ScalarProperty Name="flight_id" ColumnName="flight_id" />
-                <ScalarProperty Name="RouteICAO" ColumnName="RouteICAO" />
-                <ScalarProperty Name="RouteIATA" ColumnName="RouteIATA" />
-                <ScalarProperty Name="ToICAO" ColumnName="ToICAO" />
-                <ScalarProperty Name="ToIATA" ColumnName="ToIATA" />
-                <ScalarProperty Name="FromICAO" ColumnName="FromICAO" />
-                <ScalarProperty Name="FromIATA" ColumnName="FromIATA" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="NID" ColumnName="NID" />
-                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
-                <ScalarProperty Name="JobGroup" ColumnName="JobGroup" />
-                <ScalarProperty Name="GroupId" ColumnName="GroupId" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="date_expire" ColumnName="date_expire" />
-                <ScalarProperty Name="fdpitem_id" ColumnName="fdpitem_id" />
-                <ScalarProperty Name="is_allowed" ColumnName="is_allowed" />
-                <ScalarProperty Name="date_flight" ColumnName="date_flight" />
-                <ScalarProperty Name="to_id" ColumnName="to_id" />
-                <ScalarProperty Name="from_id" ColumnName="from_id" />
-                <ScalarProperty Name="crew_id" ColumnName="crew_id" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="view_route_count">
-            <EntityTypeMapping TypeName="dbModel.view_route_count">
-              <MappingFragment StoreEntitySet="view_route_count">
-                <ScalarProperty Name="FltCount" ColumnName="FltCount" />
-                <ScalarProperty Name="ToICAO" ColumnName="ToICAO" />
-                <ScalarProperty Name="FromICAO" ColumnName="FromICAO" />
-                <ScalarProperty Name="ToIATA" ColumnName="ToIATA" />
-                <ScalarProperty Name="FromIATA" ColumnName="FromIATA" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="AppFTLAbs">
             <EntityTypeMapping TypeName="dbModel.AppFTLAb">
               <MappingFragment StoreEntitySet="AppFTLAbs">
@@ -6173,6 +6148,113 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
                 <ScalarProperty Name="Duty7" ColumnName="Duty7" />
                 <ScalarProperty Name="CrewId" ColumnName="CrewId" />
                 <ScalarProperty Name="CDate" ColumnName="CDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OFPImports">
+            <EntityTypeMapping TypeName="dbModel.OFPImport">
+              <MappingFragment StoreEntitySet="OFPImport">
+                <ScalarProperty Name="ralt" ColumnName="ralt" />
+                <ScalarProperty Name="mod2" ColumnName="mod2" />
+                <ScalarProperty Name="mod1" ColumnName="mod1" />
+                <ScalarProperty Name="mod2_stn" ColumnName="mod2_stn" />
+                <ScalarProperty Name="mod1_stn" ColumnName="mod1_stn" />
+                <ScalarProperty Name="mzfw" ColumnName="mzfw" />
+                <ScalarProperty Name="ectm_eng2_fuel_flow" ColumnName="ectm_eng2_fuel_flow" />
+                <ScalarProperty Name="ectm_eng2_epr" ColumnName="ectm_eng2_epr" />
+                <ScalarProperty Name="ectm_eng2_n2" ColumnName="ectm_eng2_n2" />
+                <ScalarProperty Name="ectm_eng2_n1" ColumnName="ectm_eng2_n1" />
+                <ScalarProperty Name="ectm_eng2_egt" ColumnName="ectm_eng2_egt" />
+                <ScalarProperty Name="ectm_eng1_fuel_flow" ColumnName="ectm_eng1_fuel_flow" />
+                <ScalarProperty Name="ectm_eng1_epr" ColumnName="ectm_eng1_epr" />
+                <ScalarProperty Name="ectm_eng1_n2" ColumnName="ectm_eng1_n2" />
+                <ScalarProperty Name="ectm_eng1_n1" ColumnName="ectm_eng1_n1" />
+                <ScalarProperty Name="ectm_eng1_egt" ColumnName="ectm_eng1_egt" />
+                <ScalarProperty Name="ectm_computed_airspeed" ColumnName="ectm_computed_airspeed" />
+                <ScalarProperty Name="ectm_pressure_alt" ColumnName="ectm_pressure_alt" />
+                <ScalarProperty Name="ectm_mach" ColumnName="ectm_mach" />
+                <ScalarProperty Name="ectm_tat" ColumnName="ectm_tat" />
+                <ScalarProperty Name="ELBL" ColumnName="ELBL" />
+                <ScalarProperty Name="ELAL" ColumnName="ELAL" />
+                <ScalarProperty Name="ELDS" ColumnName="ELDS" />
+                <ScalarProperty Name="ELDP" ColumnName="ELDP" />
+                <ScalarProperty Name="MLDW" ColumnName="MLDW" />
+                <ScalarProperty Name="MTOW" ColumnName="MTOW" />
+                <ScalarProperty Name="ATC" ColumnName="ATC" />
+                <ScalarProperty Name="MSH" ColumnName="MSH" />
+                <ScalarProperty Name="CM2" ColumnName="CM2" />
+                <ScalarProperty Name="CM1" ColumnName="CM1" />
+                <ScalarProperty Name="DSPNAME" ColumnName="DSPNAME" />
+                <ScalarProperty Name="FuelACTUALTANKERING" ColumnName="FuelACTUALTANKERING" />
+                <ScalarProperty Name="FuelTOTALFUEL" ColumnName="FuelTOTALFUEL" />
+                <ScalarProperty Name="FuelTANKERING" ColumnName="FuelTANKERING" />
+                <ScalarProperty Name="FuelOPSEXTRA" ColumnName="FuelOPSEXTRA" />
+                <ScalarProperty Name="FuelETOPSADDNL" ColumnName="FuelETOPSADDNL" />
+                <ScalarProperty Name="FuelExtra" ColumnName="FuelExtra" />
+                <ScalarProperty Name="WDDES" ColumnName="WDDES" />
+                <ScalarProperty Name="WDCLB" ColumnName="WDCLB" />
+                <ScalarProperty Name="DID" ColumnName="DID" />
+                <ScalarProperty Name="WDTMP" ColumnName="WDTMP" />
+                <ScalarProperty Name="MINDIVFUEL" ColumnName="MINDIVFUEL" />
+                <ScalarProperty Name="MAXSHEER" ColumnName="MAXSHEER" />
+                <ScalarProperty Name="VDT" ColumnName="VDT" />
+                <ScalarProperty Name="FPF" ColumnName="FPF" />
+                <ScalarProperty Name="FuelFINALRES" ColumnName="FuelFINALRES" />
+                <ScalarProperty Name="FuelMINTOF" ColumnName="FuelMINTOF" />
+                <ScalarProperty Name="FuelCONT" ColumnName="FuelCONT" />
+                <ScalarProperty Name="FuelOFFBLOCK" ColumnName="FuelOFFBLOCK" />
+                <ScalarProperty Name="FuelTAXI" ColumnName="FuelTAXI" />
+                <ScalarProperty Name="FuelTOF" ColumnName="FuelTOF" />
+                <ScalarProperty Name="FuelALT2" ColumnName="FuelALT2" />
+                <ScalarProperty Name="FuelALT1" ColumnName="FuelALT1" />
+                <ScalarProperty Name="TALT2" ColumnName="TALT2" />
+                <ScalarProperty Name="TALT1" ColumnName="TALT1" />
+                <ScalarProperty Name="ALT2" ColumnName="ALT2" />
+                <ScalarProperty Name="ALT1" ColumnName="ALT1" />
+                <ScalarProperty Name="ETA" ColumnName="ETA" />
+                <ScalarProperty Name="ETD" ColumnName="ETD" />
+                <ScalarProperty Name="ELDW" ColumnName="ELDW" />
+                <ScalarProperty Name="ETOW" ColumnName="ETOW" />
+                <ScalarProperty Name="EZFW" ColumnName="EZFW" />
+                <ScalarProperty Name="PLD" ColumnName="PLD" />
+                <ScalarProperty Name="RTT" ColumnName="RTT" />
+                <ScalarProperty Name="RTB" ColumnName="RTB" />
+                <ScalarProperty Name="RTA" ColumnName="RTA" />
+                <ScalarProperty Name="RTM" ColumnName="RTM" />
+                <ScalarProperty Name="CRW" ColumnName="CRW" />
+                <ScalarProperty Name="UNT" ColumnName="UNT" />
+                <ScalarProperty Name="THM" ColumnName="THM" />
+                <ScalarProperty Name="JWTDRF" ColumnName="JWTDRF" />
+                <ScalarProperty Name="JALDRF" ColumnName="JALDRF" />
+                <ScalarProperty Name="JCSTBL" ColumnName="JCSTBL" />
+                <ScalarProperty Name="JFuel" ColumnName="JFuel" />
+                <ScalarProperty Name="JAPlan2" ColumnName="JAPlan2" />
+                <ScalarProperty Name="JAPlan1" ColumnName="JAPlan1" />
+                <ScalarProperty Name="JPlan" ColumnName="JPlan" />
+                <ScalarProperty Name="Source" ColumnName="Source" />
+                <ScalarProperty Name="DOW" ColumnName="DOW" />
+                <ScalarProperty Name="FLL" ColumnName="FLL" />
+                <ScalarProperty Name="MCI" ColumnName="MCI" />
+                <ScalarProperty Name="FPTripFuel" ColumnName="FPTripFuel" />
+                <ScalarProperty Name="FPFuel" ColumnName="FPFuel" />
+                <ScalarProperty Name="PIC" ColumnName="PIC" />
+                <ScalarProperty Name="JLSignedBy" ColumnName="JLSignedBy" />
+                <ScalarProperty Name="JLDatePICApproved" ColumnName="JLDatePICApproved" />
+                <ScalarProperty Name="PICId" ColumnName="PICId" />
+                <ScalarProperty Name="UserConfirmed" ColumnName="UserConfirmed" />
+                <ScalarProperty Name="DateConfirmed" ColumnName="DateConfirmed" />
+                <ScalarProperty Name="DateUpdate" ColumnName="DateUpdate" />
+                <ScalarProperty Name="FlightId" ColumnName="FlightId" />
+                <ScalarProperty Name="TextOutput" ColumnName="TextOutput" />
+                <ScalarProperty Name="User" ColumnName="User" />
+                <ScalarProperty Name="Text" ColumnName="Text" />
+                <ScalarProperty Name="DateCreate" ColumnName="DateCreate" />
+                <ScalarProperty Name="DateFlight" ColumnName="DateFlight" />
+                <ScalarProperty Name="Destination" ColumnName="Destination" />
+                <ScalarProperty Name="Origin" ColumnName="Origin" />
+                <ScalarProperty Name="FlightNo" ColumnName="FlightNo" />
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
