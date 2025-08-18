@@ -1347,6 +1347,17 @@ namespace AirpocketTRN.Services
             };
         }
 
+        public async Task<DataResponse> GetCourseTypeSubject(int cid)
+        {
+            var result = await context.course_type_subject.Where(q => q.parent_id == cid).ToListAsync();
+
+            return new DataResponse()
+            {
+                Data = result,
+                IsSuccess = true,
+            };
+        }
+
         public async Task<DataResponse> GetCourseTypeJobGroupsByGroup(int gid)
         {
             var result = await context.ViewCourseTypeJobGroups.Where(q => q.Id == gid).OrderBy(q => q.Title).ToListAsync();
@@ -1665,11 +1676,11 @@ namespace AirpocketTRN.Services
         {
             var result = await context.ViewCoursePeoples.Where(q => q.CourseId == cid).Select(q => new
             {
-                 q.Name,
-                 q.FirstName,
-                 q.LastName,
-                 q.JobGroup
-            }).OrderBy(q=>q.JobGroup).ThenBy(q=>q.Name).ToListAsync();
+                q.Name,
+                q.FirstName,
+                q.LastName,
+                q.JobGroup
+            }).OrderBy(q => q.JobGroup).ThenBy(q => q.Name).ToListAsync();
 
             return new DataResponse()
             {
@@ -1769,8 +1780,9 @@ namespace AirpocketTRN.Services
                     Date_Sign_Staff = x.Date_Sign_Staff,
                     Duration = x.Duration,
                     DurationUnitId = x.DurationUnitId,
+                    Interval = x.Interval,
                     Instructor = x.Instructor,
-                    Instructor2 = x.Instructor,
+                    Instructor2 = x.Instructor2,
                     Instructor2Id = x.Instructor2Id,
                     ParentId = x.ParentId,
                     ParentTitle = x.ParentTitle,
@@ -2668,6 +2680,12 @@ namespace AirpocketTRN.Services
                 type_id = dto.Id
             });
 
+            await SaveCourseTypeSubject(new course_type_subject()
+            {
+                parent_id = dto.Id,
+                CourseTypes = dto.CourseTypes
+            });
+
             return new DataResponse()
             {
                 IsSuccess = true,
@@ -2737,6 +2755,56 @@ namespace AirpocketTRN.Services
                 Data = dto,
             };
         }
+
+
+        public class course_type_subject
+        {
+            public int parent_id { get; set; }
+            public List<ViewCourseType> CourseTypes { get; set; }
+
+
+        }
+
+        public async Task<DataResponse> SaveCourseTypeSubject(course_type_subject dto)
+        {
+
+            foreach (var d in dto.CourseTypes)
+            {
+                var parent_id = dto.parent_id;
+                var course_type_id = d.Id;
+                var exist = context.course_type_subject.Where(q => q.parent_id == parent_id).ToList();
+                context.course_type_subject.RemoveRange(exist);
+            }
+            if (dto.CourseTypes.Count == 0)
+            {
+                await context.SaveChangesAsync();
+                return new DataResponse()
+                {
+                    IsSuccess = true,
+                    Data = dto,
+                };
+            }
+
+
+            foreach (var d in dto.CourseTypes)
+            {
+                context.course_type_subject.Add(new Models.course_type_subject()
+                {
+                    parent_id = dto.parent_id,
+                    course_type_id = d.Id,
+                    duration = d.Duration
+                });
+            }
+
+
+            await context.SaveChangesAsync();
+            return new DataResponse()
+            {
+                IsSuccess = true,
+                Data = dto,
+            };
+        }
+
 
 
         public async Task<DataResponse> SaveCourseTypeJobGroup(int tid, int gid, int man, int sel)
@@ -2812,7 +2880,7 @@ namespace AirpocketTRN.Services
             };
         }
         //07-13
-       
+
         public async Task<DataResponse> SaveExamScore(exam_score dto)
         {
             //int id = Convert.ToInt32(dto.id);
@@ -2820,7 +2888,7 @@ namespace AirpocketTRN.Services
             var course_people = await context.CoursePeoples.FirstOrDefaultAsync(q => q.Id == dto.id);
             if (course_people != null)
             {
-                course_people.ExamResult= dto.score;
+                course_people.ExamResult = dto.score;
             }
             await context.SaveChangesAsync();
             return new DataResponse()
@@ -3087,6 +3155,8 @@ namespace AirpocketTRN.Services
                         crs_subject.Remark = subject.Remark;
                         crs_subject.TrainingDirector = entity.TrainingDirector;
                         crs_subject.Title = subject.Title;
+                        crs_subject.Instructor = entity.Instructor;
+                        crs_subject.Instructor2 = subject.Instructor2;
 
                         crs_subject.Interval = subject.Interval;
                         crs_subject.CalanderTypeId = entity.CalanderTypeId;

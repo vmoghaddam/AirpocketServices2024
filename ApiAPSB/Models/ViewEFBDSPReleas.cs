@@ -101,12 +101,15 @@ namespace ApiAPSB.Models
         public string IPADCPTRemark { get; set; }
         public Nullable<System.DateTime> DateConfirmed { get; set; }
         public Nullable<int> DispatcherId { get; set; }
+        public string ipad_no_1 { get; set; }
+        public string ipad_no_2 { get; set; }
+        public string ipad_no_3 { get; set; }
+        public string pb_1 { get; set; }
+        public string pb_2 { get; set; }
         public string DSPName { get; set; }
         public string DSPPID { get; set; }
         public string DSPNID { get; set; }
         public string DSPMobile { get; set; }
-        public string JLSignedBy { get; set; }
-        public Nullable<System.DateTime> JLDatePICApproved { get; set; }
         public Nullable<int> PICId { get; set; }
         public string PIC { get; set; }
         public Nullable<bool> OperationalFlightPlanFOO { get; set; }
@@ -148,5 +151,7 @@ namespace ApiAPSB.Models
         public string SgnCPTLicNo { get; set; }
         public Nullable<System.DateTime> JLDSPSignDate { get; set; }
         public string SGNDSPName { get; set; }
+        public Nullable<System.DateTime> JLDatePICApproved { get; set; }
+        public string JLSignedBy { get; set; }
     }
 }

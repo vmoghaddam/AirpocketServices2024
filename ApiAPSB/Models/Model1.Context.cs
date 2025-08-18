@@ -33,8 +33,6 @@ namespace ApiAPSB.Models
         public virtual DbSet<FlightInformation> FlightInformations { get; set; }
         public virtual DbSet<EFBValue> EFBValues { get; set; }
         public virtual DbSet<AppLegOP> AppLegOPS { get; set; }
-        public virtual DbSet<EFBDSPRelease> EFBDSPReleases { get; set; }
-        public virtual DbSet<ViewEFBDSPReleas> ViewEFBDSPReleases { get; set; }
         public virtual DbSet<PersonCustomer> PersonCustomers { get; set; }
         public virtual DbSet<ViewFlightCrewNew> ViewFlightCrewNews { get; set; }
         public virtual DbSet<AppCrewFlightJL> AppCrewFlightJLs { get; set; }
@@ -94,5 +92,9 @@ namespace ApiAPSB.Models
         public virtual DbSet<frm_onboard_status> frm_onboard_status { get; set; }
         public virtual DbSet<view_frm_onboard_status> view_frm_onboard_status { get; set; }
         public virtual DbSet<view_frm_onboard_item> view_frm_onboard_item { get; set; }
+        public virtual DbSet<EFBDSPRelease> EFBDSPReleases { get; set; }
+        public virtual DbSet<ViewEFBDSPReleas> ViewEFBDSPReleases { get; set; }
+        public virtual DbSet<ViewQAGround> ViewQAGrounds { get; set; }
+        public virtual DbSet<ViewQAHazard> ViewQAHazards { get; set; }
     }
 }
