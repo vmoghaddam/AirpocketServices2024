@@ -21,5 +21,6 @@ namespace AirpocketAPI.Models
         public Nullable<System.DateTime> DutyStart { get; set; }
         public int DutyType { get; set; }
         public Nullable<System.DateTime> RestUntil { get; set; }
+        public Nullable<System.DateTime> DutyEnd { get; set; }
     }
 }

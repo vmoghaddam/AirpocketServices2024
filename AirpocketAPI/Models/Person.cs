@@ -514,5 +514,6 @@ namespace AirpocketAPI.Models
         public Nullable<System.DateTime> ASD_SRY_ExpireDate { get; set; }
         public Nullable<System.DateTime> FTSL1IssueDate { get; set; }
         public Nullable<System.DateTime> FTSL1ExpireDate { get; set; }
+        public string PID { get; set; }
     }
 }

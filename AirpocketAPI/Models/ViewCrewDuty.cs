@@ -86,5 +86,6 @@ namespace AirpocketAPI.Models
         public string PosTicketUrl { get; set; }
         public string ValidTypesStr { get; set; }
         public string DutyTypeTitleAcType { get; set; }
+        public string Email { get; set; }
     }
 }
