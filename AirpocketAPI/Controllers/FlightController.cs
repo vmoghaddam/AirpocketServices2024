@@ -157,6 +157,7 @@ namespace AirpocketAPI.Controllers
                     {
                         Route = model.Route,
                         Duration = model.Duration,
+                        remark = model.remark
 
                     };
                     context.FixTimes.Add(fixtime);
@@ -165,6 +166,7 @@ namespace AirpocketAPI.Controllers
                 {
 
                     fixtime.Duration = model.Duration;
+                    fixtime.remark = model.remark;
 
                 }
 
