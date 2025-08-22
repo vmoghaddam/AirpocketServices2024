@@ -1,40 +1,29 @@
 ﻿using AirpocketAPI.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Spire.Xls;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Common;
+using System.Data.Entity;
+using System.Data.Entity.Validation;
+using System.Drawing;
+using System.Dynamic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Threading.Tasks;
-using System.Web.Http;
-
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
-
-
-using System.Web.Http.Description;
-
-using System.Data.Entity.Validation;
-
-using System.Web.Http.ModelBinding;
-
-using System.Text;
-using System.Configuration;
-using Newtonsoft.Json;
-using System.Web.Http.Cors;
-using System.IO;
-using System.Xml;
-using System.Web;
-using System.Text.RegularExpressions;
-using Formatting = Newtonsoft.Json.Formatting;
-using System.Data;
-using System.Data.Common;
-using System.Dynamic;
-using Spire.Xls;
 using System.Net.Http.Headers;
-using System.Drawing;
-using System.Globalization;
-using Newtonsoft.Json.Linq;
-using Spire.Xls.Core;
+using System.Text;
+using System.Threading.Tasks;
+using System.Web;
+using System.Web.Http;
+using System.Web.Http.Cors;
+using System.Web.Routing;
+using System.Xml;
+using Formatting = Newtonsoft.Json.Formatting;
 
 namespace AirpocketAPI.Controllers
 {
@@ -133,6 +122,69 @@ namespace AirpocketAPI.Controllers
         //    return Ok(obj);
 
         //}
+        [HttpGet]
+        [Route("api/fixtime")]
+        public IHttpActionResult GetAllFixtimes()
+        {
+            var context = new AirpocketAPI.Models.FLYEntities();
+            var fixtimes = context.FixTimes.ToList();
+            return Ok(fixtimes);
+        }
+        [HttpPost]
+        [Route("api/fixtime/saves")]
+        public async Task<IHttpActionResult> SaveFixtime(FixTime model)
+        {
+
+
+            if (model == null || string.IsNullOrEmpty(model.Route))
+                return BadRequest("Invalid data.");
+
+            model.Route = model.Route
+         .Trim()
+         .ToUpper()
+         .Replace("_", "-")
+         .Replace(" ", "");
+
+            using (var context = new AirpocketAPI.Models.FLYEntities())
+            {
+                var fixtime = context.FixTimes.FirstOrDefault(q => q.Route == model.Route);
+
+
+                if (fixtime == null)
+                {
+
+                    fixtime = new FixTime()
+                    {
+                        Route = model.Route,
+                        Duration = model.Duration,
+                        remark = model.remark
+
+                    };
+                    context.FixTimes.Add(fixtime);
+                }
+                else
+                {
+
+                    fixtime.Duration = model.Duration;
+                    fixtime.remark = model.remark;
+
+                }
+
+                await context.SaveChangesAsync();
+            }
+
+
+            return Ok(new DataResponse()
+            {
+                IsSuccess = true,
+
+            });
+        }
+
+
+
+
+
         [Route("api/flight/atc/update/{id}/{fn}")]
         [AcceptVerbs("GET")]
         public IHttpActionResult GetATcUpdate(int id, string fn)
@@ -3989,7 +4041,7 @@ namespace AirpocketAPI.Controllers
             var utcdiff = 210;
             df = df.AddMinutes(0);
             dt = dt.AddDays(1);
-            var cgrps = new List<string>() { "TRI", "TRE", "P1", "P2", "CCM", "SCCM", "ISCCM","CCI","CCE" };
+            var cgrps = new List<string>() { "TRI", "TRE", "P1", "P2", "CCM", "SCCM", "ISCCM", "CCI", "CCE" };
             var query_duty = (from x in context.ViewCrewDutyTimeLineNewGDates
                               where x.GDate >= df && x.GDate < dt && cgrps.Contains(x.JobGroup)
                               select x).ToList();
@@ -4038,7 +4090,7 @@ namespace AirpocketAPI.Controllers
 
                         break;
                     case "ISCCM-SCCM":
-                        ds_crew = crews.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup== "CCI" || q.JobGroup== "CCE").ToList();
+                        ds_crew = crews.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCI" || q.JobGroup == "CCE").ToList();
                         sheet = workbook.Worksheets.Add("ISCCM-SCCM");
                         break;
                     default:
@@ -5464,7 +5516,7 @@ namespace AirpocketAPI.Controllers
                              orderby x.OrderIndex, x.ScheduleName
                              select x;
 
-            var am_sccm_thr = stbyam_thr.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup=="CCI" || q.JobGroup=="CCE").ToList();
+            var am_sccm_thr = stbyam_thr.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCI" || q.JobGroup == "CCE").ToList();
             var am_sccm_mhd = stbyam_mhd.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCI" || q.JobGroup == "CCE").ToList();
             var pm_sccm_thr = stbypm_thr.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCI" || q.JobGroup == "CCE").ToList();
             var pm_sccm_mhd = stbypm_mhd.Where(q => q.JobGroup == "ISCCM" || q.JobGroup == "SCCM" || q.JobGroup == "CCI" || q.JobGroup == "CCE").ToList();
@@ -9399,7 +9451,7 @@ new JsonSerializerSettings
         public class out_duty_item
         {
             public string Title { get; set; }
-           
+
             public int IsCockpit { get; set; }
             public string JobGroup { get; set; }
             public int GroupOrder { get; set; }
@@ -9427,7 +9479,7 @@ new JsonSerializerSettings
             df = ((DateTime)df).Date;
             var query = from x in context.ReportRosters
                         where x.STDDay == df
-                        orderby x.Register,x.STDLocal, x.STD
+                        orderby x.Register, x.STDLocal, x.STD
                         select x;
 
             var result = query.ToList();
@@ -9484,14 +9536,14 @@ new JsonSerializerSettings
             {
                 List<string> tickets = new List<string>();
                 foreach (var x in ticketQuery)
-                    tickets.Add("[ (" + x.PosAirline + " " + x.PosFrom + "-" + x.PosTo + " " + x.FlightNumber +" "+((DateTime)x.Start).ToString("HH:mm")+ ") " + x.ScheduleName + "(" + x.JobGroup + ")" + " ]");
+                    tickets.Add("[ (" + x.PosAirline + " " + x.PosFrom + "-" + x.PosTo + " " + x.FlightNumber + " " + ((DateTime)x.Start).ToString("HH:mm") + ") " + x.ScheduleName + "(" + x.JobGroup + ")" + " ]");
                 positioning += "  TICKET(s): " + string.Join(" ", tickets);
             }
             var dutiesQuery = (from x in context.ViewCrewDuties
                                where x.DateLocal == df && (x.DutyType == 1167 || x.DutyType == 1168 || x.DutyType == 300013 || x.DutyType == 1170 || x.DutyType == 5000 || x.DutyType == 5001
                                || x.DutyType == 100001 || x.DutyType == 100003)
                                select x).ToList();
-            var stby_ids = new List<int>() {1167,1168, 300013 };
+            var stby_ids = new List<int>() { 1167, 1168, 300013 };
             var duties = (from x in dutiesQuery
                           where !stby_ids.Contains(x.DutyType)
                           group x by new { x.DutyType, x.DutyTypeTitleAcType } into grp
@@ -9503,8 +9555,8 @@ new JsonSerializerSettings
                               {
                                   // Title = q.ScheduleName + " (" + q.JobGroup + ")",
                                   Title = grp.Key.DutyType != 300013 ? q.ScheduleName + " (" + q.JobGroup + ")" : q.ScheduleName + " (" + q.JobGroup + ")" + " (" + ((DateTime)q.Start).ToString("HHmm") + " - " + ((DateTime)q.End).ToString("HHmm") + ")",
-                                  IsCockpit= q.IsCockpit,
-                                 JobGroup=  q.JobGroup,
+                                  IsCockpit = q.IsCockpit,
+                                  JobGroup = q.JobGroup,
                                   GroupOrder = getOrder(q.JobGroup)
                               }).OrderBy(q => q.GroupOrder).ToList(),
                               itemsStr = string.Join(", ", grp.Select(q => new
@@ -9516,18 +9568,18 @@ new JsonSerializerSettings
                               }).OrderBy(q => q.GroupOrder).Select(q => q.Title).ToList())
                           }).OrderBy(q => q.DutyType).ToList();
             var stby_duties = (from x in dutiesQuery where stby_ids.Contains(x.DutyType) select x).ToList();
-            var stby_out = new List<out_duty>() { 
+            var stby_out = new List<out_duty>() {
              new out_duty(){DutyType=300013,DutyTypeTitle="STBY B737",aircraft_type="B737"},
              new out_duty(){DutyType=300013,DutyTypeTitle="STBY MD", aircraft_type="MD"},
             // new out_duty(){DutyType=300013,DutyTypeTitle="STBY AIRBUS", aircraft_type="AIRBUS"},
             // new out_duty(){DutyType=300013,DutyTypeTitle="STBY ERJ", aircraft_type="ERJ"},
 
             };
-            foreach(var row in stby_out)
+            foreach (var row in stby_out)
             {
                 row.items = stby_duties.Where(q => q.ValidTypesStr.Contains(row.aircraft_type)).Select(q => new out_duty_item()
                 {
-                     Title = row.DutyType != 300013 ? q.ScheduleName + " (" + q.JobGroup + ")" : q.ScheduleName + " (" + q.JobGroup + ")" + " (" + ((DateTime)q.Start).ToString("HHmm") + " - " + ((DateTime)q.End).ToString("HHmm") + ")",
+                    Title = row.DutyType != 300013 ? q.ScheduleName + " (" + q.JobGroup + ")" : q.ScheduleName + " (" + q.JobGroup + ")" + " (" + ((DateTime)q.Start).ToString("HHmm") + " - " + ((DateTime)q.End).ToString("HHmm") + ")",
                     IsCockpit = q.IsCockpit,
                     JobGroup = q.JobGroup,
                     GroupOrder = getOrder(q.JobGroup)
@@ -14969,6 +15021,15 @@ new JsonSerializerSettings
 
             return encoding.GetBytes(sbParameters.ToString());
 
+        }
+
+        private class DataResponse
+        {
+            public DataResponse()
+            {
+            }
+
+            public bool IsSuccess { get; set; }
         }
 
         //[Route("api/flight/status")]

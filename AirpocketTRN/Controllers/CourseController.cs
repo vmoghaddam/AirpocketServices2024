@@ -134,6 +134,15 @@ namespace AirpocketTRN.Controllers
 
             return Ok(result);
         }
+         
+       [Route("api/course/type/subject/{cid}")]
+        [AcceptVerbs("GET")]
+        public async Task<IHttpActionResult> GetCourseTypeSubject(int cid)
+        {
+            var result = await courseService.GetCourseTypeSubject(cid);
+
+            return Ok(result);
+        }
 
         [Route("api/course/type/groups/group/{gid}")]
         [AcceptVerbs("GET")]

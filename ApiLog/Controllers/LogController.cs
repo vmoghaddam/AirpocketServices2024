@@ -1587,18 +1587,18 @@ namespace ApiLog.Controllers
 
                 var flights = cid == 100 ? await flightsQuery.ToListAsync() : await flightsQuery.Where(q => q.CPDH == 0).ToListAsync();
 
-                
-                //if (airline == "AVA")
-                //{
-                //    var url = "https://pgs.logext.aerok.tech/api/flights/gantt/utc/customer/reg/4/"+from+"/"+to+"/0/83-SAP";
-                //    using (WebClient webClient = new WebClient())
-                //    {
-                //        var str = webClient.DownloadString(url);
-                //        var res = JsonConvert.DeserializeObject<List<ViewFlightsGanttNewDto>>(str);
-                //        flights = flights.Concat(res).ToList();
 
-                //    }
-                //}
+                if (airline == "AVA")
+                {
+                    var url = "https://pgs.logext.aerok.tech/api/flights/gantt/utc/customer/reg/4/" + from + "/" + to + "/0/83-SAP";
+                    using (WebClient webClient = new WebClient())
+                    {
+                        var str = webClient.DownloadString(url);
+                        var res = JsonConvert.DeserializeObject<List<ViewFlightsGanttNewDto>>(str);
+                        flights = flights.Concat(res).ToList();
+
+                    }
+                }
 
 
 
@@ -1903,14 +1903,14 @@ namespace ApiLog.Controllers
 
                 if (airline == "AVA")
                 {
-                    //var url = "https://pgs.logext.aerok.tech/api/flights/gantt/utc/customer/reg/4/" + from + "/" + to + "/0/83-SAP";
-                    //using (WebClient webClient = new WebClient())
-                    //{
-                    //    var str = webClient.DownloadString(url);
-                    //    var res = JsonConvert.DeserializeObject<List<ViewFlightsGanttNewDto>>(str);
-                    //    flights = flights.Concat(res).ToList();
+                    var url = "https://pgs.logext.aerok.tech/api/flights/gantt/utc/customer/reg/4/" + from + "/" + to + "/0/83-SAP";
+                    using (WebClient webClient = new WebClient())
+                    {
+                        var str = webClient.DownloadString(url);
+                        var res = JsonConvert.DeserializeObject<List<ViewFlightsGanttNewDto>>(str);
+                        flights = flights.Concat(res).ToList();
 
-                    //}
+                    }
 
 
                     List<string> regs = new List<string> { "33-LEE", "33-LEF", "83-LED" };

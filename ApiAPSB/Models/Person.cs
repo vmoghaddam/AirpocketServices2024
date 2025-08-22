@@ -520,6 +520,7 @@ namespace ApiAPSB.Models
         public Nullable<System.DateTime> ASD_SRY_ExpireDate { get; set; }
         public Nullable<System.DateTime> FTSL1IssueDate { get; set; }
         public Nullable<System.DateTime> FTSL1ExpireDate { get; set; }
+        public string PID { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PersonCustomer> PersonCustomers { get; set; }

@@ -79,9 +79,9 @@ namespace ApiForm.Controllers
                 var cockpit_grps = new List<string>() { "TRE", "TRI", "LTC", "NC", "P1", "P2" };
                 //4811
                 if (cockpit_grps.IndexOf(requester.JobGroup) != -1)
-                    form.ResponsibleId = 4151;
+                    form.ResponsibleId = 3526;
                 else
-                    form.ResponsibleId = 3928;
+                    form.ResponsibleId = 3399;
 
 
 
@@ -528,7 +528,7 @@ namespace ApiForm.Controllers
                         prts.Add("Dear " + applicant.Name);
                         prts.Add("Your Vaction/ Off request accepted.");
                         prts.Add("Please check your PulsePocket to see more details.");
-                        prts.Add("https://ava.pulsepocket.app");
+                        prts.Add("https://fleet.caspianairlines.com/webpocket");
 
                         text = String.Join("\n", prts);
                     }
@@ -538,7 +538,7 @@ namespace ApiForm.Controllers
                         prts.Add("Dear " + applicant.Name);
                         prts.Add("Your Vaction/ Off request rejected.");
                         prts.Add("Please check your PulsePocket to see more details.");
-                        prts.Add("https://ava.pulsepocket.app");
+                        prts.Add("https://fleet.caspianairlines.com/webpocket");
 
                         text = String.Join("\n", prts);
                     }

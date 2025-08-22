@@ -35,6 +35,7 @@ namespace AirpocketTRN.ViewModels
         public string Abbreviation { get; set; }
         public string Category { get; set; }
         public List<RelatedJobGroupSimple> JobGroups { get; set; }
+        public List<ViewCourseType> CourseTypes { get; set; }
         public static void Fill(Models.CourseType entity, ViewModels.CourseTypeViewModel coursetype)
         {
             entity.Id = coursetype.Id;
@@ -177,6 +178,7 @@ namespace AirpocketTRN.ViewModels
         public int Duration { get; set; }
         public int CourseTypeId { get; set; }
         public int CurrencyId { get; set; }
+        public int Instructor2 { get; set; }
         public List<string> Sessions { get; set; }
         public string Remark { get; set; }
         public int Interval { get; set; }
@@ -198,6 +200,7 @@ namespace AirpocketTRN.ViewModels
        
         public Nullable<int> Duration { get; set; }
         public Nullable<int> DurationUnitId { get; set; }
+        public Nullable<int> Interval { get; set; }
         public Nullable<int> StatusId { get; set; }
         public string Status { get; set; }
         public string Remark { get; set; }

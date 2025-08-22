@@ -18,11 +18,11 @@ namespace ApiAPSB.Models
         public FlightInformation()
         {
             this.FDPItems = new HashSet<FDPItem>();
-            this.EFBDSPReleases = new HashSet<EFBDSPRelease>();
             this.EFBVoyageReports = new HashSet<EFBVoyageReport>();
             this.EFBASRs = new HashSet<EFBASR>();
-            this.frm_onboard_status = new HashSet<frm_onboard_status>();
             this.OFPImports = new HashSet<OFPImport>();
+            this.frm_onboard_status = new HashSet<frm_onboard_status>();
+            this.EFBDSPReleases = new HashSet<EFBDSPRelease>();
         }
     
         public int ID { get; set; }
@@ -328,16 +328,16 @@ namespace ApiAPSB.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FDPItem> FDPItems { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<EFBDSPRelease> EFBDSPReleases { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EFBVoyageReport> EFBVoyageReports { get; set; }
         public virtual Airport Airport { get; set; }
         public virtual Airport Airport1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EFBASR> EFBASRs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<OFPImport> OFPImports { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<frm_onboard_status> frm_onboard_status { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<OFPImport> OFPImports { get; set; }
+        public virtual ICollection<EFBDSPRelease> EFBDSPReleases { get; set; }
     }
 }
