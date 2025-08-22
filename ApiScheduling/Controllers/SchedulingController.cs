@@ -2734,6 +2734,7 @@ namespace ApiScheduling.Controllers
             int rest_after_post_flight = Convert.ToInt32(ConfigurationManager.AppSettings["rest_after_post_flight"]);
             int rerrp_check = Convert.ToInt32(ConfigurationManager.AppSettings["rerrp_check"]);
             int post_flight = Convert.ToInt32(ConfigurationManager.AppSettings["post_flight"]);
+          
             int _ln = 1;
             if (dto.Id == -100)
             {
@@ -2758,6 +2759,9 @@ namespace ApiScheduling.Controllers
             }
             _ln = 2;
             double default_reporting = Convert.ToInt32(ConfigurationManager.AppSettings["reporting"]);
+
+            if (dto.from == 140866)
+             default_reporting = Convert.ToInt32(ConfigurationManager.AppSettings["int_reporting"]);
             _ln = 3;
             var context = new Models.dbEntities();
             try
