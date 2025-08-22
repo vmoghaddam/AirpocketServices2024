@@ -223,6 +223,7 @@ namespace AirpocketTRN.Services
                 person.UserId = dto.UserId;
                 person.ImageUrl = dto.ImageUrl;
                 person.PostalCode = dto.PostalCode;
+                person.PID = dto.NID.Replace("-", "");
 
                 var _teacher = await context.Teachers.FirstOrDefaultAsync(q => q.PersonId == person.Id);
                 if (_teacher != null)

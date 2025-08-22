@@ -27,6 +27,7 @@ using AirpocketTRN.Services;
 using System.Web.Http.OData;
 using AirpocketTRN.ViewModels;
 using System.Web;
+using static AirpocketTRN.Services.CourseService;
 
 namespace AirpocketTRN.Controllers
 {
@@ -805,6 +806,15 @@ namespace AirpocketTRN.Controllers
         public async Task<IHttpActionResult> PostCourseSessionPresence(dynamic dto)
         {
             var result = await courseService.SaveCourseSessionPresence(dto);
+
+            return Ok(result);
+        }
+
+        [Route("api/course/session/pres/save/all")]
+        [AcceptVerbs("POST")]
+        public async Task<IHttpActionResult> PostCourseSessionPresenceAll(cspg_dto dto)
+        {
+            var result = await courseService.SaveCourseSessionPresenceAll(dto);
 
             return Ok(result);
         }

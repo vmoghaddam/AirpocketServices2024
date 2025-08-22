@@ -369,7 +369,7 @@ namespace ApiFDM.Controllers
                             grp.Key.arr_id,
                             grp.Key.arr_iata,
                             grp.Key.arr_icao,
-                            route = grp.Key.dep_iata + '_' + grp.Key.arr_iata,
+                            route = grp.Key.dep_iata + "-" + grp.Key.arr_iata,
                             count = grp.Count(),
                             high_count = grp.Sum(g => g.severity == "High" ? 1 : 0),
                             medium_count = grp.Sum(g => g.severity == "Medium" ? 1 : 0),
@@ -378,7 +378,7 @@ namespace ApiFDM.Controllers
                                      grp.Sum(g => g.severity == "Medium" ? 1 : 0) * 2 +
                                      grp.Sum(g => g.severity == "Low" ? 1 : 0)
                         };
-
+            
             var query_flights = from x in context.FlightInformations
                                 join y in context.ViewMSNs on x.RegisterID equals y.ID
                                 where x.STD >= dt1 && x.STD <= dt2 && (x.FlightStatusID == 3 || x.FlightStatusID == 15 || x.FlightStatusID == 7 || x.FlightStatusID == 17)
@@ -401,13 +401,13 @@ namespace ApiFDM.Controllers
                                              q.register_id,
                                              q.register,
                                              q.ac_type,
-                                             matchedResult.dep_id,
-                                             matchedResult.dep_icao,
-                                             matchedResult.dep_iata,
-                                             matchedResult.arr_id,
-                                             matchedResult.arr_iata,
-                                             matchedResult.arr_icao,
-                                             route = matchedResult.dep_iata + '-' + matchedResult.arr_iata,
+                                             dep_id= matchedResult != null ? matchedResult.dep_id:-1,
+                                             dep_icao= matchedResult != null ? matchedResult.dep_icao:"",
+                                             dep_iata= matchedResult != null ? matchedResult.dep_iata:"",
+                                             arr_id= matchedResult != null ? matchedResult.arr_id:-1,
+                                             arr_iata= matchedResult != null ? matchedResult.arr_iata:"",
+                                             arr_icao= matchedResult != null ? matchedResult.arr_icao:"",
+                                             route = matchedResult!=null? matchedResult.dep_iata + "-" + matchedResult.arr_iata:"",
                                              flight_count = q.count,
                                              event_count = matchedResult?.count ?? 0,
                                              high_count = matchedResult?.high_count ?? 0,
@@ -443,7 +443,9 @@ namespace ApiFDM.Controllers
                                          low_score = grp.Sum(q => q.low_score),
                                          total_score = grp.Sum(q => q.total_score),
                                          score_per_event = Math.Round(grp.Sum(q => q.total_score) * 1.0 / grp.Sum(q => q.event_count), 1),
-                                         score_per_flight = Math.Round(grp.Sum(q => q.total_score) * 1.0 / grp.Sum(q => q.flight_count), 1)
+                                         score_per_flight = Math.Round(grp.Sum(q => q.total_score) * 1.0 / grp.Sum(q => q.flight_count), 1),
+                                         //registers= result_register_route.Where(q=>q.ac_type== grp.Key.ac_type && q.route== grp.Key.route).OrderByDescending(q=>q.score_per_flight).ToList(),
+                                         registers=grp.ToList(),
                                      }).ToList();
 
 

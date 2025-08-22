@@ -397,8 +397,17 @@ namespace ApiSand.Controllers
             };
         }
 
-
-
+        [Route("api/doc2")]
+        public async Task<DataResponse> get_doc2()
+        {
+            DocxToJson.Program cls = new DocxToJson.Program();
+            cls.execute();
+            return new DataResponse()
+            {
+                Data = true,
+                IsSuccess = true
+            };
+        }
     }
 
 

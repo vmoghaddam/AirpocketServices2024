@@ -4027,23 +4027,23 @@ namespace ApiAPSB.Controllers
                         var filled = x.items.Where(q => q.name.Contains("_ata") && !string.IsNullOrEmpty(q.value)).Count();
                         _msgs.Add(filled.ToString());
 
-                        if (hrs2 >= 1 && /*filled < hrs - 1*/filled < hrs2_int + 2)
-                        {
-                            //errors.Add(new _h_error()
-                            //{
-                            //    flight_no = x.ofp.FlightNo,
-                            //    route = x.ofp.Origin + "-" + x.ofp.Destination,
-                            //    toc = false,
-                            //    tod = false,
-                            //    toc_tod = true,
-                            //});
-                            var _err = errors.Where(q => q.flight_no == x.ofp.FlightNo).FirstOrDefault();
-                            if (_err != null)
-                            {
-                                _err.toc_tod = true;
+                        //if (hrs2 >= 1 && /*filled < hrs - 1*/filled < hrs2_int + 2)
+                        //{
+                        //    //errors.Add(new _h_error()
+                        //    //{
+                        //    //    flight_no = x.ofp.FlightNo,
+                        //    //    route = x.ofp.Origin + "-" + x.ofp.Destination,
+                        //    //    toc = false,
+                        //    //    tod = false,
+                        //    //    toc_tod = true,
+                        //    //});
+                        //    var _err = errors.Where(q => q.flight_no == x.ofp.FlightNo).FirstOrDefault();
+                        //    if (_err != null)
+                        //    {
+                        //        _err.toc_tod = true;
 
-                            }
-                        }
+                        //    }
+                        //}
                     }
                     if (rvsm_check)
                     {
