@@ -63,9 +63,9 @@ namespace DocxToJson
         {
             try
             {
+                ppa_entities context = new ppa_entities();
 
-
-                var input = @"C:\Users\vahid\Desktop\ava\Hozor Ghiab\145";
+                var input = @"C:\Users\vahid\Desktop\ava\Hozor Ghiab\organizational behaviour";
                 var outputFolder = @"C:\Users\vahid\Desktop\ava\Hozor Ghiab\___json";
 
                 var files = new List<string>();
@@ -116,11 +116,18 @@ namespace DocxToJson
                     }
                     catch (Exception ex)
                     {
+                        ava_error err = new ava_error()
+                        {
+                             file_path=path,
+                              description=ex.Message,
+                              file_name= Path.GetFileName(path),
+                        };
+                        context.ava_error.Add(err);
                         Console.WriteLine($"ERR → {Path.GetFileName(path)} :: {ex.Message}");
                         fail++;
                     }
                 }
-
+                context.SaveChanges();
                 Console.WriteLine($"Done. Success: {ok}, Failed: {fail}");
                 return 0;
             }
