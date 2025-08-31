@@ -181,6 +181,31 @@ namespace AirpocketAPI.Controllers
             });
         }
 
+        [HttpPost]
+        [Route("api/fixtime/delete")]
+        public async Task<IHttpActionResult> DeleteFixtime(FixTime model)
+        {
+
+
+            using (var context = new AirpocketAPI.Models.FLYEntities())
+            {
+                var fixtime = context.FixTimes.FirstOrDefault(q => q.Route == model.Route);
+
+
+                if (fixtime == null)
+            return NotFound();
+
+                context.FixTimes.Remove(fixtime);
+                await context.SaveChangesAsync();
+            }
+
+            return Ok(new DataResponse
+            {
+                IsSuccess = true,
+                
+            });
+        }
+
 
 
 
