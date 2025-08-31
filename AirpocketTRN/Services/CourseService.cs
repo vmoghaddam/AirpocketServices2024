@@ -3966,6 +3966,8 @@ namespace AirpocketTRN.Services
             public int cid { get; set; }
             public string sid { get; set; }
             public List<int?> pid { get; set; }
+
+            public bool value { get; set; }
         }
         public async Task<DataResponse> SaveCourseSessionPresenceGroup(cspg_dto dto)
         {
@@ -3996,6 +3998,54 @@ namespace AirpocketTRN.Services
                 }
 
             }
+
+            await context.SaveChangesAsync();
+
+            return new DataResponse()
+            {
+                IsSuccess = true,
+                Data = dto,
+            };
+        }
+
+
+        public async Task<DataResponse> SaveCourseSessionPresenceAll(cspg_dto dto)
+        {
+            int courseId = dto.cid;
+            var subjects = await context.Courses.Where(q => q.ParentId == dto.cid).Select(q =>(Nullable<int>) q.Id).ToListAsync();
+            subjects.Add(courseId);
+            var query = from x in context.CourseSessionPresences
+                        where subjects.Contains(x.CourseId)
+                        select x;
+            var rows = await query.ToListAsync();
+            context.CourseSessionPresences.RemoveRange(rows);
+            if (dto.value)
+            {
+                if (subjects.Count > 1)
+                      subjects.Remove(courseId);
+                foreach(var cid in subjects)
+                {
+                    var sessions = await context.CourseSessions.Where(q => q.CourseId == cid).ToListAsync();
+                    var people = await context.CoursePeoples.Where(q => q.CourseId == cid).ToListAsync();
+                    foreach (var p in people)
+                    {
+                        foreach (var s in sessions)
+                        {
+                            context.CourseSessionPresences.Add(new CourseSessionPresence()
+                            {
+                                PersonId = p.PersonId,
+                                SessionKey = s.Key,
+                                CourseId = cid,
+                                Date = DateTime.Now
+                            });
+                        }
+                    }
+                }
+               
+            }
+
+
+            
 
             await context.SaveChangesAsync();
 

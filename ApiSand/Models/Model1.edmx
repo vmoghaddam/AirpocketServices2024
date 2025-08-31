@@ -5,6 +5,49 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="ppaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ava_course">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CourseTitle" Type="nvarchar" MaxLength="1000" />
+          <Property Name="StartDate" Type="datetime2" Precision="7" />
+          <Property Name="EndDate" Type="datetime2" Precision="7" />
+          <Property Name="Duration_Days" Type="int" />
+          <Property Name="Duration_Hours" Type="int" />
+          <Property Name="Instructor" Type="nvarchar" MaxLength="1000" />
+          <Property Name="filename" Type="nvarchar" MaxLength="1000" />
+          <Property Name="filepath" Type="nvarchar(max)" />
+          <Property Name="participants_count" Type="int" />
+          <Property Name="sessions_count" Type="int" />
+        </EntityType>
+        <EntityType Name="ava_error">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="description" Type="varchar" MaxLength="2000" />
+          <Property Name="file_path" Type="nvarchar(max)" />
+          <Property Name="file_name" Type="nvarchar" MaxLength="1000" />
+        </EntityType>
+        <EntityType Name="ava_session">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="course_id" Type="int" Nullable="false" />
+          <Property Name="remark" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="ava_student">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="course_id" Type="int" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="1000" />
+          <Property Name="name_fa" Type="nvarchar" MaxLength="1000" />
+          <Property Name="attendance" Type="varchar" MaxLength="1000" />
+        </EntityType>
         <EntityType Name="fly_course">
           <Key>
             <PropertyRef Name="id" />
@@ -43,19 +86,50 @@
           <Property Name="person_id" Type="int" />
           <Property Name="course_id" Type="int" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'ppa_ava.dbo.fly_person' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="fly_person">
-          <Property Name="first_name" Type="nvarchar" MaxLength="1000" />
-          <Property Name="last_name" Type="nvarchar" MaxLength="1000" />
-          <Property Name="id" Type="int" />
-        </EntityType>-->
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_ava.dbo.AppFuel' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <Association Name="fk_1000">
+          <End Role="ava_course" Type="Self.ava_course" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ava_session" Type="Self.ava_session" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ava_course">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ava_session">
+              <PropertyRef Name="course_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_2002">
+          <End Role="ava_course" Type="Self.ava_course" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ava_student" Type="Self.ava_student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ava_course">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ava_student">
+              <PropertyRef Name="course_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="ppaModelStoreContainer">
+          <EntitySet Name="ava_course" EntityType="Self.ava_course" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ava_error" EntityType="Self.ava_error" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ava_session" EntityType="Self.ava_session" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ava_student" EntityType="Self.ava_student" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="fly_course" EntityType="Self.fly_course" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="fly_course_session" EntityType="Self.fly_course_session" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="fly_course_student" EntityType="Self.fly_course_student" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="fk_1000" Association="Self.fk_1000">
+            <End Role="ava_course" EntitySet="ava_course" />
+            <End Role="ava_session" EntitySet="ava_session" />
+          </AssociationSet>
+          <AssociationSet Name="fk_2002" Association="Self.fk_2002">
+            <End Role="ava_course" EntitySet="ava_course" />
+            <End Role="ava_student" EntitySet="ava_student" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -65,6 +139,18 @@ warning 6002: The table/view 'ppa_ava.dbo.AppFuel' does not have a primary key d
           <EntitySet Name="fly_course" EntityType="ppaModel.fly_course" />
           <EntitySet Name="fly_course_session" EntityType="ppaModel.fly_course_session" />
           <EntitySet Name="fly_course_student" EntityType="ppaModel.fly_course_student" />
+          <EntitySet Name="ava_course" EntityType="ppaModel.ava_course" />
+          <EntitySet Name="ava_student" EntityType="ppaModel.ava_student" />
+          <AssociationSet Name="fk_2002" Association="ppaModel.fk_2002">
+            <End Role="ava_course" EntitySet="ava_course" />
+            <End Role="ava_student" EntitySet="ava_student" />
+          </AssociationSet>
+          <EntitySet Name="ava_session" EntityType="ppaModel.ava_session" />
+          <AssociationSet Name="fk_1000" Association="ppaModel.fk_1000">
+            <End Role="ava_course" EntitySet="ava_course" />
+            <End Role="ava_session" EntitySet="ava_session" />
+          </AssociationSet>
+          <EntitySet Name="ava_error" EntityType="ppaModel.ava_error" />
         </EntityContainer>
         <EntityType Name="fly_course">
           <Key>
@@ -103,6 +189,79 @@ warning 6002: The table/view 'ppa_ava.dbo.AppFuel' does not have a primary key d
           <Property Name="row_no" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="person_id" Type="Int32" />
           <Property Name="course_id" Type="Int32" />
+        </EntityType>
+        <EntityType Name="ava_course">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CourseTitle" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="StartDate" Type="DateTime" Precision="7" />
+          <Property Name="EndDate" Type="DateTime" Precision="7" />
+          <Property Name="Duration_Days" Type="Int32" />
+          <Property Name="Duration_Hours" Type="Int32" />
+          <Property Name="Instructor" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="filename" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="filepath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="participants_count" Type="Int32" />
+          <Property Name="sessions_count" Type="Int32" />
+          <NavigationProperty Name="ava_student" Relationship="ppaModel.fk_2002" FromRole="ava_course" ToRole="ava_student" />
+          <NavigationProperty Name="ava_session" Relationship="ppaModel.fk_1000" FromRole="ava_course" ToRole="ava_session" />
+        </EntityType>
+        <EntityType Name="ava_student">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="course_id" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="name_fa" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="attendance" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ava_course" Relationship="ppaModel.fk_2002" FromRole="ava_student" ToRole="ava_course" />
+        </EntityType>
+        <Association Name="fk_2002">
+          <End Type="ppaModel.ava_course" Role="ava_course" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ppaModel.ava_student" Role="ava_student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ava_course">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ava_student">
+              <PropertyRef Name="course_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ava_session">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="course_id" Type="Int32" Nullable="false" />
+          <Property Name="remark" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ava_course" Relationship="ppaModel.fk_1000" FromRole="ava_session" ToRole="ava_course" />
+        </EntityType>
+        <Association Name="fk_1000">
+          <End Type="ppaModel.ava_course" Role="ava_course" Multiplicity="1" />
+          <End Type="ppaModel.ava_session" Role="ava_session" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ava_course">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ava_session">
+              <PropertyRef Name="course_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ava_error">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="description" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="file_path" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="file_name" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -147,6 +306,53 @@ warning 6002: The table/view 'ppa_ava.dbo.AppFuel' does not have a primary key d
                 <ScalarProperty Name="last_name" ColumnName="last_name" />
                 <ScalarProperty Name="first_name" ColumnName="first_name" />
                 <ScalarProperty Name="key" ColumnName="key" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ava_course">
+            <EntityTypeMapping TypeName="ppaModel.ava_course">
+              <MappingFragment StoreEntitySet="ava_course">
+                <ScalarProperty Name="sessions_count" ColumnName="sessions_count" />
+                <ScalarProperty Name="participants_count" ColumnName="participants_count" />
+                <ScalarProperty Name="filepath" ColumnName="filepath" />
+                <ScalarProperty Name="filename" ColumnName="filename" />
+                <ScalarProperty Name="Instructor" ColumnName="Instructor" />
+                <ScalarProperty Name="Duration_Hours" ColumnName="Duration_Hours" />
+                <ScalarProperty Name="Duration_Days" ColumnName="Duration_Days" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="CourseTitle" ColumnName="CourseTitle" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ava_student">
+            <EntityTypeMapping TypeName="ppaModel.ava_student">
+              <MappingFragment StoreEntitySet="ava_student">
+                <ScalarProperty Name="attendance" ColumnName="attendance" />
+                <ScalarProperty Name="name_fa" ColumnName="name_fa" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="course_id" ColumnName="course_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ava_session">
+            <EntityTypeMapping TypeName="ppaModel.ava_session">
+              <MappingFragment StoreEntitySet="ava_session">
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="course_id" ColumnName="course_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ava_error">
+            <EntityTypeMapping TypeName="ppaModel.ava_error">
+              <MappingFragment StoreEntitySet="ava_error">
+                <ScalarProperty Name="file_name" ColumnName="file_name" />
+                <ScalarProperty Name="file_path" ColumnName="file_path" />
+                <ScalarProperty Name="description" ColumnName="description" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

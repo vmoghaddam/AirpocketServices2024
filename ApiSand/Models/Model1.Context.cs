@@ -28,5 +28,9 @@ namespace ApiSand.Models
         public virtual DbSet<fly_course> fly_course { get; set; }
         public virtual DbSet<fly_course_session> fly_course_session { get; set; }
         public virtual DbSet<fly_course_student> fly_course_student { get; set; }
+        public virtual DbSet<ava_course> ava_course { get; set; }
+        public virtual DbSet<ava_student> ava_student { get; set; }
+        public virtual DbSet<ava_session> ava_session { get; set; }
+        public virtual DbSet<ava_error> ava_error { get; set; }
     }
 }

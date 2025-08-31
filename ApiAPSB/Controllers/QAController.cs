@@ -64,29 +64,29 @@ namespace ApiAPSB.Controllers
 
         }
 
-        [HttpGet]
-        [Route("api/qa/sf/ground/{id}")]
-        public async Task<IHttpActionResult> GetQaSF_Ground(int id)
-        {
-            var context = new Models.dbEntities();
-            var form = await context.ViewQAGrounds.Where(q => q.Id == id).FirstOrDefaultAsync();
-            return Ok(form);
+        //[HttpGet]
+        //[Route("api/qa/sf/ground/{id}")]
+        //public async Task<IHttpActionResult> GetQaSF_Ground(int id)
+        //{
+        //    var context = new Models.dbEntities();
+        //    var form = await context.ViewQAGrounds.Where(q => q.Id == id).FirstOrDefaultAsync();
+        //    return Ok(form);
 
 
 
-        }
+        //}
 
-        [HttpGet]
-        [Route("api/qa/sf/hazard/{id}")]
-        public async Task<IHttpActionResult> GetQaSF_Hazard(int id)
-        {
-            var context = new Models.dbEntities();
-            var form = await context.ViewQAHazards.Where(q => q.Id == id).FirstOrDefaultAsync();
-            return Ok(form);
+        //[HttpGet]
+        //[Route("api/qa/sf/hazard/{id}")]
+        //public async Task<IHttpActionResult> GetQaSF_Hazard(int id)
+        //{
+        //    var context = new Models.dbEntities();
+        //    var form = await context.ViewQAHazards.Where(q => q.Id == id).FirstOrDefaultAsync();
+        //    return Ok(form);
 
 
 
-        }
+        //}
 
     }
 }

@@ -69,7 +69,7 @@ namespace XAPI.Controllers
 
         public IHttpActionResult GetFlt(DateTime dt, string origin, string destination, string no, string key)
         {
-            if (key != "taban@1359A")
+            if (key != "ava@2025A")
                 return BadRequest("Not Authorized");
             var ctx = new PPAEntities();
             var _dt = dt.Date;
@@ -2235,7 +2235,7 @@ namespace XAPI.Controllers
         }
         [Route("api/skyputer/jsky")]
         [AcceptVerbs("POST")]
-        public IHttpActionResult PostSkyputerJsky(skyputer dto)
+        public IHttpActionResult PostSkyputerJsky1(skyputer dto)
         {
             try
             {

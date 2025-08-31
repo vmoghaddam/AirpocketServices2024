@@ -174,7 +174,7 @@ namespace ApiScheduling.ViewModel
 
         public List<RosterFDPDtoItem> items { get; set; }
 
-        public double getDuty(double? default_reporting=60)
+        public double getDuty(double? default_reporting)
         {
             var def = (double)default_reporting;
             return (this.items.Last().sta.AddMinutes(30) - this.items.First().std.AddMinutes(-1*def)).TotalMinutes;

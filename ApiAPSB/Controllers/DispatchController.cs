@@ -3444,7 +3444,7 @@ public void send_vr_notification_magfa(EFBVoyageReport asr, ViewEmployee employe
             //prts.Add("Dear ");
             prts.Add("Dear " + asr.PIC);
             prts.Add("Please click on the below link to see details.");
-            prts.Add("https://fleet.flypersiaairlines.ir/reportefb/frmreportview.aspx?type=19&fid=" + asr.FlightId);
+            prts.Add("https://report.apvaresh.com/frmreportview.aspx?type=19&fid=" + asr.FlightId);
             prts.Add("Date: " + ((DateTime)flight.STDLocal).ToString("yyyy-MM-dd"));
             prts.Add("Route: " + flight.FromAirportIATA + "-" + flight.ToAirportIATA);
             prts.Add("Register: " + flight.Register);
@@ -3468,7 +3468,7 @@ public void send_vr_notification_magfa(EFBVoyageReport asr, ViewEmployee employe
                 prts2.Add("Dear " + rec.rec_name);
                 prts2.Add("Please click on the below link to see details.");
 
-                prts2.Add("https://fleet.flypersiaairlines.ir/reportefb/frmreportview.aspx?type=19&fid=" + asr.FlightId);
+                prts2.Add("https://report.apvaresh.com/frmreportview.aspx?type=19&fid=" + asr.FlightId);
                 prts2.Add("Date: " + ((DateTime)flight.STDLocal).ToString("yyyy-MM-dd"));
                 prts2.Add("Route: " + flight.FromAirportIATA + "-" + flight.ToAirportIATA);
                 prts2.Add("Register: EP-" + flight.Register);

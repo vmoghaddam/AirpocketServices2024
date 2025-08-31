@@ -283,20 +283,20 @@ namespace ApiMSG.Controllers
         {
             var context = new ppa_vareshEntities();
             var ps = context.People.Where(q => q.UserId != null).Select(q => q.UserId).ToList();
-            //var users=context.AspNetUsers.Where(q=>q.LockoutEnabled==false && ps.Contains(q.Id)).Select(q=>q.UserName).ToList();
-            var users = new List<string>() { "p.naji",
-"s.naghizadeh",
-"s.faal",
-"m.asiaban",
-"S.Souri",
-"z.ghafari",
-"n.talebi",
-"m.ramezani",
-"m.kiaei",
-"Me.Zarei",
-"h.aramoon",
-"D.MAHMOUDI",
-"a.alishah"};
+            var users=context.AspNetUsers.Where(q=>q.LockoutEnabled==false && ps.Contains(q.Id)).Select(q=>q.UserName).ToList();
+//            var users = new List<string>() { "p.naji",
+//"s.naghizadeh",
+//"s.faal",
+//"m.asiaban",
+//"S.Souri",
+//"z.ghafari",
+//"n.talebi",
+//"m.ramezani",
+//"m.kiaei",
+//"Me.Zarei",
+//"h.aramoon",
+//"D.MAHMOUDI",
+//"a.alishah"};
             List<IdDel> result = new List<IdDel>();
             foreach (var user in users)
             {
@@ -304,7 +304,7 @@ namespace ApiMSG.Controllers
                 result.Add(new IdDel() { Username = user, Message = result9 });
             }
             result = result.Where(q => q.Message.Contains("Bad Request")).OrderBy(q => q.Username).ToList();
-            return Ok(result.Select(q => q.Username).ToList());
+            return Ok(result.ToList());
         }
         public static async Task<string> PostDataAsync(string username, string text)
         {
