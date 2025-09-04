@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.IO;
 using System.Linq;
@@ -392,11 +393,13 @@ namespace ApiReportFlight.Controllers
 
             string crew_types = "";// "21,22,26" ;
             if (actype == "AIRBUS")
-                crew_types = "26";
+                crew_types = "AB";
             if (actype == "MD")
-                crew_types = "21";
+                crew_types = "MD";
             if (actype == "FOKKER")
                 crew_types = "22";
+            if (actype == "737")
+                crew_types = "737";
 
             List<int?> registers = new List<int?>();
             if (regs!="All")
@@ -674,10 +677,10 @@ namespace ApiReportFlight.Controllers
                 }
                 foreach (var rec in nofdps)
                 {
-                    if (rec.DutyTypeTitle == "StandBy")
+                    if (rec.DutyTypeTitle == "StandBy" || rec.DutyTypeTitle == "STBY-C")
                     {
                         crew.Standby += rec.Count;
-                        crew.StandbyFixTime += rec.Count * 120;
+                        crew.StandbyFixTime += rec.Count * Convert.ToInt32(ConfigurationManager.AppSettings["fix_stby"]); ;
 
                     }
                     if (rec.DutyTypeTitle == "STBY-PM")
