@@ -31,6 +31,7 @@ namespace ApiFDM.Controllers
             }
         
             dt2 = dt2.AddDays(1);
+
             var query = from x in context.view_fdm_processed
                         where x.std >= dt1 && x.std <= dt2
                         group x by new { x.register_id, x.register, x.ac_type2 } into grp
