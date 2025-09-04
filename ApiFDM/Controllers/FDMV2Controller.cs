@@ -11,12 +11,1220 @@ using System.Data.Entity;
 
 using System.Data.SqlClient;
 using System.Web.Http.Results;
+using System.Security.Claims;
+using System.Data.Entity.SqlServer;
+using Remotion.Collections;
 
 namespace ApiFDM.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class FDMV2Controller : ApiController
     {
+        // DTOهای خروجی (بیرون از متد تعریف شوند)
+        public sealed class TrendPoint
+        {
+            public DateTime Date { get; set; }
+            public int Count { get; set; }
+            public int FlightCount { get; set; }
+            public int HighCount { get; set; }
+            public int MediumCount { get; set; }
+            public int LowCount { get; set; }
+            public int TotalScore { get; set; }
+            public double EventRatePer100 { get; set; }
+            public double Ewma { get; set; }
+            public double CusumPos { get; set; }
+            public double CusumNeg { get; set; }
+            public bool Alarm { get; set; }
+        }
+        public sealed class ParetoItem
+        {
+            public string EventTitle { get; set; } = "";
+            public int Count { get; set; }
+            public double Percent { get; set; }       // سهم هر آیتم از کل (%)
+            public double Cumulative { get; set; }    // درصد تجمعی (%)
+        }
+        public sealed class ParetoResponse
+        {
+            public object Config { get; set; }
+            public IReadOnlyList<ParetoItem> Items { get; set; }
+            public int Total { get; set; }
+        }
+        public class FleetAvgMetrics
+        {
+            public double avg_high_count_per100 { get; set; }
+            public double avg_medium_count_per100 { get; set; }
+            public double avg_low_count_per100 { get; set; }
+            public double avg_total_count_per100 { get; set; }
+
+            public double avg_high_score_per_flight { get; set; }
+            public double avg_medium_score_per_flight { get; set; }
+            public double avg_low_score_per_flight { get; set; }
+            public double avg_total_score_per_flight { get; set; }
+        };
+
+
+        //-----------------EWMA----------------------------------------
+        [Route("api/fdm/V2/EWMAAllevents/{dt1}/{dt2}")]
+        public async Task<DataResponse> get_EWMAAllevents(DateTime dt1, DateTime dt2)
+        {
+            // پارامترها
+            double alpha = 0.30; // 0..1
+            double kFactor = 0.50; // بر حسب σ
+            double hFactor = 5.00; // بر حسب σ
+
+            //FDMEntities context = new FDMEntities();
+            try
+            {
+                using (var context = new FDMEntities())
+                {
+                    var dt2Exclusive = dt2.Date.AddDays(1);
+                    // تجمیع روزانه در SQL
+                    var daily = await (
+                        from x in context.view_fdm_processed.AsNoTracking()
+                        where x.std >= dt1 && x.std < dt2Exclusive
+                        group x by DbFunctions.TruncateTime(x.std) into grp
+                        orderby grp.Key
+                        select new
+                        {
+                            std_date = grp.Key, // Nullable<DateTime>
+                            count = grp.Count(),
+                            flight_count = grp.Max(g => (int?)g.flight_count) ?? 1, // Max طبق خواسته شما
+                            high_count = grp.Sum(g => g.severity == "High" ? 1 : 0),
+                            medium_count = grp.Sum(g => g.severity == "Medium" ? 1 : 0),
+                            low_count = grp.Sum(g => g.severity == "Low" ? 1 : 0),
+                            total_score = grp.Sum(g =>
+                                g.severity == "High" ? 4 :
+                                g.severity == "Medium" ? 2 :
+                                g.severity == "Low" ? 1 : 0
+                            ),
+                            event_rate_per_100 =
+                                (grp.Count() * 100.0) / (double)(grp.Max(g => (int?)g.flight_count) ?? 1)
+                        }
+                    ).ToListAsync();
+                    // اگر خالی بود
+                    if (daily.Count == 0)
+                    {
+                        return new DataResponse
+                        {
+                            Data = new
+                            {
+                                config = new { alpha, kFactor, hFactor, dt1, dt2 },
+                                items = Array.Empty<TrendPoint>(),
+                                stats = new { meanRate = 0.0, stdRate = 0.0 }
+                            },
+                            IsSuccess = true
+                        };
+                    }
+                    // مرتب‌سازی و تبدیل به ساختار میانی
+                    var rows = daily
+                        .Where(r => r.std_date.HasValue)
+                        .OrderBy(r => r.std_date.Value)
+                        .Select(r => new
+                        {
+                            date = r.std_date.Value,
+                            r.count,
+                            r.flight_count,
+                            r.high_count,
+                            r.medium_count,
+                            r.low_count,
+                            r.total_score,
+                            r.event_rate_per_100
+                        })
+                        .ToList();
+
+                    // سری نرخ‌ها
+                    var rates = rows.Select(r => r.event_rate_per_100).ToArray();
+
+                    // EWMA
+                    var ewma = new double[rates.Length];
+                    for (int i = 0; i < rates.Length; i++)
+                        ewma[i] = i == 0 ? rates[i] : (alpha * rates[i] + (1 - alpha) * ewma[i - 1]);
+
+                    // CUSUM
+                    double mean = rates.Average();
+                    double std = Math.Sqrt(rates.Select(r => Math.Pow(r - mean, 2)).DefaultIfEmpty(0).Average());
+                    if (std == 0) std = 1; // جلوگیری از صفر
+
+                    double k = kFactor * std;
+                    double h = hFactor * std;
+
+                    var cpos = new double[rates.Length];
+                    var cneg = new double[rates.Length];
+                    var alarm = new bool[rates.Length];
+
+                    for (int i = 1; i < rates.Length; i++)
+                    {
+                        cpos[i] = Math.Max(0, cpos[i - 1] + (rates[i] - mean - k));
+                        cneg[i] = Math.Min(0, cneg[i - 1] + (rates[i] - mean + k));
+                        alarm[i] = cpos[i] > h || Math.Abs(cneg[i]) > h;
+                    }
+                    // مونتاژ خروجی
+                    var items = new List<TrendPoint>(rows.Count);
+                    for (int i = 0; i < rows.Count; i++)
+                    {
+                        var r = rows[i];
+                        items.Add(new TrendPoint
+                        {
+                            Date = r.date,
+                            Count = r.count,
+                            FlightCount = r.flight_count,
+                            HighCount = r.high_count,
+                            MediumCount = r.medium_count,
+                            LowCount = r.low_count,
+                            TotalScore = r.total_score,
+                            EventRatePer100 = r.event_rate_per_100,
+                            Ewma = ewma[i],
+                            CusumPos = cpos[i],
+                            CusumNeg = cneg[i],
+                            Alarm = alarm[i]
+                        });
+                    }
+                    return new DataResponse
+                    {
+                        Data = new
+                        {
+                            config = new { alpha, kFactor, hFactor, dt1, dt2 },
+                            items,
+                            stats = new { meanRate = mean, stdRate = std }
+                        },
+                        IsSuccess = true
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new DataResponse
+                {
+                    Data = new { error = ex.Message },
+                    IsSuccess = false
+                };
+            }
+        }
+
+        [Route("api/fdm/V2/EWMAEvent/{dt1}/{dt2}/{event_name}")]
+        public async Task<DataResponse> get_EWMAEvent(DateTime dt1, DateTime dt2, string event_name)
+        {
+            // پارامترها
+            double alpha = 0.30; // 0..1
+            double kFactor = 0.50; // بر حسب σ
+            double hFactor = 5.00; // بر حسب σ
+
+            //FDMEntities context = new FDMEntities();
+            try
+            {
+                using (var context = new FDMEntities())
+                {
+                    var dt2Exclusive = dt2.Date.AddDays(1);
+                    // تجمیع روزانه در SQL
+                    var daily = await (
+                        from x in context.view_fdm_processed.AsNoTracking()
+                        where x.std >= dt1 && x.std < dt2Exclusive && x.event_name == event_name
+                        group x by DbFunctions.TruncateTime(x.std) into grp
+                        orderby grp.Key
+                        select new
+                        {
+                            std_date = grp.Key, // Nullable<DateTime>
+                            count = grp.Count(),
+                            flight_count = grp.Max(g => (int?)g.flight_count) ?? 1, // Max طبق خواسته شما
+                            high_count = grp.Sum(g => g.severity == "High" ? 1 : 0),
+                            medium_count = grp.Sum(g => g.severity == "Medium" ? 1 : 0),
+                            low_count = grp.Sum(g => g.severity == "Low" ? 1 : 0),
+                            total_score = grp.Sum(g =>
+                                g.severity == "High" ? 4 :
+                                g.severity == "Medium" ? 2 :
+                                g.severity == "Low" ? 1 : 0
+                            ),
+                            event_rate_per_100 =
+                                (grp.Count() * 100.0) / (double)(grp.Max(g => (int?)g.flight_count) ?? 1)
+                        }
+                    ).ToListAsync();
+                    var query_flights = await (from x in context.FlightInformations
+                                               join y in context.ViewMSNs on x.RegisterID equals y.ID
+                                               where x.STD >= dt1 && x.STD <= dt2Exclusive && (x.FlightStatusID == 3 || x.FlightStatusID == 15 || x.FlightStatusID == 7 || x.FlightStatusID == 17)
+                                               group x by DbFunctions.TruncateTime(x.STD) into grp
+                                               select new
+                                               {
+                                                   std_date = grp.Key,
+                                                   count = grp.Count()
+                                               }
+                                        ).ToListAsync();
+                    var result = (from q in query_flights
+                                  let matchedResult = daily.FirstOrDefault(w => w.std_date == q.std_date)
+                                  select new
+                                  {
+                                      q.std_date,
+                                      flight_count = q.count,
+                                      count = matchedResult?.count ?? 0,
+                                      high_count = matchedResult?.high_count ?? 0,
+                                      medium_count = matchedResult?.medium_count ?? 0,
+                                      low_count = matchedResult?.low_count ?? 0,
+                                      total_score = matchedResult?.total_score ?? 0,
+                                      event_rate_per_100 = matchedResult?.event_rate_per_100 ?? 0
+                                  }).ToList();
+
+                    // اگر خالی بود
+                    if (result.Count == 0)
+                    {
+                        return new DataResponse
+                        {
+                            Data = new
+                            {
+                                config = new { alpha, kFactor, hFactor, dt1, dt2 },
+                                items = Array.Empty<TrendPoint>(),
+                                stats = new { meanRate = 0.0, stdRate = 0.0 }
+                            },
+                            IsSuccess = true
+                        };
+                    }
+                    // مرتب‌سازی و تبدیل به ساختار میانی
+                    var rows = result
+                        .Where(r => r.std_date.HasValue)
+                        .OrderBy(r => r.std_date.Value)
+                        .Select(r => new
+                        {
+                            date = r.std_date.Value,
+                            r.count,
+                            r.flight_count,
+                            r.high_count,
+                            r.medium_count,
+                            r.low_count,
+                            r.total_score,
+                            r.event_rate_per_100
+                        })
+                        .ToList();
+
+                    // سری نرخ‌ها
+                    var rates = rows.Select(r => r.event_rate_per_100).ToArray();
+
+                    // EWMA
+                    var ewma = new double[rates.Length];
+                    for (int i = 0; i < rates.Length; i++)
+                        ewma[i] = i == 0 ? rates[i] : (alpha * rates[i] + (1 - alpha) * ewma[i - 1]);
+
+                    // CUSUM
+                    double mean = rates.Average();
+                    double std = Math.Sqrt(rates.Select(r => Math.Pow(r - mean, 2)).DefaultIfEmpty(0).Average());
+                    if (std == 0) std = 1; // جلوگیری از صفر
+
+                    double k = kFactor * std;
+                    double h = hFactor * std;
+
+                    var cpos = new double[rates.Length];
+                    var cneg = new double[rates.Length];
+                    var alarm = new bool[rates.Length];
+
+                    for (int i = 1; i < rates.Length; i++)
+                    {
+                        cpos[i] = Math.Max(0, cpos[i - 1] + (rates[i] - mean - k));
+                        cneg[i] = Math.Min(0, cneg[i - 1] + (rates[i] - mean + k));
+                        alarm[i] = cpos[i] > h || Math.Abs(cneg[i]) > h;
+                    }
+                    // مونتاژ خروجی
+                    var items = new List<TrendPoint>(rows.Count);
+                    for (int i = 0; i < rows.Count; i++)
+                    {
+                        var r = rows[i];
+                        items.Add(new TrendPoint
+                        {
+                            Date = r.date,
+                            Count = r.count,
+                            FlightCount = r.flight_count,
+                            HighCount = r.high_count,
+                            MediumCount = r.medium_count,
+                            LowCount = r.low_count,
+                            TotalScore = r.total_score,
+                            EventRatePer100 = r.event_rate_per_100,
+                            Ewma = ewma[i],
+                            CusumPos = cpos[i],
+                            CusumNeg = cneg[i],
+                            Alarm = alarm[i]
+                        });
+                    }
+                    return new DataResponse
+                    {
+                        Data = new
+                        {
+                            config = new { alpha, kFactor, hFactor, dt1, dt2 },
+                            items,
+                            stats = new { meanRate = mean, stdRate = std }
+                        },
+                        IsSuccess = true
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new DataResponse
+                {
+                    Data = new { error = ex.Message },
+                    IsSuccess = false
+                };
+            }
+        }
+
+        [Route("api/fdm/V2/EWMACpt/{dt1}/{dt2}/{cpt_id}")]
+        public async Task<DataResponse> get_EWMACpt(DateTime dt1, DateTime dt2, int cpt_id)
+        {
+            // پارامترها
+            double alpha = 0.30; // 0..1
+            double kFactor = 0.50; // بر حسب σ
+            double hFactor = 5.00; // بر حسب σ
+
+            //FDMEntities context = new FDMEntities();
+            try
+            {
+                using (var context = new FDMEntities())
+                {
+                    var dt2Exclusive = dt2.Date.AddDays(1);
+                    // تجمیع روزانه در SQL
+                    var daily = await (
+                        from x in context.view_fdm_processed.AsNoTracking()
+                        join y in context.fdm_crew on x.id equals y.processed_id
+                        where x.std >= dt1 && x.std < dt2Exclusive && y.crew_id == cpt_id && y.position == "CPT"
+                        group x by DbFunctions.TruncateTime(x.std) into grp
+                        orderby grp.Key
+                        select new
+                        {
+                            std_date = grp.Key, // Nullable<DateTime>
+                            count = grp.Count(),
+                            flight_count = grp.Max(g => (int?)g.flight_count) ?? 1, // Max طبق خواسته شما
+                            high_count = grp.Sum(g => g.severity == "High" ? 1 : 0),
+                            medium_count = grp.Sum(g => g.severity == "Medium" ? 1 : 0),
+                            low_count = grp.Sum(g => g.severity == "Low" ? 1 : 0),
+                            total_score = grp.Sum(g =>
+                                g.severity == "High" ? 4 :
+                                g.severity == "Medium" ? 2 :
+                                g.severity == "Low" ? 1 : 0
+                            ),
+                            event_rate_per_100 =
+                                (grp.Count() * 100.0) /// (double)(grp.Max(g => (int?)g.flight_count) ?? 1)
+                        }
+                    ).ToListAsync();
+
+                    var query_flights = await (from x in context.view_fdm_flight_crew
+                                               where x.STD >= dt1 && x.STD <= dt2Exclusive && x.CrewId == cpt_id
+                                               group x by DbFunctions.TruncateTime(x.STD) into grp
+                                               select new
+                                               {
+                                                   std_date = grp.Key,
+                                                   count = grp.Count()
+                                               }
+                                        ).ToListAsync();
+
+                    var result = (from q in query_flights
+                                  let matchedResult = daily.FirstOrDefault(w => w.std_date == q.std_date)
+                                  select new
+                                  {
+                                      q.std_date,
+                                      flight_count = q.count,
+                                      count = matchedResult?.count ?? 0,
+                                      high_count = matchedResult?.high_count ?? 0,
+                                      medium_count = matchedResult?.medium_count ?? 0,
+                                      low_count = matchedResult?.low_count ?? 0,
+                                      total_score = matchedResult?.total_score ?? 0,
+                                      event_rate_per_100 = matchedResult?.event_rate_per_100 / (double)((int?)q.count ?? 1) ?? 0
+                                  }).ToList();
+
+                    // اگر خالی بود
+                    if (result.Count == 0)
+                    {
+                        return new DataResponse
+                        {
+                            Data = new
+                            {
+                                config = new { alpha, kFactor, hFactor, dt1, dt2 },
+                                items = Array.Empty<TrendPoint>(),
+                                stats = new { meanRate = 0.0, stdRate = 0.0 }
+                            },
+                            IsSuccess = true
+                        };
+                    }
+                    // مرتب‌سازی و تبدیل به ساختار میانی
+                    var rows = result
+                        .Where(r => r.std_date.HasValue)
+                        .OrderBy(r => r.std_date.Value)
+                        .Select(r => new
+                        {
+                            date = r.std_date.Value,
+                            r.count,
+                            r.flight_count,
+                            r.high_count,
+                            r.medium_count,
+                            r.low_count,
+                            r.total_score,
+                            r.event_rate_per_100
+                        })
+                        .ToList();
+
+                    // سری نرخ‌ها
+                    var rates = rows.Select(r => r.event_rate_per_100).ToArray();
+
+                    // EWMA
+                    var ewma = new double[rates.Length];
+                    for (int i = 0; i < rates.Length; i++)
+                        ewma[i] = i == 0 ? rates[i] : (alpha * rates[i] + (1 - alpha) * ewma[i - 1]);
+
+                    // CUSUM
+                    double mean = rates.Average();
+                    double std = Math.Sqrt(rates.Select(r => Math.Pow(r - mean, 2)).DefaultIfEmpty(0).Average());
+                    if (std == 0) std = 1; // جلوگیری از صفر
+
+                    double k = kFactor * std;
+                    double h = hFactor * std;
+
+                    var cpos = new double[rates.Length];
+                    var cneg = new double[rates.Length];
+                    var alarm = new bool[rates.Length];
+
+                    for (int i = 1; i < rates.Length; i++)
+                    {
+                        cpos[i] = Math.Max(0, cpos[i - 1] + (rates[i] - mean - k));
+                        cneg[i] = Math.Min(0, cneg[i - 1] + (rates[i] - mean + k));
+                        alarm[i] = cpos[i] > h || Math.Abs(cneg[i]) > h;
+                    }
+                    // مونتاژ خروجی
+                    var items = new List<TrendPoint>(rows.Count);
+                    for (int i = 0; i < rows.Count; i++)
+                    {
+                        var r = rows[i];
+                        items.Add(new TrendPoint
+                        {
+                            Date = r.date,
+                            Count = r.count,
+                            FlightCount = r.flight_count,
+                            HighCount = r.high_count,
+                            MediumCount = r.medium_count,
+                            LowCount = r.low_count,
+                            TotalScore = r.total_score,
+                            EventRatePer100 = r.event_rate_per_100,
+                            Ewma = ewma[i],
+                            CusumPos = cpos[i],
+                            CusumNeg = cneg[i],
+                            Alarm = alarm[i]
+                        });
+                    }
+                    return new DataResponse
+                    {
+                        Data = new
+                        {
+                            config = new { alpha, kFactor, hFactor, dt1, dt2 },
+                            items,
+                            stats = new { meanRate = mean, stdRate = std }
+                        },
+                        IsSuccess = true
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new DataResponse
+                {
+                    Data = new { error = ex.Message },
+                    IsSuccess = false
+                };
+            }
+        }
+
+        //-------------Pareto----------------------------------------
+        [Route("api/fdm/V2/ParetoEvent/{dt1}/{dt2}")]
+        public async Task<DataResponse> Get_ParetoEvent(DateTime dt1, DateTime dt2, int top = 15)
+        {
+            try
+            {
+                using (var context = new FDMEntities())
+                {
+                    var dt2Exclusive = dt2.Date.AddDays(1);
+
+                    // 1) گروه‌بندی بر اساس عنوان رخداد
+                    var raw = await (
+                        from x in context.view_fdm_processed.AsNoTracking()
+                        where x.std >= dt1 && x.std < dt2Exclusive
+                        // اگر ستون شما اسم دیگری دارد، این خط را به نام صحیح (مثلاً x.event_name) تغییر دهید
+                        group x by (x.event_name ?? "Unknown") into grp
+                        select new
+                        {
+                            EventTitle = grp.Key,
+                            Count = grp.Count()
+                        }
+                    )
+                    .OrderByDescending(r => r.Count)
+                    .ToListAsync();
+
+                    // 2) اگر داده خالی بود
+                    if (raw.Count == 0)
+                    {
+                        return new DataResponse
+                        {
+                            Data = new ParetoResponse
+                            {
+                                Config = new { dt1, dt2, top },
+                                Items = Array.Empty<ParetoItem>(),
+                                Total = 0
+                            },
+                            IsSuccess = true
+                        };
+                    }
+
+                    // 3) برش Top-N و ادغام بقیه در «Other» (اختیاری ولی مفید برای نمودار)
+                    var topItems = raw.Take(top).ToList();
+                    var othersCount = raw.Skip(top).Sum(x => x.Count);
+                    if (othersCount > 0)
+                        topItems.Add(new { EventTitle = "Other", Count = othersCount });
+
+                    // 4) محاسبه درصد و تجمعی
+                    var total = topItems.Sum(x => x.Count);
+                    double running = 0;
+                    var items = topItems.Select(x =>
+                    {
+                        var pct = total == 0 ? 0 : (x.Count * 100.0 / total);
+                        running += pct;
+                        return new ParetoItem
+                        {
+                            EventTitle = x.EventTitle,
+                            Count = x.Count,
+                            Percent = Math.Round(pct, 2),
+                            Cumulative = Math.Round(running, 2)
+                        };
+                    }).ToList();
+
+                    // 5) بازگشت خروجی استاندارد داشبورد
+                    return new DataResponse
+                    {
+                        Data = new ParetoResponse
+                        {
+                            Config = new { dt1, dt2, top },
+                            Items = items,
+                            Total = total
+                        },
+                        IsSuccess = true
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new DataResponse { Data = new { error = ex.Message }, IsSuccess = false };
+            }
+        }
+
+        //-------------Comparison----------------------------------------
+
+        [Route("api/fdm/V2/MonthlyCPT/{dt1}/{dt2}")]
+        public async Task<DataResponse> GetCaptainMonthlyScore(DateTime dt1, DateTime dt2)
+        {
+
+            try
+            {
+                using (var context = new FDMEntities())
+                {
+                    var dt2Exclusive = dt2.Date.AddDays(1);
+                    // --- پایه: همه‌ی رکوردهای بازه  انتخابی
+                    var eventsMonthly = await (
+                           from x in context.view_fdm_processed
+                           join c in context.fdm_crew on x.id equals c.processed_id
+                           where x.std >= dt1 && x.std < dt2Exclusive && c.position == "CPT"
+                           let Ye = SqlFunctions.DatePart("year", x.std)
+                           let Mo = SqlFunctions.DatePart("month", x.std)
+                           group x by new
+                           {
+                               year = (Ye ?? 0),
+                               month = (Mo ?? 0),
+                               ac_type = x.ac_type2,
+                               crew_id = c.crew_id,
+                               crew_name = c.name
+                           } into g
+                           select new
+                           {
+                               g.Key.year,
+                               g.Key.month,
+                               g.Key.ac_type,
+                               g.Key.crew_id,
+                               g.Key.crew_name,
+                               event_count = g.Count(),
+                               high_count = g.Sum(r => r.severity == "High" ? 1 : 0),
+                               medium_count = g.Sum(r => r.severity == "Medium" ? 1 : 0),
+                               low_count = g.Sum(r => r.severity == "Low" ? 1 : 0),
+                               high_score = g.Sum(r => r.severity == "High" ? 4 : 0),
+                               medium_score = g.Sum(r => r.severity == "Medium" ? 2 : 0),
+                               low_score = g.Sum(r => r.severity == "Low" ? 1 : 0),
+                               total_score = g.Sum(r =>
+                                                    r.severity == "High" ? 4 :
+                                                    r.severity == "Medium" ? 2 :
+                                                    r.severity == "Low" ? 1 : 0)
+                           }
+                          ).ToListAsync();
+
+
+                    // پروازهای ماهانه هر کاپیتان (فقط Position = "CPT")
+                    // شمارش لگ یکتا با استفاده از fi.id
+                    var flightsMonthly = await
+                    (
+                        from x in context.view_fdm_flight_crew
+                        where x.STD >= dt1 && x.STD < dt2Exclusive && x.Position == "CPT"
+                        let Ye = SqlFunctions.DatePart("year", x.STD)
+                        let Mo = SqlFunctions.DatePart("month", x.STD)
+                        group x by new
+                        {
+                            year = (Ye ?? 0),
+                            month = (Mo ?? 0),
+                            ac_type = x.ac_type2,
+                            crew_id = (int)x.CrewId,
+                            crew_name = x.Name    // در ویو Name از LastName پر شده
+                                                  // position = x.Position,
+                        }
+                        into grp
+                        select new
+                        {
+                            grp.Key.year,
+                            grp.Key.month,
+                            grp.Key.ac_type,
+                            grp.Key.crew_id,
+                            grp.Key.crew_name,
+                            //grp.Key.position,
+                            // لگ‌های یکتا برای این خلبان در این ماه
+                            flight_count = grp.Select(z => z.id).Distinct().Count()
+                        }
+                    ).ToListAsync();
+
+                    var combined = (
+                          from f in flightsMonthly
+                          join e in eventsMonthly
+                          on new { f.year, f.month, f.ac_type, f.crew_id, f.crew_name }
+                          equals new { e.year, e.month, e.ac_type, e.crew_id, e.crew_name }
+                          into ge
+                          from e in ge.DefaultIfEmpty() // Left Join
+                          select new
+                          {
+                              f.ac_type,
+                              f.crew_id,
+                              f.crew_name,
+                              // rank = f.crew_job_group,         // اگر Rank جداگانه دارید، همان را بگذارید
+                              //rank_code = f.crew_job_group_code,
+                              //position = f.crew_position,
+
+                              f.year,
+                              f.month,
+                              year_month = (f.year.ToString("0000") + "-" + f.month.ToString("00")),
+
+                              f.flight_count,
+
+                              // اگر e=null بود → صفر
+                              event_count = e?.event_count ?? 0,
+                              high_count = e?.high_count ?? 0,
+                              medium_count = e?.medium_count ?? 0,
+                              low_count = e?.low_count ?? 0,
+
+                              high_score = e?.high_score ?? 0,
+                              medium_score = e?.medium_score ?? 0,
+                              low_score = e?.low_score ?? 0,
+                              total_score = e?.total_score ?? 0,
+
+                              // نرخ رویداد به ازای هر 100 پرواز
+                              high_count_per_100 = (f.flight_count == 0) ? 0.0 : ((e?.high_count ?? 0) * 100.0) / f.flight_count,
+                              medium_count_per_100 = (f.flight_count == 0) ? 0.0 : ((e?.medium_count ?? 0) * 100.0) / f.flight_count,
+                              low_count_per_100 = (f.flight_count == 0) ? 0.0 : ((e?.low_count ?? 0) * 100.0) / f.flight_count,
+                              total_count_per_100 = (f.flight_count == 0) ? 0.0 : ((e?.event_count ?? 0) * 100.0) / f.flight_count,
+
+                              // امتیاز/پرواز (اختیاری)
+                              high_score_per_flight = (f.flight_count == 0) ? 0.0 : ((e?.high_score ?? 0) * 1.0) / f.flight_count,
+                              medium_score_per_flight = (f.flight_count == 0) ? 0.0 : ((e?.medium_score ?? 0) * 1.0) / f.flight_count,
+                              low_score_per_flight = (f.flight_count == 0) ? 0.0 : ((e?.low_score ?? 0) * 1.0) / f.flight_count,
+                              score_per_flight = (f.flight_count == 0) ? 0.0 : ((e?.total_score ?? 0) * 1.0) / f.flight_count
+
+                          }
+                    ).ToList();
+
+                    // 4) میانگین ناوگان (FleetAvg) همان ماه و تایپ
+                    // -------------------------------
+
+                    var fleetAvg = combined
+                        .GroupBy(x => new { x.ac_type, x.year, x.month })
+                        .Select(g => new
+                        {
+                            g.Key.ac_type,
+                            g.Key.year,
+                            g.Key.month,
+                            Metrics = new FleetAvgMetrics
+                            {
+                                avg_high_count_per100 = g.Average(z => (double)z.high_count_per_100),  // میانگین کل امتیاز CPTها
+                                avg_medium_count_per100 = g.Average(z => (double)z.medium_count_per_100),  // میانگین کل امتیاز CPTها
+                                avg_low_count_per100 = g.Average(z => (double)z.low_count_per_100),  // میانگین کل امتیاز CPTها
+                                avg_total_count_per100 = g.Average(z => (double)z.total_count_per_100),  // میانگین کل امتیاز CPTها
+
+                                avg_high_score_per_flight = g.Average(z => (double)z.high_score_per_flight),  // میانگین کل امتیاز CPTها
+                                avg_medium_score_per_flight = g.Average(z => (double)z.medium_score_per_flight), // میانگین کل امتیاز CPTها
+                                avg_low_score_per_flight = g.Average(z => (double)z.low_score_per_flight),  // میانگین کل امتیاز CPTها
+                                avg_total_score_per_flight = g.Average(z => (double)z.score_per_flight)  // میانگین کل امتیاز CPTها
+                            }
+                        }).ToDictionary(k => $"{k.ac_type}|{k.year:0000}-{k.month:00}",
+                                          v => v.Metrics
+                     );
+
+                    // گروه‌بندی ماهانه برای هر CPT
+                    var items = combined.Select(x =>
+                    {
+                        fleetAvg.TryGetValue($"{x.ac_type}|{x.year:0000}-{x.month:00}", out var avg);
+                        return new
+                        {
+                            ac_type = x.ac_type,
+                            crew_id = x.crew_id,
+                            crew_name = x.crew_name,
+                            //position = x.position,
+                            year = x.year,
+                            month = x.month,
+                            year_month = x.year_month,
+                            flight_count = x.flight_count,
+                            event_count = x.event_count,
+                            high_count = x.high_count,
+                            medium_count = x.medium_count,
+                            low_count = x.low_count,
+                            high_score = x.high_score,
+                            medium_score = x.medium_score,
+                            low_score = x.low_score,
+                            total_score = x.total_score,
+                            high_count_per_100 = x.high_count_per_100,
+                            medium_count_per_100 = x.medium_count_per_100,
+                            low_count_per_100 = x.low_count_per_100,
+                            total_count_per_100 = x.total_count_per_100,
+                            high_score_per_flight = x.high_score_per_flight,
+                            medium_score_per_flight = x.medium_score_per_flight,
+                            low_score_per_flight = x.low_score_per_flight,
+                            score_per_flight = x.score_per_flight,
+                            FleetAvg = avg
+                        };
+                    })
+                          .OrderBy(x => x.ac_type)
+                          .ThenBy(x => x.crew_id)
+                          .ThenBy(x => x.year)
+                          .ThenBy(x => x.month)
+                          .ToList();
+
+                    return new DataResponse
+                    {
+                        Data = new
+                        {
+                            items
+                        },
+                        IsSuccess = true
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new DataResponse { Data = new { error = ex.Message }, IsSuccess = false };
+            }
+        }
+        [Route("api/fdm/V2/MonthlyRegister/{dt1}/{dt2}")]
+        public async Task<DataResponse> GetRegisterMonthlyScore(DateTime dt1, DateTime dt2)
+        {
+
+            try
+            {
+                using (var context = new FDMEntities())
+                {
+                    var dt2Exclusive = dt2.Date.AddDays(1);
+                    // --- پایه: همه‌ی رکوردهای بازه  انتخابی
+                    var eventsMonthly = await (
+                           from x in context.view_fdm_processed
+                           where x.std >= dt1 && x.std < dt2Exclusive
+                           let Ye = SqlFunctions.DatePart("year", x.std)
+                           let Mo = SqlFunctions.DatePart("month", x.std)
+                           group x by new
+                           {
+                               year = (Ye ?? 0),
+                               month = (Mo ?? 0),
+                               ac_type = x.ac_type2,
+                               register_id = x.register_id,
+                               register = x.register
+                           } into g
+                           select new
+                           {
+                               g.Key.year,
+                               g.Key.month,
+                               g.Key.ac_type,
+                               g.Key.register_id,
+                               g.Key.register,
+                               event_count = g.Count(),
+                               high_count = g.Sum(r => r.severity == "High" ? 1 : 0),
+                               medium_count = g.Sum(r => r.severity == "Medium" ? 1 : 0),
+                               low_count = g.Sum(r => r.severity == "Low" ? 1 : 0),
+                               high_score = g.Sum(r => r.severity == "High" ? 4 : 0),
+                               medium_score = g.Sum(r => r.severity == "Medium" ? 2 : 0),
+                               low_score = g.Sum(r => r.severity == "Low" ? 1 : 0),
+                               total_score = g.Sum(r =>
+                                                    r.severity == "High" ? 4 :
+                                                    r.severity == "Medium" ? 2 :
+                                                    r.severity == "Low" ? 1 : 0)
+                           }
+                          ).ToListAsync();
+
+
+                    var flightsMonthly = await
+                    (
+                        from x in context.FlightInformations
+                        join y in context.ViewMSNs on x.RegisterID equals y.ID
+                        where x.STD >= dt1 && x.STD <= dt2Exclusive && (x.FlightStatusID == 3 || x.FlightStatusID == 15 || x.FlightStatusID == 7 || x.FlightStatusID == 17)
+
+                        //from x in context.view_fdm_flight_crew
+                        // where x.STD >= dt1 && x.STD < dt2Exclusive && x.Position == "CPT"
+                        let Ye = SqlFunctions.DatePart("year", x.STD)
+                        let Mo = SqlFunctions.DatePart("month", x.STD)
+                        group x by new
+                        {
+                            year = (Ye ?? 0),
+                            month = (Mo ?? 0),
+                            ac_type = y.AircraftType2,
+                            register_id = x.RegisterID,
+                            register = y.Register
+                        }
+                        into grp
+                        select new
+                        {
+                            grp.Key.year,
+                            grp.Key.month,
+                            grp.Key.ac_type,
+                            grp.Key.register_id,
+                            grp.Key.register,
+                            flight_count = grp.Count()
+
+                        }
+                    ).ToListAsync();
+
+                    var combined = (
+                          from f in flightsMonthly
+                          join e in eventsMonthly
+                          on new { f.year, f.month, f.ac_type, f.register_id, f.register }
+                          equals new { e.year, e.month, e.ac_type, e.register_id, e.register }
+                          into ge
+                          from e in ge.DefaultIfEmpty() // Left Join
+                          select new
+                          {
+                              f.ac_type,
+                              f.register_id,
+                              f.register,
+                              f.year,
+                              f.month,
+                              year_month = (f.year.ToString("0000") + "-" + f.month.ToString("00")),
+                              f.flight_count,
+                              // اگر e=null بود → صفر
+                              event_count = e?.event_count ?? 0,
+                              high_count = e?.high_count ?? 0,
+                              medium_count = e?.medium_count ?? 0,
+                              low_count = e?.low_count ?? 0,
+
+                              high_score = e?.high_score ?? 0,
+                              medium_score = e?.medium_score ?? 0,
+                              low_score = e?.low_score ?? 0,
+                              total_score = e?.total_score ?? 0,
+
+                              // نرخ رویداد به ازای هر 100 پرواز
+                              high_count_per_100 = (f.flight_count == 0) ? 0.0 : ((e?.high_count ?? 0) * 100.0) / f.flight_count,
+                              medium_count_per_100 = (f.flight_count == 0) ? 0.0 : ((e?.medium_count ?? 0) * 100.0) / f.flight_count,
+                              low_count_per_100 = (f.flight_count == 0) ? 0.0 : ((e?.low_count ?? 0) * 100.0) / f.flight_count,
+                              total_count_per_100 = (f.flight_count == 0) ? 0.0 : ((e?.event_count ?? 0) * 100.0) / f.flight_count,
+
+                              // امتیاز/پرواز (اختیاری)
+                              high_score_per_flight = (f.flight_count == 0) ? 0.0 : ((e?.high_score ?? 0) * 1.0) / f.flight_count,
+                              medium_score_per_flight = (f.flight_count == 0) ? 0.0 : ((e?.medium_score ?? 0) * 1.0) / f.flight_count,
+                              low_score_per_flight = (f.flight_count == 0) ? 0.0 : ((e?.low_score ?? 0) * 1.0) / f.flight_count,
+                              score_per_flight = (f.flight_count == 0) ? 0.0 : ((e?.total_score ?? 0) * 1.0) / f.flight_count
+
+                          }
+                    ).ToList();
+
+                    // 4) میانگین ناوگان (FleetAvg) همان ماه و تایپ
+                    // -------------------------------
+
+                    var fleetAvg = combined
+                        .GroupBy(x => new { x.ac_type, x.year, x.month })
+                        .Select(g => new
+                        {
+                            g.Key.ac_type,
+                            g.Key.year,
+                            g.Key.month,
+                            Metrics = new FleetAvgMetrics
+                            {
+                                avg_high_count_per100 = g.Average(z => (double)z.high_count_per_100),
+                                avg_medium_count_per100 = g.Average(z => (double)z.medium_count_per_100),
+                                avg_low_count_per100 = g.Average(z => (double)z.low_count_per_100),
+                                avg_total_count_per100 = g.Average(z => (double)z.total_count_per_100),
+
+                                avg_high_score_per_flight = g.Average(z => (double)z.high_score_per_flight),  // میانگین کل امتیاز CPTها
+                                avg_medium_score_per_flight = g.Average(z => (double)z.medium_score_per_flight), // میانگین کل امتیاز CPTها
+                                avg_low_score_per_flight = g.Average(z => (double)z.low_score_per_flight),  // میانگین کل امتیاز CPTها
+                                avg_total_score_per_flight = g.Average(z => (double)z.score_per_flight)  // میانگین کل امتیاز CPTها
+                            }
+                        }).ToDictionary(k => $"{k.ac_type}|{k.year:0000}-{k.month:00}",
+                                          v => v.Metrics
+                     );
+
+                    var items = combined.Select(x =>
+                    {
+                        fleetAvg.TryGetValue($"{x.ac_type}|{x.year:0000}-{x.month:00}", out var avg);
+                        return new
+                        {
+                            ac_type = x.ac_type,
+                            register_id = x.register_id,
+                            register = x.register,
+                            year = x.year,
+                            month = x.month,
+                            year_month = x.year_month,
+                            flight_count = x.flight_count,
+                            event_count = x.event_count,
+                            high_count = x.high_count,
+                            medium_count = x.medium_count,
+                            low_count = x.low_count,
+                            high_score = x.high_score,
+                            medium_score = x.medium_score,
+                            low_score = x.low_score,
+                            total_score = x.total_score,
+                            high_count_per_100 = x.high_count_per_100,
+                            medium_count_per_100 = x.medium_count_per_100,
+                            low_count_per_100 = x.low_count_per_100,
+                            total_count_per_100 = x.total_count_per_100,
+                            high_score_per_flight = x.high_score_per_flight,
+                            medium_score_per_flight = x.medium_score_per_flight,
+                            low_score_per_flight = x.low_score_per_flight,
+                            score_per_flight = x.score_per_flight,
+                            FleetAvg = avg
+                        };
+                    })
+                          .OrderBy(x => x.ac_type)
+                          .ThenBy(x => x.register_id)
+                          .ThenBy(x => x.year)
+                          .ThenBy(x => x.month)
+                          .ToList();
+
+                    return new DataResponse
+                    {
+                        Data = new
+                        {
+                            items
+                        },
+                        IsSuccess = true
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new DataResponse { Data = new { error = ex.Message }, IsSuccess = false };
+            }
+        }
+        [Route("api/fdm/V2/MonthlyRoute/{dt1}/{dt2}")]
+        public async Task<DataResponse> GetRouteMonthlyScore(DateTime dt1, DateTime dt2)
+        {
+
+            try
+            {
+                using (var context = new FDMEntities())
+                {
+                    var dt2Exclusive = dt2.Date.AddDays(1);
+                    // --- پایه: همه‌ی رکوردهای بازه  انتخابی
+
+
+                    var eventsMonthly = await (
+                           from x in context.view_fdm_processed
+                           where x.std >= dt1 && x.std < dt2Exclusive
+                           let Ye = SqlFunctions.DatePart("year", x.std)
+                           let Mo = SqlFunctions.DatePart("month", x.std)
+                           group x by new
+                           {
+                               year = (Ye ?? 0),
+                               month = (Mo ?? 0),
+                               dep_id = (int)x.dep_id,
+                               //x.dep_iata,
+                               //x.dep_icao,
+                               arr_id = x.arr_id
+                               //x.arr_iata,
+                               //x.arr_icao
+                           } into g
+                           select new
+                           {
+                               g.Key.year,
+                               g.Key.month,
+                               dep_id = (int)g.Key.dep_id,
+                               //g.Key.dep_iata,
+                               //g.Key.dep_icao,
+                               arr_id = (int)g.Key.arr_id,
+                               //g.Key.arr_iata,
+                               //g.Key.arr_icao,
+                               event_count = g.Count(),
+                               high_count = g.Sum(r => r.severity == "High" ? 1 : 0),
+                               medium_count = g.Sum(r => r.severity == "Medium" ? 1 : 0),
+                               low_count = g.Sum(r => r.severity == "Low" ? 1 : 0),
+                               high_score = g.Sum(r => r.severity == "High" ? 4 : 0),
+                               medium_score = g.Sum(r => r.severity == "Medium" ? 2 : 0),
+                               low_score = g.Sum(r => r.severity == "Low" ? 1 : 0),
+                               total_score = g.Sum(r =>
+                                                    r.severity == "High" ? 4 :
+                                                    r.severity == "Medium" ? 2 :
+                                                    r.severity == "Low" ? 1 : 0)
+                           }
+                          ).ToListAsync();
+
+
+                    var flightsMonthly = await
+                    (
+                        from x in context.AppLegs
+                        where x.STD >= dt1 && x.STD <= dt2Exclusive && (x.FlightStatusID == 3 || x.FlightStatusID == 15 || x.FlightStatusID == 7 || x.FlightStatusID == 17)
+                        let Ye = SqlFunctions.DatePart("year", x.STD)
+                        let Mo = SqlFunctions.DatePart("month", x.STD)
+                        group x by new
+                        {
+                            year = (Ye ?? 0),
+                            month = (Mo ?? 0),
+                            dep_id = x.FromAirport,
+                            dep_iata = x.FromAirportIATA,
+                            dep_icao = x.FromAirportIATA2,
+                            arr_id = x.ToAirport,
+                            arr_iata = x.ToAirportIATA2,
+                            arr_icao = x.ToAirportIATA
+                        }
+                        into grp
+                        select new
+                        {
+                            grp.Key.year,
+                            grp.Key.month,
+                            dep_id = (int)grp.Key.dep_id,
+                            dep_iata = grp.Key.dep_iata,
+                            dep_icao = grp.Key.dep_icao,
+                            arr_id = (int)grp.Key.arr_id,
+                            arr_iata = grp.Key.arr_iata,
+                            arr_icao = grp.Key.arr_icao,
+                            flight_count = grp.Count()
+
+                        }
+                    ).ToListAsync();
+
+                    var combined = (
+                          from f in flightsMonthly
+                          join e in eventsMonthly
+                          on new { f.year, f.month, f.dep_id, f.arr_id }
+                          equals new { e.year, e.month, e.dep_id, e.arr_id }
+                          into ge
+                          from e in ge.DefaultIfEmpty() // Left Join
+                          select new
+                          {
+                              f.year,
+                              f.month,
+                              year_month = (f.year.ToString("0000") + "-" + f.month.ToString("00")),
+                              f.dep_id,
+                              f.dep_iata,
+                              f.dep_icao,
+                              f.arr_id,
+                              f.arr_iata,
+                              f.arr_icao,
+                              f.flight_count,
+                              // اگر e=null بود → صفر
+                              event_count = e?.event_count ?? 0,
+                              high_count = e?.high_count ?? 0,
+                              medium_count = e?.medium_count ?? 0,
+                              low_count = e?.low_count ?? 0,
+
+                              high_score = e?.high_score ?? 0,
+                              medium_score = e?.medium_score ?? 0,
+                              low_score = e?.low_score ?? 0,
+                              total_score = e?.total_score ?? 0,
+
+                              // نرخ رویداد به ازای هر 100 پرواز
+                              high_count_per_100 = (f.flight_count == 0) ? 0.0 : ((e?.high_count ?? 0) * 100.0) / f.flight_count,
+                              medium_count_per_100 = (f.flight_count == 0) ? 0.0 : ((e?.medium_count ?? 0) * 100.0) / f.flight_count,
+                              low_count_per_100 = (f.flight_count == 0) ? 0.0 : ((e?.low_count ?? 0) * 100.0) / f.flight_count,
+                              total_count_per_100 = (f.flight_count == 0) ? 0.0 : ((e?.event_count ?? 0) * 100.0) / f.flight_count,
+
+                              // امتیاز/پرواز (اختیاری)
+                              high_score_per_flight = (f.flight_count == 0) ? 0.0 : ((e?.high_score ?? 0) * 1.0) / f.flight_count,
+                              medium_score_per_flight = (f.flight_count == 0) ? 0.0 : ((e?.medium_score ?? 0) * 1.0) / f.flight_count,
+                              low_score_per_flight = (f.flight_count == 0) ? 0.0 : ((e?.low_score ?? 0) * 1.0) / f.flight_count,
+                              score_per_flight = (f.flight_count == 0) ? 0.0 : ((e?.total_score ?? 0) * 1.0) / f.flight_count
+
+                          }
+                    ).ToList();
+
+                    // 4) میانگین ناوگان (FleetAvg) همان ماه و تایپ
+                    // -------------------------------
+
+                    var fleetAvg = combined
+                        .GroupBy(x => new { x.year, x.month })
+                        .Select(g => new
+                        {
+
+                            g.Key.year,
+                            g.Key.month,
+                            Metrics = new FleetAvgMetrics
+                            {
+                                avg_high_count_per100 = g.Average(z => (double)z.high_count_per_100),
+                                avg_medium_count_per100 = g.Average(z => (double)z.medium_count_per_100),
+                                avg_low_count_per100 = g.Average(z => (double)z.low_count_per_100),
+                                avg_total_count_per100 = g.Average(z => (double)z.total_count_per_100),
+
+                                avg_high_score_per_flight = g.Average(z => (double)z.high_score_per_flight),  // میانگین کل امتیاز CPTها
+                                avg_medium_score_per_flight = g.Average(z => (double)z.medium_score_per_flight), // میانگین کل امتیاز CPTها
+                                avg_low_score_per_flight = g.Average(z => (double)z.low_score_per_flight),  // میانگین کل امتیاز CPTها
+                                avg_total_score_per_flight = g.Average(z => (double)z.score_per_flight)  // میانگین کل امتیاز CPTها
+                            }
+                        }).ToDictionary(k => $"|{k.year:0000}-{k.month:00}",
+                                          v => v.Metrics
+                     );
+
+                    var items = combined.Select(x =>
+                    {
+                        fleetAvg.TryGetValue($"|{x.year:0000}-{x.month:00}", out var avg);
+                        return new
+                        {
+                            year = x.year,
+                            month = x.month,
+                            route = x.dep_iata + "-" + x.arr_iata,
+                            x.dep_id,
+                            x.dep_iata,
+                            x.dep_icao,
+                            x.arr_id,
+                            x.arr_iata,
+                            x.arr_icao,
+                            year_month = x.year_month,
+                            flight_count = x.flight_count,
+                            event_count = x.event_count,
+                            high_count = x.high_count,
+                            medium_count = x.medium_count,
+                            low_count = x.low_count,
+                            high_score = x.high_score,
+                            medium_score = x.medium_score,
+                            low_score = x.low_score,
+                            total_score = x.total_score,
+                            high_count_per_100 = x.high_count_per_100,
+                            medium_count_per_100 = x.medium_count_per_100,
+                            low_count_per_100 = x.low_count_per_100,
+                            total_count_per_100 = x.total_count_per_100,
+                            high_score_per_flight = x.high_score_per_flight,
+                            medium_score_per_flight = x.medium_score_per_flight,
+                            low_score_per_flight = x.low_score_per_flight,
+                            score_per_flight = x.score_per_flight,
+                            FleetAvg = avg
+                        };
+                    })
+                          .OrderBy(x => x.dep_id)
+                          .ThenBy(x => x.arr_id)
+                          .ThenBy(x => x.year)
+                          .ThenBy(x => x.month)
+                          .ToList();
+
+                    return new DataResponse
+                    {
+                        Data = new
+                        {
+                            items
+                        },
+                        IsSuccess = true
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new DataResponse { Data = new { error = ex.Message }, IsSuccess = false };
+            }
+        }
+
+        //-----------------------------------------------------------------
+
         [Route("api/fdm/V2/events/{dt1}/{dt2}")]
         public async Task<DataResponse> get_events(DateTime dt1, DateTime dt2)
         {
@@ -223,7 +1431,142 @@ namespace ApiFDM.Controllers
             };
 
         }
+        [Route("api/fdm/V2/eventsCptFo/{dt1}/{dt2}")]
+        public async Task<DataResponse> get_events_captain_Fo(DateTime dt1, DateTime dt2)
+        {
+            FDMEntities context = new FDMEntities();
 
+            dt2 = dt2.AddDays(1);
+            /* from f in flightsMonthly
+             join e in eventsMonthly
+             on new { f.year, f.month, f.dep_id, f.arr_id }
+             equals new { e.year, e.month, e.dep_id, e.arr_id }
+             into ge
+             from e in ge.DefaultIfEmpty() // Left Join
+             select new*/
+
+            var query_event = await (
+                 from e in context.view_fdm_processed
+                 join ccpt in context.fdm_crew on e.id equals ccpt.processed_id
+                 join cfo in context.fdm_crew on e.id equals cfo.processed_id
+                 where e.std >= dt1 && e.std < dt2
+                 && ccpt.position == "CPT"
+                 && cfo.position == "FO"
+                 && ccpt.crew_id != cfo.crew_id
+                 group new { e, ccpt, cfo } by new
+                 {
+                     ac_type = e.ac_type2,
+                     cpt_id = ccpt.crew_id,
+                     cpt_name = ccpt.name,
+                     //cpt_rank = ccpt.rank,
+                     //cpt_rank_code = ccpt.rank_code,
+                     fo_id = cfo.crew_id,
+                     fo_name = cfo.name,
+                     //fo_rank = cfo.rank,
+                     //fo_rank_code = cfo.rank_code
+                 }
+                 into grp
+                 select new
+                 {
+                     grp.Key.ac_type,
+                     cpt_id = (int)grp.Key.cpt_id,
+                     grp.Key.cpt_name,
+                     //cpt_rank = grp.Key.cpt_rank,
+                     //cpt_rank_code = grp.Key.cpt_rank_code,
+                     fo_id = (int)grp.Key.fo_id,
+                     grp.Key.fo_name,
+                     //fo_rank = grp.Key.fo_rank,
+                     //fo_rank_code = grp.Key.fo_rank_code,
+                     event_count = grp.Count(),
+                     high_count = grp.Sum(g => g.e.severity == "High" ? 1 : 0),
+                     medium_count = grp.Sum(g => g.e.severity == "Medium" ? 1 : 0),
+                     low_count = grp.Sum(g => g.e.severity == "Low" ? 1 : 0),
+                     high_score = grp.Sum(g => g.e.severity == "High" ? 4 : 0),
+                     medium_score = grp.Sum(g => g.e.severity == "Medium" ? 2 : 0),
+                     low_score = grp.Sum(g => g.e.severity == "Low" ? 1 : 0),
+                     total_score = grp.Sum(g =>
+                                      g.e.severity == "High" ? 4 :
+                                      g.e.severity == "Medium" ? 2 :
+                                      g.e.severity == "Low" ? 1 : 0)
+
+                 }).ToListAsync();
+
+
+            var query_flights = await (from x in context.view_fdm_flight_crew
+                                       join y in context.view_fdm_flight_crew on x.id equals y.id
+                                       where x.STD >= dt1 && x.STD < dt2 &&
+                                       x.Position == "CPT" && y.Position == "FO"
+                                       group new { x, y } by new
+                                       {
+                                           ac_type = x.ac_type2,
+                                           cpt_id = x.CrewId,
+                                           cpt_name = x.Name,
+                                           fo_id = y.CrewId,
+                                           fo_name = y.Name
+                                       } into grp
+                                       select new
+                                       {
+                                           grp.Key.ac_type,
+                                           cpt_id = (int)grp.Key.cpt_id,
+                                           grp.Key.cpt_name,
+                                           fo_id = (int)grp.Key.fo_id,
+                                           grp.Key.fo_name,
+                                           flight_count = grp.Count()
+                                       }).ToListAsync();
+
+            var combined = (
+                          from f in query_flights
+                          join e in query_event
+                          on new { f.ac_type, f.cpt_id, f.fo_id }
+                          equals new { e.ac_type, e.cpt_id, e.fo_id }
+                          into ge
+                          from e in ge.DefaultIfEmpty() // Left Join
+                          select new
+                          {
+                              f.cpt_id,
+                              f.cpt_name,
+                              f.fo_id,
+                              f.fo_name,
+                              f.flight_count,
+                              // اگر e=null بود → صفر
+                              event_count = e?.event_count ?? 0,
+                              high_count = e?.high_count ?? 0,
+                              medium_count = e?.medium_count ?? 0,
+                              low_count = e?.low_count ?? 0,
+
+                              high_score = e?.high_score ?? 0,
+                              medium_score = e?.medium_score ?? 0,
+                              low_score = e?.low_score ?? 0,
+                              total_score = e?.total_score ?? 0,
+
+                              // نرخ رویداد به ازای هر 100 پرواز
+                              high_count_per_100 = (f.flight_count == 0) ? 0.0 : ((e?.high_count ?? 0) * 100.0) / f.flight_count,
+                              medium_count_per_100 = (f.flight_count == 0) ? 0.0 : ((e?.medium_count ?? 0) * 100.0) / f.flight_count,
+                              low_count_per_100 = (f.flight_count == 0) ? 0.0 : ((e?.low_count ?? 0) * 100.0) / f.flight_count,
+                              total_count_per_100 = (f.flight_count == 0) ? 0.0 : ((e?.event_count ?? 0) * 100.0) / f.flight_count,
+
+                              // امتیاز/پرواز (اختیاری)
+                              high_score_per_flight = (f.flight_count == 0) ? 0.0 : ((e?.high_score ?? 0) * 1.0) / f.flight_count,
+                              medium_score_per_flight = (f.flight_count == 0) ? 0.0 : ((e?.medium_score ?? 0) * 1.0) / f.flight_count,
+                              low_score_per_flight = (f.flight_count == 0) ? 0.0 : ((e?.low_score ?? 0) * 1.0) / f.flight_count,
+                              score_per_flight = (f.flight_count == 0) ? 0.0 : ((e?.total_score ?? 0) * 1.0) / f.flight_count
+
+                          }
+                    ).ToList();
+
+
+
+            return new DataResponse()
+            {
+                Data = new
+                {
+                    combined,
+
+                },
+                IsSuccess = true
+            };
+
+        }
         [Route("api/fdm/V2/eventsCrewRoute/{dt1}/{dt2}")]
         public async Task<DataResponse> get_events_captain_route(DateTime dt1, DateTime dt2)
         {
