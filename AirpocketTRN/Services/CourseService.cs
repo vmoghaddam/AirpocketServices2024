@@ -2520,6 +2520,74 @@ namespace AirpocketTRN.Services
                 };
         }
 
+
+        public async Task<DataResponse> GetCertificateCourseAll(int course_id)
+        {
+            //var query = from x in context.ViewEmployeeTrainings select x;
+            //if (root != "000")
+            //    query = query.Where(q => q.JobGroupMainCode == root);
+            //var result = await query.OrderByDescending(q => q.MandatoryExpired).ThenBy(q => q.JobGroup).ThenBy(q => q.LastName).ToListAsync();
+            var obj = context.ViewCoursePeoplePassedRankeds.Where(q => q.CourseId==course_id /*&& (q.Instructor.Contains("TALEBI") || q.Instructor.Contains("SHAFIEI"))*/ ).Select(q =>
+
+           new
+           {
+               Id = q.Id,
+               Name = q.LastName + " " + q.FirstName,
+               q.Title,
+               Remark=q.Title+"_"+q.StatusRemark+"_"+q.Instructor
+           }
+
+            ).ToList();
+            if (obj != null)
+                return new DataResponse()
+                {
+                    Data = obj,
+                    IsSuccess = true,
+                };
+            else
+                return new DataResponse()
+                {
+                    Data = new ViewCoursePeople() { Id = -1, },
+                    IsSuccess = true,
+                };
+        }
+
+
+        public async Task<DataResponse> GetCertificatePeopleAll(string  ids)
+        {
+            //var query = from x in context.ViewEmployeeTrainings select x;
+            //if (root != "000")
+            //    query = query.Where(q => q.JobGroupMainCode == root);
+            //var result = await query.OrderByDescending(q => q.MandatoryExpired).ThenBy(q => q.JobGroup).ThenBy(q => q.LastName).ToListAsync();
+
+            var p_ids = ids.Split('_').Select(q =>(Nullable<int>) Convert.ToInt32(q)).ToList();
+            var obj = context.ViewCoursePeoplePassedRankeds.Where(q =>p_ids.Contains( q.PersonId) /*&& (q.Instructor.Contains("TALEBI") || q.Instructor.Contains("SHAFIEI"))*/ ).Select(q =>
+
+             new
+             {
+                 Id = q.Id,
+                 Name = q.LastName + " " + q.FirstName,
+                 q.Title,
+             }
+
+            ).ToList();
+            if (obj != null)
+                return new DataResponse()
+                {
+                    Data = obj,
+                    IsSuccess = true,
+                };
+            else
+                return new DataResponse()
+                {
+                    Data = new ViewCoursePeople() { Id = -1, },
+                    IsSuccess = true,
+                };
+        }
+
+
+
+
         public async Task<DataResponse> GetCertificate(int id)
         {
             //var query = from x in context.ViewEmployeeTrainings select x;
