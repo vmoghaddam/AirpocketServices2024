@@ -2534,6 +2534,7 @@ namespace AirpocketTRN.Services
                Id = q.Id,
                Name = q.LastName + " " + q.FirstName,
                q.Title,
+               Remark=q.Title+"_"+q.StatusRemark+"_"+q.Instructor
            }
 
             ).ToList();

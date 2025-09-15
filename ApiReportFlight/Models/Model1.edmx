@@ -716,6 +716,41 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_fdp_fixtime' does not have a p
           <Property Name="flt_count" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.view_layover' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_layover">
+          <Key>
+            <PropertyRef Name="date" />
+            <PropertyRef Name="crew_id" />
+            <PropertyRef Name="is_lo" />
+            <PropertyRef Name="is_vacation" />
+            <PropertyRef Name="is_lo_final" />
+          </Key>
+          <Property Name="date" Type="date" Nullable="false" />
+          <Property Name="crew_id" Type="int" Nullable="false" />
+          <Property Name="fdp_id" Type="int" />
+          <Property Name="rank" Type="nvarchar" MaxLength="500" />
+          <Property Name="first_name" Type="nvarchar" MaxLength="500" />
+          <Property Name="last_name" Type="nvarchar" MaxLength="500" />
+          <Property Name="route" Type="nvarchar(max)" />
+          <Property Name="date_first" Type="date" />
+          <Property Name="offblock_first" Type="datetime" />
+          <Property Name="date_last" Type="date" />
+          <Property Name="onblock_last" Type="datetime" />
+          <Property Name="home_base" Type="nvarchar" MaxLength="255" />
+          <Property Name="arr_iata" Type="nvarchar" MaxLength="255" />
+          <Property Name="next_offblock_first" Type="datetime" />
+          <Property Name="rest" Type="int" />
+          <Property Name="home_base_x" Type="nvarchar" MaxLength="255" />
+          <Property Name="apt_x" Type="nvarchar" MaxLength="255" />
+          <Property Name="prev_fdp_id" Type="int" />
+          <Property Name="prev_last" Type="date" />
+          <Property Name="prev_first" Type="date" />
+          <Property Name="is_lo" Type="int" Nullable="false" />
+          <Property Name="rank_last" Type="bigint" />
+          <Property Name="is_vacation" Type="int" Nullable="false" />
+          <Property Name="is_lo_final" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.view_stby' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="view_stby">
           <Key>
@@ -2481,6 +2516,34 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
     [view_fdp_fixtime].[flt_count] AS [flt_count]
     FROM [dbo].[view_fdp_fixtime] AS [view_fdp_fixtime]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="view_layover" EntityType="Self.view_layover" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_layover].[date] AS [date], 
+    [view_layover].[crew_id] AS [crew_id], 
+    [view_layover].[fdp_id] AS [fdp_id], 
+    [view_layover].[rank] AS [rank], 
+    [view_layover].[first_name] AS [first_name], 
+    [view_layover].[last_name] AS [last_name], 
+    [view_layover].[route] AS [route], 
+    [view_layover].[date_first] AS [date_first], 
+    [view_layover].[offblock_first] AS [offblock_first], 
+    [view_layover].[date_last] AS [date_last], 
+    [view_layover].[onblock_last] AS [onblock_last], 
+    [view_layover].[home_base] AS [home_base], 
+    [view_layover].[arr_iata] AS [arr_iata], 
+    [view_layover].[next_offblock_first] AS [next_offblock_first], 
+    [view_layover].[rest] AS [rest], 
+    [view_layover].[home_base_x] AS [home_base_x], 
+    [view_layover].[apt_x] AS [apt_x], 
+    [view_layover].[prev_fdp_id] AS [prev_fdp_id], 
+    [view_layover].[prev_last] AS [prev_last], 
+    [view_layover].[prev_first] AS [prev_first], 
+    [view_layover].[is_lo] AS [is_lo], 
+    [view_layover].[rank_last] AS [rank_last], 
+    [view_layover].[is_vacation] AS [is_vacation], 
+    [view_layover].[is_lo_final] AS [is_lo_final]
+    FROM [dbo].[view_layover] AS [view_layover]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="view_stby" EntityType="Self.view_stby" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [view_stby].[Id] AS [Id], 
@@ -3597,6 +3660,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySet Name="ViewRegHistoryYearlies" EntityType="ModelEntities.ViewRegHistoryYearly" />
           <EntitySet Name="RptRepositions" EntityType="ModelEntities.RptReposition" />
           <EntitySet Name="view_stby" EntityType="ModelEntities.view_stby" />
+          <EntitySet Name="view_layover" EntityType="ModelEntities.view_layover" />
         </EntityContainer>
         <EntityType Name="ViewFinMonthlyRoute">
           <Key>
@@ -5554,6 +5618,39 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="DateStartLocal" Type="DateTime" Precision="3" />
           <Property Name="DateEndLocal" Type="DateTime" Precision="3" />
         </EntityType>
+        <EntityType Name="view_layover">
+          <Key>
+            <PropertyRef Name="date" />
+            <PropertyRef Name="crew_id" />
+            <PropertyRef Name="is_lo" />
+            <PropertyRef Name="is_vacation" />
+            <PropertyRef Name="is_lo_final" />
+          </Key>
+          <Property Name="date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="crew_id" Type="Int32" Nullable="false" />
+          <Property Name="fdp_id" Type="Int32" />
+          <Property Name="rank" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="first_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="last_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="route" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="date_first" Type="DateTime" Precision="0" />
+          <Property Name="offblock_first" Type="DateTime" Precision="3" />
+          <Property Name="date_last" Type="DateTime" Precision="0" />
+          <Property Name="onblock_last" Type="DateTime" Precision="3" />
+          <Property Name="home_base" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="arr_iata" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="next_offblock_first" Type="DateTime" Precision="3" />
+          <Property Name="rest" Type="Int32" />
+          <Property Name="home_base_x" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="apt_x" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="prev_fdp_id" Type="Int32" />
+          <Property Name="prev_last" Type="DateTime" Precision="0" />
+          <Property Name="prev_first" Type="DateTime" Precision="0" />
+          <Property Name="is_lo" Type="Int32" Nullable="false" />
+          <Property Name="rank_last" Type="Int64" />
+          <Property Name="is_vacation" Type="Int32" Nullable="false" />
+          <Property Name="is_lo_final" Type="Int32" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7284,6 +7381,36 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
                 <ScalarProperty Name="JobGroup" ColumnName="JobGroup" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_layover">
+            <EntityTypeMapping TypeName="ModelEntities.view_layover">
+              <MappingFragment StoreEntitySet="view_layover">
+                <ScalarProperty Name="is_lo_final" ColumnName="is_lo_final" />
+                <ScalarProperty Name="is_vacation" ColumnName="is_vacation" />
+                <ScalarProperty Name="rank_last" ColumnName="rank_last" />
+                <ScalarProperty Name="is_lo" ColumnName="is_lo" />
+                <ScalarProperty Name="prev_first" ColumnName="prev_first" />
+                <ScalarProperty Name="prev_last" ColumnName="prev_last" />
+                <ScalarProperty Name="prev_fdp_id" ColumnName="prev_fdp_id" />
+                <ScalarProperty Name="apt_x" ColumnName="apt_x" />
+                <ScalarProperty Name="home_base_x" ColumnName="home_base_x" />
+                <ScalarProperty Name="rest" ColumnName="rest" />
+                <ScalarProperty Name="next_offblock_first" ColumnName="next_offblock_first" />
+                <ScalarProperty Name="arr_iata" ColumnName="arr_iata" />
+                <ScalarProperty Name="home_base" ColumnName="home_base" />
+                <ScalarProperty Name="onblock_last" ColumnName="onblock_last" />
+                <ScalarProperty Name="date_last" ColumnName="date_last" />
+                <ScalarProperty Name="offblock_first" ColumnName="offblock_first" />
+                <ScalarProperty Name="date_first" ColumnName="date_first" />
+                <ScalarProperty Name="route" ColumnName="route" />
+                <ScalarProperty Name="last_name" ColumnName="last_name" />
+                <ScalarProperty Name="first_name" ColumnName="first_name" />
+                <ScalarProperty Name="rank" ColumnName="rank" />
+                <ScalarProperty Name="fdp_id" ColumnName="fdp_id" />
+                <ScalarProperty Name="crew_id" ColumnName="crew_id" />
+                <ScalarProperty Name="date" ColumnName="date" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

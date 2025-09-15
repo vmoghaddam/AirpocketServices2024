@@ -369,6 +369,7 @@ namespace ApiReportFlight.Controllers
                 regs = "All";
 
             var context = new ppa_Entities();
+            context.Database.CommandTimeout = 600;
 
             df = df.Date;
             dt = dt.Date.AddDays(1);
@@ -658,12 +659,33 @@ namespace ApiReportFlight.Controllers
                                        FX = 0
 
                                    }).ToList();
+            var qry_layover = from x in context.view_layover
+                              where x.date >= df && x.date < dt && crew_ids.Contains(x.crew_id)
+                              select x;
+            var ds_layover = qry_layover.ToList();
+            var ds_layover_total = (from x in ds_layover
+                                    group x by new { x.crew_id } into grp
+                                    select new
+                                    {
+                                        grp.Key.crew_id,
+                                        total = grp.Sum(q => q.is_lo_final),
+
+                                    }).ToList();
+                                 
 
             foreach (var crew in ds_crew)
             {
                 crew.GroupOrder = getOrder(crew.JobGroup);
                 var nofdps = ds_nofdp_total.Where(q => q.CrewId == crew.CrewId).ToList();
                 var refs = ds_refuse_total.Where(q => q.CrewId == crew.CrewId).ToList();
+
+                var lay_over = ds_layover_total.FirstOrDefault(q => q.crew_id == crew.CrewId);
+                if (lay_over != null)
+                {
+                    crew.LayOver = lay_over.total;
+                }
+                else
+                    crew.LayOver = 0;
 
                 var safety = ds_safety_total.FirstOrDefault(q => q.CrewId == crew.CrewId);
                 if (safety != null)
@@ -920,6 +942,10 @@ namespace ApiReportFlight.Controllers
 
             public int? RegisterId { get; set; }
             public string Register { get; set; }
+            public int LayOver { get; set; }
+            public int Sick { get; set; }
+            public int ReqOff { get; set; }
+            public int Vacation { get; set; }
         }
         //api/flight/daily
         [Route("api/flight/daily")]
@@ -1277,7 +1303,131 @@ namespace ApiReportFlight.Controllers
         }
 
 
+        [Route("api/flight/delayed/summary")]
 
+        // [Authorize]
+        public IHttpActionResult GetDelayedFlightSummary(DateTime df, DateTime dt, string route = "", string regs = "", string types = "", string flts = "", string cats = "", int range = 1)
+        {
+            try
+            {
+
+
+                var context = new ppa_Entities();
+                var _df = df.Date;
+                var _dt = dt.Date;//.AddHours(24);
+                var query = from x in context.ViewDelayedFlights
+                            where x.STDDayLocal >= _df && x.STDDayLocal <= _dt  
+                            select x;
+                ////if (!string.IsNullOrEmpty(cats))
+                ////{
+                ////    var cts = cats.Split('_').ToList();
+                ////    query = query.Where(q => cts.Contains(q.MapTitle2));
+                ////}
+                if (!string.IsNullOrEmpty(route))
+                {
+                    var rids = route.Split('_').ToList();
+                    query = query.Where(q => rids.Contains(q.Route));
+                }
+
+
+
+                if (!string.IsNullOrEmpty(regs))
+                {
+                    var regids = regs.Split('_').Select(q => (Nullable<int>)Convert.ToInt32(q)).ToList();
+                    query = query.Where(q => regids.Contains(q.RegisterID));
+                }
+
+                if (!string.IsNullOrEmpty(types))
+                {
+                    var typeids = types.Split('_').Select(q => (Nullable<int>)Convert.ToInt32(q)).ToList();
+                    query = query.Where(q => typeids.Contains(q.TypeId));
+                }
+                //malakh
+                if (!string.IsNullOrEmpty(flts))
+                {
+                    var fltids = flts.Split(',').Select(q => q.Trim().Replace(" ", "")).ToList();
+                    query = query.Where(q => fltids.Contains(q.FlightNumber));
+                }
+
+                switch (range)
+                {
+                    case 1:
+
+                        break;
+                    case 2:
+                        query = query.Where(q => q.Delay <= 30);
+                        break;
+                    case 3:
+                        query = query.Where(q => q.Delay > 30);
+                        break;
+                    case 4:
+                        query = query.Where(q => q.Delay >= 31 && q.Delay <= 60);
+                        break;
+                    case 5:
+                        query = query.Where(q => q.Delay >= 61 && q.Delay <= 120);
+                        break;
+                    case 6:
+                        query = query.Where(q => q.Delay >= 121 && q.Delay <= 180);
+                        break;
+                    case 7:
+                        query = query.Where(q => q.Delay >= 181);
+                        break;
+                    case 8:
+                        // query = query.Where(q => q.Delay <= 15);
+                        query = query.Where(q => q.Delay <= 0);
+                        break;
+                    case 9:
+                        query = query.Where(q => q.Delay <= 15);
+                        break;
+                    case 10:
+                        query = query.Where(q => q.Delay > 15);
+                        break;
+                    case 11:
+                        // query = query.Where(q => q.Delay <= 15);
+                        query = query.Where(q => q.Delay > 0);
+                        break;
+                    default: break;
+                }
+
+
+
+
+
+                var query_result = query.ToList();
+                var total_date = (from x in query_result
+                                 group x by new { x.STDDayLocal } into grp
+                                 select new
+                                 {
+                                     date=grp.Key.STDDayLocal,
+                                     total_delay=grp.Sum(q=>q.Delay),
+                                 }).OrderBy(q=>q.date).ToList();
+                var total_station = (from x in query_result
+                                  group x by new { x.FromAirportIATA } into grp
+                                  select new
+                                  {
+                                      station = grp.Key.FromAirportIATA,
+                                      total_delay = grp.Sum(q => q.Delay),
+                                  }).OrderByDescending(q => q.total_delay).ThenBy(q=>q.station).ToList();
+
+                return Ok(new
+                {
+                    total_date,
+                     total_station
+                });
+
+
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += "    " + ex.InnerException.Message;
+                return Ok(msg);
+            }
+
+
+
+        }
 
         [Route("api/flight/daily/twoway")]
         [AcceptVerbs("GET")]

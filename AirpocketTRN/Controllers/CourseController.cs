@@ -1063,7 +1063,7 @@ namespace AirpocketTRN.Controllers
 
             return Ok(result.Data);
         }
-
+         
         [Route("api/certificate/course/all/{id}")]
         [AcceptVerbs("GET")]
         public async Task<IHttpActionResult> GetCertificateCourseAll(int id)

@@ -56,5 +56,6 @@ namespace ApiReportFlight.Models
         public virtual DbSet<ViewRegHistoryYearly> ViewRegHistoryYearlies { get; set; }
         public virtual DbSet<RptReposition> RptRepositions { get; set; }
         public virtual DbSet<view_stby> view_stby { get; set; }
+        public virtual DbSet<view_layover> view_layover { get; set; }
     }
 }
