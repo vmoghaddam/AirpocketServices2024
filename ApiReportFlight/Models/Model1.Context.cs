@@ -45,7 +45,6 @@ namespace ApiReportFlight.Models
         public virtual DbSet<ViewFlightPax> ViewFlightPaxes { get; set; }
         public virtual DbSet<ViewFormB> ViewFormBs { get; set; }
         public virtual DbSet<ViewFormC> ViewFormCs { get; set; }
-        public virtual DbSet<ViewCrew> ViewCrews { get; set; }
         public virtual DbSet<FDP> FDPs { get; set; }
         public virtual DbSet<XFlightCrew> XFlightCrews { get; set; }
         public virtual DbSet<Ac_MSN> Ac_MSN { get; set; }
@@ -57,5 +56,7 @@ namespace ApiReportFlight.Models
         public virtual DbSet<RptReposition> RptRepositions { get; set; }
         public virtual DbSet<view_stby> view_stby { get; set; }
         public virtual DbSet<view_layover> view_layover { get; set; }
+        public virtual DbSet<ViewCrew> ViewCrews { get; set; }
+        public virtual DbSet<rpt_crew_route> rpt_crew_route { get; set; }
     }
 }

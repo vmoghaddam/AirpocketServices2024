@@ -359,7 +359,56 @@ namespace ApiReportFlight.Controllers
 
         }
 
-        [Route("api/crew/flight/summary/regs")]
+        [Route("api/crew/route/summary/")]
+        public IHttpActionResult GetCrewFlightSummaryRoute(DateTime df, DateTime dt, string grps = "All", string actype = "All", string cid = "-1", string regs = "All")
+        {
+            var total_days = (dt.Date - df.Date).Days;
+            var result = new List<CrewSummaryDto>();
+
+            if (string.IsNullOrEmpty(regs))
+                regs = "All";
+
+            var context = new ppa_Entities();
+            context.Database.CommandTimeout = 600;
+
+            df = df.Date;
+            dt = dt.Date.AddDays(1);
+
+            var crew_grps = new List<string>() { "TRE", "TRI", "P1", "P2", "ISCCM", "SCCM", "CCM", "LTC", "CCI", "CCE" };
+            if (grps == "Cockpit")
+                crew_grps = new List<string>() { "TRE", "TRI", "P1", "P2", "LTC" };
+            else if (grps == "Cabin")
+                crew_grps = new List<string>() { "ISCCM", "SCCM", "CCM", "CCI", "CCE" };
+            else if (grps == "IP")
+                crew_grps = new List<string>() { "TRE", "TRI", "LTC" };
+            else if (grps == "P1")
+                crew_grps = new List<string>() { "P1" };
+            else if (grps == "P2")
+                crew_grps = new List<string>() { "P2" };
+            else if (grps == "ISCCM" || grps == "CCI")
+                crew_grps = new List<string>() { "ISCCM", "CCI" };
+            else if (grps == "SCCM")
+                crew_grps = new List<string>() { "SCCM" };
+            else if (grps == "CCM")
+                crew_grps = new List<string>() { "CCM", "CCE" };
+
+
+            string crew_types = "";// "21,22,26" ;
+            if (actype == "AIRBUS")
+                crew_types = "AB";
+            if (actype == "MD")
+                crew_types = "MD";
+            if (actype == "FOKKER")
+                crew_types = "22";
+            if (actype == "737")
+                crew_types = "737";
+
+            return Ok(true);
+
+
+        }
+
+            [Route("api/crew/flight/summary/regs")]
         public IHttpActionResult GetCrewFlightSummaryRegs(DateTime df, DateTime dt, string grps = "All", string actype = "All", string cid = "-1",string regs="All")
         {
             var total_days = (dt.Date - df.Date).Days;
@@ -415,7 +464,7 @@ namespace ApiReportFlight.Controllers
                            select x;
             if (!string.IsNullOrEmpty(crew_types))
             {
-                qry_crew = qry_crew.Where(q => q.ValidTypes.Contains(crew_types));
+                qry_crew = qry_crew.Where(q => q.ValidTypesStr.Contains(crew_types));
             }
             var _cid = Convert.ToInt32(cid);
             if (_cid != -1)
@@ -660,7 +709,8 @@ namespace ApiReportFlight.Controllers
 
                                    }).ToList();
             var qry_layover = from x in context.view_layover
-                              where x.date >= df && x.date < dt && crew_ids.Contains(x.crew_id)
+                                   where x.date >= df && x.date < dt && crew_ids.Contains(x.crew_id)
+                              //where x.date == df //&& crew_ids.Contains(x.crew_id)
                               select x;
             var ds_layover = qry_layover.ToList();
             var ds_layover_total = (from x in ds_layover
@@ -697,6 +747,14 @@ namespace ApiReportFlight.Controllers
                 {
                     crew.Refuse += rec.Count;
                 }
+
+                var _off = nofdps.Where(q => q.DutyType == 1166).FirstOrDefault();
+                var _req_off=nofdps.Where(q=>q.DutyType== 100008).FirstOrDefault();
+                if (_off != null)
+                    crew.Off =Convert.ToInt32( Math.Ceiling(_off.Duration * 1.0 / 24 / 60));
+                if (_req_off != null)
+                    crew.ReqOff = Convert.ToInt32(Math.Ceiling(_req_off.Duration * 1.0 / 24 / 60));
+
                 foreach (var rec in nofdps)
                 {
                     if (rec.DutyTypeTitle == "StandBy" || rec.DutyTypeTitle == "STBY-C")
@@ -718,6 +776,15 @@ namespace ApiReportFlight.Controllers
                     if (rec.DutyType == 300005) { crew.FX300005 += rec.Duration; }
                     if (rec.DutyType == 300006) { crew.FX300006 += rec.Duration; }
                     if (rec.DutyType == 300007) { crew.FX300007 += rec.Duration; }
+
+                    if (rec.DutyTypeTitle== "Ticket")
+                    {
+                        crew.Ticket = rec.Count;
+                    }
+                    if (rec.DutyTypeTitle == "Sick")
+                    {
+                        crew.Sick = rec.Count;
+                    }
 
 
                 }
@@ -945,7 +1012,9 @@ namespace ApiReportFlight.Controllers
             public int LayOver { get; set; }
             public int Sick { get; set; }
             public int ReqOff { get; set; }
+            public int  Off { get; set; }
             public int Vacation { get; set; }
+            public int Ticket { get; set; }
         }
         //api/flight/daily
         [Route("api/flight/daily")]
