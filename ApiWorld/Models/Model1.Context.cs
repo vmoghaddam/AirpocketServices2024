@@ -90,7 +90,6 @@ namespace ApiWorld.Models
         public virtual DbSet<Fuel> Fuels { get; set; }
         public virtual DbSet<FullEqualTimeAirport> FullEqualTimeAirports { get; set; }
         public virtual DbSet<FullEqualTimePoint> FullEqualTimePoints { get; set; }
-        public virtual DbSet<HoldingFuel> HoldingFuels { get; set; }
         public virtual DbSet<Load> Loads { get; set; }
         public virtual DbSet<Load_Cargo> Load_Cargo { get; set; }
         public virtual DbSet<Load_CargoSection> Load_CargoSection { get; set; }
@@ -105,7 +104,6 @@ namespace ApiWorld.Models
         public virtual DbSet<LoadCargoSection> LoadCargoSections { get; set; }
         public virtual DbSet<LoadFuelSection> LoadFuelSections { get; set; }
         public virtual DbSet<LoadPaxSection> LoadPaxSections { get; set; }
-        public virtual DbSet<LocalTime> LocalTimes { get; set; }
         public virtual DbSet<LocalTimeDeparture> LocalTimeDepartures { get; set; }
         public virtual DbSet<LocalTimeDestination> LocalTimeDestinations { get; set; }
         public virtual DbSet<MassBalance> MassBalances { get; set; }
@@ -127,7 +125,6 @@ namespace ApiWorld.Models
         public virtual DbSet<Position> Positions { get; set; }
         public virtual DbSet<PpsVersionInformation> PpsVersionInformations { get; set; }
         public virtual DbSet<RCFData> RCFDatas { get; set; }
-        public virtual DbSet<Response> Responses { get; set; }
         public virtual DbSet<RoutePoint> RoutePoints { get; set; }
         public virtual DbSet<RouteString> RouteStrings { get; set; }
         public virtual DbSet<SID> SIDs { get; set; }
@@ -141,6 +138,22 @@ namespace ApiWorld.Models
         public virtual DbSet<AdequateApt> AdequateApts { get; set; }
         public virtual DbSet<AltApt> AltApts { get; set; }
         public virtual DbSet<FIR> FIRs { get; set; }
+        public virtual DbSet<HoldingFuel> HoldingFuels { get; set; }
+        public virtual DbSet<Response> Responses { get; set; }
+        public virtual DbSet<LocalTime> LocalTimes { get; set; }
+        public virtual DbSet<OFPA_aldrf> OFPA_aldrf { get; set; }
+        public virtual DbSet<OFPA_apln> OFPA_apln { get; set; }
+        public virtual DbSet<OFPA_bpln> OFPA_bpln { get; set; }
+        public virtual DbSet<OFPA_cstbl> OFPA_cstbl { get; set; }
+        public virtual DbSet<OFPA_futbl> OFPA_futbl { get; set; }
+        public virtual DbSet<OFPA_Main> OFPA_Main { get; set; }
+        public virtual DbSet<OFPA_mpln> OFPA_mpln { get; set; }
+        public virtual DbSet<OFPA_pdptbl> OFPA_pdptbl { get; set; }
+        public virtual DbSet<OFPA_wdclb> OFPA_wdclb { get; set; }
+        public virtual DbSet<OFPA_wddes> OFPA_wddes { get; set; }
+        public virtual DbSet<OFPA_wdtmp> OFPA_wdtmp { get; set; }
+        public virtual DbSet<OFPA_wtdrf> OFPA_wtdrf { get; set; }
+        public virtual DbSet<OFPSkyPuter> OFPSkyPuters { get; set; }
         public virtual DbSet<Flight> Flights { get; set; }
     }
 }

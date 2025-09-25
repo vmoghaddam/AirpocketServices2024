@@ -14,6 +14,12 @@ namespace ApiWorld.Models
     
     public partial class DEPTaf
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public DEPTaf()
+        {
+            this.Flights = new HashSet<Flight>();
+        }
+    
         public int Id { get; set; }
         public int FlightID { get; set; }
         public byte Type { get; set; }
@@ -24,5 +30,7 @@ namespace ApiWorld.Models
         public System.DateTime ForecastEndTime { get; set; }
     
         public virtual Flight Flight { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Flight> Flights { get; set; }
     }
 }

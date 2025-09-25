@@ -24,7 +24,6 @@ namespace ApiWorld.Models
         public int Id { get; set; }
         public string Message { get; set; }
         public Nullable<bool> Succeed { get; set; }
-        public Nullable<int> FlightID { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Flight> Flights { get; set; }

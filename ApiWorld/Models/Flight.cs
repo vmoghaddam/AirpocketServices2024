@@ -242,12 +242,14 @@ namespace ApiWorld.Models
         public virtual ICollection<Alt1Points> Alt1Points { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ALT1Taf> ALT1Taf { get; set; }
+        public virtual ALT1Taf ALT1Taf1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ALT2Notam> ALT2Notam { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Alt2Points> Alt2Points { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ALT2Taf> ALT2Taf { get; set; }
+        public virtual ALT2Taf ALT2Taf1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AltApt> AltApts { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -265,10 +267,12 @@ namespace ApiWorld.Models
         public virtual ICollection<DEPNotam> DEPNotams { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DEPTaf> DEPTafs { get; set; }
+        public virtual DEPTaf DEPTaf { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DESTNotam> DESTNotams { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DESTTaf> DESTTafs { get; set; }
+        public virtual DESTTaf DESTTaf { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EtopsInformation> EtopsInformations { get; set; }
         public virtual EtopsInformation EtopsInformation { get; set; }
@@ -292,11 +296,6 @@ namespace ApiWorld.Models
         public virtual Response Response { get; set; }
         public virtual RouteString RouteString { get; set; }
         public virtual SID SID { get; set; }
-        public virtual Taf Taf { get; set; }
-        public virtual Taf Taf1 { get; set; }
-        public virtual Taf Taf2 { get; set; }
-        public virtual Taf Taf3 { get; set; }
-        public virtual HoldingFuel HoldingFuel1 { get; set; }
         public virtual LocalTime LocalTime1 { get; set; }
         public virtual OverflightCost OverflightCost { get; set; }
         public virtual Response Response1 { get; set; }

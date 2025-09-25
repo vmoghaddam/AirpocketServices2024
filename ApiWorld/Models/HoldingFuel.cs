@@ -18,7 +18,6 @@ namespace ApiWorld.Models
         public HoldingFuel()
         {
             this.Flights = new HashSet<Flight>();
-            this.Flights1 = new HashSet<Flight>();
         }
     
         public int Id { get; set; }
@@ -27,11 +26,8 @@ namespace ApiWorld.Models
         public string Profile { get; set; }
         public string Specification { get; set; }
         public string FuelFlowType { get; set; }
-        public Nullable<int> FlightID { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Flight> Flights { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Flight> Flights1 { get; set; }
     }
 }

@@ -20,10 +20,6 @@ namespace ApiWorld.Models
             this.AirportWeatherDatas = new HashSet<AirportWeatherData>();
             this.AirportWeatherDataPlanningEnRouteAlternates = new HashSet<AirportWeatherDataPlanningEnRouteAlternate>();
             this.ETOPSSuitableAirports = new HashSet<ETOPSSuitableAirport>();
-            this.Flights = new HashSet<Flight>();
-            this.Flights1 = new HashSet<Flight>();
-            this.Flights2 = new HashSet<Flight>();
-            this.Flights3 = new HashSet<Flight>();
         }
     
         public int Id { get; set; }
@@ -40,13 +36,5 @@ namespace ApiWorld.Models
         public virtual ICollection<AirportWeatherDataPlanningEnRouteAlternate> AirportWeatherDataPlanningEnRouteAlternates { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ETOPSSuitableAirport> ETOPSSuitableAirports { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Flight> Flights { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Flight> Flights1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Flight> Flights2 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Flight> Flights3 { get; set; }
     }
 }

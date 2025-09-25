@@ -23,7 +23,6 @@ namespace ApiWorld.Models
         public int Id { get; set; }
         public Nullable<int> DepartureId { get; set; }
         public Nullable<int> DestinationId { get; set; }
-        public Nullable<int> FlightID { get; set; }
     
         public virtual LocalTimeDeparture LocalTimeDeparture { get; set; }
         public virtual LocalTimeDestination LocalTimeDestination { get; set; }

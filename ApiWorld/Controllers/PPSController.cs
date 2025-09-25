@@ -74,21 +74,22 @@ namespace ApiWorld.Controllers
                         };
                         foreach (var rec in msg.Recipients)
                             db_msg.MessageRecipients.Add(
-                                new MessageRecipient() {
+                                new MessageRecipient()
+                                {
                                     Recipient = rec.Recipient,
                                     RecipientType = rec.RecipientType,
                                 });
                         db_flight.Messages.Add(db_msg);
                     }
 
-                //db_flight.OverflightCost = new OverflightCost()
-                //{
-                //     Currency=flt_info.OverflightCost.Currency,
-                //      TotalOverflightCost=flt_info.OverflightCost.TotalOverflightCost,
-                //       TotalTerminalCost=flt_info.OverflightCost.TotalTerminalCost,
-                //};
+                db_flight.OverflightCost = new OverflightCost()
+                {
+                    Currency = flt_info.OverflightCost.Currency,
+                    TotalOverflightCost = flt_info.OverflightCost.TotalOverflightCost,
+                    TotalTerminalCost = flt_info.OverflightCost.TotalTerminalCost,
+                };
                 db_flight.FlightLogID = flt_info.FlightLogID;
-                
+
                 db_flight.PPSName = flt_info.PPSName;
                 db_flight.ACFTAIL = flt_info.ACFTAIL;
                 db_flight.DEP = flt_info.DEP;
@@ -103,10 +104,29 @@ namespace ApiWorld.Controllers
                 db_flight.MinFL = flt_info.MinFL;
                 db_flight.MaxFL = flt_info.MaxFL;
                 db_flight.EROPSAltApts = flt_info.EROPSAltApts;
+                //db_flight.AdequateApts = flt_info.AdequateApt;
+
                 // AdequateApt            // string[] - skip
-                
+                if (flt_info.AdequateApt != null)
+                    foreach (var x in flt_info.AdequateApt)
+                        db_flight.AdequateApts.Add(new AdequateApt()
+                        {
+                            Value = x,
+                        });
                 // FIR                    // string[] - skip
+                if (flt_info.FIR != null)
+                    foreach (var x in flt_info.FIR)
+                        db_flight.FIRs.Add(new FIR()
+                        {
+                            Value = x,
+                        });
                 // AltApts                // string[] - skip
+                if (flt_info.AltApts != null)
+                    foreach (var x in flt_info.AltApts)
+                        db_flight.AltApts.Add(new AltApt()
+                        {
+                            Value = x,
+                        });
                 db_flight.TOA = flt_info.TOA;
                 db_flight.FMDID = flt_info.FMDID;
                 db_flight.DESTSTDALT = flt_info.DESTSTDALT;
@@ -131,6 +151,24 @@ namespace ApiWorld.Controllers
                 db_flight.STA = flt_info.STA;
                 db_flight.ETA = flt_info.ETA;
                 // LocalTime              // complex - skip
+                db_flight.LocalTime1 = new LocalTime()
+                {
+                    LocalTimeDeparture = new LocalTimeDeparture()
+                    {
+                        ETD = flt_info.LocalTime.Departure.ETD,
+                        STD = flt_info.LocalTime.Departure.STD,
+                        Sunrise = flt_info.LocalTime.Departure.Sunrise,
+                        Sunset = flt_info.LocalTime.Departure.Sunset,
+                    },
+                    LocalTimeDestination = new LocalTimeDestination()
+                    {
+                        ETA = flt_info.LocalTime.Destination.ETA,
+                        STA = flt_info.LocalTime.Destination.STA,
+                        Sunrise = flt_info.LocalTime.Destination.Sunrise,
+                        Sunset = flt_info.LocalTime.Destination.Sunset,
+                    }
+                };
+
                 db_flight.SCHBLOCKTIME = flt_info.SCHBLOCKTIME;
                 db_flight.DISP = flt_info.DISP;
                 db_flight.LastEditDate = flt_info.LastEditDate;
@@ -165,6 +203,15 @@ namespace ApiWorld.Controllers
                 db_flight.TripFuel = flt_info.TripFuel;
                 db_flight.HoldFuel = flt_info.HoldFuel;
                 // Holding                // complex - skip
+                db_flight.HoldingFuel = new HoldingFuel()
+                {
+                    Fuel = flt_info.Holding.Fuel,
+                    FuelFlowType = flt_info.Holding.FuelFlowType,
+                    Minutes = flt_info.Holding.Minutes,
+                    Profile = flt_info.Holding.Profile,
+                    Specification = flt_info.Holding.Specification,
+
+                };
                 db_flight.Elw = flt_info.Elw;
                 db_flight.FuelPolicy = flt_info.FuelPolicy;
                 db_flight.Alt2Time = flt_info.Alt2Time;
@@ -190,6 +237,7 @@ namespace ApiWorld.Controllers
                 db_flight.AmexsyStatus = flt_info.AmexsyStatus;
                 db_flight.AvgTrack = flt_info.AvgTrack;
                 // DEPTAF                 // complex - skip
+                
                 db_flight.DEPMetar = flt_info.DEPMetar;
                 // DEPNotam               // complex - skip
                 // DESTTAF                // complex - skip
