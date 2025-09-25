@@ -8889,7 +8889,7 @@ new JsonSerializerSettings
             df = df != null ? ((DateTime)df).Date : DateTime.MinValue.Date;
             dt = dt != null ? ((DateTime)dt).Date : DateTime.MaxValue.Date;
             var context = new AirpocketAPI.Models.FLYEntities();
-            var query = from x in context.AppLegOPS
+            var query = from x in context.view_efb_report
                             // where x.FlightStatusID != 1 && x.FlightStatusID != 4
                         select x;
             query = query.Where(q => q.STDDay >= df && q.STDDay <= dt);

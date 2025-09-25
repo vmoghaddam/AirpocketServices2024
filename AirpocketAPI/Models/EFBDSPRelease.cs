@@ -145,6 +145,11 @@ namespace AirpocketAPI.Models
         public string SgnCPTLicNo { get; set; }
         public Nullable<System.DateTime> JLDSPSignDate { get; set; }
         public string SGNDSPName { get; set; }
+        public string ipad_no_1 { get; set; }
+        public string ipad_no_2 { get; set; }
+        public string ipad_no_3 { get; set; }
+        public string pb_1 { get; set; }
+        public string pb_2 { get; set; }
     
         public virtual FlightInformation FlightInformation { get; set; }
     }

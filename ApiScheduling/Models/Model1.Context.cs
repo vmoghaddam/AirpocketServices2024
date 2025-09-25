@@ -50,14 +50,14 @@ namespace ApiScheduling.Models
         public virtual DbSet<FDP> FDPs { get; set; }
         public virtual DbSet<ViewCrewDuty> ViewCrewDuties { get; set; }
         public virtual DbSet<ViewFDPRest> ViewFDPRests { get; set; }
-        public virtual DbSet<ViewQaHazardLog> ViewQaHazardLogs { get; set; }
         public virtual DbSet<ViewCrewDutyPulsePocket> ViewCrewDutyPulsePockets { get; set; }
         public virtual DbSet<AppCrewFlight> AppCrewFlights { get; set; }
         public virtual DbSet<ViewCourseFDP> ViewCourseFDPs { get; set; }
         public virtual DbSet<recency_route> recency_route { get; set; }
-        public virtual DbSet<view_recency_route> view_recency_route { get; set; }
-        public virtual DbSet<view_route_count> view_route_count { get; set; }
         public virtual DbSet<AppFTLAb> AppFTLAbs { get; set; }
         public virtual DbSet<OFPImport> OFPImports { get; set; }
+        public virtual DbSet<view_recency_route> view_recency_route { get; set; }
+        public virtual DbSet<view_route_count> view_route_count { get; set; }
+        public virtual DbSet<qa_form_visited_history> qa_form_visited_history { get; set; }
     }
 }
