@@ -2520,6 +2520,74 @@ namespace AirpocketTRN.Services
                 };
         }
 
+
+        public async Task<DataResponse> GetCertificateCourseAll(int course_id)
+        {
+            //var query = from x in context.ViewEmployeeTrainings select x;
+            //if (root != "000")
+            //    query = query.Where(q => q.JobGroupMainCode == root);
+            //var result = await query.OrderByDescending(q => q.MandatoryExpired).ThenBy(q => q.JobGroup).ThenBy(q => q.LastName).ToListAsync();
+            var obj = context.ViewCoursePeoplePassedRankeds.Where(q => q.CourseId==course_id /*&& (q.Instructor.Contains("TALEBI") || q.Instructor.Contains("SHAFIEI"))*/ ).Select(q =>
+
+           new
+           {
+               Id = q.Id,
+               Name = q.LastName + " " + q.FirstName,
+               q.Title,
+               Remark=q.Title+"_"+q.StatusRemark+"_"+q.Instructor
+           }
+
+            ).ToList();
+            if (obj != null)
+                return new DataResponse()
+                {
+                    Data = obj,
+                    IsSuccess = true,
+                };
+            else
+                return new DataResponse()
+                {
+                    Data = new ViewCoursePeople() { Id = -1, },
+                    IsSuccess = true,
+                };
+        }
+
+
+        public async Task<DataResponse> GetCertificatePeopleAll(string  ids)
+        {
+            //var query = from x in context.ViewEmployeeTrainings select x;
+            //if (root != "000")
+            //    query = query.Where(q => q.JobGroupMainCode == root);
+            //var result = await query.OrderByDescending(q => q.MandatoryExpired).ThenBy(q => q.JobGroup).ThenBy(q => q.LastName).ToListAsync();
+
+            var p_ids = ids.Split('_').Select(q =>(Nullable<int>) Convert.ToInt32(q)).ToList();
+            var obj = context.ViewCoursePeoplePassedRankeds.Where(q =>p_ids.Contains( q.PersonId) /*&& (q.Instructor.Contains("TALEBI") || q.Instructor.Contains("SHAFIEI"))*/ ).Select(q =>
+
+             new
+             {
+                 Id = q.Id,
+                 Name = q.LastName + " " + q.FirstName,
+                 q.Title,
+             }
+
+            ).ToList();
+            if (obj != null)
+                return new DataResponse()
+                {
+                    Data = obj,
+                    IsSuccess = true,
+                };
+            else
+                return new DataResponse()
+                {
+                    Data = new ViewCoursePeople() { Id = -1, },
+                    IsSuccess = true,
+                };
+        }
+
+
+
+
         public async Task<DataResponse> GetCertificate(int id)
         {
             //var query = from x in context.ViewEmployeeTrainings select x;
@@ -3966,6 +4034,8 @@ namespace AirpocketTRN.Services
             public int cid { get; set; }
             public string sid { get; set; }
             public List<int?> pid { get; set; }
+
+            public bool value { get; set; }
         }
         public async Task<DataResponse> SaveCourseSessionPresenceGroup(cspg_dto dto)
         {
@@ -3996,6 +4066,54 @@ namespace AirpocketTRN.Services
                 }
 
             }
+
+            await context.SaveChangesAsync();
+
+            return new DataResponse()
+            {
+                IsSuccess = true,
+                Data = dto,
+            };
+        }
+
+
+        public async Task<DataResponse> SaveCourseSessionPresenceAll(cspg_dto dto)
+        {
+            int courseId = dto.cid;
+            var subjects = await context.Courses.Where(q => q.ParentId == dto.cid).Select(q =>(Nullable<int>) q.Id).ToListAsync();
+            subjects.Add(courseId);
+            var query = from x in context.CourseSessionPresences
+                        where subjects.Contains(x.CourseId)
+                        select x;
+            var rows = await query.ToListAsync();
+            context.CourseSessionPresences.RemoveRange(rows);
+            if (dto.value)
+            {
+                if (subjects.Count > 1)
+                      subjects.Remove(courseId);
+                foreach(var cid in subjects)
+                {
+                    var sessions = await context.CourseSessions.Where(q => q.CourseId == cid).ToListAsync();
+                    var people = await context.CoursePeoples.Where(q => q.CourseId == cid).ToListAsync();
+                    foreach (var p in people)
+                    {
+                        foreach (var s in sessions)
+                        {
+                            context.CourseSessionPresences.Add(new CourseSessionPresence()
+                            {
+                                PersonId = p.PersonId,
+                                SessionKey = s.Key,
+                                CourseId = cid,
+                                Date = DateTime.Now
+                            });
+                        }
+                    }
+                }
+               
+            }
+
+
+            
 
             await context.SaveChangesAsync();
 

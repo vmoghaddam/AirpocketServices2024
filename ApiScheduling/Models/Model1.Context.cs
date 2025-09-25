@@ -58,6 +58,6 @@ namespace ApiScheduling.Models
         public virtual DbSet<OFPImport> OFPImports { get; set; }
         public virtual DbSet<view_recency_route> view_recency_route { get; set; }
         public virtual DbSet<view_route_count> view_route_count { get; set; }
-        public virtual DbSet<qa_form_visited_history> qa_form_visited_history { get; set; }
+        public virtual DbSet<ViewQaHazardLog> ViewQaHazardLogs { get; set; }
     }
 }

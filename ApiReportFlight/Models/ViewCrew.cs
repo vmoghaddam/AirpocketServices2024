@@ -116,6 +116,7 @@ namespace ApiReportFlight.Models
         public Nullable<System.DateTime> DateTypeIssue { get; set; }
         public Nullable<System.DateTime> DateTypeExpire { get; set; }
         public string ValidTypes { get; set; }
+        public string ValidTypesStr { get; set; }
         public double FlightSum { get; set; }
         public int FlightEarly { get; set; }
         public int FlightLate { get; set; }

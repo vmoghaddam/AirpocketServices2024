@@ -27,6 +27,7 @@ using AirpocketTRN.Services;
 using System.Web.Http.OData;
 using AirpocketTRN.ViewModels;
 using System.Web;
+using static AirpocketTRN.Services.CourseService;
 
 namespace AirpocketTRN.Controllers
 {
@@ -818,6 +819,15 @@ namespace AirpocketTRN.Controllers
             return Ok(result);
         }
 
+        [Route("api/course/session/pres/save/all")]
+        [AcceptVerbs("POST")]
+        public async Task<IHttpActionResult> PostCourseSessionPresenceAll(cspg_dto dto)
+        {
+            var result = await courseService.SaveCourseSessionPresenceAll(dto);
+
+            return Ok(result);
+        }
+
         [Route("api/course/exam/result/save")]
         [AcceptVerbs("POST")]
         public async Task<IHttpActionResult> PostCourseExamResult(dto_exam_result dto)
@@ -1050,6 +1060,24 @@ namespace AirpocketTRN.Controllers
         public async Task<IHttpActionResult> GetCertificateFlyKish()
         {
             var result = await courseService.GetCertificateAll();
+
+            return Ok(result.Data);
+        }
+         
+        [Route("api/certificate/course/all/{id}")]
+        [AcceptVerbs("GET")]
+        public async Task<IHttpActionResult> GetCertificateCourseAll(int id)
+        {
+            var result = await courseService.GetCertificateCourseAll(id);
+
+            return Ok(result.Data);
+        }
+
+        [Route("api/certificate/people/all/{ids}")]
+        [AcceptVerbs("GET")]
+        public async Task<IHttpActionResult> GetCertificatePeopleAll(string ids)
+        {
+            var result = await courseService.GetCertificatePeopleAll(ids);
 
             return Ok(result.Data);
         }

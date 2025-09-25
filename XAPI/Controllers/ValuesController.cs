@@ -69,7 +69,7 @@ namespace XAPI.Controllers
 
         public IHttpActionResult GetFlt(DateTime dt, string origin, string destination, string no, string key)
         {
-            if (key != "taban@1359A")
+            if (key != "ava@2025A")
                 return BadRequest("Not Authorized");
             var ctx = new PPAEntities();
             var _dt = dt.Date;
@@ -2114,6 +2114,35 @@ namespace XAPI.Controllers
                     }
                     return Ok(true);
                 }
+                else if (dto.plan.Contains("NASIM"))
+                {
+                    result = "NASIM";
+                    var entity = new OFPSkyPuter()
+                    {
+                        OFP = dto.plan,
+                        DateCreate = DateTime.Now,
+                        UploadStatus = 0,
+
+
+                    };
+                    var ctx = new PPAEntities();
+                    ctx.Database.CommandTimeout = 1000;
+                    ctx.OFPSkyPuters.Add(entity);
+                    ctx.SaveChanges();
+
+
+                    string responsebody = "NO";
+                    using (WebClient client = new WebClient())
+                    {
+                        var reqparm = new System.Collections.Specialized.NameValueCollection();
+                        reqparm.Add("key", dto.key);
+                        reqparm.Add("plan", dto.plan);
+                        byte[] responsebytes = client.UploadValues("https://airpocket.nasimairlines.ir/xpi/api/skyputer/nasim", "POST", reqparm);
+                        responsebody = Encoding.UTF8.GetString(responsebytes);
+
+                    }
+                    return Ok(true);
+                }
                 else
                 {
                     var entity = new OFPSkyPuter()
@@ -2151,6 +2180,50 @@ namespace XAPI.Controllers
         [Route("api/skyputer/jsky")]
         [AcceptVerbs("POST")]
         public IHttpActionResult PostSkyputerJsky(skyputer dto)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(dto.key))
+                    return Ok("Authorization key not found.");
+                if (string.IsNullOrEmpty(dto.plan))
+                    return Ok("Plan cannot be empty.");
+                if (dto.key != "Skyputer@1359#")
+                    return Ok("Authorization key is wrong.");
+
+
+
+                var entity = new OFPSkyPuter()
+                {
+                    OFP = dto.plan,
+                    DateCreate = DateTime.Now,
+                    UploadStatus = 0,
+
+
+                };
+                var ctx = new PPAEntities();
+                ctx.Database.CommandTimeout = 1000;
+                ctx.OFPSkyPuters.Add(entity);
+                ctx.SaveChanges();
+                new Thread(async () =>
+                {
+                    GetSkyputerImport(entity.Id);
+                }).Start();
+                return Ok(true);
+
+
+
+            }
+            catch (Exception ex)
+            {
+                return Ok(true);
+            }
+
+        }
+
+
+        [Route("api/skyputer/nasim")]
+        [AcceptVerbs("POST")]
+        public IHttpActionResult PostSkyputerNasim(skyputer dto)
         {
             try
             {
@@ -2235,7 +2308,7 @@ namespace XAPI.Controllers
         }
         [Route("api/skyputer/jsky")]
         [AcceptVerbs("POST")]
-        public IHttpActionResult PostSkyputerJsky(skyputer dto)
+        public IHttpActionResult PostSkyputerJsky1(skyputer dto)
         {
             try
             {

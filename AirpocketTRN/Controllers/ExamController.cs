@@ -864,5 +864,609 @@ namespace AirpocketTRN.Controllers
             };
             return Ok(result);
         }
+
+
+
+        public class exam_dto
+        {
+
+
+            public int id { get; set; }
+            public int course_id { get; set; }
+
+            public Nullable<System.DateTime> date_start { get; set; }
+            public Nullable<System.DateTime> date_start_scheduled { get; set; }
+            public Nullable<System.DateTime> exam_date { get; set; }
+            public Nullable<int> duration { get; set; }
+            public string location_title { get; set; }
+            public string location_address { get; set; }
+            public string location_phone { get; set; }
+            public string remark { get; set; }
+            public Nullable<int> exam_type_id { get; set; }
+            public List<view_trn_exam_question_template> template { get; set; }
+
+
+
+        }
+
+        [Route("api/trn/exam/save")]
+        [AcceptVerbs("Post")]
+        public async Task<IHttpActionResult> post_exam(exam_dto dto)
+        {
+            FLYEntities context = new FLYEntities();
+
+
+
+            var exam = context.trn_exam.FirstOrDefault(q => q.id == dto.id);
+            if (exam == null)
+            {
+                exam = new trn_exam();
+                context.trn_exam.Add(exam);
+                dto.date_start = ((DateTime)dto.date_start).AddMinutes(210);
+                dto.date_start_scheduled = ((DateTime)dto.date_start_scheduled).AddMinutes(210);
+                dto.exam_date = ((DateTime)dto.exam_date).AddMinutes(210);
+            }
+
+            exam.course_id = dto.course_id;
+            exam.date_start = dto.date_start;
+            exam.date_start_scheduled = dto.date_start_scheduled;
+            exam.exam_date = dto.exam_date;
+            exam.duration = dto.duration;
+            exam.location_title = dto.location_title;
+            exam.location_address = dto.location_address;
+            exam.location_phone = dto.location_phone;
+            exam.remark = dto.remark;
+            exam.exam_type_id =  dto.exam_type_id;
+            exam.confirmed_by = 1;
+            exam.status_id = 0;
+
+
+            
+
+            //dto.template = dto.template.Where(q => q.total != null).ToList();
+            //var existing_templates = await context.trn_exam_question_template.Where(q => q.exam_id==dto.id).ToListAsync();
+            //foreach (var temp in dto.template)
+            //{
+            //    var db_temp = existing_templates.FirstOrDefault(q =>  q.question_category_id == temp.category_id);
+            //    if (db_temp == null)
+            //    {
+            //        db_temp = new trn_exam_question_template();
+            //        exam.trn_exam_question_template.Add(db_temp);
+            //    }
+            //    db_temp.question_category_id = temp.category_id;
+            //    db_temp.total = temp.total;
+            //}
+
+            await context.SaveChangesAsync();
+
+            var people = context.CoursePeoples.Where(q => q.CourseId == dto.course_id).ToList();
+            if (people.Count() > 0)
+            {
+                var people_ids = people.Select(q => q.PersonId).ToList();
+                var existing_exams = context.trn_person_exam.Where(q => q.main_exam_id == exam.id && people_ids.Contains(q.person_id)).ToList();
+                foreach (var person in people)
+                {
+                    var p_exam = existing_exams.FirstOrDefault(q => q.person_id == person.PersonId);
+                    if (p_exam == null)
+                    {
+                        context.trn_person_exam.Add(new trn_person_exam()
+                        {
+                            person_id = person.PersonId,
+                            course_id = dto.course_id,
+                            exam_date = exam.exam_date,
+                            location_title = exam.location_title,
+                            date_start = exam.date_start,
+                            duration = exam.duration,
+                            main_exam_id = exam.id,
+                            location_address = exam.location_address,
+                            exam_type_id = exam.exam_type_id,
+                            location_phone = exam.location_phone,
+                            status_id = exam.status_id,
+                            created_by = exam.created_by,
+                            date_start_scheduled = exam.date_start_scheduled,
+                            date_end_scheduled = exam.date_end_scheduled,
+                            created_date = exam.created_date,
+                            confirmed_by = 1
+
+
+                        }) ;
+                    }
+                    else
+                    {
+                        p_exam.exam_date=exam.exam_date;
+                        p_exam.location_address=exam.location_address;
+                        p_exam.location_phone=exam.location_phone;
+                        p_exam.location_title   =exam.location_title;
+                        p_exam.date_start=exam.date_start;
+                        p_exam.duration = exam.duration;
+                        p_exam.date_start_scheduled = exam.date_start_scheduled;
+                        p_exam.date_end_scheduled = exam.date_end_scheduled;
+                        p_exam.status_id = exam.status_id;
+                        p_exam.confirmed_by = 1;
+                    }
+                }
+            }
+            await context.SaveChangesAsync();
+
+            var result = new DataResponse()
+            {
+                IsSuccess = true,
+                Data = exam.id,
+
+            };
+            return Ok(result);
+        }
+
+
+
+        [Route("api/trn/exam/delete")]
+        [AcceptVerbs("Post")]
+        public async Task<IHttpActionResult> post_delete_exam(exam_dto dto)
+        {
+            FLYEntities context = new FLYEntities();
+
+
+
+            var exam = context.trn_exam.FirstOrDefault(q => q.id == dto.id);
+            context.trn_exam.Remove(exam);
+            //}
+
+            await context.SaveChangesAsync();
+
+            
+            var result = new DataResponse()
+            {
+                IsSuccess = true,
+                Data = exam.id,
+
+            };
+            return Ok(result);
+        }
+
+
+
+        [Route("api/trn/exam/people/{id}")]
+        [AcceptVerbs("Get")]
+        public async Task<IHttpActionResult> get_exam_people(int id)
+        {
+            FLYEntities context = new FLYEntities();
+            var _result = context.ViewCoursePeoples.Where(q => q.CourseId == id).OrderBy(q => q.Name).ToList();
+
+            var result = new DataResponse()
+            {
+                IsSuccess = true,
+                Data = _result,
+
+            };
+            return Ok(result);
+        }
+
+
+        public class template_dto
+        {
+            public int category_id { get; set; }
+            public string category { get; set; }
+            public int? total { get; set; }
+        }
+        public class questions_dto
+        {
+            public int exam_id { get; set; }
+            public int type_id { get; set; }
+            public List<template_dto> templates { get; set; }
+        }
+
+        [Route("api/trn/exam/questions/generate/new")]
+        [AcceptVerbs("Post")]
+        public async Task<IHttpActionResult> post_exam(questions_dto dto)
+        {
+            FLYEntities context = new FLYEntities();
+
+
+
+            var exam = context.trn_exam.FirstOrDefault(q => q.id == dto.exam_id);
+            exam.exam_type_id = dto.type_id;
+
+
+            dto.templates = dto.templates.Where(q => q.total != null).ToList();
+            var existing_templates = await context.trn_exam_question_template.Where(q => q.exam_id == dto.exam_id).ToListAsync();
+            foreach(var x in existing_templates)
+            {
+                if (dto.templates.FirstOrDefault(q => q.category_id == x.question_category_id) == null)
+                    context.trn_exam_question_template.Remove(x);
+            }
+            foreach (var temp in dto.templates)
+            {
+                var db_temp = existing_templates.FirstOrDefault(q => q.question_category_id == temp.category_id);
+                if (db_temp == null)
+                {
+                    db_temp = new trn_exam_question_template();
+                    exam.trn_exam_question_template.Add(db_temp);
+                }
+                db_temp.question_category_id = temp.category_id;
+                db_temp.total = temp.total;
+            }
+
+            await context.SaveChangesAsync();
+
+
+            context.Configuration.LazyLoadingEnabled = false;
+            var templates = await context.trn_exam_question_template.Where(q => q.exam_id == dto.exam_id).ToListAsync();
+            var generated_questions = new List<trn_exam_question>();
+            var person_generated_questions = new List<trn_person_exam_question>();
+            var cat_ids = templates.Select(q => q.question_category_id).ToList();
+            var questions = await context.trn_questions.Where(q => cat_ids.Contains(q.category_id)).ToListAsync();
+            foreach (var template in templates)
+            {
+                var qs = questions.Where(q => q.category_id == template.question_category_id).OrderBy(q => q.id).ToList();
+                var selected_qs = TakeRandomRows(qs, (int)template.total);
+                if (selected_qs != null && selected_qs.Count() > 0)
+                    foreach (var q in selected_qs)
+                    {
+                        context.trn_exam_question.Add(new trn_exam_question()
+                        {
+                            exam_id = dto.exam_id,
+                            question_id = q.id,
+
+                        });
+                        person_generated_questions.Add(
+                         new trn_person_exam_question()
+                         {
+                             exam_id = dto.exam_id,
+                             question_id = q.id,
+                             remark = "date: " + DateTime.Now.ToString("yyyy-MM-dd HH:mm"),
+
+                         }
+                       );
+                    }
+
+            }
+            var exists = await context.trn_exam_question.Where(q => q.exam_id == dto.exam_id).ToListAsync();
+            if (exists != null && exists.Count > 0)
+                context.trn_exam_question.RemoveRange(exists);
+            foreach (var q in generated_questions)
+                context.trn_exam_question.Add(q);
+
+
+
+            var person_exams = await context.trn_person_exam.Where(q => q.main_exam_id == dto.exam_id).ToListAsync();
+            foreach (var person_exam in person_exams)
+            {
+                var pexists = await context.trn_person_exam_question.Where(q => q.exam_id == person_exam.id).ToListAsync();
+                if (pexists != null && pexists.Count > 0)
+                    context.trn_person_exam_question.RemoveRange(pexists);
+
+                foreach (var q in person_generated_questions)
+                    context.trn_person_exam_question.Add(new trn_person_exam_question()
+                    {
+                        person_id = person_exam.person_id,
+                        question_id = q.question_id,
+                        remark = q.remark,
+                        exam_id = person_exam.id
+                    });
+
+            }
+
+
+            await context.SaveAsync();
+
+
+            var g_questions = await context.view_trn_exam_question
+.Where(q => q.exam_id == exam.id)
+.Select(q => new question_dto
+{
+    exam_id = q.exam_id,
+    exam_question_id = q.exam_question_id,
+    question_id = q.question_id,
+    english_title = q.english_title,
+    category_id = q.category_id,
+    is_rtl = q.is_rtl,
+    hardness = q.hardness,
+    category = q.category,
+    correct_answer_title = q.correct_answer_title,
+    correct_answer_id = q.correct_answer_id
+})
+.ToListAsync();
+
+            var questions_id = g_questions.Select(q => q.question_id).ToList();
+            var answersGrouped = context.trn_answers
+  .Where(a => questions_id.Contains(a.quesion_id))
+  .Select(a => new answers_dto
+  {
+      id = a.id,
+      quesion_id = a.quesion_id,
+      english_title = a.english_title,
+      persian_title = a.persian_title,
+      is_answer = a.is_answer,
+      is_rtl = a.is_rtl
+  })
+  .ToList()
+  .GroupBy(a => a.quesion_id)
+  .ToDictionary(g => g.Key, g => g.ToList());
+
+            foreach (var question in g_questions)
+            {
+                question.answers = answersGrouped.ContainsKey(question.question_id)
+                                   ? answersGrouped[question.question_id]
+                                   : new List<answers_dto>();
+            }
+
+
+            var result = new DataResponse()
+            {
+                IsSuccess = true,
+                Data = g_questions,
+
+            };
+
+
+            return Ok(result);
+        }
+
+
+
+
+        [Route("api/trn/exam/template/{id}")]
+        [AcceptVerbs("Get")]
+        public async Task<IHttpActionResult> get_exam_template(int id)
+        {
+            FLYEntities context = new FLYEntities();
+            var exam = context.trn_exam.FirstOrDefault(q => q.id ==id);
+            var  templates = await context.trn_exam_question_template.Where(q => q.exam_id == id).Select(q=>new
+            {
+                category_id=q.question_category_id,
+                q.total,
+            }).ToListAsync();
+
+            var g_questions = await context.view_trn_exam_question
+.Where(q => q.exam_id == exam.id)
+.Select(q => new question_dto
+{
+   exam_id = q.exam_id,
+   exam_question_id = q.exam_question_id,
+   question_id = q.question_id,
+   english_title = q.english_title,
+   category_id = q.category_id,
+   is_rtl = q.is_rtl,
+   hardness = q.hardness,
+   category = q.category,
+   correct_answer_title = q.correct_answer_title,
+   correct_answer_id = q.correct_answer_id
+})
+.ToListAsync();
+
+            var questions_id = g_questions.Select(q => q.question_id).ToList();
+            var answersGrouped = context.trn_answers
+  .Where(a => questions_id.Contains(a.quesion_id))
+  .Select(a => new answers_dto
+  {
+      id = a.id,
+      quesion_id = a.quesion_id,
+      english_title = a.english_title,
+      persian_title = a.persian_title,
+      is_answer = a.is_answer,
+      is_rtl = a.is_rtl
+  })
+  .ToList()
+  .GroupBy(a => a.quesion_id)
+  .ToDictionary(g => g.Key, g => g.ToList());
+
+            foreach (var question in g_questions)
+            {
+                question.answers = answersGrouped.ContainsKey(question.question_id)
+                                   ? answersGrouped[question.question_id]
+                                   : new List<answers_dto>();
+            }
+            var result = new DataResponse()
+            {
+                IsSuccess = true,
+                Data = new
+                {
+                    templates,
+                    questions=g_questions
+                },
+
+            };
+            return Ok(result);
+        }
+
+        public class ExamViewModel
+        {
+            public int id { get; set; }
+            public int course_id { get; set; }
+            public Nullable<System.DateTime> exam_date { get; set; }
+            public string exam_date_persian { get; set; }
+            public string location_title { get; set; }
+            public string location_address { get; set; }
+            public string location_phone { get; set; }
+            public string remark { get; set; }
+            public Nullable<int> status_id { get; set; }
+            public Nullable<int> created_by { get; set; }
+            public Nullable<int> confirmed_by { get; set; }
+            public Nullable<System.DateTime> created_date { get; set; }
+            public Nullable<System.DateTime> confirmed_date { get; set; }
+            public Nullable<int> exam_type_id { get; set; }
+            public Nullable<System.DateTime> signed_by_ins1_date { get; set; }
+            public Nullable<System.DateTime> signed_by_ins2_date { get; set; }
+            public Nullable<System.DateTime> signed_by_director_date { get; set; }
+            public Nullable<System.DateTime> signed_by_staff_date { get; set; }
+            public Nullable<int> duration { get; set; }
+            public Nullable<System.DateTime> date_start { get; set; }
+            public Nullable<System.DateTime> date_end_scheduled { get; set; }
+            public Nullable<System.DateTime> date_end_actual { get; set; }
+            public Nullable<System.DateTime> date_start_scheduled { get; set; }
+
+            public List<int?> groups { get; set; }
+            public List<int> people { get; set; }
+            public List<view_trn_exam_question_template> template { get; set; }
+            public List<view_trn_exam_question> questions { get; set; }
+            public List<view_trn_exam_summary_details> summary { get; set; }
+        }
+
+        [Route("api/trn/exam/follow/{id}")]
+        [AcceptVerbs("Get")]
+        public async Task<IHttpActionResult> get_exam_follow(int id)
+        {
+            FLYEntities context = new FLYEntities();
+            var exam = context.trn_exam.FirstOrDefault(q => q.id == id);
+            var course = await context.ViewCourseNews.Where(q => q.Id == exam.course_id).FirstOrDefaultAsync();
+            var cid = course.Id;
+            var subjects = await context.ViewCourseNews.Where(q => q.ParentId == exam.course_id).ToListAsync();
+            var subject_ids = subjects.Select(q => q.Id).ToList();
+
+            var main_sessions = await context.ViewCourseSessions.Where(q => q.CourseId == cid).OrderBy(q => q.DateStart).ToListAsync();
+            List<ViewCourseSession> sessions = main_sessions.ToList();
+            if (subjects.Count > 0)
+            {
+
+                sessions = await context.ViewCourseSessions.Where(q => subject_ids.Contains(q.CourseId)).ToListAsync();
+
+
+            }
+
+            var sessions_grps = (from x in sessions
+                                 group x by new { x.Date, x.PDate } into grp
+                                 select new
+                                 {
+                                     grp.Key.Date,
+                                     grp.Key.PDate,
+                                     instructors = (from item in grp
+                                                    group item by new { item.Instructor, item.InstructorId } into grp2
+                                                    select new
+                                                    {
+                                                        grp2.Key.InstructorId,
+                                                        grp2.Key.Instructor,
+                                                        courses = from w in grp2
+                                                                  group w by new { w.Title, w.CT_Title } into grp3
+                                                                  select new
+                                                                  {
+                                                                      grp3.Key.Title,
+                                                                      grp3.Key.CT_Title,
+                                                                      sessions = grp3.OrderBy(q => q.DateStart).ToList()
+                                                                  }
+                                                    }).ToList(),
+                                     courses = from item in grp
+                                               group item by new { item.Title, item.CT_Title, item.CourseId } into c_grp
+                                               select new
+                                               {
+                                                   c_grp.Key.Title,
+                                                   c_grp.Key.CT_Title,
+                                                   c_grp.Key.CourseId,
+                                                   sessions = c_grp.OrderBy(q => q.DateStart).ToList()
+                                               }
+                                 }).ToList();
+
+
+
+            var people = await context.ViewCoursePeoples.Where(q => q.CourseId == cid).OrderBy(q => q.DateStart).ToListAsync();
+            var participants = people.ToList();
+            if (subjects.Count > 0)
+            {
+                people = await context.ViewCoursePeoples.Where(q => subject_ids.Contains(q.CourseId)).OrderBy(q => q.DateStart).ToListAsync();
+            }
+
+
+
+            var people_grps = (from x in people
+                               group x by new { x.CourseId, x.Title, x.Instructor, x.Duration, x.Date_Sign_Ins1 } into grps
+                               select new
+                               {
+                                   grps.Key.CourseId,
+                                   grps.Key.Title,
+                                   grps.Key.Instructor,
+                                   grps.Key.Duration,
+                                   grps.Key.Date_Sign_Ins1,
+                                   people = grps.OrderByDescending(q => q.Presence).ThenBy(q => q.LastName).ThenBy(q => q.FirstName).ToList()
+
+                               }).OrderBy(q => q.Title).ToList();
+
+            //var press = await context.CourseSessionPresences.Where(q => q.CourseId == cid).ToListAsync();
+            var press = await context.ViewCourseSessionPresences.Where(q => q.CourseId == cid).ToListAsync();
+            if (subjects.Count > 0)
+            {
+                press = await context.ViewCourseSessionPresences.Where(q => subject_ids.Contains(q.CourseId)).ToListAsync();
+            }
+            //  var press_grps=from x in press
+            //                 group x by new {x.PersonId,x.EmployeeId,x.FirstName,x.LastName,x.Name,x.NID,x.Mobile,x.JobGroup}
+            var sessions_stats = (from x in press
+                                  group x by new { x.Id, x.SessionKey, x.CourseId, x.Title, x.Instructor, } into grp
+                                  select new
+                                  {
+                                      grp.Key.Id,
+                                      grp.Key.SessionKey,
+                                      grp.Key.Title,
+                                      grp.Key.Instructor,
+                                      grp.Key.CourseId,
+                                      DateStart = sessions.Where(q => q.Key == grp.Key.SessionKey).FirstOrDefault().DateStart,
+                                      DateEnd = sessions.Where(q => q.Key == grp.Key.SessionKey).FirstOrDefault().DateEnd,
+                                      present = grp.Where(q => q.IsPresent == 1).Count(),
+                                      total = people.Where(q => q.CourseId == grp.Key.CourseId).Count(),
+                                      absent = people.Where(q => q.CourseId == grp.Key.CourseId).Count() - grp.Where(q => q.IsPresent == 1).Count(),
+                                      people = grp.OrderByDescending(q => q.IsPresent).ThenBy(q => q.LastName).ThenBy(q => q.FirstName).ToList()
+                                  }).ToList();
+
+            var syllabi = await context.ViewSyllabus.Where(q => q.CourseId == cid).ToListAsync();
+            //var exams = new List<trn_exam>();
+            var _exams = await context.view_trn_exam.Where(q => q.id==exam.id).ToListAsync();
+            var exams = _exams.Select(q => JsonConvert.DeserializeObject<ExamViewModel>(JsonConvert.SerializeObject(q))).ToList();
+
+
+            var exam_ids = exams.Select(q => q.id).ToList();
+            var exam_ids_null = exams.Select(q => (Nullable<int>)q.id).ToList();
+            var templates = await context.view_trn_exam_question_template.Where(q => exam_ids.Contains(q.exam_id)).ToListAsync();
+            var questions = await context.view_trn_exam_question.Where(q => exam_ids.Contains(q.exam_id)).ToListAsync();
+            var exam_summary = await context.view_trn_exam_summary_details.Where(q => exam_ids_null.Contains(q.main_exam_id)).ToListAsync();
+            try
+            {
+                foreach (var x in exams)
+                {
+                    x.date_end_scheduled = ((DateTime)x.exam_date).AddMinutes(Convert.ToDouble(x.duration));
+                    if (x.status_id != 0 && x.date_end_actual == null && x.date_start != null)
+                    {
+                        x.date_end_actual = ((DateTime)x.date_start).AddMinutes(Convert.ToDouble(x.duration));
+                    }
+                    x.questions = questions.Where(q => q.exam_id == x.id).OrderBy(q => q.category).ThenBy(q => q.question_id).ToList();
+                    x.template = templates.Where(q => q.exam_id == x.id).ToList();
+                    x.summary = exam_summary.Where(q => q.main_exam_id == x.id).OrderBy(q => q.last_name).ThenBy(q => q.first_name).ToList();
+                }
+            }
+            catch (Exception exxx)
+            {
+
+            }
+
+
+
+
+
+            var _result= new DataResponse()
+            {
+                Data = new
+                {
+                    course,
+                    subjects,
+                    sessions,
+                    main_sessions,
+                    sessions_grps,
+                    people_grps,
+                    sessions_stats,
+                    people = participants,
+                    press,
+                    syllabi,
+                    exams
+                },
+                IsSuccess = true,
+            };
+            return Ok(_result);
+        }
+
+
+
+
+        //////////////////////////////////////////////////////
+
+
+
+
+
     }
 }

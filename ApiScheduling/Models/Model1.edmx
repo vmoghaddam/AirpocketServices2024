@@ -293,16 +293,6 @@
           <Property Name="mod2" Type="int" />
           <Property Name="ralt" Type="varchar" MaxLength="500" />
         </EntityType>
-        <EntityType Name="qa_form_visited_history">
-          <Key>
-            <PropertyRef Name="form_type_id" />
-            <PropertyRef Name="form_id" />
-            <PropertyRef Name="employee_id" />
-          </Key>
-          <Property Name="form_type_id" Type="int" Nullable="false" />
-          <Property Name="form_id" Type="int" Nullable="false" />
-          <Property Name="employee_id" Type="int" Nullable="false" />
-        </EntityType>
         <EntityType Name="recency_route">
           <Key>
             <PropertyRef Name="id" />
@@ -1693,6 +1683,58 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewLegTime' does not have a primar
           <Property Name="OFPTOTALFUEL" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.ViewQaHazardLog' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ViewQaHazardLog">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="fort_type_title" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="form_type" Type="int" />
+          <Property Name="fort_type_title" Type="varchar" MaxLength="19" Nullable="false" />
+          <Property Name="form_id" Type="int" />
+          <Property Name="form_no" Type="varchar" MaxLength="1000" />
+          <Property Name="id_date" Type="datetime2" Precision="7" />
+          <Property Name="id_department" Type="nvarchar" MaxLength="500" />
+          <Property Name="id_risk_register_number" Type="varchar" MaxLength="500" />
+          <Property Name="id_hazard_description" Type="nvarchar" MaxLength="2000" />
+          <Property Name="id_hazard_consequence" Type="nvarchar" MaxLength="2000" />
+          <Property Name="initial_prob_level" Type="int" />
+          <Property Name="initial_severity_level" Type="varchar" MaxLength="255" />
+          <Property Name="initial_index" Type="varchar" MaxLength="255" />
+          <Property Name="final_prob_level" Type="int" />
+          <Property Name="final_severity_level" Type="varchar" MaxLength="255" />
+          <Property Name="final_index" Type="varchar" MaxLength="255" />
+          <Property Name="approval_relevant_department" Type="varchar" MaxLength="500" />
+          <Property Name="approval_relevant_department_id" Type="int" />
+          <Property Name="approval_relevant_department_date" Type="datetime2" Precision="7" />
+          <Property Name="approval_qa" Type="varchar" MaxLength="500" />
+          <Property Name="approval_qa_id" Type="int" />
+          <Property Name="approval_qa_date" Type="datetime2" Precision="7" />
+          <Property Name="om_form_no" Type="varchar" MaxLength="255" />
+          <Property Name="om_form_date" Type="varchar" MaxLength="255" />
+          <Property Name="om_form_rev" Type="varchar" MaxLength="255" />
+          <Property Name="om_form_issue" Type="varchar" MaxLength="255" />
+          <Property Name="remark" Type="varchar" MaxLength="2000" />
+          <Property Name="id_source" Type="nvarchar" MaxLength="1000" />
+          <Property Name="has_relevant" Type="bit" />
+          <Property Name="initial_acceptability" Type="nvarchar" MaxLength="1000" />
+          <Property Name="initital_description" Type="nvarchar" MaxLength="1000" />
+          <Property Name="initial_responsible_manager" Type="nvarchar" MaxLength="1000" />
+          <Property Name="initial_responsible_sign" Type="datetime2" Precision="7" />
+          <Property Name="initial_qa_approval" Type="varchar" MaxLength="1000" />
+          <Property Name="initial_qa_sign" Type="datetime2" Precision="7" />
+          <Property Name="final_acceptability" Type="nvarchar" MaxLength="1000" />
+          <Property Name="final_date" Type="datetime2" Precision="7" />
+          <Property Name="consequences" Type="nvarchar(max)" />
+          <Property Name="actions" Type="nvarchar(max)" />
+          <Property Name="actions_time_limit" Type="nvarchar(max)" />
+          <Property Name="actions_responsible" Type="nvarchar(max)" />
+          <Property Name="root" Type="nvarchar(max)" />
+          <Property Name="monitor" Type="nvarchar(max)" />
+          <Property Name="monitor_date" Type="nvarchar(max)" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="XFlightCrew">
           <Key>
@@ -1822,7 +1864,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySet Name="FDPMaxDaily" EntityType="Self.FDPMaxDaily" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OffItem" EntityType="Self.OffItem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OFPImport" EntityType="Self.OFPImport" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="qa_form_visited_history" EntityType="Self.qa_form_visited_history" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="recency_route" EntityType="Self.recency_route" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TableDutyFDP" EntityType="Self.TableDutyFDP" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TableFlightFDP" EntityType="Self.TableFlightFDP" Schema="dbo" store:Type="Tables" />
@@ -2958,6 +2999,54 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
     [ViewLegTime].[OFPTOTALFUEL] AS [OFPTOTALFUEL]
     FROM [dbo].[ViewLegTime] AS [ViewLegTime]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="ViewQaHazardLog" EntityType="Self.ViewQaHazardLog" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ViewQaHazardLog].[id] AS [id], 
+    [ViewQaHazardLog].[form_type] AS [form_type], 
+    [ViewQaHazardLog].[fort_type_title] AS [fort_type_title], 
+    [ViewQaHazardLog].[form_id] AS [form_id], 
+    [ViewQaHazardLog].[form_no] AS [form_no], 
+    [ViewQaHazardLog].[id_date] AS [id_date], 
+    [ViewQaHazardLog].[id_department] AS [id_department], 
+    [ViewQaHazardLog].[id_risk_register_number] AS [id_risk_register_number], 
+    [ViewQaHazardLog].[id_hazard_description] AS [id_hazard_description], 
+    [ViewQaHazardLog].[id_hazard_consequence] AS [id_hazard_consequence], 
+    [ViewQaHazardLog].[initial_prob_level] AS [initial_prob_level], 
+    [ViewQaHazardLog].[initial_severity_level] AS [initial_severity_level], 
+    [ViewQaHazardLog].[initial_index] AS [initial_index], 
+    [ViewQaHazardLog].[final_prob_level] AS [final_prob_level], 
+    [ViewQaHazardLog].[final_severity_level] AS [final_severity_level], 
+    [ViewQaHazardLog].[final_index] AS [final_index], 
+    [ViewQaHazardLog].[approval_relevant_department] AS [approval_relevant_department], 
+    [ViewQaHazardLog].[approval_relevant_department_id] AS [approval_relevant_department_id], 
+    [ViewQaHazardLog].[approval_relevant_department_date] AS [approval_relevant_department_date], 
+    [ViewQaHazardLog].[approval_qa] AS [approval_qa], 
+    [ViewQaHazardLog].[approval_qa_id] AS [approval_qa_id], 
+    [ViewQaHazardLog].[approval_qa_date] AS [approval_qa_date], 
+    [ViewQaHazardLog].[om_form_no] AS [om_form_no], 
+    [ViewQaHazardLog].[om_form_date] AS [om_form_date], 
+    [ViewQaHazardLog].[om_form_rev] AS [om_form_rev], 
+    [ViewQaHazardLog].[om_form_issue] AS [om_form_issue], 
+    [ViewQaHazardLog].[remark] AS [remark], 
+    [ViewQaHazardLog].[id_source] AS [id_source], 
+    [ViewQaHazardLog].[has_relevant] AS [has_relevant], 
+    [ViewQaHazardLog].[initial_acceptability] AS [initial_acceptability], 
+    [ViewQaHazardLog].[initital_description] AS [initital_description], 
+    [ViewQaHazardLog].[initial_responsible_manager] AS [initial_responsible_manager], 
+    [ViewQaHazardLog].[initial_responsible_sign] AS [initial_responsible_sign], 
+    [ViewQaHazardLog].[initial_qa_approval] AS [initial_qa_approval], 
+    [ViewQaHazardLog].[initial_qa_sign] AS [initial_qa_sign], 
+    [ViewQaHazardLog].[final_acceptability] AS [final_acceptability], 
+    [ViewQaHazardLog].[final_date] AS [final_date], 
+    [ViewQaHazardLog].[consequences] AS [consequences], 
+    [ViewQaHazardLog].[actions] AS [actions], 
+    [ViewQaHazardLog].[actions_time_limit] AS [actions_time_limit], 
+    [ViewQaHazardLog].[actions_responsible] AS [actions_responsible], 
+    [ViewQaHazardLog].[root] AS [root], 
+    [ViewQaHazardLog].[monitor] AS [monitor], 
+    [ViewQaHazardLog].[monitor_date] AS [monitor_date]
+    FROM [dbo].[ViewQaHazardLog] AS [ViewQaHazardLog]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="XFlightCrew" EntityType="Self.XFlightCrew" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [XFlightCrew].[CrewId] AS [CrewId], 
@@ -3073,7 +3162,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySet Name="OFPImports" EntityType="dbModel.OFPImport" />
           <EntitySet Name="view_recency_route" EntityType="dbModel.view_recency_route" />
           <EntitySet Name="view_route_count" EntityType="dbModel.view_route_count" />
-          <EntitySet Name="qa_form_visited_history" EntityType="dbModel.qa_form_visited_history" />
+          <EntitySet Name="ViewQaHazardLogs" EntityType="dbModel.ViewQaHazardLog" />
           </EntityContainer>
         <EntityType Name="ViewFDPLog">
           <Key>
@@ -4821,15 +4910,55 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="ToICAO" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="FltCount" Type="Int32" />
         </EntityType>
-        <EntityType Name="qa_form_visited_history">
+        <EntityType Name="ViewQaHazardLog">
           <Key>
-            <PropertyRef Name="form_type_id" />
-            <PropertyRef Name="form_id" />
-            <PropertyRef Name="employee_id" />
+            <PropertyRef Name="id" />
+            <PropertyRef Name="fort_type_title" />
           </Key>
-          <Property Name="form_type_id" Type="Int32" Nullable="false" />
-          <Property Name="form_id" Type="Int32" Nullable="false" />
-          <Property Name="employee_id" Type="Int32" Nullable="false" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="form_type" Type="Int32" />
+          <Property Name="fort_type_title" Type="String" Nullable="false" MaxLength="19" FixedLength="false" Unicode="false" />
+          <Property Name="form_id" Type="Int32" />
+          <Property Name="form_no" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="id_date" Type="DateTime" Precision="7" />
+          <Property Name="id_department" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="id_risk_register_number" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="id_hazard_description" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="id_hazard_consequence" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="initial_prob_level" Type="Int32" />
+          <Property Name="initial_severity_level" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="initial_index" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="final_prob_level" Type="Int32" />
+          <Property Name="final_severity_level" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="final_index" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="approval_relevant_department" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="approval_relevant_department_id" Type="Int32" />
+          <Property Name="approval_relevant_department_date" Type="DateTime" Precision="7" />
+          <Property Name="approval_qa" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="approval_qa_id" Type="Int32" />
+          <Property Name="approval_qa_date" Type="DateTime" Precision="7" />
+          <Property Name="om_form_no" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="om_form_date" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="om_form_rev" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="om_form_issue" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="remark" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="id_source" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="has_relevant" Type="Boolean" />
+          <Property Name="initial_acceptability" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="initital_description" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="initial_responsible_manager" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="initial_responsible_sign" Type="DateTime" Precision="7" />
+          <Property Name="initial_qa_approval" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="initial_qa_sign" Type="DateTime" Precision="7" />
+          <Property Name="final_acceptability" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="final_date" Type="DateTime" Precision="7" />
+          <Property Name="consequences" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="actions" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="actions_time_limit" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="actions_responsible" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="root" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="monitor" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="monitor_date" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -6383,12 +6512,53 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="qa_form_visited_history">
-            <EntityTypeMapping TypeName="dbModel.qa_form_visited_history">
-              <MappingFragment StoreEntitySet="qa_form_visited_history">
-                <ScalarProperty Name="employee_id" ColumnName="employee_id" />
+          <EntitySetMapping Name="ViewQaHazardLogs">
+            <EntityTypeMapping TypeName="dbModel.ViewQaHazardLog">
+              <MappingFragment StoreEntitySet="ViewQaHazardLog">
+                <ScalarProperty Name="monitor_date" ColumnName="monitor_date" />
+                <ScalarProperty Name="monitor" ColumnName="monitor" />
+                <ScalarProperty Name="root" ColumnName="root" />
+                <ScalarProperty Name="actions_responsible" ColumnName="actions_responsible" />
+                <ScalarProperty Name="actions_time_limit" ColumnName="actions_time_limit" />
+                <ScalarProperty Name="actions" ColumnName="actions" />
+                <ScalarProperty Name="consequences" ColumnName="consequences" />
+                <ScalarProperty Name="final_date" ColumnName="final_date" />
+                <ScalarProperty Name="final_acceptability" ColumnName="final_acceptability" />
+                <ScalarProperty Name="initial_qa_sign" ColumnName="initial_qa_sign" />
+                <ScalarProperty Name="initial_qa_approval" ColumnName="initial_qa_approval" />
+                <ScalarProperty Name="initial_responsible_sign" ColumnName="initial_responsible_sign" />
+                <ScalarProperty Name="initial_responsible_manager" ColumnName="initial_responsible_manager" />
+                <ScalarProperty Name="initital_description" ColumnName="initital_description" />
+                <ScalarProperty Name="initial_acceptability" ColumnName="initial_acceptability" />
+                <ScalarProperty Name="has_relevant" ColumnName="has_relevant" />
+                <ScalarProperty Name="id_source" ColumnName="id_source" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="om_form_issue" ColumnName="om_form_issue" />
+                <ScalarProperty Name="om_form_rev" ColumnName="om_form_rev" />
+                <ScalarProperty Name="om_form_date" ColumnName="om_form_date" />
+                <ScalarProperty Name="om_form_no" ColumnName="om_form_no" />
+                <ScalarProperty Name="approval_qa_date" ColumnName="approval_qa_date" />
+                <ScalarProperty Name="approval_qa_id" ColumnName="approval_qa_id" />
+                <ScalarProperty Name="approval_qa" ColumnName="approval_qa" />
+                <ScalarProperty Name="approval_relevant_department_date" ColumnName="approval_relevant_department_date" />
+                <ScalarProperty Name="approval_relevant_department_id" ColumnName="approval_relevant_department_id" />
+                <ScalarProperty Name="approval_relevant_department" ColumnName="approval_relevant_department" />
+                <ScalarProperty Name="final_index" ColumnName="final_index" />
+                <ScalarProperty Name="final_severity_level" ColumnName="final_severity_level" />
+                <ScalarProperty Name="final_prob_level" ColumnName="final_prob_level" />
+                <ScalarProperty Name="initial_index" ColumnName="initial_index" />
+                <ScalarProperty Name="initial_severity_level" ColumnName="initial_severity_level" />
+                <ScalarProperty Name="initial_prob_level" ColumnName="initial_prob_level" />
+                <ScalarProperty Name="id_hazard_consequence" ColumnName="id_hazard_consequence" />
+                <ScalarProperty Name="id_hazard_description" ColumnName="id_hazard_description" />
+                <ScalarProperty Name="id_risk_register_number" ColumnName="id_risk_register_number" />
+                <ScalarProperty Name="id_department" ColumnName="id_department" />
+                <ScalarProperty Name="id_date" ColumnName="id_date" />
+                <ScalarProperty Name="form_no" ColumnName="form_no" />
                 <ScalarProperty Name="form_id" ColumnName="form_id" />
-                <ScalarProperty Name="form_type_id" ColumnName="form_type_id" />
+                <ScalarProperty Name="fort_type_title" ColumnName="fort_type_title" />
+                <ScalarProperty Name="form_type" ColumnName="form_type" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
