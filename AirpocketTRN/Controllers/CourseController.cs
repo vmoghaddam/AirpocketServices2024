@@ -1063,6 +1063,24 @@ namespace AirpocketTRN.Controllers
 
             return Ok(result.Data);
         }
+         
+        [Route("api/certificate/course/all/{id}")]
+        [AcceptVerbs("GET")]
+        public async Task<IHttpActionResult> GetCertificateCourseAll(int id)
+        {
+            var result = await courseService.GetCertificateCourseAll(id);
+
+            return Ok(result.Data);
+        }
+
+        [Route("api/certificate/people/all/{ids}")]
+        [AcceptVerbs("GET")]
+        public async Task<IHttpActionResult> GetCertificatePeopleAll(string ids)
+        {
+            var result = await courseService.GetCertificatePeopleAll(ids);
+
+            return Ok(result.Data);
+        }
 
         [Route("api/upload/certificate/{id}/{pid}/{tid}/{cid}")]
         [AcceptVerbs("POST")]

@@ -1121,6 +1121,9 @@ namespace ApiLog.Controllers
             public Nullable<int> CargoPieces { get; set; }
             public Nullable<int> CPDH { get; set; }
             public Nullable<int> NightTime { get; set; }
+            public Nullable<int> exctra_bags_weight { get; set; }
+            public Nullable<decimal> email_weight { get; set; }
+            public Nullable<decimal> fob { get; set; }
         }
         public async Task<CustomActionResult> GetUpdatedFlightsNew(int airport, DateTime baseDate, DateTime? fromDate, DateTime? toDate, int customer, int tzoffset, int userid)
         {
@@ -1573,7 +1576,10 @@ namespace ApiLog.Controllers
                    // q.Ready,
                    // q.Start,
                    CargoPieces = q.CargoPieces,
-                   CPDH = q.CPDH
+                   CPDH = q.CPDH,
+                   exctra_bags_weight = q.exctra_bags_weight,
+                   email_weight = q.email_weight,
+                   fob = q.fob
                })
                     .AsNoTracking();
 

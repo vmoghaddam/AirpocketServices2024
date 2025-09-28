@@ -4429,6 +4429,7 @@ public IHttpActionResult ValidateOFPs_OLD_TEMP(string fids)
     }
 }
 //karun
+//2025-08-27
 [Route("api/ofps/validate/b/{fids}")]
 [AcceptVerbs("GET")]
 public IHttpActionResult ValidateOFPs(string fids)
@@ -4458,6 +4459,7 @@ public IHttpActionResult ValidateOFPs(string fids)
         var flight_ids = ofp_roots.Select(q => q.FlightID).ToList();
         var flights = _context.FlightInformations.Where(q => flight_ids.Contains(q.ID)).ToList();
         var flights2 = _context.AppLegs.Where(q => _fids.Contains(q.ID)).ToList();
+
         if (ofp_roots.Count == 0)
         {
             foreach (var flt in flights2)

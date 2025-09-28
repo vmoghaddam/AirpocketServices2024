@@ -916,7 +916,9 @@ namespace AirpocketTRN.Controllers
             exam.location_address = dto.location_address;
             exam.location_phone = dto.location_phone;
             exam.remark = dto.remark;
-            exam.exam_type_id = dto.exam_type_id;
+            exam.exam_type_id =  dto.exam_type_id;
+            exam.confirmed_by = 1;
+            exam.status_id = 0;
 
 
             
@@ -964,9 +966,10 @@ namespace AirpocketTRN.Controllers
                             date_start_scheduled = exam.date_start_scheduled,
                             date_end_scheduled = exam.date_end_scheduled,
                             created_date = exam.created_date,
+                            confirmed_by = 1
 
 
-                        });
+                        }) ;
                     }
                     else
                     {
@@ -978,6 +981,8 @@ namespace AirpocketTRN.Controllers
                         p_exam.duration = exam.duration;
                         p_exam.date_start_scheduled = exam.date_start_scheduled;
                         p_exam.date_end_scheduled = exam.date_end_scheduled;
+                        p_exam.status_id = exam.status_id;
+                        p_exam.confirmed_by = 1;
                     }
                 }
             }
@@ -991,6 +996,33 @@ namespace AirpocketTRN.Controllers
             };
             return Ok(result);
         }
+
+
+
+        [Route("api/trn/exam/delete")]
+        [AcceptVerbs("Post")]
+        public async Task<IHttpActionResult> post_delete_exam(exam_dto dto)
+        {
+            FLYEntities context = new FLYEntities();
+
+
+
+            var exam = context.trn_exam.FirstOrDefault(q => q.id == dto.id);
+            context.trn_exam.Remove(exam);
+            //}
+
+            await context.SaveChangesAsync();
+
+            
+            var result = new DataResponse()
+            {
+                IsSuccess = true,
+                Data = exam.id,
+
+            };
+            return Ok(result);
+        }
+
 
 
         [Route("api/trn/exam/people/{id}")]
@@ -1037,6 +1069,11 @@ namespace AirpocketTRN.Controllers
 
             dto.templates = dto.templates.Where(q => q.total != null).ToList();
             var existing_templates = await context.trn_exam_question_template.Where(q => q.exam_id == dto.exam_id).ToListAsync();
+            foreach(var x in existing_templates)
+            {
+                if (dto.templates.FirstOrDefault(q => q.category_id == x.question_category_id) == null)
+                    context.trn_exam_question_template.Remove(x);
+            }
             foreach (var temp in dto.templates)
             {
                 var db_temp = existing_templates.FirstOrDefault(q => q.question_category_id == temp.category_id);

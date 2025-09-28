@@ -112,5 +112,6 @@ namespace ApiFDM.Models
         public string confirmation_person { get; set; }
         public int id { get; set; }
         public Nullable<int> fdm_id { get; set; }
+        public Nullable<int> flight_count { get; set; }
     }
 }
