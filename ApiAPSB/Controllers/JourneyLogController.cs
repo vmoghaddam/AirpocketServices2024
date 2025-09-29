@@ -681,6 +681,10 @@ namespace ApiAPSB.Controllers
 
         }
 
+
+
+
+
         public string get_position(string str)
         {
             switch (str)
@@ -707,12 +711,11 @@ namespace ApiAPSB.Controllers
                     return str;
             }
         }
+        [Route("api/jl/v3/xls/{fid}")]
 
-
-        [Route("api/jl/v4/xls/{fid}")]
         //nookp
         //karun,
-        public HttpResponseMessage GetJourneyLogV4XLS(int fid)
+        public HttpResponseMessage GetJourneyLogV3XLS(int fid)
         {
             string err_code = "1";
             try
@@ -961,16 +964,11 @@ namespace ApiAPSB.Controllers
                     //sheet.Range[ln_crew, 3].Text = format_to_time(c.TotalBlockTime);
                     ln_crew++;
                     cn_crew++;
-                    if (result.crew.IndexOf(c) == 4)
+                    if (cn_crew > 5)
                     {
                         col_crew = 17;
                         ln_crew = 5;
                     }
-                    //if (cn_crew > 5)
-                    //{
-                    //    col_crew = 17;
-                    //    ln_crew = 5;
-                    //}
 
                 }
 
@@ -1106,13 +1104,11 @@ namespace ApiAPSB.Controllers
 
         }
 
-
-
-        [Route("api/jl/v3/xls/{fid}")]
+        [Route("api/jl/v4/xls/{fid}")]
 
         //nookp
         //karun,
-        public HttpResponseMessage GetJourneyLogV3XLS(int fid)
+        public HttpResponseMessage GetJourneyLogV4XLS(int fid)
         {
             string err_code = "1";
             try
@@ -1351,9 +1347,9 @@ namespace ApiAPSB.Controllers
                 //sheet.Range[11, 17].Text = format_to_time(result.over); //rem
 
 
-                int ln_cockpit = 15; 
-                int ln_cabin = 21;   
-                int ln_other = 15;   
+                int ln_cockpit = 15;
+                int ln_cabin = 21;
+                int ln_other = 15;
 
                 var cockpit = new List<string>() { "TRI", "TRE", "P1", "P2" };
                 var cabin = new List<string>() { "ISCCM", "SCCM", "CCM" };
@@ -1364,7 +1360,7 @@ namespace ApiAPSB.Controllers
                     {
                         sheet.Range[ln_cockpit, 2].Text = string.IsNullOrEmpty(c.Position) ? "" : get_position(c.Position);
                         sheet.Range[ln_cockpit, 3].Text = string.IsNullOrEmpty(c.Name) ? "" : c.Name + " (" + c.JobGroup + ")";
-                        ln_cockpit++; 
+                        ln_cockpit++;
                     }
                     else if (cabin.Contains(c.JobGroup))
                     {
@@ -1522,8 +1518,6 @@ namespace ApiAPSB.Controllers
             }
 
         }
-
-
         public class CLJLData
         {
             public int? CrewId { get; set; }
