@@ -931,14 +931,16 @@ namespace ApiAPSB.Controllers
                 sheet.Range[12, 23].Text = format_to_time(_duty);  //format_to_time(result.FDP  );
 
                 TimeSpan flightTime = TimeSpan.FromMinutes(result.flight);
-                sheet.Range[23, 24].Text = result.OnBlockLocal != null
-                    ? flightTime.ToString(@"hh\:mm")
-                    : ((DateTime)result.STALocal).ToString("HH:mm");
+                sheet.Range[23, 24].Text = flightTime.ToString(@"hh\:mm");
+                //sheet.Range[23, 24].Text = result.OnBlockLocal != null
+                //    ? flightTime.ToString(@"hh\:mm")
+                //    : ((DateTime)result.STALocal).ToString("HH:mm");
 
                 TimeSpan blockTime = TimeSpan.FromMinutes(result.block);
-                sheet.Range[23, 25].Text = result.OnBlockLocal != null
-                    ? blockTime.ToString(@"hh\:mm")
-                    : ((DateTime)result.STALocal).ToString("HH:mm");
+                sheet.Range[23, 25].Text = blockTime.ToString(@"hh\:mm");
+                //sheet.Range[23, 25].Text = result.OnBlockLocal != null
+                //    ? blockTime.ToString(@"hh\:mm")
+                //    : ((DateTime)result.STALocal).ToString("HH:mm");
 
 
                 //sheet.Range[23, 24].Text = result.OnBlockLocal != null ? ((DateTime)result.flight).ToString("HH:mm") : ((DateTime)result.STALocal).ToString("HH:mm");
