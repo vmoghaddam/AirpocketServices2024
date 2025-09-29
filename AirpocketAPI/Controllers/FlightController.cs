@@ -8908,6 +8908,77 @@ new JsonSerializerSettings
         }
 
 
+        //[Route("api/applegs/{crtbl}")]
+
+        ////nookp
+        //public IHttpActionResult GetAppLegs(DateTime? df, DateTime? dt, int? ip, int? cpt, int? status, int? asrvr, int crtbl)
+        //{
+        //    //nooz
+        //    //this.context.Database.CommandTimeout = 160;
+        //    df = df != null ? ((DateTime)df).Date : DateTime.MinValue.Date;
+        //    dt = dt != null ? ((DateTime)dt).Date : DateTime.MaxValue.Date;
+        //    var context = new AirpocketAPI.Models.FLYEntities();
+        //    var query = from x in context.view_efb_report
+        //                    // where x.FlightStatusID != 1 && x.FlightStatusID != 4
+        //                select x;
+        //    query = query.Where(q => q.STDDay >= df && q.STDDay <= dt);
+        //    if (crtbl == 1)
+        //        query = query.Where(q => q.CRTBL == 1);
+        //    if (ip != null)
+        //        query = query.Where(q => q.IPId == ip);
+        //    if (cpt != null)
+        //        query = query.Where(q => q.P1Id == cpt);
+        //    if (asrvr != null)
+        //    {
+        //        if (asrvr == 1)
+        //            query = query.Where(q => q.MSN == 1);
+
+
+        //    }
+        //    if (status != null)
+        //    {
+
+        //        List<int?> sts = new List<int?>();
+        //        switch ((int)status)
+        //        {
+        //            case 1:
+        //                sts.Add(15);
+        //                sts.Add(3);
+        //                query = query.Where(q => sts.Contains(q.FlightStatusID));
+        //                break;
+        //            case 2:
+        //                sts.Add(1);
+        //                query = query.Where(q => sts.Contains(q.FlightStatusID));
+        //                break;
+        //            case 3:
+        //                sts.Add(4);
+        //                query = query.Where(q => sts.Contains(q.FlightStatusID));
+        //                break;
+        //            case 4:
+        //                sts.Add(20);
+        //                sts.Add(21);
+        //                sts.Add(22);
+        //                sts.Add(4);
+        //                sts.Add(2);
+        //                sts.Add(23);
+        //                sts.Add(24);
+        //                sts.Add(25);
+        //                query = query.Where(q => sts.Contains(q.FlightStatusID));
+
+        //                break;
+        //            case 5:
+        //                break;
+        //            default:
+        //                break;
+        //        }
+        //    }
+        //    var result = query.OrderBy(q => q.STD).ToList();
+
+        //    // return result.OrderBy(q => q.STD);
+        //    return Ok(result);
+
+        //}
+
         [Route("api/applegs/{crtbl}")]
 
         //nookp
@@ -8918,7 +8989,7 @@ new JsonSerializerSettings
             df = df != null ? ((DateTime)df).Date : DateTime.MinValue.Date;
             dt = dt != null ? ((DateTime)dt).Date : DateTime.MaxValue.Date;
             var context = new AirpocketAPI.Models.FLYEntities();
-            var query = from x in context.view_efb_report
+            var query = from x in context.AppLegOPS
                             // where x.FlightStatusID != 1 && x.FlightStatusID != 4
                         select x;
             query = query.Where(q => q.STDDay >= df && q.STDDay <= dt);
@@ -8978,8 +9049,6 @@ new JsonSerializerSettings
             return Ok(result);
 
         }
-
-
 
         [Route("api/flighttime/crew/{crewid}/{y1}/{m1}/{y2}/{m2}")]
 
