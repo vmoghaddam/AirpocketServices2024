@@ -1305,8 +1305,8 @@ namespace ApiWorld.Controllers
                 // PpsVersionInformation  // complex - skip
                 db_flight.PpsVersionInformation = new PpsVersionInformation()
                 {
-                     PpsApplicationVersion=flt_info.PpsVersionInformation.PpsApplicationVersion,
-                      PpsExeVersion=flt_info.PpsVersionInformation?.PpsExeVersion,
+                    PpsApplicationVersion = flt_info.PpsVersionInformation.PpsApplicationVersion,
+                    PpsExeVersion = flt_info.PpsVersionInformation?.PpsExeVersion,
                 };
                 // CustomReferences       // complex - skip
                 if (flt_info.CustomReferences != null)
@@ -1316,7 +1316,69 @@ namespace ApiWorld.Controllers
                         RefID = flt_info.CustomReferences.RefID,
                     };
                 // ToAlt1Points           // complex - skip
+                if (flt_info.ToAlt1Points != null)
+                {
+                    foreach (var x in flt_info.ToAlt1Points)
+                    {
+                        var _p = new ToAlt1Points()
+                        {
+                            ACCDIST = x.ACCDIST,
+                            ACCTIME = x.ACCTIME,
+                            ClimbDescent = x.ClimbDescent,
+                            DistRemaining = x.DistRemaining,
+                            FIR = x.FIR,
+                            FL = x.FL,
+                            Frequency = Convert.ToDecimal(x.Frequency),
+                            FuelFlow = x.FuelFlow,
+                            FuelFlowPerEng = Convert.ToDecimal(x.FuelFlowPerEng),
+                            FuelRemaining = Convert.ToDecimal(x.FuelRemaining),
+                            FuelUsed = Convert.ToDecimal(x.FuelUsed),
+                            GroundSpeed = x.GroundSpeed,
+                            HLAEntryExit = x.HLAEntryExit,
+                            IDENT = x.IDENT,
+                            ISA = x.ISA,
+                            LAT = Convert.ToDecimal(x.LAT),
+                            LegAWY = x.LegAWY,
+                            LegCAT = x.LegCAT,
+                            LegCourse = Convert.ToDecimal(x.LegCourse),
+                            LegDistance = x.LegDistance,
+                            LegFuel = Convert.ToDecimal(x.LegFuel),
+                            LegName = x.LegName,
+                            LegTime = x.LegTime,
+                            LON = Convert.ToDecimal(x.LON),
+                            MagCourse = Convert.ToDecimal(x.MagCourse),
+                            MagneticHeading = Convert.ToDecimal(x.MagneticHeading),
+                            MagneticTrack = x.MagneticTrack,
+                            MinimumEnrouteAltitude = x.MinimumEnrouteAltitude,
+                            MinReqFuel = Convert.ToDecimal(x.MinReqFuel),
+                            MORA = x.MORA,
+                            Temperature = x.Temperature,
+                            TimeRemaining = x.TimeRemaining,
+                            TrueAirSpeed = x.TrueAirSpeed,
+                            TrueHeading = Convert.ToDecimal(x.TrueHeading),
+                            TrueTrack = x.TrueTrack,
+                            VARIATION = x.VARIATION,
+                            Vol = x.Vol,
+                            Wind = x.Wind,
+                            WindComponent = x.WindComponent,
 
+
+
+                        };
+                        //foreach (var w in x.FlightLevelWinds)
+                        //{
+                        //    _p.FlightLevelWindt.Add(new FlightLevelWindPDP()
+                        //    {
+                        //        FlightLevel = w.FlightLevel,
+                        //        Shear = w.Shear,
+                        //        Temp = w.Temp,
+                        //        Velocity = w.Velocity,
+                        //        Wind = w.Wind,
+                        //    });
+                        //}
+                        db_flight.ToAlt1Points.Add(_p);
+                    }
+                }
                 db_flight.CFMUStatus = flt_info.CFMUStatus;
                 db_flight.StructuralTOM = flt_info.StructuralTOM;
                 db_flight.FW1 = flt_info.FW1;
@@ -1332,6 +1394,10 @@ namespace ApiWorld.Controllers
                 db_flight.Alt2Dist = flt_info.Alt2Dist;
                 db_flight.FMSIdent = flt_info.FMSIdent;
                 // ExtraFuels             // complex - skip
+                if (flt_info.ExtraFuels != null)
+                {
+                     
+                }
                 db_flight.AircraftFuelBias = flt_info.AircraftFuelBias;
                 db_flight.MelFuelBias = flt_info.MelFuelBias;
                 // DepartureAlternateAirport            // complex - skip
