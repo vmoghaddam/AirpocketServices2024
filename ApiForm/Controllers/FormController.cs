@@ -79,16 +79,16 @@ namespace ApiForm.Controllers
                 var cockpit_grps = new List<string>() { "TRE", "TRI", "LTC", "NC", "P1", "P2" };
                 //4811
                 if (cockpit_grps.IndexOf(requester.JobGroup) != -1)
-                    form.ResponsibleId = 3526;
+                    form.ResponsibleId = 3965;
                 else
-                    form.ResponsibleId = 3399;
+                    form.ResponsibleId = 3965;
 
 
 
 
                 context.FormVacations.Add(form);
                 context.SaveChanges();
-                //send_vacation_notification(form);
+                send_vacation_notification(form);
                 var view = context.FormVacations.Where(q => q.Id == form.Id).FirstOrDefault();
                 return Ok(view);
             }
@@ -195,6 +195,25 @@ namespace ApiForm.Controllers
             return Ok(forms);
         }
 
+        [Route("api/vacation/cspn/forms/approved/{isCockpit}")]
+        [AcceptVerbs("GET")]
+        public IHttpActionResult GetVacationFormsApprovedCSPN(string isCockpit)
+        {
+            ppa_entities context = new ppa_entities();
+            List<ViewFormVacation> forms = new List<ViewFormVacation>();
+            var cockpitGrps = new[] { "TRE", "TRI", "LTC", "NC", "P1", "P2" };
+            bool isCockpitBool = Convert.ToInt32(isCockpit) == 1;
+            if (Convert.ToInt32(isCockpit) == 1)
+            {
+                forms = context.ViewFormVacations.Where(q => q.ResponsibleActionId == 1 && cockpitGrps.Contains(q.JobGroup)).OrderByDescending(q => q.DateCreate).ToList();
+            }
+            else
+            {
+                forms = context.ViewFormVacations.Where(q => q.ResponsibleActionId == 1 && !cockpitGrps.Contains(q.JobGroup)).OrderByDescending(q => q.DateCreate).ToList();
+            }
+            return Ok(forms);
+        }
+
 
         [Route("api/vacation/forms/new")]
         [AcceptVerbs("GET")]
@@ -275,9 +294,9 @@ namespace ApiForm.Controllers
             request.ResponsibleRemark = dto.remark;
 
             context.SaveChanges();
-            send_vacation_notification_responsible(request);
+            //send_vacation_notification_responsible(request);
             var view = context.ViewFormVacations.Where(q => q.Id == dto.form_id).FirstOrDefault();
-
+            send_vacation_notification_responsible(request, view.JobGroup);
             return Ok(view);
         }
 
@@ -340,7 +359,7 @@ namespace ApiForm.Controllers
 
                     var not_receivers = context.request_receiver.Where(q => q.is_active == true && q.group == type).ToList();
                     var _result = new List<qa_notification_history>();
-                    MelliPayamac m1 = new MelliPayamac();
+                    Magfa m1 = new Magfa();
                     foreach (var rec in not_receivers)
                     {
                         List<string> prts2 = new List<string>();
@@ -415,7 +434,7 @@ namespace ApiForm.Controllers
                         //    not_history.counter = 0;
                         //}
 
-                        var smsResult1 = m1.send(not_history.rec_mobile, null, text)[0];
+                        var smsResult1 = m1.enqueue(1, not_history.rec_mobile, text)[0];
                         not_history.ref_id = smsResult1.ToString();
                         _result.Add(not_history);
                         System.Threading.Thread.Sleep(2000);
@@ -424,8 +443,8 @@ namespace ApiForm.Controllers
                     System.Threading.Thread.Sleep(20000);
                     foreach (var x in _result)
                     {
-                        MelliPayamac m_status = new MelliPayamac();
-                        x.status = m_status.get_delivery(x.ref_id);
+                        Magfa m_status = new Magfa();
+                        x.status = m_status.getStatus(Convert.ToInt32(x.ref_id));
 
                         context.qa_notification_history.Add(x);
                     }
@@ -443,7 +462,7 @@ namespace ApiForm.Controllers
         }
 
 
-        public void send_vacation_notification_responsible(FormVacation vacation)
+        public void send_vacation_notification_responsible(FormVacation vacation, string job_group)
         {
             new Thread(async () =>
             {
@@ -455,10 +474,15 @@ namespace ApiForm.Controllers
 
 
                     List<request_receiver> nots = new List<request_receiver>();
+                    List<request_receiver> not_receivers = new List<request_receiver>();
 
-                    var not_receivers = context.request_receiver.Where(q => q.is_active == true && q.group == "Scheduling").ToList();
+                    var cockpit_grps = new List<string>() { "TRE", "TRI", "LTC", "NC", "P1", "P2" };
+                    if (cockpit_grps.IndexOf(job_group) != -1)
+                        not_receivers = context.request_receiver.Where(q => q.is_active == true && q.group == "cockpit_res").ToList();
+                    else
+                        not_receivers = context.request_receiver.Where(q => q.is_active == true && q.group == "cabin_res").ToList();
                     var _result = new List<qa_notification_history>();
-                    MelliPayamac m1 = new MelliPayamac();
+                    Magfa m1 = new Magfa();
 
                     //Varesh
                     //MagfaNew m1 = new MagfaNew();
@@ -483,7 +507,7 @@ namespace ApiForm.Controllers
                             counter = 0,
                         };
 
-                        var smsResult1 = m1.send(not_history.rec_mobile, null, text)[0];
+                        var smsResult1 = m1.enqueue(1, not_history.rec_mobile, text)[0];
                         not_history.ref_id = smsResult1.ToString();
                         _result.Add(not_history);
                         System.Threading.Thread.Sleep(2000);
@@ -493,8 +517,8 @@ namespace ApiForm.Controllers
                     System.Threading.Thread.Sleep(20000);
                     foreach (var x in _result)
                     {
-                        MelliPayamac m_status = new MelliPayamac();
-                        x.status = m_status.get_delivery(x.ref_id);
+                        Magfa m_status = new Magfa();
+                        x.status = m_status.getStatus(Convert.ToInt32(x.ref_id));
 
                         context.qa_notification_history.Add(x);
                     }
@@ -560,8 +584,8 @@ namespace ApiForm.Controllers
                     };
 
 
-                    MelliPayamac m1_pic = new MelliPayamac();
-                    var m1_pic_result = m1_pic.send(not_history_pic.rec_mobile, null, not_history_pic.message_text)[0];
+                    Magfa m1_pic = new Magfa();
+                    var m1_pic_result = m1_pic.enqueue(1, not_history_pic.rec_mobile, not_history_pic.message_text)[0];
                     not_history_pic.ref_id = m1_pic_result.ToString();
 
                     _result.Add(not_history_pic);
@@ -569,8 +593,8 @@ namespace ApiForm.Controllers
                     System.Threading.Thread.Sleep(20000);
                     foreach (var x in _result)
                     {
-                        MelliPayamac m_status = new MelliPayamac();
-                        x.status = m_status.get_delivery(x.ref_id);
+                        Magfa m_status = new Magfa();
+                        x.status = m_status.getStatus(Convert.ToInt32(x.ref_id));
 
                         context.qa_notification_history.Add(x);
                     }

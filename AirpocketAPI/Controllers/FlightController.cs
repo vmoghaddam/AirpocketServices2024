@@ -180,7 +180,7 @@ namespace AirpocketAPI.Controllers
 
             });
         }
-
+         
         [HttpPost]
         [Route("api/fixtime/delete")]
         public async Task<IHttpActionResult> DeleteFixtime(FixTime model)
@@ -3142,14 +3142,14 @@ namespace AirpocketAPI.Controllers
             workbook.LoadFromFile(mappedPathSource);
             Worksheet sheet = workbook.Worksheets[0];
 
-            sheet.Range[2, 7].Text = result.no2;
+            sheet.Range[2, 5].Text = result.no2;
             if (result.flights.Count > 1)
-                sheet.Range[2, 7].Text = result.no2 + " (" + result.route + ")";
-            sheet.Range[2, 10].Text = ((DateTime)result.std).ToString("yyyy-MM-dd");
+                sheet.Range[2, 5].Text = result.no2 + " (" + result.route + ")";
+            sheet.Range[2, 7].Text = ((DateTime)result.std).ToString("yyyy-MM-dd");
             sheet.Range[3, 1].Value = "Marks of Nationality and Registration:" + result.regs;
 
-            sheet.Range[3, 7].Text = result.flights.First().FromAirportIATA + " - " + ((DateTime)result.flights.First().STD).ToString("HH:mm");
-            sheet.Range[3, 10].Text = result.flights.Last().ToAirportIATA + " - " + ((DateTime)result.flights.Last().STA).ToString("HH:mm");
+            sheet.Range[3, 5].Text = result.flights.First().FromAirportIATA + " - " + ((DateTime)result.flights.First().STD).ToString("HH:mm");
+            sheet.Range[3, 7].Text = result.flights.Last().ToAirportIATA + " - " + ((DateTime)result.flights.Last().STA).ToString("HH:mm");
 
             var r = 5;
             foreach (var cr in result.crew)
@@ -8914,7 +8914,7 @@ new JsonSerializerSettings
             df = df != null ? ((DateTime)df).Date : DateTime.MinValue.Date;
             dt = dt != null ? ((DateTime)dt).Date : DateTime.MaxValue.Date;
             var context = new AirpocketAPI.Models.FLYEntities();
-            var query = from x in context.AppLegOPS
+            var query = from x in context.view_efb_report
                             // where x.FlightStatusID != 1 && x.FlightStatusID != 4
                         select x;
             query = query.Where(q => q.STDDay >= df && q.STDDay <= dt);
