@@ -10293,10 +10293,10 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
           <EntitySet Name="AppCrewFlightJLs" EntityType="FLYModel.AppCrewFlightJL" />
           <EntitySet Name="AppLegJLs" EntityType="FLYModel.AppLegJL" />
           <EntitySet Name="AppLegOPS" EntityType="FLYModel.AppLegOP" />
-          <EntitySet Name="ViewCrewLists" EntityType="FLYModel.ViewCrewList" />
           <EntitySet Name="ViewCrewDuties" EntityType="FLYModel.ViewCrewDuty" />
           <EntitySet Name="FixTimes" EntityType="FLYModel.FixTime" />
           <EntitySet Name="view_efb_report" EntityType="FLYModel.view_efb_report" />
+          <EntitySet Name="ViewCrewLists" EntityType="FLYModel.ViewCrewList" />
           </EntityContainer>
         <EntityType Name="DlyGrpFlight">
           <Key>
@@ -16176,48 +16176,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
           <Property Name="PaxMale" Type="Int32" />
           <Property Name="PaxFemale" Type="Int32" />
         </EntityType>
-        <EntityType Name="ViewCrewList">
-          <Key>
-            <PropertyRef Name="FDPId" />
-            <PropertyRef Name="FDPItemId" />
-            <PropertyRef Name="PositionId" />
-            <PropertyRef Name="RosterPositionId" />
-            <PropertyRef Name="Name" />
-            <PropertyRef Name="SexId" />
-            <PropertyRef Name="FDPTitle" />
-            <PropertyRef Name="IsCockpit" />
-            <PropertyRef Name="PID" />
-            <PropertyRef Name="Gen" />
-          </Key>
-          <Property Name="FDPId" Type="Int32" Nullable="false" />
-          <Property Name="FDPItemId" Type="Int32" Nullable="false" />
-          <Property Name="CrewId" Type="Int32" />
-          <Property Name="FlightId" Type="Int32" />
-          <Property Name="IsPositioning" Type="Boolean" />
-          <Property Name="PositionId" Type="Int32" Nullable="false" />
-          <Property Name="RosterPositionId" Type="Int32" Nullable="false" />
-          <Property Name="Position" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="1003" FixedLength="false" Unicode="true" />
-          <Property Name="ScheduleName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="Seniority" Type="Int32" />
-          <Property Name="GroupId" Type="Int32" />
-          <Property Name="JobGroup" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="JobGroupCode" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="SexId" Type="Int32" Nullable="false" />
-          <Property Name="Sex" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="GroupOrder" Type="Int32" />
-          <Property Name="FDPTitle" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="IsCockpit" Type="Int32" Nullable="false" />
-          <Property Name="PID" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="Rank" Type="Int64" />
-          <Property Name="Mobile" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="Address" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
-          <Property Name="DefaultReportingTime" Type="DateTime" Precision="3" />
-          <Property Name="MaxFDPExtended" Type="Double" />
-          <Property Name="DateBirth" Type="DateTime" Precision="0" />
-          <Property Name="Gen" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Name="DatePassportExpire" Type="DateTime" Precision="0" />
-        </EntityType>
         <EntityType Name="ViewCrewDuty">
           <Key>
             <PropertyRef Name="Id" />
@@ -16531,6 +16489,48 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
           <Property Name="voyageId" Type="Int32" />
           <Property Name="asrId" Type="Int32" />
           <Property Name="otherForm" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="ViewCrewList">
+          <Key>
+            <PropertyRef Name="FDPId" />
+            <PropertyRef Name="FDPItemId" />
+            <PropertyRef Name="PositionId" />
+            <PropertyRef Name="RosterPositionId" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="SexId" />
+            <PropertyRef Name="FDPTitle" />
+            <PropertyRef Name="IsCockpit" />
+            <PropertyRef Name="PID" />
+            <PropertyRef Name="Gen" />
+          </Key>
+          <Property Name="FDPId" Type="Int32" Nullable="false" />
+          <Property Name="FDPItemId" Type="Int32" Nullable="false" />
+          <Property Name="CrewId" Type="Int32" />
+          <Property Name="FlightId" Type="Int32" />
+          <Property Name="IsPositioning" Type="Boolean" />
+          <Property Name="PositionId" Type="Int32" Nullable="false" />
+          <Property Name="RosterPositionId" Type="Int32" Nullable="false" />
+          <Property Name="Position" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="1003" FixedLength="false" Unicode="true" />
+          <Property Name="ScheduleName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Seniority" Type="Int32" />
+          <Property Name="GroupId" Type="Int32" />
+          <Property Name="JobGroup" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="JobGroupCode" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="SexId" Type="Int32" Nullable="false" />
+          <Property Name="Sex" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="GroupOrder" Type="Int32" />
+          <Property Name="FDPTitle" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="IsCockpit" Type="Int32" Nullable="false" />
+          <Property Name="PID" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Rank" Type="Int64" />
+          <Property Name="Mobile" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="DefaultReportingTime" Type="DateTime" Precision="3" />
+          <Property Name="MaxFDPExtended" Type="Double" />
+          <Property Name="DateBirth" Type="DateTime" Precision="0" />
+          <Property Name="Gen" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="DatePassportExpire" Type="DateTime" Precision="0" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -21814,40 +21814,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ViewCrewLists">
-            <EntityTypeMapping TypeName="FLYModel.ViewCrewList">
-              <MappingFragment StoreEntitySet="ViewCrewList">
-                <ScalarProperty Name="DatePassportExpire" ColumnName="DatePassportExpire" />
-                <ScalarProperty Name="Gen" ColumnName="Gen" />
-                <ScalarProperty Name="DateBirth" ColumnName="DateBirth" />
-                <ScalarProperty Name="MaxFDPExtended" ColumnName="MaxFDPExtended" />
-                <ScalarProperty Name="DefaultReportingTime" ColumnName="DefaultReportingTime" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
-                <ScalarProperty Name="Rank" ColumnName="Rank" />
-                <ScalarProperty Name="PID" ColumnName="PID" />
-                <ScalarProperty Name="IsCockpit" ColumnName="IsCockpit" />
-                <ScalarProperty Name="FDPTitle" ColumnName="FDPTitle" />
-                <ScalarProperty Name="GroupOrder" ColumnName="GroupOrder" />
-                <ScalarProperty Name="Sex" ColumnName="Sex" />
-                <ScalarProperty Name="SexId" ColumnName="SexId" />
-                <ScalarProperty Name="JobGroupCode" ColumnName="JobGroupCode" />
-                <ScalarProperty Name="JobGroup" ColumnName="JobGroup" />
-                <ScalarProperty Name="GroupId" ColumnName="GroupId" />
-                <ScalarProperty Name="Seniority" ColumnName="Seniority" />
-                <ScalarProperty Name="ScheduleName" ColumnName="ScheduleName" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Position" ColumnName="Position" />
-                <ScalarProperty Name="RosterPositionId" ColumnName="RosterPositionId" />
-                <ScalarProperty Name="PositionId" ColumnName="PositionId" />
-                <ScalarProperty Name="IsPositioning" ColumnName="IsPositioning" />
-                <ScalarProperty Name="FlightId" ColumnName="FlightId" />
-                <ScalarProperty Name="CrewId" ColumnName="CrewId" />
-                <ScalarProperty Name="FDPItemId" ColumnName="FDPItemId" />
-                <ScalarProperty Name="FDPId" ColumnName="FDPId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ViewCrewDuties">
             <EntityTypeMapping TypeName="FLYModel.ViewCrewDuty">
               <MappingFragment StoreEntitySet="ViewCrewDuty">
@@ -22130,6 +22096,40 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
                 <ScalarProperty Name="BlockOn" ColumnName="BlockOn" />
                 <ScalarProperty Name="FlightId" ColumnName="FlightId" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ViewCrewLists">
+            <EntityTypeMapping TypeName="FLYModel.ViewCrewList">
+              <MappingFragment StoreEntitySet="ViewCrewList">
+                <ScalarProperty Name="DatePassportExpire" ColumnName="DatePassportExpire" />
+                <ScalarProperty Name="Gen" ColumnName="Gen" />
+                <ScalarProperty Name="DateBirth" ColumnName="DateBirth" />
+                <ScalarProperty Name="MaxFDPExtended" ColumnName="MaxFDPExtended" />
+                <ScalarProperty Name="DefaultReportingTime" ColumnName="DefaultReportingTime" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="Rank" ColumnName="Rank" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="IsCockpit" ColumnName="IsCockpit" />
+                <ScalarProperty Name="FDPTitle" ColumnName="FDPTitle" />
+                <ScalarProperty Name="GroupOrder" ColumnName="GroupOrder" />
+                <ScalarProperty Name="Sex" ColumnName="Sex" />
+                <ScalarProperty Name="SexId" ColumnName="SexId" />
+                <ScalarProperty Name="JobGroupCode" ColumnName="JobGroupCode" />
+                <ScalarProperty Name="JobGroup" ColumnName="JobGroup" />
+                <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+                <ScalarProperty Name="Seniority" ColumnName="Seniority" />
+                <ScalarProperty Name="ScheduleName" ColumnName="ScheduleName" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="RosterPositionId" ColumnName="RosterPositionId" />
+                <ScalarProperty Name="PositionId" ColumnName="PositionId" />
+                <ScalarProperty Name="IsPositioning" ColumnName="IsPositioning" />
+                <ScalarProperty Name="FlightId" ColumnName="FlightId" />
+                <ScalarProperty Name="CrewId" ColumnName="CrewId" />
+                <ScalarProperty Name="FDPItemId" ColumnName="FDPItemId" />
+                <ScalarProperty Name="FDPId" ColumnName="FDPId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
