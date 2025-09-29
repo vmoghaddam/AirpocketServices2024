@@ -17,5 +17,8 @@ namespace ApiWorld.Models
         public int Id_key { get; set; }
         public string ActMass { get; set; }
         public string ID { get; set; }
+        public Nullable<int> FuelId { get; set; }
+    
+        public virtual Fuel Fuel { get; set; }
     }
 }

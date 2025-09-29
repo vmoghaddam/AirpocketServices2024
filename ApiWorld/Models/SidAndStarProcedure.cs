@@ -14,13 +14,19 @@ namespace ApiWorld.Models
     
     public partial class SidAndStarProcedure
     {
-        public int Id { get; set; }
-        public int FlightID { get; set; }
-        public string Sid_Name { get; set; }
-        public string Sid_Info { get; set; }
-        public string Star_Name { get; set; }
-        public string Star_Info { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public SidAndStarProcedure()
+        {
+            this.Flights = new HashSet<Flight>();
+        }
     
-        public virtual Flight Flight { get; set; }
+        public int Id { get; set; }
+        public Nullable<int> SidId { get; set; }
+        public Nullable<int> StarId { get; set; }
+    
+        public virtual SidStarInfoSid SidStarInfoSid { get; set; }
+        public virtual SidStarInfoStar SidStarInfoStar { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Flight> Flights { get; set; }
     }
 }

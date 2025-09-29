@@ -6477,27 +6477,39 @@ namespace AirpocketTRN.Services
                 List<string> strs = new List<string>();
                 strs.Add("COURSE NOTIFICATION");
                 strs.Add(course.Title.ToUpper());
-                if (!string.IsNullOrEmpty(course.Organization))
-                    strs.Add(course.Organization);
+                //if (!string.IsNullOrEmpty(course.Organization))
+                //    strs.Add(course.Organization);
                 if (!string.IsNullOrEmpty(course.Location))
                     strs.Add(course.Location);
-                if (!string.IsNullOrEmpty(course.HoldingType))
-                    strs.Add(course.HoldingType);
-                strs.Add(course.DateStart.ToString("ddd, dd MMM yyyy"));
-                if (course.DateEnd != null)
-                    strs.Add(((DateTime)course.DateEnd).ToString("ddd, dd MMM yyyy"));
+               // if (!string.IsNullOrEmpty(course.HoldingType))
+                //    strs.Add(course.HoldingType);
+               // strs.Add(course.DateStart.ToString("ddd, dd MMM yyyy"));
+              //  if (course.DateEnd != null)
+                //    strs.Add(((DateTime)course.DateEnd).ToString("ddd, dd MMM yyyy"));
 
                 if (sessions.Count > 0)
                 {
-                    strs.Add("Sessions");
-                    foreach (var x in sessions)
-                    {
-                        if (x.DateStart != null && x.DateEnd != null)
-                        {
-                            var dt = ((DateTime)x.DateStart).ToString("ddd, dd MMM yyyy");
-                            strs.Add(dt + " " + ((DateTime)x.DateStart).ToString("HH:mm") + "-" + ((DateTime)x.DateEnd).ToString("HH:mm"));
-                        }
+                    var ds = (from x in sessions
+                             group x by new { day = ((DateTime)x.DateStart).ToString("yyyy-MM-dd") } into g
+                             select new
+                             {
+                                 g.Key.day,
+                                 start=g.OrderBy(q=>q.DateStart).Select(q=>(DateTime)q.DateStart).First().ToString("HH:mm"),
+                                 end=g.OrderBy(q=>q.DateStart).Select(q => (DateTime)q.DateEnd).Last().ToString("HH:mm")
+                             }).OrderBy(q=>q.day).ToList();
+                    strs.Add("SESSIONS");
+                    //foreach (var x in sessions)
+                    //{
+                    //    if (x.DateStart != null && x.DateEnd != null)
+                    //    {
+                    //        var dt = ((DateTime)x.DateStart).ToString("ddd, dd MMM yyyy");
+                    //        strs.Add(dt + " " + ((DateTime)x.DateStart).ToString("HH:mm") + "-" + ((DateTime)x.DateEnd).ToString("HH:mm"));
+                    //    }
 
+                    //}
+                    foreach (var d in ds)
+                    {
+                        strs.Add(d.day+"  "+d.start+" - "+d.end);
                     }
                 }
                 strs.Add("TRAINING DEPARTMENT");

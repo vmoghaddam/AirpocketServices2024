@@ -12,24 +12,19 @@ namespace ApiWorld.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class ALT2Taf
+    public partial class SidStarInfoSid
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ALT2Taf()
+        public SidStarInfoSid()
         {
-            this.Flights = new HashSet<Flight>();
+            this.SidAndStarProcedures = new HashSet<SidAndStarProcedure>();
         }
     
         public int Id { get; set; }
-        public int FlightID { get; set; }
-        public byte Type { get; set; }
-        public string Text { get; set; }
-        public string ICAO { get; set; }
-        public System.DateTime ForecastTime { get; set; }
-        public System.DateTime ForecastStartTime { get; set; }
-        public System.DateTime ForecastEndTime { get; set; }
+        public string Name { get; set; }
+        public string Info { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Flight> Flights { get; set; }
+        public virtual ICollection<SidAndStarProcedure> SidAndStarProcedures { get; set; }
     }
 }

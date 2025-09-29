@@ -17,6 +17,8 @@ namespace ApiWorld.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public RCFData()
         {
+            this.RCFRoutePoints = new HashSet<RCFRoutePoint>();
+            this.RCFAltRoutePoints = new HashSet<RCFAltRoutePoint>();
             this.Flights = new HashSet<Flight>();
         }
     
@@ -33,11 +35,15 @@ namespace ApiWorld.Models
         public Nullable<int> ContFuel { get; set; }
         public string RCFERAAirport { get; set; }
         public Nullable<int> FlightID { get; set; }
-        public Nullable<int> ContingencySavingDataId { get; set; }
+        public string ContingencySavingAirportICAO { get; set; }
+        public string ContingencySavingAlternateICAO { get; set; }
+        public string ContingencySavingEnRouteAlternateAirportICAO { get; set; }
     
-        public virtual AirportWeatherData AirportWeatherData { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RCFRoutePoint> RCFRoutePoints { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RCFAltRoutePoint> RCFAltRoutePoints { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Flight> Flights { get; set; }
-        public virtual Flight Flight { get; set; }
     }
 }

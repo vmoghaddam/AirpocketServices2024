@@ -12,19 +12,16 @@ namespace ApiWorld.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class SimplePaxSection
+    public partial class FlightLevelWindPDP
     {
         public int Id { get; set; }
-        public string Row { get; set; }
-        public Nullable<int> ActPax { get; set; }
-        public Nullable<int> ActMass { get; set; }
-        public Nullable<int> Male { get; set; }
-        public Nullable<int> Female { get; set; }
-        public Nullable<int> Children { get; set; }
-        public Nullable<int> Infant { get; set; }
-        public string CustMass { get; set; }
-        public Nullable<int> PaxId { get; set; }
+        public Nullable<int> FlightLevel { get; set; }
+        public Nullable<int> Wind { get; set; }
+        public Nullable<int> Velocity { get; set; }
+        public Nullable<int> Temp { get; set; }
+        public Nullable<int> Shear { get; set; }
+        public Nullable<int> PointId { get; set; }
     
-        public virtual Pax Pax { get; set; }
+        public virtual PDPPoint PDPPoint { get; set; }
     }
 }

@@ -12,19 +12,14 @@ namespace ApiWorld.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class SimplePaxSection
+    public partial class SIDAlternative
     {
         public int Id { get; set; }
-        public string Row { get; set; }
-        public Nullable<int> ActPax { get; set; }
-        public Nullable<int> ActMass { get; set; }
-        public Nullable<int> Male { get; set; }
-        public Nullable<int> Female { get; set; }
-        public Nullable<int> Children { get; set; }
-        public Nullable<int> Infant { get; set; }
-        public string CustMass { get; set; }
-        public Nullable<int> PaxId { get; set; }
+        public string RunwayName { get; set; }
+        public string ProcedureName { get; set; }
+        public Nullable<int> Distance { get; set; }
+        public Nullable<int> FlightId { get; set; }
     
-        public virtual Pax Pax { get; set; }
+        public virtual Flight Flight { get; set; }
     }
 }

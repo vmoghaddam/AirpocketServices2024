@@ -18,6 +18,7 @@ namespace ApiWorld.Models
         public Fuel()
         {
             this.Loads = new HashSet<Load>();
+            this.LoadFuelSections = new HashSet<LoadFuelSection>();
         }
     
         public int Id { get; set; }
@@ -25,5 +26,7 @@ namespace ApiWorld.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Load> Loads { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<LoadFuelSection> LoadFuelSections { get; set; }
     }
 }

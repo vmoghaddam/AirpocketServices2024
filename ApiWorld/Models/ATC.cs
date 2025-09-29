@@ -54,7 +54,6 @@ namespace ApiWorld.Models
         public string ATCCtot { get; set; }
         public Nullable<int> FlightID { get; set; }
     
-        public virtual Flight Flight { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Flight> Flights { get; set; }
     }

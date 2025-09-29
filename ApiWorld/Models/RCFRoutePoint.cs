@@ -12,15 +12,15 @@ namespace ApiWorld.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class RoutePoint
+    public partial class RCFRoutePoint
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public RoutePoint()
+        public RCFRoutePoint()
         {
-            this.FlightLevelWinds = new HashSet<FlightLevelWind>();
+            this.FlightLevelWindRCFs = new HashSet<FlightLevelWindRCF>();
         }
     
-        public Nullable<int> FlightID { get; set; }
+        public Nullable<int> RCFDataID { get; set; }
         public string PointSet { get; set; }
         public Nullable<int> ID { get; set; }
         public string IDENT { get; set; }
@@ -65,7 +65,7 @@ namespace ApiWorld.Models
         public int Id_Point { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<FlightLevelWind> FlightLevelWinds { get; set; }
-        public virtual Flight Flight { get; set; }
+        public virtual ICollection<FlightLevelWindRCF> FlightLevelWindRCFs { get; set; }
+        public virtual RCFData RCFData { get; set; }
     }
 }

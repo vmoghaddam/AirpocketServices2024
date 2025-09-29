@@ -24,20 +24,17 @@ namespace ApiWorld.Models
             this.AirportWeatherDataPlanningEnRouteAlternates = new HashSet<AirportWeatherDataPlanningEnRouteAlternate>();
             this.ALT1Notam = new HashSet<ALT1Notam>();
             this.Alt1Points = new HashSet<Alt1Points>();
-            this.ALT1Taf = new HashSet<ALT1Taf>();
             this.ALT2Notam = new HashSet<ALT2Notam>();
             this.Alt2Points = new HashSet<Alt2Points>();
-            this.ALT2Taf = new HashSet<ALT2Taf>();
             this.AltApts = new HashSet<AltApt>();
             this.AlternateNotams = new HashSet<AlternateNotam>();
-            this.ATCs = new HashSet<ATC>();
             this.CorrectionTables = new HashSet<CorrectionTable>();
             this.Crews = new HashSet<Crew>();
             this.DEPNotams = new HashSet<DEPNotam>();
             this.DEPTafs = new HashSet<DEPTaf>();
             this.DESTNotams = new HashSet<DESTNotam>();
             this.DESTTafs = new HashSet<DESTTaf>();
-            this.EtopsInformations = new HashSet<EtopsInformation>();
+            this.EnrouteAlternates = new HashSet<EnrouteAlternate>();
             this.ExtraFuels = new HashSet<ExtraFuel>();
             this.FIRs = new HashSet<FIR>();
             this.FIRNotams = new HashSet<FIRNotam>();
@@ -49,14 +46,10 @@ namespace ApiWorld.Models
             this.PassThroughValues = new HashSet<PassThroughValue>();
             this.PDPPoints = new HashSet<PDPPoint>();
             this.PpsVersionInformations = new HashSet<PpsVersionInformation>();
-            this.RCFDatas = new HashSet<RCFData>();
             this.RoutePoints = new HashSet<RoutePoint>();
-            this.RouteStrings = new HashSet<RouteString>();
-            this.SidAndStarProcedures = new HashSet<SidAndStarProcedure>();
-            this.SIDPlanneds = new HashSet<SIDPlanned>();
+            this.SIDAlternatives = new HashSet<SIDAlternative>();
             this.StdAlternates = new HashSet<StdAlternate>();
             this.ToAlt1Points = new HashSet<ToAlt1Points>();
-            this.Loads = new HashSet<Load>();
         }
     
         public int Id { get; set; }
@@ -240,29 +233,22 @@ namespace ApiWorld.Models
         public virtual ICollection<ALT1Notam> ALT1Notam { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Alt1Points> Alt1Points { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ALT1Taf> ALT1Taf { get; set; }
-        public virtual ALT1Taf ALT1Taf1 { get; set; }
+        public virtual ALT1Taf ALT1Taf { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ALT2Notam> ALT2Notam { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Alt2Points> Alt2Points { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ALT2Taf> ALT2Taf { get; set; }
-        public virtual ALT2Taf ALT2Taf1 { get; set; }
+        public virtual ALT2Taf ALT2Taf { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AltApt> AltApts { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AlternateNotam> AlternateNotams { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ATC> ATCs { get; set; }
         public virtual ATC ATC { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CorrectionTable> CorrectionTables { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Crew> Crews { get; set; }
         public virtual CustomReference CustomReference { get; set; }
-        public virtual DepartureAndArrivalProcedure DepartureAndArrivalProcedure { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DEPNotam> DEPNotams { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -274,7 +260,7 @@ namespace ApiWorld.Models
         public virtual ICollection<DESTTaf> DESTTafs { get; set; }
         public virtual DESTTaf DESTTaf { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<EtopsInformation> EtopsInformations { get; set; }
+        public virtual ICollection<EnrouteAlternate> EnrouteAlternates { get; set; }
         public virtual EtopsInformation EtopsInformation { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ExtraFuel> ExtraFuels { get; set; }
@@ -288,15 +274,16 @@ namespace ApiWorld.Models
         public virtual ICollection<MelItem> MelItems { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Message> Messages { get; set; }
+        public virtual SidAndStarProcedure SidAndStarProcedure { get; set; }
         public virtual HoldingFuel HoldingFuel { get; set; }
-        public virtual Load Load1 { get; set; }
         public virtual NextLeg NextLeg { get; set; }
         public virtual PpsVersionInformation PpsVersionInformation { get; set; }
         public virtual RCFData RCFData { get; set; }
         public virtual Response Response { get; set; }
         public virtual RouteString RouteString { get; set; }
-        public virtual SID SID { get; set; }
+        public virtual SIDPlanned SIDPlanned { get; set; }
         public virtual LocalTime LocalTime1 { get; set; }
+        public virtual Load Load1 { get; set; }
         public virtual OverflightCost OverflightCost { get; set; }
         public virtual Response Response1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -310,20 +297,12 @@ namespace ApiWorld.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PpsVersionInformation> PpsVersionInformations { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RCFData> RCFDatas { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RoutePoint> RoutePoints { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RouteString> RouteStrings { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SidAndStarProcedure> SidAndStarProcedures { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SIDPlanned> SIDPlanneds { get; set; }
+        public virtual ICollection<SIDAlternative> SIDAlternatives { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StdAlternate> StdAlternates { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ToAlt1Points> ToAlt1Points { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Load> Loads { get; set; }
     }
 }

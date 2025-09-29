@@ -895,19 +895,19 @@ namespace ApiAPSB.Controllers
                 err_code = "2";
                 // sheet.Range[1, 17].Text = fdp.Id.ToString();
 
-                sheet.Range[14, 9].Text = "FUEL INFO (kg)";
+                //sheet.Range[14, 9].Text = "FUEL INFO (kg)";
 
-                sheet.Range[8, 5].Text = ((DateTime)result.Date).ToString("MM/dd/yyyy");
-                sheet.Range[4, 5].Text = string.IsNullOrEmpty(result.AcType) ? "" : result.AcType;
-                sheet.Range[6, 5].Text = string.IsNullOrEmpty(result.Reg) ? "" : result.Reg;
+                sheet.Range[3, 2].Text = ((DateTime)result.Date).ToString("MM/dd/yyyy");
+                sheet.Range[3, 5].Text = string.IsNullOrEmpty(result.AcType) ? "" : result.AcType;
+                sheet.Range[4, 5].Text = string.IsNullOrEmpty(result.Reg) ? "" : result.Reg;
                 //offblock local => stdlocal
-                sheet.Range[11, 7].Text = ((DateTime)result.STDLocal).ToString("HH:mm");
-                sheet.Range[12, 7].Text = result.OnBlockLocal != null ? ((DateTime)result.OnBlockLocal).ToString("HH:mm") : ((DateTime)result.STALocal).ToString("HH:mm");
+                //sheet.Range[11, 7].Text = ((DateTime)result.STDLocal).ToString("HH:mm");
+                //sheet.Range[12, 7].Text = result.OnBlockLocal != null ? ((DateTime)result.OnBlockLocal).ToString("HH:mm") : ((DateTime)result.STALocal).ToString("HH:mm");
 
                 //reporting time local => stdlocal - 60 min
-                sheet.Range[11, 14].Text = ((DateTime)reporting_time_local).ToString("HH:mm");
+                sheet.Range[5, 4].Text = ((DateTime)reporting_time_local).ToString("HH:mm");
                 // var _start =
-                sheet.Range[12, 14].Text = ((result.OnBlockLocal == null ? (DateTime)result.STALocal : (DateTime)result.OnBlockLocal)).AddMinutes(30).ToString("HH:mm");
+                //sheet.Range[12, 14].Text = ((result.OnBlockLocal == null ? (DateTime)result.STALocal : (DateTime)result.OnBlockLocal)).AddMinutes(30).ToString("HH:mm");
 
                 // ((DateTime)result.DutyEndLoccal).ToString("HH:mm");
 
@@ -920,21 +920,21 @@ namespace ApiAPSB.Controllers
                         - ((DateTime)result.ReportingTimeLocal)
                         ).TotalMinutes));
 
-                sheet.Range[11, 20].Text = format_to_time(result.MaxFDP);
+                //sheet.Range[11, 20].Text = format_to_time(result.MaxFDP);
                 //var scheduled_fdp =Convert.ToInt32( Math.Round( (((DateTime)result.STALocal) - ((DateTime)result.ReportingTimeLocal)).TotalMinutes));
-                sheet.Range[12, 20].Text = format_to_time(_duty + 30); //format_to_time(result.FDP+30);
+                sheet.Range[5, 8].Text = format_to_time(_duty + 30); //format_to_time(result.FDP+30);
 
-                sheet.Range[12, 23].Text = format_to_time(_duty);  //format_to_time(result.FDP  );
+                sheet.Range[5, 6].Text = format_to_time(_duty);  //format_to_time(result.FDP  );
 
-                TimeSpan flightTime = TimeSpan.FromMinutes(result.flight);
-                sheet.Range[23, 24].Text = result.OnBlockLocal != null
-                    ? flightTime.ToString(@"hh\:mm")
-                    : ((DateTime)result.STALocal).ToString("HH:mm");
+                //TimeSpan flightTime = TimeSpan.FromMinutes(result.flight);
+                //sheet.Range[23, 24].Text = result.OnBlockLocal != null
+                //    ? flightTime.ToString(@"hh\:mm")
+                //    : ((DateTime)result.STALocal).ToString("HH:mm");
 
-                TimeSpan blockTime = TimeSpan.FromMinutes(result.block);
-                sheet.Range[23, 25].Text = result.OnBlockLocal != null
-                    ? blockTime.ToString(@"hh\:mm")
-                    : ((DateTime)result.STALocal).ToString("HH:mm");
+                //TimeSpan blockTime = TimeSpan.FromMinutes(result.block);
+                //sheet.Range[23, 25].Text = result.OnBlockLocal != null
+                //    ? blockTime.ToString(@"hh\:mm")
+                //    : ((DateTime)result.STALocal).ToString("HH:mm");
 
 
                 //sheet.Range[23, 24].Text = result.OnBlockLocal != null ? ((DateTime)result.flight).ToString("HH:mm") : ((DateTime)result.STALocal).ToString("HH:mm");
@@ -950,66 +950,61 @@ namespace ApiAPSB.Controllers
                 //sheet.Range[11, 17].Text = format_to_time(result.over); //rem
 
 
-                var ln_crew = 5;
-                var col_crew = 8; //17
-                var cn_crew = 1;
+                var ln_crew = 15;
+             
                 foreach (var c in result.crew)
                 {
-                    sheet.Range[ln_crew, col_crew].Text = string.IsNullOrEmpty(c.Position) ? "" : get_position(c.Position);
-                    sheet.Range[ln_crew, col_crew + 2].Text = string.IsNullOrEmpty(c.Name) ? "" : c.Name + " (" + c.JobGroup + ")";
+                    sheet.Range[ln_crew, 2].Text = string.IsNullOrEmpty(c.Position) ? "" : get_position(c.Position);
+                    sheet.Range[ln_crew, 3].Text = string.IsNullOrEmpty(c.Name) ? "" : c.Name + " (" + c.JobGroup + ")";
                     //sheet.Range[ln_crew, 3].Text = format_to_time(c.TotalBlockTime);
                     ln_crew++;
-                    cn_crew++;
-                    if (cn_crew > 5)
-                    {
-                        col_crew = 17;
-                        ln_crew = 5;
-                    }
+                    
 
                 }
 
-                var ln_leg = 18;  //18,2
+                var ln_leg = 9;  //18,2
                 foreach (var leg in result.legs)
                 {
-                    sheet.Range[ln_leg, 2].Text = ((DateTime)leg.STD).ToString("MM");
-                    sheet.Range[ln_leg, 3].Text = ((DateTime)leg.STD).ToString("dd");
-                    sheet.Range[ln_leg, 4].Text = leg.FromAirportIATA;
-                    sheet.Range[ln_leg, 5].Text = leg.ToAirportIATA;
-                    sheet.Range[ln_leg, 6].Text = leg.FlightNumber;
-                    sheet.Range[ln_leg, 7].Text = string.IsNullOrEmpty(leg.FlightType) ? "S" : (leg.FlightType.StartsWith("S") ? "S" : "N");
-                    sheet.Range[ln_leg, 8].Text = string.IsNullOrEmpty(leg.PF) ? "" : leg.PF;
+                    //sheet.Range[ln_leg, 2].Text = ((DateTime)leg.STD).ToString("MM");
+                    //sheet.Range[ln_leg, 3].Text = ((DateTime)leg.STD).ToString("dd");
+                    sheet.Range[ln_leg, 2].Text = leg.FlightNumber;
+                    sheet.Range[ln_leg, 3].Text = leg.FromAirportIATA;
+                    sheet.Range[ln_leg, 4].Text = leg.ToAirportIATA;
+                    //sheet.Range[ln_leg, 7].Text = string.IsNullOrEmpty(leg.FlightType) ? "S" : (leg.FlightType.StartsWith("S") ? "S" : "N");
+                    //sheet.Range[ln_leg, 8].Text = string.IsNullOrEmpty(leg.PF) ? "" : leg.PF;
 
-                    sheet.Range[ln_leg, 9].Text = leg.FuelRemaining == null ? "" : Convert.ToInt32(leg.FuelRemaining).ToString();
-                    sheet.Range[ln_leg, 10].Text = leg.FuelUplift == null ? "" : Convert.ToInt32(leg.FuelUplift).ToString();
-                    sheet.Range[ln_leg, 11].Text = leg.FuelDensity == null ? "0.79" : Math.Round((decimal)leg.FuelDensity, 2).ToString();
-                    sheet.Range[ln_leg, 12].Text = leg.FuelTotal == null ? "" : Convert.ToInt32(leg.FuelTotal).ToString();
-                    sheet.Range[ln_leg, 13].Text = leg.FuelUsed == null ? "" : Convert.ToInt32(leg.FuelUsed).ToString();
+                    //sheet.Range[ln_leg, 9].Text = leg.FuelRemaining == null ? "" : Convert.ToInt32(leg.FuelRemaining).ToString();
+                    //sheet.Range[ln_leg, 10].Text = leg.FuelUplift == null ? "" : Convert.ToInt32(leg.FuelUplift).ToString();
+                    //sheet.Range[ln_leg, 11].Text = leg.FuelDensity == null ? "0.79" : Math.Round((decimal)leg.FuelDensity, 2).ToString();
+                    //sheet.Range[ln_leg, 12].Text = leg.FuelTotal == null ? "" : Convert.ToInt32(leg.FuelTotal).ToString();
+                    //sheet.Range[ln_leg, 13].Text = leg.FuelUsed == null ? "" : Convert.ToInt32(leg.FuelUsed).ToString();
 
                     //sheet.Range[ln_leg, 14].Text = leg.PaxAdult == null ? "" : leg.PaxAdult.ToString();
-                    sheet.Range[ln_leg, 14].Text = leg.PaxMale == null ? "" : leg.PaxMale.ToString();
-                    sheet.Range[ln_leg, 15].Text = leg.PaxFemale == null ? "" : leg.PaxFemale.ToString();
-                    sheet.Range[ln_leg, 16].Text = leg.PaxChild == null ? "" : leg.PaxChild.ToString();
-                    sheet.Range[ln_leg, 17].Text = leg.PaxInfant == null ? "" : leg.PaxInfant.ToString();
-                    sheet.Range[ln_leg, 18].Text = ((leg.PaxInfant == null ? 0 : leg.PaxInfant)
-                        + (leg.PaxChild == null ? 0 : leg.PaxChild)
-                        + (leg.PaxAdult == null ? 0 : leg.PaxAdult)).ToString();
+                    //sheet.Range[ln_leg, 14].Text = leg.PaxMale == null ? "" : leg.PaxMale.ToString();
+                    //heet.Range[ln_leg, 15].Text = leg.PaxFemale == null ? "" : leg.PaxFemale.ToString();
+                    //sheet.Range[ln_leg, 16].Text = leg.PaxChild == null ? "" : leg.PaxChild.ToString();
+                    //sheet.Range[ln_leg, 17].Text = leg.PaxInfant == null ? "" : leg.PaxInfant.ToString();
+                    //sheet.Range[ln_leg, 18].Text = ((leg.PaxInfant == null ? 0 : leg.PaxInfant)
+                    //+(leg.PaxChild == null ? 0 : leg.PaxChild)
+                    //+ (leg.PaxAdult == null ? 0 : leg.PaxAdult)).ToString();
 
-                    sheet.Range[ln_leg, 19].Text = (leg.BaggageWeight + leg.CargoWeight).ToString();
+                    //sheet.Range[ln_leg, 19].Text = (leg.BaggageWeight + leg.CargoWeight).ToString();
 
 
 
-                    sheet.Range[ln_leg, 20].Text = leg.BlockOff == null ? "" : ((DateTime)leg.BlockOff).ToString("HH:mm");
-                    sheet.Range[ln_leg, 21].Text = leg.TakeOff == null ? "" : ((DateTime)leg.TakeOff).ToString("HH:mm");
-                    sheet.Range[ln_leg, 22].Text = leg.Landing == null ? "" : ((DateTime)leg.Landing).ToString("HH:mm");
-                    sheet.Range[ln_leg, 23].Text = leg.BlockOn == null ? "" : ((DateTime)leg.BlockOn).ToString("HH:mm");
-                    sheet.Range[ln_leg, 24].Text = leg.FlightTime == null ? "" : format_to_time(leg.FlightTime);
-                    sheet.Range[ln_leg, 25].Text = leg.BlockTime == null ? "" : format_to_time(leg.BlockTime);
+                    sheet.Range[ln_leg, 5].Text = leg.BlockOff == null ? "" : ((DateTime)leg.BlockOff).ToString("HH:mm");
+                    sheet.Range[ln_leg, 6].Text = leg.BlockOn == null ? "" : ((DateTime)leg.BlockOn).ToString("HH:mm");
+                    sheet.Range[ln_leg, 7].Text = leg.BlockTime == null ? "" : format_to_time(leg.BlockTime);
+                    sheet.Range[ln_leg, 8].Text = leg.TakeOff == null ? "" : ((DateTime)leg.TakeOff).ToString("HH:mm");
+                    sheet.Range[ln_leg, 9].Text = leg.Landing == null ? "" : ((DateTime)leg.Landing).ToString("HH:mm");
+                    sheet.Range[ln_leg, 10].Text = leg.FlightTime == null ? "" : format_to_time(leg.FlightTime);
+
                     //sheet.Range[ln_leg, 26].Text = leg.RemDuty == null ? "" : ((DateTime)leg.RemDuty).ToString("HH:mm");
-                    sheet.Range[ln_leg, 26].Text = leg.RemDuty == null ? "" : TimeSpan.FromMinutes((int)leg.RemDuty).ToString(@"hh\:mm");
+                    //sheet.Range[ln_leg, 26].Text = leg.RemDuty == null ? "" : TimeSpan.FromMinutes((int)leg.RemDuty).ToString(@"hh\:mm");
 
 
                     //sheet.Range[ln_leg, 16].Text = leg.BlockOff == null || leg.BlockOn == null ? "" : format_to_time(leg.NightTime);
-                   
+
 
                     //sheet.Range[ln_leg, 17].Text = leg.RemDuty == null ? "" : format_to_time(leg.RemDuty);
                     //sheet.Range[ln_leg, 18].Text = string.IsNullOrEmpty(leg.DelayCode) ? "" : leg.DelayCode;
@@ -1017,54 +1012,54 @@ namespace ApiAPSB.Controllers
 
 
                 }
-                var nots = new List<string>();
-                ln_leg = 27;
-                foreach (var leg in result.legs)
-                {
+                //var nots = new List<string>();
+                //ln_leg = 27;
+                //foreach (var leg in result.legs)
+                //{
 
-                    sheet.Range[ln_leg, 2].Text = string.IsNullOrEmpty(leg.SerialNo) ? "" : leg.SerialNo;
-                    sheet.Range[ln_leg, 5].Text = string.IsNullOrEmpty(leg.LTR) ? "" : leg.LTR;
-
-
-                    //(leg.PaxInfant ?? 0 + leg.PaxAdult ?? 0 + leg.PaxChild ?? 0).ToString();
+                //    //sheet.Range[ln_leg, 2].Text = string.IsNullOrEmpty(leg.SerialNo) ? "" : leg.SerialNo;
+                //    //sheet.Range[ln_leg, 5].Text = string.IsNullOrEmpty(leg.LTR) ? "" : leg.LTR;
 
 
-
-
-
-                    //CommanderNote
-                    if (!string.IsNullOrEmpty(leg.CommanderNote))
-                        nots.Add(leg.CommanderNote);
-                    ln_leg++;
-
-                }
+                //    //(leg.PaxInfant ?? 0 + leg.PaxAdult ?? 0 + leg.PaxChild ?? 0).ToString();
 
 
 
 
 
-                sheet.Range[27, 8].Text = String.Join("\n", nots); //commander note
+                //    //CommanderNote
+                //    if (!string.IsNullOrEmpty(leg.CommanderNote))
+                //        nots.Add(leg.CommanderNote);
+                //    ln_leg++;
+
+                //}
+
+
+
+
+
+                //sheet.Range[27, 8].Text = String.Join("\n", nots); //commander note
 
                 if (!string.IsNullOrEmpty(result.legs.First().JLSignedBy))
                 {
-                    sheet.Range[27, 19].Text = (string.IsNullOrEmpty(result.legs.First().JLSignedBy) ? "" : result.legs.First().JLSignedBy)
+                    sheet.Range[38, 1].Text = (string.IsNullOrEmpty(result.legs.First().JLSignedBy) ? "" : result.legs.First().JLSignedBy)
                         + "\n"
                         + ((DateTime)result.legs.First().JLDatePICApproved).ToString("yyyy-MMM-dd HH:mm");  //pic name
 
                 }
 
 
-                var forms = new List<string>();
-                if (result.asr)
-                {
-                    forms.Add("ASR");
-                    sheet.Range[32, 14].Text = "*";
-                }
-                if (result.vr)
-                {
-                    forms.Add("VOYAGE REPORT");
-                    sheet.Range[32, 17].Text = "*";
-                }
+                //var forms = new List<string>();
+                //if (result.asr)
+                //{
+                //    forms.Add("ASR");
+                //    sheet.Range[32, 14].Text = "*";
+                //}
+                //if (result.vr)
+                //{
+                //    forms.Add("VOYAGE REPORT");
+                //    sheet.Range[32, 17].Text = "*";
+                //}
                 //if (forms.Count > 0)
                 //    sheet.Range[24, 7].Text = string.Join(", ", forms);  //attached forms
                 // else

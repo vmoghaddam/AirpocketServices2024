@@ -12,14 +12,12 @@ namespace ApiWorld.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class ArmPosition
+    public partial class ArmPositionLanding
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ArmPosition()
+        public ArmPositionLanding()
         {
             this.MassBalances = new HashSet<MassBalance>();
-            this.MassBalances1 = new HashSet<MassBalance>();
-            this.MassBalances2 = new HashSet<MassBalance>();
         }
     
         public int Id { get; set; }
@@ -29,9 +27,5 @@ namespace ApiWorld.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MassBalance> MassBalances { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MassBalance> MassBalances1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MassBalance> MassBalances2 { get; set; }
     }
 }

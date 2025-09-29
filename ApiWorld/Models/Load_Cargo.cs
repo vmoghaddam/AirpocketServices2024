@@ -24,8 +24,8 @@ namespace ApiWorld.Models
         public int LoadId { get; set; }
         public Nullable<double> ActTotal { get; set; }
     
-        public virtual Load Load { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Load_CargoSection> Load_CargoSection { get; set; }
+        public virtual Load Load { get; set; }
     }
 }

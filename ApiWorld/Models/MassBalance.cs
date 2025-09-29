@@ -26,9 +26,9 @@ namespace ApiWorld.Models
         public Nullable<int> ZeroFuelId { get; set; }
         public Nullable<int> IndexId { get; set; }
     
-        public virtual ArmPosition ArmPosition { get; set; }
-        public virtual ArmPosition ArmPosition1 { get; set; }
-        public virtual ArmPosition ArmPosition2 { get; set; }
+        public virtual ArmPositionLanding ArmPositionLanding { get; set; }
+        public virtual ArmPositionTakeoff ArmPositionTakeoff { get; set; }
+        public virtual ArmPositionZeroFuel ArmPositionZeroFuel { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Load> Loads { get; set; }
         public virtual MassBalanceIndex MassBalanceIndex { get; set; }

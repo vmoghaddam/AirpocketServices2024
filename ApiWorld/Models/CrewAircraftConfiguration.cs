@@ -12,11 +12,17 @@ namespace ApiWorld.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class SID
+    public partial class CrewAircraftConfiguration
     {
-        public int Id { get; set; }
-        public string RunwayName { get; set; }
-        public string ProcedureName { get; set; }
-        public Nullable<int> Distance { get; set; }
+        public int Id_key { get; set; }
+        public string ID { get; set; }
+        public string CrewType { get; set; }
+        public string CrewName { get; set; }
+        public string Initials { get; set; }
+        public string GSM { get; set; }
+        public string Mass { get; set; }
+        public Nullable<int> AircraftConfigurationId { get; set; }
+    
+        public virtual AircraftConfiguration AircraftConfiguration { get; set; }
     }
 }
