@@ -17,13 +17,13 @@ namespace ApiWorld.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Load()
         {
+            this.Flights = new HashSet<Flight>();
             this.Load_Cargo = new HashSet<Load_Cargo>();
             this.Load_DryOperating = new HashSet<Load_DryOperating>();
             this.Load_Fuel = new HashSet<Load_Fuel>();
             this.Load_MassBalance = new HashSet<Load_MassBalance>();
             this.Load_Pax = new HashSet<Load_Pax>();
             this.Load_Payload = new HashSet<Load_Payload>();
-            this.Flights = new HashSet<Flight>();
         }
     
         public int Id { get; set; }
@@ -37,8 +37,9 @@ namespace ApiWorld.Models
     
         public virtual Cargo Cargo { get; set; }
         public virtual DryOperating DryOperating { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Flight> Flights { get; set; }
         public virtual Fuel Fuel { get; set; }
-        public virtual MassBalance MassBalance { get; set; }
         public virtual Pax Pax { get; set; }
         public virtual Payload Payload { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -53,8 +54,6 @@ namespace ApiWorld.Models
         public virtual ICollection<Load_Pax> Load_Pax { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Load_Payload> Load_Payload { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Flight> Flights { get; set; }
-        public virtual Flight Flight { get; set; }
+        public virtual MassBalance MassBalance { get; set; }
     }
 }

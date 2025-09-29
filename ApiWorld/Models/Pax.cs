@@ -18,14 +18,17 @@ namespace ApiWorld.Models
         public Pax()
         {
             this.Loads = new HashSet<Load>();
+            this.SimplePaxSections = new HashSet<SimplePaxSection>();
         }
     
         public int Id { get; set; }
         public Nullable<double> Total { get; set; }
         public Nullable<int> PaxDataId { get; set; }
     
+        public virtual LoadPaxSection LoadPaxSection { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Load> Loads { get; set; }
-        public virtual LoadPaxSection LoadPaxSection { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SimplePaxSection> SimplePaxSections { get; set; }
     }
 }

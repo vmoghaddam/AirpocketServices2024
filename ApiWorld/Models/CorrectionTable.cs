@@ -20,10 +20,10 @@ namespace ApiWorld.Models
         public Nullable<int> WindCorrection { get; set; }
         public Nullable<double> TimeInMinutesForCruiseProfile { get; set; }
         public Nullable<double> TimeInHoursMinutesForCruiseProfile { get; set; }
-        public Nullable<System.TimeSpan> TimeInHoursMinutesForAltCruiseProfile { get; set; }
-        public Nullable<System.TimeSpan> TimeInMinutesForAltCruiseProfile { get; set; }
+        public string TimeInHoursMinutesForAltCruiseProfile { get; set; }
+        public string TimeInMinutesForAltCruiseProfile { get; set; }
         public Nullable<double> TimeInMinutesForXProfile { get; set; }
-        public Nullable<System.TimeSpan> TimeInHoursMinutesForXProfile { get; set; }
+        public string TimeInHoursMinutesForXProfile { get; set; }
         public Nullable<double> FuelForSelectedProfile { get; set; }
         public Nullable<double> FuelForSecondProfile { get; set; }
         public Nullable<double> FuelForXProfile { get; set; }

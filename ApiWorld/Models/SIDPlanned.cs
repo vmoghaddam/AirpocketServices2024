@@ -14,12 +14,18 @@ namespace ApiWorld.Models
     
     public partial class SIDPlanned
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public SIDPlanned()
+        {
+            this.Flights = new HashSet<Flight>();
+        }
+    
         public int Id { get; set; }
-        public int FlightID { get; set; }
         public string RunwayName { get; set; }
         public string ProcedureName { get; set; }
         public Nullable<int> Distance { get; set; }
     
-        public virtual Flight Flight { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Flight> Flights { get; set; }
     }
 }
