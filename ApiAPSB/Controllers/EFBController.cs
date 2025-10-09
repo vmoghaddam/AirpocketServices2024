@@ -20,7 +20,7 @@ namespace ApiAPSB.Controllers
 
         public class EFBASRViewModel
         {
-            // Existing properties...
+            
             public int FlightId { get; set; }
             public int? EventTypeId { get; set; }
             public string OccurrenceDate { get; set; }
@@ -174,7 +174,7 @@ namespace ApiAPSB.Controllers
         [HttpPost]
         [Route("api/asr/save")]
 
-        public async Task<DataResponse> SaveEFBASR(EFBASRViewModel EFBASR)
+        public async Task<DataResponse> SaveEFBASR( dynamic EFBASR)
         {
 
             var _context = new dbEntities();
@@ -185,11 +185,12 @@ namespace ApiAPSB.Controllers
             //    return new DataResponse() { IsSuccess = true, Data = null };
             //}
 
+            int fid  = EFBASR.Id;
 
 
             try
             {
-                var entity = await _context.EFBASRs.FirstOrDefaultAsync(q => q.FlightId == EFBASR.FlightId);
+                var entity = await _context.EFBASRs.FirstOrDefaultAsync(q => q.FlightId == fid);
 
                 if (entity == null)
                 {

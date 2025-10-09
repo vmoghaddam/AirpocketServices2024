@@ -59,5 +59,6 @@ namespace ApiScheduling.Models
         public virtual DbSet<view_recency_route> view_recency_route { get; set; }
         public virtual DbSet<view_route_count> view_route_count { get; set; }
         public virtual DbSet<ViewQaHazardLog> ViewQaHazardLogs { get; set; }
+        public virtual DbSet<ViewQAHazard> ViewQAHazards { get; set; }
     }
 }

@@ -1683,6 +1683,35 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewLegTime' does not have a primar
           <Property Name="OFPTOTALFUEL" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.ViewQAHazard' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ViewQAHazard">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="FlightId" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="EmployeeId" Type="int" />
+          <Property Name="DateOccurrence" Type="datetime" />
+          <Property Name="AffectedArea" Type="nvarchar" MaxLength="200" />
+          <Property Name="HazardDescription" Type="nvarchar(max)" />
+          <Property Name="RecommendedAction" Type="nvarchar(max)" />
+          <Property Name="status" Type="int" />
+          <Property Name="dateStatus" Type="datetime" />
+          <Property Name="StatusEmployeeId" Type="int" />
+          <Property Name="DateSign" Type="datetime" />
+          <Property Name="StatusEmployeeName" Type="nvarchar" MaxLength="1003" />
+          <Property Name="Result" Type="nvarchar" MaxLength="4000" />
+          <Property Name="DateReport" Type="datetime" />
+          <Property Name="EmployeeName" Type="nvarchar" MaxLength="200" />
+          <Property Name="Email" Type="nvarchar" MaxLength="200" />
+          <Property Name="TelNumber" Type="nvarchar" MaxLength="200" />
+          <Property Name="RelatedDepartment" Type="nvarchar" MaxLength="200" />
+          <Property Name="DelayReason" Type="nvarchar" MaxLength="255" />
+          <Property Name="Delay" Type="int" />
+          <Property Name="FlightId" Type="int" Nullable="false" />
+          <Property Name="FormNo" Type="varchar" MaxLength="1000" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.ViewQaHazardLog' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewQaHazardLog">
           <Key>
@@ -2999,6 +3028,31 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
     [ViewLegTime].[OFPTOTALFUEL] AS [OFPTOTALFUEL]
     FROM [dbo].[ViewLegTime] AS [ViewLegTime]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="ViewQAHazard" EntityType="Self.ViewQAHazard" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ViewQAHazard].[Id] AS [Id], 
+    [ViewQAHazard].[EmployeeId] AS [EmployeeId], 
+    [ViewQAHazard].[DateOccurrence] AS [DateOccurrence], 
+    [ViewQAHazard].[AffectedArea] AS [AffectedArea], 
+    [ViewQAHazard].[HazardDescription] AS [HazardDescription], 
+    [ViewQAHazard].[RecommendedAction] AS [RecommendedAction], 
+    [ViewQAHazard].[status] AS [status], 
+    [ViewQAHazard].[dateStatus] AS [dateStatus], 
+    [ViewQAHazard].[StatusEmployeeId] AS [StatusEmployeeId], 
+    [ViewQAHazard].[DateSign] AS [DateSign], 
+    [ViewQAHazard].[StatusEmployeeName] AS [StatusEmployeeName], 
+    [ViewQAHazard].[Result] AS [Result], 
+    [ViewQAHazard].[DateReport] AS [DateReport], 
+    [ViewQAHazard].[EmployeeName] AS [EmployeeName], 
+    [ViewQAHazard].[Email] AS [Email], 
+    [ViewQAHazard].[TelNumber] AS [TelNumber], 
+    [ViewQAHazard].[RelatedDepartment] AS [RelatedDepartment], 
+    [ViewQAHazard].[DelayReason] AS [DelayReason], 
+    [ViewQAHazard].[Delay] AS [Delay], 
+    [ViewQAHazard].[FlightId] AS [FlightId], 
+    [ViewQAHazard].[FormNo] AS [FormNo]
+    FROM [dbo].[ViewQAHazard] AS [ViewQAHazard]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="ViewQaHazardLog" EntityType="Self.ViewQaHazardLog" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [ViewQaHazardLog].[id] AS [id], 
@@ -3163,6 +3217,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySet Name="view_recency_route" EntityType="dbModel.view_recency_route" />
           <EntitySet Name="view_route_count" EntityType="dbModel.view_route_count" />
           <EntitySet Name="ViewQaHazardLogs" EntityType="dbModel.ViewQaHazardLog" />
+          <EntitySet Name="ViewQAHazards" EntityType="dbModel.ViewQAHazard" />
           </EntityContainer>
         <EntityType Name="ViewFDPLog">
           <Key>
@@ -4960,6 +5015,33 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="monitor" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="monitor_date" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="ViewQAHazard">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="FlightId" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="EmployeeId" Type="Int32" />
+          <Property Name="DateOccurrence" Type="DateTime" Precision="3" />
+          <Property Name="AffectedArea" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="HazardDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="RecommendedAction" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="status" Type="Int32" />
+          <Property Name="dateStatus" Type="DateTime" Precision="3" />
+          <Property Name="StatusEmployeeId" Type="Int32" />
+          <Property Name="DateSign" Type="DateTime" Precision="3" />
+          <Property Name="StatusEmployeeName" Type="String" MaxLength="1003" FixedLength="false" Unicode="true" />
+          <Property Name="Result" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="DateReport" Type="DateTime" Precision="3" />
+          <Property Name="EmployeeName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="TelNumber" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="RelatedDepartment" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="DelayReason" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Delay" Type="Int32" />
+          <Property Name="FlightId" Type="Int32" Nullable="false" />
+          <Property Name="FormNo" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -6559,6 +6641,33 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
                 <ScalarProperty Name="fort_type_title" ColumnName="fort_type_title" />
                 <ScalarProperty Name="form_type" ColumnName="form_type" />
                 <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ViewQAHazards">
+            <EntityTypeMapping TypeName="dbModel.ViewQAHazard">
+              <MappingFragment StoreEntitySet="ViewQAHazard">
+                <ScalarProperty Name="FormNo" ColumnName="FormNo" />
+                <ScalarProperty Name="FlightId" ColumnName="FlightId" />
+                <ScalarProperty Name="Delay" ColumnName="Delay" />
+                <ScalarProperty Name="DelayReason" ColumnName="DelayReason" />
+                <ScalarProperty Name="RelatedDepartment" ColumnName="RelatedDepartment" />
+                <ScalarProperty Name="TelNumber" ColumnName="TelNumber" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+                <ScalarProperty Name="DateReport" ColumnName="DateReport" />
+                <ScalarProperty Name="Result" ColumnName="Result" />
+                <ScalarProperty Name="StatusEmployeeName" ColumnName="StatusEmployeeName" />
+                <ScalarProperty Name="DateSign" ColumnName="DateSign" />
+                <ScalarProperty Name="StatusEmployeeId" ColumnName="StatusEmployeeId" />
+                <ScalarProperty Name="dateStatus" ColumnName="dateStatus" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="RecommendedAction" ColumnName="RecommendedAction" />
+                <ScalarProperty Name="HazardDescription" ColumnName="HazardDescription" />
+                <ScalarProperty Name="AffectedArea" ColumnName="AffectedArea" />
+                <ScalarProperty Name="DateOccurrence" ColumnName="DateOccurrence" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

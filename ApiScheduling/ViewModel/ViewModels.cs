@@ -320,6 +320,8 @@ namespace ApiScheduling.ViewModel
                 return 12002;
             if (rank.StartsWith("005"))
                 return 12003;
+            if (rank.StartsWith("004"))
+                return 12002;
 
             return -1;
 

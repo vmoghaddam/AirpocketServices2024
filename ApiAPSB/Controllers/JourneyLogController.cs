@@ -1430,15 +1430,11 @@ namespace ApiAPSB.Controllers
                 }
 
                 TimeSpan flightTime = TimeSpan.FromMinutes(result.flight);
-                sheet.Range[13, 10].Text = result.OnBlockLocal != null
-                    ? flightTime.ToString(@"hh\:mm")
-                    : ((DateTime)result.STALocal).ToString("HH:mm");
-
+                sheet.Range[13, 10].Text = flightTime.ToString(@"hh\:mm");
+                   
                 TimeSpan blockTime = TimeSpan.FromMinutes(result.block);
-                sheet.Range[13, 7].Text = result.OnBlockLocal != null
-                    ? blockTime.ToString(@"hh\:mm")
-                    : ((DateTime)result.STALocal).ToString("HH:mm");
-                //var nots = new List<string>();
+                sheet.Range[13, 7].Text = blockTime.ToString(@"hh\:mm");
+                                   //var nots = new List<string>();
                 //ln_leg = 27;
                 //foreach (var leg in result.legs)
                 //{
