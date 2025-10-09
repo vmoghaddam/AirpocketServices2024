@@ -7,15 +7,20 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ApiScheduling.Models
+namespace ApiReportFlight.Models
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class qa_form_visited_history
+    public partial class helper_layover_ranked_new
     {
-        public int form_type_id { get; set; }
-        public int form_id { get; set; }
-        public int employee_id { get; set; }
+        public System.DateTime date { get; set; }
+        public int crew_id { get; set; }
+        public int fdp_id { get; set; }
+        public Nullable<System.DateTime> onblock_last { get; set; }
+        public string arr_iata { get; set; }
+        public string arr_iata_prev { get; set; }
+        public string homebase { get; set; }
+        public Nullable<int> is_lo { get; set; }
     }
 }

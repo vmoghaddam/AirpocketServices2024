@@ -1,0 +1,1378 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ppaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="cms_user_flight">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="username" Type="varchar" MaxLength="500" />
+          <Property Name="is_visited" Type="int" />
+          <Property Name="is_read" Type="int" />
+          <Property Name="is_pinned" Type="int" />
+          <Property Name="tags" Type="nvarchar" MaxLength="1000" />
+          <Property Name="date_visited" Type="datetime2" Precision="7" />
+          <Property Name="date_read" Type="datetime2" Precision="7" />
+          <Property Name="date_pinned" Type="datetime2" Precision="7" />
+          <Property Name="cms_label" Type="varchar" MaxLength="500" />
+          <Property Name="ops_label" Type="varchar" MaxLength="500" />
+          <Property Name="comments" Type="nvarchar" MaxLength="4000" />
+          <Property Name="flight_id" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.AppFuel' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="AppFuel">
+          <Key>
+            <PropertyRef Name="FlightId" />
+            <PropertyRef Name="UsedFuelAvg" />
+            <PropertyRef Name="UsedFuelAvgReg" />
+            <PropertyRef Name="FuelUnitID" />
+            <PropertyRef Name="FuelUnit" />
+            <PropertyRef Name="BaggageWeight" />
+            <PropertyRef Name="CargoWeight" />
+            <PropertyRef Name="FlightStatus" />
+            <PropertyRef Name="PaxAdult" />
+            <PropertyRef Name="PaxChild" />
+            <PropertyRef Name="PaxInfant" />
+            <PropertyRef Name="Season" />
+            <PropertyRef Name="SeasonTitle" />
+            <PropertyRef Name="std_hour_0004" />
+            <PropertyRef Name="std_hour_0408" />
+            <PropertyRef Name="std_hour_0812" />
+            <PropertyRef Name="std_hour_1216" />
+            <PropertyRef Name="std_hour_1620" />
+            <PropertyRef Name="std_hour_2024" />
+          </Key>
+          <Property Name="FlightId" Type="int" Nullable="false" />
+          <Property Name="UpLift" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="FuelTotal" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="ExtraFuel" Type="decimal" Precision="20" Scale="4" />
+          <Property Name="Remaining" Type="decimal" Precision="21" Scale="4" />
+          <Property Name="UsedFuel" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="UsedFuelAvg" Type="numeric" Precision="1" Scale="1" Nullable="false" />
+          <Property Name="UsedFuelAvgReg" Type="numeric" Precision="1" Scale="1" Nullable="false" />
+          <Property Name="Taxi" Type="int" />
+          <Property Name="FPTripFuel" Type="int" />
+          <Property Name="FPFuel" Type="int" />
+          <Property Name="FuelUsedEng1" Type="int" />
+          <Property Name="FuelUsedEng2" Type="int" />
+          <Property Name="FuelUsedEng" Type="int" />
+          <Property Name="DifTripFuel" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="DifTripFuelPercent" Type="numeric" Precision="37" Scale="16" />
+          <Property Name="DifTotalFuel" Type="decimal" Precision="20" Scale="4" />
+          <Property Name="DifTotalFuelPercent" Type="numeric" Precision="38" Scale="16" />
+          <Property Name="FPVar" Type="numeric" Precision="38" Scale="13" />
+          <Property Name="TotalPax" Type="int" />
+          <Property Name="FuelUnitID" Type="int" Nullable="false" />
+          <Property Name="FuelUnit" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="BaggageWeight" Type="int" Nullable="false" />
+          <Property Name="CargoWeight" Type="int" Nullable="false" />
+          <Property Name="Freight" Type="int" />
+          <Property Name="STD" Type="datetime" />
+          <Property Name="STA" Type="datetime" />
+          <Property Name="BlockOn" Type="datetime" />
+          <Property Name="BlockOff" Type="datetime" />
+          <Property Name="TakeOff" Type="datetime" />
+          <Property Name="Landing" Type="datetime" />
+          <Property Name="FlightDate" Type="datetime" />
+          <Property Name="FlightNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="RegisterID" Type="int" />
+          <Property Name="Register" Type="nvarchar" MaxLength="50" />
+          <Property Name="TypeId" Type="int" />
+          <Property Name="AircraftType" Type="nvarchar" MaxLength="255" />
+          <Property Name="FromAirportId" Type="int" />
+          <Property Name="ToAirportId" Type="int" />
+          <Property Name="FromAirport" Type="nvarchar" MaxLength="255" />
+          <Property Name="ToAirport" Type="nvarchar" MaxLength="255" />
+          <Property Name="FromAirportIATA" Type="nvarchar" MaxLength="255" />
+          <Property Name="ToAirportIATA" Type="nvarchar" MaxLength="255" />
+          <Property Name="FlightStatus" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="FlightStatusID" Type="int" />
+          <Property Name="STDDay" Type="date" />
+          <Property Name="STADay" Type="date" />
+          <Property Name="DelayBlockOff" Type="int" />
+          <Property Name="BlockTime" Type="int" />
+          <Property Name="FlightTime" Type="int" />
+          <Property Name="FuelDensity" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="CARGO" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="PF" Type="varchar" MaxLength="255" />
+          <Property Name="PIC" Type="nvarchar" MaxLength="1001" />
+          <Property Name="PICId" Type="int" />
+          <Property Name="SIC" Type="nvarchar" MaxLength="2004" />
+          <Property Name="SICId" Type="int" />
+          <Property Name="ALT1" Type="varchar" MaxLength="255" />
+          <Property Name="ALT2" Type="varchar" MaxLength="255" />
+          <Property Name="ALT3" Type="varchar" MaxLength="255" />
+          <Property Name="IPName" Type="nvarchar" MaxLength="1001" />
+          <Property Name="IPId" Type="int" />
+          <Property Name="IPScheduleName" Type="varchar" MaxLength="500" />
+          <Property Name="P1Name" Type="nvarchar" MaxLength="1001" />
+          <Property Name="P1Id" Type="int" />
+          <Property Name="P1ScheduleName" Type="varchar" MaxLength="500" />
+          <Property Name="P2Name" Type="nvarchar" MaxLength="1001" />
+          <Property Name="P2Id" Type="int" />
+          <Property Name="P2ScheduleName" Type="varchar" MaxLength="500" />
+          <Property Name="PaxAdult" Type="int" Nullable="false" />
+          <Property Name="PaxChild" Type="int" Nullable="false" />
+          <Property Name="PaxInfant" Type="int" Nullable="false" />
+          <Property Name="RevPax" Type="int" />
+          <Property Name="PDate" Type="nvarchar" MaxLength="500" />
+          <Property Name="PYear" Type="int" />
+          <Property Name="PMonthName" Type="nvarchar" MaxLength="255" />
+          <Property Name="PMonth" Type="int" />
+          <Property Name="PDayName" Type="nvarchar" MaxLength="255" />
+          <Property Name="PDay" Type="int" />
+          <Property Name="Season" Type="int" Nullable="false" />
+          <Property Name="SeasonTitle" Type="varchar" MaxLength="7" Nullable="false" />
+          <Property Name="PYearMonthName" Type="nvarchar" MaxLength="511" />
+          <Property Name="STDLocal" Type="datetime" />
+          <Property Name="std_hour_0004" Type="int" Nullable="false" />
+          <Property Name="std_hour_0408" Type="int" Nullable="false" />
+          <Property Name="std_hour_0812" Type="int" Nullable="false" />
+          <Property Name="std_hour_1216" Type="int" Nullable="false" />
+          <Property Name="std_hour_1620" Type="int" Nullable="false" />
+          <Property Name="std_hour_2024" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.view_efb_report' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_efb_report">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="FlightId" />
+            <PropertyRef Name="FlightStatus" />
+            <PropertyRef Name="BaggageWeight" />
+            <PropertyRef Name="CargoWeight" />
+            <PropertyRef Name="NightTime" />
+            <PropertyRef Name="ASR_OPSRemarked" />
+            <PropertyRef Name="VR_OPSRemarked" />
+            <PropertyRef Name="ASR_OPSConfirmed" />
+            <PropertyRef Name="VR_OPSConfirmed" />
+            <PropertyRef Name="ASR_OPSStaffRemarked" />
+            <PropertyRef Name="VR_OPSStaffRemarked" />
+            <PropertyRef Name="ASR_OPSStaffConfirmed" />
+            <PropertyRef Name="VR_OPSStaffConfirmed" />
+            <PropertyRef Name="CRTBL" />
+            <PropertyRef Name="MSN" />
+            <PropertyRef Name="IsJL" />
+            <PropertyRef Name="IsJLApproved" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="FlightId" Type="int" Nullable="false" />
+          <Property Name="BlockOn" Type="datetime" />
+          <Property Name="Landing" Type="datetime" />
+          <Property Name="TakeOff" Type="datetime" />
+          <Property Name="BlockOff" Type="datetime" />
+          <Property Name="BlockOnX" Type="datetime" />
+          <Property Name="BlockOffX" Type="datetime" />
+          <Property Name="LandingX" Type="datetime" />
+          <Property Name="TakeOffX" Type="datetime" />
+          <Property Name="BlockOnLocalX" Type="datetime" />
+          <Property Name="BlockOffLocalX" Type="datetime" />
+          <Property Name="LandingLocalX" Type="datetime" />
+          <Property Name="TakeOffLocalX" Type="datetime" />
+          <Property Name="BlockOnLocal" Type="datetime" />
+          <Property Name="LandingLocal" Type="datetime" />
+          <Property Name="TakeOffLocal" Type="datetime" />
+          <Property Name="BlockOffLocal" Type="datetime" />
+          <Property Name="STD" Type="datetime" />
+          <Property Name="STA" Type="datetime" />
+          <Property Name="STDLocal" Type="datetime" />
+          <Property Name="STALocal" Type="datetime" />
+          <Property Name="FlightStatusID" Type="int" />
+          <Property Name="RegisterID" Type="int" />
+          <Property Name="FlightTypeID" Type="int" />
+          <Property Name="AircraftType" Type="nvarchar" MaxLength="255" />
+          <Property Name="TypeId" Type="int" />
+          <Property Name="FlightNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="FromAirport" Type="int" />
+          <Property Name="ToAirport" Type="int" />
+          <Property Name="CustomerId" Type="int" />
+          <Property Name="FromAirportIATA" Type="nvarchar" MaxLength="255" />
+          <Property Name="ToAirportIATA" Type="nvarchar" MaxLength="255" />
+          <Property Name="Register" Type="nvarchar" MaxLength="50" />
+          <Property Name="FlightStatus" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ArrivalRemark" Type="nvarchar" MaxLength="2000" />
+          <Property Name="DepartureRemark" Type="nvarchar" MaxLength="2000" />
+          <Property Name="STDDay" Type="date" />
+          <Property Name="STADay" Type="date" />
+          <Property Name="STDDayLocal" Type="date" />
+          <Property Name="STADayLocal" Type="date" />
+          <Property Name="DelayBlockOff" Type="int" />
+          <Property Name="DelayTakeoff" Type="int" />
+          <Property Name="OSTA" Type="datetime" />
+          <Property Name="OToAirportId" Type="int" />
+          <Property Name="OToAirportIATA" Type="varchar" MaxLength="255" />
+          <Property Name="FPFlightHH" Type="int" />
+          <Property Name="FPFlightMM" Type="int" />
+          <Property Name="Departure" Type="datetime" />
+          <Property Name="Arrival" Type="datetime" />
+          <Property Name="DepartureLocal" Type="datetime" />
+          <Property Name="ArrivalLocal" Type="datetime" />
+          <Property Name="BlockTime" Type="int" />
+          <Property Name="FlightTime" Type="int" />
+          <Property Name="ScheduledFlightTime" Type="int" />
+          <Property Name="FPFlightTime" Type="int" />
+          <Property Name="PFLR" Type="int" />
+          <Property Name="PaxChild" Type="int" />
+          <Property Name="PaxInfant" Type="int" />
+          <Property Name="PaxAdult" Type="int" />
+          <Property Name="PaxTotal" Type="int" />
+          <Property Name="PaxRevenued" Type="int" />
+          <Property Name="FuelUnitID" Type="int" />
+          <Property Name="FuelRemaining" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="FuelUplift" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="FuelUsed" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="FuelTotal" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="TotalSeat" Type="int" />
+          <Property Name="BaggageWeight" Type="int" Nullable="false" />
+          <Property Name="CargoWeight" Type="int" Nullable="false" />
+          <Property Name="Freight" Type="int" />
+          <Property Name="FlightDate" Type="datetime" />
+          <Property Name="CargoCount" Type="int" />
+          <Property Name="BaggageCount" Type="int" />
+          <Property Name="FPFuel" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="AirlineOperatorsID" Type="int" />
+          <Property Name="Airline" Type="nvarchar" MaxLength="1000" />
+          <Property Name="CPCrewId" Type="int" />
+          <Property Name="CPRegister" Type="varchar" MaxLength="500" />
+          <Property Name="CPPositionId" Type="int" />
+          <Property Name="CPFlightTypeId" Type="int" />
+          <Property Name="CPFDPItemId" Type="int" />
+          <Property Name="CPDH" Type="bit" />
+          <Property Name="CPFDPId" Type="int" />
+          <Property Name="CPInstructor" Type="varchar" MaxLength="500" />
+          <Property Name="CPP1" Type="varchar" MaxLength="500" />
+          <Property Name="CPP2" Type="varchar" MaxLength="500" />
+          <Property Name="CPSCCM" Type="varchar" MaxLength="500" />
+          <Property Name="CPISCCM" Type="varchar" MaxLength="500" />
+          <Property Name="NightTime" Type="int" Nullable="false" />
+          <Property Name="DayTime" Type="int" />
+          <Property Name="JLUserId" Type="int" />
+          <Property Name="JLApproverId" Type="int" />
+          <Property Name="JLDate" Type="datetime" />
+          <Property Name="JLDateApproved" Type="datetime" />
+          <Property Name="JLNo" Type="varchar" MaxLength="200" />
+          <Property Name="SerialNo" Type="varchar" MaxLength="255" />
+          <Property Name="LTR" Type="varchar" MaxLength="255" />
+          <Property Name="RVSM_GND_CPT" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="RVSM_GND_STBY" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="RVSM_GND_FO" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="RVSM_FLT_CPT" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="RVSM_FLT_STBY" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="RVSM_FLT_FO" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="CARGO" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="FuelDensity" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="CommanderNote" Type="nvarchar" MaxLength="2000" />
+          <Property Name="AttASR" Type="bit" />
+          <Property Name="AttVoyageReport" Type="bit" />
+          <Property Name="ASR_OPSRemarked" Type="int" Nullable="false" />
+          <Property Name="VR_OPSRemarked" Type="int" Nullable="false" />
+          <Property Name="ASR_OPSConfirmed" Type="int" Nullable="false" />
+          <Property Name="VR_OPSConfirmed" Type="int" Nullable="false" />
+          <Property Name="ASR_OPSStaffRemarked" Type="int" Nullable="false" />
+          <Property Name="VR_OPSStaffRemarked" Type="int" Nullable="false" />
+          <Property Name="ASR_OPSStaffConfirmed" Type="int" Nullable="false" />
+          <Property Name="VR_OPSStaffConfirmed" Type="int" Nullable="false" />
+          <Property Name="ASR_OPSRemark" Type="nvarchar" MaxLength="4000" />
+          <Property Name="ASR_OPSRemarkDate" Type="datetime" />
+          <Property Name="ASR_OPSId" Type="int" />
+          <Property Name="ASR_OPSConfirmDate" Type="datetime" />
+          <Property Name="ASR_OPSStaffRemark" Type="varchar" MaxLength="4000" />
+          <Property Name="ASR_OPSStaffDateVisit" Type="datetime" />
+          <Property Name="ASR_OPSStaffConfirmDate" Type="datetime" />
+          <Property Name="ASR_OPSStaffId" Type="int" />
+          <Property Name="ASR_OPSStaffRemarkDate" Type="datetime" />
+          <Property Name="ASR_OPSStatusId" Type="int" />
+          <Property Name="ASR_OPSStaffStatusId" Type="int" />
+          <Property Name="VR_OPSRemark" Type="nvarchar" MaxLength="4000" />
+          <Property Name="VR_OPSRemarkDate" Type="datetime" />
+          <Property Name="VR_OPSId" Type="int" />
+          <Property Name="VR_OPSConfirmDate" Type="datetime" />
+          <Property Name="VR_OPSStaffRemark" Type="varchar" MaxLength="4000" />
+          <Property Name="VR_OPSStaffDateVisit" Type="datetime" />
+          <Property Name="VR_OPSStaffConfirmDate" Type="datetime" />
+          <Property Name="VR_OPSStaffId" Type="int" />
+          <Property Name="VR_OPSStaffRemarkDate" Type="datetime" />
+          <Property Name="VR_OPSStatusId" Type="int" />
+          <Property Name="VR_OPSStaffStatusId" Type="int" />
+          <Property Name="CRTBL" Type="int" Nullable="false" />
+          <Property Name="MSN" Type="int" Nullable="false" />
+          <Property Name="AttRepositioning1" Type="bit" />
+          <Property Name="AttRepositioning2" Type="bit" />
+          <Property Name="JLUser" Type="nvarchar" MaxLength="1001" />
+          <Property Name="JLApprover" Type="nvarchar" MaxLength="1001" />
+          <Property Name="IsJL" Type="int" Nullable="false" />
+          <Property Name="IsJLApproved" Type="int" Nullable="false" />
+          <Property Name="Version" Type="int" />
+          <Property Name="IsSynced" Type="bit" />
+          <Property Name="PF" Type="varchar" MaxLength="255" />
+          <Property Name="IPName" Type="nvarchar" MaxLength="1001" />
+          <Property Name="IPId" Type="int" />
+          <Property Name="IPScheduleName" Type="varchar" MaxLength="500" />
+          <Property Name="P1Name" Type="nvarchar" MaxLength="1001" />
+          <Property Name="P1Id" Type="int" />
+          <Property Name="P1ScheduleName" Type="varchar" MaxLength="500" />
+          <Property Name="P2Name" Type="nvarchar" MaxLength="1001" />
+          <Property Name="P2Id" Type="int" />
+          <Property Name="P2ScheduleName" Type="varchar" MaxLength="500" />
+          <Property Name="PIC" Type="nvarchar" MaxLength="1001" />
+          <Property Name="PICId" Type="int" />
+          <Property Name="SIC" Type="nvarchar" MaxLength="2004" />
+          <Property Name="SICId" Type="int" />
+          <Property Name="JLDatePICApproved" Type="datetime" />
+          <Property Name="JLSignedBy" Type="varchar" MaxLength="500" />
+          <Property Name="ALT1" Type="varchar" MaxLength="255" />
+          <Property Name="ALT2" Type="varchar" MaxLength="255" />
+          <Property Name="ALT3" Type="varchar" MaxLength="255" />
+          <Property Name="ALT4" Type="varchar" MaxLength="255" />
+          <Property Name="ALT5" Type="varchar" MaxLength="255" />
+          <Property Name="FromAirportIATA2" Type="nvarchar" MaxLength="255" />
+          <Property Name="ToAirportIATA2" Type="nvarchar" MaxLength="255" />
+          <Property Name="FPTripFuel" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="ATL" Type="varchar" MaxLength="1000" />
+          <Property Name="ATCPlan" Type="varchar" MaxLength="3000" />
+          <Property Name="FuelPlanned" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="DateVisitSPWX" Type="datetime2" Precision="7" />
+          <Property Name="DateVisitDDL" Type="datetime2" Precision="7" />
+          <Property Name="DateVisitNOTAM" Type="datetime2" Precision="7" />
+          <Property Name="DateVisitOTHER" Type="datetime2" Precision="7" />
+          <Property Name="DateVisitPACKINGLIST" Type="datetime2" Precision="7" />
+          <Property Name="PaxMale" Type="int" />
+          <Property Name="PaxFemale" Type="int" />
+          <Property Name="CSRId" Type="int" />
+          <Property Name="CyberId" Type="int" />
+          <Property Name="MorId" Type="int" />
+          <Property Name="SecurityId" Type="int" />
+          <Property Name="GroundId" Type="int" />
+          <Property Name="voyageId" Type="int" />
+          <Property Name="asrId" Type="int" />
+          <Property Name="otherForm" Type="bit" />
+          <Property Name="is_pinned" Type="int" />
+          <Property Name="date_pinned" Type="datetime" />
+          <Property Name="date_visited" Type="datetime" />
+          <Property Name="date_read" Type="datetime" />
+          <Property Name="is_visited" Type="int" />
+          <Property Name="is_read" Type="int" />
+          <Property Name="tags" Type="nvarchar" MaxLength="1000" />
+          <Property Name="comments" Type="nvarchar" MaxLength="1000" />
+          <Property Name="cms_label" Type="nvarchar" MaxLength="1000" />
+          <Property Name="ops_label" Type="nvarchar" MaxLength="1000" />
+        </EntityType>
+        <EntityContainer Name="ppaModelStoreContainer">
+          <EntitySet Name="cms_user_flight" EntityType="Self.cms_user_flight" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AppFuel" EntityType="Self.AppFuel" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [AppFuel].[FlightId] AS [FlightId], 
+    [AppFuel].[UpLift] AS [UpLift], 
+    [AppFuel].[FuelTotal] AS [FuelTotal], 
+    [AppFuel].[ExtraFuel] AS [ExtraFuel], 
+    [AppFuel].[Remaining] AS [Remaining], 
+    [AppFuel].[UsedFuel] AS [UsedFuel], 
+    [AppFuel].[UsedFuelAvg] AS [UsedFuelAvg], 
+    [AppFuel].[UsedFuelAvgReg] AS [UsedFuelAvgReg], 
+    [AppFuel].[Taxi] AS [Taxi], 
+    [AppFuel].[FPTripFuel] AS [FPTripFuel], 
+    [AppFuel].[FPFuel] AS [FPFuel], 
+    [AppFuel].[FuelUsedEng1] AS [FuelUsedEng1], 
+    [AppFuel].[FuelUsedEng2] AS [FuelUsedEng2], 
+    [AppFuel].[FuelUsedEng] AS [FuelUsedEng], 
+    [AppFuel].[DifTripFuel] AS [DifTripFuel], 
+    [AppFuel].[DifTripFuelPercent] AS [DifTripFuelPercent], 
+    [AppFuel].[DifTotalFuel] AS [DifTotalFuel], 
+    [AppFuel].[DifTotalFuelPercent] AS [DifTotalFuelPercent], 
+    [AppFuel].[FPVar] AS [FPVar], 
+    [AppFuel].[TotalPax] AS [TotalPax], 
+    [AppFuel].[FuelUnitID] AS [FuelUnitID], 
+    [AppFuel].[FuelUnit] AS [FuelUnit], 
+    [AppFuel].[BaggageWeight] AS [BaggageWeight], 
+    [AppFuel].[CargoWeight] AS [CargoWeight], 
+    [AppFuel].[Freight] AS [Freight], 
+    [AppFuel].[STD] AS [STD], 
+    [AppFuel].[STA] AS [STA], 
+    [AppFuel].[BlockOn] AS [BlockOn], 
+    [AppFuel].[BlockOff] AS [BlockOff], 
+    [AppFuel].[TakeOff] AS [TakeOff], 
+    [AppFuel].[Landing] AS [Landing], 
+    [AppFuel].[FlightDate] AS [FlightDate], 
+    [AppFuel].[FlightNumber] AS [FlightNumber], 
+    [AppFuel].[RegisterID] AS [RegisterID], 
+    [AppFuel].[Register] AS [Register], 
+    [AppFuel].[TypeId] AS [TypeId], 
+    [AppFuel].[AircraftType] AS [AircraftType], 
+    [AppFuel].[FromAirportId] AS [FromAirportId], 
+    [AppFuel].[ToAirportId] AS [ToAirportId], 
+    [AppFuel].[FromAirport] AS [FromAirport], 
+    [AppFuel].[ToAirport] AS [ToAirport], 
+    [AppFuel].[FromAirportIATA] AS [FromAirportIATA], 
+    [AppFuel].[ToAirportIATA] AS [ToAirportIATA], 
+    [AppFuel].[FlightStatus] AS [FlightStatus], 
+    [AppFuel].[FlightStatusID] AS [FlightStatusID], 
+    [AppFuel].[STDDay] AS [STDDay], 
+    [AppFuel].[STADay] AS [STADay], 
+    [AppFuel].[DelayBlockOff] AS [DelayBlockOff], 
+    [AppFuel].[BlockTime] AS [BlockTime], 
+    [AppFuel].[FlightTime] AS [FlightTime], 
+    [AppFuel].[FuelDensity] AS [FuelDensity], 
+    [AppFuel].[CARGO] AS [CARGO], 
+    [AppFuel].[PF] AS [PF], 
+    [AppFuel].[PIC] AS [PIC], 
+    [AppFuel].[PICId] AS [PICId], 
+    [AppFuel].[SIC] AS [SIC], 
+    [AppFuel].[SICId] AS [SICId], 
+    [AppFuel].[ALT1] AS [ALT1], 
+    [AppFuel].[ALT2] AS [ALT2], 
+    [AppFuel].[ALT3] AS [ALT3], 
+    [AppFuel].[IPName] AS [IPName], 
+    [AppFuel].[IPId] AS [IPId], 
+    [AppFuel].[IPScheduleName] AS [IPScheduleName], 
+    [AppFuel].[P1Name] AS [P1Name], 
+    [AppFuel].[P1Id] AS [P1Id], 
+    [AppFuel].[P1ScheduleName] AS [P1ScheduleName], 
+    [AppFuel].[P2Name] AS [P2Name], 
+    [AppFuel].[P2Id] AS [P2Id], 
+    [AppFuel].[P2ScheduleName] AS [P2ScheduleName], 
+    [AppFuel].[PaxAdult] AS [PaxAdult], 
+    [AppFuel].[PaxChild] AS [PaxChild], 
+    [AppFuel].[PaxInfant] AS [PaxInfant], 
+    [AppFuel].[RevPax] AS [RevPax], 
+    [AppFuel].[PDate] AS [PDate], 
+    [AppFuel].[PYear] AS [PYear], 
+    [AppFuel].[PMonthName] AS [PMonthName], 
+    [AppFuel].[PMonth] AS [PMonth], 
+    [AppFuel].[PDayName] AS [PDayName], 
+    [AppFuel].[PDay] AS [PDay], 
+    [AppFuel].[Season] AS [Season], 
+    [AppFuel].[SeasonTitle] AS [SeasonTitle], 
+    [AppFuel].[PYearMonthName] AS [PYearMonthName], 
+    [AppFuel].[STDLocal] AS [STDLocal], 
+    [AppFuel].[std_hour_0004] AS [std_hour_0004], 
+    [AppFuel].[std_hour_0408] AS [std_hour_0408], 
+    [AppFuel].[std_hour_0812] AS [std_hour_0812], 
+    [AppFuel].[std_hour_1216] AS [std_hour_1216], 
+    [AppFuel].[std_hour_1620] AS [std_hour_1620], 
+    [AppFuel].[std_hour_2024] AS [std_hour_2024]
+    FROM [dbo].[AppFuel] AS [AppFuel]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="view_efb_report" EntityType="Self.view_efb_report" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_efb_report].[ID] AS [ID], 
+    [view_efb_report].[FlightId] AS [FlightId], 
+    [view_efb_report].[BlockOn] AS [BlockOn], 
+    [view_efb_report].[Landing] AS [Landing], 
+    [view_efb_report].[TakeOff] AS [TakeOff], 
+    [view_efb_report].[BlockOff] AS [BlockOff], 
+    [view_efb_report].[BlockOnX] AS [BlockOnX], 
+    [view_efb_report].[BlockOffX] AS [BlockOffX], 
+    [view_efb_report].[LandingX] AS [LandingX], 
+    [view_efb_report].[TakeOffX] AS [TakeOffX], 
+    [view_efb_report].[BlockOnLocalX] AS [BlockOnLocalX], 
+    [view_efb_report].[BlockOffLocalX] AS [BlockOffLocalX], 
+    [view_efb_report].[LandingLocalX] AS [LandingLocalX], 
+    [view_efb_report].[TakeOffLocalX] AS [TakeOffLocalX], 
+    [view_efb_report].[BlockOnLocal] AS [BlockOnLocal], 
+    [view_efb_report].[LandingLocal] AS [LandingLocal], 
+    [view_efb_report].[TakeOffLocal] AS [TakeOffLocal], 
+    [view_efb_report].[BlockOffLocal] AS [BlockOffLocal], 
+    [view_efb_report].[STD] AS [STD], 
+    [view_efb_report].[STA] AS [STA], 
+    [view_efb_report].[STDLocal] AS [STDLocal], 
+    [view_efb_report].[STALocal] AS [STALocal], 
+    [view_efb_report].[FlightStatusID] AS [FlightStatusID], 
+    [view_efb_report].[RegisterID] AS [RegisterID], 
+    [view_efb_report].[FlightTypeID] AS [FlightTypeID], 
+    [view_efb_report].[AircraftType] AS [AircraftType], 
+    [view_efb_report].[TypeId] AS [TypeId], 
+    [view_efb_report].[FlightNumber] AS [FlightNumber], 
+    [view_efb_report].[FromAirport] AS [FromAirport], 
+    [view_efb_report].[ToAirport] AS [ToAirport], 
+    [view_efb_report].[CustomerId] AS [CustomerId], 
+    [view_efb_report].[FromAirportIATA] AS [FromAirportIATA], 
+    [view_efb_report].[ToAirportIATA] AS [ToAirportIATA], 
+    [view_efb_report].[Register] AS [Register], 
+    [view_efb_report].[FlightStatus] AS [FlightStatus], 
+    [view_efb_report].[ArrivalRemark] AS [ArrivalRemark], 
+    [view_efb_report].[DepartureRemark] AS [DepartureRemark], 
+    [view_efb_report].[STDDay] AS [STDDay], 
+    [view_efb_report].[STADay] AS [STADay], 
+    [view_efb_report].[STDDayLocal] AS [STDDayLocal], 
+    [view_efb_report].[STADayLocal] AS [STADayLocal], 
+    [view_efb_report].[DelayBlockOff] AS [DelayBlockOff], 
+    [view_efb_report].[DelayTakeoff] AS [DelayTakeoff], 
+    [view_efb_report].[OSTA] AS [OSTA], 
+    [view_efb_report].[OToAirportId] AS [OToAirportId], 
+    [view_efb_report].[OToAirportIATA] AS [OToAirportIATA], 
+    [view_efb_report].[FPFlightHH] AS [FPFlightHH], 
+    [view_efb_report].[FPFlightMM] AS [FPFlightMM], 
+    [view_efb_report].[Departure] AS [Departure], 
+    [view_efb_report].[Arrival] AS [Arrival], 
+    [view_efb_report].[DepartureLocal] AS [DepartureLocal], 
+    [view_efb_report].[ArrivalLocal] AS [ArrivalLocal], 
+    [view_efb_report].[BlockTime] AS [BlockTime], 
+    [view_efb_report].[FlightTime] AS [FlightTime], 
+    [view_efb_report].[ScheduledFlightTime] AS [ScheduledFlightTime], 
+    [view_efb_report].[FPFlightTime] AS [FPFlightTime], 
+    [view_efb_report].[PFLR] AS [PFLR], 
+    [view_efb_report].[PaxChild] AS [PaxChild], 
+    [view_efb_report].[PaxInfant] AS [PaxInfant], 
+    [view_efb_report].[PaxAdult] AS [PaxAdult], 
+    [view_efb_report].[PaxTotal] AS [PaxTotal], 
+    [view_efb_report].[PaxRevenued] AS [PaxRevenued], 
+    [view_efb_report].[FuelUnitID] AS [FuelUnitID], 
+    [view_efb_report].[FuelRemaining] AS [FuelRemaining], 
+    [view_efb_report].[FuelUplift] AS [FuelUplift], 
+    [view_efb_report].[FuelUsed] AS [FuelUsed], 
+    [view_efb_report].[FuelTotal] AS [FuelTotal], 
+    [view_efb_report].[TotalSeat] AS [TotalSeat], 
+    [view_efb_report].[BaggageWeight] AS [BaggageWeight], 
+    [view_efb_report].[CargoWeight] AS [CargoWeight], 
+    [view_efb_report].[Freight] AS [Freight], 
+    [view_efb_report].[FlightDate] AS [FlightDate], 
+    [view_efb_report].[CargoCount] AS [CargoCount], 
+    [view_efb_report].[BaggageCount] AS [BaggageCount], 
+    [view_efb_report].[FPFuel] AS [FPFuel], 
+    [view_efb_report].[AirlineOperatorsID] AS [AirlineOperatorsID], 
+    [view_efb_report].[Airline] AS [Airline], 
+    [view_efb_report].[CPCrewId] AS [CPCrewId], 
+    [view_efb_report].[CPRegister] AS [CPRegister], 
+    [view_efb_report].[CPPositionId] AS [CPPositionId], 
+    [view_efb_report].[CPFlightTypeId] AS [CPFlightTypeId], 
+    [view_efb_report].[CPFDPItemId] AS [CPFDPItemId], 
+    [view_efb_report].[CPDH] AS [CPDH], 
+    [view_efb_report].[CPFDPId] AS [CPFDPId], 
+    [view_efb_report].[CPInstructor] AS [CPInstructor], 
+    [view_efb_report].[CPP1] AS [CPP1], 
+    [view_efb_report].[CPP2] AS [CPP2], 
+    [view_efb_report].[CPSCCM] AS [CPSCCM], 
+    [view_efb_report].[CPISCCM] AS [CPISCCM], 
+    [view_efb_report].[NightTime] AS [NightTime], 
+    [view_efb_report].[DayTime] AS [DayTime], 
+    [view_efb_report].[JLUserId] AS [JLUserId], 
+    [view_efb_report].[JLApproverId] AS [JLApproverId], 
+    [view_efb_report].[JLDate] AS [JLDate], 
+    [view_efb_report].[JLDateApproved] AS [JLDateApproved], 
+    [view_efb_report].[JLNo] AS [JLNo], 
+    [view_efb_report].[SerialNo] AS [SerialNo], 
+    [view_efb_report].[LTR] AS [LTR], 
+    [view_efb_report].[RVSM_GND_CPT] AS [RVSM_GND_CPT], 
+    [view_efb_report].[RVSM_GND_STBY] AS [RVSM_GND_STBY], 
+    [view_efb_report].[RVSM_GND_FO] AS [RVSM_GND_FO], 
+    [view_efb_report].[RVSM_FLT_CPT] AS [RVSM_FLT_CPT], 
+    [view_efb_report].[RVSM_FLT_STBY] AS [RVSM_FLT_STBY], 
+    [view_efb_report].[RVSM_FLT_FO] AS [RVSM_FLT_FO], 
+    [view_efb_report].[CARGO] AS [CARGO], 
+    [view_efb_report].[FuelDensity] AS [FuelDensity], 
+    [view_efb_report].[CommanderNote] AS [CommanderNote], 
+    [view_efb_report].[AttASR] AS [AttASR], 
+    [view_efb_report].[AttVoyageReport] AS [AttVoyageReport], 
+    [view_efb_report].[ASR_OPSRemarked] AS [ASR_OPSRemarked], 
+    [view_efb_report].[VR_OPSRemarked] AS [VR_OPSRemarked], 
+    [view_efb_report].[ASR_OPSConfirmed] AS [ASR_OPSConfirmed], 
+    [view_efb_report].[VR_OPSConfirmed] AS [VR_OPSConfirmed], 
+    [view_efb_report].[ASR_OPSStaffRemarked] AS [ASR_OPSStaffRemarked], 
+    [view_efb_report].[VR_OPSStaffRemarked] AS [VR_OPSStaffRemarked], 
+    [view_efb_report].[ASR_OPSStaffConfirmed] AS [ASR_OPSStaffConfirmed], 
+    [view_efb_report].[VR_OPSStaffConfirmed] AS [VR_OPSStaffConfirmed], 
+    [view_efb_report].[ASR_OPSRemark] AS [ASR_OPSRemark], 
+    [view_efb_report].[ASR_OPSRemarkDate] AS [ASR_OPSRemarkDate], 
+    [view_efb_report].[ASR_OPSId] AS [ASR_OPSId], 
+    [view_efb_report].[ASR_OPSConfirmDate] AS [ASR_OPSConfirmDate], 
+    [view_efb_report].[ASR_OPSStaffRemark] AS [ASR_OPSStaffRemark], 
+    [view_efb_report].[ASR_OPSStaffDateVisit] AS [ASR_OPSStaffDateVisit], 
+    [view_efb_report].[ASR_OPSStaffConfirmDate] AS [ASR_OPSStaffConfirmDate], 
+    [view_efb_report].[ASR_OPSStaffId] AS [ASR_OPSStaffId], 
+    [view_efb_report].[ASR_OPSStaffRemarkDate] AS [ASR_OPSStaffRemarkDate], 
+    [view_efb_report].[ASR_OPSStatusId] AS [ASR_OPSStatusId], 
+    [view_efb_report].[ASR_OPSStaffStatusId] AS [ASR_OPSStaffStatusId], 
+    [view_efb_report].[VR_OPSRemark] AS [VR_OPSRemark], 
+    [view_efb_report].[VR_OPSRemarkDate] AS [VR_OPSRemarkDate], 
+    [view_efb_report].[VR_OPSId] AS [VR_OPSId], 
+    [view_efb_report].[VR_OPSConfirmDate] AS [VR_OPSConfirmDate], 
+    [view_efb_report].[VR_OPSStaffRemark] AS [VR_OPSStaffRemark], 
+    [view_efb_report].[VR_OPSStaffDateVisit] AS [VR_OPSStaffDateVisit], 
+    [view_efb_report].[VR_OPSStaffConfirmDate] AS [VR_OPSStaffConfirmDate], 
+    [view_efb_report].[VR_OPSStaffId] AS [VR_OPSStaffId], 
+    [view_efb_report].[VR_OPSStaffRemarkDate] AS [VR_OPSStaffRemarkDate], 
+    [view_efb_report].[VR_OPSStatusId] AS [VR_OPSStatusId], 
+    [view_efb_report].[VR_OPSStaffStatusId] AS [VR_OPSStaffStatusId], 
+    [view_efb_report].[CRTBL] AS [CRTBL], 
+    [view_efb_report].[MSN] AS [MSN], 
+    [view_efb_report].[AttRepositioning1] AS [AttRepositioning1], 
+    [view_efb_report].[AttRepositioning2] AS [AttRepositioning2], 
+    [view_efb_report].[JLUser] AS [JLUser], 
+    [view_efb_report].[JLApprover] AS [JLApprover], 
+    [view_efb_report].[IsJL] AS [IsJL], 
+    [view_efb_report].[IsJLApproved] AS [IsJLApproved], 
+    [view_efb_report].[Version] AS [Version], 
+    [view_efb_report].[IsSynced] AS [IsSynced], 
+    [view_efb_report].[PF] AS [PF], 
+    [view_efb_report].[IPName] AS [IPName], 
+    [view_efb_report].[IPId] AS [IPId], 
+    [view_efb_report].[IPScheduleName] AS [IPScheduleName], 
+    [view_efb_report].[P1Name] AS [P1Name], 
+    [view_efb_report].[P1Id] AS [P1Id], 
+    [view_efb_report].[P1ScheduleName] AS [P1ScheduleName], 
+    [view_efb_report].[P2Name] AS [P2Name], 
+    [view_efb_report].[P2Id] AS [P2Id], 
+    [view_efb_report].[P2ScheduleName] AS [P2ScheduleName], 
+    [view_efb_report].[PIC] AS [PIC], 
+    [view_efb_report].[PICId] AS [PICId], 
+    [view_efb_report].[SIC] AS [SIC], 
+    [view_efb_report].[SICId] AS [SICId], 
+    [view_efb_report].[JLDatePICApproved] AS [JLDatePICApproved], 
+    [view_efb_report].[JLSignedBy] AS [JLSignedBy], 
+    [view_efb_report].[ALT1] AS [ALT1], 
+    [view_efb_report].[ALT2] AS [ALT2], 
+    [view_efb_report].[ALT3] AS [ALT3], 
+    [view_efb_report].[ALT4] AS [ALT4], 
+    [view_efb_report].[ALT5] AS [ALT5], 
+    [view_efb_report].[FromAirportIATA2] AS [FromAirportIATA2], 
+    [view_efb_report].[ToAirportIATA2] AS [ToAirportIATA2], 
+    [view_efb_report].[FPTripFuel] AS [FPTripFuel], 
+    [view_efb_report].[ATL] AS [ATL], 
+    [view_efb_report].[ATCPlan] AS [ATCPlan], 
+    [view_efb_report].[FuelPlanned] AS [FuelPlanned], 
+    [view_efb_report].[DateVisitSPWX] AS [DateVisitSPWX], 
+    [view_efb_report].[DateVisitDDL] AS [DateVisitDDL], 
+    [view_efb_report].[DateVisitNOTAM] AS [DateVisitNOTAM], 
+    [view_efb_report].[DateVisitOTHER] AS [DateVisitOTHER], 
+    [view_efb_report].[DateVisitPACKINGLIST] AS [DateVisitPACKINGLIST], 
+    [view_efb_report].[PaxMale] AS [PaxMale], 
+    [view_efb_report].[PaxFemale] AS [PaxFemale], 
+    [view_efb_report].[CSRId] AS [CSRId], 
+    [view_efb_report].[CyberId] AS [CyberId], 
+    [view_efb_report].[MorId] AS [MorId], 
+    [view_efb_report].[SecurityId] AS [SecurityId], 
+    [view_efb_report].[GroundId] AS [GroundId], 
+    [view_efb_report].[voyageId] AS [voyageId], 
+    [view_efb_report].[asrId] AS [asrId], 
+    [view_efb_report].[otherForm] AS [otherForm], 
+    [view_efb_report].[is_pinned] AS [is_pinned], 
+    [view_efb_report].[date_pinned] AS [date_pinned], 
+    [view_efb_report].[date_visited] AS [date_visited], 
+    [view_efb_report].[date_read] AS [date_read], 
+    [view_efb_report].[is_visited] AS [is_visited], 
+    [view_efb_report].[is_read] AS [is_read], 
+    [view_efb_report].[tags] AS [tags], 
+    [view_efb_report].[comments] AS [comments], 
+    [view_efb_report].[cms_label] AS [cms_label], 
+    [view_efb_report].[ops_label] AS [ops_label]
+    FROM [dbo].[view_efb_report] AS [view_efb_report]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ppaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="ppa_entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AppFuels" EntityType="ppaModel.AppFuel" />
+          <EntitySet Name="cms_user_flight" EntityType="ppaModel.cms_user_flight" />
+          <EntitySet Name="view_efb_report" EntityType="ppaModel.view_efb_report" />
+        </EntityContainer>
+        <EntityType Name="AppFuel">
+          <Key>
+            <PropertyRef Name="FlightId" />
+            <PropertyRef Name="UsedFuelAvg" />
+            <PropertyRef Name="UsedFuelAvgReg" />
+            <PropertyRef Name="FuelUnitID" />
+            <PropertyRef Name="FuelUnit" />
+            <PropertyRef Name="BaggageWeight" />
+            <PropertyRef Name="CargoWeight" />
+            <PropertyRef Name="FlightStatus" />
+            <PropertyRef Name="PaxAdult" />
+            <PropertyRef Name="PaxChild" />
+            <PropertyRef Name="PaxInfant" />
+            <PropertyRef Name="Season" />
+            <PropertyRef Name="SeasonTitle" />
+            <PropertyRef Name="std_hour_0004" />
+            <PropertyRef Name="std_hour_0408" />
+            <PropertyRef Name="std_hour_0812" />
+            <PropertyRef Name="std_hour_1216" />
+            <PropertyRef Name="std_hour_1620" />
+            <PropertyRef Name="std_hour_2024" />
+          </Key>
+          <Property Name="FlightId" Type="Int32" Nullable="false" />
+          <Property Name="UpLift" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="FuelTotal" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="ExtraFuel" Type="Decimal" Precision="20" Scale="4" />
+          <Property Name="Remaining" Type="Decimal" Precision="21" Scale="4" />
+          <Property Name="UsedFuel" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="UsedFuelAvg" Type="Decimal" Nullable="false" Precision="1" Scale="1" />
+          <Property Name="UsedFuelAvgReg" Type="Decimal" Nullable="false" Precision="1" Scale="1" />
+          <Property Name="Taxi" Type="Int32" />
+          <Property Name="FPTripFuel" Type="Int32" />
+          <Property Name="FPFuel" Type="Int32" />
+          <Property Name="FuelUsedEng1" Type="Int32" />
+          <Property Name="FuelUsedEng2" Type="Int32" />
+          <Property Name="FuelUsedEng" Type="Int32" />
+          <Property Name="DifTripFuel" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="DifTripFuelPercent" Type="Decimal" Precision="37" Scale="16" />
+          <Property Name="DifTotalFuel" Type="Decimal" Precision="20" Scale="4" />
+          <Property Name="DifTotalFuelPercent" Type="Decimal" Precision="38" Scale="16" />
+          <Property Name="FPVar" Type="Decimal" Precision="38" Scale="13" />
+          <Property Name="TotalPax" Type="Int32" />
+          <Property Name="FuelUnitID" Type="Int32" Nullable="false" />
+          <Property Name="FuelUnit" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="BaggageWeight" Type="Int32" Nullable="false" />
+          <Property Name="CargoWeight" Type="Int32" Nullable="false" />
+          <Property Name="Freight" Type="Int32" />
+          <Property Name="STD" Type="DateTime" Precision="3" />
+          <Property Name="STA" Type="DateTime" Precision="3" />
+          <Property Name="BlockOn" Type="DateTime" Precision="3" />
+          <Property Name="BlockOff" Type="DateTime" Precision="3" />
+          <Property Name="TakeOff" Type="DateTime" Precision="3" />
+          <Property Name="Landing" Type="DateTime" Precision="3" />
+          <Property Name="FlightDate" Type="DateTime" Precision="3" />
+          <Property Name="FlightNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RegisterID" Type="Int32" />
+          <Property Name="Register" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TypeId" Type="Int32" />
+          <Property Name="AircraftType" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FromAirportId" Type="Int32" />
+          <Property Name="ToAirportId" Type="Int32" />
+          <Property Name="FromAirport" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ToAirport" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FromAirportIATA" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ToAirportIATA" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FlightStatus" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FlightStatusID" Type="Int32" />
+          <Property Name="STDDay" Type="DateTime" Precision="0" />
+          <Property Name="STADay" Type="DateTime" Precision="0" />
+          <Property Name="DelayBlockOff" Type="Int32" />
+          <Property Name="BlockTime" Type="Int32" />
+          <Property Name="FlightTime" Type="Int32" />
+          <Property Name="FuelDensity" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="CARGO" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="PF" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="PIC" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="PICId" Type="Int32" />
+          <Property Name="SIC" Type="String" MaxLength="2004" FixedLength="false" Unicode="true" />
+          <Property Name="SICId" Type="Int32" />
+          <Property Name="ALT1" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ALT2" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ALT3" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="IPName" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="IPId" Type="Int32" />
+          <Property Name="IPScheduleName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="P1Name" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="P1Id" Type="Int32" />
+          <Property Name="P1ScheduleName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="P2Name" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="P2Id" Type="Int32" />
+          <Property Name="P2ScheduleName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="PaxAdult" Type="Int32" Nullable="false" />
+          <Property Name="PaxChild" Type="Int32" Nullable="false" />
+          <Property Name="PaxInfant" Type="Int32" Nullable="false" />
+          <Property Name="RevPax" Type="Int32" />
+          <Property Name="PDate" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="PYear" Type="Int32" />
+          <Property Name="PMonthName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PMonth" Type="Int32" />
+          <Property Name="PDayName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PDay" Type="Int32" />
+          <Property Name="Season" Type="Int32" Nullable="false" />
+          <Property Name="SeasonTitle" Type="String" Nullable="false" MaxLength="7" FixedLength="false" Unicode="false" />
+          <Property Name="PYearMonthName" Type="String" MaxLength="511" FixedLength="false" Unicode="true" />
+          <Property Name="STDLocal" Type="DateTime" Precision="3" />
+          <Property Name="std_hour_0004" Type="Int32" Nullable="false" />
+          <Property Name="std_hour_0408" Type="Int32" Nullable="false" />
+          <Property Name="std_hour_0812" Type="Int32" Nullable="false" />
+          <Property Name="std_hour_1216" Type="Int32" Nullable="false" />
+          <Property Name="std_hour_1620" Type="Int32" Nullable="false" />
+          <Property Name="std_hour_2024" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="cms_user_flight">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="username" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="is_visited" Type="Int32" />
+          <Property Name="is_read" Type="Int32" />
+          <Property Name="is_pinned" Type="Int32" />
+          <Property Name="tags" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="date_visited" Type="DateTime" Precision="7" />
+          <Property Name="date_read" Type="DateTime" Precision="7" />
+          <Property Name="date_pinned" Type="DateTime" Precision="7" />
+          <Property Name="cms_label" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ops_label" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="comments" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="flight_id" Type="Int32" />
+        </EntityType>
+        <EntityType Name="view_efb_report">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="FlightId" />
+            <PropertyRef Name="FlightStatus" />
+            <PropertyRef Name="BaggageWeight" />
+            <PropertyRef Name="CargoWeight" />
+            <PropertyRef Name="NightTime" />
+            <PropertyRef Name="ASR_OPSRemarked" />
+            <PropertyRef Name="VR_OPSRemarked" />
+            <PropertyRef Name="ASR_OPSConfirmed" />
+            <PropertyRef Name="VR_OPSConfirmed" />
+            <PropertyRef Name="ASR_OPSStaffRemarked" />
+            <PropertyRef Name="VR_OPSStaffRemarked" />
+            <PropertyRef Name="ASR_OPSStaffConfirmed" />
+            <PropertyRef Name="VR_OPSStaffConfirmed" />
+            <PropertyRef Name="CRTBL" />
+            <PropertyRef Name="MSN" />
+            <PropertyRef Name="IsJL" />
+            <PropertyRef Name="IsJLApproved" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="FlightId" Type="Int32" Nullable="false" />
+          <Property Name="BlockOn" Type="DateTime" Precision="3" />
+          <Property Name="Landing" Type="DateTime" Precision="3" />
+          <Property Name="TakeOff" Type="DateTime" Precision="3" />
+          <Property Name="BlockOff" Type="DateTime" Precision="3" />
+          <Property Name="BlockOnX" Type="DateTime" Precision="3" />
+          <Property Name="BlockOffX" Type="DateTime" Precision="3" />
+          <Property Name="LandingX" Type="DateTime" Precision="3" />
+          <Property Name="TakeOffX" Type="DateTime" Precision="3" />
+          <Property Name="BlockOnLocalX" Type="DateTime" Precision="3" />
+          <Property Name="BlockOffLocalX" Type="DateTime" Precision="3" />
+          <Property Name="LandingLocalX" Type="DateTime" Precision="3" />
+          <Property Name="TakeOffLocalX" Type="DateTime" Precision="3" />
+          <Property Name="BlockOnLocal" Type="DateTime" Precision="3" />
+          <Property Name="LandingLocal" Type="DateTime" Precision="3" />
+          <Property Name="TakeOffLocal" Type="DateTime" Precision="3" />
+          <Property Name="BlockOffLocal" Type="DateTime" Precision="3" />
+          <Property Name="STD" Type="DateTime" Precision="3" />
+          <Property Name="STA" Type="DateTime" Precision="3" />
+          <Property Name="STDLocal" Type="DateTime" Precision="3" />
+          <Property Name="STALocal" Type="DateTime" Precision="3" />
+          <Property Name="FlightStatusID" Type="Int32" />
+          <Property Name="RegisterID" Type="Int32" />
+          <Property Name="FlightTypeID" Type="Int32" />
+          <Property Name="AircraftType" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="TypeId" Type="Int32" />
+          <Property Name="FlightNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FromAirport" Type="Int32" />
+          <Property Name="ToAirport" Type="Int32" />
+          <Property Name="CustomerId" Type="Int32" />
+          <Property Name="FromAirportIATA" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ToAirportIATA" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Register" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FlightStatus" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ArrivalRemark" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="DepartureRemark" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="STDDay" Type="DateTime" Precision="0" />
+          <Property Name="STADay" Type="DateTime" Precision="0" />
+          <Property Name="STDDayLocal" Type="DateTime" Precision="0" />
+          <Property Name="STADayLocal" Type="DateTime" Precision="0" />
+          <Property Name="DelayBlockOff" Type="Int32" />
+          <Property Name="DelayTakeoff" Type="Int32" />
+          <Property Name="OSTA" Type="DateTime" Precision="3" />
+          <Property Name="OToAirportId" Type="Int32" />
+          <Property Name="OToAirportIATA" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="FPFlightHH" Type="Int32" />
+          <Property Name="FPFlightMM" Type="Int32" />
+          <Property Name="Departure" Type="DateTime" Precision="3" />
+          <Property Name="Arrival" Type="DateTime" Precision="3" />
+          <Property Name="DepartureLocal" Type="DateTime" Precision="3" />
+          <Property Name="ArrivalLocal" Type="DateTime" Precision="3" />
+          <Property Name="BlockTime" Type="Int32" />
+          <Property Name="FlightTime" Type="Int32" />
+          <Property Name="ScheduledFlightTime" Type="Int32" />
+          <Property Name="FPFlightTime" Type="Int32" />
+          <Property Name="PFLR" Type="Int32" />
+          <Property Name="PaxChild" Type="Int32" />
+          <Property Name="PaxInfant" Type="Int32" />
+          <Property Name="PaxAdult" Type="Int32" />
+          <Property Name="PaxTotal" Type="Int32" />
+          <Property Name="PaxRevenued" Type="Int32" />
+          <Property Name="FuelUnitID" Type="Int32" />
+          <Property Name="FuelRemaining" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="FuelUplift" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="FuelUsed" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="FuelTotal" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TotalSeat" Type="Int32" />
+          <Property Name="BaggageWeight" Type="Int32" Nullable="false" />
+          <Property Name="CargoWeight" Type="Int32" Nullable="false" />
+          <Property Name="Freight" Type="Int32" />
+          <Property Name="FlightDate" Type="DateTime" Precision="3" />
+          <Property Name="CargoCount" Type="Int32" />
+          <Property Name="BaggageCount" Type="Int32" />
+          <Property Name="FPFuel" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="AirlineOperatorsID" Type="Int32" />
+          <Property Name="Airline" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="CPCrewId" Type="Int32" />
+          <Property Name="CPRegister" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="CPPositionId" Type="Int32" />
+          <Property Name="CPFlightTypeId" Type="Int32" />
+          <Property Name="CPFDPItemId" Type="Int32" />
+          <Property Name="CPDH" Type="Boolean" />
+          <Property Name="CPFDPId" Type="Int32" />
+          <Property Name="CPInstructor" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="CPP1" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="CPP2" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="CPSCCM" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="CPISCCM" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="NightTime" Type="Int32" Nullable="false" />
+          <Property Name="DayTime" Type="Int32" />
+          <Property Name="JLUserId" Type="Int32" />
+          <Property Name="JLApproverId" Type="Int32" />
+          <Property Name="JLDate" Type="DateTime" Precision="3" />
+          <Property Name="JLDateApproved" Type="DateTime" Precision="3" />
+          <Property Name="JLNo" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="SerialNo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="LTR" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="RVSM_GND_CPT" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="RVSM_GND_STBY" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="RVSM_GND_FO" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="RVSM_FLT_CPT" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="RVSM_FLT_STBY" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="RVSM_FLT_FO" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="CARGO" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="FuelDensity" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="CommanderNote" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="AttASR" Type="Boolean" />
+          <Property Name="AttVoyageReport" Type="Boolean" />
+          <Property Name="ASR_OPSRemarked" Type="Int32" Nullable="false" />
+          <Property Name="VR_OPSRemarked" Type="Int32" Nullable="false" />
+          <Property Name="ASR_OPSConfirmed" Type="Int32" Nullable="false" />
+          <Property Name="VR_OPSConfirmed" Type="Int32" Nullable="false" />
+          <Property Name="ASR_OPSStaffRemarked" Type="Int32" Nullable="false" />
+          <Property Name="VR_OPSStaffRemarked" Type="Int32" Nullable="false" />
+          <Property Name="ASR_OPSStaffConfirmed" Type="Int32" Nullable="false" />
+          <Property Name="VR_OPSStaffConfirmed" Type="Int32" Nullable="false" />
+          <Property Name="ASR_OPSRemark" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="ASR_OPSRemarkDate" Type="DateTime" Precision="3" />
+          <Property Name="ASR_OPSId" Type="Int32" />
+          <Property Name="ASR_OPSConfirmDate" Type="DateTime" Precision="3" />
+          <Property Name="ASR_OPSStaffRemark" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Name="ASR_OPSStaffDateVisit" Type="DateTime" Precision="3" />
+          <Property Name="ASR_OPSStaffConfirmDate" Type="DateTime" Precision="3" />
+          <Property Name="ASR_OPSStaffId" Type="Int32" />
+          <Property Name="ASR_OPSStaffRemarkDate" Type="DateTime" Precision="3" />
+          <Property Name="ASR_OPSStatusId" Type="Int32" />
+          <Property Name="ASR_OPSStaffStatusId" Type="Int32" />
+          <Property Name="VR_OPSRemark" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="VR_OPSRemarkDate" Type="DateTime" Precision="3" />
+          <Property Name="VR_OPSId" Type="Int32" />
+          <Property Name="VR_OPSConfirmDate" Type="DateTime" Precision="3" />
+          <Property Name="VR_OPSStaffRemark" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Name="VR_OPSStaffDateVisit" Type="DateTime" Precision="3" />
+          <Property Name="VR_OPSStaffConfirmDate" Type="DateTime" Precision="3" />
+          <Property Name="VR_OPSStaffId" Type="Int32" />
+          <Property Name="VR_OPSStaffRemarkDate" Type="DateTime" Precision="3" />
+          <Property Name="VR_OPSStatusId" Type="Int32" />
+          <Property Name="VR_OPSStaffStatusId" Type="Int32" />
+          <Property Name="CRTBL" Type="Int32" Nullable="false" />
+          <Property Name="MSN" Type="Int32" Nullable="false" />
+          <Property Name="AttRepositioning1" Type="Boolean" />
+          <Property Name="AttRepositioning2" Type="Boolean" />
+          <Property Name="JLUser" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="JLApprover" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="IsJL" Type="Int32" Nullable="false" />
+          <Property Name="IsJLApproved" Type="Int32" Nullable="false" />
+          <Property Name="Version" Type="Int32" />
+          <Property Name="IsSynced" Type="Boolean" />
+          <Property Name="PF" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="IPName" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="IPId" Type="Int32" />
+          <Property Name="IPScheduleName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="P1Name" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="P1Id" Type="Int32" />
+          <Property Name="P1ScheduleName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="P2Name" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="P2Id" Type="Int32" />
+          <Property Name="P2ScheduleName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="PIC" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="PICId" Type="Int32" />
+          <Property Name="SIC" Type="String" MaxLength="2004" FixedLength="false" Unicode="true" />
+          <Property Name="SICId" Type="Int32" />
+          <Property Name="JLDatePICApproved" Type="DateTime" Precision="3" />
+          <Property Name="JLSignedBy" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ALT1" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ALT2" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ALT3" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ALT4" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ALT5" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="FromAirportIATA2" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ToAirportIATA2" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FPTripFuel" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="ATL" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="ATCPlan" Type="String" MaxLength="3000" FixedLength="false" Unicode="false" />
+          <Property Name="FuelPlanned" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="DateVisitSPWX" Type="DateTime" Precision="7" />
+          <Property Name="DateVisitDDL" Type="DateTime" Precision="7" />
+          <Property Name="DateVisitNOTAM" Type="DateTime" Precision="7" />
+          <Property Name="DateVisitOTHER" Type="DateTime" Precision="7" />
+          <Property Name="DateVisitPACKINGLIST" Type="DateTime" Precision="7" />
+          <Property Name="PaxMale" Type="Int32" />
+          <Property Name="PaxFemale" Type="Int32" />
+          <Property Name="CSRId" Type="Int32" />
+          <Property Name="CyberId" Type="Int32" />
+          <Property Name="MorId" Type="Int32" />
+          <Property Name="SecurityId" Type="Int32" />
+          <Property Name="GroundId" Type="Int32" />
+          <Property Name="voyageId" Type="Int32" />
+          <Property Name="asrId" Type="Int32" />
+          <Property Name="otherForm" Type="Boolean" />
+          <Property Name="is_pinned" Type="Int32" />
+          <Property Name="date_pinned" Type="DateTime" Precision="3" />
+          <Property Name="date_visited" Type="DateTime" Precision="3" />
+          <Property Name="date_read" Type="DateTime" Precision="3" />
+          <Property Name="is_visited" Type="Int32" />
+          <Property Name="is_read" Type="Int32" />
+          <Property Name="tags" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="comments" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="cms_label" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="ops_label" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+        </EntityType>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ppaModelStoreContainer" CdmEntityContainer="ppa_entities">
+          <EntitySetMapping Name="AppFuels">
+            <EntityTypeMapping TypeName="ppaModel.AppFuel">
+              <MappingFragment StoreEntitySet="AppFuel">
+                <ScalarProperty Name="std_hour_2024" ColumnName="std_hour_2024" />
+                <ScalarProperty Name="std_hour_1620" ColumnName="std_hour_1620" />
+                <ScalarProperty Name="std_hour_1216" ColumnName="std_hour_1216" />
+                <ScalarProperty Name="std_hour_0812" ColumnName="std_hour_0812" />
+                <ScalarProperty Name="std_hour_0408" ColumnName="std_hour_0408" />
+                <ScalarProperty Name="std_hour_0004" ColumnName="std_hour_0004" />
+                <ScalarProperty Name="STDLocal" ColumnName="STDLocal" />
+                <ScalarProperty Name="PYearMonthName" ColumnName="PYearMonthName" />
+                <ScalarProperty Name="SeasonTitle" ColumnName="SeasonTitle" />
+                <ScalarProperty Name="Season" ColumnName="Season" />
+                <ScalarProperty Name="PDay" ColumnName="PDay" />
+                <ScalarProperty Name="PDayName" ColumnName="PDayName" />
+                <ScalarProperty Name="PMonth" ColumnName="PMonth" />
+                <ScalarProperty Name="PMonthName" ColumnName="PMonthName" />
+                <ScalarProperty Name="PYear" ColumnName="PYear" />
+                <ScalarProperty Name="PDate" ColumnName="PDate" />
+                <ScalarProperty Name="RevPax" ColumnName="RevPax" />
+                <ScalarProperty Name="PaxInfant" ColumnName="PaxInfant" />
+                <ScalarProperty Name="PaxChild" ColumnName="PaxChild" />
+                <ScalarProperty Name="PaxAdult" ColumnName="PaxAdult" />
+                <ScalarProperty Name="P2ScheduleName" ColumnName="P2ScheduleName" />
+                <ScalarProperty Name="P2Id" ColumnName="P2Id" />
+                <ScalarProperty Name="P2Name" ColumnName="P2Name" />
+                <ScalarProperty Name="P1ScheduleName" ColumnName="P1ScheduleName" />
+                <ScalarProperty Name="P1Id" ColumnName="P1Id" />
+                <ScalarProperty Name="P1Name" ColumnName="P1Name" />
+                <ScalarProperty Name="IPScheduleName" ColumnName="IPScheduleName" />
+                <ScalarProperty Name="IPId" ColumnName="IPId" />
+                <ScalarProperty Name="IPName" ColumnName="IPName" />
+                <ScalarProperty Name="ALT3" ColumnName="ALT3" />
+                <ScalarProperty Name="ALT2" ColumnName="ALT2" />
+                <ScalarProperty Name="ALT1" ColumnName="ALT1" />
+                <ScalarProperty Name="SICId" ColumnName="SICId" />
+                <ScalarProperty Name="SIC" ColumnName="SIC" />
+                <ScalarProperty Name="PICId" ColumnName="PICId" />
+                <ScalarProperty Name="PIC" ColumnName="PIC" />
+                <ScalarProperty Name="PF" ColumnName="PF" />
+                <ScalarProperty Name="CARGO" ColumnName="CARGO" />
+                <ScalarProperty Name="FuelDensity" ColumnName="FuelDensity" />
+                <ScalarProperty Name="FlightTime" ColumnName="FlightTime" />
+                <ScalarProperty Name="BlockTime" ColumnName="BlockTime" />
+                <ScalarProperty Name="DelayBlockOff" ColumnName="DelayBlockOff" />
+                <ScalarProperty Name="STADay" ColumnName="STADay" />
+                <ScalarProperty Name="STDDay" ColumnName="STDDay" />
+                <ScalarProperty Name="FlightStatusID" ColumnName="FlightStatusID" />
+                <ScalarProperty Name="FlightStatus" ColumnName="FlightStatus" />
+                <ScalarProperty Name="ToAirportIATA" ColumnName="ToAirportIATA" />
+                <ScalarProperty Name="FromAirportIATA" ColumnName="FromAirportIATA" />
+                <ScalarProperty Name="ToAirport" ColumnName="ToAirport" />
+                <ScalarProperty Name="FromAirport" ColumnName="FromAirport" />
+                <ScalarProperty Name="ToAirportId" ColumnName="ToAirportId" />
+                <ScalarProperty Name="FromAirportId" ColumnName="FromAirportId" />
+                <ScalarProperty Name="AircraftType" ColumnName="AircraftType" />
+                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+                <ScalarProperty Name="Register" ColumnName="Register" />
+                <ScalarProperty Name="RegisterID" ColumnName="RegisterID" />
+                <ScalarProperty Name="FlightNumber" ColumnName="FlightNumber" />
+                <ScalarProperty Name="FlightDate" ColumnName="FlightDate" />
+                <ScalarProperty Name="Landing" ColumnName="Landing" />
+                <ScalarProperty Name="TakeOff" ColumnName="TakeOff" />
+                <ScalarProperty Name="BlockOff" ColumnName="BlockOff" />
+                <ScalarProperty Name="BlockOn" ColumnName="BlockOn" />
+                <ScalarProperty Name="STA" ColumnName="STA" />
+                <ScalarProperty Name="STD" ColumnName="STD" />
+                <ScalarProperty Name="Freight" ColumnName="Freight" />
+                <ScalarProperty Name="CargoWeight" ColumnName="CargoWeight" />
+                <ScalarProperty Name="BaggageWeight" ColumnName="BaggageWeight" />
+                <ScalarProperty Name="FuelUnit" ColumnName="FuelUnit" />
+                <ScalarProperty Name="FuelUnitID" ColumnName="FuelUnitID" />
+                <ScalarProperty Name="TotalPax" ColumnName="TotalPax" />
+                <ScalarProperty Name="FPVar" ColumnName="FPVar" />
+                <ScalarProperty Name="DifTotalFuelPercent" ColumnName="DifTotalFuelPercent" />
+                <ScalarProperty Name="DifTotalFuel" ColumnName="DifTotalFuel" />
+                <ScalarProperty Name="DifTripFuelPercent" ColumnName="DifTripFuelPercent" />
+                <ScalarProperty Name="DifTripFuel" ColumnName="DifTripFuel" />
+                <ScalarProperty Name="FuelUsedEng" ColumnName="FuelUsedEng" />
+                <ScalarProperty Name="FuelUsedEng2" ColumnName="FuelUsedEng2" />
+                <ScalarProperty Name="FuelUsedEng1" ColumnName="FuelUsedEng1" />
+                <ScalarProperty Name="FPFuel" ColumnName="FPFuel" />
+                <ScalarProperty Name="FPTripFuel" ColumnName="FPTripFuel" />
+                <ScalarProperty Name="Taxi" ColumnName="Taxi" />
+                <ScalarProperty Name="UsedFuelAvgReg" ColumnName="UsedFuelAvgReg" />
+                <ScalarProperty Name="UsedFuelAvg" ColumnName="UsedFuelAvg" />
+                <ScalarProperty Name="UsedFuel" ColumnName="UsedFuel" />
+                <ScalarProperty Name="Remaining" ColumnName="Remaining" />
+                <ScalarProperty Name="ExtraFuel" ColumnName="ExtraFuel" />
+                <ScalarProperty Name="FuelTotal" ColumnName="FuelTotal" />
+                <ScalarProperty Name="UpLift" ColumnName="UpLift" />
+                <ScalarProperty Name="FlightId" ColumnName="FlightId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cms_user_flight">
+            <EntityTypeMapping TypeName="ppaModel.cms_user_flight">
+              <MappingFragment StoreEntitySet="cms_user_flight">
+                <ScalarProperty Name="flight_id" ColumnName="flight_id" />
+                <ScalarProperty Name="comments" ColumnName="comments" />
+                <ScalarProperty Name="ops_label" ColumnName="ops_label" />
+                <ScalarProperty Name="cms_label" ColumnName="cms_label" />
+                <ScalarProperty Name="date_pinned" ColumnName="date_pinned" />
+                <ScalarProperty Name="date_read" ColumnName="date_read" />
+                <ScalarProperty Name="date_visited" ColumnName="date_visited" />
+                <ScalarProperty Name="tags" ColumnName="tags" />
+                <ScalarProperty Name="is_pinned" ColumnName="is_pinned" />
+                <ScalarProperty Name="is_read" ColumnName="is_read" />
+                <ScalarProperty Name="is_visited" ColumnName="is_visited" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_efb_report">
+            <EntityTypeMapping TypeName="ppaModel.view_efb_report">
+              <MappingFragment StoreEntitySet="view_efb_report">
+                <ScalarProperty Name="ops_label" ColumnName="ops_label" />
+                <ScalarProperty Name="cms_label" ColumnName="cms_label" />
+                <ScalarProperty Name="comments" ColumnName="comments" />
+                <ScalarProperty Name="tags" ColumnName="tags" />
+                <ScalarProperty Name="is_read" ColumnName="is_read" />
+                <ScalarProperty Name="is_visited" ColumnName="is_visited" />
+                <ScalarProperty Name="date_read" ColumnName="date_read" />
+                <ScalarProperty Name="date_visited" ColumnName="date_visited" />
+                <ScalarProperty Name="date_pinned" ColumnName="date_pinned" />
+                <ScalarProperty Name="is_pinned" ColumnName="is_pinned" />
+                <ScalarProperty Name="otherForm" ColumnName="otherForm" />
+                <ScalarProperty Name="asrId" ColumnName="asrId" />
+                <ScalarProperty Name="voyageId" ColumnName="voyageId" />
+                <ScalarProperty Name="GroundId" ColumnName="GroundId" />
+                <ScalarProperty Name="SecurityId" ColumnName="SecurityId" />
+                <ScalarProperty Name="MorId" ColumnName="MorId" />
+                <ScalarProperty Name="CyberId" ColumnName="CyberId" />
+                <ScalarProperty Name="CSRId" ColumnName="CSRId" />
+                <ScalarProperty Name="PaxFemale" ColumnName="PaxFemale" />
+                <ScalarProperty Name="PaxMale" ColumnName="PaxMale" />
+                <ScalarProperty Name="DateVisitPACKINGLIST" ColumnName="DateVisitPACKINGLIST" />
+                <ScalarProperty Name="DateVisitOTHER" ColumnName="DateVisitOTHER" />
+                <ScalarProperty Name="DateVisitNOTAM" ColumnName="DateVisitNOTAM" />
+                <ScalarProperty Name="DateVisitDDL" ColumnName="DateVisitDDL" />
+                <ScalarProperty Name="DateVisitSPWX" ColumnName="DateVisitSPWX" />
+                <ScalarProperty Name="FuelPlanned" ColumnName="FuelPlanned" />
+                <ScalarProperty Name="ATCPlan" ColumnName="ATCPlan" />
+                <ScalarProperty Name="ATL" ColumnName="ATL" />
+                <ScalarProperty Name="FPTripFuel" ColumnName="FPTripFuel" />
+                <ScalarProperty Name="ToAirportIATA2" ColumnName="ToAirportIATA2" />
+                <ScalarProperty Name="FromAirportIATA2" ColumnName="FromAirportIATA2" />
+                <ScalarProperty Name="ALT5" ColumnName="ALT5" />
+                <ScalarProperty Name="ALT4" ColumnName="ALT4" />
+                <ScalarProperty Name="ALT3" ColumnName="ALT3" />
+                <ScalarProperty Name="ALT2" ColumnName="ALT2" />
+                <ScalarProperty Name="ALT1" ColumnName="ALT1" />
+                <ScalarProperty Name="JLSignedBy" ColumnName="JLSignedBy" />
+                <ScalarProperty Name="JLDatePICApproved" ColumnName="JLDatePICApproved" />
+                <ScalarProperty Name="SICId" ColumnName="SICId" />
+                <ScalarProperty Name="SIC" ColumnName="SIC" />
+                <ScalarProperty Name="PICId" ColumnName="PICId" />
+                <ScalarProperty Name="PIC" ColumnName="PIC" />
+                <ScalarProperty Name="P2ScheduleName" ColumnName="P2ScheduleName" />
+                <ScalarProperty Name="P2Id" ColumnName="P2Id" />
+                <ScalarProperty Name="P2Name" ColumnName="P2Name" />
+                <ScalarProperty Name="P1ScheduleName" ColumnName="P1ScheduleName" />
+                <ScalarProperty Name="P1Id" ColumnName="P1Id" />
+                <ScalarProperty Name="P1Name" ColumnName="P1Name" />
+                <ScalarProperty Name="IPScheduleName" ColumnName="IPScheduleName" />
+                <ScalarProperty Name="IPId" ColumnName="IPId" />
+                <ScalarProperty Name="IPName" ColumnName="IPName" />
+                <ScalarProperty Name="PF" ColumnName="PF" />
+                <ScalarProperty Name="IsSynced" ColumnName="IsSynced" />
+                <ScalarProperty Name="Version" ColumnName="Version" />
+                <ScalarProperty Name="IsJLApproved" ColumnName="IsJLApproved" />
+                <ScalarProperty Name="IsJL" ColumnName="IsJL" />
+                <ScalarProperty Name="JLApprover" ColumnName="JLApprover" />
+                <ScalarProperty Name="JLUser" ColumnName="JLUser" />
+                <ScalarProperty Name="AttRepositioning2" ColumnName="AttRepositioning2" />
+                <ScalarProperty Name="AttRepositioning1" ColumnName="AttRepositioning1" />
+                <ScalarProperty Name="MSN" ColumnName="MSN" />
+                <ScalarProperty Name="CRTBL" ColumnName="CRTBL" />
+                <ScalarProperty Name="VR_OPSStaffStatusId" ColumnName="VR_OPSStaffStatusId" />
+                <ScalarProperty Name="VR_OPSStatusId" ColumnName="VR_OPSStatusId" />
+                <ScalarProperty Name="VR_OPSStaffRemarkDate" ColumnName="VR_OPSStaffRemarkDate" />
+                <ScalarProperty Name="VR_OPSStaffId" ColumnName="VR_OPSStaffId" />
+                <ScalarProperty Name="VR_OPSStaffConfirmDate" ColumnName="VR_OPSStaffConfirmDate" />
+                <ScalarProperty Name="VR_OPSStaffDateVisit" ColumnName="VR_OPSStaffDateVisit" />
+                <ScalarProperty Name="VR_OPSStaffRemark" ColumnName="VR_OPSStaffRemark" />
+                <ScalarProperty Name="VR_OPSConfirmDate" ColumnName="VR_OPSConfirmDate" />
+                <ScalarProperty Name="VR_OPSId" ColumnName="VR_OPSId" />
+                <ScalarProperty Name="VR_OPSRemarkDate" ColumnName="VR_OPSRemarkDate" />
+                <ScalarProperty Name="VR_OPSRemark" ColumnName="VR_OPSRemark" />
+                <ScalarProperty Name="ASR_OPSStaffStatusId" ColumnName="ASR_OPSStaffStatusId" />
+                <ScalarProperty Name="ASR_OPSStatusId" ColumnName="ASR_OPSStatusId" />
+                <ScalarProperty Name="ASR_OPSStaffRemarkDate" ColumnName="ASR_OPSStaffRemarkDate" />
+                <ScalarProperty Name="ASR_OPSStaffId" ColumnName="ASR_OPSStaffId" />
+                <ScalarProperty Name="ASR_OPSStaffConfirmDate" ColumnName="ASR_OPSStaffConfirmDate" />
+                <ScalarProperty Name="ASR_OPSStaffDateVisit" ColumnName="ASR_OPSStaffDateVisit" />
+                <ScalarProperty Name="ASR_OPSStaffRemark" ColumnName="ASR_OPSStaffRemark" />
+                <ScalarProperty Name="ASR_OPSConfirmDate" ColumnName="ASR_OPSConfirmDate" />
+                <ScalarProperty Name="ASR_OPSId" ColumnName="ASR_OPSId" />
+                <ScalarProperty Name="ASR_OPSRemarkDate" ColumnName="ASR_OPSRemarkDate" />
+                <ScalarProperty Name="ASR_OPSRemark" ColumnName="ASR_OPSRemark" />
+                <ScalarProperty Name="VR_OPSStaffConfirmed" ColumnName="VR_OPSStaffConfirmed" />
+                <ScalarProperty Name="ASR_OPSStaffConfirmed" ColumnName="ASR_OPSStaffConfirmed" />
+                <ScalarProperty Name="VR_OPSStaffRemarked" ColumnName="VR_OPSStaffRemarked" />
+                <ScalarProperty Name="ASR_OPSStaffRemarked" ColumnName="ASR_OPSStaffRemarked" />
+                <ScalarProperty Name="VR_OPSConfirmed" ColumnName="VR_OPSConfirmed" />
+                <ScalarProperty Name="ASR_OPSConfirmed" ColumnName="ASR_OPSConfirmed" />
+                <ScalarProperty Name="VR_OPSRemarked" ColumnName="VR_OPSRemarked" />
+                <ScalarProperty Name="ASR_OPSRemarked" ColumnName="ASR_OPSRemarked" />
+                <ScalarProperty Name="AttVoyageReport" ColumnName="AttVoyageReport" />
+                <ScalarProperty Name="AttASR" ColumnName="AttASR" />
+                <ScalarProperty Name="CommanderNote" ColumnName="CommanderNote" />
+                <ScalarProperty Name="FuelDensity" ColumnName="FuelDensity" />
+                <ScalarProperty Name="CARGO" ColumnName="CARGO" />
+                <ScalarProperty Name="RVSM_FLT_FO" ColumnName="RVSM_FLT_FO" />
+                <ScalarProperty Name="RVSM_FLT_STBY" ColumnName="RVSM_FLT_STBY" />
+                <ScalarProperty Name="RVSM_FLT_CPT" ColumnName="RVSM_FLT_CPT" />
+                <ScalarProperty Name="RVSM_GND_FO" ColumnName="RVSM_GND_FO" />
+                <ScalarProperty Name="RVSM_GND_STBY" ColumnName="RVSM_GND_STBY" />
+                <ScalarProperty Name="RVSM_GND_CPT" ColumnName="RVSM_GND_CPT" />
+                <ScalarProperty Name="LTR" ColumnName="LTR" />
+                <ScalarProperty Name="SerialNo" ColumnName="SerialNo" />
+                <ScalarProperty Name="JLNo" ColumnName="JLNo" />
+                <ScalarProperty Name="JLDateApproved" ColumnName="JLDateApproved" />
+                <ScalarProperty Name="JLDate" ColumnName="JLDate" />
+                <ScalarProperty Name="JLApproverId" ColumnName="JLApproverId" />
+                <ScalarProperty Name="JLUserId" ColumnName="JLUserId" />
+                <ScalarProperty Name="DayTime" ColumnName="DayTime" />
+                <ScalarProperty Name="NightTime" ColumnName="NightTime" />
+                <ScalarProperty Name="CPISCCM" ColumnName="CPISCCM" />
+                <ScalarProperty Name="CPSCCM" ColumnName="CPSCCM" />
+                <ScalarProperty Name="CPP2" ColumnName="CPP2" />
+                <ScalarProperty Name="CPP1" ColumnName="CPP1" />
+                <ScalarProperty Name="CPInstructor" ColumnName="CPInstructor" />
+                <ScalarProperty Name="CPFDPId" ColumnName="CPFDPId" />
+                <ScalarProperty Name="CPDH" ColumnName="CPDH" />
+                <ScalarProperty Name="CPFDPItemId" ColumnName="CPFDPItemId" />
+                <ScalarProperty Name="CPFlightTypeId" ColumnName="CPFlightTypeId" />
+                <ScalarProperty Name="CPPositionId" ColumnName="CPPositionId" />
+                <ScalarProperty Name="CPRegister" ColumnName="CPRegister" />
+                <ScalarProperty Name="CPCrewId" ColumnName="CPCrewId" />
+                <ScalarProperty Name="Airline" ColumnName="Airline" />
+                <ScalarProperty Name="AirlineOperatorsID" ColumnName="AirlineOperatorsID" />
+                <ScalarProperty Name="FPFuel" ColumnName="FPFuel" />
+                <ScalarProperty Name="BaggageCount" ColumnName="BaggageCount" />
+                <ScalarProperty Name="CargoCount" ColumnName="CargoCount" />
+                <ScalarProperty Name="FlightDate" ColumnName="FlightDate" />
+                <ScalarProperty Name="Freight" ColumnName="Freight" />
+                <ScalarProperty Name="CargoWeight" ColumnName="CargoWeight" />
+                <ScalarProperty Name="BaggageWeight" ColumnName="BaggageWeight" />
+                <ScalarProperty Name="TotalSeat" ColumnName="TotalSeat" />
+                <ScalarProperty Name="FuelTotal" ColumnName="FuelTotal" />
+                <ScalarProperty Name="FuelUsed" ColumnName="FuelUsed" />
+                <ScalarProperty Name="FuelUplift" ColumnName="FuelUplift" />
+                <ScalarProperty Name="FuelRemaining" ColumnName="FuelRemaining" />
+                <ScalarProperty Name="FuelUnitID" ColumnName="FuelUnitID" />
+                <ScalarProperty Name="PaxRevenued" ColumnName="PaxRevenued" />
+                <ScalarProperty Name="PaxTotal" ColumnName="PaxTotal" />
+                <ScalarProperty Name="PaxAdult" ColumnName="PaxAdult" />
+                <ScalarProperty Name="PaxInfant" ColumnName="PaxInfant" />
+                <ScalarProperty Name="PaxChild" ColumnName="PaxChild" />
+                <ScalarProperty Name="PFLR" ColumnName="PFLR" />
+                <ScalarProperty Name="FPFlightTime" ColumnName="FPFlightTime" />
+                <ScalarProperty Name="ScheduledFlightTime" ColumnName="ScheduledFlightTime" />
+                <ScalarProperty Name="FlightTime" ColumnName="FlightTime" />
+                <ScalarProperty Name="BlockTime" ColumnName="BlockTime" />
+                <ScalarProperty Name="ArrivalLocal" ColumnName="ArrivalLocal" />
+                <ScalarProperty Name="DepartureLocal" ColumnName="DepartureLocal" />
+                <ScalarProperty Name="Arrival" ColumnName="Arrival" />
+                <ScalarProperty Name="Departure" ColumnName="Departure" />
+                <ScalarProperty Name="FPFlightMM" ColumnName="FPFlightMM" />
+                <ScalarProperty Name="FPFlightHH" ColumnName="FPFlightHH" />
+                <ScalarProperty Name="OToAirportIATA" ColumnName="OToAirportIATA" />
+                <ScalarProperty Name="OToAirportId" ColumnName="OToAirportId" />
+                <ScalarProperty Name="OSTA" ColumnName="OSTA" />
+                <ScalarProperty Name="DelayTakeoff" ColumnName="DelayTakeoff" />
+                <ScalarProperty Name="DelayBlockOff" ColumnName="DelayBlockOff" />
+                <ScalarProperty Name="STADayLocal" ColumnName="STADayLocal" />
+                <ScalarProperty Name="STDDayLocal" ColumnName="STDDayLocal" />
+                <ScalarProperty Name="STADay" ColumnName="STADay" />
+                <ScalarProperty Name="STDDay" ColumnName="STDDay" />
+                <ScalarProperty Name="DepartureRemark" ColumnName="DepartureRemark" />
+                <ScalarProperty Name="ArrivalRemark" ColumnName="ArrivalRemark" />
+                <ScalarProperty Name="FlightStatus" ColumnName="FlightStatus" />
+                <ScalarProperty Name="Register" ColumnName="Register" />
+                <ScalarProperty Name="ToAirportIATA" ColumnName="ToAirportIATA" />
+                <ScalarProperty Name="FromAirportIATA" ColumnName="FromAirportIATA" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="ToAirport" ColumnName="ToAirport" />
+                <ScalarProperty Name="FromAirport" ColumnName="FromAirport" />
+                <ScalarProperty Name="FlightNumber" ColumnName="FlightNumber" />
+                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+                <ScalarProperty Name="AircraftType" ColumnName="AircraftType" />
+                <ScalarProperty Name="FlightTypeID" ColumnName="FlightTypeID" />
+                <ScalarProperty Name="RegisterID" ColumnName="RegisterID" />
+                <ScalarProperty Name="FlightStatusID" ColumnName="FlightStatusID" />
+                <ScalarProperty Name="STALocal" ColumnName="STALocal" />
+                <ScalarProperty Name="STDLocal" ColumnName="STDLocal" />
+                <ScalarProperty Name="STA" ColumnName="STA" />
+                <ScalarProperty Name="STD" ColumnName="STD" />
+                <ScalarProperty Name="BlockOffLocal" ColumnName="BlockOffLocal" />
+                <ScalarProperty Name="TakeOffLocal" ColumnName="TakeOffLocal" />
+                <ScalarProperty Name="LandingLocal" ColumnName="LandingLocal" />
+                <ScalarProperty Name="BlockOnLocal" ColumnName="BlockOnLocal" />
+                <ScalarProperty Name="TakeOffLocalX" ColumnName="TakeOffLocalX" />
+                <ScalarProperty Name="LandingLocalX" ColumnName="LandingLocalX" />
+                <ScalarProperty Name="BlockOffLocalX" ColumnName="BlockOffLocalX" />
+                <ScalarProperty Name="BlockOnLocalX" ColumnName="BlockOnLocalX" />
+                <ScalarProperty Name="TakeOffX" ColumnName="TakeOffX" />
+                <ScalarProperty Name="LandingX" ColumnName="LandingX" />
+                <ScalarProperty Name="BlockOffX" ColumnName="BlockOffX" />
+                <ScalarProperty Name="BlockOnX" ColumnName="BlockOnX" />
+                <ScalarProperty Name="BlockOff" ColumnName="BlockOff" />
+                <ScalarProperty Name="TakeOff" ColumnName="TakeOff" />
+                <ScalarProperty Name="Landing" ColumnName="Landing" />
+                <ScalarProperty Name="BlockOn" ColumnName="BlockOn" />
+                <ScalarProperty Name="FlightId" ColumnName="FlightId" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

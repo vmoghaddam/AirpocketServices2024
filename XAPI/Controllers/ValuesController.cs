@@ -1902,7 +1902,7 @@ namespace XAPI.Controllers
                         var reqparm = new System.Collections.Specialized.NameValueCollection();
                         reqparm.Add("key", dto.key);
                         reqparm.Add("plan", dto.plan);
-                        byte[] responsebytes = client.UploadValues("https://taban.skybag.app/xpi/api/skyputer/tbn", "POST", reqparm);
+                        byte[] responsebytes = client.UploadValues("https://xpi.tbn.skybag.click/api/skyputer/tbn", "POST", reqparm);
                         responsebody = Encoding.UTF8.GetString(responsebytes);
 
                     }
@@ -1960,7 +1960,7 @@ namespace XAPI.Controllers
                         var reqparm = new System.Collections.Specialized.NameValueCollection();
                         reqparm.Add("key", dto.key);
                         reqparm.Add("plan", dto.plan);
-                        byte[] responsebytes = client.UploadValues("https://xpiava.skybag.app/api/skyputer/ava", "POST", reqparm);
+                        byte[] responsebytes = client.UploadValues(/*"https://xpiava.skybag.app/api/skyputer/ava"*/"https://xpi.ava.aerotango.app/api/skyputer/ava", "POST", reqparm);
                         responsebody = Encoding.UTF8.GetString(responsebytes);
 
                     }

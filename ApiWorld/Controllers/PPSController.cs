@@ -53,7 +53,7 @@ namespace ApiWorld.Controllers
 
                 pps.EfbService pps_ins = new pps.EfbService();
                 var session_id = pps_ins.GetSessionID("ArmeniaAirways", "J8V14HNHK", "AMWINTEGRATION", "i$qn719e");
-                var flts = pps_ins.GetSTDFlightList(session_id, new DateTime(2025, 8, 27), new DateTime(2025, 8, 29));
+                var flts = pps_ins.GetSTDFlightList(session_id, new DateTime(2025, 9, 28), new DateTime(2025, 9, 30));
                 pps.Flight flt_info = pps_ins.GetFlight(session_id, flts.Items[0].ID, true, true, true, true, "kg");
 
                 Models.Flight db_flight = new Flight();
@@ -339,16 +339,17 @@ namespace ApiWorld.Controllers
 
 
                     };
-                    foreach (var w in x.FlightLevelWinds)
-                        _p.FlightLevelWinds.Add(new FlightLevelWind()
-                        {
-                            FlightLevel = w.FlightLevel,
-                            Shear = w.Shear,
-                            Temp = w.Temp,
-                            Velocity = w.Velocity,
-                            Wind = w.Wind,
+                    if (x.FlightLevelWinds != null)
+                        foreach (var w in x.FlightLevelWinds)
+                            _p.FlightLevelWinds.Add(new FlightLevelWind()
+                            {
+                                FlightLevel = w.FlightLevel,
+                                Shear = w.Shear,
+                                Temp = w.Temp,
+                                Velocity = w.Velocity,
+                                Wind = w.Wind,
 
-                        });
+                            });
                     db_flight.RoutePoints.Add(_p);
                 }
                 // Crews                  // complex - skip
@@ -521,7 +522,7 @@ namespace ApiWorld.Controllers
                         var _apt = new Airport()
                         {
                             ATC = x.ATC,
-                            AirportHoursText = x.AirportHours.Text,
+                            AirportHoursText =x.AirportHours ? x.AirportHours.Text :null,
                             Category = x.Category,
                             Dist = x.Dist,
                             Elevation = x.Elevation,
@@ -614,17 +615,18 @@ namespace ApiWorld.Controllers
 
 
                         };
-                        foreach (var w in x.FlightLevelWinds)
-                        {
-                            _p.FlightLevelWindAlt1.Add(new FlightLevelWindAlt1()
+                        if (x.FlightLevelWinds != null)
+                            foreach (var w in x.FlightLevelWinds)
                             {
-                                FlightLevel = w.FlightLevel,
-                                Shear = w.Shear,
-                                Temp = w.Temp,
-                                Velocity = w.Velocity,
-                                Wind = w.Wind,
-                            });
-                        }
+                                _p.FlightLevelWindAlt1.Add(new FlightLevelWindAlt1()
+                                {
+                                    FlightLevel = w.FlightLevel,
+                                    Shear = w.Shear,
+                                    Temp = w.Temp,
+                                    Velocity = w.Velocity,
+                                    Wind = w.Wind,
+                                });
+                            }
                         db_flight.Alt1Points.Add(_p);
                     }
                 }
@@ -678,17 +680,18 @@ namespace ApiWorld.Controllers
 
 
                         };
-                        foreach (var w in x.FlightLevelWinds)
-                        {
-                            _p.FlightLevelWindAlt2.Add(new FlightLevelWindAlt2()
+                        if (x.FlightLevelWinds != null)
+                            foreach (var w in x.FlightLevelWinds)
                             {
-                                FlightLevel = w.FlightLevel,
-                                Shear = w.Shear,
-                                Temp = w.Temp,
-                                Velocity = w.Velocity,
-                                Wind = w.Wind,
-                            });
-                        }
+                                _p.FlightLevelWindAlt2.Add(new FlightLevelWindAlt2()
+                                {
+                                    FlightLevel = w.FlightLevel,
+                                    Shear = w.Shear,
+                                    Temp = w.Temp,
+                                    Velocity = w.Velocity,
+                                    Wind = w.Wind,
+                                });
+                            }
                         db_flight.Alt2Points.Add(_p);
                     }
                 }
@@ -782,17 +785,18 @@ namespace ApiWorld.Controllers
                             Wind = x.Wind,
                             WindComponent = x.WindComponent,
                         };
-                        foreach (var w in x.FlightLevelWinds)
-                        {
-                            _p.FlightLevelWindRCFs.Add(new FlightLevelWindRCF()
+                        if (x.FlightLevelWinds != null)
+                            foreach (var w in x.FlightLevelWinds)
                             {
-                                FlightLevel = w.FlightLevel,
-                                Shear = w.Shear,
-                                Temp = w.Temp,
-                                Velocity = w.Velocity,
-                                Wind = w.Wind,
-                            });
-                        }
+                                _p.FlightLevelWindRCFs.Add(new FlightLevelWindRCF()
+                                {
+                                    FlightLevel = w.FlightLevel,
+                                    Shear = w.Shear,
+                                    Temp = w.Temp,
+                                    Velocity = w.Velocity,
+                                    Wind = w.Wind,
+                                });
+                            }
                         db_flight.RCFData.RCFRoutePoints.Add(_p);
                     }
                     foreach (var x in flt_info.RCFData.RCFAltRoutePoints)
@@ -839,17 +843,18 @@ namespace ApiWorld.Controllers
                             Wind = x.Wind,
                             WindComponent = x.WindComponent,
                         };
-                        foreach (var w in x.FlightLevelWinds)
-                        {
-                            _p.FlightLevelWindRCFAlts.Add(new FlightLevelWindRCFAlt()
+                        if (x.FlightLevelWinds != null)
+                            foreach (var w in x.FlightLevelWinds)
                             {
-                                FlightLevel = w.FlightLevel,
-                                Shear = w.Shear,
-                                Temp = w.Temp,
-                                Velocity = w.Velocity,
-                                Wind = w.Wind,
-                            });
-                        }
+                                _p.FlightLevelWindRCFAlts.Add(new FlightLevelWindRCFAlt()
+                                {
+                                    FlightLevel = w.FlightLevel,
+                                    Shear = w.Shear,
+                                    Temp = w.Temp,
+                                    Velocity = w.Velocity,
+                                    Wind = w.Wind,
+                                });
+                            }
                         db_flight.RCFData.RCFAltRoutePoints.Add(_p);
                     }
                 }
@@ -1139,17 +1144,18 @@ namespace ApiWorld.Controllers
 
 
                         };
-                        foreach (var w in x.FlightLevelWinds)
-                        {
-                            _p.FlightLevelWindPDPs.Add(new FlightLevelWindPDP()
+                        if (x.FlightLevelWinds != null)
+                            foreach (var w in x.FlightLevelWinds)
                             {
-                                FlightLevel = w.FlightLevel,
-                                Shear = w.Shear,
-                                Temp = w.Temp,
-                                Velocity = w.Velocity,
-                                Wind = w.Wind,
-                            });
-                        }
+                                _p.FlightLevelWindPDPs.Add(new FlightLevelWindPDP()
+                                {
+                                    FlightLevel = w.FlightLevel,
+                                    Shear = w.Shear,
+                                    Temp = w.Temp,
+                                    Velocity = w.Velocity,
+                                    Wind = w.Wind,
+                                });
+                            }
                         db_flight.PDPPoints.Add(_p);
                     }
                 }
@@ -1396,13 +1402,37 @@ namespace ApiWorld.Controllers
                 // ExtraFuels             // complex - skip
                 if (flt_info.ExtraFuels != null)
                 {
-                     
+                    foreach (var x in flt_info.ExtraFuels)
+                    {
+                        db_flight.ExtraFuels.Add(new ExtraFuel()
+                        {
+                            Fuel = x.Fuel,
+                            Time = x.Time,
+                            Type = x.Type,
+                        });
+                    }
                 }
                 db_flight.AircraftFuelBias = flt_info.AircraftFuelBias;
                 db_flight.MelFuelBias = flt_info.MelFuelBias;
+
                 // DepartureAlternateAirport            // complex - skip
+                db_flight.DepartureAlternateAirport = new DepartureAlternateAirport()
+                {
+                    ICAO = flt_info.DepartureAlternateAirport.ICAO,
+                };
                 // EnRouteAlternateAirport              // complex - skip
+                db_flight.EnRouteAlternateAirport = new EnRouteAlternateAirport()
+                {
+                    ICAO = flt_info.EnRouteAlternateAirport.ICAO,
+                };
                 // PlanningEnRouteAlternateAirports     // complex - skip
+                foreach (var x in flt_info.PlanningEnRouteAlternateAirports)
+                {
+                    db_flight.PlanningEnRouteAlternateAirports.Add(new PlanningEnRouteAlternateAirport()
+                    {
+                        ICAO = x.ICAO,
+                    });
+                }
 
 
                 return Ok(session_id);
