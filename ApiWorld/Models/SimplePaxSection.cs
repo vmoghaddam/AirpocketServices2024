@@ -23,5 +23,8 @@ namespace ApiWorld.Models
         public Nullable<int> Children { get; set; }
         public Nullable<int> Infant { get; set; }
         public string CustMass { get; set; }
+        public Nullable<int> PaxId { get; set; }
+    
+        public virtual Pax Pax { get; set; }
     }
 }

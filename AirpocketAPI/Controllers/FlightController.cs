@@ -180,7 +180,7 @@ namespace AirpocketAPI.Controllers
 
             });
         }
-
+         
         [HttpPost]
         [Route("api/fixtime/delete")]
         public async Task<IHttpActionResult> DeleteFixtime(FixTime model)
@@ -3050,7 +3050,8 @@ namespace AirpocketAPI.Controllers
                                PID = x.PID,
                                Mobile = x.Mobile,
                                Address = x.Address,
-                               PassportNo = x.Sex
+                               PassportNo = x.Sex,
+                               DatePassportExpire = x.DatePassportExpire
 
 
 
@@ -3071,7 +3072,8 @@ namespace AirpocketAPI.Controllers
                                x.PID,
                                x.Mobile,
                                x.Address,
-                               x.PassportNo
+                               x.PassportNo,
+                               x.DatePassportExpire
                            } into grp
                            select grp).ToList();
             var query = (from x in _gcrews
@@ -3092,6 +3094,7 @@ namespace AirpocketAPI.Controllers
                              Address = x.Key.Address,
                              IsCockpit = x.Key.IsCockpit,
                              PassportNo = x.Key.PassportNo,
+                             DatePassportExpire = x.Key.DatePassportExpire,
                              Legs = vflights.Where(q => xfids.Contains((int)q.ID)).OrderBy(q => q.DepartureLocal).Select(q => q.FlightNumber).Distinct().ToList(),
                              LegsStr = string.Join("-", vflights.Where(q => xfids.Contains((int)q.ID)).OrderBy(q => q.DepartureLocal).Select(q => q.FlightNumber).Distinct().ToList()),
 
@@ -3142,14 +3145,14 @@ namespace AirpocketAPI.Controllers
             workbook.LoadFromFile(mappedPathSource);
             Worksheet sheet = workbook.Worksheets[0];
 
-            sheet.Range[2, 7].Text = result.no2;
+            sheet.Range[2, 5].Text = result.no2;
             if (result.flights.Count > 1)
-                sheet.Range[2, 7].Text = result.no2 + " (" + result.route + ")";
-            sheet.Range[2, 10].Text = ((DateTime)result.std).ToString("yyyy-MM-dd");
+                sheet.Range[2, 5].Text = result.no2 + " (" + result.route + ")";
+            sheet.Range[2, 7].Text = ((DateTime)result.std).ToString("yyyy-MM-dd");
             sheet.Range[3, 1].Value = "Marks of Nationality and Registration:" + result.regs;
 
-            sheet.Range[3, 7].Text = result.flights.First().FromAirportIATA + " - " + ((DateTime)result.flights.First().STD).ToString("HH:mm");
-            sheet.Range[3, 10].Text = result.flights.Last().ToAirportIATA + " - " + ((DateTime)result.flights.Last().STA).ToString("HH:mm");
+            sheet.Range[3, 5].Text = result.flights.First().FromAirportIATA + " - " + ((DateTime)result.flights.First().STD).ToString("HH:mm");
+            sheet.Range[3, 7].Text = result.flights.Last().ToAirportIATA + " - " + ((DateTime)result.flights.Last().STA).ToString("HH:mm");
 
             var r = 5;
             foreach (var cr in result.crew)
@@ -3158,6 +3161,7 @@ namespace AirpocketAPI.Controllers
                 sheet.Range[r, 2].Text = cr.Position;
                 sheet.Range[r, 3].Text = cr.Name;
                 sheet.Range[r, 4].Text = cr.PassportNo;
+                sheet.Range[r, 5].Text = cr.DatePassportExpire?.ToString("yyyy-MM-dd") ?? "";
 
                 r++;
             }
@@ -8904,6 +8908,77 @@ new JsonSerializerSettings
         }
 
 
+        //[Route("api/applegs/{crtbl}")]
+
+        ////nookp
+        //public IHttpActionResult GetAppLegs(DateTime? df, DateTime? dt, int? ip, int? cpt, int? status, int? asrvr, int crtbl)
+        //{
+        //    //nooz
+        //    //this.context.Database.CommandTimeout = 160;
+        //    df = df != null ? ((DateTime)df).Date : DateTime.MinValue.Date;
+        //    dt = dt != null ? ((DateTime)dt).Date : DateTime.MaxValue.Date;
+        //    var context = new AirpocketAPI.Models.FLYEntities();
+        //    var query = from x in context.view_efb_report
+        //                    // where x.FlightStatusID != 1 && x.FlightStatusID != 4
+        //                select x;
+        //    query = query.Where(q => q.STDDay >= df && q.STDDay <= dt);
+        //    if (crtbl == 1)
+        //        query = query.Where(q => q.CRTBL == 1);
+        //    if (ip != null)
+        //        query = query.Where(q => q.IPId == ip);
+        //    if (cpt != null)
+        //        query = query.Where(q => q.P1Id == cpt);
+        //    if (asrvr != null)
+        //    {
+        //        if (asrvr == 1)
+        //            query = query.Where(q => q.MSN == 1);
+
+
+        //    }
+        //    if (status != null)
+        //    {
+
+        //        List<int?> sts = new List<int?>();
+        //        switch ((int)status)
+        //        {
+        //            case 1:
+        //                sts.Add(15);
+        //                sts.Add(3);
+        //                query = query.Where(q => sts.Contains(q.FlightStatusID));
+        //                break;
+        //            case 2:
+        //                sts.Add(1);
+        //                query = query.Where(q => sts.Contains(q.FlightStatusID));
+        //                break;
+        //            case 3:
+        //                sts.Add(4);
+        //                query = query.Where(q => sts.Contains(q.FlightStatusID));
+        //                break;
+        //            case 4:
+        //                sts.Add(20);
+        //                sts.Add(21);
+        //                sts.Add(22);
+        //                sts.Add(4);
+        //                sts.Add(2);
+        //                sts.Add(23);
+        //                sts.Add(24);
+        //                sts.Add(25);
+        //                query = query.Where(q => sts.Contains(q.FlightStatusID));
+
+        //                break;
+        //            case 5:
+        //                break;
+        //            default:
+        //                break;
+        //        }
+        //    }
+        //    var result = query.OrderBy(q => q.STD).ToList();
+
+        //    // return result.OrderBy(q => q.STD);
+        //    return Ok(result);
+
+        //}
+
         [Route("api/applegs/{crtbl}")]
 
         //nookp
@@ -8974,8 +9049,6 @@ new JsonSerializerSettings
             return Ok(result);
 
         }
-
-
 
         [Route("api/flighttime/crew/{crewid}/{y1}/{m1}/{y2}/{m2}")]
 
@@ -15362,6 +15435,7 @@ new JsonSerializerSettings
         public string Address { get; set; }
         public string NID { get; set; }
         public DateTime? Reporting { get; set; }
+        public DateTime? DatePassportExpire { get; set; }
         public int? MaxFDP { get; set; }
         public double? FDP { get; set; }
     }

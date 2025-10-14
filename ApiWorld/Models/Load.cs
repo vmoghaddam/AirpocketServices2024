@@ -38,7 +38,6 @@ namespace ApiWorld.Models
         public virtual Cargo Cargo { get; set; }
         public virtual DryOperating DryOperating { get; set; }
         public virtual Fuel Fuel { get; set; }
-        public virtual MassBalance MassBalance { get; set; }
         public virtual Pax Pax { get; set; }
         public virtual Payload Payload { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -53,8 +52,8 @@ namespace ApiWorld.Models
         public virtual ICollection<Load_Pax> Load_Pax { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Load_Payload> Load_Payload { get; set; }
+        public virtual MassBalance MassBalance { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Flight> Flights { get; set; }
-        public virtual Flight Flight { get; set; }
     }
 }

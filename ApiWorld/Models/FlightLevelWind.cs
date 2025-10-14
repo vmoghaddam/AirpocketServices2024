@@ -20,5 +20,8 @@ namespace ApiWorld.Models
         public Nullable<int> Velocity { get; set; }
         public Nullable<int> Temp { get; set; }
         public Nullable<int> Shear { get; set; }
+        public Nullable<int> PointId { get; set; }
+    
+        public virtual RoutePoint RoutePoint { get; set; }
     }
 }

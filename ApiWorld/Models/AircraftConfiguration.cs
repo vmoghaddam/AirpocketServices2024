@@ -18,6 +18,7 @@ namespace ApiWorld.Models
         public AircraftConfiguration()
         {
             this.AircraftConfigurationCrews = new HashSet<AircraftConfigurationCrew>();
+            this.CrewAircraftConfigurations = new HashSet<CrewAircraftConfiguration>();
             this.Flights = new HashSet<Flight>();
         }
     
@@ -27,6 +28,8 @@ namespace ApiWorld.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AircraftConfigurationCrew> AircraftConfigurationCrews { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CrewAircraftConfiguration> CrewAircraftConfigurations { get; set; }
         public virtual Flight Flight { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Flight> Flights { get; set; }

@@ -14,49 +14,58 @@ namespace ApiWorld.Models
     
     public partial class RoutePoint
     {
-        public int FlightID { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public RoutePoint()
+        {
+            this.FlightLevelWinds = new HashSet<FlightLevelWind>();
+        }
+    
+        public Nullable<int> FlightID { get; set; }
         public string PointSet { get; set; }
-        public int ID { get; set; }
+        public Nullable<int> ID { get; set; }
         public string IDENT { get; set; }
-        public int FL { get; set; }
-        public int Wind { get; set; }
-        public int Vol { get; set; }
-        public int ISA { get; set; }
-        public int LegTime { get; set; }
-        public decimal LegCourse { get; set; }
-        public int LegDistance { get; set; }
-        public int LegCAT { get; set; }
+        public Nullable<int> FL { get; set; }
+        public Nullable<int> Wind { get; set; }
+        public Nullable<int> Vol { get; set; }
+        public Nullable<int> ISA { get; set; }
+        public Nullable<int> LegTime { get; set; }
+        public Nullable<decimal> LegCourse { get; set; }
+        public Nullable<int> LegDistance { get; set; }
+        public Nullable<int> LegCAT { get; set; }
         public string LegName { get; set; }
         public string LegAWY { get; set; }
-        public decimal FuelUsed { get; set; }
-        public int FuelFlow { get; set; }
-        public decimal LAT { get; set; }
-        public decimal LON { get; set; }
-        public int VARIATION { get; set; }
-        public int ACCDIST { get; set; }
-        public int ACCTIME { get; set; }
-        public decimal MagCourse { get; set; }
-        public int TrueAirSpeed { get; set; }
-        public int GroundSpeed { get; set; }
-        public decimal FuelRemaining { get; set; }
-        public int DistRemaining { get; set; }
-        public int TimeRemaining { get; set; }
-        public decimal MinReqFuel { get; set; }
-        public decimal FuelFlowPerEng { get; set; }
-        public int Temperature { get; set; }
-        public int MORA { get; set; }
-        public decimal Frequency { get; set; }
-        public int WindComponent { get; set; }
-        public int MinimumEnrouteAltitude { get; set; }
-        public decimal MagneticHeading { get; set; }
-        public decimal TrueHeading { get; set; }
-        public int MagneticTrack { get; set; }
-        public int TrueTrack { get; set; }
+        public Nullable<decimal> FuelUsed { get; set; }
+        public Nullable<int> FuelFlow { get; set; }
+        public Nullable<decimal> LAT { get; set; }
+        public Nullable<decimal> LON { get; set; }
+        public Nullable<int> VARIATION { get; set; }
+        public Nullable<int> ACCDIST { get; set; }
+        public Nullable<int> ACCTIME { get; set; }
+        public Nullable<decimal> MagCourse { get; set; }
+        public Nullable<int> TrueAirSpeed { get; set; }
+        public Nullable<int> GroundSpeed { get; set; }
+        public Nullable<decimal> FuelRemaining { get; set; }
+        public Nullable<int> DistRemaining { get; set; }
+        public Nullable<int> TimeRemaining { get; set; }
+        public Nullable<decimal> MinReqFuel { get; set; }
+        public Nullable<decimal> FuelFlowPerEng { get; set; }
+        public Nullable<int> Temperature { get; set; }
+        public Nullable<int> MORA { get; set; }
+        public Nullable<decimal> Frequency { get; set; }
+        public Nullable<int> WindComponent { get; set; }
+        public Nullable<int> MinimumEnrouteAltitude { get; set; }
+        public Nullable<decimal> MagneticHeading { get; set; }
+        public Nullable<decimal> TrueHeading { get; set; }
+        public Nullable<int> MagneticTrack { get; set; }
+        public Nullable<int> TrueTrack { get; set; }
         public string HLAEntryExit { get; set; }
         public string FIR { get; set; }
         public string ClimbDescent { get; set; }
-        public decimal LegFuel { get; set; }
+        public Nullable<decimal> LegFuel { get; set; }
+        public int Id_Point { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<FlightLevelWind> FlightLevelWinds { get; set; }
         public virtual Flight Flight { get; set; }
     }
 }

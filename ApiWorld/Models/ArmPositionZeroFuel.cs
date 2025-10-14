@@ -12,22 +12,20 @@ namespace ApiWorld.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class SidStarInfo
+    public partial class ArmPositionZeroFuel
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public SidStarInfo()
+        public ArmPositionZeroFuel()
         {
-            this.DepartureAndArrivalProcedures = new HashSet<DepartureAndArrivalProcedure>();
-            this.DepartureAndArrivalProcedures1 = new HashSet<DepartureAndArrivalProcedure>();
+            this.MassBalances = new HashSet<MassBalance>();
         }
     
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string Info { get; set; }
+        public Nullable<double> ForwardLimit { get; set; }
+        public Nullable<double> ActualPosition { get; set; }
+        public Nullable<double> AftLimit { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DepartureAndArrivalProcedure> DepartureAndArrivalProcedures { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DepartureAndArrivalProcedure> DepartureAndArrivalProcedures1 { get; set; }
+        public virtual ICollection<MassBalance> MassBalances { get; set; }
     }
 }

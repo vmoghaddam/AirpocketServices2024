@@ -25,10 +25,10 @@ namespace ApiWorld.Models
         public int LoadId { get; set; }
         public Nullable<double> Total { get; set; }
     
-        public virtual Load Load { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Load_PaxData> Load_PaxData { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Load_PaxSection> Load_PaxSection { get; set; }
+        public virtual Load Load { get; set; }
     }
 }

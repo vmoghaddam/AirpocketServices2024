@@ -37,24 +37,16 @@ namespace ApiWorld.Models
         public virtual DbSet<AirportWeatherDataPlanningEnRouteAlternate> AirportWeatherDataPlanningEnRouteAlternates { get; set; }
         public virtual DbSet<ALT1Notam> ALT1Notam { get; set; }
         public virtual DbSet<ALT1NotamPartInformation> ALT1NotamPartInformation { get; set; }
-        public virtual DbSet<Alt1Points> Alt1Points { get; set; }
-        public virtual DbSet<ALT1Taf> ALT1Taf { get; set; }
         public virtual DbSet<ALT2Notam> ALT2Notam { get; set; }
         public virtual DbSet<ALT2NotamPartInformation> ALT2NotamPartInformation { get; set; }
-        public virtual DbSet<Alt2Points> Alt2Points { get; set; }
-        public virtual DbSet<ALT2Taf> ALT2Taf { get; set; }
         public virtual DbSet<AltAirport> AltAirports { get; set; }
         public virtual DbSet<AlternateAirport> AlternateAirports { get; set; }
         public virtual DbSet<AlternateNotam> AlternateNotams { get; set; }
         public virtual DbSet<AlternateNotamPartInformation> AlternateNotamPartInformations { get; set; }
-        public virtual DbSet<ArmPosition> ArmPositions { get; set; }
-        public virtual DbSet<ATC> ATCs { get; set; }
         public virtual DbSet<Cargo> Cargoes { get; set; }
         public virtual DbSet<ContingencySavingData> ContingencySavingDatas { get; set; }
-        public virtual DbSet<CorrectionTable> CorrectionTables { get; set; }
         public virtual DbSet<Crew> Crews { get; set; }
         public virtual DbSet<CustomReference> CustomReferences { get; set; }
-        public virtual DbSet<DepartureAndArrivalProcedure> DepartureAndArrivalProcedures { get; set; }
         public virtual DbSet<DEPNotam> DEPNotams { get; set; }
         public virtual DbSet<DEPNotamPartInformation> DEPNotamPartInformations { get; set; }
         public virtual DbSet<DEPTaf> DEPTafs { get; set; }
@@ -83,14 +75,12 @@ namespace ApiWorld.Models
         public virtual DbSet<FIRNotamPartInformation> FIRNotamPartInformations { get; set; }
         public virtual DbSet<FIROverflightCost> FIROverflightCosts { get; set; }
         public virtual DbSet<FlightLevel> FlightLevels { get; set; }
-        public virtual DbSet<FlightLevelWind> FlightLevelWinds { get; set; }
         public virtual DbSet<FreeText> FreeTexts { get; set; }
         public virtual DbSet<Frequency> Frequencies { get; set; }
         public virtual DbSet<Frequency2> Frequency2 { get; set; }
         public virtual DbSet<Fuel> Fuels { get; set; }
         public virtual DbSet<FullEqualTimeAirport> FullEqualTimeAirports { get; set; }
         public virtual DbSet<FullEqualTimePoint> FullEqualTimePoints { get; set; }
-        public virtual DbSet<Load> Loads { get; set; }
         public virtual DbSet<Load_Cargo> Load_Cargo { get; set; }
         public virtual DbSet<Load_CargoSection> Load_CargoSection { get; set; }
         public virtual DbSet<Load_DryOperating> Load_DryOperating { get; set; }
@@ -102,11 +92,9 @@ namespace ApiWorld.Models
         public virtual DbSet<Load_PaxSection> Load_PaxSection { get; set; }
         public virtual DbSet<Load_Payload> Load_Payload { get; set; }
         public virtual DbSet<LoadCargoSection> LoadCargoSections { get; set; }
-        public virtual DbSet<LoadFuelSection> LoadFuelSections { get; set; }
         public virtual DbSet<LoadPaxSection> LoadPaxSections { get; set; }
         public virtual DbSet<LocalTimeDeparture> LocalTimeDepartures { get; set; }
         public virtual DbSet<LocalTimeDestination> LocalTimeDestinations { get; set; }
-        public virtual DbSet<MassBalance> MassBalances { get; set; }
         public virtual DbSet<MassBalanceIndex> MassBalanceIndexes { get; set; }
         public virtual DbSet<MelItem> MelItems { get; set; }
         public virtual DbSet<MelItemLimitation> MelItemLimitations { get; set; }
@@ -121,20 +109,11 @@ namespace ApiWorld.Models
         public virtual DbSet<PassThroughValue> PassThroughValues { get; set; }
         public virtual DbSet<Pax> Paxes { get; set; }
         public virtual DbSet<Payload> Payloads { get; set; }
-        public virtual DbSet<PDPPoint> PDPPoints { get; set; }
         public virtual DbSet<Position> Positions { get; set; }
         public virtual DbSet<PpsVersionInformation> PpsVersionInformations { get; set; }
-        public virtual DbSet<RCFData> RCFDatas { get; set; }
-        public virtual DbSet<RoutePoint> RoutePoints { get; set; }
-        public virtual DbSet<RouteString> RouteStrings { get; set; }
         public virtual DbSet<SID> SIDs { get; set; }
-        public virtual DbSet<SidAndStarProcedure> SidAndStarProcedures { get; set; }
-        public virtual DbSet<SIDPlanned> SIDPlanneds { get; set; }
-        public virtual DbSet<SidStarInfo> SidStarInfoes { get; set; }
-        public virtual DbSet<SimplePaxSection> SimplePaxSections { get; set; }
         public virtual DbSet<StdAlternate> StdAlternates { get; set; }
         public virtual DbSet<Taf> Tafs { get; set; }
-        public virtual DbSet<ToAlt1Points> ToAlt1Points { get; set; }
         public virtual DbSet<AdequateApt> AdequateApts { get; set; }
         public virtual DbSet<AltApt> AltApts { get; set; }
         public virtual DbSet<FIR> FIRs { get; set; }
@@ -154,6 +133,42 @@ namespace ApiWorld.Models
         public virtual DbSet<OFPA_wdtmp> OFPA_wdtmp { get; set; }
         public virtual DbSet<OFPA_wtdrf> OFPA_wtdrf { get; set; }
         public virtual DbSet<OFPSkyPuter> OFPSkyPuters { get; set; }
+        public virtual DbSet<ALT1Taf> ALT1Taf { get; set; }
+        public virtual DbSet<ALT2Taf> ALT2Taf { get; set; }
+        public virtual DbSet<ATC> ATCs { get; set; }
+        public virtual DbSet<EnrouteAlternate> EnrouteAlternates { get; set; }
+        public virtual DbSet<RCFData> RCFDatas { get; set; }
+        public virtual DbSet<Alt1Points> Alt1Points { get; set; }
+        public virtual DbSet<Alt2Points> Alt2Points { get; set; }
+        public virtual DbSet<FlightLevelWind> FlightLevelWinds { get; set; }
+        public virtual DbSet<FlightLevelWindAlt1> FlightLevelWindAlt1 { get; set; }
+        public virtual DbSet<FlightLevelWindAlt2> FlightLevelWindAlt2 { get; set; }
+        public virtual DbSet<FlightLevelWindRCF> FlightLevelWindRCFs { get; set; }
+        public virtual DbSet<RCFRoutePoint> RCFRoutePoints { get; set; }
+        public virtual DbSet<RoutePoint> RoutePoints { get; set; }
+        public virtual DbSet<FlightLevelWindRCFAlt> FlightLevelWindRCFAlts { get; set; }
+        public virtual DbSet<RCFAltRoutePoint> RCFAltRoutePoints { get; set; }
+        public virtual DbSet<ToAlt1Points> ToAlt1Points { get; set; }
+        public virtual DbSet<RouteString> RouteStrings { get; set; }
+        public virtual DbSet<SIDAlternative> SIDAlternatives { get; set; }
+        public virtual DbSet<SIDPlanned> SIDPlanneds { get; set; }
+        public virtual DbSet<CorrectionTable> CorrectionTables { get; set; }
+        public virtual DbSet<FlightLevelWindPDP> FlightLevelWindPDPs { get; set; }
+        public virtual DbSet<PDPPoint> PDPPoints { get; set; }
+        public virtual DbSet<SidStarInfoSid> SidStarInfoSids { get; set; }
+        public virtual DbSet<SidStarInfoStar> SidStarInfoStars { get; set; }
+        public virtual DbSet<SidAndStarProcedure> SidAndStarProcedures { get; set; }
+        public virtual DbSet<Load> Loads { get; set; }
+        public virtual DbSet<SimplePaxSection> SimplePaxSections { get; set; }
+        public virtual DbSet<ArmPositionLanding> ArmPositionLandings { get; set; }
+        public virtual DbSet<ArmPositionTakeoff> ArmPositionTakeoffs { get; set; }
+        public virtual DbSet<ArmPositionZeroFuel> ArmPositionZeroFuels { get; set; }
+        public virtual DbSet<MassBalance> MassBalances { get; set; }
+        public virtual DbSet<LoadFuelSection> LoadFuelSections { get; set; }
+        public virtual DbSet<CrewAircraftConfiguration> CrewAircraftConfigurations { get; set; }
+        public virtual DbSet<DepartureAlternateAirport> DepartureAlternateAirports { get; set; }
+        public virtual DbSet<EnRouteAlternateAirport> EnRouteAlternateAirports { get; set; }
+        public virtual DbSet<PlanningEnRouteAlternateAirport> PlanningEnRouteAlternateAirports { get; set; }
         public virtual DbSet<Flight> Flights { get; set; }
     }
 }

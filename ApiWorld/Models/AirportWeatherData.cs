@@ -20,9 +20,6 @@ namespace ApiWorld.Models
             this.ContingencySavingDatas = new HashSet<ContingencySavingData>();
             this.ContingencySavingDatas1 = new HashSet<ContingencySavingData>();
             this.ContingencySavingDatas2 = new HashSet<ContingencySavingData>();
-            this.RCFDatas = new HashSet<RCFData>();
-            this.Flights = new HashSet<Flight>();
-            this.Flights1 = new HashSet<Flight>();
         }
     
         public int Id { get; set; }
@@ -38,11 +35,5 @@ namespace ApiWorld.Models
         public virtual ICollection<ContingencySavingData> ContingencySavingDatas1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ContingencySavingData> ContingencySavingDatas2 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RCFData> RCFDatas { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Flight> Flights { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Flight> Flights1 { get; set; }
     }
 }
