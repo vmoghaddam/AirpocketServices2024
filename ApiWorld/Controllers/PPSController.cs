@@ -53,7 +53,7 @@ namespace ApiWorld.Controllers
 
                 pps.EfbService pps_ins = new pps.EfbService();
                 var session_id = pps_ins.GetSessionID("ArmeniaAirways", "J8V14HNHK", "AMWINTEGRATION", "i$qn719e");
-                var flts = pps_ins.GetSTDFlightList(session_id, new DateTime(2025, 9, 28), new DateTime(2025, 9, 30));
+                var flts = pps_ins.GetSTDFlightList(session_id, new DateTime(2025, 10, 1), new DateTime(2025, 10, 11));
                 pps.Flight flt_info = pps_ins.GetFlight(session_id, flts.Items[0].ID, true, true, true, true, "kg");
 
                 Models.Flight db_flight = new Flight();
@@ -522,7 +522,7 @@ namespace ApiWorld.Controllers
                         var _apt = new Airport()
                         {
                             ATC = x.ATC,
-                            AirportHoursText =x.AirportHours ? x.AirportHours.Text :null,
+                            AirportHoursText =x.AirportHours!=null ? x.AirportHours.Text :null,
                             Category = x.Category,
                             Dist = x.Dist,
                             Elevation = x.Elevation,
@@ -1416,15 +1416,17 @@ namespace ApiWorld.Controllers
                 db_flight.MelFuelBias = flt_info.MelFuelBias;
 
                 // DepartureAlternateAirport            // complex - skip
-                db_flight.DepartureAlternateAirport = new DepartureAlternateAirport()
-                {
-                    ICAO = flt_info.DepartureAlternateAirport.ICAO,
-                };
+                if (flt_info.DepartureAlternateAirport != null)
+                    db_flight.DepartureAlternateAirport = new DepartureAlternateAirport()
+                    {
+                        ICAO = flt_info.DepartureAlternateAirport.ICAO,
+                    };
                 // EnRouteAlternateAirport              // complex - skip
-                db_flight.EnRouteAlternateAirport = new EnRouteAlternateAirport()
-                {
-                    ICAO = flt_info.EnRouteAlternateAirport.ICAO,
-                };
+                if (flt_info.EnRouteAlternateAirport != null)
+                    db_flight.EnRouteAlternateAirport = new EnRouteAlternateAirport()
+                    {
+                        ICAO = flt_info.EnRouteAlternateAirport.ICAO,
+                    };
                 // PlanningEnRouteAlternateAirports     // complex - skip
                 foreach (var x in flt_info.PlanningEnRouteAlternateAirports)
                 {
@@ -1433,8 +1435,8 @@ namespace ApiWorld.Controllers
                         ICAO = x.ICAO,
                     });
                 }
-
-
+                context.Flights.Add(db_flight);
+                var save_result=await context.SaveAsync();
                 return Ok(session_id);
             }
             catch (Exception ex)

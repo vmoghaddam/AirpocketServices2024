@@ -17,6 +17,7 @@ namespace ApiSand.Models
         public int id { get; set; }
         public int course_id { get; set; }
         public string remark { get; set; }
+        public Nullable<int> id2 { get; set; }
     
         public virtual ava_course ava_course { get; set; }
     }

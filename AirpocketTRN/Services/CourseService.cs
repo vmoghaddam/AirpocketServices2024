@@ -7196,7 +7196,7 @@ namespace AirpocketTRN.Services
 
 
             var fltcrew = new List<string>() { "P1", "P2", "ISCCM", "SCCM", "CCM", "TRE", "TRI", "LTC", "CCE", "CCI" };
-            var employees = await context.ViewEmployeeAbs.Where(q => personIds.Contains(q.PersonId) && fltcrew.Contains(q.JobGroup)).ToListAsync();
+            var employees = await context.ViewEmployeeAbs.Where(q => personIds.Contains(q.PersonId) /*&& fltcrew.Contains(q.JobGroup)*/).ToListAsync();
             var eids = employees.Select(q => (Nullable<int>)q.PersonId).ToList();
 
 

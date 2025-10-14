@@ -65,8 +65,8 @@ namespace DocxToJson
             {
                 ppa_entities context = new ppa_entities();
 
-                var input = @"C:\Users\vahid\Desktop\ava\Hozor Ghiab\organizational behaviour";
-                var outputFolder = @"C:\Users\vahid\Desktop\ava\Hozor Ghiab\___json";
+                var input = @"C:\Users\vahid\Desktop\ava\camo";
+                var outputFolder = @"C:\Users\vahid\Desktop\ava\camo\___json";
 
                 var files = new List<string>();
                 //if (Directory.Exists(input))

@@ -7,29 +7,31 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ApiWorld.Models
+namespace ApiSand.Models
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class DESTTaf
+    public partial class CourseSession
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public DESTTaf()
+        public CourseSession()
         {
-            this.Flights = new HashSet<Flight>();
+            this.CourseSessionPresences = new HashSet<CourseSessionPresence>();
         }
     
         public int Id { get; set; }
-        public int FlightID { get; set; }
-        public byte Type { get; set; }
-        public string Text { get; set; }
-        public string ICAO { get; set; }
-        public System.DateTime ForecastTime { get; set; }
-        public System.DateTime ForecastStartTime { get; set; }
-        public System.DateTime ForecastEndTime { get; set; }
+        public int CourseId { get; set; }
+        public Nullable<System.DateTime> DateStart { get; set; }
+        public Nullable<System.DateTime> DateEnd { get; set; }
+        public bool Done { get; set; }
+        public string Remark { get; set; }
+        public string Key { get; set; }
+        public Nullable<System.DateTime> DateStartUtc { get; set; }
+        public Nullable<System.DateTime> DateEndUtc { get; set; }
     
+        public virtual Course Course { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Flight> Flights { get; set; }
+        public virtual ICollection<CourseSessionPresence> CourseSessionPresences { get; set; }
     }
 }

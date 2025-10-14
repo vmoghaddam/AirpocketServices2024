@@ -30,7 +30,6 @@ namespace ApiWorld.Models
         public int Id { get; set; }
         public Nullable<int> RuleTimeUsed { get; set; }
         public Nullable<int> IcingPercentage { get; set; }
-        public Nullable<int> FlightID { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EtopsAlternate> EtopsAlternates { get; set; }
