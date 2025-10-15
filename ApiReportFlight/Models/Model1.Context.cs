@@ -58,7 +58,8 @@ namespace ApiReportFlight.Models
         public virtual DbSet<view_layover> view_layover { get; set; }
         public virtual DbSet<ViewCrew> ViewCrews { get; set; }
         public virtual DbSet<rpt_crew_route> rpt_crew_route { get; set; }
-        public virtual DbSet<helper_layover_ranked_new> helper_layover_ranked_new { get; set; }
         public virtual DbSet<rpt_citypair_daily> rpt_citypair_daily { get; set; }
+        public virtual DbSet<helper_layover_ranked_new> helper_layover_ranked_new { get; set; }
+        public virtual DbSet<helper_layover_ranked_new_prev> helper_layover_ranked_new_prev { get; set; }
     }
 }

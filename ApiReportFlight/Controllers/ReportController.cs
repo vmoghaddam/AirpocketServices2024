@@ -741,73 +741,78 @@ namespace ApiReportFlight.Controllers
 
             //                        }).ToList();
 
-            //////var helper_layover = context.helper_layover_ranked_new.Where(q => q.date >= df && q.date < dt && crew_ids.Contains(q.crew_id)).ToList();
-            
-            //////var helper_grp = (from x in helper_layover
-            //////                  //5where x.crew_id == 4827
-            //////                  group x by new { x.crew_id, x.date, x.homebase } into grp
-            //////                  select new dto_helper_layover()
-            //////                  {
-            //////                      date = grp.Key.date,
-            //////                      crew_id = grp.Key.crew_id,
-            //////                      homebase = grp.Key.homebase,
-            //////                      apt = grp.OrderByDescending(q => q.onblock_last).First().arr_iata,
-            //////                      is_lo = 0,
-            //////                      rows = grp.ToList()
+            var helper_layover = context.helper_layover_ranked_new.Where(q => q.date >= df && q.date < dt && crew_ids.Contains(q.crew_id)).ToList();
 
-            //////                  }).OrderBy(q => q.crew_id).ThenBy(q => q.date).ToList() ;
+            var helper_grp = (from x in helper_layover
+                              where x.crew_id == 4819
+                              group x by new { x.crew_id, x.date, x.homebase } into grp
+                              select new dto_helper_layover()
+                              {
+                                  date = grp.Key.date,
+                                  crew_id = grp.Key.crew_id,
+                                  homebase = grp.Key.homebase,
+                                  apt = grp.OrderByDescending(q => q.onblock_last).First().arr_iata,
+                                  is_lo = 0,
+                                  rows = grp.ToList()
 
-            //////var grp_layover = (from x in helper_grp
-            //////                   group x by new { x.crew_id } into grp
-            //////                   select new
-            //////                   {
-            //////                       grp.Key.crew_id,
-            //////                       items = grp.OrderBy(q => q.date).ToList()
-            //////                   }).ToList();
+                              }).OrderBy(q => q.crew_id).ThenBy(q => q.date).ToList();
 
-            //var empty_layover = (from x in grp_layover
-            //                     where string.IsNullOrEmpty(x.items.First().apt)
-            //                     select x.crew_id).ToList();
-            //var first_rows = context.view_layover.Where(q => empty_layover.Contains(q.crew_id) && q.date == df).Select(
-            //    q=>new
-            //    {
-            //         q.crew_id,
-            //         q.date,
-            //         q.apt_x
+            var grp_layover = (from x in helper_grp
+                               group x by new { x.crew_id } into grp
+                               select new
+                               {
+                                   grp.Key.crew_id,
+                                   items = grp.OrderBy(q => q.date).ToList()
+                               }).ToList();
 
-            //    }
-            //    ).ToList();
+            var empty_layover = (from x in grp_layover
+                                 where string.IsNullOrEmpty(x.items.First().apt)
+                                 select x.crew_id).ToList();
+            var first_rows = context.helper_layover_ranked_new_prev.Where(q => empty_layover.Contains(q.crew_id) && q.date == df).Select(
+                q => new
+                {
+                    q.crew_id,
+                    q.date,
+                    q.arr_iata_prev
 
-            //////foreach(var c in grp_layover)
-            //////{
-            //////    var _c = 0;
-            //////    foreach(var item in c.items)
-            //////    {
-            //////        if (_c == 0)
-            //////        {
-            //////            if (string.IsNullOrEmpty(item.apt))
-            //////            {
-            //////                item.apt = item.rows[0].arr_iata_prev;
-            //////               // var fr = first_rows.Where(q => q.crew_id == c.crew_id).First().apt_x;
-            //////               // item.apt = fr;
-            //////            }
-            //////        }
-            //////        else
-            //////        {
-            //////            if (string.IsNullOrEmpty(item.apt))
-            //////                item.apt = c.items[_c - 1].apt;
-            //////        }
-            //////        item.is_lo = item.apt == item.homebase ? 0 : 1;
-            //////        _c++;
-            //////    }
-            //////}
+                }
+                ).ToList();
 
-            //////var ds_layover_total = (from x in grp_layover
-            //////                       select new
-            //////                       {
-            //////                           x.crew_id,
-            //////                           total=x.items.Sum(q=>q.is_lo)
-            //////                       }).ToList();
+            foreach (var c in grp_layover)
+            {
+                var _c = 0;
+                foreach (var item in c.items)
+                {
+                    if (_c == 0)
+                    {
+                        if (string.IsNullOrEmpty(item.apt))
+                        {
+                            //item.apt = item.rows[0].arr_iata_prev;
+
+                            var fr = first_rows.Where(q => q.crew_id == c.crew_id).First().arr_iata_prev;
+                            item.apt = fr;
+                            if (item.apt == null)
+                            {
+                                item.apt = item.homebase;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(item.apt))
+                            item.apt = c.items[_c - 1].apt;
+                    }
+                    item.is_lo = item.apt == item.homebase ? 0 : 1;
+                    _c++;
+                }
+            }
+
+            var ds_layover_total = (from x in grp_layover
+                                    select new
+                                    {
+                                        x.crew_id,
+                                        total = x.items.Sum(q => q.is_lo)
+                                    }).ToList();
 
             foreach (var crew in ds_crew)
             {
@@ -815,12 +820,12 @@ namespace ApiReportFlight.Controllers
                 var nofdps = ds_nofdp_total.Where(q => q.CrewId == crew.CrewId).ToList();
                 var refs = ds_refuse_total.Where(q => q.CrewId == crew.CrewId).ToList();
 
-                ////var lay_over = ds_layover_total.FirstOrDefault(q => q.crew_id == crew.CrewId);
-                ////if (lay_over != null)
-                ////{
-                ////    crew.LayOver = lay_over.total;
-                ////}
-                ////else
+                var lay_over = ds_layover_total.FirstOrDefault(q => q.crew_id == crew.CrewId);
+                if (lay_over != null)
+                {
+                    crew.LayOver = lay_over.total;
+                }
+                else
                     crew.LayOver = 0;
 
                 var safety = ds_safety_total.FirstOrDefault(q => q.CrewId == crew.CrewId);
@@ -3716,6 +3721,49 @@ namespace ApiReportFlight.Controllers
             return Ok(total_result);
         }
 
+        [Route("api/report/citypair/daily/")]
+        [AcceptVerbs("GET")]
+        public IHttpActionResult GetCrewCalendar(DateTime df, DateTime dt)
+        {
+            var ctx = new ppa_Entities();
+            var dt2 = dt.Date.AddDays(1);
+            var query = (from x in ctx.rpt_citypair_daily
+                         where x.date_local >= df && x.date_local < dt2
+                         group x by new
+                         {
+                             x.date_local,
+                             x.arr,
+                             x.arr_icao,
+                             x.arr_id,
+                             x.route,
+                             x.dep,
+                             x.dep_icao,
+                             x.dep_id,
+
+                             x.route_icao,
+                         } into grp
+                         select new
+                         {
+                             grp.Key.dep,
+                             grp.Key.dep_icao,
+                             grp.Key.dep_id,
+                             grp.Key.arr,
+                             grp.Key.arr_icao,
+                             grp.Key.arr_id,
+                             grp.Key.route_icao,
+                             grp.Key.route,
+                             pax_adult = grp.Sum(q => q.pax_adults),
+                             pax_children = grp.Sum(q => q.pax_children),
+                             pax_infant = grp.Sum(q => q.pax_infants),
+                             pax_total = grp.Sum(q => q.pax_total),
+                             is_int=!(grp.Key.dep_icao.StartsWith("OI") && grp.Key.arr_icao.StartsWith("OI"))
+
+                         }).OrderBy(q=>q.pax_total).ToList();  
+
+
+            return Ok(query);
+        }
+
 
         [Route("api/flightpax/daily")]
         [AcceptVerbs("GET")]
@@ -3756,7 +3804,7 @@ namespace ApiReportFlight.Controllers
         {
             var ctx = new ppa_Entities();
 
-            var totalQuery = ctx.ViewRegHistoryYearlies.Where(q=>q.Year==year);
+            var totalQuery = ctx.ViewRegHistoryYearlies.Where(q => q.Year == year);
             var total = totalQuery.OrderBy(q => q.Year)
                 .ThenBy(q => q.Month)
 
