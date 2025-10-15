@@ -37,6 +37,5 @@ namespace ApiScheduling.Models
         public string PLastName { get; set; }
         public string PName { get; set; }
         public string NID { get; set; }
-        public string MainGroup { get; set; }
     }
 }

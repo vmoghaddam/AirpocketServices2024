@@ -99,11 +99,6 @@ namespace ApiScheduling.Models
         public string PosRemark { get; set; }
         public string PosTicketUrl { get; set; }
         public Nullable<System.DateTime> DutyEndDateLocal { get; set; }
-        public string InitTo { get; set; }
-        public Nullable<System.DateTime> offblock { get; set; }
-        public Nullable<System.DateTime> onblock { get; set; }
-        public Nullable<System.DateTime> takeoff { get; set; }
-        public Nullable<System.DateTime> landing { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CrewPickupSM> CrewPickupSMS { get; set; }
