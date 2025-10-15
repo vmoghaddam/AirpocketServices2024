@@ -158,7 +158,6 @@ namespace ApiWorld.Models
         public virtual DbSet<SidStarInfoSid> SidStarInfoSids { get; set; }
         public virtual DbSet<SidStarInfoStar> SidStarInfoStars { get; set; }
         public virtual DbSet<SidAndStarProcedure> SidAndStarProcedures { get; set; }
-        public virtual DbSet<Flight> Flights { get; set; }
         public virtual DbSet<Load> Loads { get; set; }
         public virtual DbSet<SimplePaxSection> SimplePaxSections { get; set; }
         public virtual DbSet<ArmPositionLanding> ArmPositionLandings { get; set; }
@@ -167,5 +166,9 @@ namespace ApiWorld.Models
         public virtual DbSet<MassBalance> MassBalances { get; set; }
         public virtual DbSet<LoadFuelSection> LoadFuelSections { get; set; }
         public virtual DbSet<CrewAircraftConfiguration> CrewAircraftConfigurations { get; set; }
+        public virtual DbSet<DepartureAlternateAirport> DepartureAlternateAirports { get; set; }
+        public virtual DbSet<EnRouteAlternateAirport> EnRouteAlternateAirports { get; set; }
+        public virtual DbSet<PlanningEnRouteAlternateAirport> PlanningEnRouteAlternateAirports { get; set; }
+        public virtual DbSet<Flight> Flights { get; set; }
     }
 }

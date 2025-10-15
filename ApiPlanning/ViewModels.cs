@@ -1881,6 +1881,8 @@ namespace ApiPlanning.ViewModels
 
             apt_infos.Add(new apt_info() { Id = 100011, IATA = "MCX", ICAO = "URML", UTC = 180, TIMEZONE = "" });
 
+            apt_infos.Add(new apt_info() { Id = 152402, IATA = "OUA", ICAO = "DFFD", UTC = 0, TIMEZONE = "" });
+
             return apt_infos;
 
         }

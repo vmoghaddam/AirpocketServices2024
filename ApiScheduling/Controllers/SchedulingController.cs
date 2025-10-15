@@ -4240,10 +4240,11 @@ namespace ApiScheduling.Controllers
                         case 5001:
                         case 300014:
                         case 100001: //meeting
+                        case 100003:
                             coef = 1;
                             break;
                         case 100025:
-                        case 100003:
+                        
                         case 1167:
                         case 1168:
                         case 300013:

@@ -177,6 +177,52 @@
           <Property Name="landing" Type="datetime" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.helper_layover_ranked_new' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="helper_layover_ranked_new">
+          <Key>
+            <PropertyRef Name="date" />
+            <PropertyRef Name="crew_id" />
+            <PropertyRef Name="fdp_id" />
+          </Key>
+          <Property Name="date" Type="date" Nullable="false" />
+          <Property Name="crew_id" Type="int" Nullable="false" />
+          <Property Name="fdp_id" Type="int" Nullable="false" />
+          <Property Name="onblock_last" Type="datetime" />
+          <Property Name="arr_iata" Type="nvarchar" MaxLength="255" />
+          <Property Name="arr_iata_prev" Type="nvarchar" MaxLength="255" />
+          <Property Name="homebase" Type="nvarchar" MaxLength="255" />
+          <Property Name="is_lo" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.rpt_citypair_daily' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="rpt_citypair_daily">
+          <Key>
+            <PropertyRef Name="pax_adults" />
+            <PropertyRef Name="pax_children" />
+            <PropertyRef Name="pax_infants" />
+          </Key>
+          <Property Name="date_local" Type="date" />
+          <Property Name="date" Type="date" />
+          <Property Name="std" Type="datetime" />
+          <Property Name="sta" Type="datetime" />
+          <Property Name="takeoff" Type="datetime" />
+          <Property Name="landing" Type="datetime" />
+          <Property Name="onblock" Type="datetime" />
+          <Property Name="offblock" Type="datetime" />
+          <Property Name="pax_adults" Type="int" Nullable="false" />
+          <Property Name="pax_children" Type="int" Nullable="false" />
+          <Property Name="pax_infants" Type="int" Nullable="false" />
+          <Property Name="pax_total" Type="int" />
+          <Property Name="dep" Type="nvarchar" MaxLength="255" />
+          <Property Name="dep_icao" Type="nvarchar" MaxLength="255" />
+          <Property Name="arr" Type="nvarchar" MaxLength="255" />
+          <Property Name="arr_icao" Type="nvarchar" MaxLength="255" />
+          <Property Name="dep_id" Type="int" />
+          <Property Name="arr_id" Type="int" />
+          <Property Name="route" Type="nvarchar" MaxLength="511" />
+          <Property Name="route_icao" Type="nvarchar" MaxLength="511" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.rpt_crew_route' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="rpt_crew_route">
           <Key>
@@ -2122,6 +2168,42 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySet Name="Ac_MSN" EntityType="Self.Ac_MSN" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="airline_route" EntityType="Self.airline_route" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FDP" EntityType="Self.FDP" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="helper_layover_ranked_new" EntityType="Self.helper_layover_ranked_new" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [helper_layover_ranked_new].[date] AS [date], 
+    [helper_layover_ranked_new].[crew_id] AS [crew_id], 
+    [helper_layover_ranked_new].[fdp_id] AS [fdp_id], 
+    [helper_layover_ranked_new].[onblock_last] AS [onblock_last], 
+    [helper_layover_ranked_new].[arr_iata] AS [arr_iata], 
+    [helper_layover_ranked_new].[arr_iata_prev] AS [arr_iata_prev], 
+    [helper_layover_ranked_new].[homebase] AS [homebase], 
+    [helper_layover_ranked_new].[is_lo] AS [is_lo]
+    FROM [dbo].[helper_layover_ranked_new] AS [helper_layover_ranked_new]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="rpt_citypair_daily" EntityType="Self.rpt_citypair_daily" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [rpt_citypair_daily].[date_local] AS [date_local], 
+    [rpt_citypair_daily].[date] AS [date], 
+    [rpt_citypair_daily].[std] AS [std], 
+    [rpt_citypair_daily].[sta] AS [sta], 
+    [rpt_citypair_daily].[takeoff] AS [takeoff], 
+    [rpt_citypair_daily].[landing] AS [landing], 
+    [rpt_citypair_daily].[onblock] AS [onblock], 
+    [rpt_citypair_daily].[offblock] AS [offblock], 
+    [rpt_citypair_daily].[pax_adults] AS [pax_adults], 
+    [rpt_citypair_daily].[pax_children] AS [pax_children], 
+    [rpt_citypair_daily].[pax_infants] AS [pax_infants], 
+    [rpt_citypair_daily].[pax_total] AS [pax_total], 
+    [rpt_citypair_daily].[dep] AS [dep], 
+    [rpt_citypair_daily].[dep_icao] AS [dep_icao], 
+    [rpt_citypair_daily].[arr] AS [arr], 
+    [rpt_citypair_daily].[arr_icao] AS [arr_icao], 
+    [rpt_citypair_daily].[dep_id] AS [dep_id], 
+    [rpt_citypair_daily].[arr_id] AS [arr_id], 
+    [rpt_citypair_daily].[route] AS [route], 
+    [rpt_citypair_daily].[route_icao] AS [route_icao]
+    FROM [dbo].[rpt_citypair_daily] AS [rpt_citypair_daily]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="rpt_crew_route" EntityType="Self.rpt_crew_route" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [rpt_crew_route].[fdp_id] AS [fdp_id], 
@@ -3714,6 +3796,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySet Name="view_layover" EntityType="ModelEntities.view_layover" />
           <EntitySet Name="ViewCrews" EntityType="ModelEntities.ViewCrew" />
           <EntitySet Name="rpt_crew_route" EntityType="ModelEntities.rpt_crew_route" />
+          <EntitySet Name="helper_layover_ranked_new" EntityType="ModelEntities.helper_layover_ranked_new" />
+          <EntitySet Name="rpt_citypair_daily" EntityType="ModelEntities.rpt_citypair_daily" />
         </EntityContainer>
         <EntityType Name="ViewFinMonthlyRoute">
           <Key>
@@ -5731,6 +5815,48 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="block_jl" Type="Int32" />
           <Property Name="flt_count" Type="Int32" />
         </EntityType>
+        <EntityType Name="helper_layover_ranked_new">
+          <Key>
+            <PropertyRef Name="date" />
+            <PropertyRef Name="crew_id" />
+            <PropertyRef Name="fdp_id" />
+          </Key>
+          <Property Name="date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="crew_id" Type="Int32" Nullable="false" />
+          <Property Name="fdp_id" Type="Int32" Nullable="false" />
+          <Property Name="onblock_last" Type="DateTime" Precision="3" />
+          <Property Name="arr_iata" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="arr_iata_prev" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="homebase" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="is_lo" Type="Int32" />
+        </EntityType>
+        <EntityType Name="rpt_citypair_daily">
+          <Key>
+            <PropertyRef Name="pax_adults" />
+            <PropertyRef Name="pax_children" />
+            <PropertyRef Name="pax_infants" />
+          </Key>
+          <Property Name="date_local" Type="DateTime" Precision="0" />
+          <Property Name="date" Type="DateTime" Precision="0" />
+          <Property Name="std" Type="DateTime" Precision="3" />
+          <Property Name="sta" Type="DateTime" Precision="3" />
+          <Property Name="takeoff" Type="DateTime" Precision="3" />
+          <Property Name="landing" Type="DateTime" Precision="3" />
+          <Property Name="onblock" Type="DateTime" Precision="3" />
+          <Property Name="offblock" Type="DateTime" Precision="3" />
+          <Property Name="pax_adults" Type="Int32" Nullable="false" />
+          <Property Name="pax_children" Type="Int32" Nullable="false" />
+          <Property Name="pax_infants" Type="Int32" Nullable="false" />
+          <Property Name="pax_total" Type="Int32" />
+          <Property Name="dep" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="dep_icao" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="arr" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="arr_icao" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="dep_id" Type="Int32" />
+          <Property Name="arr_id" Type="Int32" />
+          <Property Name="route" Type="String" MaxLength="511" FixedLength="false" Unicode="true" />
+          <Property Name="route_icao" Type="String" MaxLength="511" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7513,6 +7639,46 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
                 <ScalarProperty Name="crew_id" ColumnName="crew_id" />
                 <ScalarProperty Name="rank" ColumnName="rank" />
                 <ScalarProperty Name="fdp_id" ColumnName="fdp_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="helper_layover_ranked_new">
+            <EntityTypeMapping TypeName="ModelEntities.helper_layover_ranked_new">
+              <MappingFragment StoreEntitySet="helper_layover_ranked_new">
+                <ScalarProperty Name="is_lo" ColumnName="is_lo" />
+                <ScalarProperty Name="homebase" ColumnName="homebase" />
+                <ScalarProperty Name="arr_iata_prev" ColumnName="arr_iata_prev" />
+                <ScalarProperty Name="arr_iata" ColumnName="arr_iata" />
+                <ScalarProperty Name="onblock_last" ColumnName="onblock_last" />
+                <ScalarProperty Name="fdp_id" ColumnName="fdp_id" />
+                <ScalarProperty Name="crew_id" ColumnName="crew_id" />
+                <ScalarProperty Name="date" ColumnName="date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="rpt_citypair_daily">
+            <EntityTypeMapping TypeName="ModelEntities.rpt_citypair_daily">
+              <MappingFragment StoreEntitySet="rpt_citypair_daily">
+                <ScalarProperty Name="route_icao" ColumnName="route_icao" />
+                <ScalarProperty Name="route" ColumnName="route" />
+                <ScalarProperty Name="arr_id" ColumnName="arr_id" />
+                <ScalarProperty Name="dep_id" ColumnName="dep_id" />
+                <ScalarProperty Name="arr_icao" ColumnName="arr_icao" />
+                <ScalarProperty Name="arr" ColumnName="arr" />
+                <ScalarProperty Name="dep_icao" ColumnName="dep_icao" />
+                <ScalarProperty Name="dep" ColumnName="dep" />
+                <ScalarProperty Name="pax_total" ColumnName="pax_total" />
+                <ScalarProperty Name="pax_infants" ColumnName="pax_infants" />
+                <ScalarProperty Name="pax_children" ColumnName="pax_children" />
+                <ScalarProperty Name="pax_adults" ColumnName="pax_adults" />
+                <ScalarProperty Name="offblock" ColumnName="offblock" />
+                <ScalarProperty Name="onblock" ColumnName="onblock" />
+                <ScalarProperty Name="landing" ColumnName="landing" />
+                <ScalarProperty Name="takeoff" ColumnName="takeoff" />
+                <ScalarProperty Name="sta" ColumnName="sta" />
+                <ScalarProperty Name="std" ColumnName="std" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="date_local" ColumnName="date_local" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

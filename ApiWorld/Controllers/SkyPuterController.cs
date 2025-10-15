@@ -11,10 +11,6 @@ namespace ApiWorld.Controllers
 {
     public class SkyPuterController : ApiController
     {
-        [Route("api/sky/test")]
-        public async Task<IHttpActionResult> GetSkyTest()
-        {
-
-        }
+         
     }
 }

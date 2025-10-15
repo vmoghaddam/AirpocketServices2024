@@ -525,6 +525,13 @@
           <Property Name="RefID" Type="nvarchar" MaxLength="1000" />
           <Property Name="MilID" Type="nvarchar" MaxLength="1000" />
         </EntityType>
+        <EntityType Name="DepartureAlternateAirport">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ICAO" Type="varchar" MaxLength="255" />
+        </EntityType>
         <EntityType Name="DEPNotam">
           <Key>
             <PropertyRef Name="Id" />
@@ -640,6 +647,13 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Value" Type="nvarchar" MaxLength="500" />
           <Property Name="FlightId" Type="int" />
+        </EntityType>
+        <EntityType Name="EnRouteAlternateAirport">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="ICAO" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="EntryPoint">
           <Key>
@@ -1864,6 +1878,14 @@
           <Property Name="ClimbDescent" Type="nvarchar" MaxLength="16" />
           <Property Name="LegFuel" Type="decimal" Precision="18" Scale="6" />
           <Property Name="Id_Point" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PlanningEnRouteAlternateAirport">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ICAO" Type="varchar" MaxLength="255" />
+          <Property Name="FlightId" Type="int" />
         </EntityType>
         <EntityType Name="Position">
           <Key>
@@ -3189,10 +3211,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Flight_AirportWeatherData">
-          <End Role="AirportWeatherData" Type="Self.AirportWeatherData" Multiplicity="0..1" />
+          <End Role="DepartureAlternateAirport" Type="Self.DepartureAlternateAirport" Multiplicity="0..1" />
           <End Role="Flight" Type="Self.Flight" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="AirportWeatherData">
+            <Principal Role="DepartureAlternateAirport">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Flight">
@@ -3201,10 +3223,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Flight_AirportWeatherData2">
-          <End Role="AirportWeatherData" Type="Self.AirportWeatherData" Multiplicity="0..1" />
+          <End Role="EnRouteAlternateAirport" Type="Self.EnRouteAlternateAirport" Multiplicity="0..1" />
           <End Role="Flight" Type="Self.Flight" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="AirportWeatherData">
+            <Principal Role="EnRouteAlternateAirport">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Flight">
@@ -4090,6 +4112,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_tbl_flt">
+          <End Role="Flight" Type="Self.Flight" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PlanningEnRouteAlternateAirport" Type="Self.PlanningEnRouteAlternateAirport" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Flight">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PlanningEnRouteAlternateAirport">
+              <PropertyRef Name="FlightId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ToAlt1Points_Flights">
           <End Role="Flight" Type="Self.Flight" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -4139,6 +4175,7 @@
           <EntitySet Name="Crew" EntityType="Self.Crew" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CrewAircraftConfiguration" EntityType="Self.CrewAircraftConfiguration" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CustomReferences" EntityType="Self.CustomReferences" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DepartureAlternateAirport" EntityType="Self.DepartureAlternateAirport" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DEPNotam" EntityType="Self.DEPNotam" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DEPNotamPartInformation" EntityType="Self.DEPNotamPartInformation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DEPTaf" EntityType="Self.DEPTaf" Schema="dbo" store:Type="Tables" />
@@ -4148,6 +4185,7 @@
           <EntitySet Name="DryOperating" EntityType="Self.DryOperating" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EcoInfo" EntityType="Self.EcoInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EnrouteAlternate" EntityType="Self.EnrouteAlternate" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EnRouteAlternateAirport" EntityType="Self.EnRouteAlternateAirport" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EntryPoint" EntityType="Self.EntryPoint" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EqualTimeAirport" EntityType="Self.EqualTimeAirport" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EqualTimePoint" EntityType="Self.EqualTimePoint" Schema="dbo" store:Type="Tables" />
@@ -4229,6 +4267,7 @@
           <EntitySet Name="Pax" EntityType="Self.Pax" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Payload" EntityType="Self.Payload" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PDPPoints" EntityType="Self.PDPPoints" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PlanningEnRouteAlternateAirport" EntityType="Self.PlanningEnRouteAlternateAirport" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Position" EntityType="Self.Position" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PpsVersionInformation" EntityType="Self.PpsVersionInformation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RCFAltRoutePoints" EntityType="Self.RCFAltRoutePoints" Schema="dbo" store:Type="Tables" />
@@ -4536,11 +4575,11 @@
             <End Role="Flight" EntitySet="Flight" />
           </AssociationSet>
           <AssociationSet Name="FK_Flight_AirportWeatherData" Association="Self.FK_Flight_AirportWeatherData">
-            <End Role="AirportWeatherData" EntitySet="AirportWeatherData" />
+            <End Role="DepartureAlternateAirport" EntitySet="DepartureAlternateAirport" />
             <End Role="Flight" EntitySet="Flight" />
           </AssociationSet>
           <AssociationSet Name="FK_Flight_AirportWeatherData2" Association="Self.FK_Flight_AirportWeatherData2">
-            <End Role="AirportWeatherData" EntitySet="AirportWeatherData" />
+            <End Role="EnRouteAlternateAirport" EntitySet="EnRouteAlternateAirport" />
             <End Role="Flight" EntitySet="Flight" />
           </AssociationSet>
           <AssociationSet Name="FK_Flight_ATC" Association="Self.FK_Flight_ATC">
@@ -4814,6 +4853,10 @@
           <AssociationSet Name="FK_StdAlternates_Flight" Association="Self.FK_StdAlternates_Flight">
             <End Role="Flight" EntitySet="Flight" />
             <End Role="StdAlternates" EntitySet="StdAlternates" />
+          </AssociationSet>
+          <AssociationSet Name="fk_tbl_flt" Association="Self.fk_tbl_flt">
+            <End Role="Flight" EntitySet="Flight" />
+            <End Role="PlanningEnRouteAlternateAirport" EntitySet="PlanningEnRouteAlternateAirport" />
           </AssociationSet>
           <AssociationSet Name="FK_ToAlt1Points_Flights" Association="Self.FK_ToAlt1Points_Flights">
             <End Role="Flight" EntitySet="Flight" />
@@ -5234,8 +5277,94 @@
             <End Role="SidStarInfoStar" EntitySet="SidStarInfoStars" />
             <End Role="SidAndStarProcedure" EntitySet="SidAndStarProcedures" />
           </AssociationSet>
-          <EntitySet Name="Flights" EntityType="ppaModel.Flight" />
           <EntitySet Name="Loads" EntityType="ppaModel.Load" />
+          <AssociationSet Name="FK_Load_Cargo" Association="ppaModel.FK_Load_Cargo">
+            <End Role="Cargo" EntitySet="Cargoes" />
+            <End Role="Load" EntitySet="Loads" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Load_DryOperating" Association="ppaModel.FK_Load_DryOperating">
+            <End Role="DryOperating" EntitySet="DryOperatings" />
+            <End Role="Load" EntitySet="Loads" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Load_Fuel" Association="ppaModel.FK_Load_Fuel">
+            <End Role="Fuel" EntitySet="Fuels" />
+            <End Role="Load" EntitySet="Loads" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Load_Pax" Association="ppaModel.FK_Load_Pax">
+            <End Role="Pax" EntitySet="Paxes" />
+            <End Role="Load" EntitySet="Loads" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Load_Payload" Association="ppaModel.FK_Load_Payload">
+            <End Role="Payload" EntitySet="Payloads" />
+            <End Role="Load" EntitySet="Loads" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LoadCargo_Load" Association="ppaModel.FK_LoadCargo_Load">
+            <End Role="Load" EntitySet="Loads" />
+            <End Role="Load_Cargo" EntitySet="Load_Cargo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LoadDryOperating_Load" Association="ppaModel.FK_LoadDryOperating_Load">
+            <End Role="Load" EntitySet="Loads" />
+            <End Role="Load_DryOperating" EntitySet="Load_DryOperating" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LoadFuel_Load" Association="ppaModel.FK_LoadFuel_Load">
+            <End Role="Load" EntitySet="Loads" />
+            <End Role="Load_Fuel" EntitySet="Load_Fuel" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LoadMassBalance_Load" Association="ppaModel.FK_LoadMassBalance_Load">
+            <End Role="Load" EntitySet="Loads" />
+            <End Role="Load_MassBalance" EntitySet="Load_MassBalance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LoadPax_Load" Association="ppaModel.FK_LoadPax_Load">
+            <End Role="Load" EntitySet="Loads" />
+            <End Role="Load_Pax" EntitySet="Load_Pax" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LoadPayload_Load" Association="ppaModel.FK_LoadPayload_Load">
+            <End Role="Load" EntitySet="Loads" />
+            <End Role="Load_Payload" EntitySet="Load_Payload" />
+          </AssociationSet>
+          <EntitySet Name="SimplePaxSections" EntityType="ppaModel.SimplePaxSection" />
+          <AssociationSet Name="FK__SimplePax__PaxId__74CE504D" Association="ppaModel.FK__SimplePax__PaxId__74CE504D">
+            <End Role="Pax" EntitySet="Paxes" />
+            <End Role="SimplePaxSection" EntitySet="SimplePaxSections" />
+          </AssociationSet>
+          <EntitySet Name="ArmPositionLandings" EntityType="ppaModel.ArmPositionLanding" />
+          <EntitySet Name="ArmPositionTakeoffs" EntityType="ppaModel.ArmPositionTakeoff" />
+          <EntitySet Name="ArmPositionZeroFuels" EntityType="ppaModel.ArmPositionZeroFuel" />
+          <EntitySet Name="MassBalances" EntityType="ppaModel.MassBalance" />
+          <AssociationSet Name="FK_MassBalance_ArmPosition2" Association="ppaModel.FK_MassBalance_ArmPosition2">
+            <End Role="ArmPositionLanding" EntitySet="ArmPositionLandings" />
+            <End Role="MassBalance" EntitySet="MassBalances" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MassBalance_ArmPosition" Association="ppaModel.FK_MassBalance_ArmPosition">
+            <End Role="ArmPositionTakeoff" EntitySet="ArmPositionTakeoffs" />
+            <End Role="MassBalance" EntitySet="MassBalances" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MassBalance_ArmPosition3" Association="ppaModel.FK_MassBalance_ArmPosition3">
+            <End Role="ArmPositionZeroFuel" EntitySet="ArmPositionZeroFuels" />
+            <End Role="MassBalance" EntitySet="MassBalances" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Load_MassBalance" Association="ppaModel.FK_Load_MassBalance">
+            <End Role="MassBalance" EntitySet="MassBalances" />
+            <End Role="Load" EntitySet="Loads" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MassBalance_MassBalanceIndex" Association="ppaModel.FK_MassBalance_MassBalanceIndex">
+            <End Role="MassBalanceIndex" EntitySet="MassBalanceIndexes" />
+            <End Role="MassBalance" EntitySet="MassBalances" />
+          </AssociationSet>
+          <EntitySet Name="LoadFuelSections" EntityType="ppaModel.LoadFuelSection" />
+          <AssociationSet Name="FK__LoadFuelS__FuelI__7D63964E" Association="ppaModel.FK__LoadFuelS__FuelI__7D63964E">
+            <End Role="Fuel" EntitySet="Fuels" />
+            <End Role="LoadFuelSection" EntitySet="LoadFuelSections" />
+          </AssociationSet>
+          <EntitySet Name="CrewAircraftConfigurations" EntityType="ppaModel.CrewAircraftConfiguration" />
+          <AssociationSet Name="FK__Crew_copy__Fligh__004002F9" Association="ppaModel.FK__Crew_copy__Fligh__004002F9">
+            <End Role="AircraftConfiguration" EntitySet="AircraftConfigurations" />
+            <End Role="CrewAircraftConfiguration" EntitySet="CrewAircraftConfigurations" />
+          </AssociationSet>
+          <EntitySet Name="DepartureAlternateAirports" EntityType="ppaModel.DepartureAlternateAirport" />
+          <EntitySet Name="EnRouteAlternateAirports" EntityType="ppaModel.EnRouteAlternateAirport" />
+          <EntitySet Name="PlanningEnRouteAlternateAirports" EntityType="ppaModel.PlanningEnRouteAlternateAirport" />
+          <EntitySet Name="Flights" EntityType="ppaModel.Flight" />
           <AssociationSet Name="fk_adapt_flt" Association="ppaModel.fk_adapt_flt">
             <End Role="Flight" EntitySet="Flights" />
             <End Role="AdequateApt" EntitySet="AdequateApts" />
@@ -5255,14 +5384,6 @@
           <AssociationSet Name="FK_Airports_Flight" Association="ppaModel.FK_Airports_Flight">
             <End Role="Flight" EntitySet="Flights" />
             <End Role="Airport" EntitySet="Airports" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Flight_AirportWeatherData" Association="ppaModel.FK_Flight_AirportWeatherData">
-            <End Role="AirportWeatherData" EntitySet="AirportWeatherDatas" />
-            <End Role="Flight" EntitySet="Flights" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Flight_AirportWeatherData2" Association="ppaModel.FK_Flight_AirportWeatherData2">
-            <End Role="AirportWeatherData" EntitySet="AirportWeatherDatas" />
-            <End Role="Flight" EntitySet="Flights" />
           </AssociationSet>
           <AssociationSet Name="fk_awdpl_flt" Association="ppaModel.fk_awdpl_flt">
             <End Role="Flight" EntitySet="Flights" />
@@ -5304,10 +5425,6 @@
             <End Role="ATC" EntitySet="ATCs" />
             <End Role="Flight" EntitySet="Flights" />
           </AssociationSet>
-          <AssociationSet Name="FK_Load_Cargo" Association="ppaModel.FK_Load_Cargo">
-            <End Role="Cargo" EntitySet="Cargoes" />
-            <End Role="Load" EntitySet="Loads" />
-          </AssociationSet>
           <AssociationSet Name="fk_ctbl_flt" Association="ppaModel.fk_ctbl_flt">
             <End Role="Flight" EntitySet="Flights" />
             <End Role="CorrectionTable" EntitySet="CorrectionTables" />
@@ -5318,6 +5435,10 @@
           </AssociationSet>
           <AssociationSet Name="FK_Flight_CustomReferences" Association="ppaModel.FK_Flight_CustomReferences">
             <End Role="CustomReference" EntitySet="CustomReferences" />
+            <End Role="Flight" EntitySet="Flights" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Flight_AirportWeatherData" Association="ppaModel.FK_Flight_AirportWeatherData">
+            <End Role="DepartureAlternateAirport" EntitySet="DepartureAlternateAirports" />
             <End Role="Flight" EntitySet="Flights" />
           </AssociationSet>
           <AssociationSet Name="FK_DEPNotam_Flight" Association="ppaModel.FK_DEPNotam_Flight">
@@ -5344,13 +5465,13 @@
             <End Role="DESTTaf" EntitySet="DESTTafs" />
             <End Role="Flight" EntitySet="Flights" />
           </AssociationSet>
-          <AssociationSet Name="FK_Load_DryOperating" Association="ppaModel.FK_Load_DryOperating">
-            <End Role="DryOperating" EntitySet="DryOperatings" />
-            <End Role="Load" EntitySet="Loads" />
-          </AssociationSet>
           <AssociationSet Name="fk_enalt_flight" Association="ppaModel.fk_enalt_flight">
             <End Role="Flight" EntitySet="Flights" />
             <End Role="EnrouteAlternate" EntitySet="EnrouteAlternates" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Flight_AirportWeatherData2" Association="ppaModel.FK_Flight_AirportWeatherData2">
+            <End Role="EnRouteAlternateAirport" EntitySet="EnRouteAlternateAirports" />
+            <End Role="Flight" EntitySet="Flights" />
           </AssociationSet>
           <AssociationSet Name="FK_Flight_EtopsInformation" Association="ppaModel.FK_Flight_EtopsInformation">
             <End Role="EtopsInformation" EntitySet="EtopsInformations" />
@@ -5460,84 +5581,13 @@
             <End Role="Flight" EntitySet="Flights" />
             <End Role="StdAlternate" EntitySet="StdAlternates" />
           </AssociationSet>
+          <AssociationSet Name="fk_tbl_flt" Association="ppaModel.fk_tbl_flt">
+            <End Role="Flight" EntitySet="Flights" />
+            <End Role="PlanningEnRouteAlternateAirport" EntitySet="PlanningEnRouteAlternateAirports" />
+          </AssociationSet>
           <AssociationSet Name="FK_ToAlt1Points_Flights" Association="ppaModel.FK_ToAlt1Points_Flights">
             <End Role="Flight" EntitySet="Flights" />
             <End Role="ToAlt1Points" EntitySet="ToAlt1Points" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Load_Fuel" Association="ppaModel.FK_Load_Fuel">
-            <End Role="Fuel" EntitySet="Fuels" />
-            <End Role="Load" EntitySet="Loads" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Load_Pax" Association="ppaModel.FK_Load_Pax">
-            <End Role="Pax" EntitySet="Paxes" />
-            <End Role="Load" EntitySet="Loads" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Load_Payload" Association="ppaModel.FK_Load_Payload">
-            <End Role="Payload" EntitySet="Payloads" />
-            <End Role="Load" EntitySet="Loads" />
-          </AssociationSet>
-          <AssociationSet Name="FK_LoadCargo_Load" Association="ppaModel.FK_LoadCargo_Load">
-            <End Role="Load" EntitySet="Loads" />
-            <End Role="Load_Cargo" EntitySet="Load_Cargo" />
-          </AssociationSet>
-          <AssociationSet Name="FK_LoadDryOperating_Load" Association="ppaModel.FK_LoadDryOperating_Load">
-            <End Role="Load" EntitySet="Loads" />
-            <End Role="Load_DryOperating" EntitySet="Load_DryOperating" />
-          </AssociationSet>
-          <AssociationSet Name="FK_LoadFuel_Load" Association="ppaModel.FK_LoadFuel_Load">
-            <End Role="Load" EntitySet="Loads" />
-            <End Role="Load_Fuel" EntitySet="Load_Fuel" />
-          </AssociationSet>
-          <AssociationSet Name="FK_LoadMassBalance_Load" Association="ppaModel.FK_LoadMassBalance_Load">
-            <End Role="Load" EntitySet="Loads" />
-            <End Role="Load_MassBalance" EntitySet="Load_MassBalance" />
-          </AssociationSet>
-          <AssociationSet Name="FK_LoadPax_Load" Association="ppaModel.FK_LoadPax_Load">
-            <End Role="Load" EntitySet="Loads" />
-            <End Role="Load_Pax" EntitySet="Load_Pax" />
-          </AssociationSet>
-          <AssociationSet Name="FK_LoadPayload_Load" Association="ppaModel.FK_LoadPayload_Load">
-            <End Role="Load" EntitySet="Loads" />
-            <End Role="Load_Payload" EntitySet="Load_Payload" />
-          </AssociationSet>
-          <EntitySet Name="SimplePaxSections" EntityType="ppaModel.SimplePaxSection" />
-          <AssociationSet Name="FK__SimplePax__PaxId__74CE504D" Association="ppaModel.FK__SimplePax__PaxId__74CE504D">
-            <End Role="Pax" EntitySet="Paxes" />
-            <End Role="SimplePaxSection" EntitySet="SimplePaxSections" />
-          </AssociationSet>
-          <EntitySet Name="ArmPositionLandings" EntityType="ppaModel.ArmPositionLanding" />
-          <EntitySet Name="ArmPositionTakeoffs" EntityType="ppaModel.ArmPositionTakeoff" />
-          <EntitySet Name="ArmPositionZeroFuels" EntityType="ppaModel.ArmPositionZeroFuel" />
-          <EntitySet Name="MassBalances" EntityType="ppaModel.MassBalance" />
-          <AssociationSet Name="FK_MassBalance_ArmPosition2" Association="ppaModel.FK_MassBalance_ArmPosition2">
-            <End Role="ArmPositionLanding" EntitySet="ArmPositionLandings" />
-            <End Role="MassBalance" EntitySet="MassBalances" />
-          </AssociationSet>
-          <AssociationSet Name="FK_MassBalance_ArmPosition" Association="ppaModel.FK_MassBalance_ArmPosition">
-            <End Role="ArmPositionTakeoff" EntitySet="ArmPositionTakeoffs" />
-            <End Role="MassBalance" EntitySet="MassBalances" />
-          </AssociationSet>
-          <AssociationSet Name="FK_MassBalance_ArmPosition3" Association="ppaModel.FK_MassBalance_ArmPosition3">
-            <End Role="ArmPositionZeroFuel" EntitySet="ArmPositionZeroFuels" />
-            <End Role="MassBalance" EntitySet="MassBalances" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Load_MassBalance" Association="ppaModel.FK_Load_MassBalance">
-            <End Role="MassBalance" EntitySet="MassBalances" />
-            <End Role="Load" EntitySet="Loads" />
-          </AssociationSet>
-          <AssociationSet Name="FK_MassBalance_MassBalanceIndex" Association="ppaModel.FK_MassBalance_MassBalanceIndex">
-            <End Role="MassBalanceIndex" EntitySet="MassBalanceIndexes" />
-            <End Role="MassBalance" EntitySet="MassBalances" />
-          </AssociationSet>
-          <EntitySet Name="LoadFuelSections" EntityType="ppaModel.LoadFuelSection" />
-          <AssociationSet Name="FK__LoadFuelS__FuelI__7D63964E" Association="ppaModel.FK__LoadFuelS__FuelI__7D63964E">
-            <End Role="Fuel" EntitySet="Fuels" />
-            <End Role="LoadFuelSection" EntitySet="LoadFuelSections" />
-          </AssociationSet>
-          <EntitySet Name="CrewAircraftConfigurations" EntityType="ppaModel.CrewAircraftConfiguration" />
-          <AssociationSet Name="FK__Crew_copy__Fligh__004002F9" Association="ppaModel.FK__Crew_copy__Fligh__004002F9">
-            <End Role="AircraftConfiguration" EntitySet="AircraftConfigurations" />
-            <End Role="CrewAircraftConfiguration" EntitySet="CrewAircraftConfigurations" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="AdequateNotam">
@@ -5581,9 +5631,9 @@
           <Property Name="Name" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="FlightID" Type="Int32" />
           <NavigationProperty Name="AircraftConfigurationCrews" Relationship="ppaModel.FK_ACCrew_Config" FromRole="AircraftConfiguration" ToRole="AircraftConfigurationCrew" />
+          <NavigationProperty Name="CrewAircraftConfigurations" Relationship="ppaModel.FK__Crew_copy__Fligh__004002F9" FromRole="AircraftConfiguration" ToRole="CrewAircraftConfiguration" />
           <NavigationProperty Name="Flight" Relationship="ppaModel.fk_aconf_flt" FromRole="AircraftConfiguration" ToRole="Flight" />
           <NavigationProperty Name="Flights" Relationship="ppaModel.FK_Flight_AircraftConfiguration" FromRole="AircraftConfiguration" ToRole="Flight" />
-          <NavigationProperty Name="CrewAircraftConfigurations" Relationship="ppaModel.FK__Crew_copy__Fligh__004002F9" FromRole="AircraftConfiguration" ToRole="CrewAircraftConfiguration" />
           </EntityType>
         <EntityType Name="AircraftConfigurationCrew">
           <Key>
@@ -5667,8 +5717,6 @@
           <NavigationProperty Name="ContingencySavingDatas" Relationship="ppaModel.FK_ContingencySavingData_AirportWeatherData" FromRole="AirportWeatherData" ToRole="ContingencySavingData" />
           <NavigationProperty Name="ContingencySavingDatas1" Relationship="ppaModel.FK_ContingencySavingData_AirportWeatherData2" FromRole="AirportWeatherData" ToRole="ContingencySavingData" />
           <NavigationProperty Name="ContingencySavingDatas2" Relationship="ppaModel.FK_ContingencySavingData_AirportWeatherData3" FromRole="AirportWeatherData" ToRole="ContingencySavingData" />
-          <NavigationProperty Name="Flights" Relationship="ppaModel.FK_Flight_AirportWeatherData" FromRole="AirportWeatherData" ToRole="Flight" />
-          <NavigationProperty Name="Flights1" Relationship="ppaModel.FK_Flight_AirportWeatherData2" FromRole="AirportWeatherData" ToRole="Flight" />
           </EntityType>
         <EntityType Name="AirportWeatherDataPlanningEnRouteAlternate">
           <Key>
@@ -8620,6 +8668,388 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Load">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FuelId" Type="Int32" />
+          <Property Name="CargoId" Type="Int32" />
+          <Property Name="PaxId" Type="Int32" />
+          <Property Name="MassBalanceId" Type="Int32" />
+          <Property Name="PayloadId" Type="Int32" />
+          <Property Name="DryOperatingId" Type="Int32" />
+          <Property Name="FlightID" Type="Int32" />
+          <NavigationProperty Name="Cargo" Relationship="ppaModel.FK_Load_Cargo" FromRole="Load" ToRole="Cargo" />
+          <NavigationProperty Name="DryOperating" Relationship="ppaModel.FK_Load_DryOperating" FromRole="Load" ToRole="DryOperating" />
+          <NavigationProperty Name="Fuel" Relationship="ppaModel.FK_Load_Fuel" FromRole="Load" ToRole="Fuel" />
+          <NavigationProperty Name="Pax" Relationship="ppaModel.FK_Load_Pax" FromRole="Load" ToRole="Pax" />
+          <NavigationProperty Name="Payload" Relationship="ppaModel.FK_Load_Payload" FromRole="Load" ToRole="Payload" />
+          <NavigationProperty Name="Load_Cargo" Relationship="ppaModel.FK_LoadCargo_Load" FromRole="Load" ToRole="Load_Cargo" />
+          <NavigationProperty Name="Load_DryOperating" Relationship="ppaModel.FK_LoadDryOperating_Load" FromRole="Load" ToRole="Load_DryOperating" />
+          <NavigationProperty Name="Load_Fuel" Relationship="ppaModel.FK_LoadFuel_Load" FromRole="Load" ToRole="Load_Fuel" />
+          <NavigationProperty Name="Load_MassBalance" Relationship="ppaModel.FK_LoadMassBalance_Load" FromRole="Load" ToRole="Load_MassBalance" />
+          <NavigationProperty Name="Load_Pax" Relationship="ppaModel.FK_LoadPax_Load" FromRole="Load" ToRole="Load_Pax" />
+          <NavigationProperty Name="Load_Payload" Relationship="ppaModel.FK_LoadPayload_Load" FromRole="Load" ToRole="Load_Payload" />
+          <NavigationProperty Name="MassBalance" Relationship="ppaModel.FK_Load_MassBalance" FromRole="Load" ToRole="MassBalance" />
+          <NavigationProperty Name="Flights" Relationship="ppaModel.fk_flt_load" FromRole="Load" ToRole="Flight" />
+        </EntityType>
+        <Association Name="FK_Load_Cargo">
+          <End Type="ppaModel.Cargo" Role="Cargo" Multiplicity="0..1" />
+          <End Type="ppaModel.Load" Role="Load" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cargo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Load">
+              <PropertyRef Name="CargoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Load_DryOperating">
+          <End Type="ppaModel.DryOperating" Role="DryOperating" Multiplicity="0..1" />
+          <End Type="ppaModel.Load" Role="Load" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DryOperating">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Load">
+              <PropertyRef Name="DryOperatingId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Load_Fuel">
+          <End Type="ppaModel.Fuel" Role="Fuel" Multiplicity="0..1" />
+          <End Type="ppaModel.Load" Role="Load" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Fuel">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Load">
+              <PropertyRef Name="FuelId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Load_Pax">
+          <End Type="ppaModel.Pax" Role="Pax" Multiplicity="0..1" />
+          <End Type="ppaModel.Load" Role="Load" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pax">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Load">
+              <PropertyRef Name="PaxId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Load_Payload">
+          <End Type="ppaModel.Payload" Role="Payload" Multiplicity="0..1" />
+          <End Type="ppaModel.Load" Role="Load" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Payload">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Load">
+              <PropertyRef Name="PayloadId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LoadCargo_Load">
+          <End Type="ppaModel.Load" Role="Load" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ppaModel.Load_Cargo" Role="Load_Cargo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Load">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Load_Cargo">
+              <PropertyRef Name="LoadId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LoadDryOperating_Load">
+          <End Type="ppaModel.Load" Role="Load" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ppaModel.Load_DryOperating" Role="Load_DryOperating" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Load">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Load_DryOperating">
+              <PropertyRef Name="LoadId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LoadFuel_Load">
+          <End Type="ppaModel.Load" Role="Load" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ppaModel.Load_Fuel" Role="Load_Fuel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Load">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Load_Fuel">
+              <PropertyRef Name="LoadId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LoadMassBalance_Load">
+          <End Type="ppaModel.Load" Role="Load" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ppaModel.Load_MassBalance" Role="Load_MassBalance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Load">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Load_MassBalance">
+              <PropertyRef Name="LoadId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LoadPax_Load">
+          <End Type="ppaModel.Load" Role="Load" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ppaModel.Load_Pax" Role="Load_Pax" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Load">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Load_Pax">
+              <PropertyRef Name="LoadId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LoadPayload_Load">
+          <End Type="ppaModel.Load" Role="Load" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ppaModel.Load_Payload" Role="Load_Payload" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Load">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Load_Payload">
+              <PropertyRef Name="LoadId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="SimplePaxSection">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Row" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="ActPax" Type="Int32" />
+          <Property Name="ActMass" Type="Int32" />
+          <Property Name="Male" Type="Int32" />
+          <Property Name="Female" Type="Int32" />
+          <Property Name="Children" Type="Int32" />
+          <Property Name="Infant" Type="Int32" />
+          <Property Name="CustMass" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="PaxId" Type="Int32" />
+          <NavigationProperty Name="Pax" Relationship="ppaModel.FK__SimplePax__PaxId__74CE504D" FromRole="SimplePaxSection" ToRole="Pax" />
+        </EntityType>
+        <Association Name="FK__SimplePax__PaxId__74CE504D">
+          <End Type="ppaModel.Pax" Role="Pax" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ppaModel.SimplePaxSection" Role="SimplePaxSection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pax">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SimplePaxSection">
+              <PropertyRef Name="PaxId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ArmPositionLanding">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ForwardLimit" Type="Double" />
+          <Property Name="ActualPosition" Type="Double" />
+          <Property Name="AftLimit" Type="Double" />
+          <NavigationProperty Name="MassBalances" Relationship="ppaModel.FK_MassBalance_ArmPosition2" FromRole="ArmPositionLanding" ToRole="MassBalance" />
+        </EntityType>
+        <EntityType Name="ArmPositionTakeoff">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ForwardLimit" Type="Double" />
+          <Property Name="ActualPosition" Type="Double" />
+          <Property Name="AftLimit" Type="Double" />
+          <NavigationProperty Name="MassBalances" Relationship="ppaModel.FK_MassBalance_ArmPosition" FromRole="ArmPositionTakeoff" ToRole="MassBalance" />
+        </EntityType>
+        <EntityType Name="ArmPositionZeroFuel">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ForwardLimit" Type="Double" />
+          <Property Name="ActualPosition" Type="Double" />
+          <Property Name="AftLimit" Type="Double" />
+          <NavigationProperty Name="MassBalances" Relationship="ppaModel.FK_MassBalance_ArmPosition3" FromRole="ArmPositionZeroFuel" ToRole="MassBalance" />
+        </EntityType>
+        <EntityType Name="MassBalance">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TakeoffId" Type="Int32" />
+          <Property Name="LandingId" Type="Int32" />
+          <Property Name="ZeroFuelId" Type="Int32" />
+          <Property Name="IndexId" Type="Int32" />
+          <NavigationProperty Name="ArmPositionLanding" Relationship="ppaModel.FK_MassBalance_ArmPosition2" FromRole="MassBalance" ToRole="ArmPositionLanding" />
+          <NavigationProperty Name="ArmPositionTakeoff" Relationship="ppaModel.FK_MassBalance_ArmPosition" FromRole="MassBalance" ToRole="ArmPositionTakeoff" />
+          <NavigationProperty Name="ArmPositionZeroFuel" Relationship="ppaModel.FK_MassBalance_ArmPosition3" FromRole="MassBalance" ToRole="ArmPositionZeroFuel" />
+          <NavigationProperty Name="Loads" Relationship="ppaModel.FK_Load_MassBalance" FromRole="MassBalance" ToRole="Load" />
+          <NavigationProperty Name="MassBalanceIndex" Relationship="ppaModel.FK_MassBalance_MassBalanceIndex" FromRole="MassBalance" ToRole="MassBalanceIndex" />
+        </EntityType>
+        <Association Name="FK_MassBalance_ArmPosition2">
+          <End Type="ppaModel.ArmPositionLanding" Role="ArmPositionLanding" Multiplicity="0..1" />
+          <End Type="ppaModel.MassBalance" Role="MassBalance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ArmPositionLanding">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MassBalance">
+              <PropertyRef Name="LandingId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MassBalance_ArmPosition">
+          <End Type="ppaModel.ArmPositionTakeoff" Role="ArmPositionTakeoff" Multiplicity="0..1" />
+          <End Type="ppaModel.MassBalance" Role="MassBalance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ArmPositionTakeoff">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MassBalance">
+              <PropertyRef Name="TakeoffId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MassBalance_ArmPosition3">
+          <End Type="ppaModel.ArmPositionZeroFuel" Role="ArmPositionZeroFuel" Multiplicity="0..1" />
+          <End Type="ppaModel.MassBalance" Role="MassBalance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ArmPositionZeroFuel">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MassBalance">
+              <PropertyRef Name="ZeroFuelId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Load_MassBalance">
+          <End Type="ppaModel.MassBalance" Role="MassBalance" Multiplicity="0..1" />
+          <End Type="ppaModel.Load" Role="Load" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MassBalance">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Load">
+              <PropertyRef Name="MassBalanceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MassBalance_MassBalanceIndex">
+          <End Type="ppaModel.MassBalanceIndex" Role="MassBalanceIndex" Multiplicity="0..1" />
+          <End Type="ppaModel.MassBalance" Role="MassBalance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MassBalanceIndex">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MassBalance">
+              <PropertyRef Name="IndexId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="LoadFuelSection">
+          <Key>
+            <PropertyRef Name="Id_key" />
+          </Key>
+          <Property Name="Id_key" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ActMass" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="ID" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="FuelId" Type="Int32" />
+          <NavigationProperty Name="Fuel" Relationship="ppaModel.FK__LoadFuelS__FuelI__7D63964E" FromRole="LoadFuelSection" ToRole="Fuel" />
+        </EntityType>
+        <Association Name="FK__LoadFuelS__FuelI__7D63964E">
+          <End Type="ppaModel.Fuel" Role="Fuel" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ppaModel.LoadFuelSection" Role="LoadFuelSection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Fuel">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LoadFuelSection">
+              <PropertyRef Name="FuelId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="CrewAircraftConfiguration">
+          <Key>
+            <PropertyRef Name="Id_key" />
+          </Key>
+          <Property Name="Id_key" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="CrewType" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="CrewName" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Initials" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="GSM" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Mass" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="AircraftConfigurationId" Type="Int32" />
+          <NavigationProperty Name="AircraftConfiguration" Relationship="ppaModel.FK__Crew_copy__Fligh__004002F9" FromRole="CrewAircraftConfiguration" ToRole="AircraftConfiguration" />
+        </EntityType>
+        <Association Name="FK__Crew_copy__Fligh__004002F9">
+          <End Type="ppaModel.AircraftConfiguration" Role="AircraftConfiguration" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ppaModel.CrewAircraftConfiguration" Role="CrewAircraftConfiguration" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AircraftConfiguration">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CrewAircraftConfiguration">
+              <PropertyRef Name="AircraftConfigurationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="DepartureAlternateAirport">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ICAO" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Flights" Relationship="ppaModel.FK_Flight_AirportWeatherData" FromRole="DepartureAlternateAirport" ToRole="Flight" />
+        </EntityType>
+        <EntityType Name="EnRouteAlternateAirport">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="ICAO" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Flights" Relationship="ppaModel.FK_Flight_AirportWeatherData2" FromRole="EnRouteAlternateAirport" ToRole="Flight" />
+        </EntityType>
+        <EntityType Name="PlanningEnRouteAlternateAirport">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ICAO" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="FlightId" Type="Int32" />
+          <NavigationProperty Name="Flight" Relationship="ppaModel.fk_tbl_flt" FromRole="PlanningEnRouteAlternateAirport" ToRole="Flight" />
+        </EntityType>
         <EntityType Name="Flight">
           <Key>
             <PropertyRef Name="Id" />
@@ -8792,8 +9222,6 @@
           <NavigationProperty Name="AircraftConfigurations" Relationship="ppaModel.fk_aconf_flt" FromRole="Flight" ToRole="AircraftConfiguration" />
           <NavigationProperty Name="AircraftConfiguration" Relationship="ppaModel.FK_Flight_AircraftConfiguration" FromRole="Flight" ToRole="AircraftConfiguration" />
           <NavigationProperty Name="Airports" Relationship="ppaModel.FK_Airports_Flight" FromRole="Flight" ToRole="Airport" />
-          <NavigationProperty Name="AirportWeatherData" Relationship="ppaModel.FK_Flight_AirportWeatherData" FromRole="Flight" ToRole="AirportWeatherData" />
-          <NavigationProperty Name="AirportWeatherData1" Relationship="ppaModel.FK_Flight_AirportWeatherData2" FromRole="Flight" ToRole="AirportWeatherData" />
           <NavigationProperty Name="AirportWeatherDataPlanningEnRouteAlternates" Relationship="ppaModel.fk_awdpl_flt" FromRole="Flight" ToRole="AirportWeatherDataPlanningEnRouteAlternate" />
           <NavigationProperty Name="ALT1Notam" Relationship="ppaModel.FK_ALT1Notam_Flight" FromRole="Flight" ToRole="ALT1Notam" />
           <NavigationProperty Name="Alt1Points" Relationship="ppaModel.FK_Alt1Points_Flights" FromRole="Flight" ToRole="Alt1Points" />
@@ -8807,6 +9235,7 @@
           <NavigationProperty Name="CorrectionTables" Relationship="ppaModel.fk_ctbl_flt" FromRole="Flight" ToRole="CorrectionTable" />
           <NavigationProperty Name="Crews" Relationship="ppaModel.FK__Crew__FlightID__703EA55A" FromRole="Flight" ToRole="Crew" />
           <NavigationProperty Name="CustomReference" Relationship="ppaModel.FK_Flight_CustomReferences" FromRole="Flight" ToRole="CustomReference" />
+          <NavigationProperty Name="DepartureAlternateAirport" Relationship="ppaModel.FK_Flight_AirportWeatherData" FromRole="Flight" ToRole="DepartureAlternateAirport" />
           <NavigationProperty Name="DEPNotams" Relationship="ppaModel.FK_DEPNotam_Flight" FromRole="Flight" ToRole="DEPNotam" />
           <NavigationProperty Name="DEPTafs" Relationship="ppaModel.FK_DEPTaf_Flight" FromRole="Flight" ToRole="DEPTaf" />
           <NavigationProperty Name="DEPTaf" Relationship="ppaModel.FK_Flight_Taf" FromRole="Flight" ToRole="DEPTaf" />
@@ -8814,6 +9243,7 @@
           <NavigationProperty Name="DESTTafs" Relationship="ppaModel.FK_DESTTaf_Flight" FromRole="Flight" ToRole="DESTTaf" />
           <NavigationProperty Name="DESTTaf" Relationship="ppaModel.FK_Flight_Taf2" FromRole="Flight" ToRole="DESTTaf" />
           <NavigationProperty Name="EnrouteAlternates" Relationship="ppaModel.fk_enalt_flight" FromRole="Flight" ToRole="EnrouteAlternate" />
+          <NavigationProperty Name="EnRouteAlternateAirport" Relationship="ppaModel.FK_Flight_AirportWeatherData2" FromRole="Flight" ToRole="EnRouteAlternateAirport" />
           <NavigationProperty Name="EtopsInformation" Relationship="ppaModel.FK_Flight_EtopsInformation" FromRole="Flight" ToRole="EtopsInformation" />
           <NavigationProperty Name="ExtraFuels" Relationship="ppaModel.fk_exf_flt" FromRole="Flight" ToRole="ExtraFuel" />
           <NavigationProperty Name="FIRs" Relationship="ppaModel.fk_fir_flt" FromRole="Flight" ToRole="FIR" />
@@ -8841,33 +9271,8 @@
           <NavigationProperty Name="RoutePoints" Relationship="ppaModel.FK_RoutePoints_Flight" FromRole="Flight" ToRole="RoutePoint" />
           <NavigationProperty Name="SIDAlternatives" Relationship="ppaModel.fk_sidalt_flt" FromRole="Flight" ToRole="SIDAlternative" />
           <NavigationProperty Name="StdAlternates" Relationship="ppaModel.FK_StdAlternates_Flight" FromRole="Flight" ToRole="StdAlternate" />
+          <NavigationProperty Name="PlanningEnRouteAlternateAirports" Relationship="ppaModel.fk_tbl_flt" FromRole="Flight" ToRole="PlanningEnRouteAlternateAirport" />
           <NavigationProperty Name="ToAlt1Points" Relationship="ppaModel.FK_ToAlt1Points_Flights" FromRole="Flight" ToRole="ToAlt1Points" />
-        </EntityType>
-        <EntityType Name="Load">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FuelId" Type="Int32" />
-          <Property Name="CargoId" Type="Int32" />
-          <Property Name="PaxId" Type="Int32" />
-          <Property Name="MassBalanceId" Type="Int32" />
-          <Property Name="PayloadId" Type="Int32" />
-          <Property Name="DryOperatingId" Type="Int32" />
-          <Property Name="FlightID" Type="Int32" />
-          <NavigationProperty Name="Cargo" Relationship="ppaModel.FK_Load_Cargo" FromRole="Load" ToRole="Cargo" />
-          <NavigationProperty Name="DryOperating" Relationship="ppaModel.FK_Load_DryOperating" FromRole="Load" ToRole="DryOperating" />
-          <NavigationProperty Name="Flights" Relationship="ppaModel.fk_flt_load" FromRole="Load" ToRole="Flight" />
-          <NavigationProperty Name="Fuel" Relationship="ppaModel.FK_Load_Fuel" FromRole="Load" ToRole="Fuel" />
-          <NavigationProperty Name="Pax" Relationship="ppaModel.FK_Load_Pax" FromRole="Load" ToRole="Pax" />
-          <NavigationProperty Name="Payload" Relationship="ppaModel.FK_Load_Payload" FromRole="Load" ToRole="Payload" />
-          <NavigationProperty Name="Load_Cargo" Relationship="ppaModel.FK_LoadCargo_Load" FromRole="Load" ToRole="Load_Cargo" />
-          <NavigationProperty Name="Load_DryOperating" Relationship="ppaModel.FK_LoadDryOperating_Load" FromRole="Load" ToRole="Load_DryOperating" />
-          <NavigationProperty Name="Load_Fuel" Relationship="ppaModel.FK_LoadFuel_Load" FromRole="Load" ToRole="Load_Fuel" />
-          <NavigationProperty Name="Load_MassBalance" Relationship="ppaModel.FK_LoadMassBalance_Load" FromRole="Load" ToRole="Load_MassBalance" />
-          <NavigationProperty Name="Load_Pax" Relationship="ppaModel.FK_LoadPax_Load" FromRole="Load" ToRole="Load_Pax" />
-          <NavigationProperty Name="Load_Payload" Relationship="ppaModel.FK_LoadPayload_Load" FromRole="Load" ToRole="Load_Payload" />
-          <NavigationProperty Name="MassBalance" Relationship="ppaModel.FK_Load_MassBalance" FromRole="Load" ToRole="MassBalance" />
         </EntityType>
         <Association Name="fk_adapt_flt">
           <End Type="ppaModel.Flight" Role="Flight" Multiplicity="0..1">
@@ -8934,30 +9339,6 @@
             </Principal>
             <Dependent Role="Airport">
               <PropertyRef Name="FlightID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Flight_AirportWeatherData">
-          <End Type="ppaModel.AirportWeatherData" Role="AirportWeatherData" Multiplicity="0..1" />
-          <End Type="ppaModel.Flight" Role="Flight" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AirportWeatherData">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Flight">
-              <PropertyRef Name="DepartureAlternateAirportId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Flight_AirportWeatherData2">
-          <End Type="ppaModel.AirportWeatherData" Role="AirportWeatherData" Multiplicity="0..1" />
-          <End Type="ppaModel.Flight" Role="Flight" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AirportWeatherData">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Flight">
-              <PropertyRef Name="EnRouteAlternateAirportId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -9095,18 +9476,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Load_Cargo">
-          <End Type="ppaModel.Cargo" Role="Cargo" Multiplicity="0..1" />
-          <End Type="ppaModel.Load" Role="Load" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Cargo">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Load">
-              <PropertyRef Name="CargoId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="fk_ctbl_flt">
           <End Type="ppaModel.Flight" Role="Flight" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -9144,6 +9513,18 @@
             </Principal>
             <Dependent Role="Flight">
               <PropertyRef Name="CustomReferencesId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Flight_AirportWeatherData">
+          <End Type="ppaModel.DepartureAlternateAirport" Role="DepartureAlternateAirport" Multiplicity="0..1" />
+          <End Type="ppaModel.Flight" Role="Flight" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DepartureAlternateAirport">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Flight">
+              <PropertyRef Name="DepartureAlternateAirportId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -9227,18 +9608,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Load_DryOperating">
-          <End Type="ppaModel.DryOperating" Role="DryOperating" Multiplicity="0..1" />
-          <End Type="ppaModel.Load" Role="Load" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DryOperating">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Load">
-              <PropertyRef Name="DryOperatingId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="fk_enalt_flight">
           <End Type="ppaModel.Flight" Role="Flight" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -9250,6 +9619,18 @@
             </Principal>
             <Dependent Role="EnrouteAlternate">
               <PropertyRef Name="FlightId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Flight_AirportWeatherData2">
+          <End Type="ppaModel.EnRouteAlternateAirport" Role="EnRouteAlternateAirport" Multiplicity="0..1" />
+          <End Type="ppaModel.Flight" Role="Flight" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EnRouteAlternateAirport">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Flight">
+              <PropertyRef Name="EnRouteAlternateAirportId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -9605,6 +9986,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_tbl_flt">
+          <End Type="ppaModel.Flight" Role="Flight" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ppaModel.PlanningEnRouteAlternateAirport" Role="PlanningEnRouteAlternateAirport" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Flight">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PlanningEnRouteAlternateAirport">
+              <PropertyRef Name="FlightId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ToAlt1Points_Flights">
           <End Type="ppaModel.Flight" Role="Flight" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -9616,313 +10011,6 @@
             </Principal>
             <Dependent Role="ToAlt1Points">
               <PropertyRef Name="FlightID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Load_Fuel">
-          <End Type="ppaModel.Fuel" Role="Fuel" Multiplicity="0..1" />
-          <End Type="ppaModel.Load" Role="Load" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Fuel">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Load">
-              <PropertyRef Name="FuelId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Load_Pax">
-          <End Type="ppaModel.Pax" Role="Pax" Multiplicity="0..1" />
-          <End Type="ppaModel.Load" Role="Load" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Pax">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Load">
-              <PropertyRef Name="PaxId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Load_Payload">
-          <End Type="ppaModel.Payload" Role="Payload" Multiplicity="0..1" />
-          <End Type="ppaModel.Load" Role="Load" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Payload">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Load">
-              <PropertyRef Name="PayloadId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_LoadCargo_Load">
-          <End Type="ppaModel.Load" Role="Load" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="ppaModel.Load_Cargo" Role="Load_Cargo" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Load">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Load_Cargo">
-              <PropertyRef Name="LoadId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_LoadDryOperating_Load">
-          <End Type="ppaModel.Load" Role="Load" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="ppaModel.Load_DryOperating" Role="Load_DryOperating" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Load">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Load_DryOperating">
-              <PropertyRef Name="LoadId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_LoadFuel_Load">
-          <End Type="ppaModel.Load" Role="Load" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="ppaModel.Load_Fuel" Role="Load_Fuel" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Load">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Load_Fuel">
-              <PropertyRef Name="LoadId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_LoadMassBalance_Load">
-          <End Type="ppaModel.Load" Role="Load" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="ppaModel.Load_MassBalance" Role="Load_MassBalance" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Load">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Load_MassBalance">
-              <PropertyRef Name="LoadId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_LoadPax_Load">
-          <End Type="ppaModel.Load" Role="Load" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="ppaModel.Load_Pax" Role="Load_Pax" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Load">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Load_Pax">
-              <PropertyRef Name="LoadId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_LoadPayload_Load">
-          <End Type="ppaModel.Load" Role="Load" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="ppaModel.Load_Payload" Role="Load_Payload" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Load">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Load_Payload">
-              <PropertyRef Name="LoadId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="SimplePaxSection">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Row" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="ActPax" Type="Int32" />
-          <Property Name="ActMass" Type="Int32" />
-          <Property Name="Male" Type="Int32" />
-          <Property Name="Female" Type="Int32" />
-          <Property Name="Children" Type="Int32" />
-          <Property Name="Infant" Type="Int32" />
-          <Property Name="CustMass" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="PaxId" Type="Int32" />
-          <NavigationProperty Name="Pax" Relationship="ppaModel.FK__SimplePax__PaxId__74CE504D" FromRole="SimplePaxSection" ToRole="Pax" />
-        </EntityType>
-        <Association Name="FK__SimplePax__PaxId__74CE504D">
-          <End Type="ppaModel.Pax" Role="Pax" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="ppaModel.SimplePaxSection" Role="SimplePaxSection" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Pax">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="SimplePaxSection">
-              <PropertyRef Name="PaxId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="ArmPositionLanding">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ForwardLimit" Type="Double" />
-          <Property Name="ActualPosition" Type="Double" />
-          <Property Name="AftLimit" Type="Double" />
-          <NavigationProperty Name="MassBalances" Relationship="ppaModel.FK_MassBalance_ArmPosition2" FromRole="ArmPositionLanding" ToRole="MassBalance" />
-        </EntityType>
-        <EntityType Name="ArmPositionTakeoff">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ForwardLimit" Type="Double" />
-          <Property Name="ActualPosition" Type="Double" />
-          <Property Name="AftLimit" Type="Double" />
-          <NavigationProperty Name="MassBalances" Relationship="ppaModel.FK_MassBalance_ArmPosition" FromRole="ArmPositionTakeoff" ToRole="MassBalance" />
-        </EntityType>
-        <EntityType Name="ArmPositionZeroFuel">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ForwardLimit" Type="Double" />
-          <Property Name="ActualPosition" Type="Double" />
-          <Property Name="AftLimit" Type="Double" />
-          <NavigationProperty Name="MassBalances" Relationship="ppaModel.FK_MassBalance_ArmPosition3" FromRole="ArmPositionZeroFuel" ToRole="MassBalance" />
-        </EntityType>
-        <EntityType Name="MassBalance">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TakeoffId" Type="Int32" />
-          <Property Name="LandingId" Type="Int32" />
-          <Property Name="ZeroFuelId" Type="Int32" />
-          <Property Name="IndexId" Type="Int32" />
-          <NavigationProperty Name="ArmPositionLanding" Relationship="ppaModel.FK_MassBalance_ArmPosition2" FromRole="MassBalance" ToRole="ArmPositionLanding" />
-          <NavigationProperty Name="ArmPositionTakeoff" Relationship="ppaModel.FK_MassBalance_ArmPosition" FromRole="MassBalance" ToRole="ArmPositionTakeoff" />
-          <NavigationProperty Name="ArmPositionZeroFuel" Relationship="ppaModel.FK_MassBalance_ArmPosition3" FromRole="MassBalance" ToRole="ArmPositionZeroFuel" />
-          <NavigationProperty Name="Loads" Relationship="ppaModel.FK_Load_MassBalance" FromRole="MassBalance" ToRole="Load" />
-          <NavigationProperty Name="MassBalanceIndex" Relationship="ppaModel.FK_MassBalance_MassBalanceIndex" FromRole="MassBalance" ToRole="MassBalanceIndex" />
-        </EntityType>
-        <Association Name="FK_MassBalance_ArmPosition2">
-          <End Type="ppaModel.ArmPositionLanding" Role="ArmPositionLanding" Multiplicity="0..1" />
-          <End Type="ppaModel.MassBalance" Role="MassBalance" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ArmPositionLanding">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="MassBalance">
-              <PropertyRef Name="LandingId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_MassBalance_ArmPosition">
-          <End Type="ppaModel.ArmPositionTakeoff" Role="ArmPositionTakeoff" Multiplicity="0..1" />
-          <End Type="ppaModel.MassBalance" Role="MassBalance" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ArmPositionTakeoff">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="MassBalance">
-              <PropertyRef Name="TakeoffId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_MassBalance_ArmPosition3">
-          <End Type="ppaModel.ArmPositionZeroFuel" Role="ArmPositionZeroFuel" Multiplicity="0..1" />
-          <End Type="ppaModel.MassBalance" Role="MassBalance" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ArmPositionZeroFuel">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="MassBalance">
-              <PropertyRef Name="ZeroFuelId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Load_MassBalance">
-          <End Type="ppaModel.MassBalance" Role="MassBalance" Multiplicity="0..1" />
-          <End Type="ppaModel.Load" Role="Load" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MassBalance">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Load">
-              <PropertyRef Name="MassBalanceId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_MassBalance_MassBalanceIndex">
-          <End Type="ppaModel.MassBalanceIndex" Role="MassBalanceIndex" Multiplicity="0..1" />
-          <End Type="ppaModel.MassBalance" Role="MassBalance" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MassBalanceIndex">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="MassBalance">
-              <PropertyRef Name="IndexId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="LoadFuelSection">
-          <Key>
-            <PropertyRef Name="Id_key" />
-          </Key>
-          <Property Name="Id_key" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ActMass" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="ID" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="FuelId" Type="Int32" />
-          <NavigationProperty Name="Fuel" Relationship="ppaModel.FK__LoadFuelS__FuelI__7D63964E" FromRole="LoadFuelSection" ToRole="Fuel" />
-        </EntityType>
-        <Association Name="FK__LoadFuelS__FuelI__7D63964E">
-          <End Type="ppaModel.Fuel" Role="Fuel" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="ppaModel.LoadFuelSection" Role="LoadFuelSection" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Fuel">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="LoadFuelSection">
-              <PropertyRef Name="FuelId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="CrewAircraftConfiguration">
-          <Key>
-            <PropertyRef Name="Id_key" />
-          </Key>
-          <Property Name="Id_key" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ID" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="CrewType" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="CrewName" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="Initials" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="GSM" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="Mass" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="AircraftConfigurationId" Type="Int32" />
-          <NavigationProperty Name="AircraftConfiguration" Relationship="ppaModel.FK__Crew_copy__Fligh__004002F9" FromRole="CrewAircraftConfiguration" ToRole="AircraftConfiguration" />
-        </EntityType>
-        <Association Name="FK__Crew_copy__Fligh__004002F9">
-          <End Type="ppaModel.AircraftConfiguration" Role="AircraftConfiguration" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="ppaModel.CrewAircraftConfiguration" Role="CrewAircraftConfiguration" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AircraftConfiguration">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CrewAircraftConfiguration">
-              <PropertyRef Name="AircraftConfigurationId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -12017,6 +12105,126 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Loads">
+            <EntityTypeMapping TypeName="ppaModel.Load">
+              <MappingFragment StoreEntitySet="Load">
+                <ScalarProperty Name="FlightID" ColumnName="FlightID" />
+                <ScalarProperty Name="DryOperatingId" ColumnName="DryOperatingId" />
+                <ScalarProperty Name="PayloadId" ColumnName="PayloadId" />
+                <ScalarProperty Name="MassBalanceId" ColumnName="MassBalanceId" />
+                <ScalarProperty Name="PaxId" ColumnName="PaxId" />
+                <ScalarProperty Name="CargoId" ColumnName="CargoId" />
+                <ScalarProperty Name="FuelId" ColumnName="FuelId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SimplePaxSections">
+            <EntityTypeMapping TypeName="ppaModel.SimplePaxSection">
+              <MappingFragment StoreEntitySet="SimplePaxSection">
+                <ScalarProperty Name="PaxId" ColumnName="PaxId" />
+                <ScalarProperty Name="CustMass" ColumnName="CustMass" />
+                <ScalarProperty Name="Infant" ColumnName="Infant" />
+                <ScalarProperty Name="Children" ColumnName="Children" />
+                <ScalarProperty Name="Female" ColumnName="Female" />
+                <ScalarProperty Name="Male" ColumnName="Male" />
+                <ScalarProperty Name="ActMass" ColumnName="ActMass" />
+                <ScalarProperty Name="ActPax" ColumnName="ActPax" />
+                <ScalarProperty Name="Row" ColumnName="Row" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ArmPositionLandings">
+            <EntityTypeMapping TypeName="ppaModel.ArmPositionLanding">
+              <MappingFragment StoreEntitySet="ArmPositionLanding">
+                <ScalarProperty Name="AftLimit" ColumnName="AftLimit" />
+                <ScalarProperty Name="ActualPosition" ColumnName="ActualPosition" />
+                <ScalarProperty Name="ForwardLimit" ColumnName="ForwardLimit" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ArmPositionTakeoffs">
+            <EntityTypeMapping TypeName="ppaModel.ArmPositionTakeoff">
+              <MappingFragment StoreEntitySet="ArmPositionTakeoff">
+                <ScalarProperty Name="AftLimit" ColumnName="AftLimit" />
+                <ScalarProperty Name="ActualPosition" ColumnName="ActualPosition" />
+                <ScalarProperty Name="ForwardLimit" ColumnName="ForwardLimit" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ArmPositionZeroFuels">
+            <EntityTypeMapping TypeName="ppaModel.ArmPositionZeroFuel">
+              <MappingFragment StoreEntitySet="ArmPositionZeroFuel">
+                <ScalarProperty Name="AftLimit" ColumnName="AftLimit" />
+                <ScalarProperty Name="ActualPosition" ColumnName="ActualPosition" />
+                <ScalarProperty Name="ForwardLimit" ColumnName="ForwardLimit" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MassBalances">
+            <EntityTypeMapping TypeName="ppaModel.MassBalance">
+              <MappingFragment StoreEntitySet="MassBalance">
+                <ScalarProperty Name="IndexId" ColumnName="IndexId" />
+                <ScalarProperty Name="ZeroFuelId" ColumnName="ZeroFuelId" />
+                <ScalarProperty Name="LandingId" ColumnName="LandingId" />
+                <ScalarProperty Name="TakeoffId" ColumnName="TakeoffId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LoadFuelSections">
+            <EntityTypeMapping TypeName="ppaModel.LoadFuelSection">
+              <MappingFragment StoreEntitySet="LoadFuelSection">
+                <ScalarProperty Name="FuelId" ColumnName="FuelId" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ActMass" ColumnName="ActMass" />
+                <ScalarProperty Name="Id_key" ColumnName="Id_key" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CrewAircraftConfigurations">
+            <EntityTypeMapping TypeName="ppaModel.CrewAircraftConfiguration">
+              <MappingFragment StoreEntitySet="CrewAircraftConfiguration">
+                <ScalarProperty Name="AircraftConfigurationId" ColumnName="AircraftConfigurationId" />
+                <ScalarProperty Name="Mass" ColumnName="Mass" />
+                <ScalarProperty Name="GSM" ColumnName="GSM" />
+                <ScalarProperty Name="Initials" ColumnName="Initials" />
+                <ScalarProperty Name="CrewName" ColumnName="CrewName" />
+                <ScalarProperty Name="CrewType" ColumnName="CrewType" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Id_key" ColumnName="Id_key" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DepartureAlternateAirports">
+            <EntityTypeMapping TypeName="ppaModel.DepartureAlternateAirport">
+              <MappingFragment StoreEntitySet="DepartureAlternateAirport">
+                <ScalarProperty Name="ICAO" ColumnName="ICAO" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EnRouteAlternateAirports">
+            <EntityTypeMapping TypeName="ppaModel.EnRouteAlternateAirport">
+              <MappingFragment StoreEntitySet="EnRouteAlternateAirport">
+                <ScalarProperty Name="ICAO" ColumnName="ICAO" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PlanningEnRouteAlternateAirports">
+            <EntityTypeMapping TypeName="ppaModel.PlanningEnRouteAlternateAirport">
+              <MappingFragment StoreEntitySet="PlanningEnRouteAlternateAirport">
+                <ScalarProperty Name="FlightId" ColumnName="FlightId" />
+                <ScalarProperty Name="ICAO" ColumnName="ICAO" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Flights">
             <EntityTypeMapping TypeName="ppaModel.Flight">
               <MappingFragment StoreEntitySet="Flight">
@@ -12183,101 +12391,6 @@
                 <ScalarProperty Name="FlightLogID" ColumnName="FlightLogID" />
                 <ScalarProperty Name="OverflightCostId" ColumnName="OverflightCostId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Loads">
-            <EntityTypeMapping TypeName="ppaModel.Load">
-              <MappingFragment StoreEntitySet="Load">
-                <ScalarProperty Name="FlightID" ColumnName="FlightID" />
-                <ScalarProperty Name="DryOperatingId" ColumnName="DryOperatingId" />
-                <ScalarProperty Name="PayloadId" ColumnName="PayloadId" />
-                <ScalarProperty Name="MassBalanceId" ColumnName="MassBalanceId" />
-                <ScalarProperty Name="PaxId" ColumnName="PaxId" />
-                <ScalarProperty Name="CargoId" ColumnName="CargoId" />
-                <ScalarProperty Name="FuelId" ColumnName="FuelId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="SimplePaxSections">
-            <EntityTypeMapping TypeName="ppaModel.SimplePaxSection">
-              <MappingFragment StoreEntitySet="SimplePaxSection">
-                <ScalarProperty Name="PaxId" ColumnName="PaxId" />
-                <ScalarProperty Name="CustMass" ColumnName="CustMass" />
-                <ScalarProperty Name="Infant" ColumnName="Infant" />
-                <ScalarProperty Name="Children" ColumnName="Children" />
-                <ScalarProperty Name="Female" ColumnName="Female" />
-                <ScalarProperty Name="Male" ColumnName="Male" />
-                <ScalarProperty Name="ActMass" ColumnName="ActMass" />
-                <ScalarProperty Name="ActPax" ColumnName="ActPax" />
-                <ScalarProperty Name="Row" ColumnName="Row" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ArmPositionLandings">
-            <EntityTypeMapping TypeName="ppaModel.ArmPositionLanding">
-              <MappingFragment StoreEntitySet="ArmPositionLanding">
-                <ScalarProperty Name="AftLimit" ColumnName="AftLimit" />
-                <ScalarProperty Name="ActualPosition" ColumnName="ActualPosition" />
-                <ScalarProperty Name="ForwardLimit" ColumnName="ForwardLimit" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ArmPositionTakeoffs">
-            <EntityTypeMapping TypeName="ppaModel.ArmPositionTakeoff">
-              <MappingFragment StoreEntitySet="ArmPositionTakeoff">
-                <ScalarProperty Name="AftLimit" ColumnName="AftLimit" />
-                <ScalarProperty Name="ActualPosition" ColumnName="ActualPosition" />
-                <ScalarProperty Name="ForwardLimit" ColumnName="ForwardLimit" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ArmPositionZeroFuels">
-            <EntityTypeMapping TypeName="ppaModel.ArmPositionZeroFuel">
-              <MappingFragment StoreEntitySet="ArmPositionZeroFuel">
-                <ScalarProperty Name="AftLimit" ColumnName="AftLimit" />
-                <ScalarProperty Name="ActualPosition" ColumnName="ActualPosition" />
-                <ScalarProperty Name="ForwardLimit" ColumnName="ForwardLimit" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="MassBalances">
-            <EntityTypeMapping TypeName="ppaModel.MassBalance">
-              <MappingFragment StoreEntitySet="MassBalance">
-                <ScalarProperty Name="IndexId" ColumnName="IndexId" />
-                <ScalarProperty Name="ZeroFuelId" ColumnName="ZeroFuelId" />
-                <ScalarProperty Name="LandingId" ColumnName="LandingId" />
-                <ScalarProperty Name="TakeoffId" ColumnName="TakeoffId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="LoadFuelSections">
-            <EntityTypeMapping TypeName="ppaModel.LoadFuelSection">
-              <MappingFragment StoreEntitySet="LoadFuelSection">
-                <ScalarProperty Name="FuelId" ColumnName="FuelId" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="ActMass" ColumnName="ActMass" />
-                <ScalarProperty Name="Id_key" ColumnName="Id_key" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CrewAircraftConfigurations">
-            <EntityTypeMapping TypeName="ppaModel.CrewAircraftConfiguration">
-              <MappingFragment StoreEntitySet="CrewAircraftConfiguration">
-                <ScalarProperty Name="AircraftConfigurationId" ColumnName="AircraftConfigurationId" />
-                <ScalarProperty Name="Mass" ColumnName="Mass" />
-                <ScalarProperty Name="GSM" ColumnName="GSM" />
-                <ScalarProperty Name="Initials" ColumnName="Initials" />
-                <ScalarProperty Name="CrewName" ColumnName="CrewName" />
-                <ScalarProperty Name="CrewType" ColumnName="CrewType" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Id_key" ColumnName="Id_key" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
