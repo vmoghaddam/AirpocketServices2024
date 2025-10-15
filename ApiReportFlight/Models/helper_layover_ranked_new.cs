@@ -19,7 +19,6 @@ namespace ApiReportFlight.Models
         public int fdp_id { get; set; }
         public Nullable<System.DateTime> onblock_last { get; set; }
         public string arr_iata { get; set; }
-        public string arr_iata_prev { get; set; }
         public string homebase { get; set; }
         public Nullable<int> is_lo { get; set; }
     }

@@ -131,7 +131,7 @@ namespace ApiSand.Controllers
         [Route("api/doc")]
         public async Task<DataResponse> get_doc()
         {
-            string mainPath = @"C:\Users\vahid\Desktop\ava\Hozor Ghiab";  // مسیر فولدر مورد نظر رو وارد کن
+            string mainPath = @"C:\Users\vahid\Desktop\ava\camo";  // مسیر فولدر مورد نظر رو وارد کن
 
             // گرفتن فقط فولدرهای سطح اول داخل فولدر
             string[] subDirectories = Directory.GetDirectories(mainPath, "*", SearchOption.AllDirectories); //Directory.GetDirectories(mainPath);
@@ -145,14 +145,14 @@ namespace ApiSand.Controllers
             {
                 string folderPath = _folderPath; //@"C:\Users\vahid\Desktop\ava\Hozor Ghiab\initial_cabin_1\test";
                 string[] docxFiles = Directory.GetFiles(folderPath, "*.docx");
-               
+
                 Console.WriteLine("فایل‌های موجود در پوشه:");
-               
+
                 foreach (string file in docxFiles)
                 {
                     if (!file.Contains("Type 310 5"))
                     {
-                       // continue;
+                        // continue;
                     }
                     // Console.WriteLine(Path.GetFileName(file)); // فقط نام فایل بدون مسیر
                     //string filePath = @"C:\Users\vahid\Desktop\ava\flykish\" + "فرم  حضورغیاب fly kish Annoucment" + ".docx";
@@ -253,7 +253,7 @@ namespace ApiSand.Controllers
                                             sessions = sessions.Select(q => q.Replace(" ", "").Trim()).ToList();
                                             foreach (var session in sessions)
                                             {
-                                                var _i6 = Convert.ToInt64(session.Replace("-", "").Replace(":", "").Replace(" ",""));
+                                                var _i6 = Convert.ToInt64(session.Replace("-", "").Replace(":", "").Replace(" ", ""));
                                                 if (_cs >= _i6)
                                                     _di++;
                                                 var _day = days[_di];
@@ -384,8 +384,8 @@ namespace ApiSand.Controllers
                 }
             }
             context.SaveChanges();
-            File.WriteAllLines(@"C:\Users\vahid\Desktop\ava\Hozor Ghiab\" + "errors.txt", errors);
-            File.WriteAllLines(@"C:\Users\vahid\Desktop\ava\Hozor Ghiab\" + "errors2.txt", errors2);
+            File.WriteAllLines(@"C:\Users\vahid\Desktop\ava\camo\" + "errors.txt", errors);
+            File.WriteAllLines(@"C:\Users\vahid\Desktop\ava\camo\" + "errors2.txt", errors2);
             return new DataResponse()
             {
                 Data = new
@@ -402,6 +402,58 @@ namespace ApiSand.Controllers
         {
             DocxToJson.Program cls = new DocxToJson.Program();
             cls.execute();
+            return new DataResponse()
+            {
+                Data = true,
+                IsSuccess = true
+            };
+        }
+
+
+        [Route("api/doc2/sessions")]
+        public async Task<DataResponse> get_doc2_sessions()
+        {
+            ppa_entities context = new ppa_entities();
+            var ava_courses = context.ava_course.Where(q => string.IsNullOrEmpty(q.remark)).ToList();
+            var ava_crs_ids = ava_courses.Select(q => (Nullable<int>)q.id).ToList();
+            var ava_sessions = context.ava_session.Where(q => ava_crs_ids.Contains(q.course_id)).ToList();
+            var courses = context.Courses.Where(q => ava_crs_ids.Contains(q.ext_id)).ToList();
+            foreach (var crs in courses)
+            {
+                var i_sessions = ava_sessions.Where(q => q.course_id == crs.ext_id).ToList();
+                var start_date = crs.DateStart.Date;
+                var end_date = ((DateTime)crs.DateEnd).Date;
+                while (start_date <= end_date)
+                {
+                    foreach (var s in i_sessions)
+                    {
+                        var prts = s.remark.Replace(" ", "").Split('-');
+                        var s_h = Convert.ToInt32(prts[0].Split(':')[0]);
+                        var s_m = Convert.ToInt32(prts[0].Split(':')[1]);
+                        var e_h = Convert.ToInt32(prts[1].Split(':')[0]);
+                        var e_m = Convert.ToInt32(prts[1].Split(':')[1]);
+                        var s_start = start_date.AddHours(s_h).AddMinutes(s_m);
+                        var s_end = start_date.AddHours(e_h).AddMinutes(e_m);
+                        //2023-11-28-08-30-16-30
+                        var s_key = start_date.ToString("yyyy-MM-dd-") + s_start.ToString("HH-mm-") + s_end.ToString("HH-mm");
+                        var db_session = new CourseSession()
+                        {
+                            CourseId = crs.Id,
+                            DateEnd = s_end,
+                            DateStart = s_start,
+                            DateEndUtc = s_end.AddMinutes(-210),
+                            DateStartUtc = s_start.AddMinutes(-210),
+                            Key = s_key,
+                            Done = false,
+                            Remark = "import_20251012_" + crs.Id + "_" + crs.ext_id,
+                        };
+                        context.CourseSessions.Add(db_session);
+
+                    }
+                    start_date = start_date.AddDays(1);
+                }
+            }
+            context.SaveChanges();
             return new DataResponse()
             {
                 Data = true,

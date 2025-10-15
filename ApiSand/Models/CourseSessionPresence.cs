@@ -12,16 +12,17 @@ namespace ApiSand.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class ava_student
+    public partial class CourseSessionPresence
     {
-        public int id { get; set; }
-        public int course_id { get; set; }
-        public string name { get; set; }
-        public string name_fa { get; set; }
-        public string attendance { get; set; }
-        public string source_name { get; set; }
-        public Nullable<int> source_person_id { get; set; }
+        public int Id { get; set; }
+        public Nullable<int> SessionId { get; set; }
+        public Nullable<System.DateTime> Date { get; set; }
+        public string Remark { get; set; }
+        public Nullable<int> PersonId { get; set; }
+        public string SessionKey { get; set; }
+        public Nullable<int> CourseId { get; set; }
     
-        public virtual ava_course ava_course { get; set; }
+        public virtual Course Course { get; set; }
+        public virtual CourseSession CourseSession { get; set; }
     }
 }

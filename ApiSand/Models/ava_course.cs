@@ -17,8 +17,8 @@ namespace ApiSand.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ava_course()
         {
-            this.ava_student = new HashSet<ava_student>();
             this.ava_session = new HashSet<ava_session>();
+            this.ava_student = new HashSet<ava_student>();
         }
     
         public int id { get; set; }
@@ -32,10 +32,15 @@ namespace ApiSand.Models
         public string filepath { get; set; }
         public Nullable<int> participants_count { get; set; }
         public Nullable<int> sessions_count { get; set; }
+        public string course_key { get; set; }
+        public string course_type { get; set; }
+        public Nullable<int> ins1_id { get; set; }
+        public Nullable<int> ins2_id { get; set; }
+        public string remark { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ava_student> ava_student { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ava_session> ava_session { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ava_student> ava_student { get; set; }
     }
 }

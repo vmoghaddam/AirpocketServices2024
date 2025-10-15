@@ -189,6 +189,22 @@ warning 6002: The table/view 'ppa_varesh.dbo.helper_layover_ranked_new' does not
           <Property Name="fdp_id" Type="int" Nullable="false" />
           <Property Name="onblock_last" Type="datetime" />
           <Property Name="arr_iata" Type="nvarchar" MaxLength="255" />
+          <Property Name="homebase" Type="nvarchar" MaxLength="255" />
+          <Property Name="is_lo" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.helper_layover_ranked_new_prev' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="helper_layover_ranked_new_prev">
+          <Key>
+            <PropertyRef Name="date" />
+            <PropertyRef Name="crew_id" />
+            <PropertyRef Name="fdp_id" />
+          </Key>
+          <Property Name="date" Type="date" Nullable="false" />
+          <Property Name="crew_id" Type="int" Nullable="false" />
+          <Property Name="fdp_id" Type="int" Nullable="false" />
+          <Property Name="onblock_last" Type="datetime" />
+          <Property Name="arr_iata" Type="nvarchar" MaxLength="255" />
           <Property Name="arr_iata_prev" Type="nvarchar" MaxLength="255" />
           <Property Name="homebase" Type="nvarchar" MaxLength="255" />
           <Property Name="is_lo" Type="int" />
@@ -2175,10 +2191,21 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
     [helper_layover_ranked_new].[fdp_id] AS [fdp_id], 
     [helper_layover_ranked_new].[onblock_last] AS [onblock_last], 
     [helper_layover_ranked_new].[arr_iata] AS [arr_iata], 
-    [helper_layover_ranked_new].[arr_iata_prev] AS [arr_iata_prev], 
     [helper_layover_ranked_new].[homebase] AS [homebase], 
     [helper_layover_ranked_new].[is_lo] AS [is_lo]
     FROM [dbo].[helper_layover_ranked_new] AS [helper_layover_ranked_new]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="helper_layover_ranked_new_prev" EntityType="Self.helper_layover_ranked_new_prev" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [helper_layover_ranked_new_prev].[date] AS [date], 
+    [helper_layover_ranked_new_prev].[crew_id] AS [crew_id], 
+    [helper_layover_ranked_new_prev].[fdp_id] AS [fdp_id], 
+    [helper_layover_ranked_new_prev].[onblock_last] AS [onblock_last], 
+    [helper_layover_ranked_new_prev].[arr_iata] AS [arr_iata], 
+    [helper_layover_ranked_new_prev].[arr_iata_prev] AS [arr_iata_prev], 
+    [helper_layover_ranked_new_prev].[homebase] AS [homebase], 
+    [helper_layover_ranked_new_prev].[is_lo] AS [is_lo]
+    FROM [dbo].[helper_layover_ranked_new_prev] AS [helper_layover_ranked_new_prev]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="rpt_citypair_daily" EntityType="Self.rpt_citypair_daily" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -3796,8 +3823,9 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySet Name="view_layover" EntityType="ModelEntities.view_layover" />
           <EntitySet Name="ViewCrews" EntityType="ModelEntities.ViewCrew" />
           <EntitySet Name="rpt_crew_route" EntityType="ModelEntities.rpt_crew_route" />
-          <EntitySet Name="helper_layover_ranked_new" EntityType="ModelEntities.helper_layover_ranked_new" />
           <EntitySet Name="rpt_citypair_daily" EntityType="ModelEntities.rpt_citypair_daily" />
+          <EntitySet Name="helper_layover_ranked_new" EntityType="ModelEntities.helper_layover_ranked_new" />
+          <EntitySet Name="helper_layover_ranked_new_prev" EntityType="ModelEntities.helper_layover_ranked_new_prev" />
         </EntityContainer>
         <EntityType Name="ViewFinMonthlyRoute">
           <Key>
@@ -5815,21 +5843,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="block_jl" Type="Int32" />
           <Property Name="flt_count" Type="Int32" />
         </EntityType>
-        <EntityType Name="helper_layover_ranked_new">
-          <Key>
-            <PropertyRef Name="date" />
-            <PropertyRef Name="crew_id" />
-            <PropertyRef Name="fdp_id" />
-          </Key>
-          <Property Name="date" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="crew_id" Type="Int32" Nullable="false" />
-          <Property Name="fdp_id" Type="Int32" Nullable="false" />
-          <Property Name="onblock_last" Type="DateTime" Precision="3" />
-          <Property Name="arr_iata" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="arr_iata_prev" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="homebase" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="is_lo" Type="Int32" />
-        </EntityType>
         <EntityType Name="rpt_citypair_daily">
           <Key>
             <PropertyRef Name="pax_adults" />
@@ -5856,6 +5869,35 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="arr_id" Type="Int32" />
           <Property Name="route" Type="String" MaxLength="511" FixedLength="false" Unicode="true" />
           <Property Name="route_icao" Type="String" MaxLength="511" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="helper_layover_ranked_new">
+          <Key>
+            <PropertyRef Name="date" />
+            <PropertyRef Name="crew_id" />
+            <PropertyRef Name="fdp_id" />
+          </Key>
+          <Property Name="date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="crew_id" Type="Int32" Nullable="false" />
+          <Property Name="fdp_id" Type="Int32" Nullable="false" />
+          <Property Name="onblock_last" Type="DateTime" Precision="3" />
+          <Property Name="arr_iata" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="homebase" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="is_lo" Type="Int32" />
+        </EntityType>
+        <EntityType Name="helper_layover_ranked_new_prev">
+          <Key>
+            <PropertyRef Name="date" />
+            <PropertyRef Name="crew_id" />
+            <PropertyRef Name="fdp_id" />
+          </Key>
+          <Property Name="date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="crew_id" Type="Int32" Nullable="false" />
+          <Property Name="fdp_id" Type="Int32" Nullable="false" />
+          <Property Name="onblock_last" Type="DateTime" Precision="3" />
+          <Property Name="arr_iata" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="arr_iata_prev" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="homebase" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="is_lo" Type="Int32" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -7642,20 +7684,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="helper_layover_ranked_new">
-            <EntityTypeMapping TypeName="ModelEntities.helper_layover_ranked_new">
-              <MappingFragment StoreEntitySet="helper_layover_ranked_new">
-                <ScalarProperty Name="is_lo" ColumnName="is_lo" />
-                <ScalarProperty Name="homebase" ColumnName="homebase" />
-                <ScalarProperty Name="arr_iata_prev" ColumnName="arr_iata_prev" />
-                <ScalarProperty Name="arr_iata" ColumnName="arr_iata" />
-                <ScalarProperty Name="onblock_last" ColumnName="onblock_last" />
-                <ScalarProperty Name="fdp_id" ColumnName="fdp_id" />
-                <ScalarProperty Name="crew_id" ColumnName="crew_id" />
-                <ScalarProperty Name="date" ColumnName="date" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="rpt_citypair_daily">
             <EntityTypeMapping TypeName="ModelEntities.rpt_citypair_daily">
               <MappingFragment StoreEntitySet="rpt_citypair_daily">
@@ -7679,6 +7707,33 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
                 <ScalarProperty Name="std" ColumnName="std" />
                 <ScalarProperty Name="date" ColumnName="date" />
                 <ScalarProperty Name="date_local" ColumnName="date_local" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="helper_layover_ranked_new">
+            <EntityTypeMapping TypeName="ModelEntities.helper_layover_ranked_new">
+              <MappingFragment StoreEntitySet="helper_layover_ranked_new">
+                <ScalarProperty Name="is_lo" ColumnName="is_lo" />
+                <ScalarProperty Name="homebase" ColumnName="homebase" />
+                <ScalarProperty Name="arr_iata" ColumnName="arr_iata" />
+                <ScalarProperty Name="onblock_last" ColumnName="onblock_last" />
+                <ScalarProperty Name="fdp_id" ColumnName="fdp_id" />
+                <ScalarProperty Name="crew_id" ColumnName="crew_id" />
+                <ScalarProperty Name="date" ColumnName="date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="helper_layover_ranked_new_prev">
+            <EntityTypeMapping TypeName="ModelEntities.helper_layover_ranked_new_prev">
+              <MappingFragment StoreEntitySet="helper_layover_ranked_new_prev">
+                <ScalarProperty Name="is_lo" ColumnName="is_lo" />
+                <ScalarProperty Name="homebase" ColumnName="homebase" />
+                <ScalarProperty Name="arr_iata_prev" ColumnName="arr_iata_prev" />
+                <ScalarProperty Name="arr_iata" ColumnName="arr_iata" />
+                <ScalarProperty Name="onblock_last" ColumnName="onblock_last" />
+                <ScalarProperty Name="fdp_id" ColumnName="fdp_id" />
+                <ScalarProperty Name="crew_id" ColumnName="crew_id" />
+                <ScalarProperty Name="date" ColumnName="date" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

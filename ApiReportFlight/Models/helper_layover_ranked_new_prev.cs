@@ -7,21 +7,20 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ApiSand.Models
+namespace ApiReportFlight.Models
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class ava_student
+    public partial class helper_layover_ranked_new_prev
     {
-        public int id { get; set; }
-        public int course_id { get; set; }
-        public string name { get; set; }
-        public string name_fa { get; set; }
-        public string attendance { get; set; }
-        public string source_name { get; set; }
-        public Nullable<int> source_person_id { get; set; }
-    
-        public virtual ava_course ava_course { get; set; }
+        public System.DateTime date { get; set; }
+        public int crew_id { get; set; }
+        public int fdp_id { get; set; }
+        public Nullable<System.DateTime> onblock_last { get; set; }
+        public string arr_iata { get; set; }
+        public string arr_iata_prev { get; set; }
+        public string homebase { get; set; }
+        public Nullable<int> is_lo { get; set; }
     }
 }

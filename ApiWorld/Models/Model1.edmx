@@ -19,19 +19,19 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="FlightID" Type="int" Nullable="false" />
-          <Property Name="Number" Type="nvarchar" MaxLength="500" Nullable="false" />
-          <Property Name="Text" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="FromDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="ToDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="FromLevel" Type="int" Nullable="false" />
-          <Property Name="ToLevel" Type="int" Nullable="false" />
+          <Property Name="Number" Type="nvarchar" MaxLength="500" />
+          <Property Name="Text" Type="nvarchar(max)" />
+          <Property Name="FromDate" Type="datetime2" Precision="7" />
+          <Property Name="ToDate" Type="datetime2" Precision="7" />
+          <Property Name="FromLevel" Type="int" />
+          <Property Name="ToLevel" Type="int" />
           <Property Name="Fir" Type="nvarchar" MaxLength="500" />
           <Property Name="QCode" Type="nvarchar" MaxLength="500" />
           <Property Name="ECode" Type="nvarchar" MaxLength="500" />
           <Property Name="ICAO" Type="nvarchar" MaxLength="500" />
           <Property Name="UniformAbbreviation" Type="nvarchar" MaxLength="500" />
-          <Property Name="Year" Type="int" Nullable="false" />
-          <Property Name="RoutePart" Type="int" Nullable="false" />
+          <Property Name="Year" Type="int" />
+          <Property Name="RoutePart" Type="int" />
           <Property Name="Provider" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="AdequateNotamPartInformation">
@@ -567,7 +567,6 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="FlightID" Type="int" Nullable="false" />
           <Property Name="Type" Type="tinyint" Nullable="false" />
           <Property Name="Text" Type="nvarchar(max)" />
           <Property Name="ICAO" Type="char" MaxLength="4" Nullable="false" />
@@ -839,8 +838,8 @@
           <Property Name="FromLevel" Type="int" Nullable="false" />
           <Property Name="ToLevel" Type="int" Nullable="false" />
           <Property Name="Fir" Type="nvarchar" MaxLength="500" />
-          <Property Name="QCode" Type="nvarchar" MaxLength="500" />
-          <Property Name="ECode" Type="nvarchar" MaxLength="500" />
+          <Property Name="QCode" Type="nvarchar" MaxLength="4000" />
+          <Property Name="ECode" Type="nvarchar" MaxLength="4000" />
           <Property Name="ICAO" Type="nvarchar" MaxLength="500" />
           <Property Name="UniformAbbreviation" Type="nvarchar" MaxLength="500" />
           <Property Name="Year" Type="int" Nullable="false" />
@@ -2872,20 +2871,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_DEPTaf_Flight">
-          <End Role="Flight" Type="Self.Flight" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="DEPTaf" Type="Self.DEPTaf" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Flight">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="DEPTaf">
-              <PropertyRef Name="FlightID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_DESTNotam_Flight">
           <End Role="Flight" Type="Self.Flight" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -2911,20 +2896,6 @@
             </Principal>
             <Dependent Role="DESTNotamPartInformation">
               <PropertyRef Name="NotamId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_DESTTaf_Flight">
-          <End Role="Flight" Type="Self.Flight" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="DESTTaf" Type="Self.DESTTaf" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Flight">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="DESTTaf">
-              <PropertyRef Name="FlightID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4474,10 +4445,6 @@
             <End Role="DEPNotam" EntitySet="DEPNotam" />
             <End Role="DEPNotamPartInformation" EntitySet="DEPNotamPartInformation" />
           </AssociationSet>
-          <AssociationSet Name="FK_DEPTaf_Flight" Association="Self.FK_DEPTaf_Flight">
-            <End Role="Flight" EntitySet="Flight" />
-            <End Role="DEPTaf" EntitySet="DEPTaf" />
-          </AssociationSet>
           <AssociationSet Name="FK_DESTNotam_Flight" Association="Self.FK_DESTNotam_Flight">
             <End Role="Flight" EntitySet="Flight" />
             <End Role="DESTNotam" EntitySet="DESTNotam" />
@@ -4485,10 +4452,6 @@
           <AssociationSet Name="FK_DESTNotamPartInfo_Notam" Association="Self.FK_DESTNotamPartInfo_Notam">
             <End Role="DESTNotam" EntitySet="DESTNotam" />
             <End Role="DESTNotamPartInformation" EntitySet="DESTNotamPartInformation" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DESTTaf_Flight" Association="Self.FK_DESTTaf_Flight">
-            <End Role="Flight" EntitySet="Flight" />
-            <End Role="DESTTaf" EntitySet="DESTTaf" />
           </AssociationSet>
           <AssociationSet Name="fk_enalt_flight" Association="Self.fk_enalt_flight">
             <End Role="Flight" EntitySet="Flight" />
@@ -4868,7 +4831,6 @@
     <edmx:ConceptualModels>
       <Schema Namespace="ppaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="ppa_entities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="AdequateNotams" EntityType="ppaModel.AdequateNotam" />
           <EntitySet Name="AdequateNotamPartInformations" EntityType="ppaModel.AdequateNotamPartInformation" />
           <EntitySet Name="AircraftConfigurations" EntityType="ppaModel.AircraftConfiguration" />
           <EntitySet Name="AircraftConfigurationCrews" EntityType="ppaModel.AircraftConfigurationCrew" />
@@ -4892,10 +4854,8 @@
           <EntitySet Name="CustomReferences" EntityType="ppaModel.CustomReference" />
           <EntitySet Name="DEPNotams" EntityType="ppaModel.DEPNotam" />
           <EntitySet Name="DEPNotamPartInformations" EntityType="ppaModel.DEPNotamPartInformation" />
-          <EntitySet Name="DEPTafs" EntityType="ppaModel.DEPTaf" />
           <EntitySet Name="DESTNotams" EntityType="ppaModel.DESTNotam" />
           <EntitySet Name="DESTNotamPartInformations" EntityType="ppaModel.DESTNotamPartInformation" />
-          <EntitySet Name="DESTTafs" EntityType="ppaModel.DESTTaf" />
           <EntitySet Name="DryOperatings" EntityType="ppaModel.DryOperating" />
           <EntitySet Name="EcoInfoes" EntityType="ppaModel.EcoInfo" />
           <EntitySet Name="EntryPoints" EntityType="ppaModel.EntryPoint" />
@@ -4908,13 +4868,11 @@
           <EntitySet Name="EtopsExitPoints" EntityType="ppaModel.EtopsExitPoint" />
           <EntitySet Name="EtopsFullETPs" EntityType="ppaModel.EtopsFullETP" />
           <EntitySet Name="EtopsFullETPAirports" EntityType="ppaModel.EtopsFullETPAirport" />
-          <EntitySet Name="EtopsInformations" EntityType="ppaModel.EtopsInformation" />
           <EntitySet Name="EtopsLimits" EntityType="ppaModel.EtopsLimit" />
           <EntitySet Name="EtopsProfiles" EntityType="ppaModel.EtopsProfile" />
           <EntitySet Name="ETOPSSuitableAirports" EntityType="ppaModel.ETOPSSuitableAirport" />
           <EntitySet Name="ExitPoints" EntityType="ppaModel.ExitPoint" />
           <EntitySet Name="ExtraFuels" EntityType="ppaModel.ExtraFuel" />
-          <EntitySet Name="FIRNotams" EntityType="ppaModel.FIRNotam" />
           <EntitySet Name="FIRNotamPartInformations" EntityType="ppaModel.FIRNotamPartInformation" />
           <EntitySet Name="FIROverflightCosts" EntityType="ppaModel.FIROverflightCost" />
           <EntitySet Name="FlightLevels" EntityType="ppaModel.FlightLevel" />
@@ -4957,10 +4915,6 @@
           <EntitySet Name="SIDs" EntityType="ppaModel.SID" />
           <EntitySet Name="StdAlternates" EntityType="ppaModel.StdAlternate" />
           <EntitySet Name="Tafs" EntityType="ppaModel.Taf" />
-          <AssociationSet Name="FK_AdequateNotamPartInfo_Notam" Association="ppaModel.FK_AdequateNotamPartInfo_Notam">
-            <End Role="AdequateNotam" EntitySet="AdequateNotams" />
-            <End Role="AdequateNotamPartInformation" EntitySet="AdequateNotamPartInformations" />
-          </AssociationSet>
           <AssociationSet Name="FK_ACCrew_Config" Association="ppaModel.FK_ACCrew_Config">
             <End Role="AircraftConfiguration" EntitySet="AircraftConfigurations" />
             <End Role="AircraftConfigurationCrew" EntitySet="AircraftConfigurationCrews" />
@@ -5041,25 +4995,9 @@
             <End Role="Position" EntitySet="Positions" />
             <End Role="EqualTimePoint" EntitySet="EqualTimePoints" />
           </AssociationSet>
-          <AssociationSet Name="FK_EtopsAlternate_Parent" Association="ppaModel.FK_EtopsAlternate_Parent">
-            <End Role="EtopsInformation" EntitySet="EtopsInformations" />
-            <End Role="EtopsAlternate" EntitySet="EtopsAlternates" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EtopsEntryPoint_Parent" Association="ppaModel.FK_EtopsEntryPoint_Parent">
-            <End Role="EtopsInformation" EntitySet="EtopsInformations" />
-            <End Role="EtopsEntryPoint" EntitySet="EtopsEntryPoints" />
-          </AssociationSet>
           <AssociationSet Name="FK_EtopsETAirport_ETP" Association="ppaModel.FK_EtopsETAirport_ETP">
             <End Role="EtopsEqualTimePoint" EntitySet="EtopsEqualTimePoints" />
             <End Role="EtopsEqualTimeAirport" EntitySet="EtopsEqualTimeAirports" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EtopsETP_Parent" Association="ppaModel.FK_EtopsETP_Parent">
-            <End Role="EtopsInformation" EntitySet="EtopsInformations" />
-            <End Role="EtopsEqualTimePoint" EntitySet="EtopsEqualTimePoints" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EtopsExitPoint_Parent" Association="ppaModel.FK_EtopsExitPoint_Parent">
-            <End Role="EtopsInformation" EntitySet="EtopsInformations" />
-            <End Role="EtopsExitPoint" EntitySet="EtopsExitPoints" />
           </AssociationSet>
           <AssociationSet Name="FK_EtopsFullETP_Profile" Association="ppaModel.FK_EtopsFullETP_Profile">
             <End Role="EtopsProfile" EntitySet="EtopsProfiles" />
@@ -5068,18 +5006,6 @@
           <AssociationSet Name="FK_EtopsFullETPAirport_FullETP" Association="ppaModel.FK_EtopsFullETPAirport_FullETP">
             <End Role="EtopsFullETP" EntitySet="EtopsFullETPs" />
             <End Role="EtopsFullETPAirport" EntitySet="EtopsFullETPAirports" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EtopsLimit_Parent" Association="ppaModel.FK_EtopsLimit_Parent">
-            <End Role="EtopsInformation" EntitySet="EtopsInformations" />
-            <End Role="EtopsLimit" EntitySet="EtopsLimits" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EtopsProfile_Parent" Association="ppaModel.FK_EtopsProfile_Parent">
-            <End Role="EtopsInformation" EntitySet="EtopsInformations" />
-            <End Role="EtopsProfile" EntitySet="EtopsProfiles" />
-          </AssociationSet>
-          <AssociationSet Name="fk_etopw_etop" Association="ppaModel.fk_etopw_etop">
-            <End Role="EtopsInformation" EntitySet="EtopsInformations" />
-            <End Role="ETOPSSuitableAirport" EntitySet="ETOPSSuitableAirports" />
           </AssociationSet>
           <AssociationSet Name="FK__AirportWe__Metar__26CFC035" Association="ppaModel.FK__AirportWe__Metar__26CFC035">
             <End Role="Metar" EntitySet="Metars" />
@@ -5092,10 +5018,6 @@
           <AssociationSet Name="FK_ExitPoint_Position" Association="ppaModel.FK_ExitPoint_Position">
             <End Role="Position" EntitySet="Positions" />
             <End Role="ExitPoint" EntitySet="ExitPoints" />
-          </AssociationSet>
-          <AssociationSet Name="FK_FIRNotamPartInfo_Notam" Association="ppaModel.FK_FIRNotamPartInfo_Notam">
-            <End Role="FIRNotam" EntitySet="FIRNotams" />
-            <End Role="FIRNotamPartInformation" EntitySet="FIRNotamPartInformations" />
           </AssociationSet>
           <AssociationSet Name="FK_FIROverflightCost_OverflightCost" Association="ppaModel.FK_FIROverflightCost_OverflightCost">
             <End Role="OverflightCost" EntitySet="OverflightCosts" />
@@ -5369,10 +5291,6 @@
             <End Role="Flight" EntitySet="Flights" />
             <End Role="AdequateApt" EntitySet="AdequateApts" />
           </AssociationSet>
-          <AssociationSet Name="FK_AdequateNotam_Flight" Association="ppaModel.FK_AdequateNotam_Flight">
-            <End Role="Flight" EntitySet="Flights" />
-            <End Role="AdequateNotam" EntitySet="AdequateNotams" />
-          </AssociationSet>
           <AssociationSet Name="fk_aconf_flt" Association="ppaModel.fk_aconf_flt">
             <End Role="Flight" EntitySet="Flights" />
             <End Role="AircraftConfiguration" EntitySet="AircraftConfigurations" />
@@ -5445,25 +5363,9 @@
             <End Role="Flight" EntitySet="Flights" />
             <End Role="DEPNotam" EntitySet="DEPNotams" />
           </AssociationSet>
-          <AssociationSet Name="FK_DEPTaf_Flight" Association="ppaModel.FK_DEPTaf_Flight">
-            <End Role="Flight" EntitySet="Flights" />
-            <End Role="DEPTaf" EntitySet="DEPTafs" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Flight_Taf" Association="ppaModel.FK_Flight_Taf">
-            <End Role="DEPTaf" EntitySet="DEPTafs" />
-            <End Role="Flight" EntitySet="Flights" />
-          </AssociationSet>
           <AssociationSet Name="FK_DESTNotam_Flight" Association="ppaModel.FK_DESTNotam_Flight">
             <End Role="Flight" EntitySet="Flights" />
             <End Role="DESTNotam" EntitySet="DESTNotams" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DESTTaf_Flight" Association="ppaModel.FK_DESTTaf_Flight">
-            <End Role="Flight" EntitySet="Flights" />
-            <End Role="DESTTaf" EntitySet="DESTTafs" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Flight_Taf2" Association="ppaModel.FK_Flight_Taf2">
-            <End Role="DESTTaf" EntitySet="DESTTafs" />
-            <End Role="Flight" EntitySet="Flights" />
           </AssociationSet>
           <AssociationSet Name="fk_enalt_flight" Association="ppaModel.fk_enalt_flight">
             <End Role="Flight" EntitySet="Flights" />
@@ -5473,10 +5375,6 @@
             <End Role="EnRouteAlternateAirport" EntitySet="EnRouteAlternateAirports" />
             <End Role="Flight" EntitySet="Flights" />
           </AssociationSet>
-          <AssociationSet Name="FK_Flight_EtopsInformation" Association="ppaModel.FK_Flight_EtopsInformation">
-            <End Role="EtopsInformation" EntitySet="EtopsInformations" />
-            <End Role="Flight" EntitySet="Flights" />
-          </AssociationSet>
           <AssociationSet Name="fk_exf_flt" Association="ppaModel.fk_exf_flt">
             <End Role="Flight" EntitySet="Flights" />
             <End Role="ExtraFuel" EntitySet="ExtraFuels" />
@@ -5484,10 +5382,6 @@
           <AssociationSet Name="fk_fir_flt" Association="ppaModel.fk_fir_flt">
             <End Role="Flight" EntitySet="Flights" />
             <End Role="FIR" EntitySet="FIRs" />
-          </AssociationSet>
-          <AssociationSet Name="FK_FIRNotam_Flight" Association="ppaModel.FK_FIRNotam_Flight">
-            <End Role="Flight" EntitySet="Flights" />
-            <End Role="FIRNotam" EntitySet="FIRNotams" />
           </AssociationSet>
           <AssociationSet Name="FK__FreeText__Flight__5772F790" Association="ppaModel.FK__FreeText__Flight__5772F790">
             <End Role="Flight" EntitySet="Flights" />
@@ -5589,30 +5483,68 @@
             <End Role="Flight" EntitySet="Flights" />
             <End Role="ToAlt1Points" EntitySet="ToAlt1Points" />
           </AssociationSet>
+          <EntitySet Name="FIRNotams" EntityType="ppaModel.FIRNotam" />
+          <AssociationSet Name="FK_FIRNotam_Flight" Association="ppaModel.FK_FIRNotam_Flight">
+            <End Role="Flight" EntitySet="Flights" />
+            <End Role="FIRNotam" EntitySet="FIRNotams" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FIRNotamPartInfo_Notam" Association="ppaModel.FK_FIRNotamPartInfo_Notam">
+            <End Role="FIRNotam" EntitySet="FIRNotams" />
+            <End Role="FIRNotamPartInformation" EntitySet="FIRNotamPartInformations" />
+          </AssociationSet>
+          <EntitySet Name="EtopsInformations" EntityType="ppaModel.EtopsInformation" />
+          <AssociationSet Name="FK_EtopsAlternate_Parent" Association="ppaModel.FK_EtopsAlternate_Parent">
+            <End Role="EtopsInformation" EntitySet="EtopsInformations" />
+            <End Role="EtopsAlternate" EntitySet="EtopsAlternates" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EtopsEntryPoint_Parent" Association="ppaModel.FK_EtopsEntryPoint_Parent">
+            <End Role="EtopsInformation" EntitySet="EtopsInformations" />
+            <End Role="EtopsEntryPoint" EntitySet="EtopsEntryPoints" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EtopsETP_Parent" Association="ppaModel.FK_EtopsETP_Parent">
+            <End Role="EtopsInformation" EntitySet="EtopsInformations" />
+            <End Role="EtopsEqualTimePoint" EntitySet="EtopsEqualTimePoints" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EtopsExitPoint_Parent" Association="ppaModel.FK_EtopsExitPoint_Parent">
+            <End Role="EtopsInformation" EntitySet="EtopsInformations" />
+            <End Role="EtopsExitPoint" EntitySet="EtopsExitPoints" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EtopsLimit_Parent" Association="ppaModel.FK_EtopsLimit_Parent">
+            <End Role="EtopsInformation" EntitySet="EtopsInformations" />
+            <End Role="EtopsLimit" EntitySet="EtopsLimits" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EtopsProfile_Parent" Association="ppaModel.FK_EtopsProfile_Parent">
+            <End Role="EtopsInformation" EntitySet="EtopsInformations" />
+            <End Role="EtopsProfile" EntitySet="EtopsProfiles" />
+          </AssociationSet>
+          <AssociationSet Name="fk_etopw_etop" Association="ppaModel.fk_etopw_etop">
+            <End Role="EtopsInformation" EntitySet="EtopsInformations" />
+            <End Role="ETOPSSuitableAirport" EntitySet="ETOPSSuitableAirports" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Flight_EtopsInformation" Association="ppaModel.FK_Flight_EtopsInformation">
+            <End Role="EtopsInformation" EntitySet="EtopsInformations" />
+            <End Role="Flight" EntitySet="Flights" />
+          </AssociationSet>
+          <EntitySet Name="DEPTafs" EntityType="ppaModel.DEPTaf" />
+          <EntitySet Name="DESTTafs" EntityType="ppaModel.DESTTaf" />
+          <AssociationSet Name="FK_Flight_Taf" Association="ppaModel.FK_Flight_Taf">
+            <End Role="DEPTaf" EntitySet="DEPTafs" />
+            <End Role="Flight" EntitySet="Flights" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Flight_Taf2" Association="ppaModel.FK_Flight_Taf2">
+            <End Role="DESTTaf" EntitySet="DESTTafs" />
+            <End Role="Flight" EntitySet="Flights" />
+          </AssociationSet>
+          <EntitySet Name="AdequateNotams" EntityType="ppaModel.AdequateNotam" />
+          <AssociationSet Name="FK_AdequateNotam_Flight" Association="ppaModel.FK_AdequateNotam_Flight">
+            <End Role="Flight" EntitySet="Flights" />
+            <End Role="AdequateNotam" EntitySet="AdequateNotams" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AdequateNotamPartInfo_Notam" Association="ppaModel.FK_AdequateNotamPartInfo_Notam">
+            <End Role="AdequateNotam" EntitySet="AdequateNotams" />
+            <End Role="AdequateNotamPartInformation" EntitySet="AdequateNotamPartInformations" />
+          </AssociationSet>
           </EntityContainer>
-        <EntityType Name="AdequateNotam">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FlightID" Type="Int32" Nullable="false" />
-          <Property Name="Number" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="Text" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="FromDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="ToDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="FromLevel" Type="Int32" Nullable="false" />
-          <Property Name="ToLevel" Type="Int32" Nullable="false" />
-          <Property Name="Fir" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="QCode" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="ECode" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="ICAO" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="UniformAbbreviation" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="Year" Type="Int32" Nullable="false" />
-          <Property Name="RoutePart" Type="Int32" Nullable="false" />
-          <Property Name="Provider" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AdequateNotamPartInformations" Relationship="ppaModel.FK_AdequateNotamPartInfo_Notam" FromRole="AdequateNotam" ToRole="AdequateNotamPartInformation" />
-          <NavigationProperty Name="Flight" Relationship="ppaModel.FK_AdequateNotam_Flight" FromRole="AdequateNotam" ToRole="Flight" />
-        </EntityType>
         <EntityType Name="AdequateNotamPartInformation">
           <Key>
             <PropertyRef Name="Id" />
@@ -5948,21 +5880,6 @@
           <Property Name="TotalParts" Type="Int32" Nullable="false" />
           <NavigationProperty Name="DEPNotam" Relationship="ppaModel.FK_DEPNotamPartInfo_Notam" FromRole="DEPNotamPartInformation" ToRole="DEPNotam" />
         </EntityType>
-        <EntityType Name="DEPTaf">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FlightID" Type="Int32" Nullable="false" />
-          <Property Name="Type" Type="Byte" Nullable="false" />
-          <Property Name="Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ICAO" Type="String" Nullable="false" MaxLength="4" FixedLength="true" Unicode="false" />
-          <Property Name="ForecastTime" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="ForecastStartTime" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="ForecastEndTime" Type="DateTime" Nullable="false" Precision="0" />
-          <NavigationProperty Name="Flight" Relationship="ppaModel.FK_DEPTaf_Flight" FromRole="DEPTaf" ToRole="Flight" />
-          <NavigationProperty Name="Flights" Relationship="ppaModel.FK_Flight_Taf" FromRole="DEPTaf" ToRole="Flight" />
-          </EntityType>
         <EntityType Name="DESTNotam">
           <Key>
             <PropertyRef Name="Id" />
@@ -5996,21 +5913,6 @@
           <Property Name="TotalParts" Type="Int32" Nullable="false" />
           <NavigationProperty Name="DESTNotam" Relationship="ppaModel.FK_DESTNotamPartInfo_Notam" FromRole="DESTNotamPartInformation" ToRole="DESTNotam" />
         </EntityType>
-        <EntityType Name="DESTTaf">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FlightID" Type="Int32" Nullable="false" />
-          <Property Name="Type" Type="Byte" Nullable="false" />
-          <Property Name="Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ICAO" Type="String" Nullable="false" MaxLength="4" FixedLength="true" Unicode="false" />
-          <Property Name="ForecastTime" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="ForecastStartTime" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="ForecastEndTime" Type="DateTime" Nullable="false" Precision="0" />
-          <NavigationProperty Name="Flight" Relationship="ppaModel.FK_DESTTaf_Flight" FromRole="DESTTaf" ToRole="Flight" />
-          <NavigationProperty Name="Flights" Relationship="ppaModel.FK_Flight_Taf2" FromRole="DESTTaf" ToRole="Flight" />
-          </EntityType>
         <EntityType Name="DryOperating">
           <Key>
             <PropertyRef Name="Id" />
@@ -6156,23 +6058,6 @@
           <Property Name="AirportHoursText" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="EtopsFullETP" Relationship="ppaModel.FK_EtopsFullETPAirport_FullETP" FromRole="EtopsFullETPAirport" ToRole="EtopsFullETP" />
         </EntityType>
-        <EntityType Name="EtopsInformation">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="RuleTimeUsed" Type="Int32" />
-          <Property Name="IcingPercentage" Type="Int32" />
-          <Property Name="FlightID" Type="Int32" />
-          <NavigationProperty Name="EtopsAlternates" Relationship="ppaModel.FK_EtopsAlternate_Parent" FromRole="EtopsInformation" ToRole="EtopsAlternate" />
-          <NavigationProperty Name="EtopsEntryPoints" Relationship="ppaModel.FK_EtopsEntryPoint_Parent" FromRole="EtopsInformation" ToRole="EtopsEntryPoint" />
-          <NavigationProperty Name="EtopsEqualTimePoints" Relationship="ppaModel.FK_EtopsETP_Parent" FromRole="EtopsInformation" ToRole="EtopsEqualTimePoint" />
-          <NavigationProperty Name="EtopsExitPoints" Relationship="ppaModel.FK_EtopsExitPoint_Parent" FromRole="EtopsInformation" ToRole="EtopsExitPoint" />
-          <NavigationProperty Name="EtopsLimits" Relationship="ppaModel.FK_EtopsLimit_Parent" FromRole="EtopsInformation" ToRole="EtopsLimit" />
-          <NavigationProperty Name="EtopsProfiles" Relationship="ppaModel.FK_EtopsProfile_Parent" FromRole="EtopsInformation" ToRole="EtopsProfile" />
-          <NavigationProperty Name="ETOPSSuitableAirports" Relationship="ppaModel.fk_etopw_etop" FromRole="EtopsInformation" ToRole="ETOPSSuitableAirport" />
-          <NavigationProperty Name="Flights" Relationship="ppaModel.FK_Flight_EtopsInformation" FromRole="EtopsInformation" ToRole="Flight" />
-          </EntityType>
         <EntityType Name="EtopsLimit">
           <Key>
             <PropertyRef Name="Id" />
@@ -6203,9 +6088,9 @@
           <Property Name="TAFId" Type="Int32" />
           <Property Name="MetarId" Type="Int32" />
           <Property Name="EtopsId" Type="Int32" />
-          <NavigationProperty Name="EtopsInformation" Relationship="ppaModel.fk_etopw_etop" FromRole="ETOPSSuitableAirport" ToRole="EtopsInformation" />
           <NavigationProperty Name="Metar" Relationship="ppaModel.FK__AirportWe__Metar__26CFC035" FromRole="ETOPSSuitableAirport" ToRole="Metar" />
           <NavigationProperty Name="Taf" Relationship="ppaModel.FK__AirportWe__TAFId__25DB9BFC" FromRole="ETOPSSuitableAirport" ToRole="Taf" />
+          <NavigationProperty Name="EtopsInformation" Relationship="ppaModel.fk_etopw_etop" FromRole="ETOPSSuitableAirport" ToRole="EtopsInformation" />
         </EntityType>
         <EntityType Name="ExitPoint">
           <Key>
@@ -6225,29 +6110,6 @@
           <Property Name="Time" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="FlightID" Type="Int32" />
           <NavigationProperty Name="Flight" Relationship="ppaModel.fk_exf_flt" FromRole="ExtraFuel" ToRole="Flight" />
-        </EntityType>
-        <EntityType Name="FIRNotam">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FlightID" Type="Int32" Nullable="false" />
-          <Property Name="Number" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="Text" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="FromDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="ToDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="FromLevel" Type="Int32" Nullable="false" />
-          <Property Name="ToLevel" Type="Int32" Nullable="false" />
-          <Property Name="Fir" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="QCode" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="ECode" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="ICAO" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="UniformAbbreviation" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="Year" Type="Int32" Nullable="false" />
-          <Property Name="RoutePart" Type="Int32" Nullable="false" />
-          <Property Name="Provider" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="FIRNotamPartInformations" Relationship="ppaModel.FK_FIRNotamPartInfo_Notam" FromRole="FIRNotam" ToRole="FIRNotamPartInformation" />
-          <NavigationProperty Name="Flight" Relationship="ppaModel.FK_FIRNotam_Flight" FromRole="FIRNotam" ToRole="Flight" />
         </EntityType>
         <EntityType Name="FIRNotamPartInformation">
           <Key>
@@ -6786,20 +6648,6 @@
           <NavigationProperty Name="AirportWeatherDataPlanningEnRouteAlternates" Relationship="ppaModel.FK__AirportWe__TAFId__52AE4273" FromRole="Taf" ToRole="AirportWeatherDataPlanningEnRouteAlternate" />
           <NavigationProperty Name="ETOPSSuitableAirports" Relationship="ppaModel.FK__AirportWe__TAFId__25DB9BFC" FromRole="Taf" ToRole="ETOPSSuitableAirport" />
           </EntityType>
-        <Association Name="FK_AdequateNotamPartInfo_Notam">
-          <End Type="ppaModel.AdequateNotam" Role="AdequateNotam" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="ppaModel.AdequateNotamPartInformation" Role="AdequateNotamPartInformation" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AdequateNotam">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="AdequateNotamPartInformation">
-              <PropertyRef Name="NotamId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_ACCrew_Config">
           <End Type="ppaModel.AircraftConfiguration" Role="AircraftConfiguration" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -7056,34 +6904,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_EtopsAlternate_Parent">
-          <End Type="ppaModel.EtopsInformation" Role="EtopsInformation" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="ppaModel.EtopsAlternate" Role="EtopsAlternate" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="EtopsInformation">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="EtopsAlternate">
-              <PropertyRef Name="EtopsId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EtopsEntryPoint_Parent">
-          <End Type="ppaModel.EtopsInformation" Role="EtopsInformation" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="ppaModel.EtopsEntryPoint" Role="EtopsEntryPoint" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="EtopsInformation">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="EtopsEntryPoint">
-              <PropertyRef Name="EtopsId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_EtopsETAirport_ETP">
           <End Type="ppaModel.EtopsEqualTimePoint" Role="EtopsEqualTimePoint" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -7095,34 +6915,6 @@
             </Principal>
             <Dependent Role="EtopsEqualTimeAirport">
               <PropertyRef Name="ETPId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EtopsETP_Parent">
-          <End Type="ppaModel.EtopsInformation" Role="EtopsInformation" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="ppaModel.EtopsEqualTimePoint" Role="EtopsEqualTimePoint" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="EtopsInformation">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="EtopsEqualTimePoint">
-              <PropertyRef Name="EtopsId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EtopsExitPoint_Parent">
-          <End Type="ppaModel.EtopsInformation" Role="EtopsInformation" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="ppaModel.EtopsExitPoint" Role="EtopsExitPoint" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="EtopsInformation">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="EtopsExitPoint">
-              <PropertyRef Name="EtopsId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -7151,48 +6943,6 @@
             </Principal>
             <Dependent Role="EtopsFullETPAirport">
               <PropertyRef Name="FullETPId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EtopsLimit_Parent">
-          <End Type="ppaModel.EtopsInformation" Role="EtopsInformation" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="ppaModel.EtopsLimit" Role="EtopsLimit" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="EtopsInformation">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="EtopsLimit">
-              <PropertyRef Name="EtopsId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EtopsProfile_Parent">
-          <End Type="ppaModel.EtopsInformation" Role="EtopsInformation" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="ppaModel.EtopsProfile" Role="EtopsProfile" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="EtopsInformation">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="EtopsProfile">
-              <PropertyRef Name="EtopsId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="fk_etopw_etop">
-          <End Type="ppaModel.EtopsInformation" Role="EtopsInformation" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="ppaModel.ETOPSSuitableAirport" Role="ETOPSSuitableAirport" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="EtopsInformation">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ETOPSSuitableAirport">
-              <PropertyRef Name="EtopsId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -7229,20 +6979,6 @@
             </Principal>
             <Dependent Role="ExitPoint">
               <PropertyRef Name="PositionId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_FIRNotamPartInfo_Notam">
-          <End Type="ppaModel.FIRNotam" Role="FIRNotam" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="ppaModel.FIRNotamPartInformation" Role="FIRNotamPartInformation" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="FIRNotam">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="FIRNotamPartInformation">
-              <PropertyRef Name="NotamId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -9218,7 +8954,6 @@
           <Property Name="HoldingFuelId" Type="Int32" />
           <Property Name="ResponseId" Type="Int32" />
           <NavigationProperty Name="AdequateApts" Relationship="ppaModel.fk_adapt_flt" FromRole="Flight" ToRole="AdequateApt" />
-          <NavigationProperty Name="AdequateNotams" Relationship="ppaModel.FK_AdequateNotam_Flight" FromRole="Flight" ToRole="AdequateNotam" />
           <NavigationProperty Name="AircraftConfigurations" Relationship="ppaModel.fk_aconf_flt" FromRole="Flight" ToRole="AircraftConfiguration" />
           <NavigationProperty Name="AircraftConfiguration" Relationship="ppaModel.FK_Flight_AircraftConfiguration" FromRole="Flight" ToRole="AircraftConfiguration" />
           <NavigationProperty Name="Airports" Relationship="ppaModel.FK_Airports_Flight" FromRole="Flight" ToRole="Airport" />
@@ -9237,17 +8972,11 @@
           <NavigationProperty Name="CustomReference" Relationship="ppaModel.FK_Flight_CustomReferences" FromRole="Flight" ToRole="CustomReference" />
           <NavigationProperty Name="DepartureAlternateAirport" Relationship="ppaModel.FK_Flight_AirportWeatherData" FromRole="Flight" ToRole="DepartureAlternateAirport" />
           <NavigationProperty Name="DEPNotams" Relationship="ppaModel.FK_DEPNotam_Flight" FromRole="Flight" ToRole="DEPNotam" />
-          <NavigationProperty Name="DEPTafs" Relationship="ppaModel.FK_DEPTaf_Flight" FromRole="Flight" ToRole="DEPTaf" />
-          <NavigationProperty Name="DEPTaf" Relationship="ppaModel.FK_Flight_Taf" FromRole="Flight" ToRole="DEPTaf" />
           <NavigationProperty Name="DESTNotams" Relationship="ppaModel.FK_DESTNotam_Flight" FromRole="Flight" ToRole="DESTNotam" />
-          <NavigationProperty Name="DESTTafs" Relationship="ppaModel.FK_DESTTaf_Flight" FromRole="Flight" ToRole="DESTTaf" />
-          <NavigationProperty Name="DESTTaf" Relationship="ppaModel.FK_Flight_Taf2" FromRole="Flight" ToRole="DESTTaf" />
           <NavigationProperty Name="EnrouteAlternates" Relationship="ppaModel.fk_enalt_flight" FromRole="Flight" ToRole="EnrouteAlternate" />
           <NavigationProperty Name="EnRouteAlternateAirport" Relationship="ppaModel.FK_Flight_AirportWeatherData2" FromRole="Flight" ToRole="EnRouteAlternateAirport" />
-          <NavigationProperty Name="EtopsInformation" Relationship="ppaModel.FK_Flight_EtopsInformation" FromRole="Flight" ToRole="EtopsInformation" />
           <NavigationProperty Name="ExtraFuels" Relationship="ppaModel.fk_exf_flt" FromRole="Flight" ToRole="ExtraFuel" />
           <NavigationProperty Name="FIRs" Relationship="ppaModel.fk_fir_flt" FromRole="Flight" ToRole="FIR" />
-          <NavigationProperty Name="FIRNotams" Relationship="ppaModel.FK_FIRNotam_Flight" FromRole="Flight" ToRole="FIRNotam" />
           <NavigationProperty Name="FreeTexts" Relationship="ppaModel.FK__FreeText__Flight__5772F790" FromRole="Flight" ToRole="FreeText" />
           <NavigationProperty Name="MelItems" Relationship="ppaModel.FK__MelItem__FlightI__5B438874" FromRole="Flight" ToRole="MelItem" />
           <NavigationProperty Name="Messages" Relationship="ppaModel.FK__Message__FlightI__7132C993" FromRole="Flight" ToRole="Message" />
@@ -9273,6 +9002,11 @@
           <NavigationProperty Name="StdAlternates" Relationship="ppaModel.FK_StdAlternates_Flight" FromRole="Flight" ToRole="StdAlternate" />
           <NavigationProperty Name="PlanningEnRouteAlternateAirports" Relationship="ppaModel.fk_tbl_flt" FromRole="Flight" ToRole="PlanningEnRouteAlternateAirport" />
           <NavigationProperty Name="ToAlt1Points" Relationship="ppaModel.FK_ToAlt1Points_Flights" FromRole="Flight" ToRole="ToAlt1Points" />
+          <NavigationProperty Name="FIRNotams" Relationship="ppaModel.FK_FIRNotam_Flight" FromRole="Flight" ToRole="FIRNotam" />
+          <NavigationProperty Name="EtopsInformation" Relationship="ppaModel.FK_Flight_EtopsInformation" FromRole="Flight" ToRole="EtopsInformation" />
+          <NavigationProperty Name="DEPTaf" Relationship="ppaModel.FK_Flight_Taf" FromRole="Flight" ToRole="DEPTaf" />
+          <NavigationProperty Name="DESTTaf" Relationship="ppaModel.FK_Flight_Taf2" FromRole="Flight" ToRole="DESTTaf" />
+          <NavigationProperty Name="AdequateNotams" Relationship="ppaModel.FK_AdequateNotam_Flight" FromRole="Flight" ToRole="AdequateNotam" />
         </EntityType>
         <Association Name="fk_adapt_flt">
           <End Type="ppaModel.Flight" Role="Flight" Multiplicity="0..1">
@@ -9284,20 +9018,6 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="AdequateApt">
-              <PropertyRef Name="FlightID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_AdequateNotam_Flight">
-          <End Type="ppaModel.Flight" Role="Flight" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="ppaModel.AdequateNotam" Role="AdequateNotam" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Flight">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="AdequateNotam">
               <PropertyRef Name="FlightID" />
             </Dependent>
           </ReferentialConstraint>
@@ -9542,32 +9262,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_DEPTaf_Flight">
-          <End Type="ppaModel.Flight" Role="Flight" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="ppaModel.DEPTaf" Role="DEPTaf" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Flight">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="DEPTaf">
-              <PropertyRef Name="FlightID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Flight_Taf">
-          <End Type="ppaModel.DEPTaf" Role="DEPTaf" Multiplicity="0..1" />
-          <End Type="ppaModel.Flight" Role="Flight" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DEPTaf">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Flight">
-              <PropertyRef Name="DEPTAFId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_DESTNotam_Flight">
           <End Type="ppaModel.Flight" Role="Flight" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -9579,32 +9273,6 @@
             </Principal>
             <Dependent Role="DESTNotam">
               <PropertyRef Name="FlightID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_DESTTaf_Flight">
-          <End Type="ppaModel.Flight" Role="Flight" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="ppaModel.DESTTaf" Role="DESTTaf" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Flight">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="DESTTaf">
-              <PropertyRef Name="FlightID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Flight_Taf2">
-          <End Type="ppaModel.DESTTaf" Role="DESTTaf" Multiplicity="0..1" />
-          <End Type="ppaModel.Flight" Role="Flight" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DESTTaf">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Flight">
-              <PropertyRef Name="DESTTAFId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -9634,18 +9302,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Flight_EtopsInformation">
-          <End Type="ppaModel.EtopsInformation" Role="EtopsInformation" Multiplicity="0..1" />
-          <End Type="ppaModel.Flight" Role="Flight" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="EtopsInformation">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Flight">
-              <PropertyRef Name="EtopsInformationId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="fk_exf_flt">
           <End Type="ppaModel.Flight" Role="Flight" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -9670,20 +9326,6 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="FIR">
-              <PropertyRef Name="FlightID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_FIRNotam_Flight">
-          <End Type="ppaModel.Flight" Role="Flight" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="ppaModel.FIRNotam" Role="FIRNotam" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Flight">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="FIRNotam">
               <PropertyRef Name="FlightID" />
             </Dependent>
           </ReferentialConstraint>
@@ -10014,34 +9656,291 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="FIRNotam">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FlightID" Type="Int32" Nullable="false" />
+          <Property Name="Number" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Text" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FromDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="ToDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="FromLevel" Type="Int32" Nullable="false" />
+          <Property Name="ToLevel" Type="Int32" Nullable="false" />
+          <Property Name="Fir" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="QCode" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="ECode" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="ICAO" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="UniformAbbreviation" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Year" Type="Int32" Nullable="false" />
+          <Property Name="RoutePart" Type="Int32" Nullable="false" />
+          <Property Name="Provider" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Flight" Relationship="ppaModel.FK_FIRNotam_Flight" FromRole="FIRNotam" ToRole="Flight" />
+          <NavigationProperty Name="FIRNotamPartInformations" Relationship="ppaModel.FK_FIRNotamPartInfo_Notam" FromRole="FIRNotam" ToRole="FIRNotamPartInformation" />
+        </EntityType>
+        <Association Name="FK_FIRNotam_Flight">
+          <End Type="ppaModel.Flight" Role="Flight" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ppaModel.FIRNotam" Role="FIRNotam" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Flight">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FIRNotam">
+              <PropertyRef Name="FlightID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FIRNotamPartInfo_Notam">
+          <End Type="ppaModel.FIRNotam" Role="FIRNotam" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ppaModel.FIRNotamPartInformation" Role="FIRNotamPartInformation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FIRNotam">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FIRNotamPartInformation">
+              <PropertyRef Name="NotamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="EtopsInformation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RuleTimeUsed" Type="Int32" />
+          <Property Name="IcingPercentage" Type="Int32" />
+          <NavigationProperty Name="EtopsAlternates" Relationship="ppaModel.FK_EtopsAlternate_Parent" FromRole="EtopsInformation" ToRole="EtopsAlternate" />
+          <NavigationProperty Name="EtopsEntryPoints" Relationship="ppaModel.FK_EtopsEntryPoint_Parent" FromRole="EtopsInformation" ToRole="EtopsEntryPoint" />
+          <NavigationProperty Name="EtopsEqualTimePoints" Relationship="ppaModel.FK_EtopsETP_Parent" FromRole="EtopsInformation" ToRole="EtopsEqualTimePoint" />
+          <NavigationProperty Name="EtopsExitPoints" Relationship="ppaModel.FK_EtopsExitPoint_Parent" FromRole="EtopsInformation" ToRole="EtopsExitPoint" />
+          <NavigationProperty Name="EtopsLimits" Relationship="ppaModel.FK_EtopsLimit_Parent" FromRole="EtopsInformation" ToRole="EtopsLimit" />
+          <NavigationProperty Name="EtopsProfiles" Relationship="ppaModel.FK_EtopsProfile_Parent" FromRole="EtopsInformation" ToRole="EtopsProfile" />
+          <NavigationProperty Name="ETOPSSuitableAirports" Relationship="ppaModel.fk_etopw_etop" FromRole="EtopsInformation" ToRole="ETOPSSuitableAirport" />
+          <NavigationProperty Name="Flights" Relationship="ppaModel.FK_Flight_EtopsInformation" FromRole="EtopsInformation" ToRole="Flight" />
+        </EntityType>
+        <Association Name="FK_EtopsAlternate_Parent">
+          <End Type="ppaModel.EtopsInformation" Role="EtopsInformation" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ppaModel.EtopsAlternate" Role="EtopsAlternate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EtopsInformation">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EtopsAlternate">
+              <PropertyRef Name="EtopsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EtopsEntryPoint_Parent">
+          <End Type="ppaModel.EtopsInformation" Role="EtopsInformation" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ppaModel.EtopsEntryPoint" Role="EtopsEntryPoint" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EtopsInformation">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EtopsEntryPoint">
+              <PropertyRef Name="EtopsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EtopsETP_Parent">
+          <End Type="ppaModel.EtopsInformation" Role="EtopsInformation" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ppaModel.EtopsEqualTimePoint" Role="EtopsEqualTimePoint" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EtopsInformation">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EtopsEqualTimePoint">
+              <PropertyRef Name="EtopsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EtopsExitPoint_Parent">
+          <End Type="ppaModel.EtopsInformation" Role="EtopsInformation" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ppaModel.EtopsExitPoint" Role="EtopsExitPoint" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EtopsInformation">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EtopsExitPoint">
+              <PropertyRef Name="EtopsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EtopsLimit_Parent">
+          <End Type="ppaModel.EtopsInformation" Role="EtopsInformation" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ppaModel.EtopsLimit" Role="EtopsLimit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EtopsInformation">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EtopsLimit">
+              <PropertyRef Name="EtopsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EtopsProfile_Parent">
+          <End Type="ppaModel.EtopsInformation" Role="EtopsInformation" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ppaModel.EtopsProfile" Role="EtopsProfile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EtopsInformation">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EtopsProfile">
+              <PropertyRef Name="EtopsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_etopw_etop">
+          <End Type="ppaModel.EtopsInformation" Role="EtopsInformation" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ppaModel.ETOPSSuitableAirport" Role="ETOPSSuitableAirport" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EtopsInformation">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ETOPSSuitableAirport">
+              <PropertyRef Name="EtopsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Flight_EtopsInformation">
+          <End Type="ppaModel.EtopsInformation" Role="EtopsInformation" Multiplicity="0..1" />
+          <End Type="ppaModel.Flight" Role="Flight" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EtopsInformation">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Flight">
+              <PropertyRef Name="EtopsInformationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="DEPTaf">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Type" Type="Byte" Nullable="false" />
+          <Property Name="Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ICAO" Type="String" Nullable="false" MaxLength="4" FixedLength="true" Unicode="false" />
+          <Property Name="ForecastTime" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ForecastStartTime" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ForecastEndTime" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Flights" Relationship="ppaModel.FK_Flight_Taf" FromRole="DEPTaf" ToRole="Flight" />
+        </EntityType>
+        <EntityType Name="DESTTaf">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FlightID" Type="Int32" Nullable="false" />
+          <Property Name="Type" Type="Byte" Nullable="false" />
+          <Property Name="Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ICAO" Type="String" Nullable="false" MaxLength="4" FixedLength="true" Unicode="false" />
+          <Property Name="ForecastTime" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ForecastStartTime" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ForecastEndTime" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Flights" Relationship="ppaModel.FK_Flight_Taf2" FromRole="DESTTaf" ToRole="Flight" />
+        </EntityType>
+        <Association Name="FK_Flight_Taf">
+          <End Type="ppaModel.DEPTaf" Role="DEPTaf" Multiplicity="0..1" />
+          <End Type="ppaModel.Flight" Role="Flight" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DEPTaf">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Flight">
+              <PropertyRef Name="DEPTAFId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Flight_Taf2">
+          <End Type="ppaModel.DESTTaf" Role="DESTTaf" Multiplicity="0..1" />
+          <End Type="ppaModel.Flight" Role="Flight" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DESTTaf">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Flight">
+              <PropertyRef Name="DESTTAFId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="AdequateNotam">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FlightID" Type="Int32" Nullable="false" />
+          <Property Name="Number" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FromDate" Type="DateTime" Precision="7" />
+          <Property Name="ToDate" Type="DateTime" Precision="7" />
+          <Property Name="FromLevel" Type="Int32" />
+          <Property Name="ToLevel" Type="Int32" />
+          <Property Name="Fir" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="QCode" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ECode" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ICAO" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="UniformAbbreviation" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Year" Type="Int32" />
+          <Property Name="RoutePart" Type="Int32" />
+          <Property Name="Provider" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Flight" Relationship="ppaModel.FK_AdequateNotam_Flight" FromRole="AdequateNotam" ToRole="Flight" />
+          <NavigationProperty Name="AdequateNotamPartInformations" Relationship="ppaModel.FK_AdequateNotamPartInfo_Notam" FromRole="AdequateNotam" ToRole="AdequateNotamPartInformation" />
+        </EntityType>
+        <Association Name="FK_AdequateNotam_Flight">
+          <End Type="ppaModel.Flight" Role="Flight" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ppaModel.AdequateNotam" Role="AdequateNotam" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Flight">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AdequateNotam">
+              <PropertyRef Name="FlightID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AdequateNotamPartInfo_Notam">
+          <End Type="ppaModel.AdequateNotam" Role="AdequateNotam" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ppaModel.AdequateNotamPartInformation" Role="AdequateNotamPartInformation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AdequateNotam">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AdequateNotamPartInformation">
+              <PropertyRef Name="NotamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="ppaModelStoreContainer" CdmEntityContainer="ppa_entities">
-          <EntitySetMapping Name="AdequateNotams">
-            <EntityTypeMapping TypeName="ppaModel.AdequateNotam">
-              <MappingFragment StoreEntitySet="AdequateNotam">
-                <ScalarProperty Name="Provider" ColumnName="Provider" />
-                <ScalarProperty Name="RoutePart" ColumnName="RoutePart" />
-                <ScalarProperty Name="Year" ColumnName="Year" />
-                <ScalarProperty Name="UniformAbbreviation" ColumnName="UniformAbbreviation" />
-                <ScalarProperty Name="ICAO" ColumnName="ICAO" />
-                <ScalarProperty Name="ECode" ColumnName="ECode" />
-                <ScalarProperty Name="QCode" ColumnName="QCode" />
-                <ScalarProperty Name="Fir" ColumnName="Fir" />
-                <ScalarProperty Name="ToLevel" ColumnName="ToLevel" />
-                <ScalarProperty Name="FromLevel" ColumnName="FromLevel" />
-                <ScalarProperty Name="ToDate" ColumnName="ToDate" />
-                <ScalarProperty Name="FromDate" ColumnName="FromDate" />
-                <ScalarProperty Name="Text" ColumnName="Text" />
-                <ScalarProperty Name="Number" ColumnName="Number" />
-                <ScalarProperty Name="FlightID" ColumnName="FlightID" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="AdequateNotamPartInformations">
             <EntityTypeMapping TypeName="ppaModel.AdequateNotamPartInformation">
               <MappingFragment StoreEntitySet="AdequateNotamPartInformation">
@@ -10359,20 +10258,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="DEPTafs">
-            <EntityTypeMapping TypeName="ppaModel.DEPTaf">
-              <MappingFragment StoreEntitySet="DEPTaf">
-                <ScalarProperty Name="ForecastEndTime" ColumnName="ForecastEndTime" />
-                <ScalarProperty Name="ForecastStartTime" ColumnName="ForecastStartTime" />
-                <ScalarProperty Name="ForecastTime" ColumnName="ForecastTime" />
-                <ScalarProperty Name="ICAO" ColumnName="ICAO" />
-                <ScalarProperty Name="Text" ColumnName="Text" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="FlightID" ColumnName="FlightID" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="DESTNotams">
             <EntityTypeMapping TypeName="ppaModel.DESTNotam">
               <MappingFragment StoreEntitySet="DESTNotam">
@@ -10401,20 +10286,6 @@
                 <ScalarProperty Name="TotalParts" ColumnName="TotalParts" />
                 <ScalarProperty Name="Part" ColumnName="Part" />
                 <ScalarProperty Name="NotamId" ColumnName="NotamId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="DESTTafs">
-            <EntityTypeMapping TypeName="ppaModel.DESTTaf">
-              <MappingFragment StoreEntitySet="DESTTaf">
-                <ScalarProperty Name="ForecastEndTime" ColumnName="ForecastEndTime" />
-                <ScalarProperty Name="ForecastStartTime" ColumnName="ForecastStartTime" />
-                <ScalarProperty Name="ForecastTime" ColumnName="ForecastTime" />
-                <ScalarProperty Name="ICAO" ColumnName="ICAO" />
-                <ScalarProperty Name="Text" ColumnName="Text" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="FlightID" ColumnName="FlightID" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -10563,15 +10434,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="EtopsInformations">
-            <EntityTypeMapping TypeName="ppaModel.EtopsInformation">
-              <MappingFragment StoreEntitySet="EtopsInformation">
-                <ScalarProperty Name="IcingPercentage" ColumnName="IcingPercentage" />
-                <ScalarProperty Name="RuleTimeUsed" ColumnName="RuleTimeUsed" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="EtopsLimits">
             <EntityTypeMapping TypeName="ppaModel.EtopsLimit">
               <MappingFragment StoreEntitySet="EtopsLimit">
@@ -10618,28 +10480,6 @@
                 <ScalarProperty Name="Time" ColumnName="Time" />
                 <ScalarProperty Name="Fuel" ColumnName="Fuel" />
                 <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="FIRNotams">
-            <EntityTypeMapping TypeName="ppaModel.FIRNotam">
-              <MappingFragment StoreEntitySet="FIRNotam">
-                <ScalarProperty Name="Provider" ColumnName="Provider" />
-                <ScalarProperty Name="RoutePart" ColumnName="RoutePart" />
-                <ScalarProperty Name="Year" ColumnName="Year" />
-                <ScalarProperty Name="UniformAbbreviation" ColumnName="UniformAbbreviation" />
-                <ScalarProperty Name="ICAO" ColumnName="ICAO" />
-                <ScalarProperty Name="ECode" ColumnName="ECode" />
-                <ScalarProperty Name="QCode" ColumnName="QCode" />
-                <ScalarProperty Name="Fir" ColumnName="Fir" />
-                <ScalarProperty Name="ToLevel" ColumnName="ToLevel" />
-                <ScalarProperty Name="FromLevel" ColumnName="FromLevel" />
-                <ScalarProperty Name="ToDate" ColumnName="ToDate" />
-                <ScalarProperty Name="FromDate" ColumnName="FromDate" />
-                <ScalarProperty Name="Text" ColumnName="Text" />
-                <ScalarProperty Name="Number" ColumnName="Number" />
-                <ScalarProperty Name="FlightID" ColumnName="FlightID" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -12390,6 +12230,86 @@
                 <ScalarProperty Name="PPSName" ColumnName="PPSName" />
                 <ScalarProperty Name="FlightLogID" ColumnName="FlightLogID" />
                 <ScalarProperty Name="OverflightCostId" ColumnName="OverflightCostId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FIRNotams">
+            <EntityTypeMapping TypeName="ppaModel.FIRNotam">
+              <MappingFragment StoreEntitySet="FIRNotam">
+                <ScalarProperty Name="Provider" ColumnName="Provider" />
+                <ScalarProperty Name="RoutePart" ColumnName="RoutePart" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="UniformAbbreviation" ColumnName="UniformAbbreviation" />
+                <ScalarProperty Name="ICAO" ColumnName="ICAO" />
+                <ScalarProperty Name="ECode" ColumnName="ECode" />
+                <ScalarProperty Name="QCode" ColumnName="QCode" />
+                <ScalarProperty Name="Fir" ColumnName="Fir" />
+                <ScalarProperty Name="ToLevel" ColumnName="ToLevel" />
+                <ScalarProperty Name="FromLevel" ColumnName="FromLevel" />
+                <ScalarProperty Name="ToDate" ColumnName="ToDate" />
+                <ScalarProperty Name="FromDate" ColumnName="FromDate" />
+                <ScalarProperty Name="Text" ColumnName="Text" />
+                <ScalarProperty Name="Number" ColumnName="Number" />
+                <ScalarProperty Name="FlightID" ColumnName="FlightID" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EtopsInformations">
+            <EntityTypeMapping TypeName="ppaModel.EtopsInformation">
+              <MappingFragment StoreEntitySet="EtopsInformation">
+                <ScalarProperty Name="IcingPercentage" ColumnName="IcingPercentage" />
+                <ScalarProperty Name="RuleTimeUsed" ColumnName="RuleTimeUsed" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DEPTafs">
+            <EntityTypeMapping TypeName="ppaModel.DEPTaf">
+              <MappingFragment StoreEntitySet="DEPTaf">
+                <ScalarProperty Name="ForecastEndTime" ColumnName="ForecastEndTime" />
+                <ScalarProperty Name="ForecastStartTime" ColumnName="ForecastStartTime" />
+                <ScalarProperty Name="ForecastTime" ColumnName="ForecastTime" />
+                <ScalarProperty Name="ICAO" ColumnName="ICAO" />
+                <ScalarProperty Name="Text" ColumnName="Text" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DESTTafs">
+            <EntityTypeMapping TypeName="ppaModel.DESTTaf">
+              <MappingFragment StoreEntitySet="DESTTaf">
+                <ScalarProperty Name="ForecastEndTime" ColumnName="ForecastEndTime" />
+                <ScalarProperty Name="ForecastStartTime" ColumnName="ForecastStartTime" />
+                <ScalarProperty Name="ForecastTime" ColumnName="ForecastTime" />
+                <ScalarProperty Name="ICAO" ColumnName="ICAO" />
+                <ScalarProperty Name="Text" ColumnName="Text" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="FlightID" ColumnName="FlightID" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AdequateNotams">
+            <EntityTypeMapping TypeName="ppaModel.AdequateNotam">
+              <MappingFragment StoreEntitySet="AdequateNotam">
+                <ScalarProperty Name="Provider" ColumnName="Provider" />
+                <ScalarProperty Name="RoutePart" ColumnName="RoutePart" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="UniformAbbreviation" ColumnName="UniformAbbreviation" />
+                <ScalarProperty Name="ICAO" ColumnName="ICAO" />
+                <ScalarProperty Name="ECode" ColumnName="ECode" />
+                <ScalarProperty Name="QCode" ColumnName="QCode" />
+                <ScalarProperty Name="Fir" ColumnName="Fir" />
+                <ScalarProperty Name="ToLevel" ColumnName="ToLevel" />
+                <ScalarProperty Name="FromLevel" ColumnName="FromLevel" />
+                <ScalarProperty Name="ToDate" ColumnName="ToDate" />
+                <ScalarProperty Name="FromDate" ColumnName="FromDate" />
+                <ScalarProperty Name="Text" ColumnName="Text" />
+                <ScalarProperty Name="Number" ColumnName="Number" />
+                <ScalarProperty Name="FlightID" ColumnName="FlightID" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
