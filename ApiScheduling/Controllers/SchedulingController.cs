@@ -3589,13 +3589,16 @@ namespace ApiScheduling.Controllers
                         //    && (_activeq && _interupted.DutyType != 1167 && _interupted.DutyType != 1168 && _interupted.DutyType != 1170)
                         //    || !(dto.items.First().std >= _interupted.DateStart && dto.items.First().std <= _interupted.DateEnd))
                         if ((dto.IsAdmin == null || dto.IsAdmin == 0)
-                           && (_interupted.DutyType != 1167 && _interupted.DutyType != 1168 && _interupted.DutyType != 1170)
+                           && (_interupted.DutyType != 1167 && _interupted.DutyType != 1168 /*&& _interupted.DutyType != 1170*/)
                           )
                         {
                             //if (false)
                             bool sendError = false;
                             switch (_interupted.DutyType)
                             {
+                                case 1170:
+                                    sendError = false;
+                                    break;
                                 case 5000:
                                     if ((fdp.InitStart >= _interupted.InitStart && fdp.InitStart <= _interupted.InitEnd)
                                            || (fdp.InitEnd >= _interupted.InitStart && fdp.InitEnd <= _interupted.InitEnd)
