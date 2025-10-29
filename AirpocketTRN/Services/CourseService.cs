@@ -6515,13 +6515,14 @@ namespace AirpocketTRN.Services
                 strs.Add("TRAINING DEPARTMENT");
 
                 var text = String.Join("\n", strs);
-                Magfa m = new Magfa();
-
+                //Magfa m = new Magfa();
+                MelliPayamac m = new MelliPayamac();
                 var res = new List<long>();
                 var hists = new List<CourseSMSHistory>();
                 foreach (var p in people)
                 {
-                    var rs = m.enqueue(1, p.Mobile, text)[0];
+                    //var rs = m.send(1, p.Mobile, text)[0];
+                    var rs = m.send(p.Mobile,null , text)[0];
                     var hist = new CourseSMSHistory()
                     {
                         CourseId = cid,
@@ -6543,14 +6544,16 @@ namespace AirpocketTRN.Services
                 await Task.Delay(10000);
 
 
-                var sts = m.getStatus(res);
+                var sts = m.get_delivery(res.ToString());
                 int c = 0;
-                foreach (var st in sts)
-                {
-                    hists[c].DateStatus = DateTime.Now;
-                    hists[c].Statu = st;
-                    c++;
-                }
+                hists[c].DateStatus = DateTime.Now;
+                hists[c].Statu = sts;
+                //foreach (var st in sts)
+                //{
+                //    hists[c].DateStatus = DateTime.Now;
+                //    hists[c].Statu = st;
+                //    c++;
+                //}
                 var saveResult = await context.SaveAsync();
                 return new DataResponse()
                 {
