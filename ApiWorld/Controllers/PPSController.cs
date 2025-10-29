@@ -18,7 +18,8 @@ namespace ApiWorld.Controllers
             {
                 pps.EfbService pps_ins = new pps.EfbService();
                 var session_id = pps_ins.GetSessionID("ArmeniaAirways", "J8V14HNHK", "AMWINTEGRATION", "i$qn719e");
-                var flts = pps_ins.GetSTDFlightList(session_id, new DateTime(2025, 8, 27), new DateTime(2025, 8, 29));
+                var _flt = pps_ins.GetFlight(session_id, 9300840, false, false, false, false, "kg");
+                var flts = pps_ins.GetSTDFlightList(session_id, new DateTime(2025, 1, 27), new DateTime(2025, 10, 29));
                 pps.Flight flt_info = pps_ins.GetFlight(session_id, flts.Items[0].ID, true, true, true, true, "kg");
                 var atc = pps_ins.GetATC(session_id, flts.Items[0].ID);
                 var apts = pps_ins.GetFlightAirports(session_id, flts.Items[0].ID);
@@ -53,7 +54,9 @@ namespace ApiWorld.Controllers
 
                 pps.EfbService pps_ins = new pps.EfbService();
                 var session_id = pps_ins.GetSessionID("ArmeniaAirways", "J8V14HNHK", "AMWINTEGRATION", "i$qn719e");
-                var flts = pps_ins.GetSTDFlightList(session_id, new DateTime(2025, 10, 1), new DateTime(2025, 10, 11));
+                var flts = pps_ins.GetSTDFlightList(session_id, new DateTime(2025, 1, 1), new DateTime(2025, 10, 20));
+                var flts2 = pps_ins.GetFlightListSearch(session_id, new DateTime(2025, 9, 1), new DateTime(2025, 10, 17),new DateTime(2025,9,1)
+                    ,null,false,null,null,null,null);
                 pps.Flight flt_info = pps_ins.GetFlight(session_id, flts.Items[0].ID, true, true, true, true, "kg");
 
                 Models.Flight db_flight = new Flight();

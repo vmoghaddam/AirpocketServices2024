@@ -9649,7 +9649,7 @@ new JsonSerializerSettings
                 positioning += "  TICKET(s): " + string.Join(" ", tickets);
             }
             var dutiesQuery = (from x in context.ViewCrewDuties
-                               where x.DateLocal == df && (x.DutyType == 1167 || x.DutyType == 1168 || x.DutyType == 300013 || x.DutyType == 1170 || x.DutyType == 5000 || x.DutyType == 5001
+                               where x.DateLocal == df && (x.DutyType == 1167 || x.DutyType == 1168 || x.DutyType == 300013 || x.DutyType == 1170 || x.DutyType == 5000 /*|| x.DutyType == 5001*/
                                || x.DutyType == 100001 || x.DutyType == 100003)
                                select x).ToList();
             var stby_ids = new List<int>() { 1167, 1168, 300013 };
@@ -9678,29 +9678,74 @@ new JsonSerializerSettings
                           }).OrderBy(q => q.DutyType).ToList();
             var stby_duties = (from x in dutiesQuery where stby_ids.Contains(x.DutyType) select x).ToList();
             var stby_out = new List<out_duty>() {
-             new out_duty(){DutyType=300013,DutyTypeTitle="STBY B737",aircraft_type="B737"},
-             new out_duty(){DutyType=300013,DutyTypeTitle="STBY MD", aircraft_type="MD"},
+                     new out_duty(){DutyType=1168,DutyTypeTitle="STBY AM",aircraft_type="-"},
+                          new out_duty(){DutyType=1167,DutyTypeTitle="STBY PM",aircraft_type="-"},
+            //     new out_duty(){DutyType=300013,DutyTypeTitle="STBY",aircraft_type="-"},
+            // new out_duty(){DutyType=300013,DutyTypeTitle="STBY B737",aircraft_type="B737"},
+            // new out_duty(){DutyType=300013,DutyTypeTitle="STBY MD", aircraft_type="MD"},
             // new out_duty(){DutyType=300013,DutyTypeTitle="STBY AIRBUS", aircraft_type="AIRBUS"},
             // new out_duty(){DutyType=300013,DutyTypeTitle="STBY ERJ", aircraft_type="ERJ"},
 
             };
             foreach (var row in stby_out)
             {
-                row.items = stby_duties.Where(q => q.ValidTypesStr.Contains(row.aircraft_type)).Select(q => new out_duty_item()
+                if (row.DutyType == 1168)
                 {
-                    Title = row.DutyType != 300013 ? q.ScheduleName + " (" + q.JobGroup + ")" : q.ScheduleName + " (" + q.JobGroup + ")" + " (" + ((DateTime)q.Start).ToString("HHmm") + " - " + ((DateTime)q.End).ToString("HHmm") + ")",
-                    IsCockpit = q.IsCockpit,
-                    JobGroup = q.JobGroup,
-                    GroupOrder = getOrder(q.JobGroup)
-                }).OrderBy(q => q.GroupOrder).ToList();
+                    row.items = stby_duties.Where(q => q.DutyType==1168).Select(q => new out_duty_item()
+                    {
+                        Title = row.DutyType != 300013 ? q.ScheduleName + " (" + q.JobGroup + ")" : q.ScheduleName + " (" + q.JobGroup + ")" + " (" + ((DateTime)q.Start).ToString("HHmm") + " - " + ((DateTime)q.End).ToString("HHmm") + ")",
+                        IsCockpit = q.IsCockpit,
+                        JobGroup = q.JobGroup,
+                        GroupOrder = getOrder(q.JobGroup)
+                    }).OrderBy(q => q.GroupOrder).ToList();
 
-                row.itemsStr = string.Join(", ", stby_duties.Where(q => q.ValidTypesStr.Contains(row.aircraft_type)).Select(q => new
+                    row.itemsStr = string.Join(", ", stby_duties/*.Where(q => q.ValidTypesStr.Contains(row.aircraft_type))*/.Select(q => new
+                    {
+                        Title = row.DutyType != 300013 ? q.ScheduleName + " (" + q.JobGroup + ")" : q.ScheduleName + " (" + q.JobGroup + ")" + " (" + ((DateTime)q.Start).ToString("HHmm") + " - " + ((DateTime)q.End).ToString("HHmm") + ")",
+                        q.IsCockpit,
+                        q.JobGroup,
+                        GroupOrder = getOrder(q.JobGroup)
+                    }).OrderBy(q => q.GroupOrder).Select(q => q.Title).ToList());
+
+                }
+                else if (row.DutyType == 1167)
                 {
-                    Title = row.DutyType != 300013 ? q.ScheduleName + " (" + q.JobGroup + ")" : q.ScheduleName + " (" + q.JobGroup + ")" + " (" + ((DateTime)q.Start).ToString("HHmm") + " - " + ((DateTime)q.End).ToString("HHmm") + ")",
-                    q.IsCockpit,
-                    q.JobGroup,
-                    GroupOrder = getOrder(q.JobGroup)
-                }).OrderBy(q => q.GroupOrder).Select(q => q.Title).ToList());
+                    row.items = stby_duties.Where(q => q.DutyType == 1167).Select(q => new out_duty_item()
+                    {
+                        Title = row.DutyType != 300013 ? q.ScheduleName + " (" + q.JobGroup + ")" : q.ScheduleName + " (" + q.JobGroup + ")" + " (" + ((DateTime)q.Start).ToString("HHmm") + " - " + ((DateTime)q.End).ToString("HHmm") + ")",
+                        IsCockpit = q.IsCockpit,
+                        JobGroup = q.JobGroup,
+                        GroupOrder = getOrder(q.JobGroup)
+                    }).OrderBy(q => q.GroupOrder).ToList();
+
+                    row.itemsStr = string.Join(", ", stby_duties/*.Where(q => q.ValidTypesStr.Contains(row.aircraft_type))*/.Select(q => new
+                    {
+                        Title = row.DutyType != 300013 ? q.ScheduleName + " (" + q.JobGroup + ")" : q.ScheduleName + " (" + q.JobGroup + ")" + " (" + ((DateTime)q.Start).ToString("HHmm") + " - " + ((DateTime)q.End).ToString("HHmm") + ")",
+                        q.IsCockpit,
+                        q.JobGroup,
+                        GroupOrder = getOrder(q.JobGroup)
+                    }).OrderBy(q => q.GroupOrder).Select(q => q.Title).ToList());
+
+                }
+                else
+                {
+                    row.items = stby_duties.Where(q => q.ValidTypesStr.Contains(row.aircraft_type)).Select(q => new out_duty_item()
+                    {
+                        Title = row.DutyType != 300013 ? q.ScheduleName + " (" + q.JobGroup + ")" : q.ScheduleName + " (" + q.JobGroup + ")" + " (" + ((DateTime)q.Start).ToString("HHmm") + " - " + ((DateTime)q.End).ToString("HHmm") + ")",
+                        IsCockpit = q.IsCockpit,
+                        JobGroup = q.JobGroup,
+                        GroupOrder = getOrder(q.JobGroup)
+                    }).OrderBy(q => q.GroupOrder).ToList();
+
+                    row.itemsStr = string.Join(", ", stby_duties.Where(q => q.ValidTypesStr.Contains(row.aircraft_type)).Select(q => new
+                    {
+                        Title = row.DutyType != 300013 ? q.ScheduleName + " (" + q.JobGroup + ")" : q.ScheduleName + " (" + q.JobGroup + ")" + " (" + ((DateTime)q.Start).ToString("HHmm") + " - " + ((DateTime)q.End).ToString("HHmm") + ")",
+                        q.IsCockpit,
+                        q.JobGroup,
+                        GroupOrder = getOrder(q.JobGroup)
+                    }).OrderBy(q => q.GroupOrder).Select(q => q.Title).ToList());
+
+                }
 
 
             }
