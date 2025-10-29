@@ -2475,41 +2475,41 @@ public IHttpActionResult PostSIGNOfps(dto_sign dto)
         }
 
         List<sgn_ofp_result> sgn_result = new List<sgn_ofp_result>();
-        var ofps = context.OFPImports.Where(q => fids.Contains(q.FlightId)).ToList();
-        //var ofps = context.OFPB_Root.Where(q => fids.Contains(q.FlightID)).ToList();
+        //var ofps = context.OFPImports.Where(q => fids.Contains(q.FlightId)).ToList();
+        var ofps = context.OFPB_Root.Where(q => fids.Contains(q.FlightID)).ToList();
         foreach (var ofp in ofps)
         {
-            //karun
-            //ofp.DateSign = DateTime.UtcNow;
-            //ofp.SignedbyId = employee != null ? (Nullable<int>)employee.Id : null;
+                    //karun
+                    ofp.DateSign = DateTime.UtcNow;
+                    ofp.SignedbyId = employee != null ? (Nullable<int>)employee.Id : null;
 
 
-            ofp.PIC = employee != null ? employee.Name : lic_no;
-            ofp.PICId = employee.Id;
-            ofp.JLDatePICApproved = DateTime.UtcNow;
-            ofp.JLSignedBy = lic_no;
+                    //ofp.PIC = employee != null ? employee.Name : lic_no;
+                    //ofp.PICId = employee.Id;
+                    //ofp.JLDatePICApproved = DateTime.UtcNow;
+                    //ofp.JLSignedBy = lic_no;
 
 
-            //karun
-            //sgn_result.Add(new sgn_ofp_result()
+                    //karun
+                    sgn_result.Add(new sgn_ofp_result()
+                    {
+                        FlightId = (int)ofp.FlightID,
+                        Id = ofp.Id,
+                        JLDatePICApproved = (DateTime)ofp.DateSign, //ofp.JLDatePICApproved,
+                        JLSignedBy = employee.LicNo, //ofp.JLSignedBy,
+                        PIC = employee.Name, //ofp.PIC,
+                        PICId = (int)ofp.SignedbyId, //ofp.PICId
+                    });
+
+            //        sgn_result.Add(new sgn_ofp_result()
             //{
-            //    FlightId = (int)ofp.FlightID,
+            //    FlightId = (int)ofp.FlightId,
             //    Id = ofp.Id,
-            //    JLDatePICApproved = (DateTime)ofp.DateSign, //ofp.JLDatePICApproved,
-            //    JLSignedBy = employee.Name, //ofp.JLSignedBy,
-            //    PIC = employee.Name, //ofp.PIC,
-            //    PICId = (int)ofp.SignedbyId, //ofp.PICId
+            //    JLDatePICApproved = (DateTime)ofp.JLDatePICApproved,
+            //    JLSignedBy = ofp.JLSignedBy,
+            //    PIC = ofp.PIC,
+            //    PICId = (int)ofp.PICId
             //});
-
-            sgn_result.Add(new sgn_ofp_result()
-            {
-                FlightId = (int)ofp.FlightId,
-                Id = ofp.Id,
-                JLDatePICApproved = (DateTime)ofp.JLDatePICApproved,
-                JLSignedBy = ofp.JLSignedBy,
-                PIC = ofp.PIC,
-                PICId = (int)ofp.PICId
-            });
 
         }
 

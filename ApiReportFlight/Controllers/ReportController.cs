@@ -431,7 +431,7 @@ namespace ApiReportFlight.Controllers
 
             if (string.IsNullOrEmpty(regs))
                 regs = "All";
-
+             
             var context = new ppa_Entities();
             context.Database.CommandTimeout = 600;
 
@@ -3721,7 +3721,7 @@ namespace ApiReportFlight.Controllers
             return Ok(total_result);
         }
 
-        [Route("api/report/citypair/daily/")]
+        [Route("api/report/citypair/daily/{df}/{dt}")]
         [AcceptVerbs("GET")]
         public IHttpActionResult GetCrewCalendar(DateTime df, DateTime dt)
         {

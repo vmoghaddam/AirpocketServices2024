@@ -17,12 +17,12 @@ namespace ApiScheduling.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public FDP()
         {
-            this.CrewPickupSMS = new HashSet<CrewPickupSM>();
             this.ExtensionHistories = new HashSet<ExtensionHistory>();
             this.FDP1 = new HashSet<FDP>();
             this.FDPExtras = new HashSet<FDPExtra>();
             this.FDPItems = new HashSet<FDPItem>();
             this.OffItems = new HashSet<OffItem>();
+            this.CrewPickupSMS = new HashSet<CrewPickupSM>();
         }
     
         public int Id { get; set; }
@@ -99,9 +99,12 @@ namespace ApiScheduling.Models
         public string PosRemark { get; set; }
         public string PosTicketUrl { get; set; }
         public Nullable<System.DateTime> DutyEndDateLocal { get; set; }
+        public string InitTo { get; set; }
+        public Nullable<System.DateTime> offblock { get; set; }
+        public Nullable<System.DateTime> onblock { get; set; }
+        public Nullable<System.DateTime> takeoff { get; set; }
+        public Nullable<System.DateTime> landing { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CrewPickupSM> CrewPickupSMS { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ExtensionHistory> ExtensionHistories { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -113,5 +116,7 @@ namespace ApiScheduling.Models
         public virtual ICollection<FDPItem> FDPItems { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OffItem> OffItems { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CrewPickupSM> CrewPickupSMS { get; set; }
     }
 }

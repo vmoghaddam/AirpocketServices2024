@@ -1683,8 +1683,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewLegTime' does not have a primar
           <Property Name="OFPTOTALFUEL" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ppa_varesh.dbo.ViewQaHazardLog' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="XFlightCrew">
           <Key>
@@ -3019,7 +3017,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySet Name="Extensions" EntityType="dbModel.Extension" />
           <EntitySet Name="ViewCrewDutyNoRegs" EntityType="dbModel.ViewCrewDutyNoReg" />
           <EntitySet Name="ViewFDPItem2" EntityType="dbModel.ViewFDPItem2" />
-          <EntitySet Name="CrewPickupSMS" EntityType="dbModel.CrewPickupSM" />
           <EntitySet Name="ViewEmployeeLights" EntityType="dbModel.ViewEmployeeLight" />
           <EntitySet Name="OffItems" EntityType="dbModel.OffItem" />
           <EntitySet Name="HelperMaxFDPs" EntityType="dbModel.HelperMaxFDP" />
@@ -3030,10 +3027,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySet Name="ViewFlightCrewXes" EntityType="dbModel.ViewFlightCrewX" />
           <EntitySet Name="AppFTLs" EntityType="dbModel.AppFTL" />
           <EntitySet Name="FDPs" EntityType="dbModel.FDP" />
-          <AssociationSet Name="cps_fdp" Association="dbModel.cps_fdp">
-            <End Role="FDP" EntitySet="FDPs" />
-            <End Role="CrewPickupSM" EntitySet="CrewPickupSMS" />
-          </AssociationSet>
           <AssociationSet Name="fk_exh_fdp" Association="dbModel.fk_exh_fdp">
             <End Role="FDP" EntitySet="FDPs" />
             <End Role="ExtensionHistory" EntitySet="ExtensionHistories" />
@@ -3064,6 +3057,11 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySet Name="OFPImports" EntityType="dbModel.OFPImport" />
           <EntitySet Name="view_recency_route" EntityType="dbModel.view_recency_route" />
           <EntitySet Name="view_route_count" EntityType="dbModel.view_route_count" />
+          <EntitySet Name="CrewPickupSMS" EntityType="dbModel.CrewPickupSM" />
+          <AssociationSet Name="cps_fdp" Association="dbModel.cps_fdp">
+            <End Role="FDP" EntitySet="FDPs" />
+            <End Role="CrewPickupSM" EntitySet="CrewPickupSMS" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="ViewFDPLog">
           <Key>
@@ -3481,33 +3479,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="SplitDuty" Type="Boolean" />
           <Property Name="Rank" Type="Int64" />
           <Property Name="RankDesc" Type="Int64" />
-        </EntityType>
-        <EntityType Name="CrewPickupSM">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CrewId" Type="Int32" Nullable="false" />
-          <Property Name="FlightId" Type="Int32" Nullable="false" />
-          <Property Name="Pickup" Type="DateTime" Precision="3" />
-          <Property Name="RefId" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="Status" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="StatusId" Type="Int32" />
-          <Property Name="Message" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
-          <Property Name="DateSent" Type="DateTime" Precision="3" />
-          <Property Name="DateStatus" Type="DateTime" Precision="3" />
-          <Property Name="Type" Type="Int32" />
-          <Property Name="DateVisit" Type="DateTime" Precision="3" />
-          <Property Name="RecName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="RecMobile" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="Sender" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="DutyDate" Type="DateTime" Precision="3" />
-          <Property Name="DutyType" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="FDPId" Type="Int32" />
-          <Property Name="Flts" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="Routes" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="FltIds" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="FDP" Relationship="dbModel.cps_fdp" FromRole="CrewPickupSM" ToRole="FDP" />
         </EntityType>
         <EntityType Name="ViewEmployeeLight">
           <Key>
@@ -4056,7 +4027,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="PosFDPId" Type="Int32" />
           <Property Name="PosRemark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="PosTicketUrl" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="CrewPickupSMS" Relationship="dbModel.cps_fdp" FromRole="FDP" ToRole="CrewPickupSM" />
           <NavigationProperty Name="ExtensionHistories" Relationship="dbModel.fk_exh_fdp" FromRole="FDP" ToRole="ExtensionHistory" />
           <NavigationProperty Name="FDP1" Relationship="dbModel.fk_fdp_fdp" FromRole="FDP" ToRole="FDP1" />
           <NavigationProperty Name="FDP2" Relationship="dbModel.fk_fdp_fdp" FromRole="FDP1" ToRole="FDP" />
@@ -4069,21 +4039,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="onblock" Type="DateTime" Precision="3" />
           <Property Name="takeoff" Type="DateTime" Precision="3" />
           <Property Name="landing" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="CrewPickupSMS" Relationship="dbModel.cps_fdp" FromRole="FDP" ToRole="CrewPickupSM" />
         </EntityType>
-        <Association Name="cps_fdp">
-          <End Type="dbModel.FDP" Role="FDP" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="dbModel.CrewPickupSM" Role="CrewPickupSM" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="FDP">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CrewPickupSM">
-              <PropertyRef Name="FDPId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="fk_exh_fdp">
           <End Type="dbModel.FDP" Role="FDP" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -4811,6 +4768,47 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="ToICAO" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="FltCount" Type="Int32" />
         </EntityType>
+        <EntityType Name="CrewPickupSM">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CrewId" Type="Int32" Nullable="false" />
+          <Property Name="FlightId" Type="Int32" Nullable="false" />
+          <Property Name="Pickup" Type="DateTime" Precision="3" />
+          <Property Name="RefId" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="StatusId" Type="Int32" />
+          <Property Name="Message" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="DateSent" Type="DateTime" Precision="3" />
+          <Property Name="DateStatus" Type="DateTime" Precision="3" />
+          <Property Name="Type" Type="Int32" />
+          <Property Name="DateVisit" Type="DateTime" Precision="3" />
+          <Property Name="RecName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="RecMobile" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Sender" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="DutyDate" Type="DateTime" Precision="3" />
+          <Property Name="DutyType" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="FDPId" Type="Int32" />
+          <Property Name="Flts" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Routes" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="FltIds" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="FDP" Relationship="dbModel.cps_fdp" FromRole="CrewPickupSM" ToRole="FDP" />
+        </EntityType>
+        <Association Name="cps_fdp">
+          <End Type="dbModel.FDP" Role="FDP" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="dbModel.CrewPickupSM" Role="CrewPickupSM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FDP">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CrewPickupSM">
+              <PropertyRef Name="FDPId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -5212,33 +5210,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="CrewId" ColumnName="CrewId" />
                 <ScalarProperty Name="FDPId" ColumnName="FDPId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CrewPickupSMS">
-            <EntityTypeMapping TypeName="dbModel.CrewPickupSM">
-              <MappingFragment StoreEntitySet="CrewPickupSMS">
-                <ScalarProperty Name="FltIds" ColumnName="FltIds" />
-                <ScalarProperty Name="Routes" ColumnName="Routes" />
-                <ScalarProperty Name="Flts" ColumnName="Flts" />
-                <ScalarProperty Name="FDPId" ColumnName="FDPId" />
-                <ScalarProperty Name="DutyType" ColumnName="DutyType" />
-                <ScalarProperty Name="DutyDate" ColumnName="DutyDate" />
-                <ScalarProperty Name="Sender" ColumnName="Sender" />
-                <ScalarProperty Name="RecMobile" ColumnName="RecMobile" />
-                <ScalarProperty Name="RecName" ColumnName="RecName" />
-                <ScalarProperty Name="DateVisit" ColumnName="DateVisit" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="DateStatus" ColumnName="DateStatus" />
-                <ScalarProperty Name="DateSent" ColumnName="DateSent" />
-                <ScalarProperty Name="Message" ColumnName="Message" />
-                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="RefId" ColumnName="RefId" />
-                <ScalarProperty Name="Pickup" ColumnName="Pickup" />
-                <ScalarProperty Name="FlightId" ColumnName="FlightId" />
-                <ScalarProperty Name="CrewId" ColumnName="CrewId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -6360,6 +6331,33 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
                 <ScalarProperty Name="FromICAO" ColumnName="FromICAO" />
                 <ScalarProperty Name="ToIATA" ColumnName="ToIATA" />
                 <ScalarProperty Name="FromIATA" ColumnName="FromIATA" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CrewPickupSMS">
+            <EntityTypeMapping TypeName="dbModel.CrewPickupSM">
+              <MappingFragment StoreEntitySet="CrewPickupSMS">
+                <ScalarProperty Name="FltIds" ColumnName="FltIds" />
+                <ScalarProperty Name="Routes" ColumnName="Routes" />
+                <ScalarProperty Name="Flts" ColumnName="Flts" />
+                <ScalarProperty Name="FDPId" ColumnName="FDPId" />
+                <ScalarProperty Name="DutyType" ColumnName="DutyType" />
+                <ScalarProperty Name="DutyDate" ColumnName="DutyDate" />
+                <ScalarProperty Name="Sender" ColumnName="Sender" />
+                <ScalarProperty Name="RecMobile" ColumnName="RecMobile" />
+                <ScalarProperty Name="RecName" ColumnName="RecName" />
+                <ScalarProperty Name="DateVisit" ColumnName="DateVisit" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="DateStatus" ColumnName="DateStatus" />
+                <ScalarProperty Name="DateSent" ColumnName="DateSent" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="RefId" ColumnName="RefId" />
+                <ScalarProperty Name="Pickup" ColumnName="Pickup" />
+                <ScalarProperty Name="FlightId" ColumnName="FlightId" />
+                <ScalarProperty Name="CrewId" ColumnName="CrewId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

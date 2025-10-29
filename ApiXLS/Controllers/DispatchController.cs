@@ -115,7 +115,7 @@ namespace ApiXLS.Controllers
             var mappedPathSource = System.Web.Hosting.HostingEnvironment.MapPath("~/upload/" + "CrewFlights" + ".xlsx");
             workbook.LoadFromFile(mappedPathSource);
 
-            List<string> grps = new List<string>() {"IP","P1","P2","ISCCM","SCCM","CCM","F/M","CCI","CCE" };
+            List<string> grps = new List<string>() {"IP","P1","P2","ISCCM","SCCM","CCM","F/M"};
             var sh = 0;
             foreach(var sht in grps)
             {

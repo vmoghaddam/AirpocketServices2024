@@ -37,7 +37,6 @@ namespace ApiScheduling.Models
         public virtual DbSet<Extension> Extensions { get; set; }
         public virtual DbSet<ViewCrewDutyNoReg> ViewCrewDutyNoRegs { get; set; }
         public virtual DbSet<ViewFDPItem2> ViewFDPItem2 { get; set; }
-        public virtual DbSet<CrewPickupSM> CrewPickupSMS { get; set; }
         public virtual DbSet<ViewEmployeeLight> ViewEmployeeLights { get; set; }
         public virtual DbSet<OffItem> OffItems { get; set; }
         public virtual DbSet<HelperMaxFDP> HelperMaxFDPs { get; set; }
@@ -58,5 +57,6 @@ namespace ApiScheduling.Models
         public virtual DbSet<OFPImport> OFPImports { get; set; }
         public virtual DbSet<view_recency_route> view_recency_route { get; set; }
         public virtual DbSet<view_route_count> view_route_count { get; set; }
+        public virtual DbSet<CrewPickupSM> CrewPickupSMS { get; set; }
     }
 }
