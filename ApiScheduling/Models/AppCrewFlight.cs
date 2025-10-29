@@ -172,7 +172,5 @@ namespace ApiScheduling.Models
         public string AttForms { get; set; }
         public Nullable<int> PaxFemale { get; set; }
         public Nullable<int> PaxMale { get; set; }
-        public Nullable<System.DateTime> BlockOffStation { get; set; }
-        public Nullable<System.DateTime> BlockOnStation { get; set; }
     }
 }

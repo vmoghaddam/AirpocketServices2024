@@ -520,6 +520,70 @@ namespace ApiScheduling.Controllers
             return Ok(result);
 
         }
+
+
+        
+
+
+
+        [Route("odata/roster/fdp/nocrew/save")]
+        [AcceptVerbs("POST")]
+
+        public async Task<IHttpActionResult> PostRosterFDPNoCrewSave(dynamic dto)
+        {
+
+            var context = new Models.dbEntities();
+            var userId = Convert.ToInt32(dto.userId);
+            var flightId = Convert.ToInt32(dto.flightId);
+            var code = Convert.ToString(dto.code);
+            var std = Convert.ToDateTime(dto.std);
+            var sta = Convert.ToDateTime(dto.sta);
+
+            try
+            {
+
+                var fdp = new FDP()
+                {
+                    IsTemplate = false,
+                    DutyType = 1165,
+                    CrewId = userId,
+                    GUID = Guid.NewGuid(),
+                    JobGroupId = RosterFDPDto.getRank(code),
+                    FirstFlightId = flightId,
+                    LastFlightId = flightId,
+                    DateStart = std,
+                    DateEnd = sta,
+                    DateConfirmed =  DateTime.Now,
+                    Split = 0,
+
+
+
+                };
+
+                fdp.FDPItems.Add(new FDPItem()
+                {
+                    FlightId = flightId,
+                    IsPositioning = false,
+                    IsSector = false,
+                    PositionId = RosterFDPDto.getRank(code),
+                    RosterPositionId = 1,
+
+                });
+
+                context.FDPs.Add(fdp);
+                var saveResult = await context.SaveChangesAsync();
+             
+
+                return Ok(true);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+
+        }
+
+
         [Route("api/pp/fdps/{crewId}/{year}/{month}")]
         public IHttpActionResult GetPPCrewDuties(int crewId, int year, int month)
         {
@@ -538,17 +602,17 @@ namespace ApiScheduling.Controllers
         {
             var context = new Models.dbEntities();
             var is_crew_visible = Convert.ToInt32(ConfigurationManager.AppSettings["is_crew_visible"]);
-           
+
             switch (type)
             {
                 case 1165:
                     var fdp = context.FDPs.FirstOrDefault(q => q.Id == fdpid);
                     var crew = context.ViewEmployeeLights.Where(q => q.Id == fdp.CrewId).FirstOrDefault();
-                    var show_crew = is_crew_visible == 1 || crew.Id==4811 || (  crew.JobGroup != "CCM"  );
+                    var show_crew = is_crew_visible == 1 || crew.Id == 4811 || (crew.JobGroup != "CCM");
                     var flts = context.AppCrewFlights.Where(q => q.FDPId == fdpid).OrderBy(q => q.STD).ToList();
                     var flt_ids = flts.Select(q => q.FlightId).ToList();
-                    var crews =!show_crew?null: context.AppCrewFlights.Where(q => flt_ids.Contains(q.FlightId)).Select(q => new { q.Name, q.Position, q.IsPositioning, q.GroupOrder,q.FlightId }).Distinct().OrderBy(q => q.GroupOrder).ToList();
-                    return Ok(new { type, flts,crews });
+                    var crews = !show_crew ? null : context.AppCrewFlights.Where(q => flt_ids.Contains(q.FlightId)).Select(q => new { q.Name, q.Position, q.IsPositioning, q.GroupOrder, q.FlightId }).Distinct().OrderBy(q => q.GroupOrder).ToList();
+                    return Ok(new { type, flts, crews });
 
                 case 5000:
                     var sessions = context.ViewCourseFDPs.Where(q => q.FDPId == fdpid).OrderBy(q => q.SessionStart).ToList();
@@ -560,11 +624,11 @@ namespace ApiScheduling.Controllers
                     break;
             }
 
-            
+
 
         }
         [Route("api/pp/duty/date/{cid}")]
-        public IHttpActionResult GetPPCrewDutiesByDate(int cid,DateTime df,DateTime dt)
+        public IHttpActionResult GetPPCrewDutiesByDate(int cid, DateTime df, DateTime dt)
         {
             var context = new Models.dbEntities();
             df = df.Date;
@@ -574,15 +638,15 @@ namespace ApiScheduling.Controllers
             var duties = context.ViewCrewDutyTimeLineNews.Where(q => q.CrewId == cid && q.DateStartLocal >= df && q.DateStartLocal < dt).ToList();
             var crew = context.ViewEmployeeLights.Where(q => q.Id == cid).FirstOrDefault();
             var is_crew_visible = Convert.ToInt32(ConfigurationManager.AppSettings["is_crew_visible"]);
-            var show_crew = is_crew_visible==1 || cid==4811 || (   crew.JobGroup != "CCM" );
+            var show_crew = is_crew_visible == 1 || cid == 4811 || (crew.JobGroup != "CCM");
             foreach (var x in duties)
             {
                 if (x.DutyType == 1165)
                 {
                     var flts = context.AppCrewFlights.Where(q => q.FDPId == x.Id).OrderBy(q => q.STD).ToList();
                     var flt_ids = flts.Select(q => q.FlightId).ToList();
-                    var crews =!show_crew? null: context.AppCrewFlights.Where(q => flt_ids.Contains(q.FlightId)).Select(q => new { q.Name, q.Position, q.IsPositioning, q.GroupOrder, q.FlightId }).Distinct().OrderBy(q => q.GroupOrder).ToList();
-                    result.Add(new { type = x.DutyType, flts, crews, duty = x ,date=x.DutyDateLocal});
+                    var crews = !show_crew ? null : context.AppCrewFlights.Where(q => flt_ids.Contains(q.FlightId)).Select(q => new { q.Name, q.Position, q.IsPositioning, q.GroupOrder, q.FlightId }).Distinct().OrderBy(q => q.GroupOrder).ToList();
+                    result.Add(new { type = x.DutyType, flts, crews, duty = x, date = x.DutyDateLocal });
 
                 }
                 else if (x.DutyType == 5000)
@@ -995,11 +1059,11 @@ namespace ApiScheduling.Controllers
                 return Ok(result);
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                 var msg = ex.Message;
-                 if (ex.InnerException != null)
-                     msg += "     " + ex.InnerException.Message;
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += "     " + ex.InnerException.Message;
                 return Ok(msg);
             }
         }
@@ -1784,7 +1848,7 @@ namespace ApiScheduling.Controllers
 
 
             var utcdiff = Convert.ToInt32(ConfigurationManager.AppSettings["utcdiff"]);
-            var d24s = new List<int>() {   100007, 100008, 100002 };
+            var d24s = new List<int>() { 100007, 100008, 100002 };
             if (d24s.IndexOf(duty.DutyType) != -1)
             {
                 var _start = ((DateTime)duty.InitStart);//.Date;//.AddMinutes(-utcdiff);
@@ -1825,11 +1889,11 @@ namespace ApiScheduling.Controllers
                     }
                     duty.DateStart = _start.AddMinutes(-utcdiff);
                     if (duty.DateEnd > _end.AddMinutes(-utcdiff))
-                        _end =(DateTime) duty.DateEnd;
+                        _end = (DateTime)duty.DateEnd;
                     else
                         _end = _end.AddMinutes(-utcdiff);
 
-                    duty.DateEnd = _end;  
+                    duty.DateEnd = _end;
                     duty.InitStart = duty.DateStart;
                     duty.InitEnd = duty.DateEnd;
                     duty.InitRestTo = duty.DateEnd;
@@ -1966,10 +2030,10 @@ namespace ApiScheduling.Controllers
                 case 5001: //office
                     if (_interupted_norest != null &&
                         (_interupted_norest.DutyType == 1165
-                       // || _interupted_norest.DutyType == 1167
+                        // || _interupted_norest.DutyType == 1167
                         //|| _interupted_norest.DutyType == 1170
-                       // || _interupted_norest.DutyType == 1168
-                       // || _interupted_norest.DutyType == 300010)
+                        // || _interupted_norest.DutyType == 1168
+                        // || _interupted_norest.DutyType == 300010)
                         )
                         )//other airline stby
                         return new CustomActionResult(HttpStatusCode.OK, new
@@ -1979,7 +2043,7 @@ namespace ApiScheduling.Controllers
 
                         });
                     break;
-                   
+
                 case 300014:
                 case 100001: //meeting
                     if (_interupted != null &&
@@ -2294,8 +2358,8 @@ namespace ApiScheduling.Controllers
             else
                 duty.InitRestTo = duty.DateEnd;
             //porn
-            var exc = new List<int>() { 100009, 100020, 100021, 100022, 100023, 1170,5000 };
-            var check = new List<int>() { 1165, 1166, 1167, 1168, 300013, 1169,  5001, 100000, 100002, 100003, 100004, 100005, 100006,100007, 100008, 100025, 300008, 300009, 300010, 300014 };
+            var exc = new List<int>() { 100009, 100020, 100021, 100022, 100023, 1170, 5000 };
+            var check = new List<int>() { 1165, 1166, 1167, 1168, 300013, 1169, 5001, 100000, 100002, 100003, 100004, 100005, 100006, 100007, 100008, 100025, 300008, 300009, 300010, 300014 };
             // var _interupted = await this.context.FDPs.FirstOrDefaultAsync(q => !exc.Contains(q.DutyType) && q.CrewId == duty.CrewId
             // && (
             //       (duty.InitStart >= q.InitStart && duty.InitStart <= q.InitRestTo)
@@ -2332,8 +2396,8 @@ namespace ApiScheduling.Controllers
                                                              )
                                                           );
             }
-       
-            if (_interupted !=null && _interupted.DutyType != 1165)
+
+            if (_interupted != null && _interupted.DutyType != 1165)
             {
                 if (_interupted.InitStart >= duty.InitEnd)
                     _interupted = null;
@@ -2734,7 +2798,7 @@ namespace ApiScheduling.Controllers
             int rest_after_post_flight = Convert.ToInt32(ConfigurationManager.AppSettings["rest_after_post_flight"]);
             int rerrp_check = Convert.ToInt32(ConfigurationManager.AppSettings["rerrp_check"]);
             int post_flight = Convert.ToInt32(ConfigurationManager.AppSettings["post_flight"]);
-          
+
             int _ln = 1;
             if (dto.Id == -100)
             {
@@ -2761,7 +2825,7 @@ namespace ApiScheduling.Controllers
             double default_reporting = Convert.ToInt32(ConfigurationManager.AppSettings["reporting"]);
 
             if (dto.from == 140866)
-             default_reporting = Convert.ToInt32(ConfigurationManager.AppSettings["int_reporting"]);
+                default_reporting = Convert.ToInt32(ConfigurationManager.AppSettings["int_reporting"]);
             _ln = 3;
             var context = new Models.dbEntities();
             try
@@ -2938,8 +3002,8 @@ namespace ApiScheduling.Controllers
                 int _rt_i = 0;
                 foreach (var x in dto.items)
                 {
-                   
-                   // if (x != dto.items.Last())
+
+                    // if (x != dto.items.Last())
                     {
 
                         if (_rt_i > 0 && dto.items[_rt_i - 1].dh == 1)
@@ -2950,7 +3014,7 @@ namespace ApiScheduling.Controllers
                         {
                             //_rts.Add((x.pos.ToLower().Contains("obs") ? "(obs)" : "")+x.from); 
                             if (_rt_i > 0 && dto.items[_rt_i - 1].pos.ToLower().Contains("obs"))
-                                _rts.Add("(obs)"+x.from );
+                                _rts.Add("(obs)" + x.from);
                             else
                                 _rts.Add(x.from);
                         }
@@ -2967,16 +3031,16 @@ namespace ApiScheduling.Controllers
                     if (x == dto.items.Last())
                     {
                         if (x.dh != 1)
-                        { 
-                            _rts.Add(  (x.pos.ToLower().Contains("obs")?"(obs)":"")+x.to); 
+                        {
+                            _rts.Add((x.pos.ToLower().Contains("obs") ? "(obs)" : "") + x.to);
                         }
                         else
                             _rts.Add(x.to + "(dh)");
                     }
                     _rt_i++;
                 }
-                
-               // var rts = dto.items.Select(q => q.from).ToList();
+
+                // var rts = dto.items.Select(q => q.from).ToList();
                 //rts.Add(dto.items.Last().to);
                 dto.route = string.Join(",", _rts);
                 // if (dto.items.Count= 1)
@@ -3056,7 +3120,7 @@ namespace ApiScheduling.Controllers
                     }
                 }
 
-                
+
 
 
                 //4-11
@@ -3247,7 +3311,7 @@ namespace ApiScheduling.Controllers
                                     break;
                                 case 1169:
                                 case 100008:
-                                    if (_interupted.InitStart< fdp.InitEnd)
+                                    if (_interupted.InitStart < fdp.InitEnd)
                                         sendError = true;
                                     break;
 
@@ -4267,7 +4331,7 @@ namespace ApiScheduling.Controllers
             //var flights = await this.context.ViewFlightABS.Where(q => ids.Contains(q.ID)).OrderBy(q => q.STDDay).ThenBy(q => q.STD).ThenBy(q => q.Register).ToListAsync();
             //2022-01-23
             var flights = await context.ViewLegTimes.Where(q => ids.Contains(q.ID)).OrderBy(q => q.STDDay).ThenBy(q => q.ChocksOut).ThenBy(q => q.Register).ToListAsync();
-         //   var flights2 = flights.OrderBy(q => q.STDDay).ThenBy(q => q.ChocksOut).ThenBy(q => q.Register).ToList();
+            //   var flights2 = flights.OrderBy(q => q.STDDay).ThenBy(q => q.ChocksOut).ThenBy(q => q.Register).ToList();
             foreach (var f in flights)
             {
 
