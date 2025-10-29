@@ -414,7 +414,7 @@ namespace ApiSand.Controllers
         public async Task<DataResponse> get_doc2_sessions()
         {
             ppa_entities context = new ppa_entities();
-            var ava_courses = context.ava_course.Where(q => string.IsNullOrEmpty(q.remark)).ToList();
+            var ava_courses = context.ava_course.Where(q => q.remark.StartsWith("cc")).ToList();
             var ava_crs_ids = ava_courses.Select(q => (Nullable<int>)q.id).ToList();
             var ava_sessions = context.ava_session.Where(q => ava_crs_ids.Contains(q.course_id)).ToList();
             var courses = context.Courses.Where(q => ava_crs_ids.Contains(q.ext_id)).ToList();
@@ -445,7 +445,7 @@ namespace ApiSand.Controllers
                             DateStartUtc = s_start.AddMinutes(-210),
                             Key = s_key,
                             Done = false,
-                            Remark = "import_20251012_" + crs.Id + "_" + crs.ext_id,
+                            Remark =crs.Remark+" "+ "import_20251028_" + crs.Id + "_" + crs.ext_id,
                         };
                         context.CourseSessions.Add(db_session);
 

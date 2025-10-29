@@ -65,8 +65,8 @@ namespace DocxToJson
             {
                 ppa_entities context = new ppa_entities();
 
-                var input = @"C:\Users\vahid\Desktop\ava\camo";
-                var outputFolder = @"C:\Users\vahid\Desktop\ava\camo\___json";
+                var input = @"C:\Users\vahid\Desktop\ava\ftp_crew_documents\AttendanceFiles\خلبان\Cockpit\AVA\Conversion";
+                var outputFolder = @"C:\Users\vahid\Desktop\ava\ftp_crew_documents\AttendanceFiles\خلبان\Cockpit\AVA\Conversion\___json";
 
                 var files = new List<string>();
                 //if (Directory.Exists(input))
@@ -102,6 +102,7 @@ namespace DocxToJson
                     try
                     {
                         var rec = ParseDocx(path);
+                        
                         var json = JsonConvert.SerializeObject(rec, Formatting.Indented, new JsonSerializerSettings
                         {
                             NullValueHandling = NullValueHandling.Ignore
@@ -191,7 +192,8 @@ namespace DocxToJson
                 // File info
                 rec.FileName = Path.GetFileName(filePath);
                 rec.FilePath = Path.GetFullPath(filePath);
-
+                
+                
                 // Dates (support Persian/Jalali too)
                 var start = Get(map, "StartingDate");
                 var end = Get(map, "EndingDate");
@@ -357,6 +359,9 @@ namespace DocxToJson
 
                 var _course = new ava_course();
                 _course.filepath = rec.FilePath;
+                string directoryPath = Path.GetDirectoryName(rec.FilePath);
+                
+                string target = Path.GetFileName(directoryPath);
                 _course.filename = rec.FileName;
                 _course.EndDate = rec.EndDate;
                 _course.StartDate = rec.StartDate;
@@ -366,6 +371,7 @@ namespace DocxToJson
                 _course.participants_count = rec.ParticipantsCount;
                 _course.Duration_Days = rec.Duration.Days;
                 _course.Duration_Hours= rec.Duration.Hours;
+                _course.remark = "coc " + target.ToLower();
                 foreach (var s in rec.Sessions)
                     _course.ava_session.Add(new ava_session()
                     {

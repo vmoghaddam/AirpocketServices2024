@@ -104,7 +104,10 @@ namespace XAPI.Controllers
                 DepartureUtc = q.Departure,
                 ArrivalUtc = q.Arrival,
                 q.Register,
-                q.FlightStatus
+                q.FlightStatus,
+                q.DelayOffBlock,
+                q.DelayTakeoff,
+                TotalDelay=q.DelayOffBlock
 
 
 
