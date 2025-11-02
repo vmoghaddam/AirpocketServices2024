@@ -2961,10 +2961,12 @@ namespace ApiReportFlight.Controllers
             else
             {
                 query = from x in query
-                        where (x.pyear == year && x.period == _period) || (x.pyear == lyear && x.period == _periodx)
+                        //where (x.pyear == year && x.period == _period) || (x.pyear == lyear && x.period == _periodx)
+                        where (x.pyear == year) || (x.pyear == lyear)
                         select x;
                 query2 = from x in query2
-                         where (x.PYear == year && x.PeriodFixTime == _period) || (x.PYear == lyear && x.PeriodFixTime == _periodx)
+                         //where (x.PYear == year && x.PeriodFixTime == _period) || (x.PYear == lyear && x.PeriodFixTime == _periodx)
+                         where (x.PYear == year ) || (x.PYear == lyear)
                          select x;
 
             }
@@ -3152,7 +3154,7 @@ namespace ApiReportFlight.Controllers
             {
                 ((DataColumn)c).ColumnName = ((DataColumn)c).ColumnName.Replace(" ", "\r\n");
             }
-            ExportDataTableToCsv(table_md, @"C:\Users\vahid\source\repos\AirpocketServices2024\ApiReportFlight\bin\output.csv");
+            ExportDataTableToCsv(table_md, @"C:\Users\SEPEHR\source\repos\AirpocketServices2024\ApiReportFlight\bin\output.csv");
             return Ok(table_md);
 
 
