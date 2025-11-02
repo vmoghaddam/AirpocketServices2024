@@ -180,7 +180,7 @@ namespace AirpocketAPI.Controllers
 
             });
         }
-         
+
         [HttpPost]
         [Route("api/fixtime/delete")]
         public async Task<IHttpActionResult> DeleteFixtime(FixTime model)
@@ -193,7 +193,7 @@ namespace AirpocketAPI.Controllers
 
 
                 if (fixtime == null)
-            return NotFound();
+                    return NotFound();
 
                 context.FixTimes.Remove(fixtime);
                 await context.SaveChangesAsync();
@@ -202,7 +202,7 @@ namespace AirpocketAPI.Controllers
             return Ok(new DataResponse
             {
                 IsSuccess = true,
-                
+
             });
         }
 
@@ -9691,7 +9691,7 @@ new JsonSerializerSettings
             {
                 if (row.DutyType == 1168)
                 {
-                    row.items = stby_duties.Where(q => q.DutyType==1168).Select(q => new out_duty_item()
+                    row.items = stby_duties.Where(q => q.DutyType == 1168).Select(q => new out_duty_item()
                     {
                         Title = row.DutyType != 300013 ? q.ScheduleName + " (" + q.JobGroup + ")" : q.ScheduleName + " (" + q.JobGroup + ")" + " (" + ((DateTime)q.Start).ToString("HHmm") + " - " + ((DateTime)q.End).ToString("HHmm") + ")",
                         IsCockpit = q.IsCockpit,
@@ -9699,7 +9699,7 @@ new JsonSerializerSettings
                         GroupOrder = getOrder(q.JobGroup)
                     }).OrderBy(q => q.GroupOrder).ToList();
 
-                    row.itemsStr = string.Join(", ", stby_duties/*.Where(q => q.ValidTypesStr.Contains(row.aircraft_type))*/.Select(q => new
+                    row.itemsStr = string.Join(", ", stby_duties.Where(q => q.DutyType == 1168)/*.Where(q => q.ValidTypesStr.Contains(row.aircraft_type))*/.Select(q => new
                     {
                         Title = row.DutyType != 300013 ? q.ScheduleName + " (" + q.JobGroup + ")" : q.ScheduleName + " (" + q.JobGroup + ")" + " (" + ((DateTime)q.Start).ToString("HHmm") + " - " + ((DateTime)q.End).ToString("HHmm") + ")",
                         q.IsCockpit,
@@ -9718,7 +9718,7 @@ new JsonSerializerSettings
                         GroupOrder = getOrder(q.JobGroup)
                     }).OrderBy(q => q.GroupOrder).ToList();
 
-                    row.itemsStr = string.Join(", ", stby_duties/*.Where(q => q.ValidTypesStr.Contains(row.aircraft_type))*/.Select(q => new
+                    row.itemsStr = string.Join(", ", stby_duties.Where(q => q.DutyType == 1167)/*.Where(q => q.ValidTypesStr.Contains(row.aircraft_type))*/.Select(q => new
                     {
                         Title = row.DutyType != 300013 ? q.ScheduleName + " (" + q.JobGroup + ")" : q.ScheduleName + " (" + q.JobGroup + ")" + " (" + ((DateTime)q.Start).ToString("HHmm") + " - " + ((DateTime)q.End).ToString("HHmm") + ")",
                         q.IsCockpit,
