@@ -128,6 +128,185 @@ namespace ApiSand.Controllers
             public List<Student2> students { get; set; }
             public string key { get; set; }
         }
+
+        [Route("api/folders")]
+        public async Task<DataResponse> get_folder_names()
+        {
+            string root = @"C:\Users\vahid\Desktop\ava\ftp_crew_documents\Documents\Cabin\مهمانداران INITIAL MHD";
+            ppa_entities context = new ppa_entities();
+
+
+            // آدرس کامل فولدرهای مستقیم داخل root
+            string[] dirPaths = Directory.GetDirectories(root);
+
+            // فقط اسم فولدر (بدون مسیر کامل)
+            var dirNames = dirPaths.Select(Path.GetFileName);
+
+            foreach (var name in dirNames)
+            {
+                context.ava_folder.Add(new ava_folder()
+                {
+                    folder_name = name,
+
+                });
+            }
+            context.SaveChanges();
+            return new DataResponse()
+            {
+                Data = dirNames,
+                IsSuccess = true
+            };
+        }
+
+
+        [Route("api/folders/rename")]
+        public async Task<DataResponse> get_folder_renames()
+        {
+            string root = @"C:\Users\vahid\Desktop\ava\crew documents\source";
+            ppa_entities context = new ppa_entities();
+            var db_names = context.ava_folder.ToList();
+
+            foreach (var dirPath in Directory.EnumerateDirectories(root, "*", SearchOption.TopDirectoryOnly))
+            {
+                string oldName = Path.GetFileName(dirPath);
+                var rec = db_names.Where(q => q.folder_name == oldName).FirstOrDefault();
+                if (rec != null)
+                {
+                    string newName = rec.nid + "_" + oldName;
+
+                    // --- قاعده‌ی تغییر نام (هرطور می‌خوای تنظیم کن) ---
+                    // newName = newName.ToLowerInvariant();                // مثال: همه حروف کوچک
+                    // newName = newName.Replace(" ", "_");                 // مثال: فاصله -> _
+                    // newName = Regex.Replace(newName, @"\s+", "-");       // مثال: فاصله‌ها -> -
+                    // newName = "PREFIX_" + newName;                       // مثال: افزودن پیشوند
+                    // newName = newName.Trim();                            // مثال: حذف فاصله‌های ابتدا/انتها
+                    // نمونه ترکیبی پیشنهادی:
+                    //newName = Regex.Replace(newName.Trim(), @"\s+", "-").ToLowerInvariant();
+                    // ----------------------------------------------------
+
+                    string targetPath = Path.Combine(root, newName);
+                    Directory.Move(dirPath, targetPath);
+                    //  Console.WriteLine($"Renamed: \"{oldName}\" -> \"{newName}\"");
+                }
+
+            }
+
+
+            return new DataResponse()
+            {
+                Data = db_names,
+                IsSuccess = true
+            };
+        }
+
+        [Route("api/folders/rename/x")]
+        public async Task<DataResponse> get_folder_renamesx()
+        {
+            string root = @"C:\Users\vahid\Desktop\ava\crew documents\source";
+
+
+            foreach (var dirPath in Directory.EnumerateDirectories(root, "*", SearchOption.TopDirectoryOnly))
+            {
+                string oldName = Path.GetFileName(dirPath);
+
+
+                {
+                    string newName = oldName.Split('_')[1];
+
+                    // --- قاعده‌ی تغییر نام (هرطور می‌خوای تنظیم کن) ---
+                    // newName = newName.ToLowerInvariant();                // مثال: همه حروف کوچک
+                    // newName = newName.Replace(" ", "_");                 // مثال: فاصله -> _
+                    // newName = Regex.Replace(newName, @"\s+", "-");       // مثال: فاصله‌ها -> -
+                    // newName = "PREFIX_" + newName;                       // مثال: افزودن پیشوند
+                    // newName = newName.Trim();                            // مثال: حذف فاصله‌های ابتدا/انتها
+                    // نمونه ترکیبی پیشنهادی:
+                    //newName = Regex.Replace(newName.Trim(), @"\s+", "-").ToLowerInvariant();
+                    // ----------------------------------------------------
+
+                    string targetPath = Path.Combine(root, newName);
+                    Directory.Move(dirPath, targetPath);
+                    //  Console.WriteLine($"Renamed: \"{oldName}\" -> \"{newName}\"");
+                }
+
+            }
+
+
+            return new DataResponse()
+            {
+                Data = true,
+                IsSuccess = true
+            };
+        }
+
+
+
+        [Route("api/folders/a")]
+        public async Task<DataResponse> get_folder_a()
+        {
+            string root = @"C:\Users\vahid\Desktop\ava\crew documents"; // مسیر root خودت
+            ppa_entities context = new ppa_entities();
+            List<string> names = new List<string>();
+            // سطح اول: پوشه‌های مستقیم داخل root
+            //foreach (var level1Path in Directory.EnumerateDirectories(root, "*", SearchOption.TopDirectoryOnly))
+            //{
+            //    string level1Name = Path.GetFileName(level1Path);
+
+
+            //    // سطح دوم: فولدرهای داخل هر ساب‌فولدر سطح اول
+            //    foreach (var level2Path in Directory.EnumerateDirectories(level1Path, "*", SearchOption.TopDirectoryOnly))
+            //    {
+            //        string level2Name = Path.GetFileName(level2Path);
+            //        names.Add(level2Name);
+            //        context.ava_sub.Add(new ava_sub() {  title=level2Name});
+
+
+            //    }
+
+
+            //}
+            foreach (var level1Path in Directory.EnumerateDirectories(root, "*", SearchOption.TopDirectoryOnly))
+            {
+                //Console.WriteLine($"[L1] {level1Path}"); // مسیر کامل فولدر سطح اول
+                string level1Name = Path.GetFileName(level1Path);
+                // ساب‌فولدرهای سطح دوم (مسیر کامل)
+                foreach (var level2Path in Directory.EnumerateDirectories(level1Path, "*", SearchOption.TopDirectoryOnly))
+                {
+                   // Console.WriteLine($"  [L2] {level2Path}");
+                    string level2Name = Path.GetFileName(level2Path);
+                    var ava_sub = new ava_sub()
+                    {
+                        title = level2Name,
+                        fullpath = level2Path,
+                        nid = level1Name.Split('_')[0],
+                        remark = level1Name.Split('_')[1],
+                    };
+                    context.ava_sub.Add(ava_sub);
+                    // فایل‌های داخل هر ساب‌فولدر سطح دوم (مسیر کامل)
+                    foreach (var filePath in Directory.EnumerateFiles(level2Path, "*", SearchOption.TopDirectoryOnly))
+                    {
+                        //Console.WriteLine($"    [FILE] {filePath}");
+                        string fileName = Path.GetFileName(filePath);
+                        ava_sub.ava_sub_file.Add(new ava_sub_file()
+                        {
+                             fullpath = filePath,
+                              title = fileName,
+                               
+                        });
+                        
+                    }
+                }
+
+                //Console.WriteLine();
+            }
+
+            context.SaveChanges();
+            return new DataResponse()
+            {
+                Data = names,
+                IsSuccess = true
+            };
+        }
+
         [Route("api/doc")]
         public async Task<DataResponse> get_doc()
         {
@@ -414,7 +593,7 @@ namespace ApiSand.Controllers
         public async Task<DataResponse> get_doc2_sessions()
         {
             ppa_entities context = new ppa_entities();
-            var ava_courses = context.ava_course.Where(q => q.remark.StartsWith("cc")).ToList();
+            var ava_courses = context.ava_course.Where(q => q.remark.StartsWith("coc")).ToList();
             var ava_crs_ids = ava_courses.Select(q => (Nullable<int>)q.id).ToList();
             var ava_sessions = context.ava_session.Where(q => ava_crs_ids.Contains(q.course_id)).ToList();
             var courses = context.Courses.Where(q => ava_crs_ids.Contains(q.ext_id)).ToList();
@@ -445,7 +624,7 @@ namespace ApiSand.Controllers
                             DateStartUtc = s_start.AddMinutes(-210),
                             Key = s_key,
                             Done = false,
-                            Remark =crs.Remark+" "+ "import_20251028_" + crs.Id + "_" + crs.ext_id,
+                            Remark = crs.Remark + " " + "import_20251029_" + crs.Id + "_" + crs.ext_id,
                         };
                         context.CourseSessions.Add(db_session);
 

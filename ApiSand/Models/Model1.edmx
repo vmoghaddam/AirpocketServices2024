@@ -35,6 +35,15 @@
           <Property Name="file_path" Type="nvarchar(max)" />
           <Property Name="file_name" Type="nvarchar" MaxLength="1000" />
         </EntityType>
+        <EntityType Name="ava_folder">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="folder_name" Type="nvarchar" MaxLength="1000" />
+          <Property Name="person_id" Type="int" />
+          <Property Name="nid" Type="nvarchar" MaxLength="1000" />
+        </EntityType>
         <EntityType Name="ava_session">
           <Key>
             <PropertyRef Name="id" />
@@ -55,6 +64,26 @@
           <Property Name="attendance" Type="varchar" MaxLength="1000" />
           <Property Name="source_name" Type="nvarchar" MaxLength="1000" />
           <Property Name="source_person_id" Type="int" />
+        </EntityType>
+        <EntityType Name="ava_sub">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="title" Type="nvarchar" MaxLength="1000" />
+          <Property Name="fullpath" Type="nvarchar" MaxLength="2000" />
+          <Property Name="remark" Type="varchar" MaxLength="255" />
+          <Property Name="nid" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="ava_sub_file">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="sub_id" Type="int" Nullable="false" />
+          <Property Name="title" Type="nvarchar" MaxLength="1000" />
+          <Property Name="fullpath" Type="nvarchar" MaxLength="2000" />
+          <Property Name="remark" Type="nvarchar" MaxLength="2000" />
         </EntityType>
         <EntityType Name="Course">
           <Key>
@@ -243,6 +272,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_f_sub">
+          <End Role="ava_sub" Type="Self.ava_sub" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ava_sub_file" Type="Self.ava_sub_file" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ava_sub">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ava_sub_file">
+              <PropertyRef Name="sub_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_psco_course">
           <End Role="Course" Type="Self.Course" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -274,8 +317,11 @@
         <EntityContainer Name="ppaModelStoreContainer">
           <EntitySet Name="ava_course" EntityType="Self.ava_course" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ava_error" EntityType="Self.ava_error" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ava_folder" EntityType="Self.ava_folder" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ava_session" EntityType="Self.ava_session" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ava_student" EntityType="Self.ava_student" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ava_sub" EntityType="Self.ava_sub" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ava_sub_file" EntityType="Self.ava_sub_file" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Course" EntityType="Self.Course" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CourseSession" EntityType="Self.CourseSession" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CourseSessionPresence" EntityType="Self.CourseSessionPresence" Schema="dbo" store:Type="Tables" />
@@ -297,6 +343,10 @@
           <AssociationSet Name="FK_CourseSessionPresence_CourseSession_Id" Association="Self.FK_CourseSessionPresence_CourseSession_Id">
             <End Role="CourseSession" EntitySet="CourseSession" />
             <End Role="CourseSessionPresence" EntitySet="CourseSessionPresence" />
+          </AssociationSet>
+          <AssociationSet Name="fk_f_sub" Association="Self.fk_f_sub">
+            <End Role="ava_sub" EntitySet="ava_sub" />
+            <End Role="ava_sub_file" EntitySet="ava_sub_file" />
           </AssociationSet>
           <AssociationSet Name="fk_psco_course" Association="Self.fk_psco_course">
             <End Role="Course" EntitySet="Course" />
@@ -345,6 +395,13 @@
           <AssociationSet Name="FK_CourseSessionPresence_CourseSession_Id" Association="ppaModel.FK_CourseSessionPresence_CourseSession_Id">
             <End Role="CourseSession" EntitySet="CourseSessions" />
             <End Role="CourseSessionPresence" EntitySet="CourseSessionPresences" />
+          </AssociationSet>
+          <EntitySet Name="ava_folder" EntityType="ppaModel.ava_folder" />
+          <EntitySet Name="ava_sub" EntityType="ppaModel.ava_sub" />
+          <EntitySet Name="ava_sub_file" EntityType="ppaModel.ava_sub_file" />
+          <AssociationSet Name="fk_f_sub" Association="ppaModel.fk_f_sub">
+            <End Role="ava_sub" EntitySet="ava_sub" />
+            <End Role="ava_sub_file" EntitySet="ava_sub_file" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="fly_course">
@@ -625,6 +682,51 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ava_folder">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="folder_name" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="person_id" Type="Int32" />
+          <Property Name="nid" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ava_sub">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="title" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="fullpath" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="remark" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="nid" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ava_sub_file" Relationship="ppaModel.fk_f_sub" FromRole="ava_sub" ToRole="ava_sub_file" />
+        </EntityType>
+        <EntityType Name="ava_sub_file">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="sub_id" Type="Int32" Nullable="false" />
+          <Property Name="title" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="fullpath" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="remark" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ava_sub" Relationship="ppaModel.fk_f_sub" FromRole="ava_sub_file" ToRole="ava_sub" />
+        </EntityType>
+        <Association Name="fk_f_sub">
+          <End Type="ppaModel.ava_sub" Role="ava_sub" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ppaModel.ava_sub_file" Role="ava_sub_file" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ava_sub">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ava_sub_file">
+              <PropertyRef Name="sub_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -824,6 +926,38 @@
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="SessionId" ColumnName="SessionId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ava_folder">
+            <EntityTypeMapping TypeName="ppaModel.ava_folder">
+              <MappingFragment StoreEntitySet="ava_folder">
+                <ScalarProperty Name="nid" ColumnName="nid" />
+                <ScalarProperty Name="person_id" ColumnName="person_id" />
+                <ScalarProperty Name="folder_name" ColumnName="folder_name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ava_sub">
+            <EntityTypeMapping TypeName="ppaModel.ava_sub">
+              <MappingFragment StoreEntitySet="ava_sub">
+                <ScalarProperty Name="nid" ColumnName="nid" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="fullpath" ColumnName="fullpath" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ava_sub_file">
+            <EntityTypeMapping TypeName="ppaModel.ava_sub_file">
+              <MappingFragment StoreEntitySet="ava_sub_file">
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="fullpath" ColumnName="fullpath" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="sub_id" ColumnName="sub_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
