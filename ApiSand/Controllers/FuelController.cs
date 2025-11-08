@@ -15,6 +15,7 @@ using System.Web.Http.Cors;
 using Novacode;
 using System.IO;
 using System.Text.RegularExpressions;
+using Tesseract;
 
 namespace ApiSand.Controllers
 {
@@ -132,7 +133,7 @@ namespace ApiSand.Controllers
         [Route("api/folders")]
         public async Task<DataResponse> get_folder_names()
         {
-            string root = @"C:\Users\vahid\Desktop\ava\ftp_crew_documents\Documents\Cabin\مهمانداران INITIAL MHD";
+            string root = @"C:\inetpub\vhosts\aerotango.app\httpdocs\AVA\Documents\Crew";
             ppa_entities context = new ppa_entities();
 
 
@@ -162,7 +163,7 @@ namespace ApiSand.Controllers
         [Route("api/folders/rename")]
         public async Task<DataResponse> get_folder_renames()
         {
-            string root = @"C:\Users\vahid\Desktop\ava\crew documents\source";
+            string root = @"C:\inetpub\vhosts\aerotango.app\httpdocs\AVA\Documents\Crew";
             ppa_entities context = new ppa_entities();
             var db_names = context.ava_folder.ToList();
 
@@ -172,7 +173,7 @@ namespace ApiSand.Controllers
                 var rec = db_names.Where(q => q.folder_name == oldName).FirstOrDefault();
                 if (rec != null)
                 {
-                    string newName = rec.nid + "_" + oldName;
+                    string newName = rec.nid; //+ "_" + oldName;
 
                     // --- قاعده‌ی تغییر نام (هرطور می‌خوای تنظیم کن) ---
                     // newName = newName.ToLowerInvariant();                // مثال: همه حروف کوچک
@@ -229,6 +230,70 @@ namespace ApiSand.Controllers
                 }
 
             }
+
+
+            return new DataResponse()
+            {
+                Data = true,
+                IsSuccess = true
+            };
+        }
+
+
+        [Route("api/folders/rename/sub")]
+        public async Task<DataResponse> get_folder_renames_sub()
+        {
+            string root = @"C:\Users\vahid\Desktop\ava\crew documents";
+            // گرفتن همه‌ی ساب‌فولدرها
+            string[] subDirs = Directory.GetDirectories(root);
+
+            foreach (var dir in subDirs)
+            {
+                string dirName = Path.GetFileName(dir); // مثل "0019061961_نگار هاشمی"
+                string[] parts = dirName.Split('_');
+
+                if (parts.Length > 0)
+                {
+                    string newName = parts[0]; // فقط قسمت اول
+                    string newPath = Path.Combine(root, newName);
+
+                    // اگر پوشه جدید از قبل وجود ندارد، تغییر نام بده
+                    if (!Directory.Exists(newPath))
+                    {
+                        Directory.Move(dir, newPath);
+                        Console.WriteLine($"Renamed: {dirName} -> {newName}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Skipped (already exists): {newName}");
+                    }
+                }
+            }
+            //ppa_entities context = new ppa_entities();
+            //var subs = context.ava_sub.ToList();
+            //foreach (var sub in subs)
+            //{
+            //    try
+            //    {
+            //        string path = sub.fullpath;
+            //        string oldName = sub.title;
+            //        string newName = sub.title2;
+            //        string parentDir = Path.GetDirectoryName(path);
+
+            //        // مسیر جدید با نام جدید
+            //        string newPath = Path.Combine(parentDir, newName);
+
+            //        // تغییر نام دایرکتوری
+            //        Directory.Move(path, newPath);
+            //    }
+            //    catch (Exception ex)
+            //    {
+
+            //    }
+
+            //}
+
+
 
 
             return new DataResponse()
@@ -576,6 +641,8 @@ namespace ApiSand.Controllers
             };
         }
 
+       
+
         [Route("api/doc2")]
         public async Task<DataResponse> get_doc2()
         {
@@ -593,7 +660,7 @@ namespace ApiSand.Controllers
         public async Task<DataResponse> get_doc2_sessions()
         {
             ppa_entities context = new ppa_entities();
-            var ava_courses = context.ava_course.Where(q => q.remark.StartsWith("coc")).ToList();
+            var ava_courses = context.ava_course.Where(q => q.remark== "ci ci1" || q.remark == "ci ci2" || q.remark == "ci ci3" || q.remark == "ci ci4").ToList();
             var ava_crs_ids = ava_courses.Select(q => (Nullable<int>)q.id).ToList();
             var ava_sessions = context.ava_session.Where(q => ava_crs_ids.Contains(q.course_id)).ToList();
             var courses = context.Courses.Where(q => ava_crs_ids.Contains(q.ext_id)).ToList();
@@ -624,7 +691,7 @@ namespace ApiSand.Controllers
                             DateStartUtc = s_start.AddMinutes(-210),
                             Key = s_key,
                             Done = false,
-                            Remark = crs.Remark + " " + "import_20251029_" + crs.Id + "_" + crs.ext_id,
+                            Remark = crs.Remark /*+ " " + "import_20251029_" + crs.Id + "_" + crs.ext_id*/,
                         };
                         context.CourseSessions.Add(db_session);
 
@@ -639,6 +706,23 @@ namespace ApiSand.Controllers
                 IsSuccess = true
             };
         }
+
+
+        [Route("api/ocr")]
+        public async Task<DataResponse> get_ocr()
+        {
+            string tessDataPath = @"C:\tessdata";
+            string imagePath = @"C:\Users\vahid\Desktop\ava\ftp_crew_documents\Documents\TRG\1-2 2027-09-23\2027-10-23 TRG 1-2 AHMADREZA BAGHERI.jpg";
+            var reader = new TesseractOCRReader(tessDataPath);
+            string englishText = reader.ReadEnglishText(imagePath);
+            return new DataResponse()
+            {
+                Data = true,
+                IsSuccess = true
+            };
+        }
+
+
     }
 
 
@@ -647,4 +731,142 @@ namespace ApiSand.Controllers
         public bool IsSuccess { get; set; }
         public object Data { get; set; }
     }
+
+    public class TesseractOCRReader
+    {
+        private string tessDataPath;
+
+        public TesseractOCRReader(string tessDataPath)
+        {
+            this.tessDataPath = tessDataPath;
+        }
+
+        /// <summary>
+        /// خواندن متن از تصویر - فارسی
+        /// </summary>
+        public string ReadPersianText(string imagePath)
+        {
+            try
+            {
+                using (var engine = new TesseractEngine(tessDataPath, "fas", EngineMode.Default))
+                {
+                    using (var img = Pix.LoadFromFile(imagePath))
+                    {
+                        using (var page = engine.Process(img))
+                        {
+                            return page.GetText();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("خطا در خواندن تصویر: " + ex.Message);
+                return string.Empty;
+            }
+        }
+
+        /// <summary>
+        /// خواندن متن از تصویر - انگلیسی
+        /// </summary>
+        public string ReadEnglishText(string imagePath)
+        {
+            try
+            {
+                using (var engine = new TesseractEngine(tessDataPath, "eng", EngineMode.TesseractAndLstm))
+                {
+                    using (var img = Pix.LoadFromFile(imagePath))
+                    {
+                        using (var page = engine.Process(img))
+                        {
+                            return page.GetText();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("خطا در خواندن تصویر: " + ex.Message);
+                return string.Empty;
+            }
+        }
+
+        /// <summary>
+        /// خواندن متن از تصویر - چند زبانه (فارسی و انگلیسی)
+        /// </summary>
+        public string ReadMixedText(string imagePath)
+        {
+            try
+            {
+                using (var engine = new TesseractEngine(tessDataPath, "fas+eng", EngineMode.Default))
+                {
+                    using (var img = Pix.LoadFromFile(imagePath))
+                    {
+                        using (var page = engine.Process(img))
+                        {
+                            return page.GetText();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("خطا در خواندن تصویر: " + ex.Message);
+                return string.Empty;
+            }
+        }
+
+        /// <summary>
+        /// خواندن متن با جزئیات (شامل موقعیت و اطمینان)
+        /// </summary>
+        //public void ReadTextWithDetails(string imagePath)
+        //{
+        //    try
+        //    {
+        //        using (var engine = new TesseractEngine(tessDataPath, "fas+eng", EngineMode.Default))
+        //        {
+        //            using (var img = Pix.LoadFromFile(imagePath))
+        //            {
+        //                using (var page = engine.Process(img))
+        //                {
+        //                    Console.WriteLine("متن کامل:");
+        //                    Console.WriteLine(page.GetText());
+        //                    Console.WriteLine();
+        //                    Console.WriteLine("میزان اطمینان: " + page.GetMeanConfidence());
+        //                    Console.WriteLine();
+
+        //                    // خواندن کلمه به کلمه
+        //                    using (var iter = page.GetIterator())
+        //                    {
+        //                        iter.Begin();
+        //                        do
+        //                        {
+        //                            var word = iter.GetText(PageIteratorLevel.Word);
+        //                            var confidence = iter.GetConfidence(PageIteratorLevel.Word);
+        //                            var bounds = iter.GetBoundingBox(PageIteratorLevel.Word);
+
+        //                            if (bounds != null)
+        //                            {
+        //                                Console.WriteLine("کلمه: {0}, اطمینان: {1:F2}%, مختصات: ({2},{3})-({4},{5})",
+        //                                    word, confidence,
+        //                                    bounds.Value.X1, bounds.Value.Y1,
+        //                                    bounds.Value.X2, bounds.Value.Y2);
+        //                            }
+        //                        } while (iter.Next(PageIteratorLevel.Word));
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine("خطا: " + ex.Message);
+        //    }
+        //}
+    }
+
+
+
+
+
 }

@@ -65,8 +65,8 @@ namespace DocxToJson
             {
                 ppa_entities context = new ppa_entities();
 
-                var input = @"C:\Users\vahid\Desktop\ava\ftp_crew_documents\AttendanceFiles\خلبان\Cockpit\AVA\Conversion";
-                var outputFolder = @"C:\Users\vahid\Desktop\ava\ftp_crew_documents\AttendanceFiles\خلبان\Cockpit\AVA\Conversion\___json";
+                var input = @"C:\Users\vahid\Desktop\ava\ftp_crew_documents\AttendanceFiles\cabin initial";
+                var outputFolder = @"C:\Users\vahid\Desktop\ava\ftp_crew_documents\AttendanceFiles\cabin initial\___json";
 
                 var files = new List<string>();
                 //if (Directory.Exists(input))
@@ -101,7 +101,7 @@ namespace DocxToJson
                 {
                     try
                     {
-                        var rec = ParseDocx(path);
+                        var rec = ParseDocx(path, "ci ");
                         
                         var json = JsonConvert.SerializeObject(rec, Formatting.Indented, new JsonSerializerSettings
                         {
@@ -155,7 +155,7 @@ namespace DocxToJson
             return cols.Distinct().OrderBy(x => x).ToList();
         }
 
-        public static CourseRecord ParseDocx(string filePath)
+        public static CourseRecord ParseDocx(string filePath,string rem="")
         {
             ppa_entities context = new ppa_entities();
             using (var doc = WordprocessingDocument.Open(filePath, false))
@@ -371,7 +371,7 @@ namespace DocxToJson
                 _course.participants_count = rec.ParticipantsCount;
                 _course.Duration_Days = rec.Duration.Days;
                 _course.Duration_Hours= rec.Duration.Hours;
-                _course.remark = "coc " + target.ToLower();
+                _course.remark = rem+ target.ToLower();
                 foreach (var s in rec.Sessions)
                     _course.ava_session.Add(new ava_session()
                     {
