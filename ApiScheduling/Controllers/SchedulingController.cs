@@ -4701,6 +4701,7 @@ namespace ApiScheduling.Controllers
             //var flights = await this.context.ViewFlightABS.Where(q => ids.Contains(q.ID)).OrderBy(q => q.STDDay).ThenBy(q => q.STD).ThenBy(q => q.Register).ToListAsync();
             //2022-01-23
             var flights = await context.ViewLegTimes.Where(q => ids.Contains(q.ID)).OrderBy(q => q.STDDay).ThenBy(q => q.ChocksOut).ThenBy(q => q.Register).ToListAsync();
+            var first_leg = flights.FirstOrDefault();
             //   var flights2 = flights.OrderBy(q => q.STDDay).ThenBy(q => q.ChocksOut).ThenBy(q => q.Register).ToList();
             foreach (var f in flights)
             {
@@ -4712,8 +4713,13 @@ namespace ApiScheduling.Controllers
             }
             //old 
             //var flights = await this.context.ViewLegTimes.Where(q => ids.Contains(q.ID)).OrderBy(q => q.STDDay).ThenBy(q => q.STD).ThenBy(q => q.Register).ToListAsync();
+
             MaxFDPStats stat = new MaxFDPStats();
             var rp = Convert.ToInt32(ConfigurationManager.AppSettings["reporting"]);
+            if (!first_leg.FromAirportICAO.StartsWith("OI") || !first_leg.ToAirportICAO.StartsWith("OI"))
+            {
+                rp = Convert.ToInt32(ConfigurationManager.AppSettings["int_reporting"]);
+            }
             stat.ReportingTime = ((DateTime)flights.First().DepartureLocal).AddMinutes(-1 * rp);
             stat.Sectors = ids.Count - (dh == null ? 0 : (int)dh);
             stat.RestFrom = ((DateTime)flights.Last().ArrivalLocal).AddMinutes(double.Parse(ConfigurationManager.AppSettings["post_flight"]));
