@@ -124,6 +124,27 @@
           <Property Name="ParentId" Type="int" />
           <Property Name="ExamType" Type="varchar" MaxLength="500" />
         </EntityType>
+        <EntityType Name="course_external">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="title" Type="nvarchar" MaxLength="1000" />
+          <Property Name="instructor" Type="nvarchar" MaxLength="1000" />
+          <Property Name="instructor2" Type="nvarchar" MaxLength="1000" />
+          <Property Name="course_type_id" Type="int" />
+          <Property Name="location" Type="nvarchar" MaxLength="1000" />
+          <Property Name="person_id" Type="int" />
+          <Property Name="date_issue" Type="datetime2" Precision="7" />
+          <Property Name="date_expire" Type="datetime2" Precision="7" />
+          <Property Name="certificate_no" Type="int" />
+          <Property Name="duration" Type="int" />
+          <Property Name="training_director" Type="nvarchar" MaxLength="1000" />
+          <Property Name="remark" Type="nvarchar" MaxLength="1000" />
+          <Property Name="file_url" Type="nvarchar" MaxLength="2000" />
+          <Property Name="ext_id" Type="int" />
+          <Property Name="ext_name" Type="varchar" MaxLength="1000" />
+        </EntityType>
         <EntityType Name="course_type_subject">
           <Key>
             <PropertyRef Name="id" />
@@ -5651,6 +5672,30 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_exc_ct">
+          <End Role="CourseType" Type="Self.CourseType" Multiplicity="0..1" />
+          <End Role="course_external" Type="Self.course_external" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CourseType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="course_external">
+              <PropertyRef Name="course_type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_exc_person">
+          <End Role="Person" Type="Self.Person" Multiplicity="0..1" />
+          <End Role="course_external" Type="Self.course_external" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="course_external">
+              <PropertyRef Name="person_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_exma_course">
           <End Role="Course" Type="Self.Course" Multiplicity="1" />
           <End Role="trn_exam" Type="Self.trn_exam" Multiplicity="*" />
@@ -5907,6 +5952,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <EntitySet Name="CertificateType" EntityType="Self.CertificateType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Charterer" EntityType="Self.Charterer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Course" EntityType="Self.Course" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="course_external" EntityType="Self.course_external" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="course_type_subject" EntityType="Self.course_type_subject" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CourseDocument" EntityType="Self.CourseDocument" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CoursePeople" EntityType="Self.CoursePeople" Schema="dbo" store:Type="Tables" />
@@ -8868,6 +8914,14 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
             <End Role="trn_exam" EntitySet="trn_exam" />
             <End Role="trn_exam_person" EntitySet="trn_exam_person" />
           </AssociationSet>
+          <AssociationSet Name="fk_exc_ct" Association="Self.fk_exc_ct">
+            <End Role="CourseType" EntitySet="CourseType" />
+            <End Role="course_external" EntitySet="course_external" />
+          </AssociationSet>
+          <AssociationSet Name="fk_exc_person" Association="Self.fk_exc_person">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="course_external" EntitySet="course_external" />
+          </AssociationSet>
           <AssociationSet Name="fk_exma_course" Association="Self.fk_exma_course">
             <End Role="Course" EntitySet="Course" />
             <End Role="trn_exam" EntitySet="trn_exam" />
@@ -9372,6 +9426,15 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <AssociationSet Name="fk_qu_cat" Association="FLYModel.fk_qu_cat">
             <End Role="trn_question_category" EntitySet="trn_question_category" />
             <End Role="trn_questions" EntitySet="trn_questions" />
+          </AssociationSet>
+          <EntitySet Name="course_external" EntityType="FLYModel.course_external" />
+          <AssociationSet Name="fk_exc_ct" Association="FLYModel.fk_exc_ct">
+            <End Role="CourseType" EntitySet="CourseTypes" />
+            <End Role="course_external" EntitySet="course_external" />
+          </AssociationSet>
+          <AssociationSet Name="fk_exc_person" Association="FLYModel.fk_exc_person">
+            <End Role="Person" EntitySet="People" />
+            <End Role="course_external" EntitySet="course_external" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="ExpFlight">
@@ -11247,6 +11310,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <NavigationProperty Name="CoursePeoples" Relationship="FLYModel.FK_CoursePeople_Person_Id" FromRole="Person" ToRole="CoursePeople" />
           <NavigationProperty Name="CertificateHistories" Relationship="FLYModel.FK_CH_PERSON" FromRole="Person" ToRole="CertificateHistory" />
           <Property Name="PID" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="course_external" Relationship="FLYModel.fk_exc_person" FromRole="Person" ToRole="course_external" />
         </EntityType>
         <Association Name="fk_psco_person">
           <End Type="FLYModel.Person" Role="Person" Multiplicity="0..1">
@@ -14661,6 +14725,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <NavigationProperty Name="CourseTypeJobGroups" Relationship="FLYModel.fk_ctjg_ct" FromRole="CourseType" ToRole="CourseTypeJobGroup" />
           <NavigationProperty Name="course_type_subject" Relationship="FLYModel.fk_sub_ct" FromRole="CourseType" ToRole="course_type_subject" />
           <NavigationProperty Name="Courses" Relationship="FLYModel.FK_Course_Type" FromRole="CourseType" ToRole="Course" />
+          <NavigationProperty Name="course_external" Relationship="FLYModel.fk_exc_ct" FromRole="CourseType" ToRole="course_external" />
         </EntityType>
         <Association Name="fk_cty_certy">
           <End Type="FLYModel.CertificateType" Role="CertificateType" Multiplicity="0..1" />
@@ -15273,6 +15338,53 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
             </Principal>
             <Dependent Role="trn_questions">
               <PropertyRef Name="category_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="course_external">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="title" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="instructor" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="instructor2" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="course_type_id" Type="Int32" />
+          <Property Name="location" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="person_id" Type="Int32" />
+          <Property Name="date_issue" Type="DateTime" Precision="7" />
+          <Property Name="date_expire" Type="DateTime" Precision="7" />
+          <Property Name="certificate_no" Type="Int32" />
+          <Property Name="duration" Type="Int32" />
+          <Property Name="training_director" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="remark" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="file_url" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="ext_id" Type="Int32" />
+          <Property Name="ext_name" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CourseType" Relationship="FLYModel.fk_exc_ct" FromRole="course_external" ToRole="CourseType" />
+          <NavigationProperty Name="Person" Relationship="FLYModel.fk_exc_person" FromRole="course_external" ToRole="Person" />
+        </EntityType>
+        <Association Name="fk_exc_ct">
+          <End Type="FLYModel.CourseType" Role="CourseType" Multiplicity="0..1" />
+          <End Type="FLYModel.course_external" Role="course_external" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CourseType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="course_external">
+              <PropertyRef Name="course_type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_exc_person">
+          <End Type="FLYModel.Person" Role="Person" Multiplicity="0..1" />
+          <End Type="FLYModel.course_external" Role="course_external" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="course_external">
+              <PropertyRef Name="person_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -19854,6 +19966,28 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
                 <ScalarProperty Name="type_id" ColumnName="type_id" />
                 <ScalarProperty Name="remark" ColumnName="remark" />
                 <ScalarProperty Name="category" ColumnName="category" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="course_external">
+            <EntityTypeMapping TypeName="FLYModel.course_external">
+              <MappingFragment StoreEntitySet="course_external">
+                <ScalarProperty Name="ext_name" ColumnName="ext_name" />
+                <ScalarProperty Name="ext_id" ColumnName="ext_id" />
+                <ScalarProperty Name="file_url" ColumnName="file_url" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="training_director" ColumnName="training_director" />
+                <ScalarProperty Name="duration" ColumnName="duration" />
+                <ScalarProperty Name="certificate_no" ColumnName="certificate_no" />
+                <ScalarProperty Name="date_expire" ColumnName="date_expire" />
+                <ScalarProperty Name="date_issue" ColumnName="date_issue" />
+                <ScalarProperty Name="person_id" ColumnName="person_id" />
+                <ScalarProperty Name="location" ColumnName="location" />
+                <ScalarProperty Name="course_type_id" ColumnName="course_type_id" />
+                <ScalarProperty Name="instructor2" ColumnName="instructor2" />
+                <ScalarProperty Name="instructor" ColumnName="instructor" />
+                <ScalarProperty Name="title" ColumnName="title" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

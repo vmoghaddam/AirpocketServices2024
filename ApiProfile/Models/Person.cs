@@ -17,10 +17,10 @@ namespace ApiProfile.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Person()
         {
+            this.CertificateHistories = new HashSet<CertificateHistory>();
+            this.PersonDocuments = new HashSet<PersonDocument>();
             this.PersonCustomers = new HashSet<PersonCustomer>();
             this.PersonAircraftTypes = new HashSet<PersonAircraftType>();
-            this.PersonDocuments = new HashSet<PersonDocument>();
-            this.CertificateHistories = new HashSet<CertificateHistory>();
         }
     
         public int Id { get; set; }
@@ -523,14 +523,69 @@ namespace ApiProfile.Models
         public Nullable<System.DateTime> ASD_SRY_ExpireDate { get; set; }
         public Nullable<System.DateTime> FTSL1IssueDate { get; set; }
         public Nullable<System.DateTime> FTSL1ExpireDate { get; set; }
+        public string PID { get; set; }
+        public Nullable<System.DateTime> ExpireDate51 { get; set; }
+        public Nullable<System.DateTime> ExpireDate52 { get; set; }
+        public Nullable<System.DateTime> ExpireDate53 { get; set; }
+        public Nullable<System.DateTime> ExpireDate54 { get; set; }
+        public Nullable<System.DateTime> ExpireDate55 { get; set; }
+        public Nullable<System.DateTime> ExpireDate56 { get; set; }
+        public Nullable<System.DateTime> ExpireDate57 { get; set; }
+        public Nullable<System.DateTime> ExpireDate58 { get; set; }
+        public Nullable<System.DateTime> ExpireDate59 { get; set; }
+        public Nullable<System.DateTime> ExpireDate60 { get; set; }
+        public Nullable<System.DateTime> IssueDate51 { get; set; }
+        public Nullable<System.DateTime> IssueDate52 { get; set; }
+        public Nullable<System.DateTime> IssueDate53 { get; set; }
+        public Nullable<System.DateTime> IssueDate54 { get; set; }
+        public Nullable<System.DateTime> IssueDate55 { get; set; }
+        public Nullable<System.DateTime> IssueDate56 { get; set; }
+        public Nullable<System.DateTime> IssueDate57 { get; set; }
+        public Nullable<System.DateTime> IssueDate58 { get; set; }
+        public Nullable<System.DateTime> IssueDate59 { get; set; }
+        public Nullable<System.DateTime> IssueDate60 { get; set; }
+        public Nullable<System.DateTime> IssueDate61 { get; set; }
+        public Nullable<System.DateTime> IssueDate62 { get; set; }
+        public Nullable<System.DateTime> ExpireDate61 { get; set; }
+        public Nullable<System.DateTime> ExpireDate62 { get; set; }
+        public Nullable<System.DateTime> IssueDate63 { get; set; }
+        public Nullable<System.DateTime> IssueDate64 { get; set; }
+        public Nullable<System.DateTime> IssueDate65 { get; set; }
+        public Nullable<System.DateTime> ExpireDate63 { get; set; }
+        public Nullable<System.DateTime> ExpireDate64 { get; set; }
+        public Nullable<System.DateTime> ExpireDate65 { get; set; }
+        public Nullable<System.DateTime> IssueDate66 { get; set; }
+        public Nullable<System.DateTime> IssueDate67 { get; set; }
+        public Nullable<System.DateTime> IssueDate68 { get; set; }
+        public Nullable<System.DateTime> IssueDate69 { get; set; }
+        public Nullable<System.DateTime> IssueDate70 { get; set; }
+        public Nullable<System.DateTime> ExpireDate66 { get; set; }
+        public Nullable<System.DateTime> ExpireDate67 { get; set; }
+        public Nullable<System.DateTime> ExpireDate68 { get; set; }
+        public Nullable<System.DateTime> ExpireDate69 { get; set; }
+        public Nullable<System.DateTime> ExpireDate70 { get; set; }
+        public Nullable<System.DateTime> IssueDate71 { get; set; }
+        public Nullable<System.DateTime> ExpireDate71 { get; set; }
+        public Nullable<System.DateTime> IssueDate72 { get; set; }
+        public Nullable<System.DateTime> ExpireDate72 { get; set; }
+        public Nullable<System.DateTime> IssueDate73 { get; set; }
+        public Nullable<System.DateTime> ExpireDate73 { get; set; }
+        public Nullable<System.DateTime> IssueDate74 { get; set; }
+        public Nullable<System.DateTime> ExpireDate74 { get; set; }
+        public Nullable<System.DateTime> IssueDate75 { get; set; }
+        public Nullable<System.DateTime> IssueDate76 { get; set; }
+        public Nullable<System.DateTime> IssueDate77 { get; set; }
+        public Nullable<System.DateTime> ExpireDate75 { get; set; }
+        public Nullable<System.DateTime> ExpireDate76 { get; set; }
+        public Nullable<System.DateTime> ExpireDate77 { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CertificateHistory> CertificateHistories { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PersonDocument> PersonDocuments { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PersonCustomer> PersonCustomers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PersonAircraftType> PersonAircraftTypes { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PersonDocument> PersonDocuments { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CertificateHistory> CertificateHistories { get; set; }
     }
 }

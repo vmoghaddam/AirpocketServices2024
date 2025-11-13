@@ -21,6 +21,7 @@ namespace AirpocketTRN.Models
             this.CourseSessionPresenceDetails = new HashSet<CourseSessionPresenceDetail>();
             this.CoursePeoples = new HashSet<CoursePeople>();
             this.CertificateHistories = new HashSet<CertificateHistory>();
+            this.course_external = new HashSet<course_external>();
         }
     
         public int Id { get; set; }
@@ -534,5 +535,7 @@ namespace AirpocketTRN.Models
         public virtual ICollection<CoursePeople> CoursePeoples { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CertificateHistory> CertificateHistories { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<course_external> course_external { get; set; }
     }
 }

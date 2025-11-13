@@ -1970,7 +1970,8 @@ public IHttpActionResult PostDRDSPSIGNNew(dto_sign dto)
 {
     try
     {
-        var do_lic = Convert.ToInt32(ConfigurationManager.AppSettings["dsp_lic"]);
+        //var do_lic = Convert.ToInt32(ConfigurationManager.AppSettings["dsp_lic"]);
+        var do_lic = 1;
         var context = new Models.dbEntities();
 
         int flight_id = Convert.ToInt32(dto.flight_id);

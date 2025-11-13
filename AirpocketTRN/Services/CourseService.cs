@@ -6136,7 +6136,8 @@ namespace AirpocketTRN.Services
         public IQueryable<ViewCourseNew> GetCourseQuery()
         {
             IQueryable<ViewCourseNew> query = context.Set<ViewCourseNew>().AsNoTracking();
-            return query.Where(q => q.ParentId == null);
+            //return query.Where(q => q.ParentId == null);
+            return query;
         }
 
         public IQueryable<ViewJobGroup> GetViewJobGroupQuery()
@@ -6544,15 +6545,20 @@ namespace AirpocketTRN.Services
                 await Task.Delay(10000);
 
 
-                var sts = m.get_delivery(res.ToString());
-                int c = 0;
-                hists[c].DateStatus = DateTime.Now;
-                hists[c].Statu = sts;
+                foreach(var r in res) {
+                    var sts = m.get_delivery(r.ToString());
+                    int c = 0;
+                    hists[c].DateStatus = DateTime.Now;
+                    hists[c].Statu = sts;
+                    c++;
+                };
+
+                
                 //foreach (var st in sts)
                 //{
                 //    hists[c].DateStatus = DateTime.Now;
                 //    hists[c].Statu = st;
-                //    c++;
+                //    
                 //}
                 var saveResult = await context.SaveAsync();
                 return new DataResponse()
