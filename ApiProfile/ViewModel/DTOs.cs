@@ -375,6 +375,61 @@ namespace ApiProfile.ViewModels
         public Nullable<System.DateTime> ExpireDate48 { get; set; }
         public Nullable<System.DateTime> ExpireDate49 { get; set; }
         public Nullable<System.DateTime> ExpireDate50 { get; set; }
+        public Nullable<System.DateTime> ExpireDate51 { get; set; }
+        public Nullable<System.DateTime> ExpireDate52 { get; set; }
+        public Nullable<System.DateTime> ExpireDate53 { get; set; }
+        public Nullable<System.DateTime> ExpireDate54 { get; set; }
+        public Nullable<System.DateTime> ExpireDate55 { get; set; }
+        public Nullable<System.DateTime> ExpireDate56 { get; set; }
+        public Nullable<System.DateTime> ExpireDate57 { get; set; }
+        public Nullable<System.DateTime> ExpireDate58 { get; set; }
+        public Nullable<System.DateTime> ExpireDate59 { get; set; }
+        public Nullable<System.DateTime> ExpireDate60 { get; set; }
+        public Nullable<System.DateTime> IssueDate51 { get; set; }
+        public Nullable<System.DateTime> IssueDate52 { get; set; }
+        public Nullable<System.DateTime> IssueDate53 { get; set; }
+        public Nullable<System.DateTime> IssueDate54 { get; set; }
+        public Nullable<System.DateTime> IssueDate55 { get; set; }
+        public Nullable<System.DateTime> IssueDate56 { get; set; }
+        public Nullable<System.DateTime> IssueDate57 { get; set; }
+        public Nullable<System.DateTime> IssueDate58 { get; set; }
+        public Nullable<System.DateTime> IssueDate59 { get; set; }
+        public Nullable<System.DateTime> IssueDate60 { get; set; }
+        public Nullable<System.DateTime> IssueDate61 { get; set; }
+        public Nullable<System.DateTime> IssueDate62 { get; set; }
+        public Nullable<System.DateTime> ExpireDate61 { get; set; }
+        public Nullable<System.DateTime> ExpireDate62 { get; set; }
+        public Nullable<System.DateTime> IssueDate63 { get; set; }
+        public Nullable<System.DateTime> IssueDate64 { get; set; }
+        public Nullable<System.DateTime> IssueDate65 { get; set; }
+        public Nullable<System.DateTime> ExpireDate63 { get; set; }
+        public Nullable<System.DateTime> ExpireDate64 { get; set; }
+        public Nullable<System.DateTime> ExpireDate65 { get; set; }
+        public Nullable<System.DateTime> IssueDate66 { get; set; }
+        public Nullable<System.DateTime> IssueDate67 { get; set; }
+        public Nullable<System.DateTime> IssueDate68 { get; set; }
+        public Nullable<System.DateTime> IssueDate69 { get; set; }
+        public Nullable<System.DateTime> IssueDate70 { get; set; }
+        public Nullable<System.DateTime> ExpireDate66 { get; set; }
+        public Nullable<System.DateTime> ExpireDate67 { get; set; }
+        public Nullable<System.DateTime> ExpireDate68 { get; set; }
+        public Nullable<System.DateTime> ExpireDate69 { get; set; }
+        public Nullable<System.DateTime> ExpireDate70 { get; set; }
+        public Nullable<System.DateTime> IssueDate71 { get; set; }
+        public Nullable<System.DateTime> ExpireDate71 { get; set; }
+        public Nullable<System.DateTime> IssueDate72 { get; set; }
+        public Nullable<System.DateTime> ExpireDate72 { get; set; }
+        public Nullable<System.DateTime> IssueDate73 { get; set; }
+        public Nullable<System.DateTime> ExpireDate73 { get; set; }
+        public Nullable<System.DateTime> IssueDate74 { get; set; }
+        public Nullable<System.DateTime> ExpireDate74 { get; set; }
+        public Nullable<System.DateTime> IssueDate75 { get; set; }
+        public Nullable<System.DateTime> IssueDate76 { get; set; }
+        public Nullable<System.DateTime> IssueDate77 { get; set; }
+        public Nullable<System.DateTime> ExpireDate75 { get; set; }
+        public Nullable<System.DateTime> ExpireDate76 { get; set; }
+        public Nullable<System.DateTime> ExpireDate77 { get; set; }
+
 
         public Nullable<System.DateTime> EFBIssueDate { get; set; }
         public Nullable<System.DateTime> EFBExpireDate { get; set; }
@@ -922,6 +977,61 @@ namespace ApiProfile.ViewModels
             entity.IssueDate48 = person.IssueDate48;
             entity.IssueDate49 = person.IssueDate49;
             entity.IssueDate50 = person.IssueDate50;
+            entity.ExpireDate51 = person.ExpireDate51;
+            entity.ExpireDate52 = person.ExpireDate52;
+            entity.ExpireDate53 = person.ExpireDate53;
+            entity.ExpireDate54 = person.ExpireDate54;
+            entity.ExpireDate55 = person.ExpireDate55;
+            entity.ExpireDate56 = person.ExpireDate56;
+            entity.ExpireDate57 = person.ExpireDate57;
+            entity.ExpireDate58 = person.ExpireDate58;
+            entity.ExpireDate59 = person.ExpireDate59;
+            entity.ExpireDate60 = person.ExpireDate60;
+            entity.IssueDate51 = person.IssueDate51;
+            entity.IssueDate52 = person.IssueDate52;
+            entity.IssueDate53 = person.IssueDate53;
+            entity.IssueDate54 = person.IssueDate54;
+            entity.IssueDate55 = person.IssueDate55;
+            entity.IssueDate56 = person.IssueDate56;
+            entity.IssueDate57 = person.IssueDate57;
+            entity.IssueDate58 = person.IssueDate58;
+            entity.IssueDate59 = person.IssueDate59;
+            entity.IssueDate60 = person.IssueDate60;
+            entity.IssueDate61 = person.IssueDate61;
+            entity.IssueDate62 = person.IssueDate62;
+            entity.ExpireDate61 = person.ExpireDate61;
+            entity.ExpireDate62 = person.ExpireDate62;
+            entity.IssueDate63 = person.IssueDate63;
+            entity.IssueDate64 = person.IssueDate64;
+            entity.IssueDate65 = person.IssueDate65;
+            entity.ExpireDate63 = person.ExpireDate63;
+            entity.ExpireDate64 = person.ExpireDate64;
+            entity.ExpireDate65 = person.ExpireDate65;
+            entity.IssueDate66 = person.IssueDate66;
+            entity.IssueDate67 = person.IssueDate67;
+            entity.IssueDate68 = person.IssueDate68;
+            entity.IssueDate69 = person.IssueDate69;
+            entity.IssueDate70 = person.IssueDate70;
+            entity.ExpireDate66 = person.ExpireDate66;
+            entity.ExpireDate67 = person.ExpireDate67;
+            entity.ExpireDate68 = person.ExpireDate68;
+            entity.ExpireDate69 = person.ExpireDate69;
+            entity.ExpireDate70 = person.ExpireDate70;
+            entity.IssueDate71 = person.IssueDate71;
+            entity.ExpireDate71 = person.ExpireDate71;
+            entity.IssueDate72 = person.IssueDate72;
+            entity.ExpireDate72 = person.ExpireDate72;
+            entity.IssueDate73 = person.IssueDate73;
+            entity.ExpireDate73 = person.ExpireDate73;
+            entity.IssueDate74 = person.IssueDate74;
+            entity.ExpireDate74 = person.ExpireDate74;
+            entity.IssueDate75 = person.IssueDate75;
+            entity.IssueDate76 = person.IssueDate76;
+            entity.IssueDate77 = person.IssueDate77;
+            entity.ExpireDate75 = person.ExpireDate75;
+            entity.ExpireDate76 = person.ExpireDate76;
+            entity.ExpireDate77 = person.ExpireDate77;
+
             entity.ExpireDateTRG02 = person.ExpireDateTRG02;
             entity.IssueDateTRG02 = person.IssueDateTRG02;
 
@@ -1367,6 +1477,61 @@ namespace ApiProfile.ViewModels
             person.IssueDate48 = entity.IssueDate48;
             person.IssueDate49 = entity.IssueDate49;
             person.IssueDate50 = entity.IssueDate50;
+            person.ExpireDate51 = entity.ExpireDate51;
+            person.ExpireDate52 = entity.ExpireDate52;
+            person.ExpireDate53 = entity.ExpireDate53;
+            person.ExpireDate54 = entity.ExpireDate54;
+            person.ExpireDate55 = entity.ExpireDate55;
+            person.ExpireDate56 = entity.ExpireDate56;
+            person.ExpireDate57 = entity.ExpireDate57;
+            person.ExpireDate58 = entity.ExpireDate58;
+            person.ExpireDate59 = entity.ExpireDate59;
+            person.ExpireDate60 = entity.ExpireDate60;
+            person.IssueDate51 = entity.IssueDate51;
+            person.IssueDate52 = entity.IssueDate52;
+            person.IssueDate53 = entity.IssueDate53;
+            person.IssueDate54 = entity.IssueDate54;
+            person.IssueDate55 = entity.IssueDate55;
+            person.IssueDate56 = entity.IssueDate56;
+            person.IssueDate57 = entity.IssueDate57;
+            person.IssueDate58 = entity.IssueDate58;
+            person.IssueDate59 = entity.IssueDate59;
+            person.IssueDate60 = entity.IssueDate60;
+            person.IssueDate61 = entity.IssueDate61;
+            person.IssueDate62 = entity.IssueDate62;
+            person.ExpireDate61 = entity.ExpireDate61;
+            person.ExpireDate62 = entity.ExpireDate62;
+            person.IssueDate63 = entity.IssueDate63;
+            person.IssueDate64 = entity.IssueDate64;
+            person.IssueDate65 = entity.IssueDate65;
+            person.ExpireDate63 = entity.ExpireDate63;
+            person.ExpireDate64 = entity.ExpireDate64;
+            person.ExpireDate65 = entity.ExpireDate65;
+            person.IssueDate66 = entity.IssueDate66;
+            person.IssueDate67 = entity.IssueDate67;
+            person.IssueDate68 = entity.IssueDate68;
+            person.IssueDate69 = entity.IssueDate69;
+            person.IssueDate70 = entity.IssueDate70;
+            person.ExpireDate66 = entity.ExpireDate66;
+            person.ExpireDate67 = entity.ExpireDate67;
+            person.ExpireDate68 = entity.ExpireDate68;
+            person.ExpireDate69 = entity.ExpireDate69;
+            person.ExpireDate70 = entity.ExpireDate70;
+            person.IssueDate71 = entity.IssueDate71;
+            person.ExpireDate71 = entity.ExpireDate71;
+            person.IssueDate72 = entity.IssueDate72;
+            person.ExpireDate72 = entity.ExpireDate72;
+            person.IssueDate73 = entity.IssueDate73;
+            person.ExpireDate73 = entity.ExpireDate73;
+            person.IssueDate74 = entity.IssueDate74;
+            person.ExpireDate74 = entity.ExpireDate74;
+            person.IssueDate75 = entity.IssueDate75;
+            person.IssueDate76 = entity.IssueDate76;
+            person.IssueDate77 = entity.IssueDate77;
+            person.ExpireDate75 = entity.ExpireDate75;
+            person.ExpireDate76 = entity.ExpireDate76;
+            person.ExpireDate77 = entity.ExpireDate77;
+
             person.ExpireDateTRG02 = entity.ExpireDateTRG02;
             person.IssueDateTRG02 = entity.IssueDateTRG02;
 

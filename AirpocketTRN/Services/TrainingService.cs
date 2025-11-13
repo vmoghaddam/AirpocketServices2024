@@ -3,6 +3,7 @@ using Antlr.Runtime;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Management.Instrumentation;
 using System.Net.Http.Formatting;
@@ -60,6 +61,271 @@ namespace AirpocketTRN.Services
 
             public List<view_trn_crm_assessment> questions { get; set; }
         }
+
+        public async Task<DataResponse> get_person_files(string nid)
+        {
+           
+
+            try
+            {
+
+                var rootPath = @"C:\Inetpub\vhosts\airpocket.app\ava.airpocket.app\upload\training\linecheck";
+                string targetPath = Path.Combine(rootPath, nid);
+
+                if (!Directory.Exists(targetPath))
+                    throw new DirectoryNotFoundException($"Folder not found: {targetPath}");
+
+                var result = new Dictionary<string, List<string>>();
+
+                foreach (var dir in Directory.GetDirectories(targetPath, "*", SearchOption.AllDirectories))
+                {
+                    string folderName = Path.GetFileName(dir);
+
+                    var files = new List<string>();
+                    foreach (var file in Directory.GetFiles(dir))
+                    {
+                        files.Add(Path.GetFileName(file));
+                    }
+
+                    result[folderName] = files;
+                }
+
+                var rootFiles = new List<string>();
+                foreach (var file in Directory.GetFiles(targetPath))
+                {
+                    rootFiles.Add(Path.GetFileName(file));
+                }
+                if (rootFiles.Count > 0)
+                    result[nid] = rootFiles;
+
+
+
+                return new DataResponse()
+                {
+                    IsSuccess = true,
+                    Data = result
+                };
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += "   " + ex.InnerException.Message;
+                return new DataResponse()
+                {
+                    IsSuccess = false,
+                    Data = msg,
+                };
+
+            }
+        }
+
+
+        public async Task<DataResponse> get_crew_files(string nid)
+        {
+
+
+            try
+            {
+                     var rootPath = @"C:\inetpub\vhosts\airpocket.app\ava.airpocket.app\upload\training\crew\cockpit";
+                //var rootPath = "C:\\inetpub\\vhosts\\airpocket.app\\ava.airpocket.app\\upload\\training\\crew\\cockpit\\";
+                string targetPath = Path.Combine(rootPath, nid);
+
+                //if (!Directory.Exists(targetPath))
+                //    throw new DirectoryNotFoundException($"Folder not found: {targetPath}");
+
+                var result = new Dictionary<string, List<string>>();
+
+                foreach (var dir in Directory.GetDirectories(targetPath, "*", SearchOption.AllDirectories))
+                {
+                    string folderName = Path.GetFileName(dir);
+
+                    var files = new List<string>();
+                    foreach (var file in Directory.GetFiles(dir))
+                    {
+                        files.Add(Path.GetFileName(file));
+                    }
+
+                    result[folderName] = files;
+                }
+
+                var rootFiles = new List<string>();
+                foreach (var file in Directory.GetFiles(targetPath))
+                {
+                    rootFiles.Add(Path.GetFileName(file));
+                }
+                if (rootFiles.Count > 0)
+                    result[nid] = rootFiles;
+
+
+
+                return new DataResponse()
+                {
+                    IsSuccess = true,
+                    Data = result
+                };
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += "   " + ex.InnerException.Message;
+                return new DataResponse()
+                {
+                    IsSuccess = false,
+                    Data = msg,
+                };
+
+            }
+        }
+
+
+        public async Task<DataResponse> get_cabin_files(string nid)
+        {
+
+
+            try
+            {
+                var rootPath = @"C:\inetpub\vhosts\airpocket.app\ava.airpocket.app\upload\training\crew\cabin";
+                //var rootPath = "C:\\inetpub\\vhosts\\airpocket.app\\ava.airpocket.app\\upload\\training\\crew\\cockpit\\";
+                string targetPath = Path.Combine(rootPath, nid);
+
+                //if (!Directory.Exists(targetPath))
+                //    throw new DirectoryNotFoundException($"Folder not found: {targetPath}");
+
+                var result = new Dictionary<string, List<string>>();
+
+                foreach (var dir in Directory.GetDirectories(targetPath, "*", SearchOption.AllDirectories))
+                {
+                    string folderName = Path.GetFileName(dir);
+
+                    var files = new List<string>();
+                    foreach (var file in Directory.GetFiles(dir))
+                    {
+                        files.Add(Path.GetFileName(file));
+                    }
+
+                    result[folderName] = files;
+                }
+
+                var rootFiles = new List<string>();
+                foreach (var file in Directory.GetFiles(targetPath))
+                {
+                    rootFiles.Add(Path.GetFileName(file));
+                }
+                if (rootFiles.Count > 0)
+                    result[nid] = rootFiles;
+
+
+
+                return new DataResponse()
+                {
+                    IsSuccess = true,
+                    Data = result
+                };
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += "   " + ex.InnerException.Message;
+                return new DataResponse()
+                {
+                    IsSuccess = false,
+                    Data = msg,
+                };
+
+            }
+        }
+
+
+        public async Task<DataResponse> get_dispatch_files(string nid)
+        {
+
+
+            try
+            {
+                var rootPath = @"C:\inetpub\vhosts\airpocket.app\ava.airpocket.app\upload\training\crew\dispatch\";
+                //var rootPath = "C:\\inetpub\\vhosts\\airpocket.app\\ava.airpocket.app\\upload\\training\\crew\\cockpit\\";
+                string targetPath = Path.Combine(rootPath, nid);
+
+                //if (!Directory.Exists(targetPath))
+                //    throw new DirectoryNotFoundException($"Folder not found: {targetPath}");
+
+                var result = new Dictionary<string, List<string>>();
+
+                foreach (var dir in Directory.GetDirectories(targetPath, "*", SearchOption.AllDirectories))
+                {
+                    string folderName = Path.GetFileName(dir);
+
+                    var files = new List<string>();
+                    foreach (var file in Directory.GetFiles(dir))
+                    {
+                        files.Add(Path.GetFileName(file));
+                    }
+
+                    result[folderName] = files;
+                }
+
+                var rootFiles = new List<string>();
+                foreach (var file in Directory.GetFiles(targetPath))
+                {
+                    rootFiles.Add(Path.GetFileName(file));
+                }
+                if (rootFiles.Count > 0)
+                    result[nid] = rootFiles;
+
+
+
+                return new DataResponse()
+                {
+                    IsSuccess = true,
+                    Data = result
+                };
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += "   " + ex.InnerException.Message;
+                return new DataResponse()
+                {
+                    IsSuccess = false,
+                    Data = msg,
+                };
+
+            }
+        }
+        public async Task<DataResponse> get_course_ext(int pid)
+        {
+
+
+            try
+            {
+                var entity = context.course_external.Where(q => q.person_id == pid);
+
+
+                return new DataResponse()
+                {
+                    IsSuccess = true,
+                    Data = entity
+                };
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += "   " + ex.InnerException.Message;
+                return new DataResponse()
+                {
+                    IsSuccess = false,
+                    Data = msg,
+                };
+
+            }
+        }
+
+
 
         public async Task<DataResponse> get_trn_crm_assessment(int flightId)
         {

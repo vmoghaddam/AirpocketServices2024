@@ -183,6 +183,8 @@ namespace ApiProfile.Models
         public Nullable<int> Remain48 { get; set; }
         public Nullable<int> Remain49 { get; set; }
         public Nullable<int> Remain50 { get; set; }
+        public Nullable<int> Remain56 { get; set; }
+        public Nullable<int> Remain66 { get; set; }
         public Nullable<int> RemainRIGHT_SEAT_QUALIFICATION { get; set; }
         public Nullable<int> RemainELT { get; set; }
         public Nullable<int> RemainRVSM { get; set; }

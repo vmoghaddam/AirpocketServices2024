@@ -136,6 +136,53 @@ namespace AirpocketTRN.Controllers
             return Ok(result);
         }
 
+       [Route("api/trn/get/person/files/{nid}")]
+        [AcceptVerbs("Get")]
+
+        public async Task<IHttpActionResult> get_person_files(string nid)
+        {
+            var result = await trainingService.get_person_files(nid);
+            return Ok(result);
+        }
+
+       [Route("api/trn/get/crew/files/{nid}")]
+        [AcceptVerbs("Get")]
+
+        public async Task<IHttpActionResult> get_crew_files(string nid)
+        {
+            var result = await trainingService.get_crew_files(nid);
+            return Ok(result);
+        }
+
+        [Route("api/trn/get/cabin/files/{nid}")]
+        [AcceptVerbs("Get")]
+
+        public async Task<IHttpActionResult> get_cabin_files(string nid)
+        {
+            var result = await trainingService.get_cabin_files(nid);
+            return Ok(result);
+        }
+
+
+        [Route("api/trn/get/dispatch/files/{nid}")]
+        [AcceptVerbs("Get")]
+
+        public async Task<IHttpActionResult> get_dispatch_files(string nid)
+        {
+            var result = await trainingService.get_dispatch_files(nid);
+            return Ok(result);
+        }
+
+
+        [Route("api/trn/get/course/ext/{pid}")]
+        [AcceptVerbs("Get")]
+
+        public async Task<IHttpActionResult> get_course_ext(int pid)
+        {
+            var result = await trainingService.get_course_ext(pid);
+            return Ok(result);
+        }
+
         [Route("api/trn/save/crm/assessment")]
         [AcceptVerbs("Post")]
 
