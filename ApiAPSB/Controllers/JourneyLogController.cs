@@ -1126,6 +1126,7 @@ namespace ApiAPSB.Controllers
                 var clegs = crewlegs.Select(q => (int)q.FlightId).ToList();
                 var legs = context.AppLegJLs.Where(q => clegs.Contains(q.FlightId)).OrderBy(q => q.STD).ToList();
                 var fdp = context.ViewFDPRests.FirstOrDefault(q => q.Id == appFlight.FDPId);
+
                 var reporting_time_local = legs[0].STDLocal.Value.AddMinutes(-60);
                 var reporting_time_utc = legs[0].STD.Value.AddMinutes(-60);
                 foreach (var x in legs)
