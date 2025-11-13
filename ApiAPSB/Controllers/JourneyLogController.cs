@@ -1130,6 +1130,10 @@ namespace ApiAPSB.Controllers
                 var reporting_time_utc = legs[0].STD.Value.AddMinutes(-60);
                 foreach (var x in legs)
                 {
+                    //x.PM1Name ,x.PM1Time 
+                    //x.PF1Name ,x.PF1Time
+                    //x.PM2Name ,x.PM2Time 
+                    //x.PF2Name ,x.PF2Time
                     if (x.BlockOn != null)
                     {
                         //fdp reporting time => reporting time utc

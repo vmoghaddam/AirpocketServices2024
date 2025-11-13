@@ -41,7 +41,6 @@ namespace ApiAPSB.Models
         public virtual DbSet<geo_apt_sunrise> geo_apt_sunrise { get; set; }
         public virtual DbSet<Person> People { get; set; }
         public virtual DbSet<EFBVoyageReport> EFBVoyageReports { get; set; }
-        public virtual DbSet<AppLegJL> AppLegJLs { get; set; }
         public virtual DbSet<FDP> FDPs { get; set; }
         public virtual DbSet<ViewQACSREvent> ViewQACSREvents { get; set; }
         public virtual DbSet<Option> Options { get; set; }
@@ -96,5 +95,6 @@ namespace ApiAPSB.Models
         public virtual DbSet<ViewEFBDSPReleas> ViewEFBDSPReleases { get; set; }
         public virtual DbSet<ViewQAGround> ViewQAGrounds { get; set; }
         public virtual DbSet<ViewQAHazard> ViewQAHazards { get; set; }
+        public virtual DbSet<AppLegJL> AppLegJLs { get; set; }
     }
 }
