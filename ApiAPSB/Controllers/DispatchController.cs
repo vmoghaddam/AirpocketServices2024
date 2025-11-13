@@ -761,7 +761,9 @@ namespace ApiAPSB.Controllers
                     case "other":
                         flight.CPSCCM = doc.DocumentUrl;
                         break;
-
+                    case "per":
+                        flight.CPRegister = doc.DocumentUrl;
+                        break;
                     default:
                         break;
                 }
