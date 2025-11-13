@@ -88,6 +88,7 @@ namespace ApiSand.Models
         public string ExamType { get; set; }
         public string course_key { get; set; }
         public Nullable<int> ext_id { get; set; }
+        public string course_key2 { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Course> Course1 { get; set; }

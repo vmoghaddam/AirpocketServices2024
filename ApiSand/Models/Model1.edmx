@@ -74,6 +74,7 @@
           <Property Name="fullpath" Type="nvarchar" MaxLength="2000" />
           <Property Name="remark" Type="varchar" MaxLength="255" />
           <Property Name="nid" Type="varchar" MaxLength="500" />
+          <Property Name="title2" Type="nvarchar" MaxLength="1000" />
         </EntityType>
         <EntityType Name="ava_sub_file">
           <Key>
@@ -155,6 +156,7 @@
           <Property Name="ExamType" Type="varchar" MaxLength="500" />
           <Property Name="course_key" Type="varchar" MaxLength="255" />
           <Property Name="ext_id" Type="int" />
+          <Property Name="course_key2" Type="varchar" MaxLength="1000" />
         </EntityType>
         <EntityType Name="CourseSession">
           <Key>
@@ -397,8 +399,8 @@
             <End Role="CourseSessionPresence" EntitySet="CourseSessionPresences" />
           </AssociationSet>
           <EntitySet Name="ava_folder" EntityType="ppaModel.ava_folder" />
-          <EntitySet Name="ava_sub" EntityType="ppaModel.ava_sub" />
           <EntitySet Name="ava_sub_file" EntityType="ppaModel.ava_sub_file" />
+          <EntitySet Name="ava_sub" EntityType="ppaModel.ava_sub" />
           <AssociationSet Name="fk_f_sub" Association="ppaModel.fk_f_sub">
             <End Role="ava_sub" EntitySet="ava_sub" />
             <End Role="ava_sub_file" EntitySet="ava_sub_file" />
@@ -571,6 +573,7 @@
           <NavigationProperty Name="Course2" Relationship="ppaModel.fk_course_parent" FromRole="Course1" ToRole="Course" />
           <NavigationProperty Name="CourseSessionPresences" Relationship="ppaModel.fk_psco_course" FromRole="Course" ToRole="CourseSessionPresence" />
           <NavigationProperty Name="CourseSessions" Relationship="ppaModel.fk_session_course" FromRole="Course" ToRole="CourseSession" />
+          <Property Name="course_key2" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="CourseSession">
           <Key>
@@ -691,17 +694,6 @@
           <Property Name="person_id" Type="Int32" />
           <Property Name="nid" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="ava_sub">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="title" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="fullpath" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
-          <Property Name="remark" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="nid" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="ava_sub_file" Relationship="ppaModel.fk_f_sub" FromRole="ava_sub" ToRole="ava_sub_file" />
-        </EntityType>
         <EntityType Name="ava_sub_file">
           <Key>
             <PropertyRef Name="id" />
@@ -712,6 +704,18 @@
           <Property Name="fullpath" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
           <Property Name="remark" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="ava_sub" Relationship="ppaModel.fk_f_sub" FromRole="ava_sub_file" ToRole="ava_sub" />
+        </EntityType>
+        <EntityType Name="ava_sub">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="title" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="fullpath" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="remark" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="nid" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="title2" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ava_sub_file" Relationship="ppaModel.fk_f_sub" FromRole="ava_sub" ToRole="ava_sub_file" />
         </EntityType>
         <Association Name="fk_f_sub">
           <End Type="ppaModel.ava_sub" Role="ava_sub" Multiplicity="1">
@@ -832,6 +836,7 @@
           <EntitySetMapping Name="Courses">
             <EntityTypeMapping TypeName="ppaModel.Course">
               <MappingFragment StoreEntitySet="Course">
+                <ScalarProperty Name="course_key2" ColumnName="course_key2" />
                 <ScalarProperty Name="ext_id" ColumnName="ext_id" />
                 <ScalarProperty Name="course_key" ColumnName="course_key" />
                 <ScalarProperty Name="ExamType" ColumnName="ExamType" />
@@ -939,17 +944,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ava_sub">
-            <EntityTypeMapping TypeName="ppaModel.ava_sub">
-              <MappingFragment StoreEntitySet="ava_sub">
-                <ScalarProperty Name="nid" ColumnName="nid" />
-                <ScalarProperty Name="remark" ColumnName="remark" />
-                <ScalarProperty Name="fullpath" ColumnName="fullpath" />
-                <ScalarProperty Name="title" ColumnName="title" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ava_sub_file">
             <EntityTypeMapping TypeName="ppaModel.ava_sub_file">
               <MappingFragment StoreEntitySet="ava_sub_file">
@@ -957,6 +951,18 @@
                 <ScalarProperty Name="fullpath" ColumnName="fullpath" />
                 <ScalarProperty Name="title" ColumnName="title" />
                 <ScalarProperty Name="sub_id" ColumnName="sub_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ava_sub">
+            <EntityTypeMapping TypeName="ppaModel.ava_sub">
+              <MappingFragment StoreEntitySet="ava_sub">
+                <ScalarProperty Name="title2" ColumnName="title2" />
+                <ScalarProperty Name="nid" ColumnName="nid" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="fullpath" ColumnName="fullpath" />
+                <ScalarProperty Name="title" ColumnName="title" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

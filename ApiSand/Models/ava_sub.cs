@@ -25,6 +25,7 @@ namespace ApiSand.Models
         public string fullpath { get; set; }
         public string remark { get; set; }
         public string nid { get; set; }
+        public string title2 { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ava_sub_file> ava_sub_file { get; set; }
