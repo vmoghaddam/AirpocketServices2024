@@ -3067,7 +3067,7 @@ namespace XAPI.Controllers
                 fln = fln.Trim();
                 var no = fln.Contains(" ") ? fln.Substring(4) : fln.Substring(3);
                 var main_flight_no = fln.Replace(" ", "").ToUpper();
-                if (no.Length == 3 && no.StartsWith("0"))
+                if (no.Length == 3 && no.StartsWith("0") && opt !="FLYX")
                     no = "0" + no;
                 no = no.Replace(" ", "");
                 if (no.StartsWith("A"))
