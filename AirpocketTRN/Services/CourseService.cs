@@ -4810,11 +4810,16 @@ namespace AirpocketTRN.Services
             var profiles = await context.ViewProfiles.Where(q => person_ids.Contains(q.PersonId)).ToListAsync();
 
             var certificate_histories = await context.CertificateHistories.Where(q => q.CourseId == dto.CourseId).ToListAsync();
+            
             var certificate_histories_last = await context.ViewCertificateHistoryRankeds.Where(q => person_ids.Contains(q.PersonId) && q.CertificateTypeId != null && q.CertificateTypeId == course.CertificateTypeId).ToListAsync();
+           
             var subjects_certificate_histories = await context.CertificateHistories.Where(q => subject_ids.Contains(q.CourseId)).ToListAsync();
+            
             var subjects_certificate_histories_last = await context.ViewCertificateHistoryRankeds.Where(q =>
                q.CertificateTypeId != null && person_ids.Contains(q.PersonId) && subjects_cer_type_ids.Contains(q.CertificateTypeId)).ToListAsync();
+           
             var certificate_type = await context.CertificateTypes.Where(q => q.Id == course.CertificateTypeId).FirstOrDefaultAsync();
+           
             var subjects_cer_types = await context.CertificateTypes.Where(q => subjects_cer_type_ids.Contains(q.Id)).ToListAsync();
 
             var _date_issue = course.Date_Sign_Director != null ? ((DateTime)course.Date_Sign_Director).Date : ((DateTime)course.DateEnd).Date;
@@ -4965,7 +4970,7 @@ namespace AirpocketTRN.Services
                     ///var _date_exire = _date_issue.AddMonths((int)_interval).AddMonths(1);
 
 
-                    if (_interval != 1200)
+                    if (sbj_interval != 1200)
                     {
                         var last_history = subjects_certificate_histories_last.Where(q => q.PersonId == scp.PersonId && q.CertificateTypeId == sbj.CertificateTypeId && q.DateIssue != _date_issue).FirstOrDefault();
 
@@ -4981,7 +4986,7 @@ namespace AirpocketTRN.Services
 
                     /////////////////////////////
 
-                    scp.DateExpire = _interval == 1200 ? null : (Nullable<DateTime>)sbj_date_exire;
+                    scp.DateExpire = sbj_interval == 1200 ? null : (Nullable<DateTime>)sbj_date_exire;
                     scp.DateIssue = _date_issue;
                     scp.CertificateNo = vscp.Id.ToString();
 
@@ -5046,7 +5051,307 @@ namespace AirpocketTRN.Services
             };
         }
 
+        public async Task<DataResponse> UpdateCoursePeopleStatusAllNew(CoursePeopleStatusViewModel dto)
+        {
 
+
+            var course = await context.ViewCourseNews.Where(q => q.Id == dto.CourseId).FirstOrDefaultAsync();
+            var _crs = await context.Courses.FirstOrDefaultAsync(q => q.Id == dto.CourseId);
+            List<ViewCourseNew> subjects_views = await context.ViewCourseNews.Where(q => q.ParentId == dto.CourseId).ToListAsync();
+            List<Course> subjects = await context.Courses.Where(q => q.ParentId == dto.CourseId).ToListAsync();
+            var subject_ids = subjects.Select(q => (Nullable<int>)q.Id).ToList();
+            var subjects_cer_type_ids = subjects_views.Select(q => q.CertificateTypeId).ToList();
+
+
+
+
+
+            _crs.StatusId = 3;
+            foreach (var s in subjects)
+                s.StatusId = 3;
+            //2025-11-16
+            List<ViewCoursePeople> view_cps = new List<ViewCoursePeople>();
+            List<CoursePeople> cps = new List<CoursePeople>();
+            List<ViewCoursePeople> view_cps_subjects = new List<ViewCoursePeople>();
+            List<CoursePeople> cps_subjects = new List<CoursePeople>();
+            if (dto.PersonIds != null && dto.PersonIds.Any())
+            {
+                view_cps = await context.ViewCoursePeoples.Where(q => q.CourseId == dto.CourseId && dto.PersonIds.Contains(q.PersonId)).ToListAsync();
+               
+                cps = await context.CoursePeoples.Where(q => q.CourseId == dto.CourseId && dto.PersonIds.Contains(q.PersonId)).ToListAsync();
+               
+                if (subjects.Count > 0)
+                {
+                    view_cps_subjects = await context.ViewCoursePeoples.Where(q => q.ParentId == dto.CourseId && dto.PersonIds.Contains(q.PersonId)).ToListAsync();
+                    var _ids = view_cps_subjects.Select(q => q.Id).ToList();
+                    cps_subjects = await context.CoursePeoples.Where(q => _ids.Contains(q.Id) && dto.PersonIds.Contains(q.PersonId)).ToListAsync();
+
+                }
+
+            }
+            else
+            {
+                view_cps = await context.ViewCoursePeoples.Where(q => q.CourseId == dto.CourseId).ToListAsync();
+                cps = await context.CoursePeoples.Where(q => q.CourseId == dto.CourseId).ToListAsync();
+                if (subjects.Count > 0)
+                {
+                    view_cps_subjects = await context.ViewCoursePeoples.Where(q => q.ParentId == dto.CourseId).ToListAsync();
+                    var _ids = view_cps_subjects.Select(q => q.Id).ToList();
+                    cps_subjects = await context.CoursePeoples.Where(q => _ids.Contains(q.Id)).ToListAsync();
+                }
+
+            }
+
+            var person_ids = cps.Select(q => (int)q.PersonId).ToList();
+
+            var profiles = await context.ViewProfiles.Where(q => person_ids.Contains(q.PersonId)).ToListAsync();
+
+            var certificate_histories = await context.CertificateHistories.Where(q => q.CourseId == dto.CourseId).ToListAsync();
+
+            var certificate_histories_last = await context.ViewCertificateHistoryRankeds.Where(q => person_ids.Contains(q.PersonId) && q.CertificateTypeId != null && q.CertificateTypeId == course.CertificateTypeId).ToListAsync();
+
+            var subjects_certificate_histories = await context.CertificateHistories.Where(q => subject_ids.Contains(q.CourseId)).ToListAsync();
+
+            var subjects_certificate_histories_last = await context.ViewCertificateHistoryRankeds.Where(q =>
+               q.CertificateTypeId != null && person_ids.Contains(q.PersonId) && subjects_cer_type_ids.Contains(q.CertificateTypeId)).ToListAsync();
+
+            var certificate_type = await context.CertificateTypes.Where(q => q.Id == course.CertificateTypeId).FirstOrDefaultAsync();
+
+            var subjects_cer_types = await context.CertificateTypes.Where(q => subjects_cer_type_ids.Contains(q.Id)).ToListAsync();
+
+            var _date_issue = course.Date_Sign_Director != null ? ((DateTime)course.Date_Sign_Director).Date : ((DateTime)course.DateEnd).Date;
+            var _interval = course.Interval;
+            if (_interval == null)
+                _interval = 0;
+            if (course.Continual == true)
+                _interval = 1200;
+
+
+
+            //Main Course
+            foreach (var cp in cps)
+            {
+
+                var _date_exire = _date_issue.AddMonths((int)_interval).AddMonths(1);
+
+                _date_exire = new DateTime(_date_exire.Year, _date_exire.Month, 1);
+                _date_exire = _date_exire.AddDays(-1);
+                if (_interval != 1200)
+                {
+                    var last_history = certificate_histories_last.Where(q => q.PersonId == cp.PersonId).FirstOrDefault();
+                    if (last_history != null && last_history.DateExpire != null && last_history.DateExpire > _date_exire)
+                    {
+                        var lh = (DateTime)last_history.DateExpire;
+                        _date_exire = new DateTime(lh.Year, lh.Month, 1);
+                        _date_exire = _date_exire.AddDays(-1);
+                    }
+                }
+
+                var vcp = view_cps.FirstOrDefault(q => q.Id == cp.Id);
+                var cp_subjects = view_cps_subjects.Where(q => q.PersonId == cp.PersonId).ToList();
+
+                /*int statusId = 0;
+                if (cp_subjects.Any())
+                {
+                    statusId = cp_subjects.Where(q => q.Presence != 100).Any() ? 0 : 1;
+                }
+                else
+                    statusId = vcp.Presence == 100 ? 1 : 0;
+                */
+                int statusId = (int)dto.StatusId;
+                
+                
+                var profile = profiles.FirstOrDefault(q => q.PersonId == cp.PersonId);
+                var not_applicable = context.CourseTypeApplicables.Where(q => q.IsApplicable == false && (q.TrainingGroup == profile.JobGroupRoot || q.TrainingGroup == profile.PostRoot)
+                 && q.CourseTypeId == course.CourseTypeId).FirstOrDefault();
+                var history = certificate_histories.FirstOrDefault(q => q.PersonId == cp.PersonId);
+
+                if (history != null)
+                    context.CertificateHistories.Remove(history);
+
+                if (statusId != 1)
+                {
+                    cp.DateIssue = null;
+                    cp.DateExpire = null;
+                    cp.CertificateNo = null;
+
+                    //remove record from history
+
+
+
+                }
+                else
+                {
+                    cp.DateExpire = _interval == 1200 ? null : (Nullable<DateTime>)_date_exire;
+                    cp.DateIssue = _date_issue;
+                    cp.CertificateNo = cp.Id.ToString();
+
+
+                    //add record to history
+                    context.CertificateHistories.Add(new CertificateHistory()
+                    {
+                        CourseId = dto.CourseId,
+                        CertificateType = certificate_type != null ? (!string.IsNullOrEmpty(certificate_type.IssueField) ? certificate_type.IssueField : certificate_type.ExpireField) : "", //field_map.Identifier,
+                        DateCreate = DateTime.Now,
+                        DateExpire = not_applicable == null ? cp.DateExpire : null,
+                        DateIssue = cp.DateIssue,
+                        PersonId = (int)cp.PersonId,
+                        Remark = "Update Course Result"
+
+                    });
+                }
+
+                cp.StatusId = statusId;
+                //cp.StatusRemark = dto.Remark;
+                if (statusId == 1 && (cp.DateIssue != null || cp.DateExpire != null) && /*field_map.DbFieldIssue!=null*/certificate_type != null)
+                {
+                    var cmd_upd_part = new List<string>();
+
+                    if (cp.DateIssue != null && !string.IsNullOrEmpty(certificate_type.IssueField))
+                        cmd_upd_part.Add(/*field_map.DbFieldIssue*/certificate_type.IssueField + "='" + ((DateTime)cp.DateIssue).ToString("yyyy-MM-dd") + "' ");
+                    if (cp.DateExpire != null && !string.IsNullOrEmpty(certificate_type.IssueField))
+                        cmd_upd_part.Add(/*field_map.DbFieldExpire*/certificate_type.ExpireField + "='" + ((DateTime)cp.DateExpire).ToString("yyyy-MM-dd") + "' ");
+                    if (cp.DateExpire == null && !string.IsNullOrEmpty(certificate_type.IssueField))
+                        cmd_upd_part.Add(/*field_map.DbFieldExpire*/certificate_type.ExpireField + "=null ");
+
+                    var cmd_upd = "Update Person set "
+                        + string.Join(",", cmd_upd_part)
+                        + " Where id=" + cp.PersonId;
+
+                    var i = context.Database.ExecuteSqlCommand(cmd_upd);
+
+                }
+
+
+            }
+
+
+            //subjects
+            foreach (var scp in cps_subjects)
+            {
+                var cp = cps.FirstOrDefault(q => q.PersonId == scp.PersonId);
+                if (cp.StatusId != 1)
+                    continue;
+
+                var sbj = subjects_views.FirstOrDefault(q => q.Id == scp.CourseId);
+                var vscp = view_cps_subjects.FirstOrDefault(q => q.Id == scp.Id);
+                var sbj_certificate_type = subjects_cer_types.FirstOrDefault(q => q.Id == sbj.CertificateTypeId);
+                var statusId = vscp.Presence == 100 ? 1 : 0;
+                var profile = profiles.FirstOrDefault(q => q.PersonId == scp.PersonId);
+                var not_applicable = context.CourseTypeApplicables.Where(q => q.IsApplicable == false && (q.TrainingGroup == profile.JobGroupRoot || q.TrainingGroup == profile.PostRoot)
+                 && q.CourseTypeId == sbj.CourseTypeId).FirstOrDefault();
+                var history = subjects_certificate_histories.FirstOrDefault(q => q.PersonId == scp.PersonId && q.CourseId == sbj.Id);
+
+
+                if (history != null)
+                    context.CertificateHistories.Remove(history);
+
+                if (statusId != 1)
+                {
+                    scp.DateIssue = null;
+                    scp.DateExpire = null;
+                    scp.CertificateNo = null;
+
+                    //remove record from history
+
+
+                }
+                else
+                {
+                    var sbj_interval = sbj.Interval;
+                    if (sbj_interval == null)
+                        sbj_interval = 0;
+                    if (sbj.Continual == true)
+                        sbj_interval = 1200;
+                    var sbj_date_exire = _date_issue.AddMonths((int)sbj_interval).AddMonths(1);
+
+                    sbj_date_exire = new DateTime(sbj_date_exire.Year, sbj_date_exire.Month, 1);
+                    sbj_date_exire = sbj_date_exire.AddDays(-1);
+
+                    /////////////////////////////////
+                    ///var _date_exire = _date_issue.AddMonths((int)_interval).AddMonths(1);
+
+
+                    if (sbj_interval != 1200)
+                    {
+                        var last_history = subjects_certificate_histories_last.Where(q => q.PersonId == scp.PersonId && q.CertificateTypeId == sbj.CertificateTypeId && q.DateIssue != _date_issue).FirstOrDefault();
+
+                        if (last_history != null && last_history.DateExpire != null && last_history.DateExpire > _date_issue && last_history.DateIssue != null
+                            && ((DateTime)last_history.DateIssue).Date != _date_issue.Date)
+                        {
+                            var dif = ((DateTime)last_history.DateExpire).Subtract(_date_issue).Days;
+
+
+                            sbj_date_exire = sbj_date_exire.AddDays(dif);
+                        }
+                    }
+
+                    /////////////////////////////
+
+                    scp.DateExpire = sbj_interval == 1200 ? null : (Nullable<DateTime>)sbj_date_exire;
+                    scp.DateIssue = _date_issue;
+                    scp.CertificateNo = vscp.Id.ToString();
+
+
+                    //add record to history
+                    context.CertificateHistories.Add(new CertificateHistory()
+                    {
+                        CourseId = sbj.Id,
+                        CertificateType = sbj_certificate_type != null ? (!string.IsNullOrEmpty(sbj_certificate_type.IssueField) ? sbj_certificate_type.IssueField : sbj_certificate_type.ExpireField) : "", //field_map.Identifier,
+                        DateCreate = DateTime.Now,
+                        DateExpire = not_applicable == null ? vscp.DateExpire : null,
+                        DateIssue = vscp.DateIssue,
+                        PersonId = (int)vscp.PersonId,
+                        Remark = "Update Course Result"
+
+                    });
+                }
+
+                scp.StatusId = statusId;
+                //cp.StatusRemark = dto.Remark;
+                if (statusId == 1 && (scp.DateIssue != null || scp.DateExpire != null) && /*field_map.DbFieldIssue!=null*/sbj_certificate_type != null)
+                {
+                    var cmd_upd_part = new List<string>();
+
+                    if (scp.DateIssue != null && !string.IsNullOrEmpty(sbj_certificate_type.IssueField))
+                        cmd_upd_part.Add(/*field_map.DbFieldIssue*/sbj_certificate_type.IssueField + "='" + ((DateTime)scp.DateIssue).ToString("yyyy-MM-dd") + "' ");
+                    if (scp.DateExpire != null && !string.IsNullOrEmpty(sbj_certificate_type.IssueField))
+                        cmd_upd_part.Add(/*field_map.DbFieldExpire*/sbj_certificate_type.ExpireField + "='" + ((DateTime)scp.DateExpire).ToString("yyyy-MM-dd") + "' ");
+                    if (scp.DateExpire == null && !string.IsNullOrEmpty(sbj_certificate_type.IssueField))
+                        cmd_upd_part.Add(/*field_map.DbFieldExpire*/sbj_certificate_type.ExpireField + "=null ");
+
+                    var cmd_upd = "Update Person set "
+                        + string.Join(",", cmd_upd_part)
+                        + " Where id=" + scp.PersonId;
+
+                    var i = context.Database.ExecuteSqlCommand(cmd_upd);
+
+                }
+
+
+
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+            await context.SaveChangesAsync();
+
+            return new DataResponse()
+            {
+                IsSuccess = true,
+                Data = dto,
+            };
+        }
 
         public async Task<DataResponse> SaveCertificateAtlas(ViewModels.CertificateViewModel dto)
         {
@@ -6136,8 +6441,8 @@ namespace AirpocketTRN.Services
         public IQueryable<ViewCourseNew> GetCourseQuery()
         {
             IQueryable<ViewCourseNew> query = context.Set<ViewCourseNew>().AsNoTracking();
-            //return query.Where(q => q.ParentId == null);
-            return query;
+            return query.Where(q => q.ParentId == null);
+           // return query;
         }
 
         public IQueryable<ViewJobGroup> GetViewJobGroupQuery()

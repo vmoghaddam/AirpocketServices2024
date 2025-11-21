@@ -4737,7 +4737,7 @@ namespace ApiScheduling.Controllers
             else if (2 > _start && 2 < _end && 6 > _start && 6 < _end)
                 wocl = 4;
 
-
+            wocl = 0;
             stat.RestTo = stat.RestFrom.AddHours(12);
             stat.MaxFDP = getMaxFDP(((DateTime)flights.First().DepartureLocal).AddMinutes(-rp), stat.Sectors, MaxFDPTable);
             stat.WOCL = wocl * 60;

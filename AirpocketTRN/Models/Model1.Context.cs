@@ -132,7 +132,6 @@ namespace AirpocketTRN.Models
         public virtual DbSet<view_trn_exam> view_trn_exam { get; set; }
         public virtual DbSet<view_trn_exam_question_person> view_trn_exam_question_person { get; set; }
         public virtual DbSet<view_trn_exam_question_person_details> view_trn_exam_question_person_details { get; set; }
-        public virtual DbSet<ViewProfile> ViewProfiles { get; set; }
         public virtual DbSet<view_trn_exam_summary> view_trn_exam_summary { get; set; }
         public virtual DbSet<view_trn_exam_summary_details> view_trn_exam_summary_details { get; set; }
         public virtual DbSet<view_trn_student_answer> view_trn_student_answer { get; set; }
@@ -173,5 +172,6 @@ namespace AirpocketTRN.Models
         public virtual DbSet<ViewCourseNew> ViewCourseNews { get; set; }
         public virtual DbSet<trn_question_category> trn_question_category { get; set; }
         public virtual DbSet<course_external> course_external { get; set; }
+        public virtual DbSet<ViewProfile> ViewProfiles { get; set; }
     }
 }

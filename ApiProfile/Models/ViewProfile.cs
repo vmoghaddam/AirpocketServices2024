@@ -207,6 +207,7 @@ namespace ApiProfile.Models
         public string UserId { get; set; }
         public Nullable<int> RemainTypeFoker50 { get; set; }
         public Nullable<int> RemainTypeFoker100 { get; set; }
+        public Nullable<int> RemainDisManual { get; set; }
         public string Reserved1 { get; set; }
         public string Reserved2 { get; set; }
         public string Reserved3 { get; set; }
