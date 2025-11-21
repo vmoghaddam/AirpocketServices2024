@@ -174,5 +174,15 @@ namespace AirpocketAPI.Models
         public Nullable<int> PaxMale { get; set; }
         public Nullable<System.DateTime> BlockOffStation { get; set; }
         public Nullable<System.DateTime> BlockOnStation { get; set; }
+        public string CPRegister { get; set; }
+        public Nullable<int> PF1Id { get; set; }
+        public Nullable<int> PM1Id { get; set; }
+        public Nullable<int> PF2Id { get; set; }
+        public Nullable<int> PM2Id { get; set; }
+        public Nullable<int> PF1Time { get; set; }
+        public Nullable<int> PM1Time { get; set; }
+        public Nullable<int> PF2Time { get; set; }
+        public Nullable<int> PM2Time { get; set; }
+        public Nullable<System.DateTime> Reporting { get; set; }
     }
 }

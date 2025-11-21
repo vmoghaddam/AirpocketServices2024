@@ -36,7 +36,26 @@ namespace ApiReportFlight.Controllers
             df = df.Date;
             dt = dt.Date.AddDays(1);
             // dataSource: ['All', 'Cockpit', 'Cabin', 'IP', 'P1', 'P2', 'SCCM', 'CCM', 'ISCCM'],
-            var crew_grps = new List<string>() { "TRE", "TRI", "P1", "P2", "ISCCM", "SCCM", "CCM", "LTC", "CCE", "CCI" };
+            // var crew_grps = new List<string>() { "TRE", "TRI", "P1", "P2", "ISCCM", "SCCM", "CCM", "LTC", "CCE", "CCI" };
+            var crew_grps = new List<string>()
+{
+    "TRE", "TRI", "P1", "P2", "ISCCM", "SCCM", "CCM", "LTC", "CCI", "CCE", "F/M",
+
+    "ENGINEERING AND MAINTENANCE",
+    "AIRCRAFT MECHANIC TECHNICIAN",
+    "AIRCRAFT REPAIR CONTROL MANAGER",
+    "CABIN REPAIR TECHNICIAN",
+    "FLIGHT LINE AVIONICS EXPERT",
+    "FLIGHT LINE MANAGER",
+    "FLIGHT LINE MECHANIC EXPERT",
+    "FLIGHT LINE RESPONSIBLE",
+    "OFFICER",
+    "TECHNICAL AND ENGINEERING DEPUTY",
+    "TOOLS AND PARTS STOREKEEPER",
+    "AIRCRAFT MECHANIC"
+};
+
+
             if (grps == "Cockpit")
                 crew_grps = new List<string>() { "TRE", "TRI", "P1", "P2", "LTC" };
             else if (grps == "Cabin")
@@ -295,7 +314,7 @@ namespace ApiReportFlight.Controllers
                     crew.WOCLTO = fdp.WOCLTO;
                     crew.XAirportLND = fdp.XAirportLND;
                     crew.XAirportTO = fdp.XAirportTO + fdp.XAirportLND;
-                    //crew.FDPs = fdp.FDPs.
+                    crew.FDPs = fdp.FDPs;
                     crew.Instructor = fdp.Instructor;
                     crew.InstructorBlock = fdp.InstructorBlock;
                     crew.OBS = fdp.OBS;

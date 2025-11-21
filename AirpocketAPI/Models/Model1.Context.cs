@@ -115,5 +115,7 @@ namespace AirpocketAPI.Models
         public virtual DbSet<FixTime> FixTimes { get; set; }
         public virtual DbSet<view_efb_report> view_efb_report { get; set; }
         public virtual DbSet<ViewCrewList> ViewCrewLists { get; set; }
+        public virtual DbSet<C_view_trncard> C_view_trncard { get; set; }
+        public virtual DbSet<ViewCertificateHistoryRanked> ViewCertificateHistoryRankeds { get; set; }
     }
 }

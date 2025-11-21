@@ -4,6 +4,7 @@ using Newtonsoft.Json.Linq;
 using Spire.Xls;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.Common;
 using System.Data.Entity;
@@ -2164,7 +2165,30 @@ namespace AirpocketAPI.Controllers
 
             var _dt1 = dt1.Date;
             var _dt2 = dt2.Date.AddDays(0);
+            var airline = ConfigurationManager.AppSettings["airline"];
+            ppa_pgs ext_context = null;
+            if (airline == "AVA")
+                ext_context = new ppa_pgs();
             var context = new AirpocketAPI.Models.FLYEntities();
+
+            IQueryable<ViewTimeTable> query_pgs = Enumerable.Empty<ViewTimeTable>().AsQueryable();
+
+            if (airline == "AVA")
+            {
+                 query_pgs = (from x in ext_context.ViewTimeTables
+                                 where x.Register == "SAP"
+                                 select x);
+                query_pgs = query_pgs.Where(q => (utcRef) ? q.STDDay >= _dt1 && q.STDDay <= _dt2 : q.STDDayLocal >= _dt1 && q.STDDayLocal <= _dt2);
+                if (cnl == -1)
+                    query_pgs = query_pgs.Where(q => q.FlightStatusID != 4);
+
+
+            
+
+              
+            }
+
+
             var query = (from x in context.ViewTimeTables
                              //where x.STDDay >= _dt1 && x.STDDay <= _dt2
                          select x);
@@ -2173,14 +2197,35 @@ namespace AirpocketAPI.Controllers
                 query = query.Where(q => q.FlightStatusID != 4);
 
 
-            var totalcnt = query.Count();
+            var totalcnt = query.Count() + query_pgs.Count();
 
-            var grps = (from x in query
-                        group x by new { refSTD = utcRef ? x.STDDay : x.STDDayLocal } into grp
-                        orderby grp.Key.refSTD
-                        select grp).ToList();
+            //var grps = (from x in query
+            //            group x by new { refSTD = utcRef ? x.STDDay : x.STDDayLocal } into grp
+            //            orderby grp.Key.refSTD
+            //            select grp).ToList();
+
+            // run each query on its own context
+            var queryList = query.ToList();       // from context A
+            var queryPgsList = query_pgs.ToList();   // from context B
+
+            // combine in memory
+            var combined = queryList
+                .Concat(queryPgsList)
+                .ToList();
+
+            // now group in memory, no EF involved any more
+            var grps = combined
+                .GroupBy(x => new { refSTD = utcRef ? x.STDDay : x.STDDayLocal })
+                .OrderBy(g => g.Key.refSTD)
+                .ToList();
 
 
+            //var combined = query.Concat(query_pgs);
+
+            //var grps = (from x in combined
+            //            group x by new { refSTD = utcRef ? x.STDDay : x.STDDayLocal } into grp
+            //            orderby grp.Key.refSTD
+            //            select grp).ToList();
 
             //var query = from x in context.ViewRosterCrewCounts
             //            where x.DateLocal >= _dt1 && x.DateLocal <= _dt2
@@ -8786,6 +8831,22 @@ namespace AirpocketAPI.Controllers
                  q.CrewId == id
 
            ).OrderBy(q => q.StatusId).ThenBy(q => q.Remain).ToList();
+
+            //var result = await courseService.GetEmployeeCertificates(id);
+
+            return Ok(certs);
+        }
+
+        [Route("api/crew/certificates/pp/{id}")]
+        [AcceptVerbs("GET")]
+        public async Task<IHttpActionResult> GetEmployeeCertificatesPP(int id)
+        {
+            var context = new AirpocketAPI.Models.FLYEntities();
+            var certs = context.ViewCertificateHistoryRankeds.Where(q =>
+                 q.PersonId == id
+
+           ).OrderBy(q => q.StatusId).ThenBy(q => q.Remain).ToList();
+
 
             //var result = await courseService.GetEmployeeCertificates(id);
 

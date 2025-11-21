@@ -205,5 +205,15 @@ namespace AirpocketAPI.Models
         public Nullable<int> voyageId { get; set; }
         public Nullable<int> asrId { get; set; }
         public Nullable<bool> otherForm { get; set; }
+        public Nullable<int> is_pinned { get; set; }
+        public Nullable<System.DateTime> date_pinned { get; set; }
+        public Nullable<System.DateTime> date_visited { get; set; }
+        public Nullable<System.DateTime> date_read { get; set; }
+        public Nullable<int> is_visited { get; set; }
+        public Nullable<int> is_read { get; set; }
+        public string tags { get; set; }
+        public string comments { get; set; }
+        public string cms_label { get; set; }
+        public string ops_label { get; set; }
     }
 }

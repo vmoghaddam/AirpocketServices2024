@@ -249,11 +249,11 @@ namespace ApiMSG.Controllers
 
 
                     var email_status = "";
-                    if (3==3 && !string.IsNullOrEmpty( x.Email))
+                    if (3==3 )
                     {
                         var email_body = String.Join("\n", strs_email);
                        // var fromAddress = new MailAddress("airpocket@flypersiaairlines.ir", "TRAINING DEPARTMENT");
-                       email_status= mailHelper.SendEmail(email_body, x.Email, x.Name, "Crew Scheduling Department", "Crew Scheduling Notification", "rai@aerok.tech");
+                       email_status= mailHelper.SendEmail(email_body, "shahraeinisepehr@gmail.com", x.Name, "Crew Scheduling Department", "Crew Scheduling Notification", ConfigurationManager.AppSettings["smtp_address"]);
                         //using (var message = new MailMessage(fromAddress, new MailAddress(_man.Email, _man.Name))
                         //{
                         //    Subject = "Crew Scheduling Notification",

@@ -150,7 +150,7 @@ namespace ApiMSG.Controllers
             {
                 var context = new ppa_vareshEntities();
                 List<qa_notification_history> _result = new List<qa_notification_history>();
-                var url = "https://apiapsb.apvaresh.com/api/asr/view/abs/" + id;
+                var url = "https://fly.apiapsb.myaero.tech/api/asr/view/abs/" + id;
                 using (WebClient webClient = new WebClient())
                 {
                     webClient.Encoding = Encoding.UTF8;
@@ -169,7 +169,7 @@ namespace ApiMSG.Controllers
                     //prts.Add("Dear ");
                     prts.Add("Dear " + asr.PIC);
                     prts.Add("Please click on the below link to see details.");
-                    prts.Add("https://report.apvaresh.com/frmreportview.aspx?type=17&fid=" + asr.FlightId);
+                    prts.Add("https://fly.report.myaero.tech/frmreportview.aspx?type=17&fid=" + asr.FlightId);
                     prts.Add("Date: " + asr.FlightDate.ToString("yyyy-MM-dd"));
                     prts.Add("Route: " + asr.Route);
                     prts.Add("Register: " + asr.Register);
@@ -193,7 +193,7 @@ namespace ApiMSG.Controllers
                         prts2.Add("Dear " + rec.rec_name);
                         prts2.Add("Please click on the below link to see details.");
 
-                        prts2.Add("https://report.apvaresh.com/frmreportview.aspx?type=17&fid=" + asr.FlightId);
+                        prts2.Add("https://fly.report.myaero.tech/frmreportview.aspx?type=17&fid=" + asr.FlightId);
                         prts2.Add("Date: " + asr.FlightDate.ToString("yyyy-MM-dd"));
                         prts2.Add("Route: " + asr.Route);
                         prts2.Add("Register: EP-" + asr.Register);
@@ -213,7 +213,7 @@ namespace ApiMSG.Controllers
                         mail_parts.Add("<b>" + "Dear " + rec.rec_name + "</b><br/>");
                         mail_parts.Add("Please click on the below link to see details.");
 
-                        mail_parts.Add("https://report.apvaresh.com/frmreportview.aspx?type=17&fid=" + asr.FlightId + "<br/>");
+                        mail_parts.Add("https://fly.report.myaero.tech/frmreportview.aspx?type=17&fid=" + asr.FlightId + "<br/>");
                         mail_parts.Add("Date: " + "<b>" + asr.FlightDate.ToString("yyyy-MM-dd") + "</b><br/>");
                         mail_parts.Add("Route: " + "<b>" + asr.Route + "</b><br/>");
                         mail_parts.Add("Register: " + "<b>" + "EP-" + asr.Register + "</b><br/>");

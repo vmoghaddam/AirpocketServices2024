@@ -75,7 +75,7 @@ namespace XAPI.Controllers
             var _dt = dt.Date;
             var _de = _dt.AddDays(1);
             var query = from x in ctx.ViewLegTimes
-                        where x.STDLocal >= _dt && x.STDLocal < _de
+                        where x.STD >= _dt && x.STD < _de
                         select x;
 
             if (!string.IsNullOrEmpty(origin))

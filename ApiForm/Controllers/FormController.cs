@@ -337,18 +337,19 @@ namespace ApiForm.Controllers
 
                     if (cockpit_grps.Contains(applicant.JobGroup))
                     {
-                        switch (applicant.ValidTypes)
-                        {
-                            case "28":
-                                type = "Cockpit_737";
-                                break;
-                            case "21":
-                                type = "Cockpit_MD";
-                                break;
-                            case "25":
-                                type = "Cockpit_Airbus";
-                                break;
-                        }
+                        type = "Cockpit_737";
+                        //switch (applicant.ValidTypes)
+                        //{
+                        //    case "28":
+                        //        type = "Cockpit_737";
+                        //        break;
+                        //    case "21":
+                        //        type = "Cockpit_MD";
+                        //        break;
+                        //    case "25":
+                        //        type = "Cockpit_Airbus";
+                        //        break;
+                        //}
                     }
                     else if (cabin_grps.Contains(applicant.JobGroup))
                     {
