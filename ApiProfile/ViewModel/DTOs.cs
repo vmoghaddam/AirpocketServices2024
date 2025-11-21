@@ -492,6 +492,10 @@ namespace ApiProfile.ViewModels
         public Nullable<System.DateTime> TRG07AIssueDate { get; set; }
         public Nullable<System.DateTime> TRG07AExpireDate { get; set; }
 
+        //DISPATCH_MANUAL_FAM_ExpireDate
+        public Nullable<System.DateTime> DISPATCH_MANUAL_FAM_ExpireDate { get; set; }
+        public Nullable<System.DateTime> DISPATCH_MANUAL_FAM_IssueDate { get; set; }
+
         public string BaseAirline { get; set; }
 
         public Nullable<bool> IsType737 { get; set; }
@@ -1075,6 +1079,9 @@ namespace ApiProfile.ViewModels
             entity.TRG07AExpireDate = person.TRG07AExpireDate;
             entity.TRG07AIssueDate = person.TRG07AIssueDate;
 
+            entity.DISPATCH_MANUAL_FAM_ExpireDate = person.DISPATCH_MANUAL_FAM_ExpireDate;
+            entity.DISPATCH_MANUAL_FAM_IssueDate = person.DISPATCH_MANUAL_FAM_IssueDate;
+
 
             entity.Phase1IssueDate = person.Phase1IssueDate;
             entity.Phase1ExpireDate = person.Phase1ExpireDate;
@@ -1574,6 +1581,9 @@ namespace ApiProfile.ViewModels
             person.TRG16ExpireDate = entity.TRG16ExpireDate;
             person.TRG07AIssueDate = entity.TRG07AIssueDate;
             person.TRG07AExpireDate = entity.TRG07AExpireDate;
+
+            person.DISPATCH_MANUAL_FAM_IssueDate = entity.DISPATCH_MANUAL_FAM_IssueDate;
+            person.DISPATCH_MANUAL_FAM_ExpireDate = entity.DISPATCH_MANUAL_FAM_ExpireDate;
 
 
             person.Phase1IssueDate = entity.Phase1IssueDate;

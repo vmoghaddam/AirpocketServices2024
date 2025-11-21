@@ -183,6 +183,8 @@ namespace AirpocketTRN.Models
         public Nullable<int> Remain48 { get; set; }
         public Nullable<int> Remain49 { get; set; }
         public Nullable<int> Remain50 { get; set; }
+        public Nullable<int> Remain56 { get; set; }
+        public Nullable<int> Remain66 { get; set; }
         public Nullable<int> RemainRIGHT_SEAT_QUALIFICATION { get; set; }
         public Nullable<int> RemainELT { get; set; }
         public Nullable<int> RemainRVSM { get; set; }
@@ -205,6 +207,7 @@ namespace AirpocketTRN.Models
         public string UserId { get; set; }
         public Nullable<int> RemainTypeFoker50 { get; set; }
         public Nullable<int> RemainTypeFoker100 { get; set; }
+        public Nullable<int> RemainDisManual { get; set; }
         public string Reserved1 { get; set; }
         public string Reserved2 { get; set; }
         public string Reserved3 { get; set; }

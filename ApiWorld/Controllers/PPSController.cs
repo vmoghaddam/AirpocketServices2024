@@ -19,7 +19,7 @@ namespace ApiWorld.Controllers
                 pps.EfbService pps_ins = new pps.EfbService();
                 var session_id = pps_ins.GetSessionID("ArmeniaAirways", "J8V14HNHK", "AMWINTEGRATION", "i$qn719e");
                 var _flt = pps_ins.GetFlight(session_id, 9300840, false, false, false, false, "kg");
-                var flts = pps_ins.GetSTDFlightList(session_id, new DateTime(2025, 1, 27), new DateTime(2025, 10, 29));
+                var flts = pps_ins.GetSTDFlightList(session_id, new DateTime(2025, 11, 18), new DateTime(2025, 10, 19));
                 pps.Flight flt_info = pps_ins.GetFlight(session_id, flts.Items[0].ID, true, true, true, true, "kg");
                 var atc = pps_ins.GetATC(session_id, flts.Items[0].ID);
                 var apts = pps_ins.GetFlightAirports(session_id, flts.Items[0].ID);
