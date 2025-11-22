@@ -140,6 +140,11 @@
           <Property Name="SgnCPTLicNo" Type="varchar" MaxLength="500" />
           <Property Name="JLDSPSignDate" Type="datetime" />
           <Property Name="SGNDSPName" Type="varchar" MaxLength="500" />
+          <Property Name="ipad_no_1" Type="varchar" MaxLength="255" />
+          <Property Name="ipad_no_2" Type="varchar" MaxLength="255" />
+          <Property Name="ipad_no_3" Type="varchar" MaxLength="255" />
+          <Property Name="pb_1" Type="varchar" MaxLength="255" />
+          <Property Name="pb_2" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="FlightCard">
           <Key>
@@ -456,6 +461,14 @@
           <Property Name="AttForms" Type="varchar" MaxLength="500" />
           <Property Name="PaxMale" Type="int" />
           <Property Name="PaxFemale" Type="int" />
+          <Property Name="PF1Id" Type="int" />
+          <Property Name="PM1Id" Type="int" />
+          <Property Name="PF2Id" Type="int" />
+          <Property Name="PM2Id" Type="int" />
+          <Property Name="PF1Time" Type="int" />
+          <Property Name="PM1Time" Type="int" />
+          <Property Name="PF2Time" Type="int" />
+          <Property Name="PM2Time" Type="int" />
         </EntityType>
         <EntityType Name="load_sheet_raw">
           <Key>
@@ -996,6 +1009,55 @@
           <Property Name="UploadMessage" Type="varchar" MaxLength="2000" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.ViewBoardSummary' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ViewBoardSummary">
+          <Key>
+            <PropertyRef Name="Date" />
+            <PropertyRef Name="BlockTime" />
+            <PropertyRef Name="FlightTimeActual" />
+            <PropertyRef Name="FlightTime" />
+            <PropertyRef Name="FixTime" />
+            <PropertyRef Name="SITATime" />
+            <PropertyRef Name="Delay" />
+            <PropertyRef Name="Pax" />
+            <PropertyRef Name="PaxAdult" />
+            <PropertyRef Name="PaxChild" />
+            <PropertyRef Name="PaxInfant" />
+            <PropertyRef Name="PaxLoad" />
+            <PropertyRef Name="TotalSeat" />
+            <PropertyRef Name="BaggageWeight" />
+            <PropertyRef Name="CargoWeight" />
+            <PropertyRef Name="BaggageCount" />
+            <PropertyRef Name="CargoCount" />
+            <PropertyRef Name="FuelActual" />
+            <PropertyRef Name="FuelUplift" />
+          </Key>
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="TotalFlight" Type="int" />
+          <Property Name="Departed" Type="int" />
+          <Property Name="Arrived" Type="int" />
+          <Property Name="Diverted" Type="int" />
+          <Property Name="Canceled" Type="int" />
+          <Property Name="BlockTime" Type="int" Nullable="false" />
+          <Property Name="FlightTimeActual" Type="int" Nullable="false" />
+          <Property Name="FlightTime" Type="int" Nullable="false" />
+          <Property Name="FixTime" Type="int" Nullable="false" />
+          <Property Name="SITATime" Type="int" Nullable="false" />
+          <Property Name="Delay" Type="int" Nullable="false" />
+          <Property Name="Pax" Type="int" Nullable="false" />
+          <Property Name="PaxAdult" Type="int" Nullable="false" />
+          <Property Name="PaxChild" Type="int" Nullable="false" />
+          <Property Name="PaxInfant" Type="int" Nullable="false" />
+          <Property Name="PaxLoad" Type="numeric" Precision="38" Scale="12" Nullable="false" />
+          <Property Name="TotalSeat" Type="int" Nullable="false" />
+          <Property Name="BaggageWeight" Type="int" Nullable="false" />
+          <Property Name="CargoWeight" Type="int" Nullable="false" />
+          <Property Name="BaggageCount" Type="int" Nullable="false" />
+          <Property Name="CargoCount" Type="int" Nullable="false" />
+          <Property Name="FuelActual" Type="decimal" Precision="38" Scale="4" Nullable="false" />
+          <Property Name="FuelUplift" Type="decimal" Precision="38" Scale="4" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.ViewLegTime' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewLegTime">
           <Key>
@@ -1362,6 +1424,34 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
           <EntitySet Name="OFPImportProp" EntityType="Self.OFPImportProp" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OFPPoint" EntityType="Self.OFPPoint" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OFPSkyPuter" EntityType="Self.OFPSkyPuter" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ViewBoardSummary" EntityType="Self.ViewBoardSummary" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ViewBoardSummary].[Date] AS [Date], 
+    [ViewBoardSummary].[TotalFlight] AS [TotalFlight], 
+    [ViewBoardSummary].[Departed] AS [Departed], 
+    [ViewBoardSummary].[Arrived] AS [Arrived], 
+    [ViewBoardSummary].[Diverted] AS [Diverted], 
+    [ViewBoardSummary].[Canceled] AS [Canceled], 
+    [ViewBoardSummary].[BlockTime] AS [BlockTime], 
+    [ViewBoardSummary].[FlightTimeActual] AS [FlightTimeActual], 
+    [ViewBoardSummary].[FlightTime] AS [FlightTime], 
+    [ViewBoardSummary].[FixTime] AS [FixTime], 
+    [ViewBoardSummary].[SITATime] AS [SITATime], 
+    [ViewBoardSummary].[Delay] AS [Delay], 
+    [ViewBoardSummary].[Pax] AS [Pax], 
+    [ViewBoardSummary].[PaxAdult] AS [PaxAdult], 
+    [ViewBoardSummary].[PaxChild] AS [PaxChild], 
+    [ViewBoardSummary].[PaxInfant] AS [PaxInfant], 
+    [ViewBoardSummary].[PaxLoad] AS [PaxLoad], 
+    [ViewBoardSummary].[TotalSeat] AS [TotalSeat], 
+    [ViewBoardSummary].[BaggageWeight] AS [BaggageWeight], 
+    [ViewBoardSummary].[CargoWeight] AS [CargoWeight], 
+    [ViewBoardSummary].[BaggageCount] AS [BaggageCount], 
+    [ViewBoardSummary].[CargoCount] AS [CargoCount], 
+    [ViewBoardSummary].[FuelActual] AS [FuelActual], 
+    [ViewBoardSummary].[FuelUplift] AS [FuelUplift]
+    FROM [dbo].[ViewBoardSummary] AS [ViewBoardSummary]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="ViewLegTime" EntityType="Self.ViewLegTime" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [ViewLegTime].[ID] AS [ID], 
@@ -1782,6 +1872,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
             <End Role="OFPImport" EntitySet="OFPImports" />
             <End Role="OFPPoint" EntitySet="OFPPoints" />
           </AssociationSet>
+          <EntitySet Name="ViewBoardSummaries" EntityType="ppa_tabanModel.ViewBoardSummary" />
           </EntityContainer>
         <EntityType Name="OFPSkyPuter">
           <Key>
@@ -1935,6 +2026,11 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
           <Property Name="SgnCPTLicNo" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="JLDSPSignDate" Type="DateTime" Precision="3" />
           <Property Name="SGNDSPName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ipad_no_1" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ipad_no_2" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ipad_no_3" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="pb_1" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="pb_2" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="FlightCard">
           <Key>
@@ -2277,6 +2373,14 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
           <Property Name="PaxMale" Type="Int32" />
           <Property Name="PaxFemale" Type="Int32" />
           <NavigationProperty Name="OFPImports" Relationship="ppa_tabanModel.fk_ofp_flt" FromRole="FlightInformation" ToRole="OFPImport" />
+          <Property Name="PF1Id" Type="Int32" />
+          <Property Name="PM1Id" Type="Int32" />
+          <Property Name="PF2Id" Type="Int32" />
+          <Property Name="PM2Id" Type="Int32" />
+          <Property Name="PF1Time" Type="Int32" />
+          <Property Name="PM1Time" Type="Int32" />
+          <Property Name="PF2Time" Type="Int32" />
+          <Property Name="PM2Time" Type="Int32" />
         </EntityType>
         <Association Name="fk_EFB_FI">
           <End Type="ppa_tabanModel.FlightInformation" Role="FlightInformation" Multiplicity="0..1" />
@@ -3010,6 +3114,53 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ViewBoardSummary">
+          <Key>
+            <PropertyRef Name="Date" />
+            <PropertyRef Name="BlockTime" />
+            <PropertyRef Name="FlightTimeActual" />
+            <PropertyRef Name="FlightTime" />
+            <PropertyRef Name="FixTime" />
+            <PropertyRef Name="SITATime" />
+            <PropertyRef Name="Delay" />
+            <PropertyRef Name="Pax" />
+            <PropertyRef Name="PaxAdult" />
+            <PropertyRef Name="PaxChild" />
+            <PropertyRef Name="PaxInfant" />
+            <PropertyRef Name="PaxLoad" />
+            <PropertyRef Name="TotalSeat" />
+            <PropertyRef Name="BaggageWeight" />
+            <PropertyRef Name="CargoWeight" />
+            <PropertyRef Name="BaggageCount" />
+            <PropertyRef Name="CargoCount" />
+            <PropertyRef Name="FuelActual" />
+            <PropertyRef Name="FuelUplift" />
+          </Key>
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TotalFlight" Type="Int32" />
+          <Property Name="Departed" Type="Int32" />
+          <Property Name="Arrived" Type="Int32" />
+          <Property Name="Diverted" Type="Int32" />
+          <Property Name="Canceled" Type="Int32" />
+          <Property Name="BlockTime" Type="Int32" Nullable="false" />
+          <Property Name="FlightTimeActual" Type="Int32" Nullable="false" />
+          <Property Name="FlightTime" Type="Int32" Nullable="false" />
+          <Property Name="FixTime" Type="Int32" Nullable="false" />
+          <Property Name="SITATime" Type="Int32" Nullable="false" />
+          <Property Name="Delay" Type="Int32" Nullable="false" />
+          <Property Name="Pax" Type="Int32" Nullable="false" />
+          <Property Name="PaxAdult" Type="Int32" Nullable="false" />
+          <Property Name="PaxChild" Type="Int32" Nullable="false" />
+          <Property Name="PaxInfant" Type="Int32" Nullable="false" />
+          <Property Name="PaxLoad" Type="Decimal" Nullable="false" Precision="38" Scale="12" />
+          <Property Name="TotalSeat" Type="Int32" Nullable="false" />
+          <Property Name="BaggageWeight" Type="Int32" Nullable="false" />
+          <Property Name="CargoWeight" Type="Int32" Nullable="false" />
+          <Property Name="BaggageCount" Type="Int32" Nullable="false" />
+          <Property Name="CargoCount" Type="Int32" Nullable="false" />
+          <Property Name="FuelActual" Type="Decimal" Nullable="false" Precision="38" Scale="4" />
+          <Property Name="FuelUplift" Type="Decimal" Nullable="false" Precision="38" Scale="4" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3163,6 +3314,11 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
           <EntitySetMapping Name="EFBDSPReleases">
             <EntityTypeMapping TypeName="ppa_tabanModel.EFBDSPRelease">
               <MappingFragment StoreEntitySet="EFBDSPRelease">
+                <ScalarProperty Name="pb_2" ColumnName="pb_2" />
+                <ScalarProperty Name="pb_1" ColumnName="pb_1" />
+                <ScalarProperty Name="ipad_no_3" ColumnName="ipad_no_3" />
+                <ScalarProperty Name="ipad_no_2" ColumnName="ipad_no_2" />
+                <ScalarProperty Name="ipad_no_1" ColumnName="ipad_no_1" />
                 <ScalarProperty Name="SGNDSPName" ColumnName="SGNDSPName" />
                 <ScalarProperty Name="JLDSPSignDate" ColumnName="JLDSPSignDate" />
                 <ScalarProperty Name="SgnCPTLicNo" ColumnName="SgnCPTLicNo" />
@@ -3337,6 +3493,14 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
           <EntitySetMapping Name="FlightInformations">
             <EntityTypeMapping TypeName="ppa_tabanModel.FlightInformation">
               <MappingFragment StoreEntitySet="FlightInformation">
+                <ScalarProperty Name="PM2Time" ColumnName="PM2Time" />
+                <ScalarProperty Name="PF2Time" ColumnName="PF2Time" />
+                <ScalarProperty Name="PM1Time" ColumnName="PM1Time" />
+                <ScalarProperty Name="PF1Time" ColumnName="PF1Time" />
+                <ScalarProperty Name="PM2Id" ColumnName="PM2Id" />
+                <ScalarProperty Name="PF2Id" ColumnName="PF2Id" />
+                <ScalarProperty Name="PM1Id" ColumnName="PM1Id" />
+                <ScalarProperty Name="PF1Id" ColumnName="PF1Id" />
                 <ScalarProperty Name="PaxFemale" ColumnName="PaxFemale" />
                 <ScalarProperty Name="PaxMale" ColumnName="PaxMale" />
                 <ScalarProperty Name="AttForms" ColumnName="AttForms" />
@@ -4182,6 +4346,36 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
                 <ScalarProperty Name="FlightNo" ColumnName="FlightNo" />
                 <ScalarProperty Name="FileName" ColumnName="FileName" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ViewBoardSummaries">
+            <EntityTypeMapping TypeName="ppa_tabanModel.ViewBoardSummary">
+              <MappingFragment StoreEntitySet="ViewBoardSummary">
+                <ScalarProperty Name="FuelUplift" ColumnName="FuelUplift" />
+                <ScalarProperty Name="FuelActual" ColumnName="FuelActual" />
+                <ScalarProperty Name="CargoCount" ColumnName="CargoCount" />
+                <ScalarProperty Name="BaggageCount" ColumnName="BaggageCount" />
+                <ScalarProperty Name="CargoWeight" ColumnName="CargoWeight" />
+                <ScalarProperty Name="BaggageWeight" ColumnName="BaggageWeight" />
+                <ScalarProperty Name="TotalSeat" ColumnName="TotalSeat" />
+                <ScalarProperty Name="PaxLoad" ColumnName="PaxLoad" />
+                <ScalarProperty Name="PaxInfant" ColumnName="PaxInfant" />
+                <ScalarProperty Name="PaxChild" ColumnName="PaxChild" />
+                <ScalarProperty Name="PaxAdult" ColumnName="PaxAdult" />
+                <ScalarProperty Name="Pax" ColumnName="Pax" />
+                <ScalarProperty Name="Delay" ColumnName="Delay" />
+                <ScalarProperty Name="SITATime" ColumnName="SITATime" />
+                <ScalarProperty Name="FixTime" ColumnName="FixTime" />
+                <ScalarProperty Name="FlightTime" ColumnName="FlightTime" />
+                <ScalarProperty Name="FlightTimeActual" ColumnName="FlightTimeActual" />
+                <ScalarProperty Name="BlockTime" ColumnName="BlockTime" />
+                <ScalarProperty Name="Canceled" ColumnName="Canceled" />
+                <ScalarProperty Name="Diverted" ColumnName="Diverted" />
+                <ScalarProperty Name="Arrived" ColumnName="Arrived" />
+                <ScalarProperty Name="Departed" ColumnName="Departed" />
+                <ScalarProperty Name="TotalFlight" ColumnName="TotalFlight" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

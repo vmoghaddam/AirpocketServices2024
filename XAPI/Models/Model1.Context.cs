@@ -44,5 +44,6 @@ namespace XAPI.Models
         public virtual DbSet<OFPB_MainNavLog> OFPB_MainNavLog { get; set; }
         public virtual DbSet<load_sheet_raw> load_sheet_raw { get; set; }
         public virtual DbSet<OFPImport> OFPImports { get; set; }
+        public virtual DbSet<ViewBoardSummary> ViewBoardSummaries { get; set; }
     }
 }

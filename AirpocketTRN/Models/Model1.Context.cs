@@ -173,5 +173,7 @@ namespace AirpocketTRN.Models
         public virtual DbSet<trn_question_category> trn_question_category { get; set; }
         public virtual DbSet<course_external> course_external { get; set; }
         public virtual DbSet<ViewProfile> ViewProfiles { get; set; }
+        public virtual DbSet<coursetype_profile> coursetype_profile { get; set; }
+        public virtual DbSet<view_coursetype_profile> view_coursetype_profile { get; set; }
     }
 }

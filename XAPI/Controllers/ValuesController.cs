@@ -75,7 +75,7 @@ namespace XAPI.Controllers
             var _dt = dt.Date;
             var _de = _dt.AddDays(1);
             var query = from x in ctx.ViewLegTimes
-                        where x.STD >= _dt && x.STD < _de
+                        where x.STDLocal >= _dt && x.STDLocal < _de
                         select x;
 
             if (!string.IsNullOrEmpty(origin))
@@ -87,7 +87,7 @@ namespace XAPI.Controllers
             if (!string.IsNullOrEmpty(no))
                 query = query.Where(q => q.FlightNumber == no);
 
-            var result = query.ToList().OrderBy(q => q.STD).Select(q => new
+            var result = query.ToList().OrderBy(q=>q.Register).ThenBy(q => q.STD).Select(q => new
             {
                 FlightId = q.ID,
                 Date = ((DateTime)q.STDLocal).Date,
@@ -116,7 +116,74 @@ namespace XAPI.Controllers
             return Ok(result);
 
         }
+        private string FormatTwoDigits(Int32 i)
+        {
+            string functionReturnValue = null;
+            if (10 > i)
+            {
+                functionReturnValue = "0" + i.ToString();
+            }
+            else
+            {
+                functionReturnValue = i.ToString();
+            }
+            return functionReturnValue;
+        }
+        [Route("api/board/summary/{year}/{month}/{day}")]
+        [AcceptVerbs("POST", "GET")]
+        public IHttpActionResult GetBoardSummary(int cid, int year, int month, int day)
+        {
+            var context = new PPAEntities();
+            var date = new DateTime(year, month, day);
 
+            var summary =   context.ViewBoardSummaries.Where(q => q.Date == date).FirstOrDefault ();
+            if (summary == null)
+                return null;
+            double? delayRatio = null;
+            if (summary.BlockTime != 0)
+                delayRatio = Math.Round(summary.Delay * 1.0 / summary.BlockTime, 1, MidpointRounding.AwayFromZero) * 100;
+            double? cargoPerPax = null;
+            if (summary.Pax != 0)
+                cargoPerPax = Math.Round(summary.BaggageWeight * 1.0 / summary.Pax, 1, MidpointRounding.AwayFromZero);
+            double? paxLoad = null;
+            if (summary.TotalSeat != 0)
+                paxLoad = Math.Round(summary.Pax * 1.0 / summary.TotalSeat, 1, MidpointRounding.AwayFromZero) * 100;
+            var Hour = summary.Delay / 60;
+            var Minute = summary.Delay % 60;
+            var delayStr = FormatTwoDigits(Hour) + ":" + FormatTwoDigits(Minute);
+
+            Hour = summary.BlockTime / 60;
+            Minute = summary.BlockTime % 60;
+            var blockTimeStr = FormatTwoDigits(Hour) + ":" + FormatTwoDigits(Minute);
+
+            if (summary.Canceled != null && summary.TotalFlight != null)
+                summary.TotalFlight = (int)summary.TotalFlight - (int)summary.Canceled;
+
+            var result = new
+            {
+                summary.Arrived,
+                summary.Departed,
+                summary.TotalFlight,
+                summary.BaggageWeight,
+                summary.BlockTime,
+                summary.Canceled,
+                summary.Date,
+                summary.Delay,
+                summary.Diverted,
+                FuelActual = Math.Round(summary.FuelActual / 1000, 2),
+                summary.Pax,
+                summary.TotalSeat,
+                CargoPerPax = cargoPerPax,
+                DelayRatio = delayRatio,
+                PaxLoad = paxLoad,
+                DelayStr = delayStr,
+                BlockTimeStr = blockTimeStr,
+
+            };
+
+
+            return Ok(result);
+        }
 
         public class fltQry
         {

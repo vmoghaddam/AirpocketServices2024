@@ -35,6 +35,21 @@ namespace AirpocketTRN.Controllers
             }
         }
 
+
+
+        [Route("api/files/get/{nid}")]
+        [AcceptVerbs("Get")]
+
+        public async Task<IHttpActionResult> get_person_folder(string nid)
+        {
+            var context = new FLYEntities();
+            var result = context.view_person_folder.Where(q => q.nid == nid).ToList();
+            return Ok(result);
+        }
+
+
+
+
         [Route("api/files/get/{nid}")]
         [AcceptVerbs("Get")]
 
