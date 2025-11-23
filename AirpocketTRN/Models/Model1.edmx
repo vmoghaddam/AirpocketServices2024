@@ -322,6 +322,16 @@
           <Property Name="IsMonitoringEnabled" Type="bit" />
           <Property Name="Abbreviation" Type="varchar" MaxLength="255" />
         </EntityType>
+        <EntityType Name="coursetype_profile">
+          <Key>
+            <PropertyRef Name="course_type_id" />
+            <PropertyRef Name="profile_group" />
+          </Key>
+          <Property Name="course_type_id" Type="int" Nullable="false" />
+          <Property Name="profile_group" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="show_in_profile" Type="bit" />
+          <Property Name="show_in_list" Type="bit" />
+        </EntityType>
         <EntityType Name="CourseTypeApplicable">
           <Key>
             <PropertyRef Name="Id" />
@@ -1759,6 +1769,8 @@ warning 6002: The table/view 'ppa_varesh.dbo._view_trncard' does not have a prim
             <PropertyRef Name="jobgroup_root" />
             <PropertyRef Name="column_name" />
             <PropertyRef Name="trncard_title" />
+            <PropertyRef Name="Status" />
+            <PropertyRef Name="StatusId" />
           </Key>
           <Property Name="profile_id" Type="int" Nullable="false" />
           <Property Name="name" Type="nvarchar" MaxLength="1003" Nullable="false" />
@@ -1780,6 +1792,8 @@ warning 6002: The table/view 'ppa_varesh.dbo._view_trncard' does not have a prim
           <Property Name="ExpireDate" Type="datetime2" Precision="7" />
           <Property Name="interval_month" Type="int" />
           <Property Name="Remain" Type="int" />
+          <Property Name="Status" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="StatusId" Type="int" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.AppCertificate' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -2002,6 +2016,24 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_course_type_subject' does not 
           <Property Name="title" Type="nvarchar" MaxLength="500" />
           <Property Name="interval" Type="int" />
           <Property Name="duration" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.view_coursetype_profile' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_coursetype_profile">
+          <Key>
+            <PropertyRef Name="course_type_id" />
+            <PropertyRef Name="profile_group" />
+          </Key>
+          <Property Name="course_type_id" Type="int" Nullable="false" />
+          <Property Name="profile_group" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="show_in_profile" Type="bit" />
+          <Property Name="show_in_list" Type="bit" />
+          <Property Name="course_type" Type="nvarchar" MaxLength="500" />
+          <Property Name="duration" Type="int" />
+          <Property Name="interval" Type="int" />
+          <Property Name="duration_initial" Type="int" />
+          <Property Name="issue_field" Type="varchar" MaxLength="500" />
+          <Property Name="expire_field" Type="varchar" MaxLength="500" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.view_person_folder' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -2801,6 +2833,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewCertificateHistoryRanked' does 
             <PropertyRef Name="L3Title" />
             <PropertyRef Name="L4Title" />
             <PropertyRef Name="L5Title" />
+            <PropertyRef Name="Status" />
+            <PropertyRef Name="StatusId" />
             <PropertyRef Name="IsValid" />
             <PropertyRef Name="IsExpiring" />
             <PropertyRef Name="IsExpired" />
@@ -2833,7 +2867,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewCertificateHistoryRanked' does 
           <Property Name="JobGroupId" Type="int" />
           <Property Name="JobGroupParentId" Type="int" />
           <Property Name="JobGroupCode" Type="varchar" MaxLength="500" />
-          <Property Name="JobGroupRoot" Type="varchar" MaxLength="7" />
+          <Property Name="JobGroupRoot" Type="nvarchar" MaxLength="500" />
           <Property Name="JobGroupCode2" Type="varchar" MaxLength="500" />
           <Property Name="JobGroupMainCode" Type="varchar" MaxLength="500" />
           <Property Name="JobGroupMain" Type="nvarchar" MaxLength="500" />
@@ -2855,6 +2889,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewCertificateHistoryRanked' does 
           <Property Name="L5Title" Type="varchar" MaxLength="1" Nullable="false" />
           <Property Name="RankOrder" Type="bigint" />
           <Property Name="ExpiringStatusId" Type="int" />
+          <Property Name="Status" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="StatusId" Type="int" Nullable="false" />
           <Property Name="IsValid" Type="int" Nullable="false" />
           <Property Name="IsExpiring" Type="int" Nullable="false" />
           <Property Name="IsExpired" Type="int" Nullable="false" />
@@ -5817,6 +5853,20 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_pct_ct">
+          <End Role="CourseType" Type="Self.CourseType" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="coursetype_profile" Type="Self.coursetype_profile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CourseType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="coursetype_profile">
+              <PropertyRef Name="course_type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_pexam_main">
           <End Role="trn_exam" Type="Self.trn_exam" Multiplicity="0..1" />
           <End Role="trn_person_exam" Type="Self.trn_person_exam" Multiplicity="*" />
@@ -6022,6 +6072,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <EntitySet Name="CourseSMSHistory" EntityType="Self.CourseSMSHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CourseSyllabus" EntityType="Self.CourseSyllabus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CourseType" EntityType="Self.CourseType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="coursetype_profile" EntityType="Self.coursetype_profile" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CourseTypeApplicable" EntityType="Self.CourseTypeApplicable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CourseTypeJobGroup" EntityType="Self.CourseTypeJobGroup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Document" EntityType="Self.Document" Schema="dbo" store:Type="Tables" />
@@ -6101,7 +6152,9 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
     [_view_trncard].[IssueDate] AS [IssueDate], 
     [_view_trncard].[ExpireDate] AS [ExpireDate], 
     [_view_trncard].[interval_month] AS [interval_month], 
-    [_view_trncard].[Remain] AS [Remain]
+    [_view_trncard].[Remain] AS [Remain], 
+    [_view_trncard].[Status] AS [Status], 
+    [_view_trncard].[StatusId] AS [StatusId]
     FROM [dbo].[_view_trncard] AS [_view_trncard]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="AppCertificate" EntityType="Self.AppCertificate" store:Type="Views" store:Schema="dbo">
@@ -6270,6 +6323,20 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
     [view_course_type_subject].[interval] AS [interval], 
     [view_course_type_subject].[duration] AS [duration]
     FROM [dbo].[view_course_type_subject] AS [view_course_type_subject]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="view_coursetype_profile" EntityType="Self.view_coursetype_profile" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_coursetype_profile].[course_type_id] AS [course_type_id], 
+    [view_coursetype_profile].[profile_group] AS [profile_group], 
+    [view_coursetype_profile].[show_in_profile] AS [show_in_profile], 
+    [view_coursetype_profile].[show_in_list] AS [show_in_list], 
+    [view_coursetype_profile].[course_type] AS [course_type], 
+    [view_coursetype_profile].[duration] AS [duration], 
+    [view_coursetype_profile].[interval] AS [interval], 
+    [view_coursetype_profile].[duration_initial] AS [duration_initial], 
+    [view_coursetype_profile].[issue_field] AS [issue_field], 
+    [view_coursetype_profile].[expire_field] AS [expire_field]
+    FROM [dbo].[view_coursetype_profile] AS [view_coursetype_profile]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="view_person_folder" EntityType="Self.view_person_folder" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -6906,6 +6973,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
     [ViewCertificateHistoryRanked].[L5Title] AS [L5Title], 
     [ViewCertificateHistoryRanked].[RankOrder] AS [RankOrder], 
     [ViewCertificateHistoryRanked].[ExpiringStatusId] AS [ExpiringStatusId], 
+    [ViewCertificateHistoryRanked].[Status] AS [Status], 
+    [ViewCertificateHistoryRanked].[StatusId] AS [StatusId], 
     [ViewCertificateHistoryRanked].[IsValid] AS [IsValid], 
     [ViewCertificateHistoryRanked].[IsExpiring] AS [IsExpiring], 
     [ViewCertificateHistoryRanked].[IsExpired] AS [IsExpired], 
@@ -9002,6 +9071,10 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
             <End Role="Manager" EntitySet="Manager" />
             <End Role="ManagerGroup" EntitySet="ManagerGroup" />
           </AssociationSet>
+          <AssociationSet Name="fk_pct_ct" Association="Self.fk_pct_ct">
+            <End Role="CourseType" EntitySet="CourseType" />
+            <End Role="coursetype_profile" EntitySet="coursetype_profile" />
+          </AssociationSet>
           <AssociationSet Name="fk_pexam_main" Association="Self.fk_pexam_main">
             <End Role="trn_exam" EntitySet="trn_exam" />
             <End Role="trn_person_exam" EntitySet="trn_person_exam" />
@@ -9496,6 +9569,12 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
             <End Role="course_external" EntitySet="course_external" />
           </AssociationSet>
           <EntitySet Name="ViewProfiles" EntityType="FLYModel.ViewProfile" />
+          <EntitySet Name="coursetype_profile" EntityType="FLYModel.coursetype_profile" />
+          <EntitySet Name="view_coursetype_profile" EntityType="FLYModel.view_coursetype_profile" />
+          <AssociationSet Name="fk_pct_ct" Association="FLYModel.fk_pct_ct">
+            <End Role="CourseType" EntitySet="CourseTypes" />
+            <End Role="coursetype_profile" EntitySet="coursetype_profile" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="ExpFlight">
           <Key>
@@ -10595,6 +10674,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
             <PropertyRef Name="IsExpiring" />
             <PropertyRef Name="IsExpired" />
             <PropertyRef Name="IsCritical" />
+            <PropertyRef Name="Status" />
+            <PropertyRef Name="StatusId" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
           <Property Name="DateCreate" Type="DateTime" Precision="3" />
@@ -10623,7 +10704,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <Property Name="JobGroupId" Type="Int32" />
           <Property Name="JobGroupParentId" Type="Int32" />
           <Property Name="JobGroupCode" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="JobGroupRoot" Type="String" MaxLength="7" FixedLength="false" Unicode="false" />
+          <Property Name="JobGroupRoot" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="JobGroupCode2" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="JobGroupMainCode" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="JobGroupMain" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
@@ -10649,6 +10730,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <Property Name="IsExpiring" Type="Int32" Nullable="false" />
           <Property Name="IsExpired" Type="Int32" Nullable="false" />
           <Property Name="IsCritical" Type="Int32" Nullable="false" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="StatusId" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Manager">
           <Key>
@@ -13623,6 +13706,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
             <PropertyRef Name="jobgroup_root" />
             <PropertyRef Name="column_name" />
             <PropertyRef Name="trncard_title" />
+            <PropertyRef Name="Status" />
+            <PropertyRef Name="StatusId" />
           </Key>
           <Property Name="profile_id" Type="Int32" Nullable="false" />
           <Property Name="name" Type="String" Nullable="false" MaxLength="1003" FixedLength="false" Unicode="true" />
@@ -13644,6 +13729,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <Property Name="ExpireDate" Type="DateTime" Precision="7" />
           <Property Name="interval_month" Type="Int32" />
           <Property Name="Remain" Type="Int32" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="StatusId" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="FDP">
           <Key>
@@ -14617,6 +14704,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <NavigationProperty Name="course_type_subject" Relationship="FLYModel.fk_sub_ct" FromRole="CourseType" ToRole="course_type_subject" />
           <NavigationProperty Name="Courses" Relationship="FLYModel.FK_Course_Type" FromRole="CourseType" ToRole="Course" />
           <NavigationProperty Name="course_external" Relationship="FLYModel.fk_exc_ct" FromRole="CourseType" ToRole="course_external" />
+          <NavigationProperty Name="coursetype_profile" Relationship="FLYModel.fk_pct_ct" FromRole="CourseType" ToRole="coursetype_profile" />
         </EntityType>
         <Association Name="fk_cty_certy">
           <End Type="FLYModel.CertificateType" Role="CertificateType" Multiplicity="0..1" />
@@ -15505,6 +15593,47 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <Property Name="RemainTRG07A" Type="Int32" />
           <Property Name="ImageUrl" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="coursetype_profile">
+          <Key>
+            <PropertyRef Name="course_type_id" />
+            <PropertyRef Name="profile_group" />
+          </Key>
+          <Property Name="course_type_id" Type="Int32" Nullable="false" />
+          <Property Name="profile_group" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="show_in_profile" Type="Boolean" />
+          <Property Name="show_in_list" Type="Boolean" />
+          <NavigationProperty Name="CourseType" Relationship="FLYModel.fk_pct_ct" FromRole="coursetype_profile" ToRole="CourseType" />
+        </EntityType>
+        <EntityType Name="view_coursetype_profile">
+          <Key>
+            <PropertyRef Name="course_type_id" />
+            <PropertyRef Name="profile_group" />
+          </Key>
+          <Property Name="course_type_id" Type="Int32" Nullable="false" />
+          <Property Name="profile_group" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="show_in_profile" Type="Boolean" />
+          <Property Name="show_in_list" Type="Boolean" />
+          <Property Name="course_type" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="duration" Type="Int32" />
+          <Property Name="interval" Type="Int32" />
+          <Property Name="duration_initial" Type="Int32" />
+          <Property Name="issue_field" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="expire_field" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="fk_pct_ct">
+          <End Type="FLYModel.CourseType" Role="CourseType" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="FLYModel.coursetype_profile" Role="coursetype_profile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CourseType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="coursetype_profile">
+              <PropertyRef Name="course_type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -16404,6 +16533,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <EntitySetMapping Name="ViewCertificateHistoryRankeds">
             <EntityTypeMapping TypeName="FLYModel.ViewCertificateHistoryRanked">
               <MappingFragment StoreEntitySet="ViewCertificateHistoryRanked">
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="IsCritical" ColumnName="IsCritical" />
                 <ScalarProperty Name="IsExpired" ColumnName="IsExpired" />
                 <ScalarProperty Name="IsExpiring" ColumnName="IsExpiring" />
@@ -18762,6 +18893,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <EntitySetMapping Name="C_view_trncard">
             <EntityTypeMapping TypeName="FLYModel.C_view_trncard">
               <MappingFragment StoreEntitySet="_view_trncard">
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="Remain" ColumnName="Remain" />
                 <ScalarProperty Name="interval_month" ColumnName="interval_month" />
                 <ScalarProperty Name="ExpireDate" ColumnName="ExpireDate" />
@@ -20163,6 +20296,32 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="PID" ColumnName="PID" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="coursetype_profile">
+            <EntityTypeMapping TypeName="FLYModel.coursetype_profile">
+              <MappingFragment StoreEntitySet="coursetype_profile">
+                <ScalarProperty Name="show_in_list" ColumnName="show_in_list" />
+                <ScalarProperty Name="show_in_profile" ColumnName="show_in_profile" />
+                <ScalarProperty Name="profile_group" ColumnName="profile_group" />
+                <ScalarProperty Name="course_type_id" ColumnName="course_type_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_coursetype_profile">
+            <EntityTypeMapping TypeName="FLYModel.view_coursetype_profile">
+              <MappingFragment StoreEntitySet="view_coursetype_profile">
+                <ScalarProperty Name="expire_field" ColumnName="expire_field" />
+                <ScalarProperty Name="issue_field" ColumnName="issue_field" />
+                <ScalarProperty Name="duration_initial" ColumnName="duration_initial" />
+                <ScalarProperty Name="interval" ColumnName="interval" />
+                <ScalarProperty Name="duration" ColumnName="duration" />
+                <ScalarProperty Name="course_type" ColumnName="course_type" />
+                <ScalarProperty Name="show_in_list" ColumnName="show_in_list" />
+                <ScalarProperty Name="show_in_profile" ColumnName="show_in_profile" />
+                <ScalarProperty Name="profile_group" ColumnName="profile_group" />
+                <ScalarProperty Name="course_type_id" ColumnName="course_type_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

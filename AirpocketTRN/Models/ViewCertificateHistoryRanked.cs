@@ -67,5 +67,7 @@ namespace AirpocketTRN.Models
         public int IsExpiring { get; set; }
         public int IsExpired { get; set; }
         public int IsCritical { get; set; }
+        public string Status { get; set; }
+        public int StatusId { get; set; }
     }
 }

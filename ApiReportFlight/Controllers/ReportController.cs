@@ -2842,7 +2842,7 @@ namespace ApiReportFlight.Controllers
             }
 
             // ذخیره در فایل
-            File.WriteAllText(filePath, sb.ToString(), Encoding.UTF8);
+           // File.WriteAllText(filePath, sb.ToString(), Encoding.UTF8);
         }
 
         // توابع برای ایمن‌سازی داده‌های CSV (مثل قرار دادن رشته‌هایی که شامل کاما یا نقل‌قول هستند داخل "...")
@@ -3173,7 +3173,7 @@ namespace ApiReportFlight.Controllers
             {
                 ((DataColumn)c).ColumnName = ((DataColumn)c).ColumnName.Replace(" ", "\r\n");
             }
-            ExportDataTableToCsv(table_md, @"C:\Users\SEPEHR\source\repos\AirpocketServices2024\ApiReportFlight\bin\output.csv");
+           // ExportDataTableToCsv(table_md, @"C:\Users\SEPEHR\source\repos\AirpocketServices2024\ApiReportFlight\bin\output.csv");
             return Ok(table_md);
 
 
