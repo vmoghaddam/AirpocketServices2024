@@ -50,13 +50,13 @@ namespace AirpocketTRN.Controllers
 
 
 
-        [Route("api/files/get/{nid}")]
+        [Route("api/profile/config")]
         [AcceptVerbs("Get")]
 
-        public async Task<IHttpActionResult> get_person_folder(string nid)
+        public async Task<IHttpActionResult> get_profile_config()
         {
             var context = new FLYEntities();
-            var result=context.view_person_folder.Where(q=>q.nid== nid).ToList();
+            var result=context.view_coursetype_profile.ToList();
             return Ok(result);
         }
         [Route("api/files/test")]
