@@ -19,5 +19,10 @@ namespace XAPI.Models
         public Nullable<System.DateTime> date_create { get; set; }
         public string content { get; set; }
         public string remark { get; set; }
+        public Nullable<int> flight_id { get; set; }
+        public Nullable<int> signed_by_id { get; set; }
+        public Nullable<System.DateTime> date_sign { get; set; }
+        public string pic { get; set; }
+        public string lic_no { get; set; }
     }
 }
