@@ -18,6 +18,7 @@ namespace AirpocketTRN.Models
         public string profile_group { get; set; }
         public Nullable<bool> show_in_profile { get; set; }
         public Nullable<bool> show_in_list { get; set; }
+        public string abbreviation { get; set; }
     
         public virtual CourseType CourseType { get; set; }
     }

@@ -24,5 +24,7 @@ namespace AirpocketTRN.Models
         public Nullable<int> duration_initial { get; set; }
         public string issue_field { get; set; }
         public string expire_field { get; set; }
+        public string remaining_field { get; set; }
+        public string abbreviation { get; set; }
     }
 }

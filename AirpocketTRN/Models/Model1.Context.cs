@@ -34,7 +34,6 @@ namespace AirpocketTRN.Models
         public virtual DbSet<ViewCourseType> ViewCourseTypes { get; set; }
         public virtual DbSet<SumMandatoryCourseExpired> SumMandatoryCourseExpireds { get; set; }
         public virtual DbSet<ViewEmployeeTraining> ViewEmployeeTrainings { get; set; }
-        public virtual DbSet<ViewJobGroupMain> ViewJobGroupMains { get; set; }
         public virtual DbSet<GRPCourseTypeExpiring> GRPCourseTypeExpirings { get; set; }
         public virtual DbSet<GRPCourseTypeExpiringMainGroup> GRPCourseTypeExpiringMainGroups { get; set; }
         public virtual DbSet<GRPGroupsCourseTypeExpiring> GRPGroupsCourseTypeExpirings { get; set; }
@@ -47,7 +46,6 @@ namespace AirpocketTRN.Models
         public virtual DbSet<CourseSessionPresenceDetail> CourseSessionPresenceDetails { get; set; }
         public virtual DbSet<ViewCourseSessionPresenceDetail> ViewCourseSessionPresenceDetails { get; set; }
         public virtual DbSet<CourseSMSHistory> CourseSMSHistories { get; set; }
-        public virtual DbSet<ViewCoursePeoplePassedRanked> ViewCoursePeoplePassedRankeds { get; set; }
         public virtual DbSet<TeacherDocument> TeacherDocuments { get; set; }
         public virtual DbSet<ViewTeacherDocument> ViewTeacherDocuments { get; set; }
         public virtual DbSet<ViewPersonDocumentFileX> ViewPersonDocumentFileXes { get; set; }
@@ -143,7 +141,6 @@ namespace AirpocketTRN.Models
         public virtual DbSet<CourseSessionFDP> CourseSessionFDPs { get; set; }
         public virtual DbSet<CourseSessionFDPItem> CourseSessionFDPItems { get; set; }
         public virtual DbSet<ViewTeacherCourse> ViewTeacherCourses { get; set; }
-        public virtual DbSet<ViewCoursePeople> ViewCoursePeoples { get; set; }
         public virtual DbSet<ViewSyllabu> ViewSyllabus { get; set; }
         public virtual DbSet<CourseSyllabu> CourseSyllabus { get; set; }
         public virtual DbSet<ViewCourseNewAll> ViewCourseNewAlls { get; set; }
@@ -152,15 +149,8 @@ namespace AirpocketTRN.Models
         public virtual DbSet<person_folder> person_folder { get; set; }
         public virtual DbSet<view_person_folder> view_person_folder { get; set; }
         public virtual DbSet<view_person_folder_p1> view_person_folder_p1 { get; set; }
-        public virtual DbSet<C_view_trncard> C_view_trncard { get; set; }
-        public virtual DbSet<FDP> FDPs { get; set; }
         public virtual DbSet<FDPItem> FDPItems { get; set; }
-        public virtual DbSet<ViewLegTime> ViewLegTimes { get; set; }
         public virtual DbSet<GRPCourseTypeExpiringGroup> GRPCourseTypeExpiringGroups { get; set; }
-        public virtual DbSet<ViewEmployeeLight> ViewEmployeeLights { get; set; }
-        public virtual DbSet<ViewFDPRest> ViewFDPRests { get; set; }
-        public virtual DbSet<ViewEmployee> ViewEmployees { get; set; }
-        public virtual DbSet<CourseType> CourseTypes { get; set; }
         public virtual DbSet<CertificateHistory> CertificateHistories { get; set; }
         public virtual DbSet<view_trn_certificate_history> view_trn_certificate_history { get; set; }
         public virtual DbSet<CourseTypeJobGroup> CourseTypeJobGroups { get; set; }
@@ -168,12 +158,22 @@ namespace AirpocketTRN.Models
         public virtual DbSet<view_trn_certificate_history_last> view_trn_certificate_history_last { get; set; }
         public virtual DbSet<course_type_subject> course_type_subject { get; set; }
         public virtual DbSet<view_course_type_subject> view_course_type_subject { get; set; }
-        public virtual DbSet<Course> Courses { get; set; }
-        public virtual DbSet<ViewCourseNew> ViewCourseNews { get; set; }
         public virtual DbSet<trn_question_category> trn_question_category { get; set; }
         public virtual DbSet<course_external> course_external { get; set; }
-        public virtual DbSet<ViewProfile> ViewProfiles { get; set; }
         public virtual DbSet<coursetype_profile> coursetype_profile { get; set; }
         public virtual DbSet<view_coursetype_profile> view_coursetype_profile { get; set; }
+        public virtual DbSet<FDP> FDPs { get; set; }
+        public virtual DbSet<ViewFDPRest> ViewFDPRests { get; set; }
+        public virtual DbSet<ViewJobGroupMain> ViewJobGroupMains { get; set; }
+        public virtual DbSet<ViewCoursePeoplePassedRanked> ViewCoursePeoplePassedRankeds { get; set; }
+        public virtual DbSet<ViewCoursePeople> ViewCoursePeoples { get; set; }
+        public virtual DbSet<ViewLegTime> ViewLegTimes { get; set; }
+        public virtual DbSet<ViewEmployeeLight> ViewEmployeeLights { get; set; }
+        public virtual DbSet<ViewEmployee> ViewEmployees { get; set; }
+        public virtual DbSet<CourseType> CourseTypes { get; set; }
+        public virtual DbSet<Course> Courses { get; set; }
+        public virtual DbSet<ViewCourseNew> ViewCourseNews { get; set; }
+        public virtual DbSet<ViewProfile> ViewProfiles { get; set; }
+        public virtual DbSet<C_view_trncard> C_view_trncard { get; set; }
     }
 }

@@ -336,7 +336,7 @@ namespace ApiSand.Controllers
                 // ساب‌فولدرهای سطح دوم (مسیر کامل)
                 foreach (var level2Path in Directory.EnumerateDirectories(level1Path, "*", SearchOption.TopDirectoryOnly))
                 {
-                   // Console.WriteLine($"  [L2] {level2Path}");
+                    // Console.WriteLine($"  [L2] {level2Path}");
                     string level2Name = Path.GetFileName(level2Path);
                     var ava_sub = new ava_sub()
                     {
@@ -353,11 +353,11 @@ namespace ApiSand.Controllers
                         string fileName = Path.GetFileName(filePath);
                         ava_sub.ava_sub_file.Add(new ava_sub_file()
                         {
-                             fullpath = filePath,
-                              title = fileName,
-                               
+                            fullpath = filePath,
+                            title = fileName,
+
                         });
-                        
+
                     }
                 }
 
@@ -641,7 +641,7 @@ namespace ApiSand.Controllers
             };
         }
 
-       
+
 
         [Route("api/doc2")]
         public async Task<DataResponse> get_doc2()
@@ -660,7 +660,7 @@ namespace ApiSand.Controllers
         public async Task<DataResponse> get_doc2_sessions()
         {
             ppa_entities context = new ppa_entities();
-            var ava_courses = context.ava_course.Where(q => q.remark== "ci ci1" || q.remark == "ci ci2" || q.remark == "ci ci3" || q.remark == "ci ci4").ToList();
+            var ava_courses = context.ava_course.Where(q => q.remark.StartsWith("grh")).ToList();
             var ava_crs_ids = ava_courses.Select(q => (Nullable<int>)q.id).ToList();
             var ava_sessions = context.ava_session.Where(q => ava_crs_ids.Contains(q.course_id)).ToList();
             var courses = context.Courses.Where(q => ava_crs_ids.Contains(q.ext_id)).ToList();
@@ -715,6 +715,45 @@ namespace ApiSand.Controllers
             string imagePath = @"C:\Users\vahid\Desktop\ava\ftp_crew_documents\Documents\TRG\1-2 2027-09-23\2027-10-23 TRG 1-2 AHMADREZA BAGHERI.jpg";
             var reader = new TesseractOCRReader(tessDataPath);
             string englishText = reader.ReadEnglishText(imagePath);
+            return new DataResponse()
+            {
+                Data = true,
+                IsSuccess = true
+            };
+        }
+
+        [Route("api/create/profile/folders")]
+        public async Task<DataResponse> get_create_folders()
+        {
+            ppa_entities context = new ppa_entities();
+
+            var nids = context.ViewProfiles.Where(q => q.GroupId == 1047 || q.GroupId == 1052).Select(q => q.NID).ToList();
+            string basePath = @"C:\Users\vahid\Desktop\ava\profile_folders";
+            string[] subfolders =
+            {
+            "LINE CHECK RECORDS",
+            "LICENSES",
+            "GENERAL DOCUMENTS",
+            "CERTIFICATES",
+            "LOGBOOK RECORDS",
+            "MEDICAL RECORDS",
+            "OFFICIAL RECORDS",
+            "SIMULATOR RECORDS"
+            };
+            foreach (var nid in nids)
+            {
+                // فولدر اصلی برای هر NID
+                string nidFolderPath = Path.Combine(basePath, nid);
+                Directory.CreateDirectory(nidFolderPath);
+
+                // ایجاد ساب‌فولدرها
+                foreach (var sub in subfolders)
+                {
+                    string subFolderPath = Path.Combine(nidFolderPath, sub);
+                    Directory.CreateDirectory(subFolderPath);
+                }
+            }
+
             return new DataResponse()
             {
                 Data = true,

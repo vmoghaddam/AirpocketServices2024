@@ -38,5 +38,6 @@ namespace ApiSand.Models
         public virtual DbSet<ava_folder> ava_folder { get; set; }
         public virtual DbSet<ava_sub_file> ava_sub_file { get; set; }
         public virtual DbSet<ava_sub> ava_sub { get; set; }
+        public virtual DbSet<ViewProfile> ViewProfiles { get; set; }
     }
 }

@@ -68,7 +68,7 @@ namespace ApiXLS.Controllers
                          where 
                            //x.CrewId == id && 
                           // x.JobGroup==grp &&  
-                           x.STDLocal >= df && x.STDLocal < dt
+                           x.STDLocal >= df && x.STDLocal < _dt
                          //flypersia
                          //&& x.FlightStatusID != 1 
                          && x.FlightStatusID != 4

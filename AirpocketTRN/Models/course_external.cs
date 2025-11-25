@@ -31,7 +31,7 @@ namespace AirpocketTRN.Models
         public Nullable<int> ext_id { get; set; }
         public string ext_name { get; set; }
     
-        public virtual CourseType CourseType { get; set; }
         public virtual Person Person { get; set; }
+        public virtual CourseType CourseType { get; set; }
     }
 }
