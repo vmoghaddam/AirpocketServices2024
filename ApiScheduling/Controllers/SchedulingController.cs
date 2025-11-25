@@ -444,6 +444,19 @@ namespace ApiScheduling.Controllers
         //    // return new DataResponse() { IsSuccess = false };
         //}
         ///// 
+        ///
+
+
+        [Route("api/get/duties/{dutytype}")]
+        [AcceptVerbs("GET")]
+        public IHttpActionResult GetOfficeRpt(string dutytype, DateTime df, DateTime dt)
+        {
+            var _context = new Models.dbEntities();
+            var duty_types = new List<int> { 1165, 1167, 1168, 1170, 5000, 5001, 100003, 300013 };
+            var result = _context.view_report_duty.Where(q => q.DateStart >= df && q.DateStart <= dt && duty_types.Contains(q.DutyTypeId)).ToList();
+            return Ok(result);
+        }
+
 
         [Route("api/test")]
         [AcceptVerbs("GET")]

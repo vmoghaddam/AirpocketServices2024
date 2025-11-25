@@ -121,6 +121,61 @@ namespace AirpocketTRN.Services
         }
 
 
+        public async Task<DataResponse> get_profile_doc(string nid)
+        {
+
+
+            try
+            {
+                var rootPath = @"C:\inetpub\vhosts\airpocket.app\ava.airpocket.app\upload\training\doc";
+                string targetPath = Path.Combine(rootPath, nid);
+
+                var result = new Dictionary<string, List<string>>();
+
+                foreach (var dir in Directory.GetDirectories(targetPath, "*", SearchOption.AllDirectories))
+                {
+                    string folderName = Path.GetFileName(dir);
+
+                    var files = new List<string>();
+                    foreach (var file in Directory.GetFiles(dir))
+                    {
+                        files.Add(Path.GetFileName(file));
+                    }
+
+                    result[folderName] = files;
+                }
+
+                var rootFiles = new List<string>();
+                foreach (var file in Directory.GetFiles(targetPath))
+                {
+                    rootFiles.Add(Path.GetFileName(file));
+                }
+                if (rootFiles.Count > 0)
+                    result[nid] = rootFiles;
+
+
+
+                return new DataResponse()
+                {
+                    IsSuccess = true,
+                    Data = result
+                };
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += "   " + ex.InnerException.Message;
+                return new DataResponse()
+                {
+                    IsSuccess = false,
+                    Data = msg,
+                };
+
+            }
+        }
+
+
         public async Task<DataResponse> get_crew_files(string nid)
         {
 

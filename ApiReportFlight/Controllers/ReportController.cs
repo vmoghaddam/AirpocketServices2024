@@ -3868,6 +3868,10 @@ namespace ApiReportFlight.Controllers
             };
             return Ok(result);
         }
+
+
+
+
         public partial class dto_summary_flight_pax
         {
             public int season { get; set; }

@@ -422,6 +422,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.AppCrewFlight' does not have a prim
           <Property Name="CPP2" Type="varchar" MaxLength="500" />
           <Property Name="CPSCCM" Type="varchar" MaxLength="500" />
           <Property Name="CPISCCM" Type="varchar" MaxLength="500" />
+          <Property Name="CPRegister" Type="varchar" MaxLength="500" />
           <Property Name="SplitDuty" Type="bit" />
           <Property Name="NightTime" Type="int" Nullable="false" />
           <Property Name="DayTime" Type="int" />
@@ -523,6 +524,15 @@ warning 6002: The table/view 'ppa_varesh.dbo.AppCrewFlight' does not have a prim
           <Property Name="PaxMale" Type="int" />
           <Property Name="BlockOffStation" Type="datetime" />
           <Property Name="BlockOnStation" Type="datetime" />
+          <Property Name="PF1Id" Type="int" />
+          <Property Name="PM1Id" Type="int" />
+          <Property Name="PF2Id" Type="int" />
+          <Property Name="PM2Id" Type="int" />
+          <Property Name="PF1Time" Type="int" />
+          <Property Name="PM1Time" Type="int" />
+          <Property Name="PF2Time" Type="int" />
+          <Property Name="PM2Time" Type="int" />
+          <Property Name="Reporting" Type="datetime" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.AppFTL' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -689,6 +699,31 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_recency_route' does not have a
           <Property Name="OnBlock" Type="datetime" />
           <Property Name="RemainExpire" Type="int" />
           <Property Name="Rank" Type="bigint" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.view_report_duty' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_report_duty">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="DutyType" />
+            <PropertyRef Name="DutyTypeId" />
+            <PropertyRef Name="FirstName" />
+            <PropertyRef Name="LastName" />
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="DutyType" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="DutyTypeId" Type="int" Nullable="false" />
+          <Property Name="CrewId" Type="int" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="1001" Nullable="false" />
+          <Property Name="JobGroup" Type="nvarchar" MaxLength="500" />
+          <Property Name="DateStart" Type="datetime" />
+          <Property Name="DateEnd" Type="datetime" />
+          <Property Name="DateStartLocal" Type="datetime" />
+          <Property Name="DateEndLocal" Type="datetime" />
+          <Property Name="Duty" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.view_route_count' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1876,6 +1911,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
     [AppCrewFlight].[CPP2] AS [CPP2], 
     [AppCrewFlight].[CPSCCM] AS [CPSCCM], 
     [AppCrewFlight].[CPISCCM] AS [CPISCCM], 
+    [AppCrewFlight].[CPRegister] AS [CPRegister], 
     [AppCrewFlight].[SplitDuty] AS [SplitDuty], 
     [AppCrewFlight].[NightTime] AS [NightTime], 
     [AppCrewFlight].[DayTime] AS [DayTime], 
@@ -1976,7 +2012,16 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
     [AppCrewFlight].[PaxFemale] AS [PaxFemale], 
     [AppCrewFlight].[PaxMale] AS [PaxMale], 
     [AppCrewFlight].[BlockOffStation] AS [BlockOffStation], 
-    [AppCrewFlight].[BlockOnStation] AS [BlockOnStation]
+    [AppCrewFlight].[BlockOnStation] AS [BlockOnStation], 
+    [AppCrewFlight].[PF1Id] AS [PF1Id], 
+    [AppCrewFlight].[PM1Id] AS [PM1Id], 
+    [AppCrewFlight].[PF2Id] AS [PF2Id], 
+    [AppCrewFlight].[PM2Id] AS [PM2Id], 
+    [AppCrewFlight].[PF1Time] AS [PF1Time], 
+    [AppCrewFlight].[PM1Time] AS [PM1Time], 
+    [AppCrewFlight].[PF2Time] AS [PF2Time], 
+    [AppCrewFlight].[PM2Time] AS [PM2Time], 
+    [AppCrewFlight].[Reporting] AS [Reporting]
     FROM [dbo].[AppCrewFlight] AS [AppCrewFlight]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="AppFTL" EntityType="Self.AppFTL" store:Type="Views" store:Schema="dbo">
@@ -2109,6 +2154,23 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
     [view_recency_route].[RemainExpire] AS [RemainExpire], 
     [view_recency_route].[Rank] AS [Rank]
     FROM [dbo].[view_recency_route] AS [view_recency_route]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="view_report_duty" EntityType="Self.view_report_duty" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_report_duty].[Id] AS [Id], 
+    [view_report_duty].[DutyType] AS [DutyType], 
+    [view_report_duty].[DutyTypeId] AS [DutyTypeId], 
+    [view_report_duty].[CrewId] AS [CrewId], 
+    [view_report_duty].[FirstName] AS [FirstName], 
+    [view_report_duty].[LastName] AS [LastName], 
+    [view_report_duty].[Name] AS [Name], 
+    [view_report_duty].[JobGroup] AS [JobGroup], 
+    [view_report_duty].[DateStart] AS [DateStart], 
+    [view_report_duty].[DateEnd] AS [DateEnd], 
+    [view_report_duty].[DateStartLocal] AS [DateStartLocal], 
+    [view_report_duty].[DateEndLocal] AS [DateEndLocal], 
+    [view_report_duty].[Duty] AS [Duty]
+    FROM [dbo].[view_report_duty] AS [view_report_duty]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="view_route_count" EntityType="Self.view_route_count" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -3062,6 +3124,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
             <End Role="FDP" EntitySet="FDPs" />
             <End Role="CrewPickupSM" EntitySet="CrewPickupSMS" />
           </AssociationSet>
+          <EntitySet Name="view_report_duty" EntityType="dbModel.view_report_duty" />
           </EntityContainer>
         <EntityType Name="ViewFDPLog">
           <Key>
@@ -4539,6 +4602,16 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="PaxMale" Type="Int32" />
           <Property Name="BlockOffStation" Type="DateTime" Precision="3" />
           <Property Name="BlockOnStation" Type="DateTime" Precision="3" />
+          <Property Name="CPRegister" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="PF1Id" Type="Int32" />
+          <Property Name="PM1Id" Type="Int32" />
+          <Property Name="PF2Id" Type="Int32" />
+          <Property Name="PM2Id" Type="Int32" />
+          <Property Name="PF1Time" Type="Int32" />
+          <Property Name="PM1Time" Type="Int32" />
+          <Property Name="PF2Time" Type="Int32" />
+          <Property Name="PM2Time" Type="Int32" />
+          <Property Name="Reporting" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="ViewCourseFDP">
           <Key>
@@ -4809,6 +4882,29 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="view_report_duty">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="DutyType" />
+            <PropertyRef Name="DutyTypeId" />
+            <PropertyRef Name="FirstName" />
+            <PropertyRef Name="LastName" />
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="DutyType" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="DutyTypeId" Type="Int32" Nullable="false" />
+          <Property Name="CrewId" Type="Int32" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="JobGroup" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="DateStart" Type="DateTime" Precision="3" />
+          <Property Name="DateEnd" Type="DateTime" Precision="3" />
+          <Property Name="DateStartLocal" Type="DateTime" Precision="3" />
+          <Property Name="DateEndLocal" Type="DateTime" Precision="3" />
+          <Property Name="Duty" Type="Int32" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -5952,6 +6048,16 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySetMapping Name="AppCrewFlights">
             <EntityTypeMapping TypeName="dbModel.AppCrewFlight">
               <MappingFragment StoreEntitySet="AppCrewFlight">
+                <ScalarProperty Name="Reporting" ColumnName="Reporting" />
+                <ScalarProperty Name="PM2Time" ColumnName="PM2Time" />
+                <ScalarProperty Name="PF2Time" ColumnName="PF2Time" />
+                <ScalarProperty Name="PM1Time" ColumnName="PM1Time" />
+                <ScalarProperty Name="PF1Time" ColumnName="PF1Time" />
+                <ScalarProperty Name="PM2Id" ColumnName="PM2Id" />
+                <ScalarProperty Name="PF2Id" ColumnName="PF2Id" />
+                <ScalarProperty Name="PM1Id" ColumnName="PM1Id" />
+                <ScalarProperty Name="PF1Id" ColumnName="PF1Id" />
+                <ScalarProperty Name="CPRegister" ColumnName="CPRegister" />
                 <ScalarProperty Name="BlockOnStation" ColumnName="BlockOnStation" />
                 <ScalarProperty Name="BlockOffStation" ColumnName="BlockOffStation" />
                 <ScalarProperty Name="PaxMale" ColumnName="PaxMale" />
@@ -6357,6 +6463,25 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
                 <ScalarProperty Name="Pickup" ColumnName="Pickup" />
                 <ScalarProperty Name="FlightId" ColumnName="FlightId" />
                 <ScalarProperty Name="CrewId" ColumnName="CrewId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_report_duty">
+            <EntityTypeMapping TypeName="dbModel.view_report_duty">
+              <MappingFragment StoreEntitySet="view_report_duty">
+                <ScalarProperty Name="Duty" ColumnName="Duty" />
+                <ScalarProperty Name="DateEndLocal" ColumnName="DateEndLocal" />
+                <ScalarProperty Name="DateStartLocal" ColumnName="DateStartLocal" />
+                <ScalarProperty Name="DateEnd" ColumnName="DateEnd" />
+                <ScalarProperty Name="DateStart" ColumnName="DateStart" />
+                <ScalarProperty Name="JobGroup" ColumnName="JobGroup" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="CrewId" ColumnName="CrewId" />
+                <ScalarProperty Name="DutyTypeId" ColumnName="DutyTypeId" />
+                <ScalarProperty Name="DutyType" ColumnName="DutyType" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
