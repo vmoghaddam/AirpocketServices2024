@@ -169,6 +169,15 @@ namespace AirpocketTRN.Controllers
             return Ok(result);
         }
 
+        [Route("api/trn/get/profile/doc/{nid}")]
+        [AcceptVerbs("Get")]
+
+        public async Task<IHttpActionResult> get_profile_doc(string nid)
+        {
+            var result = await trainingService.get_profile_doc(nid);
+            return Ok(result);
+        }
+
         [Route("api/trn/get/cabin/files/{nid}")]
         [AcceptVerbs("Get")]
 

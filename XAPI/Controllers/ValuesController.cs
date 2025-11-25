@@ -5888,6 +5888,7 @@ namespace XAPI.Controllers
 
                     var result = new
                     {
+                        raw = text,
                         pic = data.pic,
                         date_sign = data.date_sign,
                         lic_no = data.lic_no,
