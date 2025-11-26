@@ -64,7 +64,7 @@ namespace AirpocketTRN.Services
 
         public async Task<DataResponse> get_person_files(string nid)
         {
-           
+
 
             try
             {
@@ -175,6 +175,13 @@ namespace AirpocketTRN.Services
             }
         }
 
+       
+        //public async Task<DataResponse> UploadProfileDoc(dynamic entity)
+        //{
+          
+
+        //}
+
 
         public async Task<DataResponse> get_crew_files(string nid)
         {
@@ -182,7 +189,7 @@ namespace AirpocketTRN.Services
 
             try
             {
-                     var rootPath = @"C:\inetpub\vhosts\airpocket.app\ava.airpocket.app\upload\training\crew\cockpit";
+                var rootPath = @"C:\inetpub\vhosts\airpocket.app\ava.airpocket.app\upload\training\crew\cockpit";
                 //var rootPath = "C:\\inetpub\\vhosts\\airpocket.app\\ava.airpocket.app\\upload\\training\\crew\\cockpit\\";
                 string targetPath = Path.Combine(rootPath, nid);
 
@@ -934,7 +941,7 @@ namespace AirpocketTRN.Services
 
                     if (existingQuestionValue != null)
                     {
-                        existingQuestionValue.grade = item.item_grade;   
+                        existingQuestionValue.grade = item.item_grade;
                         context.Entry(existingQuestionValue).State = EntityState.Modified;
                     }
                     else
@@ -1099,7 +1106,7 @@ namespace AirpocketTRN.Services
                 form.course_title = dto.course_title;
                 form.class_format = dto.class_format;
                 form.flight_id = dto.flight_id;
-                
+
                 foreach (var section in dto.sections)
                 {
                     foreach (var action in section.actions)
@@ -1839,7 +1846,7 @@ namespace AirpocketTRN.Services
 
 
 
-                    foreach (var difference in dto.differences)
+                foreach (var difference in dto.differences)
                 {
                     int systemId = difference.system_id;
 

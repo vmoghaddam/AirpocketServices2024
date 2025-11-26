@@ -11,6 +11,7 @@ using System.Web.Http.Cors;
 using PdfiumViewer;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Configuration;
 
 namespace AirpocketTRN.Controllers
 {
@@ -56,13 +57,13 @@ namespace AirpocketTRN.Controllers
         public async Task<IHttpActionResult> get_profile_config()
         {
             var context = new FLYEntities();
-            var result=context.view_coursetype_profile.ToList();
+            var result = context.view_coursetype_profile.ToList();
             return Ok(result);
         }
         [Route("api/files/test")]
         [AcceptVerbs("Get")]
 
-        public async Task<IHttpActionResult> get_person_test( )
+        public async Task<IHttpActionResult> get_person_test()
         {
             using (var document = PdfDocument.Load(@"C:\Training_Folder\1.pdf"))
             {
@@ -119,22 +120,22 @@ namespace AirpocketTRN.Controllers
 
 
             var context = new FLYEntities();
-            var profile=context.ViewProfiles.Where(q=>q.NID==nid).FirstOrDefault();
+            var profile = context.ViewProfiles.Where(q => q.NID == nid).FirstOrDefault();
             foreach (var x in fileQuery)
             {
                 context.person_folder.Add(new person_folder()
                 {
                     creation_time = x.CreationTime,
                     directory = x.Directory,
-                    employee_id = profile!=null?(Nullable<int>)profile.Id:null,
-                    person_id = profile != null ? (Nullable<int>)profile.PersonId:null,
+                    employee_id = profile != null ? (Nullable<int>)profile.Id : null,
+                    person_id = profile != null ? (Nullable<int>)profile.PersonId : null,
                     file_extension = x.Extension.Replace(".", ""),
                     file_full_name = x.FullName,
                     file_name = x.Name,
                     folder = x.grp.ToUpper(),
                     nid = nid,
-                    last_name = profile != null ? profile.FirstName:null,
-                    first_name = profile != null ? profile.LastName:null,
+                    last_name = profile != null ? profile.FirstName : null,
+                    first_name = profile != null ? profile.LastName : null,
 
                 });
             }
@@ -151,7 +152,7 @@ namespace AirpocketTRN.Controllers
             return Ok(result);
         }
 
-       [Route("api/trn/get/person/files/{nid}")]
+        [Route("api/trn/get/person/files/{nid}")]
         [AcceptVerbs("Get")]
 
         public async Task<IHttpActionResult> get_person_files(string nid)
@@ -160,7 +161,7 @@ namespace AirpocketTRN.Controllers
             return Ok(result);
         }
 
-       [Route("api/trn/get/crew/files/{nid}")]
+        [Route("api/trn/get/crew/files/{nid}")]
         [AcceptVerbs("Get")]
 
         public async Task<IHttpActionResult> get_crew_files(string nid)
@@ -168,6 +169,107 @@ namespace AirpocketTRN.Controllers
             var result = await trainingService.get_crew_files(nid);
             return Ok(result);
         }
+
+        [Route("api/trn/get/profile/doc/{nid}")]
+        [AcceptVerbs("Get")]
+
+        public async Task<IHttpActionResult> get_profile_doc(string nid)
+        {
+            var result = await trainingService.get_profile_doc(nid);
+            return Ok(result);
+        }
+
+
+      
+
+        [Route("api/upload/profile/doc")]
+        [AcceptVerbs("POST")]
+        public async Task<IHttpActionResult> UploadProfileDoc()
+        {
+            try
+            {
+
+               var context = new FLYEntities();
+               
+                string key = string.Empty;
+                var httpRequest = HttpContext.Current.Request;
+                string nid = httpRequest.Form["nid"];
+                int type = Convert.ToInt32(httpRequest.Form["DocumentTypeId"]);
+                string ac_type = httpRequest.Form["ac_type"];
+                DateTime idt = Convert.ToDateTime(httpRequest.Form["DateIssue"]);
+                DateTime edt =Convert.ToDateTime(httpRequest.Form["DateExpire"]);
+                string title = httpRequest.Form["Remark"];
+                var docfiles = new List<string>();
+                foreach (string file in httpRequest.Files)
+                {
+                    var postedFile = httpRequest.Files[file];
+                    var doc_type = "";
+
+                    if (type != 8)
+                    {
+                        switch (type)
+                        {
+                            case 1:
+                                doc_type = "GENERAL DOCUMENTS";
+                                break;
+                            case 2:
+                                doc_type = "LICENSES";
+                                break;
+                            case 3:
+                                doc_type = "MEDICAL RECORDS";
+                                break;
+                            case 4:
+                                doc_type = ac_type != "null" ? "LINE CHECK RECORDS/" + ac_type : "LINE CHECK RECORDS";
+                                break;
+                            case 5:
+                                doc_type = "OFFICIAL RECORDS";
+                                break;
+                            case 6:
+                                doc_type = "SIMULATOR TRAINING";
+                                break;
+                            case 7:
+                                doc_type = "LOGBOOK RECORDS";
+                                break;
+                            default:
+                                // code block
+                                break;
+                        }
+                        var filePath = $"C:/Inetpub/vhosts/airpocket.app/ava.airpocket.app/upload/training/doc/" + nid + "/" + doc_type + "/" + postedFile.FileName;
+                        postedFile.SaveAs(filePath);
+                        docfiles.Add(filePath);
+                    }
+                    else
+                    {
+                        var filePath = $"C:/Inetpub/vhosts/airpocket.app/ava.airpocket.app/upload/training/doc/" + nid + "/CERTIFICATES/" + postedFile.FileName;
+                        postedFile.SaveAs(filePath);
+                        docfiles.Add(filePath);
+
+                        var course = new Models.course_external();
+                        course.file_url = filePath;
+                        course.date_issue = idt;
+                        course.date_expire = edt;
+                        course.title = title;
+                        context.course_external.Add(course);
+                        context.SaveChanges();
+
+                    }
+
+                }
+
+
+
+                return Ok("Succeded"); 
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += "   " + ex.InnerException.Message;
+                return Ok(msg);
+            }
+        }
+
+
 
         [Route("api/trn/get/cabin/files/{nid}")]
         [AcceptVerbs("Get")]
