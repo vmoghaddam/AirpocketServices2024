@@ -37,6 +37,7 @@ namespace ApiSand.Models
         public Nullable<int> ins1_id { get; set; }
         public Nullable<int> ins2_id { get; set; }
         public string remark { get; set; }
+        public Nullable<int> temp_id { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ava_session> ava_session { get; set; }

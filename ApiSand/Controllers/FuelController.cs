@@ -761,6 +761,54 @@ namespace ApiSand.Controllers
             };
         }
 
+        [Route("api/att")]
+        public async Task<DataResponse> get_att()
+        {
+            ppa_entities context = new ppa_entities();
+
+            var students = context.ava_view_student.ToList();
+            var cids=students.Select(q=>q.course_id).Distinct().ToList();
+            var courses = context.Courses.Where(q => cids.Contains(q.Id)).ToList();
+            var sessions=context.CourseSessions.Where(q=>cids.Contains(q.CourseId)).ToList();
+            foreach(var s in students)
+            {
+                var parts=s.attendance.Split(',').ToList();
+                var ss = sessions.Where(q => q.CourseId == s.course_id).OrderBy(q => q.DateStart).ToList();
+                int i = 0;
+                foreach(var c in ss)
+                {
+                    try
+                    {
+                        var p = parts[i];
+                        if (p == "true")
+                        {
+                            var cp = new CourseSessionPresence()
+                            {
+                                CourseId = s.course_id,
+                                PersonId = s.person_id,
+                                SessionKey = c.Key,
+                                Date = DateTime.Now,
+                                Remark = "grh2",
+                            };
+                            context.CourseSessionPresences.Add(cp);
+                        }
+                    }
+                    catch(Exception ex)
+                    {
+                        int j = 0;
+                    }
+                    i++;
+                }
+
+            }
+            context.SaveChanges();
+            return new DataResponse()
+            {
+                Data = true,
+                IsSuccess = true
+            };
+        }
+
 
     }
 
