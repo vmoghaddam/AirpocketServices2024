@@ -46,9 +46,9 @@ namespace ApiProfile.Models
         public virtual DbSet<CertificateHistory> CertificateHistories { get; set; }
         public virtual DbSet<view_trn_certificate_history> view_trn_certificate_history { get; set; }
         public virtual DbSet<view_trn_course_type_group> view_trn_course_type_group { get; set; }
-        public virtual DbSet<view_profile> view_profile { get; set; }
         public virtual DbSet<view_trn_certificate_history_last> view_trn_certificate_history_last { get; set; }
         public virtual DbSet<Person> People { get; set; }
+        public virtual DbSet<view_profile> view_profile { get; set; }
         public virtual DbSet<ViewProfile> ViewProfiles { get; set; }
     }
 }
