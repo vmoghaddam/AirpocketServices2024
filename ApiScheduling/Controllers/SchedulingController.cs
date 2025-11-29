@@ -620,7 +620,7 @@ namespace ApiScheduling.Controllers
                 case 1165:
                     var fdp = context.FDPs.FirstOrDefault(q => q.Id == fdpid);
                     var crew = context.ViewEmployeeLights.Where(q => q.Id == fdp.CrewId).FirstOrDefault();
-                    var show_crew = is_crew_visible == 1 || crew.Id == 4811 || (crew.JobGroup != "CCM");
+                    var show_crew = true;//is_crew_visible == 1 || crew.Id == 4811 || (crew.JobGroup != "CCM");
                     var flts = context.AppCrewFlights.Where(q => q.FDPId == fdpid).OrderBy(q => q.STD).ToList();
                     var flt_ids = flts.Select(q => q.FlightId).ToList();
                     var crews = !show_crew ? null : context.AppCrewFlights.Where(q => flt_ids.Contains(q.FlightId)).Select(q => new { q.Name, q.Position, q.IsPositioning, q.GroupOrder, q.FlightId }).Distinct().OrderBy(q => q.GroupOrder).ToList();
@@ -650,7 +650,7 @@ namespace ApiScheduling.Controllers
             var duties = context.ViewCrewDutyTimeLineNews.Where(q => q.CrewId == cid && q.DateStartLocal >= df && q.DateStartLocal < dt).ToList();
             var crew = context.ViewEmployeeLights.Where(q => q.Id == cid).FirstOrDefault();
             var is_crew_visible = Convert.ToInt32(ConfigurationManager.AppSettings["is_crew_visible"]);
-            var show_crew = is_crew_visible == 1 || cid == 4811 || (crew.JobGroup != "CCM");
+            var show_crew = true;// is_crew_visible == 1; /*|| cid == 4811 || (crew.JobGroup != "CCM")*/;
             foreach (var x in duties)
             {
                 if (x.DutyType == 1165)
