@@ -196,9 +196,20 @@ namespace AirpocketTRN.Controllers
                 string nid = httpRequest.Form["nid"];
                 int type = Convert.ToInt32(httpRequest.Form["DocumentTypeId"]);
                 string ac_type = httpRequest.Form["ac_type"];
-                DateTime idt = Convert.ToDateTime(httpRequest.Form["DateIssue"]);
-                DateTime edt =Convert.ToDateTime(httpRequest.Form["DateExpire"]);
+                //DateTime idt = Convert.ToDateTime(httpRequest.Form["DateIssue"]);
+                //DateTime edt =Convert.ToDateTime(httpRequest.Form["DateExpire"]);
                 string title = httpRequest.Form["Remark"];
+
+                string issueStr = httpRequest.Form["DateIssue"];
+                string expireStr = httpRequest.Form["DateExpire"];
+
+                bool hasIssue = DateTime.TryParse(issueStr, out DateTime issueDateValue);
+                bool hasExpire = DateTime.TryParse(expireStr, out DateTime expireDateValue);
+
+                DateTime? idt = hasIssue ? (DateTime?)issueDateValue : null;
+                DateTime? edt = hasExpire ? (DateTime?)expireDateValue : null;
+
+
                 var docfiles = new List<string>();
                 foreach (string file in httpRequest.Files)
                 {
