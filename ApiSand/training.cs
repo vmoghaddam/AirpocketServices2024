@@ -66,7 +66,7 @@ namespace DocxToJson
                 ppa_entities context = new ppa_entities();
 
                 var input = @"C:\Users\vahid\Desktop\ava\ftp_crew_documents\AttendanceFiles\خدمات فرودگاهی";
-                var outputFolder = @"C:\Users\vahid\Desktop\ava\ftp_crew_documents\AttendanceFiles\خدمات فرودگاهی\___json";
+                var outputFolder = @"C:\Users\vahid\Desktop\ava\ftp_crew_documents\AttendanceFiles\خدمات فرودگاهی\___json2";
 
                 var files = new List<string>();
                 //if (Directory.Exists(input))
@@ -101,7 +101,7 @@ namespace DocxToJson
                 {
                     try
                     {
-                        var rec = ParseDocx(path, "grh ");
+                        var rec = ParseDocx(path, "grh2 ");
                         
                         var json = JsonConvert.SerializeObject(rec, Formatting.Indented, new JsonSerializerSettings
                         {

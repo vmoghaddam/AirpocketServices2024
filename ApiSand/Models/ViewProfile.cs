@@ -221,5 +221,24 @@ namespace ApiSand.Models
         public Nullable<int> RemainSMSL1L2L3 { get; set; }
         public Nullable<int> RemainTRG07A { get; set; }
         public string ImageUrl { get; set; }
+        public Nullable<int> Remain67 { get; set; }
+        public Nullable<int> Remain68 { get; set; }
+        public Nullable<int> Remain69 { get; set; }
+        public Nullable<int> Remain70 { get; set; }
+        public Nullable<int> Remain71 { get; set; }
+        public Nullable<int> Remain72 { get; set; }
+        public Nullable<int> Remain73 { get; set; }
+        public Nullable<int> Remain74 { get; set; }
+        public Nullable<int> Remain75 { get; set; }
+        public Nullable<int> Remain76 { get; set; }
+        public Nullable<int> Remain77 { get; set; }
+        public Nullable<int> Remain78 { get; set; }
+        public Nullable<int> Remain79 { get; set; }
+        public Nullable<int> Remain80 { get; set; }
+        public Nullable<int> Remain81 { get; set; }
+        public Nullable<int> Remain82 { get; set; }
+        public Nullable<int> Remain83 { get; set; }
+        public Nullable<int> Remain84 { get; set; }
+        public Nullable<int> Remain85 { get; set; }
     }
 }

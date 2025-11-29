@@ -25,6 +25,7 @@
           <Property Name="ins1_id" Type="int" />
           <Property Name="ins2_id" Type="int" />
           <Property Name="remark" Type="varchar" MaxLength="500" />
+          <Property Name="temp_id" Type="int" />
         </EntityType>
         <EntityType Name="ava_error">
           <Key>
@@ -223,6 +224,17 @@
           <Property Name="course_id" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_ava.dbo.ava_view_student' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ava_view_student">
+          <Key>
+            <PropertyRef Name="person_id" />
+            <PropertyRef Name="course_id" />
+          </Key>
+          <Property Name="person_id" Type="int" Nullable="false" />
+          <Property Name="course_id" Type="int" Nullable="false" />
+          <Property Name="attendance" Type="varchar" MaxLength="1000" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_ava.dbo.ViewProfile' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewProfile">
           <Key>
@@ -416,6 +428,25 @@ warning 6002: The table/view 'ppa_ava.dbo.ViewProfile' does not have a primary k
           <Property Name="Remain50" Type="int" />
           <Property Name="Remain56" Type="int" />
           <Property Name="Remain66" Type="int" />
+          <Property Name="Remain67" Type="int" />
+          <Property Name="Remain68" Type="int" />
+          <Property Name="Remain69" Type="int" />
+          <Property Name="Remain70" Type="int" />
+          <Property Name="Remain71" Type="int" />
+          <Property Name="Remain72" Type="int" />
+          <Property Name="Remain73" Type="int" />
+          <Property Name="Remain74" Type="int" />
+          <Property Name="Remain75" Type="int" />
+          <Property Name="Remain76" Type="int" />
+          <Property Name="Remain77" Type="int" />
+          <Property Name="Remain78" Type="int" />
+          <Property Name="Remain79" Type="int" />
+          <Property Name="Remain80" Type="int" />
+          <Property Name="Remain81" Type="int" />
+          <Property Name="Remain82" Type="int" />
+          <Property Name="Remain83" Type="int" />
+          <Property Name="Remain84" Type="int" />
+          <Property Name="Remain85" Type="int" />
           <Property Name="RemainRIGHT_SEAT_QUALIFICATION" Type="int" />
           <Property Name="RemainELT" Type="int" />
           <Property Name="RemainRVSM" Type="int" />
@@ -560,6 +591,13 @@ warning 6002: The table/view 'ppa_ava.dbo.ViewProfile' does not have a primary k
           <EntitySet Name="fly_course" EntityType="Self.fly_course" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="fly_course_session" EntityType="Self.fly_course_session" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="fly_course_student" EntityType="Self.fly_course_student" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ava_view_student" EntityType="Self.ava_view_student" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ava_view_student].[person_id] AS [person_id], 
+    [ava_view_student].[course_id] AS [course_id], 
+    [ava_view_student].[attendance] AS [attendance]
+    FROM [dbo].[ava_view_student] AS [ava_view_student]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="ViewProfile" EntityType="Self.ViewProfile" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [ViewProfile].[Id] AS [Id], 
@@ -734,6 +772,25 @@ warning 6002: The table/view 'ppa_ava.dbo.ViewProfile' does not have a primary k
     [ViewProfile].[Remain50] AS [Remain50], 
     [ViewProfile].[Remain56] AS [Remain56], 
     [ViewProfile].[Remain66] AS [Remain66], 
+    [ViewProfile].[Remain67] AS [Remain67], 
+    [ViewProfile].[Remain68] AS [Remain68], 
+    [ViewProfile].[Remain69] AS [Remain69], 
+    [ViewProfile].[Remain70] AS [Remain70], 
+    [ViewProfile].[Remain71] AS [Remain71], 
+    [ViewProfile].[Remain72] AS [Remain72], 
+    [ViewProfile].[Remain73] AS [Remain73], 
+    [ViewProfile].[Remain74] AS [Remain74], 
+    [ViewProfile].[Remain75] AS [Remain75], 
+    [ViewProfile].[Remain76] AS [Remain76], 
+    [ViewProfile].[Remain77] AS [Remain77], 
+    [ViewProfile].[Remain78] AS [Remain78], 
+    [ViewProfile].[Remain79] AS [Remain79], 
+    [ViewProfile].[Remain80] AS [Remain80], 
+    [ViewProfile].[Remain81] AS [Remain81], 
+    [ViewProfile].[Remain82] AS [Remain82], 
+    [ViewProfile].[Remain83] AS [Remain83], 
+    [ViewProfile].[Remain84] AS [Remain84], 
+    [ViewProfile].[Remain85] AS [Remain85], 
     [ViewProfile].[RemainRIGHT_SEAT_QUALIFICATION] AS [RemainRIGHT_SEAT_QUALIFICATION], 
     [ViewProfile].[RemainELT] AS [RemainELT], 
     [ViewProfile].[RemainRVSM] AS [RemainRVSM], 
@@ -847,6 +904,7 @@ warning 6002: The table/view 'ppa_ava.dbo.ViewProfile' does not have a primary k
             <End Role="ava_sub_file" EntitySet="ava_sub_file" />
           </AssociationSet>
           <EntitySet Name="ViewProfiles" EntityType="ppaModel.ViewProfile" />
+          <EntitySet Name="ava_view_student" EntityType="ppaModel.ava_view_student" />
         </EntityContainer>
         <EntityType Name="fly_course">
           <Key>
@@ -940,6 +998,7 @@ warning 6002: The table/view 'ppa_ava.dbo.ViewProfile' does not have a primary k
           <Property Name="remark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="ava_session" Relationship="ppaModel.fk_1000" FromRole="ava_course" ToRole="ava_session" />
           <NavigationProperty Name="ava_student" Relationship="ppaModel.fk_2002" FromRole="ava_course" ToRole="ava_student" />
+          <Property Name="temp_id" Type="Int32" />
         </EntityType>
         <EntityType Name="Course">
           <Key>
@@ -1400,6 +1459,34 @@ warning 6002: The table/view 'ppa_ava.dbo.ViewProfile' does not have a primary k
           <Property Name="RemainSMSL1L2L3" Type="Int32" />
           <Property Name="RemainTRG07A" Type="Int32" />
           <Property Name="ImageUrl" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Remain67" Type="Int32" />
+          <Property Name="Remain68" Type="Int32" />
+          <Property Name="Remain69" Type="Int32" />
+          <Property Name="Remain70" Type="Int32" />
+          <Property Name="Remain71" Type="Int32" />
+          <Property Name="Remain72" Type="Int32" />
+          <Property Name="Remain73" Type="Int32" />
+          <Property Name="Remain74" Type="Int32" />
+          <Property Name="Remain75" Type="Int32" />
+          <Property Name="Remain76" Type="Int32" />
+          <Property Name="Remain77" Type="Int32" />
+          <Property Name="Remain78" Type="Int32" />
+          <Property Name="Remain79" Type="Int32" />
+          <Property Name="Remain80" Type="Int32" />
+          <Property Name="Remain81" Type="Int32" />
+          <Property Name="Remain82" Type="Int32" />
+          <Property Name="Remain83" Type="Int32" />
+          <Property Name="Remain84" Type="Int32" />
+          <Property Name="Remain85" Type="Int32" />
+        </EntityType>
+        <EntityType Name="ava_view_student">
+          <Key>
+            <PropertyRef Name="person_id" />
+            <PropertyRef Name="course_id" />
+          </Key>
+          <Property Name="person_id" Type="Int32" Nullable="false" />
+          <Property Name="course_id" Type="Int32" Nullable="false" />
+          <Property Name="attendance" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -1484,6 +1571,7 @@ warning 6002: The table/view 'ppa_ava.dbo.ViewProfile' does not have a primary k
           <EntitySetMapping Name="ava_course">
             <EntityTypeMapping TypeName="ppaModel.ava_course">
               <MappingFragment StoreEntitySet="ava_course">
+                <ScalarProperty Name="temp_id" ColumnName="temp_id" />
                 <ScalarProperty Name="remark" ColumnName="remark" />
                 <ScalarProperty Name="ins2_id" ColumnName="ins2_id" />
                 <ScalarProperty Name="ins1_id" ColumnName="ins1_id" />
@@ -1640,6 +1728,25 @@ warning 6002: The table/view 'ppa_ava.dbo.ViewProfile' does not have a primary k
           <EntitySetMapping Name="ViewProfiles">
             <EntityTypeMapping TypeName="ppaModel.ViewProfile">
               <MappingFragment StoreEntitySet="ViewProfile">
+                <ScalarProperty Name="Remain85" ColumnName="Remain85" />
+                <ScalarProperty Name="Remain84" ColumnName="Remain84" />
+                <ScalarProperty Name="Remain83" ColumnName="Remain83" />
+                <ScalarProperty Name="Remain82" ColumnName="Remain82" />
+                <ScalarProperty Name="Remain81" ColumnName="Remain81" />
+                <ScalarProperty Name="Remain80" ColumnName="Remain80" />
+                <ScalarProperty Name="Remain79" ColumnName="Remain79" />
+                <ScalarProperty Name="Remain78" ColumnName="Remain78" />
+                <ScalarProperty Name="Remain77" ColumnName="Remain77" />
+                <ScalarProperty Name="Remain76" ColumnName="Remain76" />
+                <ScalarProperty Name="Remain75" ColumnName="Remain75" />
+                <ScalarProperty Name="Remain74" ColumnName="Remain74" />
+                <ScalarProperty Name="Remain73" ColumnName="Remain73" />
+                <ScalarProperty Name="Remain72" ColumnName="Remain72" />
+                <ScalarProperty Name="Remain71" ColumnName="Remain71" />
+                <ScalarProperty Name="Remain70" ColumnName="Remain70" />
+                <ScalarProperty Name="Remain69" ColumnName="Remain69" />
+                <ScalarProperty Name="Remain68" ColumnName="Remain68" />
+                <ScalarProperty Name="Remain67" ColumnName="Remain67" />
                 <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
                 <ScalarProperty Name="RemainTRG07A" ColumnName="RemainTRG07A" />
                 <ScalarProperty Name="RemainSMSL1L2L3" ColumnName="RemainSMSL1L2L3" />
@@ -1847,6 +1954,15 @@ warning 6002: The table/view 'ppa_ava.dbo.ViewProfile' does not have a primary k
                 <ScalarProperty Name="PID" ColumnName="PID" />
                 <ScalarProperty Name="Name2" ColumnName="Name2" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ava_view_student">
+            <EntityTypeMapping TypeName="ppaModel.ava_view_student">
+              <MappingFragment StoreEntitySet="ava_view_student">
+                <ScalarProperty Name="attendance" ColumnName="attendance" />
+                <ScalarProperty Name="course_id" ColumnName="course_id" />
+                <ScalarProperty Name="person_id" ColumnName="person_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
