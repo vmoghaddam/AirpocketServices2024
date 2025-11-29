@@ -30,13 +30,10 @@ namespace ApiProfile.Models
         public virtual DbSet<ThirdPartySyncHistory> ThirdPartySyncHistories { get; set; }
         public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<EmployeeLocation> EmployeeLocations { get; set; }
-        public virtual DbSet<PersonAircraftType> PersonAircraftTypes { get; set; }
         public virtual DbSet<Document> Documents { get; set; }
         public virtual DbSet<ViewPersonDocumentFile> ViewPersonDocumentFiles { get; set; }
-        public virtual DbSet<ViewPersonAircraftType> ViewPersonAircraftTypes { get; set; }
         public virtual DbSet<ViewEmployeeLocation> ViewEmployeeLocations { get; set; }
         public virtual DbSet<PersonCustomer> PersonCustomers { get; set; }
-        public virtual DbSet<ViewEmployeeLight> ViewEmployeeLights { get; set; }
         public virtual DbSet<LoginInfo> LoginInfoes { get; set; }
         public virtual DbSet<ViewOPC> ViewOPCs { get; set; }
         public virtual DbSet<ViewCrewPickupSM> ViewCrewPickupSMS { get; set; }
@@ -46,9 +43,12 @@ namespace ApiProfile.Models
         public virtual DbSet<CertificateHistory> CertificateHistories { get; set; }
         public virtual DbSet<view_trn_certificate_history> view_trn_certificate_history { get; set; }
         public virtual DbSet<view_trn_course_type_group> view_trn_course_type_group { get; set; }
-        public virtual DbSet<view_profile> view_profile { get; set; }
         public virtual DbSet<view_trn_certificate_history_last> view_trn_certificate_history_last { get; set; }
         public virtual DbSet<Person> People { get; set; }
+        public virtual DbSet<view_profile> view_profile { get; set; }
+        public virtual DbSet<PersonAircraftType> PersonAircraftTypes { get; set; }
+        public virtual DbSet<ViewPersonAircraftType> ViewPersonAircraftTypes { get; set; }
+        public virtual DbSet<ViewEmployeeLight> ViewEmployeeLights { get; set; }
         public virtual DbSet<ViewProfile> ViewProfiles { get; set; }
     }
 }
