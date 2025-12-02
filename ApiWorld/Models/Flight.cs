@@ -49,6 +49,7 @@ namespace ApiWorld.Models
             this.ToAlt1Points = new HashSet<ToAlt1Points>();
             this.FIRNotams = new HashSet<FIRNotam>();
             this.AdequateNotams = new HashSet<AdequateNotam>();
+            this.OFPImportProps = new HashSet<OFPImportProp>();
         }
     
         public int Id { get; set; }
@@ -301,5 +302,7 @@ namespace ApiWorld.Models
         public virtual DESTTaf DESTTaf { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AdequateNotam> AdequateNotams { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<OFPImportProp> OFPImportProps { get; set; }
     }
 }

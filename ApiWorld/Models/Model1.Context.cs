@@ -170,5 +170,7 @@ namespace ApiWorld.Models
         public virtual DbSet<DEPTaf> DEPTafs { get; set; }
         public virtual DbSet<DESTTaf> DESTTafs { get; set; }
         public virtual DbSet<AdequateNotam> AdequateNotams { get; set; }
+        public virtual DbSet<OFPImportProp> OFPImportProps { get; set; }
+        public virtual DbSet<OFPImport> OFPImports { get; set; }
     }
 }
