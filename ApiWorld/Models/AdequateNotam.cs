@@ -37,8 +37,8 @@ namespace ApiWorld.Models
         public Nullable<int> RoutePart { get; set; }
         public string Provider { get; set; }
     
-        public virtual Flight Flight { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AdequateNotamPartInformation> AdequateNotamPartInformations { get; set; }
+        public virtual Flight Flight { get; set; }
     }
 }

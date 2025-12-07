@@ -97,9 +97,6 @@ namespace ApiWorld.Models
         public virtual DbSet<MessageRecipient> MessageRecipients { get; set; }
         public virtual DbSet<Metar> Metars { get; set; }
         public virtual DbSet<NextLeg> NextLegs { get; set; }
-        public virtual DbSet<Notam> Notams { get; set; }
-        public virtual DbSet<NotamPartInformation> NotamPartInformations { get; set; }
-        public virtual DbSet<OptFlightLevel> OptFlightLevels { get; set; }
         public virtual DbSet<OverflightCost> OverflightCosts { get; set; }
         public virtual DbSet<PassThroughValue> PassThroughValues { get; set; }
         public virtual DbSet<Pax> Paxes { get; set; }
@@ -164,11 +161,18 @@ namespace ApiWorld.Models
         public virtual DbSet<DepartureAlternateAirport> DepartureAlternateAirports { get; set; }
         public virtual DbSet<EnRouteAlternateAirport> EnRouteAlternateAirports { get; set; }
         public virtual DbSet<PlanningEnRouteAlternateAirport> PlanningEnRouteAlternateAirports { get; set; }
-        public virtual DbSet<Flight> Flights { get; set; }
         public virtual DbSet<FIRNotam> FIRNotams { get; set; }
         public virtual DbSet<EtopsInformation> EtopsInformations { get; set; }
         public virtual DbSet<DEPTaf> DEPTafs { get; set; }
         public virtual DbSet<DESTTaf> DESTTafs { get; set; }
         public virtual DbSet<AdequateNotam> AdequateNotams { get; set; }
+        public virtual DbSet<OFPPoint> OFPPoints { get; set; }
+        public virtual DbSet<OFPImport> OFPImports { get; set; }
+        public virtual DbSet<OptFlightLevel> OptFlightLevels { get; set; }
+        public virtual DbSet<FlightInformation> FlightInformations { get; set; }
+        public virtual DbSet<OFPImportProp> OFPImportProps { get; set; }
+        public virtual DbSet<PSSPoint> PSSPoints { get; set; }
+        public virtual DbSet<Flight> Flights { get; set; }
+        public virtual DbSet<plan_flight> plan_flight { get; set; }
     }
 }

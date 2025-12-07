@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="4f1c6431bd014f5a8ca17126f48bfc90" Name="Diagram1" ZoomLevel="94">
+      <Diagram DiagramId="4f1c6431bd014f5a8ca17126f48bfc90" Name="Diagram1" ZoomLevel="10">
         <EntityTypeShape EntityType="ppaModel.AdequateNotamPartInformation" Width="1.5" PointX="9.75" PointY="60.5" />
         <EntityTypeShape EntityType="ppaModel.AircraftConfiguration" Width="1.5" PointX="7.5" PointY="183" />
         <EntityTypeShape EntityType="ppaModel.AircraftConfigurationCrew" Width="1.5" PointX="9.75" PointY="182.75" />
@@ -77,9 +77,6 @@
         <EntityTypeShape EntityType="ppaModel.MessageRecipient" Width="1.5" PointX="9.75" PointY="108.5" />
         <EntityTypeShape EntityType="ppaModel.Metar" Width="1.5" PointX="0.75" PointY="126" />
         <EntityTypeShape EntityType="ppaModel.NextLeg" Width="1.5" PointX="7.5" PointY="74.125" />
-        <EntityTypeShape EntityType="ppaModel.Notam" Width="1.5" PointX="8" PointY="1.125" />
-        <EntityTypeShape EntityType="ppaModel.NotamPartInformation" Width="1.5" PointX="5.75" PointY="2.625" />
-        <EntityTypeShape EntityType="ppaModel.OptFlightLevel" Width="1.5" PointX="7.5" PointY="100" />
         <EntityTypeShape EntityType="ppaModel.OverflightCost" Width="1.5" PointX="7.5" PointY="40.875" />
         <EntityTypeShape EntityType="ppaModel.PassThroughValue" Width="1.5" PointX="7.5" PointY="145.25" />
         <EntityTypeShape EntityType="ppaModel.Pax" Width="1.5" PointX="5.25" PointY="163.75" />
@@ -124,8 +121,6 @@
         <AssociationConnector Association="ppaModel.FK_Pax_LoadPaxSection" />
         <AssociationConnector Association="ppaModel.FK_MelItemLimitations_MelItem" />
         <AssociationConnector Association="ppaModel.FK_MessageRecipient_Message" />
-        <AssociationConnector Association="ppaModel.fk_notam_flight" />
-        <AssociationConnector Association="ppaModel.FK_Notam_NotamPartInformation" />
         <EntityTypeShape EntityType="ppaModel.AdequateApt" Width="1.5" PointX="17" PointY="115.375" />
         <EntityTypeShape EntityType="ppaModel.AltApt" Width="1.5" PointX="17" PointY="117.875" />
         <EntityTypeShape EntityType="ppaModel.FIR" Width="1.5" PointX="17" PointY="120.375" />
@@ -223,8 +218,33 @@
         <EntityTypeShape EntityType="ppaModel.DepartureAlternateAirport" Width="1.5" PointX="13.375" PointY="0.75" />
         <EntityTypeShape EntityType="ppaModel.EnRouteAlternateAirport" Width="1.5" PointX="13.375" PointY="6.75" />
         <EntityTypeShape EntityType="ppaModel.PlanningEnRouteAlternateAirport" Width="1.5" PointX="29.25" PointY="110.25" />
-        <EntityTypeShape EntityType="ppaModel.Flight" Width="1.5" PointX="27" PointY="81.375" />
+        <EntityTypeShape EntityType="ppaModel.FIRNotam" Width="1.5" PointX="29.25" PointY="113.75" />
+        <AssociationConnector Association="ppaModel.FK_FIRNotamPartInfo_Notam" />
+        <EntityTypeShape EntityType="ppaModel.EtopsInformation" Width="1.5" PointX="4.5" PointY="149.75" />
+        <AssociationConnector Association="ppaModel.FK_EtopsAlternate_Parent" />
+        <AssociationConnector Association="ppaModel.FK_EtopsEntryPoint_Parent" />
+        <AssociationConnector Association="ppaModel.FK_EtopsETP_Parent" />
+        <AssociationConnector Association="ppaModel.FK_EtopsExitPoint_Parent" />
+        <AssociationConnector Association="ppaModel.FK_EtopsLimit_Parent" />
+        <AssociationConnector Association="ppaModel.FK_EtopsProfile_Parent" />
+        <AssociationConnector Association="ppaModel.fk_etopw_etop" />
+        <EntityTypeShape EntityType="ppaModel.DEPTaf" Width="1.5" PointX="24.75" PointY="104.5" />
+        <EntityTypeShape EntityType="ppaModel.DESTTaf" Width="1.5" PointX="13.375" PointY="10" />
+        <EntityTypeShape EntityType="ppaModel.AdequateNotam" Width="1.5" PointX="29.25" PointY="85.5" />
+        <AssociationConnector Association="ppaModel.FK_AdequateNotamPartInfo_Notam" />
+        <EntityTypeShape EntityType="ppaModel.OFPPoint" Width="1.5" PointX="3" PointY="27.25" />
+        <EntityTypeShape EntityType="ppaModel.OFPImport" Width="1.5" PointX="3" PointY="34.5" />
+        <AssociationConnector Association="ppaModel.fk_point_ofp" />
+        <EntityTypeShape EntityType="ppaModel.OptFlightLevel" Width="1.5" PointX="29.25" PointY="80.25" />
+        <EntityTypeShape EntityType="ppaModel.FlightInformation" Width="1.5" PointX="0.75" PointY="19.875" />
+        <AssociationConnector Association="ppaModel.fk_ofp_flt" />
+        <EntityTypeShape EntityType="ppaModel.OFPImportProp" Width="1.5" PointX="5.25" PointY="43.5" />
+        <AssociationConnector Association="ppaModel.fk_ofpp_ofp" />
+        <EntityTypeShape EntityType="ppaModel.PSSPoint" Width="1.5" PointX="5.375" PointY="20.75" />
+        <EntityTypeShape EntityType="ppaModel.Flight" Width="1.5" PointX="27" PointY="71.5" />
+        <EntityTypeShape EntityType="ppaModel.plan_flight" Width="1.5" PointX="29.25" PointY="66.125" />
         <AssociationConnector Association="ppaModel.fk_adapt_flt" />
+        <AssociationConnector Association="ppaModel.FK_AdequateNotam_Flight" />
         <AssociationConnector Association="ppaModel.fk_aconf_flt" />
         <AssociationConnector Association="ppaModel.FK_Flight_AircraftConfiguration" />
         <AssociationConnector Association="ppaModel.FK_Airports_Flight" />
@@ -243,11 +263,15 @@
         <AssociationConnector Association="ppaModel.FK_Flight_CustomReferences" />
         <AssociationConnector Association="ppaModel.FK_Flight_AirportWeatherData" />
         <AssociationConnector Association="ppaModel.FK_DEPNotam_Flight" />
+        <AssociationConnector Association="ppaModel.FK_Flight_Taf" />
         <AssociationConnector Association="ppaModel.FK_DESTNotam_Flight" />
+        <AssociationConnector Association="ppaModel.FK_Flight_Taf2" />
         <AssociationConnector Association="ppaModel.fk_enalt_flight" />
         <AssociationConnector Association="ppaModel.FK_Flight_AirportWeatherData2" />
+        <AssociationConnector Association="ppaModel.FK_Flight_EtopsInformation" />
         <AssociationConnector Association="ppaModel.fk_exf_flt" />
         <AssociationConnector Association="ppaModel.fk_fir_flt" />
+        <AssociationConnector Association="ppaModel.FK_FIRNotam_Flight" />
         <AssociationConnector Association="ppaModel.FK__FreeText__Flight__5772F790" />
         <AssociationConnector Association="ppaModel.FK__MelItem__FlightI__5B438874" />
         <AssociationConnector Association="ppaModel.FK__Message__FlightI__7132C993" />
@@ -263,35 +287,17 @@
         <AssociationConnector Association="ppaModel.fk_flt_load" />
         <AssociationConnector Association="ppaModel.fk_flt_overcost" />
         <AssociationConnector Association="ppaModel.fk_flt_resp" />
-        <AssociationConnector Association="ppaModel.fk_nl_flt" />
         <AssociationConnector Association="ppaModel.FK_OptFlightLevels_Flight" />
         <AssociationConnector Association="ppaModel.FK_PassThroughValues_Flight" />
         <AssociationConnector Association="ppaModel.FK_PDPPoints_Flights" />
+        <AssociationConnector Association="ppaModel.fk_plan_flt_plan" />
         <AssociationConnector Association="ppaModel.fk_ppsvr_flt" />
         <AssociationConnector Association="ppaModel.FK_RoutePoints_Flight" />
         <AssociationConnector Association="ppaModel.fk_sidalt_flt" />
         <AssociationConnector Association="ppaModel.FK_StdAlternates_Flight" />
         <AssociationConnector Association="ppaModel.fk_tbl_flt" />
         <AssociationConnector Association="ppaModel.FK_ToAlt1Points_Flights" />
-        <EntityTypeShape EntityType="ppaModel.FIRNotam" Width="1.5" PointX="29.25" PointY="113.75" />
-        <AssociationConnector Association="ppaModel.FK_FIRNotam_Flight" />
-        <AssociationConnector Association="ppaModel.FK_FIRNotamPartInfo_Notam" />
-        <EntityTypeShape EntityType="ppaModel.EtopsInformation" Width="1.5" PointX="4.5" PointY="149.75" />
-        <AssociationConnector Association="ppaModel.FK_EtopsAlternate_Parent" />
-        <AssociationConnector Association="ppaModel.FK_EtopsEntryPoint_Parent" />
-        <AssociationConnector Association="ppaModel.FK_EtopsETP_Parent" />
-        <AssociationConnector Association="ppaModel.FK_EtopsExitPoint_Parent" />
-        <AssociationConnector Association="ppaModel.FK_EtopsLimit_Parent" />
-        <AssociationConnector Association="ppaModel.FK_EtopsProfile_Parent" />
-        <AssociationConnector Association="ppaModel.fk_etopw_etop" />
-        <AssociationConnector Association="ppaModel.FK_Flight_EtopsInformation" />
-        <EntityTypeShape EntityType="ppaModel.DEPTaf" Width="1.5" PointX="24.75" PointY="104.5" />
-        <EntityTypeShape EntityType="ppaModel.DESTTaf" Width="1.5" PointX="13.375" PointY="10" />
-        <AssociationConnector Association="ppaModel.FK_Flight_Taf" />
-        <AssociationConnector Association="ppaModel.FK_Flight_Taf2" />
-        <EntityTypeShape EntityType="ppaModel.AdequateNotam" Width="1.5" PointX="29.25" PointY="85.5" />
-        <AssociationConnector Association="ppaModel.FK_AdequateNotam_Flight" />
-        <AssociationConnector Association="ppaModel.FK_AdequateNotamPartInfo_Notam" />
+        <AssociationConnector Association="ppaModel.fk_plan_flt_flt" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
