@@ -12,19 +12,15 @@ namespace ApiWorld.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class OFPImportProp
+    public partial class plan_flight
     {
         public int Id { get; set; }
-        public int OFPId { get; set; }
-        public string PropName { get; set; }
-        public string PropValue { get; set; }
-        public string PropType { get; set; }
-        public string User { get; set; }
-        public string DateUpdate { get; set; }
-        public Nullable<decimal> DateUpdateLocal { get; set; }
-        public string Remark { get; set; }
-        public string Identifier { get; set; }
+        public int flight_id { get; set; }
+        public int plan_id { get; set; }
+        public Nullable<System.DateTime> date_create { get; set; }
+        public string remark { get; set; }
     
-        public virtual OFPImport OFPImport { get; set; }
+        public virtual Flight Flight { get; set; }
+        public virtual FlightInformation FlightInformation { get; set; }
     }
 }

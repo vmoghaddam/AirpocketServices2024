@@ -14,6 +14,13 @@ namespace ApiWorld.Models
     
     public partial class OFPImport
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public OFPImport()
+        {
+            this.OFPPoints = new HashSet<OFPPoint>();
+            this.OFPImportProps = new HashSet<OFPImportProp>();
+        }
+    
         public int Id { get; set; }
         public string FileName { get; set; }
         public string FlightNo { get; set; }
@@ -115,5 +122,11 @@ namespace ApiWorld.Models
         public Nullable<int> mod1 { get; set; }
         public Nullable<int> mod2 { get; set; }
         public string ralt { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<OFPPoint> OFPPoints { get; set; }
+        public virtual FlightInformation FlightInformation { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<OFPImportProp> OFPImportProps { get; set; }
     }
 }

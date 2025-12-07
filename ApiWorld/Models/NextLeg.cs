@@ -29,6 +29,5 @@ namespace ApiWorld.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Flight> Flights { get; set; }
-        public virtual Flight Flight { get; set; }
     }
 }

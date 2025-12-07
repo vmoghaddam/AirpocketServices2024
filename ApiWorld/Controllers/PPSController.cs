@@ -2,14 +2,17 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace ApiWorld.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class PPSController : ApiController
     {
         [Route("api/pps/test")]
@@ -17,7 +20,7 @@ namespace ApiWorld.Controllers
         {
             try
             {
-               
+
                 pps.EfbService pps_ins = new pps.EfbService();
                 var session_id = pps_ins.GetSessionID("ArmeniaAirways", "J8V14HNHK", "AMWINTEGRATION", "i$qn719e");
                 var _flt = pps_ins.GetFlight(session_id, 9300840, false, false, false, false, "kg");
@@ -45,13 +48,35 @@ namespace ApiWorld.Controllers
             }
 
         }
+        string get_tme(int n)
+        {
+            var hh = n / 60;
+            var mm = n % 60;
+            //"TME": "00:00:00.0000000",
+            return hh.ToString().PadLeft(2, '0') + ":" + mm.ToString().PadLeft(2, '0') + ":" + "00.0000000";
 
+        }
 
-        [Route("api/pps/test/save")]
-        public async Task<IHttpActionResult> GetPPSTestSave()
+        [Route("api/pps/status/{fltid}")]
+        [HttpGet]
+        public async Task<IHttpActionResult> GeOfpStatus(int fltid)
+        {
+            ppa_entities context = new ppa_entities();
+            var fp=  context.Flights.Where(q => q.FlightId == fltid).FirstOrDefault();
+            if (fp == null)
+                return Ok(false);
+            return Ok(true);
+        }
+
+        [Route("api/pps/save/{fltid}")]
+        [HttpGet]
+        public async Task<IHttpActionResult> GetPPSTestSave(int fltid)
         {
             try
             {
+                //var file_path = @"C:\Users\vahid\Desktop\amw\OFP\";
+                var file_path = @"C:\Inetpub\vhosts\amwaero.tech\efb.amwaero.tech\upload\ofp\";
+                var flight_id = fltid; //582875;
                 var plan = new OFPImport()
                 {
                     DateCreate = DateTime.Now,
@@ -62,24 +87,114 @@ namespace ApiWorld.Controllers
                     //Destination = flight.ToAirportICAO,
                     //User = "airpocket",
                     //Text = rawText,
-
+                    FlightId = flight_id,
 
 
                 };
                 ppa_entities context = new ppa_entities();
+                var ops_flight = context.FlightInformations.FirstOrDefault(q => q.ID == flight_id);
+                var ops_flight_std_date = ((DateTime)ops_flight.STD);
+
                 List<string> props = new List<string>();
                 pps.EfbService pps_ins = new pps.EfbService();
                 var session_id = pps_ins.GetSessionID("ArmeniaAirways", "J8V14HNHK", "AMWINTEGRATION", "i$qn719e");
-                var flts = pps_ins.GetSTDFlightList(session_id, new DateTime(2025, 11, 29), new DateTime(2025, 12, 1));
-                //var eeee=pps_ins.GetEff_FullPackage(session_id, flts.Items[0].ID, "kg");
+                var flts = pps_ins.GetSTDFlightList(session_id, ops_flight_std_date, ops_flight_std_date);
 
-
-
-                var flts2 = pps_ins.GetFlightListSearch(session_id, new DateTime(2025, 9, 1), new DateTime(2025, 11, 17), new DateTime(2025, 9, 1)
-                    , null, false, null, null, null, null);
+                if (flts == null || flts.Items.Count() == 0)
+                {
+                    return Ok(false);
+                }
                 pps.Flight flt_info = pps_ins.GetFlight(session_id, flts.Items[0].ID, true, true, true, true, "kg");
 
-                Models.Flight db_flight = new Flight();
+                //var eeee=pps_ins.GetEff_FullPackage(session_id, flts.Items[0].ID, "kg");
+
+                //var file_prefix = flt_info.ID + "_" + ops_flight_std_date.ToString("yyyy-MM-dd_HHmm") + "_" + ops_flight.FlightNumber;
+                var file_prefix = flight_id + "_";
+
+                //var flts2 = pps_ins.GetFlightListSearch(session_id, new DateTime(2025, 9, 1), new DateTime(2025, 11, 17), new DateTime(2025, 9, 1)
+                //    , null, false, null, null, null, null);
+
+
+                //  var package=pps_ins.GetEff_FullPackage(session_id, flt_info.ID, "kg").bArray;
+                //  File.WriteAllBytes(file_path+ @"packages\package_" + flt_info.ID+"_"+ops_flight_std_date.ToString("yyyy-MM-dd_HHmm")+"_"+ops_flight.FlightNumber+".eff", package);
+
+                //var docs = pps_ins.GetFlightDocumentsMeta(session_id, flt_info.ID).Documents;
+                //foreach(var x in docs)
+                //{
+                //    var pdf_id = x.Identifier;
+                //    var pdf = pps_ins.GetFlightDocument(session_id, pdf_id).ByteArray;
+                //    //File.WriteAllBytes(file_path + @"documents\doc_" + flt_info.ID + "_" + ops_flight_std_date.ToString("yyyy-MM-dd_HHmm") + "_" + ops_flight.FlightNumber + ".eff", pdf);
+                //    File.WriteAllBytes(file_path + @"documents\"+x.Identifier  + ".pdf", pdf);
+
+                //}try{
+                try
+                {
+                    File.WriteAllBytes(file_path + @"atc\" + "atc_" + file_prefix + ".pdf", pps_ins.GetPDF_ATC(session_id, flt_info.ID).bArray);
+                    File.WriteAllBytes(file_path + @"log\" + "log_" + file_prefix + ".pdf", pps_ins.GetPDF_Logstring(session_id, flt_info.ID).bArray);
+                    File.WriteAllBytes(file_path + @"notam\" + "notam_" + file_prefix + ".pdf", pps_ins.GetPDF_NOTAMs(session_id, flt_info.ID, false).bArray);
+                    File.WriteAllBytes(file_path + @"wx\" + "wx_" + file_prefix + ".pdf", pps_ins.GetPDF_WX(session_id, flt_info.ID, false).bArray);
+
+                    var wind_def_fl = pps_ins.GetRSChart(session_id, flt_info.ID, true, false, false, false, false, false, false).Content;
+                    File.WriteAllBytes(file_path + @"chart\" + "wind_fl_def_" + file_prefix + ".pdf", wind_def_fl);
+
+                    var wind_low_fl = pps_ins.GetRSChart(session_id, flt_info.ID, false, true, false, false, false, false, false).Content;
+                    File.WriteAllBytes(file_path + @"chart\" + "wind_fl_low_" + file_prefix + ".pdf", wind_low_fl);
+
+                    var wind_high_fl = pps_ins.GetRSChart(session_id, flt_info.ID, false, false, true, false, false, false, false).Content;
+                    File.WriteAllBytes(file_path + @"chart\" + "wind_fl_high_" + file_prefix + ".pdf", wind_high_fl);
+
+                    var cross_section = pps_ins.GetRSChart(session_id, flt_info.ID, false, false, false, true, false, false, false).Content;
+                    File.WriteAllBytes(file_path + @"chart\" + "cross_section_" + file_prefix + ".pdf", cross_section);
+
+                    var swx_chart = pps_ins.GetRSChart(session_id, flt_info.ID, false, false, false, false, true, false, false).Content;
+                    File.WriteAllBytes(file_path + @"chart\" + "swx_" + file_prefix + ".pdf", swx_chart);
+
+                    var etps_chart = pps_ins.GetRSChart(session_id, flt_info.ID, false, false, false, false, false, true, false).Content;
+                    File.WriteAllBytes(file_path + @"chart\" + "etops_" + file_prefix + ".pdf", etps_chart);
+
+                    var pax_chart = pps_ins.GetRSChart(session_id, flt_info.ID, false, false, false, false, false, false, true).Content;
+                    File.WriteAllBytes(file_path + @"chart\" + "pax_" + file_prefix + ".pdf", pax_chart);
+                }
+                catch (Exception ex)
+                {
+
+                }
+                // var apt=pps_ins.GetAirport(session_id, "UDYZ");
+
+                // var wx = pps_ins.GetPDF_WX(session_id, flt_info.ID, false).bArray;
+                // File.WriteAllBytes(@"C:\Users\vahid\Desktop\amw\OFP\file.pdf", wx);
+
+                // var rs=pps_ins.GetRSChart(session_id, flt_info.ID, true, true, true, true, true, true, true).Content;
+
+
+                //  File.WriteAllBytes(@"C:\Users\vahid\Desktop\amw\OFP\rs.pdf", rs);
+
+
+                Models.Flight db_flight = new Flight() { FlightId = flight_id };
+
+                var pf_junction = new plan_flight()
+                {
+                    Flight = db_flight,
+                    FlightInformation = ops_flight,
+                };
+
+                var exist_flt = context.Flights.Where(q => q.FlightId == flight_id).ToList();
+                var exist_ofp=context.OFPImports.Where(q=>q.FlightId == flight_id).ToList();
+                context.Flights.RemoveRange(exist_flt);
+                context.OFPImports.RemoveRange(exist_ofp);
+                var atcdata = flt_info.ATCData;
+                var atc_prts = new List<string>();
+                atc_prts.Add("(FPL-" + flt_info.ATCData.ATCID + "-" + flt_info.ATCData.ATCRule + flt_info.ATCData.ATCType);
+                atc_prts.Add("-" + atcdata.ATCTOA + "/" + atcdata.ATCWake + "-" + atcdata.ATCEqui + "/" + atcdata.ATCSSR);
+                atc_prts.Add("-" + atcdata.ATCDep + atcdata.ATCTime);
+                atc_prts.Add("-" + atcdata.ATCSpeed + atcdata.ATCFL + " " + atcdata.ATCRoute);
+                atc_prts.Add("-" + atcdata.ATCDest + atcdata.ATCEET + " " + atcdata.ATCAlt1 + " " + atcdata.ATCAlt2);
+                atc_prts.Add("-" + atcdata.ATCInfo);
+                atc_prts.Add("-E/" + atcdata.ATCEndu + " " + "P/" + atcdata.ATCPers + " " + "R/" + atcdata.ATCRadi + " " + "J/" + atcdata.ATCJack);
+                atc_prts.Add("A/" + atcdata.ATCAcco);
+                atc_prts.Add("C/" + atcdata.ATCPIC + ")");
+
+                plan.ATC = String.Join("<br>", atc_prts);
 
 
                 if (flt_info.Messages != null)
@@ -317,6 +432,8 @@ namespace ApiWorld.Controllers
                 // ALT2Notam              // complex - skip
                 // RoutePoints            // complex - skip
                 var idx = 0;
+                List<PSSPoint> main_points = new List<PSSPoint>();
+                //2025-12-03
                 foreach (var x in flt_info.RoutePoints)
                 {
                     var _p = new RoutePoint()
@@ -363,6 +480,60 @@ namespace ApiWorld.Controllers
 
 
                     };
+                    var _key = "mpln_WAP_" + _p.IDENT;
+                    PSSPoint point = new PSSPoint()
+                    {
+
+                        ACCDIST = x.ACCDIST,
+                        ACCTIME = x.ACCTIME,
+                        ClimbDescent = x.ClimbDescent,
+                        DistRemaining = x.DistRemaining,
+                        FIR = x.FIR,
+                        FL = x.FL,
+                        Frequency = Convert.ToDecimal(x.Frequency),
+                        FuelFlow = x.FuelFlow,
+                        FuelFlowPerEng = Convert.ToDecimal(x.FuelFlowPerEng),
+                        FuelRemaining = Convert.ToDecimal(x.FuelRemaining),
+                        FuelUsed = Convert.ToDecimal(x.FuelUsed),
+                        GroundSpeed = x.GroundSpeed,
+                        HLAEntryExit = x.HLAEntryExit,
+                        IDENT = x.IDENT,
+                        ISA = x.ISA,
+                        LAT = Convert.ToDecimal(x.LAT),
+                        LegAWY = x.LegAWY,
+                        LegCAT = x.LegCAT,
+                        LegCourse = Convert.ToDecimal(x.LegCourse),
+                        LegDistance = x.LegDistance,
+                        LegFuel = Convert.ToDecimal(x.LegFuel),
+                        LegName = x.LegName,
+                        LegTime = x.LegTime,
+                        LON = Convert.ToDecimal(x.LON),
+                        MagCourse = Convert.ToDecimal(x.MagCourse),
+                        MagneticHeading = Convert.ToDecimal(x.MagneticHeading),
+                        MagneticTrack = x.MagneticTrack,
+                        MinimumEnrouteAltitude = x.MinimumEnrouteAltitude,
+                        MinReqFuel = Convert.ToDecimal(x.MinReqFuel),
+                        MORA = x.MORA,
+                        Temperature = x.Temperature,
+                        TimeRemaining = x.TimeRemaining,
+                        TrueAirSpeed = x.TrueAirSpeed,
+                        TrueHeading = Convert.ToDecimal(x.TrueHeading),
+                        TrueTrack = x.TrueTrack,
+                        VARIATION = x.VARIATION,
+                        Vol = x.Vol,
+                        Wind = x.Wind,
+                        WindComponent = x.WindComponent,
+                        PlanType = "MAIN",
+                        _key = _key,
+                        FRE = round_int(x.FuelRemaining).ToString(),
+                        FUS = round_int(x.FuelUsed).ToString(),
+                        TME = get_tme(x.LegTime),
+                        TTM = get_tme(x.ACCTIME)
+
+                    };
+                    // "TME": "00:00:00.0000000",
+                    main_points.Add(point);
+
                     if (x.FlightLevelWinds != null)
                         foreach (var w in x.FlightLevelWinds)
                             _p.FlightLevelWinds.Add(new FlightLevelWind()
@@ -375,8 +546,8 @@ namespace ApiWorld.Controllers
 
                             });
                     db_flight.RoutePoints.Add(_p);
-                    var _key = "mpln_WAP_" + _p.IDENT;
-                    db_flight.OFPImportProps.Add(new OFPImportProp()
+
+                    plan.OFPImportProps.Add(new OFPImportProp()
                     {
                         PropName = "prop_" + _key + "_eta_" + idx,
                         DateUpdate = DateTime.UtcNow.ToString("yyyyMMddHHmm"),
@@ -387,7 +558,7 @@ namespace ApiWorld.Controllers
                     });
                     //props.Add("prop_" + _key + "_eta_" + idx);
                     //props.Add("prop_" + _key + "_ata_" + idx);
-                    db_flight.OFPImportProps.Add(new OFPImportProp()
+                    plan.OFPImportProps.Add(new OFPImportProp()
                     {
                         PropName = "prop_" + _key + "_ata_" + idx,
                         DateUpdate = DateTime.UtcNow.ToString("yyyyMMddHHmm"),
@@ -397,7 +568,7 @@ namespace ApiWorld.Controllers
 
                     });
                     //props.Add("prop_" + _key + "_rem_" + idx);
-                    db_flight.OFPImportProps.Add(new OFPImportProp()
+                    plan.OFPImportProps.Add(new OFPImportProp()
                     {
                         PropName = "prop_" + _key + "_rem_" + idx,
                         DateUpdate = DateTime.UtcNow.ToString("yyyyMMddHHmm"),
@@ -407,7 +578,7 @@ namespace ApiWorld.Controllers
 
                     });
                     //props.Add("prop_" + _key + "_usd_" + idx);
-                    db_flight.OFPImportProps.Add(new OFPImportProp()
+                    plan.OFPImportProps.Add(new OFPImportProp()
                     {
                         PropName = "prop_" + _key + "_usd_" + idx,
                         DateUpdate = DateTime.UtcNow.ToString("yyyyMMddHHmm"),
@@ -632,6 +803,7 @@ namespace ApiWorld.Controllers
                         });
                 }
                 // Alt1Points             // complex - skip
+                var alt1_points = new List<PSSPoint>();
                 idx = 0;
                 if (flt_info.Alt1Points != null)
                 {
@@ -682,6 +854,57 @@ namespace ApiWorld.Controllers
 
 
                         };
+                        var _key = "apln_WAP_" + _p.IDENT;
+                        PSSPoint point = new PSSPoint()
+                        {
+                            ACCDIST = x.ACCDIST,
+                            ACCTIME = x.ACCTIME,
+                            ClimbDescent = x.ClimbDescent,
+                            DistRemaining = x.DistRemaining,
+                            FIR = x.FIR,
+                            FL = x.FL,
+                            Frequency = Convert.ToDecimal(x.Frequency),
+                            FuelFlow = x.FuelFlow,
+                            FuelFlowPerEng = Convert.ToDecimal(x.FuelFlowPerEng),
+                            FuelRemaining = Convert.ToDecimal(x.FuelRemaining),
+                            FuelUsed = Convert.ToDecimal(x.FuelUsed),
+                            GroundSpeed = x.GroundSpeed,
+                            HLAEntryExit = x.HLAEntryExit,
+                            IDENT = x.IDENT,
+                            ISA = x.ISA,
+                            LAT = Convert.ToDecimal(x.LAT),
+                            LegAWY = x.LegAWY,
+                            LegCAT = x.LegCAT,
+                            LegCourse = Convert.ToDecimal(x.LegCourse),
+                            LegDistance = x.LegDistance,
+                            LegFuel = Convert.ToDecimal(x.LegFuel),
+                            LegName = x.LegName,
+                            LegTime = x.LegTime,
+                            LON = Convert.ToDecimal(x.LON),
+                            MagCourse = Convert.ToDecimal(x.MagCourse),
+                            MagneticHeading = Convert.ToDecimal(x.MagneticHeading),
+                            MagneticTrack = x.MagneticTrack,
+                            MinimumEnrouteAltitude = x.MinimumEnrouteAltitude,
+                            MinReqFuel = Convert.ToDecimal(x.MinReqFuel),
+                            MORA = x.MORA,
+                            Temperature = x.Temperature,
+                            TimeRemaining = x.TimeRemaining,
+                            TrueAirSpeed = x.TrueAirSpeed,
+                            TrueHeading = Convert.ToDecimal(x.TrueHeading),
+                            TrueTrack = x.TrueTrack,
+                            VARIATION = x.VARIATION,
+                            Vol = x.Vol,
+                            Wind = x.Wind,
+                            WindComponent = x.WindComponent,
+                            PlanType = "ALT1",
+                            _key = _key,
+                            FRE = round_int(x.FuelRemaining).ToString(),
+                            FUS = round_int(x.FuelUsed).ToString(),
+                            TME = get_tme(x.LegTime),
+                            TTM = get_tme(x.ACCTIME)
+                        };
+
+                        alt1_points.Add(point);
                         if (x.FlightLevelWinds != null)
                             foreach (var w in x.FlightLevelWinds)
                             {
@@ -695,8 +918,8 @@ namespace ApiWorld.Controllers
                                 });
                             }
                         db_flight.Alt1Points.Add(_p);
-                        var _key = "apln_WAP_" + _p.IDENT;
-                        db_flight.OFPImportProps.Add(new OFPImportProp()
+
+                        plan.OFPImportProps.Add(new OFPImportProp()
                         {
                             PropName = "prop_" + _key + "_a1eta_" + idx,
                             DateUpdate = DateTime.UtcNow.ToString("yyyyMMddHHmm"),
@@ -707,7 +930,7 @@ namespace ApiWorld.Controllers
                         });
                         //props.Add("prop_" + _key + "_eta_" + idx);
                         //props.Add("prop_" + _key + "_ata_" + idx);
-                        db_flight.OFPImportProps.Add(new OFPImportProp()
+                        plan.OFPImportProps.Add(new OFPImportProp()
                         {
                             PropName = "prop_" + _key + "_a1ata_" + idx,
                             DateUpdate = DateTime.UtcNow.ToString("yyyyMMddHHmm"),
@@ -717,7 +940,7 @@ namespace ApiWorld.Controllers
 
                         });
                         //props.Add("prop_" + _key + "_rem_" + idx);
-                        db_flight.OFPImportProps.Add(new OFPImportProp()
+                        plan.OFPImportProps.Add(new OFPImportProp()
                         {
                             PropName = "prop_" + _key + "_a1rem_" + idx,
                             DateUpdate = DateTime.UtcNow.ToString("yyyyMMddHHmm"),
@@ -727,7 +950,7 @@ namespace ApiWorld.Controllers
 
                         });
                         //props.Add("prop_" + _key + "_usd_" + idx);
-                        db_flight.OFPImportProps.Add(new OFPImportProp()
+                        plan.OFPImportProps.Add(new OFPImportProp()
                         {
                             PropName = "prop_" + _key + "_a1usd_" + idx,
                             DateUpdate = DateTime.UtcNow.ToString("yyyyMMddHHmm"),
@@ -739,12 +962,15 @@ namespace ApiWorld.Controllers
                         idx++;
                     }
                 }
+
+                var alt2_points = new List<PSSPoint>();
                 // Alt2Points             // complex - skip
                 idx = 0;
                 if (flt_info.Alt2Points != null)
                 {
                     foreach (var x in flt_info.Alt2Points)
                     {
+
                         var _p = new Alt2Points()
                         {
                             ACCDIST = x.ACCDIST,
@@ -790,6 +1016,57 @@ namespace ApiWorld.Controllers
 
 
                         };
+                        var _key = "apln_WAP_" + _p.IDENT;
+                        PSSPoint point = new PSSPoint()
+                        {
+                            ACCDIST = x.ACCDIST,
+                            ACCTIME = x.ACCTIME,
+                            ClimbDescent = x.ClimbDescent,
+                            DistRemaining = x.DistRemaining,
+                            FIR = x.FIR,
+                            FL = x.FL,
+                            Frequency = Convert.ToDecimal(x.Frequency),
+                            FuelFlow = x.FuelFlow,
+                            FuelFlowPerEng = Convert.ToDecimal(x.FuelFlowPerEng),
+                            FuelRemaining = Convert.ToDecimal(x.FuelRemaining),
+                            FuelUsed = Convert.ToDecimal(x.FuelUsed),
+                            GroundSpeed = x.GroundSpeed,
+                            HLAEntryExit = x.HLAEntryExit,
+                            IDENT = x.IDENT,
+                            ISA = x.ISA,
+                            LAT = Convert.ToDecimal(x.LAT),
+                            LegAWY = x.LegAWY,
+                            LegCAT = x.LegCAT,
+                            LegCourse = Convert.ToDecimal(x.LegCourse),
+                            LegDistance = x.LegDistance,
+                            LegFuel = Convert.ToDecimal(x.LegFuel),
+                            LegName = x.LegName,
+                            LegTime = x.LegTime,
+                            LON = Convert.ToDecimal(x.LON),
+                            MagCourse = Convert.ToDecimal(x.MagCourse),
+                            MagneticHeading = Convert.ToDecimal(x.MagneticHeading),
+                            MagneticTrack = x.MagneticTrack,
+                            MinimumEnrouteAltitude = x.MinimumEnrouteAltitude,
+                            MinReqFuel = Convert.ToDecimal(x.MinReqFuel),
+                            MORA = x.MORA,
+                            Temperature = x.Temperature,
+                            TimeRemaining = x.TimeRemaining,
+                            TrueAirSpeed = x.TrueAirSpeed,
+                            TrueHeading = Convert.ToDecimal(x.TrueHeading),
+                            TrueTrack = x.TrueTrack,
+                            VARIATION = x.VARIATION,
+                            Vol = x.Vol,
+                            Wind = x.Wind,
+                            WindComponent = x.WindComponent,
+                            PlanType = "ALT2",
+                            _key = _key,
+                            FRE = round_int(x.FuelRemaining).ToString(),
+                            FUS = round_int(x.FuelUsed).ToString(),
+                            TME = get_tme(x.LegTime),
+                            TTM = get_tme(x.ACCTIME)
+                        };
+                        alt2_points.Add(point);
+
                         if (x.FlightLevelWinds != null)
                             foreach (var w in x.FlightLevelWinds)
                             {
@@ -803,8 +1080,8 @@ namespace ApiWorld.Controllers
                                 });
                             }
                         db_flight.Alt2Points.Add(_p);
-                        var _key = "apln_WAP_" + _p.IDENT;
-                        db_flight.OFPImportProps.Add(new OFPImportProp()
+
+                        plan.OFPImportProps.Add(new OFPImportProp()
                         {
                             PropName = "prop_" + _key + "_a2eta_" + idx,
                             DateUpdate = DateTime.UtcNow.ToString("yyyyMMddHHmm"),
@@ -815,7 +1092,7 @@ namespace ApiWorld.Controllers
                         });
                         //props.Add("prop_" + _key + "_eta_" + idx);
                         //props.Add("prop_" + _key + "_ata_" + idx);
-                        db_flight.OFPImportProps.Add(new OFPImportProp()
+                        plan.OFPImportProps.Add(new OFPImportProp()
                         {
                             PropName = "prop_" + _key + "_a2ata_" + idx,
                             DateUpdate = DateTime.UtcNow.ToString("yyyyMMddHHmm"),
@@ -825,7 +1102,7 @@ namespace ApiWorld.Controllers
 
                         });
                         //props.Add("prop_" + _key + "_rem_" + idx);
-                        db_flight.OFPImportProps.Add(new OFPImportProp()
+                        plan.OFPImportProps.Add(new OFPImportProp()
                         {
                             PropName = "prop_" + _key + "_a2rem_" + idx,
                             DateUpdate = DateTime.UtcNow.ToString("yyyyMMddHHmm"),
@@ -835,7 +1112,7 @@ namespace ApiWorld.Controllers
 
                         });
                         //props.Add("prop_" + _key + "_usd_" + idx);
-                        db_flight.OFPImportProps.Add(new OFPImportProp()
+                        plan.OFPImportProps.Add(new OFPImportProp()
                         {
                             PropName = "prop_" + _key + "_a2usd_" + idx,
                             DateUpdate = DateTime.UtcNow.ToString("yyyyMMddHHmm"),
@@ -1602,112 +1879,118 @@ namespace ApiWorld.Controllers
 
                 other.Add(new fuelPrm() { prm = "MACH", value = db_flight.CruiseProfile });
                 props.Add("prop_mach");
-               // plan.MCI= db_flight.CruiseProfile
+                // plan.MCI= db_flight.CruiseProfile
                 other.Add(new fuelPrm() { prm = "FL", value = db_flight.Fl.ToString() });
                 props.Add("prop_fl");
                 plan.FLL = Convert.ToDecimal(db_flight.Fl);
-                
+
                 other.Add(new fuelPrm() { prm = "DOW", value = (flt_info.EmptyWeight).ToString() });
                 props.Add("prop_dow");
                 plan.DOW = Convert.ToDecimal(flt_info.EmptyWeight);//Convert.ToDecimal( db_flight.Load1.DryOperating.DryOperatingWeight);
-                
-                
-                other.Add(new fuelPrm() { prm = "PLD", value = flt_info.TrafficLoad });
-                plan.PLD =  flt_info.TrafficLoad ;
+
+
+                other.Add(new fuelPrm() { prm = "PLD", value = round_int(Convert.ToDouble(flt_info.TrafficLoad)).ToString() });
+                plan.PLD = round_int(Convert.ToDouble(flt_info.TrafficLoad)).ToString();
                 props.Add("prop_pld");
                 //db_flight.zfm
 
 
-                other.Add(new fuelPrm() { prm = "EZFW", value = Math.Round( Convert.ToDouble( flt_info.ZFM)).ToString() });
+                other.Add(new fuelPrm() { prm = "EZFW", value = Math.Round(Convert.ToDouble(flt_info.ZFM)).ToString() });
                 props.Add("prop_ezfw");
                 plan.EZFW = Math.Round(Convert.ToDouble(flt_info.ZFM)).ToString();
-                other.Add(new fuelPrm() { prm = "MZFW", value = Math.Round( flt_info.MaxZFM).ToString() });
+                other.Add(new fuelPrm() { prm = "MZFW", value = Math.Round(flt_info.MaxZFM).ToString() });
                 plan.mzfw = (int)Math.Round(flt_info.MaxZFM, MidpointRounding.AwayFromZero);
                 props.Add("prop_mzfw");
-               
-                other.Add(new fuelPrm() { prm = "ETOW", value = flt_info.ActTOW.ToString() });
+
+                other.Add(new fuelPrm() { prm = "ETOW", value = round_int(Convert.ToDouble(flt_info.ActTOW)).ToString() });
                 props.Add("prop_etow");
-                other.Add(new fuelPrm() { prm = "MTOW", value = flt_info.MaxTOM.ToString() });
+                other.Add(new fuelPrm() { prm = "MTOW", value = round_int(Convert.ToDouble(flt_info.MaxTOM)).ToString() });
                 props.Add("prop_mtow");
+                plan.MTOW = round_int(Convert.ToDouble(flt_info.MaxTOM)).ToString();
+                plan.ETOW = round_int(Convert.ToDouble(flt_info.ActTOW)).ToString();
 
-                other.Add(new fuelPrm() { prm = "ELDW", value = fff.FlightPlan.WeightHeader.LandingWeight.EstimatedWeight.ToString() });
+                other.Add(new fuelPrm() { prm = "ELDW", value = round_int(Convert.ToDouble(flt_info.Elw)).ToString() });
                 props.Add("prop_eldw");
-                other.Add(new fuelPrm() { prm = "MLDW", value = db_flight.MaxLM.ToString() });
+                other.Add(new fuelPrm() { prm = "MLDW", value = round_int(Convert.ToDouble(flt_info.MaxLM)).ToString() });
                 props.Add("prop_mldw");
+                plan.ELDW = round_int(Convert.ToDouble(flt_info.Elw)).ToString();
+                plan.MLDW = round_int(Convert.ToDouble(flt_info.MaxLM)).ToString();
 
 
 
-               
-                    plan.RTM = f1.FlightPlanHeader.RouteInformation.RouteDescription;
-                
-                
-                    plan.RTA = "";
-                
-                
-                    plan.RTB = "";
+
+
+                plan.RTM = flt_info.RouteStrings.ToDest;
+
+
+
+                plan.RTA = flt_info.RouteStrings.ToAlt1;
+
+
+                plan.RTB = flt_info.RouteStrings.ToAlt2;
                 // var rtt = infoRows.FirstOrDefault(q => q.StartsWith("RTT")).Split('=')[1];
-             
-                    plan.RTT = "";
+
+                plan.RTT = flt_info.RouteStrings.TOAlt;
                 // var thm = infoRows.FirstOrDefault(q => q.StartsWith("THM")).Split('=')[1];
-                
-                    plan.THM = "FMACH";
+
+                plan.THM = "FMACH";
                 // var unt = infoRows.FirstOrDefault(q => q.StartsWith("UNT")).Split('=')[1];
-               
-                    plan.UNT = "KGS";
+
+                plan.UNT = "KGS";
 
 
-               
-                    plan.CRW = "2/4";
 
-                plan.PLD = db_flight.Load1.Payload.MaxPayload.ToString();
-                // var ezfw = infoRows.FirstOrDefault(q => q.StartsWith("EZFW")).Split('=')[1];
+                plan.CRW = "2/4";
 
-                plan.EZFW = db_flight.ZFM.ToString();
-                // var etow = infoRows.FirstOrDefault(q => q.StartsWith("ETOW")).Split('=')[1];
+                //plan.PLD = db_flight.Load1.Payload.MaxPayload.ToString();
+                //// var ezfw = infoRows.FirstOrDefault(q => q.StartsWith("EZFW")).Split('=')[1];
 
-                plan.ETOW = fff.FlightPlan.WeightHeader.TakeoffWeight.EstimatedWeight.ToString();
-                //  var eldw = infoRows.FirstOrDefault(q => q.StartsWith("ELDW")).Split('=')[1];
+                //plan.EZFW = db_flight.ZFM.ToString();
+                //// var etow = infoRows.FirstOrDefault(q => q.StartsWith("ETOW")).Split('=')[1];
 
-                plan.ELDW = fff.FlightPlan.WeightHeader.LandingWeight.EstimatedWeight.ToString();
-                // var eta = infoRows.FirstOrDefault(q => q.StartsWith("ETA")).Split('=')[1];
+                //plan.ETOW = fff.FlightPlan.WeightHeader.TakeoffWeight.EstimatedWeight.ToString();
+                ////  var eldw = infoRows.FirstOrDefault(q => q.StartsWith("ELDW")).Split('=')[1];
 
-                plan.ETA = "";
+                //plan.ELDW = fff.FlightPlan.WeightHeader.LandingWeight.EstimatedWeight.ToString();
+                //// var eta = infoRows.FirstOrDefault(q => q.StartsWith("ETA")).Split('=')[1];
+
+                plan.ETA = flt_info.ETA.ToString("HH:mm");
 
 
-                plan.ETD = "";
+                plan.ETD = flt_info.STD.ToString("HH:mm");
 
-               
-                plan.FPF = db_flight.Correction1TON.ToString();
 
-                
-                    //plan.MSH = MSH;
-                
-                    //plan.CM1 = CM1;
-               
-                    //plan.CM2 = CM2;
-               
-                    //plan.DSPNAME = DSP;
+                plan.FPF = "FUEL BURN ADJUSTMENT FOR 1000KGS INCREASE IN T/O WT " + db_flight.Correction1TON.ToString() + " KG";
 
-                
-                    plan.ATC ="";
 
-                
-                    plan.MTOW = db_flight.MaxTOM.ToString();
-               
-                    plan.MLDW = db_flight.MaxLM.ToString();
+                //plan.MSH = MSH;
 
-                plan.mzfw = 0; // db_flight.ZFM.ToString();
-                
-                    plan.ELDP = "";
-                
-                    plan.ELDS = "";
-               
-                    plan.ELAL = "";
-                
-                    plan.ELBL = "";
+                //plan.CM1 = CM1;
+
+                //plan.CM2 = CM2;
+
+                //plan.DSPNAME = DSP;
+
+
+                //plan.ATC = "";
+
+
+                // plan.MTOW = db_flight.MaxTOM.ToString();
+
+                // plan.MLDW = db_flight.MaxLM.ToString();
+
+                // plan.mzfw = 0; // db_flight.ZFM.ToString();
+
+                plan.ELDP = "";
+
+                plan.ELDS = "";
+
+                plan.ELAL = "";
+
+                plan.ELBL = "";
 
                 plan.mod1_stn = "";
-                plan.mod1 =0;
+                plan.mod1 = 0;
 
                 plan.mod2_stn = "";
                 plan.mod2 = 0;
@@ -1738,20 +2021,20 @@ namespace ApiWorld.Controllers
 
 
 
-                other.Add(new fuelPrm() { prm = "ETD", value = ((DateTime)db_flight.LocalTime1.LocalTimeDeparture.ETD).ToString("HH:mm") });
+                other.Add(new fuelPrm() { prm = "ETD", value = flt_info.STD.ToString("HH:mm") });
                 props.Add("prop_etd");
 
-                other.Add(new fuelPrm() { prm = "ETA", value = ((DateTime)db_flight.LocalTime1.LocalTimeDestination.ETA).ToString("HH:mm") });
+                other.Add(new fuelPrm() { prm = "ETA", value = flt_info.ETA.ToString("HH:mm") });
                 props.Add("prop_eta");
 
-                other.Add(new fuelPrm() { prm = "RTM", value = f1.FlightPlanHeader.RouteInformation.RouteDescription });
+                other.Add(new fuelPrm() { prm = "RTM", value = flt_info.RouteStrings.ToDest });
                 props.Add("prop_rtm");
 
-                other.Add(new fuelPrm() { prm = "RTA", value = "" });
+                other.Add(new fuelPrm() { prm = "RTA", value = flt_info.RouteStrings.ToAlt1 });
                 props.Add("prop_rta");
-                other.Add(new fuelPrm() { prm = "RTB", value = "" });
+                other.Add(new fuelPrm() { prm = "RTB", value = flt_info.RouteStrings.ToAlt2 });
                 props.Add("prop_rtb");
-                other.Add(new fuelPrm() { prm = "RTT", value = "" });
+                other.Add(new fuelPrm() { prm = "RTT", value = flt_info.RouteStrings.TOAlt });
                 props.Add("prop_rtt");
 
                 other.Add(new fuelPrm() { prm = "THM", value = "FMACH" });
@@ -2061,7 +2344,7 @@ namespace ApiWorld.Controllers
 
 
                 foreach (var prop in props)
-                    db_flight.OFPImportProps.Add(new OFPImportProp()
+                    plan.OFPImportProps.Add(new OFPImportProp()
                     {
                         DateUpdate = dtupd,
                         PropName = prop,
@@ -2072,81 +2355,118 @@ namespace ApiWorld.Controllers
 
                 var fuellll = f1.FuelHeader.TripFuel;
                 var min_to = db_flight.FUELMINTO;
-                
+
 
                 var mmdmd = flt_info.FUELMIN;
                 var mmdmd1 = flt_info.FUELMINTO;
 
                 var fuel = new List<fuelPrm>()
                 {
-                     new fuelPrm { prm = "TRIP FUEL",   time = to_fuel_duration(f1.FuelHeader.TripFuel.Duration.Value), value = db_flight.TripFuel.ToString(),  _key = "fuel_tripfuel" },
-    new fuelPrm { prm = "CONT[5%]",    time = db_flight.TIMECONT , value = db_flight.FUELCONT.ToString(),   _key = "fuel_cont05" },
-    //new fuelPrm { prm = "ALTN 1",      time = to_fuel_duration(f1.FuelHeader.AlternateFuels[0].Duration.Value), value = "3373",  _key = "fuel_altn1" },
-   // new fuelPrm { prm = "ALTN 2",      time = "00:30:00.00000", value = "1715",  _key = "fuel_altn2" },
-    new fuelPrm { prm = "FINAL RES",   time =to_time((int) db_flight.FinalReserveMinutes ), value = db_flight.FinalReserveFuel.ToString(),  _key = "fuel_finalres" },
-    //new fuelPrm { prm = "ETOPS/ADDNL", time = "00:00:00.00000", value = "0",     _key = "fuel_etops/addnl" },
-    //new fuelPrm { prm = "OPS.EXTRA",   time = "00:00:00.00000", value = "1",     _key = "fuel_ops.extra" },
-    new fuelPrm { prm = "MIN TOF",     time =db_flight.TIMEMINTO , value =db_flight.FUELMINTO,  _key = "fuel_mintof" },
-   // new fuelPrm { prm = "TANKERING",   time = "00:00:00.00000", value = "0",     _key = "fuel_tankering" },
-    new fuelPrm { prm = "TAXI",        time = db_flight.TIMETAXI, value = db_flight.FUELTAXI,   _key = "fuel_taxi" },
-   // new fuelPrm { prm = "TOTAL FUEL",  time = to_fuel_duration(f1.FuelHeader.BlockFuel.Duration.Value), value = "9500",  _key = "fuel_totalfuel" },
-   // new fuelPrm { prm = "EZFW",        time = "00:00:00.00000", value = "43744", _key = "fuel_ezfw" },
-    //new fuelPrm { prm = "ETOW",        time = "00:00:00.00000", value = "53044", _key = "fuel_etow" },
-   // new fuelPrm { prm = "ELW",         time = "00:00:00.00000", value = "48514", _key = "fuel_elw" },
-    new fuelPrm { prm = "REQ",         time = null,             value = null,    _key = "fuel_req" },
+                     new fuelPrm { prm = "TRIP FUEL",   time = to_fuel_duration(f1.FuelHeader.TripFuel.Duration.Value),
+                         value =round_int( flt_info.TripFuel).ToString(),  _key = "fuel_tripfuel" },
 
-    new fuelPrm { prm = "HOLD",         time = to_time((int)db_flight.HoldTime),             value = db_flight.HoldFuel.ToString(),    _key = "fuel_req" },
-    new fuelPrm { prm = "COMP",         time =  db_flight.TIMECOMP ,             value = db_flight.FUELCOMP,    _key = "fuel_req" }
+
+                     new fuelPrm { prm = "CONT[5%]",    time = db_flight.TIMECONT ,
+                         value =round_int(Convert.ToDouble( flt_info.FUELCONT)).ToString(),   _key = "fuel_cont05" },
+                     new fuelPrm() { prm = "ALTN 1", time = to_time(flt_info.AltTime),
+                         value = flt_info.AltFuel.ToString(), _key = "fuel_altn1" },
+                     new fuelPrm() { prm = "ALTN 2", time = to_time(flt_info.Alt2Time), value = flt_info.Alt2Fuel.ToString(), _key = "fuel_altn2" },
+                     new fuelPrm { prm = "HOLD",         time = to_time((int)db_flight.HoldTime),             value =round_int( Convert.ToDouble( flt_info.HoldFuel)).ToString()  ,    _key = "fuel_hold" },
                 };
+                if (f1.FuelHeader.AdditionalFuels != null && f1.FuelHeader.AdditionalFuels.Count() > 0)
+                    fuel.Add(new fuelPrm { prm = "ADDI", time = to_time(flt_info.AddFuelMinutes), value = flt_info.AddFuel.ToString(), _key = "fuel_addi" });
+                fuel.Add(new fuelPrm { prm = "COMP", time = db_flight.TIMECOMP, value = db_flight.FUELCOMP, _key = "fuel_comp" });
+                fuel.Add(new fuelPrm
+                {
+                    prm = "REQD",
+                    time = db_flight.TIMEMINTO,
+                    value = round_int(Convert.ToDouble(flt_info.FUELMINTO)).ToString(),
+                    _key = "fuel_reqd"
+                });
+                fuel.Add(new fuelPrm
+                {
+                    prm = "TAXI",
+                    time = db_flight.TIMETAXI,
+                    value = round_int(Convert.ToDouble(flt_info.FUELTAXI)).ToString(),
+                    _key = "fuel_taxi"
+                });
+                if (f1.FuelHeader.ExtraFuels != null && f1.FuelHeader.ExtraFuels.Count() > 0)
+                    fuel.Add(new fuelPrm
+                    {
+                        prm = "XTRA",
+                        time = flt_info.TIMEEXTRA,
+                        value = round_int(Convert.ToDouble(flt_info.FUELEXTRA)).ToString(),
+                        _key = "fuel_xtra"
+                    });
+
+                // fuel.Add(new fuelPrm { prm = "FINAL RES", time = to_time((int)db_flight.FinalReserveMinutes), value = flt_info.FinalReserveFuel.ToString(), _key = "fuel_finalres" });
+
+                fuel.Add(new fuelPrm
+                {
+                    prm = "TOTAL",
+                    time = db_flight.TIMEACT,
+                    value = round_int(Convert.ToDouble(flt_info.FUELACT)).ToString(),
+                    _key = "fuel_total"
+                });
+
+
+
+                ops_flight.OFPTRIPFUEL = round_int(flt_info.TripFuel);
+                ops_flight.OFPCONTFUEL = round_int(Convert.ToDouble(flt_info.FUELCONT));
+                ops_flight.OFPALT1FUEL = flt_info.AltFuel;
+                ops_flight.OFPALT2FUEL = flt_info.Alt2Fuel;
+                ops_flight.OFPMINTOFFUEL = round_int(Convert.ToDouble(flt_info.FUELMINTO));
+                ops_flight.OFPTANKERINGFUEL = round_int(Convert.ToDouble(flt_info.FUELEXTRA));
+                ops_flight.OFPTAXIFUEL = round_int(Convert.ToDouble(flt_info.FUELTAXI));
+                ops_flight.OFPTOTALFUEL = round_int(Convert.ToDouble(flt_info.FUELACT));
+
+                ops_flight.ALT1 = flt_info.ALT1;
+                ops_flight.ALT2 = flt_info.ALT2;
+
+                plan.FPTripFuel = Convert.ToDecimal(flt_info.TripFuel);
+                //plan.MCI = 0;
+                plan.FuelALT1 = flt_info.AltFuel;
+                plan.FuelALT2 = flt_info.Alt2Fuel;
+                plan.FuelTAXI = round_int(Convert.ToDouble(flt_info.FUELTAXI));
+                plan.FuelCONT = round_int(Convert.ToDouble(flt_info.FUELCONT));
+                plan.FuelMINTOF = round_int(Convert.ToDouble(flt_info.FUELMINTO));
+                plan.FuelOPSEXTRA = round_int(Convert.ToDouble(flt_info.FUELEXTRA));
+                plan.FuelTOTALFUEL = round_int(Convert.ToDouble(flt_info.FUELACT));
+
+                plan.VDT = "OFP Generated On: " + flt_info.LastEditDate.ToString("dd MMM yyyy HH:mm") + "  and Valid until: " + flt_info.LastEditDate.AddHours(24).ToString("dd MMM yyyy HH:mm") + " (UTC)";
+
+                string[] lines = flt_info.FlightSummary.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
+                var lnr = lines.Where(q => q.Contains("LOG NR:")).FirstOrDefault();
+                if (!string.IsNullOrEmpty(lnr))
+                    plan.DID = "LOG NR: " + (lnr.Split(new[] { "LOG NR:" }, StringSplitOptions.None))[1];
+
+
+
                 //to_time
 
 
-                //f1.FuelHeader.AlternateFuels
-                //f1.FuelHeader.AdditionalFuels ***
-                //f1.FuelHeader.ArrivalFuel
-                 if (f1.FuelHeader.ArrivalFuel != null)
-                     fuel.Add(new fuelPrm { prm = "ARR", time ="", value = f1.FuelHeader.ArrivalFuel.EstimatedWeight.Value.Text[0], _key = "fuel_altn1" });
 
-                //f1.FuelHeader.BlockFuel ***
-                //f1.FuelHeader.ETOPSFuel  ***
-                //f1.FuelHeader.ExtraFuels ***
-                //f1.FuelHeader.LandingFuel
-                if (f1.FuelHeader.LandingFuel != null)
-                    fuel.Add(new fuelPrm { prm = "LND", time = "", value = f1.FuelHeader.LandingFuel.EstimatedWeight.Value.Text[0], _key = "fuel_altn1" });
-
-                //f1.FuelHeader.PossibleExtraFuel
-                //f1.FuelHeader.ReserveFuel ***
-                //f1.FuelHeader.TakeOffFuel **
-                //f1.FuelHeader.TaxiFuel  **
-                //f1.FuelHeader.TripFuel  **
-                //  db_flight.fue
-
-                //if (f1.FuelHeader.AlternateFuels!=null && f1.FuelHeader.AlternateFuels.Count() > 0)
-                //    fuel.Add(new fuelPrm { prm = "ALTN 1", time = to_fuel_duration(f1.FuelHeader.AlternateFuels[0].Duration.Value), value = f1.FuelHeader.AlternateFuels[0].EstimatedWeight.Value.Text[0], _key = "fuel_altn1" });
-
-                //if (f1.FuelHeader.AlternateFuels!=null && f1.FuelHeader.AlternateFuels.Count() > 0)
-                //    fuel.Add(new fuelPrm { prm = "ALTN 1", time = to_fuel_duration(f1.FuelHeader.AlternateFuels[0].Duration.Value), value = f1.FuelHeader.AlternateFuels[0].EstimatedWeight.Value.Text[0], _key = "fuel_altn1" });
-                fuel.Add(new fuelPrm() { prm="ALTN 1",time="", value=db_flight.AltFuel.ToString(), _key = "fuel_altn1" });
-
-                //if (f1.FuelHeader.AlternateFuels != null && f1.FuelHeader.AlternateFuels.Count() > 1)
-                //    fuel.Add(new fuelPrm { prm = "ALTN 2", time = to_fuel_duration(f1.FuelHeader.AlternateFuels[1].Duration.Value), value = f1.FuelHeader.AlternateFuels[1].EstimatedWeight.Value.Text[0], _key = "fuel_altn1" });
-                fuel.Add(new fuelPrm() { prm = "ALTN 2", time = "", value = db_flight.Alt2Fuel.ToString(), _key = "fuel_altn2" });
+                //  if (f1.FuelHeader.ArrivalFuel != null)
+                //     fuel.Add(new fuelPrm { prm = "ARR", time = "", value = f1.FuelHeader.ArrivalFuel.EstimatedWeight.Value.Text[0], _key = "fuel_altn1" });
 
 
-                if (f1.FuelHeader.ETOPSFuel !=null  )
-                    fuel.Add(new fuelPrm { prm = "ETOPS", time = to_fuel_duration(f1.FuelHeader.ETOPSFuel.Duration.Value), value = f1.FuelHeader.ETOPSFuel.EstimatedWeight.Value.Text[0], _key = "fuel_altn1" });
-
-                if (f1.FuelHeader.AdditionalFuels != null && f1.FuelHeader.AdditionalFuels.Count()>0)
-                    fuel.Add(new fuelPrm { prm = "ADDI", time = to_fuel_duration(f1.FuelHeader.AdditionalFuels[0].Duration.Value), value = f1.FuelHeader.AdditionalFuels[0].EstimatedWeight.Value.Text[0], _key = "fuel_altn1" });
+                //   if (f1.FuelHeader.LandingFuel != null)
+                //      fuel.Add(new fuelPrm { prm = "LND", time = "", value = f1.FuelHeader.LandingFuel.EstimatedWeight.Value.Text[0], _key = "fuel_altn1" });
 
 
-                if (f1.FuelHeader.ExtraFuels != null && f1.FuelHeader.ExtraFuels.Count() > 0)
-                    fuel.Add(new fuelPrm { prm = "EXTRA", time = to_fuel_duration(f1.FuelHeader.ExtraFuels[0].Duration.Value), value = f1.FuelHeader.ExtraFuels[0].EstimatedWeight.Value.Text[0], _key = "fuel_altn1" });
+
+                //if (f1.FuelHeader.ETOPSFuel != null)
+                //    fuel.Add(new fuelPrm { prm = "ETOPS", time = to_fuel_duration(f1.FuelHeader.ETOPSFuel.Duration.Value), value = f1.FuelHeader.ETOPSFuel.EstimatedWeight.Value.Text[0], _key = "fuel_etops" });
+
+
+
 
 
                 // if (f1.FuelHeader.PossibleExtraFuel != null  )
                 //     fuel.Add(new fuelPrm { prm = "POSS EXTRA", time = to_fuel_duration(f1.FuelHeader.PossibleExtraFuel. .Duration.Value), value = "3373", _key = "fuel_altn1" });
 
+                // fuel.Add(new fuelPrm() { prm = "ALTN 1", time = to_time(flt_info.AltTime), value = flt_info.AltFuel.ToString(), _key = "fuel_altn1" });
+                //  fuel.Add(new fuelPrm() { prm = "ALTN 2", time = to_time(flt_info.Alt2Time), value = flt_info.Alt2Fuel.ToString(), _key = "fuel_altn2" });
 
                 //fuel.Add(new fuelPrm()
                 //{
@@ -2160,9 +2480,23 @@ namespace ApiWorld.Controllers
 
                 var _fuel = JsonConvert.SerializeObject(fuel);
 
-                
+                plan.JAPlan1 = JsonConvert.SerializeObject(alt1_points);
+                plan.JAPlan2 = JsonConvert.SerializeObject(alt2_points);
+                plan.JPlan = JsonConvert.SerializeObject(main_points);
+                plan.JFuel = _fuel;
+
+                plan.FlightNo = flt_info.FlightLogID;
+                plan.Destination = flt_info.DEST;
+                plan.Origin = flt_info.DEP;
+                plan.DateFlight = flt_info.STD.Date;
+                plan.DateCreate = DateTime.Now;
+                plan.ALT1 = flt_info.ALT1;
+                plan.ALT2 = flt_info.ALT2;
+                plan.DSPNAME = flt_info.DISP;
 
 
+
+                context.OFPImports.Add(plan);
                 context.Flights.Add(db_flight);
                 var save_result = await context.SaveAsync();
                 return Ok(session_id);
@@ -2196,11 +2530,17 @@ namespace ApiWorld.Controllers
             return result;
         }
 
-        string to_time (int v)
+        string to_time(int v)
         {
             var hh = v / 60;
             var mm = v % 60;
-            return hh.ToString().PadLeft(2,'0') + ":" + mm.ToString().PadLeft(2, '0');
+            return hh.ToString().PadLeft(2, '0') + ":" + mm.ToString().PadLeft(2, '0');
+        }
+
+        int round_int(double num)
+        {
+            var result = (int)Math.Round(num, MidpointRounding.AwayFromZero);
+            return result;
         }
         public class fuelPrm
         {
