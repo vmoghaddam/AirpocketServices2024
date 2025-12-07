@@ -47,5 +47,6 @@ namespace XAPI.Models
         public virtual DbSet<ViewBoardSummary> ViewBoardSummaries { get; set; }
         public virtual DbSet<AppLeg> AppLegs { get; set; }
         public virtual DbSet<ViewEmployee> ViewEmployees { get; set; }
+        public virtual DbSet<load_sheet_history> load_sheet_history { get; set; }
     }
 }

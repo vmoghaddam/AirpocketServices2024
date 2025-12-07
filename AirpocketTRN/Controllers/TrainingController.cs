@@ -89,7 +89,7 @@ namespace AirpocketTRN.Controllers
 
         public async Task<IHttpActionResult> get_files(string nid, string root)
         {
-            string startFolder = /*@"C:\Training_Folder"*/ @"C:\Inetpub\vhosts\airpocket.app\ava.airpocket.app\upload\training_folder" + @"\" + nid;
+            string startFolder = /*@"C:\Training_Folder"*/ @"C:\Inetpub\vhosts\amwaero.tech\httpdocs\upload\training_folder" + @"\" + nid;
             if (root != "-1")
                 startFolder += @"\" + root;
 
@@ -245,13 +245,13 @@ namespace AirpocketTRN.Controllers
                                 // code block
                                 break;
                         }
-                        var filePath = $"C:/Inetpub/vhosts/airpocket.app/ava.airpocket.app/upload/training/doc/" + nid + "/" + doc_type + "/" + postedFile.FileName;
+                        var filePath = $"C:/Inetpub/vhosts/amwaero.tech/httpdocs/upload/training/doc/" + nid + "/" + doc_type + "/" + postedFile.FileName;
                         postedFile.SaveAs(filePath);
                         docfiles.Add(filePath);
                     }
                     else
                     {
-                        var filePath = $"C:/Inetpub/vhosts/airpocket.app/ava.airpocket.app/upload/training/doc/" + nid + "/CERTIFICATES/" + postedFile.FileName;
+                        var filePath = $"C:/Inetpub/vhosts/amwaero.tech/httpdocs/upload/training/doc/" + nid + "/CERTIFICATES/" + postedFile.FileName;
                         postedFile.SaveAs(filePath);
                         docfiles.Add(filePath);
 

@@ -7,6 +7,7 @@ using System.Configuration;
 using System.Data.Entity;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -68,8 +69,8 @@ namespace ApiProfile.Controllers
         DateTime? to_date(string str)
         {
             if (string.IsNullOrEmpty(str)) return null;
-            var prts = str.Split('-').Select(q=>Convert.ToInt32(q)).ToList();
-            return new DateTime(prts[0],prts[1],prts[2]);
+            var prts = str.Split('-').Select(q => Convert.ToInt32(q)).ToList();
+            return new DateTime(prts[0], prts[1], prts[2]);
 
         }
         [Route("api/profile/employee/save")]
@@ -158,6 +159,33 @@ namespace ApiProfile.Controllers
                 context.AspNetUsers.Add(user);
                 person.UserId = user.Id;
 
+                string basePath = ConfigurationManager.AppSettings["profile_doc_path"];
+
+                if (string.IsNullOrWhiteSpace(basePath))
+                    throw new Exception("profile_doc_path is missing in config file.");
+
+
+                string[] folders =
+                {
+        "CERTIFICATES",
+        "GENERAL DOCUMENTS",
+        "LICENSES",
+        "LINE CHECK RECORDS",
+        "LOGBOOK RECORDS",
+        "MEDICAL RECORDS",
+        "OFFICIAL RECORDS",
+        "SIMULATOR TRAINING"
+    };
+
+
+                string userFolder = Path.Combine(basePath, dto.Person.NID);
+
+                Directory.CreateDirectory(userFolder);
+
+                foreach (var folder in folders)
+                {
+                    Directory.CreateDirectory(Path.Combine(userFolder, folder));
+                }
 
             }
 
@@ -238,12 +266,12 @@ namespace ApiProfile.Controllers
                     var locs = await context.ViewEmployeeLocations.Where(q => q.EmployeeId == pc.Id).ToListAsync();
                     employee.Locations = ViewModels.EmployeeLocation.GetDtos(locs);
                     employee.Certificates = await context.view_trn_certificate_history_last.Where(q => q.person_id == entity.Id).ToListAsync();
-                    
+
 
 
                 }
 
-               
+
 
 
             }
@@ -633,7 +661,7 @@ namespace ApiProfile.Controllers
                 switch (grp)
                 {
                     case "Cockpit":
-                        extra.Add(new view_trn_course_type_group() { title= "RemainPassport", abbreviation="PASS.", course_type_id=-1  });
+                        extra.Add(new view_trn_course_type_group() { title = "RemainPassport", abbreviation = "PASS.", course_type_id = -1 });
                         extra.Add(new view_trn_course_type_group() { title = "RemainLicence", abbreviation = "LIC.", course_type_id = -1 });
                         extra.Add(new view_trn_course_type_group() { title = "RemainCMC", abbreviation = "CMC", course_type_id = -1 });
                         extra.Add(new view_trn_course_type_group() { title = "RemainProficiencyOPC", abbreviation = "OPC", course_type_id = -1 });
@@ -647,7 +675,7 @@ namespace ApiProfile.Controllers
                 course_types = extra.Concat(course_types).ToList();
 
 
-                var certificates=await context.view_trn_certificate_history_last.Where(q=>q.group_root==grp).ToListAsync();
+                var certificates = await context.view_trn_certificate_history_last.Where(q => q.group_root == grp).ToListAsync();
 
                 var result = new List<JObject>();
                 foreach (var p in profiles)
@@ -736,9 +764,9 @@ namespace ApiProfile.Controllers
                     jsonObject["ImageUrl"] = p.ImageUrl;
                     foreach (var ct in course_types)
                     {
-                        var certificate=certificates.Where(q=>q.person_id==p.PersonId && q.course_type_id==ct.course_type_id).FirstOrDefault();
-                        jsonObject["remain_" + ct.title.Replace(" ", "_")] = certificate== null? -100000:certificate.remaining;
-                        jsonObject["date_" + ct.title.Replace(" ", "_")] = certificate == null?(Nullable<DateTime>) null:certificate.date_expire;
+                        var certificate = certificates.Where(q => q.person_id == p.PersonId && q.course_type_id == ct.course_type_id).FirstOrDefault();
+                        jsonObject["remain_" + ct.title.Replace(" ", "_")] = certificate == null ? -100000 : certificate.remaining;
+                        jsonObject["date_" + ct.title.Replace(" ", "_")] = certificate == null ? (Nullable<DateTime>)null : certificate.date_expire;
                     }
 
                     result.Add(jsonObject);
@@ -749,8 +777,8 @@ namespace ApiProfile.Controllers
                 // return Ok(result);
                 return Ok(new
                 {
-                     result,
-                     course_types
+                    result,
+                    course_types
                 });
             }
             catch (Exception ex)

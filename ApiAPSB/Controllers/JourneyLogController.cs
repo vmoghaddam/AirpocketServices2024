@@ -911,7 +911,8 @@ namespace ApiAPSB.Controllers
                 //reporting time local => stdlocal - 60 min
                 sheet.Range[11, 14].Text = ((DateTime)reporting_time_local).ToString("HH:mm");
                 // var _start =
-                sheet.Range[12, 14].Text = ((result.OnBlockLocal == null ? (DateTime)result.STALocal : (DateTime)result.OnBlockLocal)).AddMinutes(30).ToString("HH:mm");
+                //sheet.Range[12, 14].Text = ((result.OnBlockLocal == null ? (DateTime)result.STALocal : (DateTime)result.OnBlockLocal)).AddMinutes(30).ToString("HH:mm");
+                sheet.Range[12, 14].Text = ((result.OnBlockLocal == null ? (DateTime)result.STALocal : (DateTime)result.OnBlockLocal)).ToString("HH:mm");
 
                 // ((DateTime)result.DutyEndLoccal).ToString("HH:mm");
 
@@ -926,7 +927,8 @@ namespace ApiAPSB.Controllers
 
                 sheet.Range[11, 20].Text = format_to_time(result.MaxFDP);
                 //var scheduled_fdp =Convert.ToInt32( Math.Round( (((DateTime)result.STALocal) - ((DateTime)result.ReportingTimeLocal)).TotalMinutes));
-                sheet.Range[12, 20].Text = format_to_time(_duty + 30); //format_to_time(result.FDP+30);
+                sheet.Range[12, 20].Text = format_to_time(_duty); //format_to_time(result.FDP+30);
+                //sheet.Range[12, 20].Text = format_to_time(_duty + 30); //format_to_time(result.FDP+30);
 
                 sheet.Range[12, 23].Text = format_to_time(_duty);  //format_to_time(result.FDP  );
 
@@ -966,7 +968,7 @@ namespace ApiAPSB.Controllers
                     //sheet.Range[ln_crew, 3].Text = format_to_time(c.TotalBlockTime);
                     ln_crew++;
                     cn_crew++;
-                    if (cn_crew > 5)
+                    if (cn_crew > 5 && ln_crew > 9)
                     {
                         col_crew = 17;
                         ln_crew = 5;
