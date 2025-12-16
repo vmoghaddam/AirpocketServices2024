@@ -31,7 +31,6 @@ namespace AirpocketTRN.Models
         public virtual DbSet<BookFile> BookFiles { get; set; }
         public virtual DbSet<Document> Documents { get; set; }
         public virtual DbSet<ViewCoursePeopleRanked> ViewCoursePeopleRankeds { get; set; }
-        public virtual DbSet<ViewCourseType> ViewCourseTypes { get; set; }
         public virtual DbSet<SumMandatoryCourseExpired> SumMandatoryCourseExpireds { get; set; }
         public virtual DbSet<ViewEmployeeTraining> ViewEmployeeTrainings { get; set; }
         public virtual DbSet<GRPCourseTypeExpiring> GRPCourseTypeExpirings { get; set; }
@@ -170,10 +169,11 @@ namespace AirpocketTRN.Models
         public virtual DbSet<ViewLegTime> ViewLegTimes { get; set; }
         public virtual DbSet<ViewEmployeeLight> ViewEmployeeLights { get; set; }
         public virtual DbSet<ViewEmployee> ViewEmployees { get; set; }
-        public virtual DbSet<CourseType> CourseTypes { get; set; }
-        public virtual DbSet<Course> Courses { get; set; }
-        public virtual DbSet<ViewCourseNew> ViewCourseNews { get; set; }
         public virtual DbSet<ViewProfile> ViewProfiles { get; set; }
         public virtual DbSet<C_view_trncard> C_view_trncard { get; set; }
+        public virtual DbSet<Course> Courses { get; set; }
+        public virtual DbSet<ViewCourseNew> ViewCourseNews { get; set; }
+        public virtual DbSet<CourseType> CourseTypes { get; set; }
+        public virtual DbSet<ViewCourseType> ViewCourseTypes { get; set; }
     }
 }

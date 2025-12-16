@@ -30,6 +30,7 @@ namespace AirpocketAPI.Models
         public string JobGroupCode { get; set; }
         public int SexId { get; set; }
         public string Sex { get; set; }
+        public string PassportNumber { get; set; }
         public Nullable<int> GroupOrder { get; set; }
         public string FDPTitle { get; set; }
         public int IsCockpit { get; set; }

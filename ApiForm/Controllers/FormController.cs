@@ -57,7 +57,7 @@ namespace ApiForm.Controllers
 
                 if (log.Reason == 2)
                 {
-                    var exist = context.FormVacations.Where(q => q.Reason == 2 && q.DateFrom >= m_first && q.DateTo <= m_last && q.Status == "Accepted").FirstOrDefault();
+                    var exist = context.FormVacations.Where(q => q.Reason == 2 && q.DateFrom >= m_first && q.DateTo <= m_last && q.Status == "Accepted" && q.UserId == log.UserId).FirstOrDefault();
                     if (exist != null)
                         return Ok(new FormVacation() { Id = -1000, Remark = "Your request is not acceptable. You can request an OFF once in a month." });
 

@@ -762,7 +762,7 @@ namespace ApiAPSB.Controllers
                         flight.CPSCCM = doc.DocumentUrl;
                         break;
                     case "per":
-                        flight.CPRegister = doc.DocumentUrl;
+                        flight.PermissionUrl = doc.DocumentUrl;
                         break;
                     default:
                         break;
@@ -1972,8 +1972,8 @@ public IHttpActionResult PostDRDSPSIGNNew(dto_sign dto)
 {
     try
     {
-        //var do_lic = Convert.ToInt32(ConfigurationManager.AppSettings["dsp_lic"]);
-        var do_lic = 1;
+        var do_lic = Convert.ToInt32(ConfigurationManager.AppSettings["dsp_lic"]);
+        //var do_lic = 1;
         var context = new Models.dbEntities();
 
         int flight_id = Convert.ToInt32(dto.flight_id);
@@ -1982,20 +1982,17 @@ public IHttpActionResult PostDRDSPSIGNNew(dto_sign dto)
 
 
         ViewEmployee employee = null;
-        //try
-        //{
-        employee = context.ViewEmployees.Where(q => q.UserId == userid || q.PersonId.ToString() == userid || q.FatherName == userid).FirstOrDefault();
-        //}
-        //catch(Exception ex)
-        //{
-        //    employee = context.ViewEmployees.Where(q => q.PersonId.ToString() == userid).FirstOrDefault();
-        //}
-        //employee = context.ViewEmployees.Where(q => q.PersonId.ToString() == userid).FirstOrDefault();
+                //try
+                //{
+                    employee = context.ViewEmployees.Where(q => q.UserId == userid || q.PersonId.ToString() == userid || q.FatherName == userid).FirstOrDefault();
+                //}
+                //catch (Exception ex)
+                //{
+                //    employee = context.ViewEmployees.Where(q => q.PersonId.ToString() == userid).FirstOrDefault();
+                //}
+              
 
-        //if (employee==null)
-        //   employee=context.ViewEmployees.Where(q=>q.PersonId==userid).
-
-        if (do_lic == 1)
+                if (do_lic == 1)
         {
             if (employee != null)
             {

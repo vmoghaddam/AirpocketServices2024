@@ -3022,6 +3022,8 @@ namespace AirpocketTRN.Services
                 entity.InForm = dto.InForm;
                 entity.Certificate = dto.Certificate;
                 entity.ExamType = dto.ExamType;
+                entity.RecurrentType = dto.RecurrentType;
+                entity.ProfileGroup = dto.ProfileGroup;
 
 
 
@@ -5150,15 +5152,15 @@ namespace AirpocketTRN.Services
                 var vcp = view_cps.FirstOrDefault(q => q.Id == cp.Id);
                 var cp_subjects = view_cps_subjects.Where(q => q.PersonId == cp.PersonId).ToList();
 
-                /*int statusId = 0;
+                int statusId = 0;
                 if (cp_subjects.Any())
                 {
                     statusId = cp_subjects.Where(q => q.Presence != 100).Any() ? 0 : 1;
                 }
                 else
                     statusId = vcp.Presence == 100 ? 1 : 0;
-                */
-                int statusId = (int)dto.StatusId;
+                
+                //int statusId = (int)dto.StatusId;
                 
                 
                 var profile = profiles.FirstOrDefault(q => q.PersonId == cp.PersonId);

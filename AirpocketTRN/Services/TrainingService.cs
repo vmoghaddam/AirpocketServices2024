@@ -127,7 +127,7 @@ namespace AirpocketTRN.Services
 
             try
             {
-                var rootPath = @"C:\inetpub\vhosts\airpocket.app\ava.airpocket.app\upload\training\doc";
+                var rootPath = @"C:/Inetpub/vhosts/airpocket.app/ava.airpocket.app/upload/training/doc/";
                 string targetPath = Path.Combine(rootPath, nid);
 
                 var result = new Dictionary<string, List<string>>();

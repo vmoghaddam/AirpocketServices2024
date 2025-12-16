@@ -3278,7 +3278,8 @@ namespace AirpocketAPI.Controllers
                                PID = x.PID,
                                Mobile = x.Mobile,
                                Address = x.Address,
-                               PassportNo = x.Sex,
+                               PassportNo = x.PassportNumber,
+                               NID = x.Sex,
                                DatePassportExpire = x.DatePassportExpire
 
 
@@ -3301,6 +3302,7 @@ namespace AirpocketAPI.Controllers
                                x.Mobile,
                                x.Address,
                                x.PassportNo,
+                               x.NID,
                                x.DatePassportExpire
                            } into grp
                            select grp).ToList();
@@ -3322,6 +3324,7 @@ namespace AirpocketAPI.Controllers
                              Address = x.Key.Address,
                              IsCockpit = x.Key.IsCockpit,
                              PassportNo = x.Key.PassportNo,
+                             NID = x.Key.NID,
                              DatePassportExpire = x.Key.DatePassportExpire,
                              Legs = vflights.Where(q => xfids.Contains((int)q.ID)).OrderBy(q => q.DepartureLocal).Select(q => q.FlightNumber).Distinct().ToList(),
                              LegsStr = string.Join("-", vflights.Where(q => xfids.Contains((int)q.ID)).OrderBy(q => q.DepartureLocal).Select(q => q.FlightNumber).Distinct().ToList()),
@@ -3388,8 +3391,9 @@ namespace AirpocketAPI.Controllers
 
                 sheet.Range[r, 2].Text = cr.Position;
                 sheet.Range[r, 3].Text = cr.Name;
-                sheet.Range[r, 4].Text = cr.PassportNo;
-                sheet.Range[r, 5].Text = cr.DatePassportExpire?.ToString("yyyy-MM-dd") ?? "";
+                sheet.Range[r, 4].Text = cr.NID;
+                sheet.Range[r, 5].Text = cr.PassportNo;
+                sheet.Range[r, 6].Text = cr.DatePassportExpire?.ToString("yyyy-MM-dd") ?? "";
 
                 r++;
             }

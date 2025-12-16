@@ -569,5 +569,21 @@ namespace AirpocketAPI.Models
         public Nullable<System.DateTime> ExpireDate75 { get; set; }
         public Nullable<System.DateTime> ExpireDate76 { get; set; }
         public Nullable<System.DateTime> ExpireDate77 { get; set; }
+        public Nullable<System.DateTime> ExpireDate78 { get; set; }
+        public Nullable<System.DateTime> ExpireDate79 { get; set; }
+        public Nullable<System.DateTime> ExpireDate80 { get; set; }
+        public Nullable<System.DateTime> ExpireDate81 { get; set; }
+        public Nullable<System.DateTime> ExpireDate82 { get; set; }
+        public Nullable<System.DateTime> ExpireDate83 { get; set; }
+        public Nullable<System.DateTime> ExpireDate84 { get; set; }
+        public Nullable<System.DateTime> ExpireDate85 { get; set; }
+        public Nullable<System.DateTime> IssueDate78 { get; set; }
+        public Nullable<System.DateTime> IssueDate79 { get; set; }
+        public Nullable<System.DateTime> IssueDate80 { get; set; }
+        public Nullable<System.DateTime> IssueDate81 { get; set; }
+        public Nullable<System.DateTime> IssueDate82 { get; set; }
+        public Nullable<System.DateTime> IssueDate83 { get; set; }
+        public Nullable<System.DateTime> IssueDate84 { get; set; }
+        public Nullable<System.DateTime> IssueDate85 { get; set; }
     }
 }

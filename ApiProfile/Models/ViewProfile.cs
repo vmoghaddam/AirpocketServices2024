@@ -204,6 +204,10 @@ namespace ApiProfile.Models
         public Nullable<int> Remain83 { get; set; }
         public Nullable<int> Remain84 { get; set; }
         public Nullable<int> Remain85 { get; set; }
+        public Nullable<int> Remain86 { get; set; }
+        public Nullable<int> Remain87 { get; set; }
+        public Nullable<int> Remain88 { get; set; }
+        public Nullable<int> Remain89 { get; set; }
         public Nullable<int> RemainRIGHT_SEAT_QUALIFICATION { get; set; }
         public Nullable<int> RemainELT { get; set; }
         public Nullable<int> RemainRVSM { get; set; }
@@ -373,6 +377,10 @@ namespace ApiProfile.Models
         public Nullable<System.DateTime> ExpireDate83 { get; set; }
         public Nullable<System.DateTime> ExpireDate84 { get; set; }
         public Nullable<System.DateTime> ExpireDate85 { get; set; }
+        public Nullable<System.DateTime> ExpireDate86 { get; set; }
+        public Nullable<System.DateTime> ExpireDate87 { get; set; }
+        public Nullable<System.DateTime> ExpireDate88 { get; set; }
+        public Nullable<System.DateTime> ExpireDate89 { get; set; }
         public Nullable<System.DateTime> ExpireDate9 { get; set; }
         public Nullable<System.DateTime> ExpireDateTRG02 { get; set; }
         public Nullable<System.DateTime> FDMFAMExpireDate { get; set; }

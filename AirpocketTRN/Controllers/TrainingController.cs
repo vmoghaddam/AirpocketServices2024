@@ -180,7 +180,7 @@ namespace AirpocketTRN.Controllers
         }
 
 
-      
+
 
         [Route("api/upload/profile/doc")]
         [AcceptVerbs("POST")]
@@ -189,8 +189,8 @@ namespace AirpocketTRN.Controllers
             try
             {
 
-               var context = new FLYEntities();
-               
+                var context = new FLYEntities();
+
                 string key = string.Empty;
                 var httpRequest = HttpContext.Current.Request;
                 string nid = httpRequest.Form["nid"];
@@ -269,7 +269,109 @@ namespace AirpocketTRN.Controllers
 
 
 
-                return Ok("Succeded"); 
+                return Ok("Succeded");
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += "   " + ex.InnerException.Message;
+                return Ok(msg);
+            }
+        }
+
+        [Route("api/upload/certificates")]
+        [HttpPost]
+        public Task<IHttpActionResult> UploadCertificates()
+        {
+            try
+            {
+                var req = HttpContext.Current.Request;
+
+                if (req.Files == null || req.Files.Count == 0)
+                    return Task.FromResult<IHttpActionResult>(BadRequest("No files uploaded."));
+
+                var targetFolder = @"C:\Inetpub\vhosts\airpocket.app\ava.airpocket.app\upload\training\certificates";
+
+                Directory.CreateDirectory(targetFolder);
+
+                var saved = new List<string>();
+
+                for (int i = 0; i < req.Files.Count; i++)
+                {
+                    var file = req.Files[i];
+                    if (file == null || file.ContentLength == 0) continue;
+
+                    var safeName = Path.GetFileName(file.FileName);
+
+                    var uniqueName = $"{Path.GetFileNameWithoutExtension(safeName)}_{Guid.NewGuid():N}{Path.GetExtension(safeName)}";
+
+                    var fullPath = Path.Combine(targetFolder, uniqueName);
+
+                    file.SaveAs(fullPath);
+                    saved.Add(uniqueName);
+                }
+
+                return Task.FromResult<IHttpActionResult>(Ok(new
+                {
+                    message = "Uploaded",
+                    count = saved.Count,
+                    files = saved
+                }));
+            }
+            catch (Exception ex)
+            {
+                return Task.FromResult<IHttpActionResult>(InternalServerError(ex));
+            }
+        }
+    
+
+    [Route("api/create/profile/folder")]
+        [AcceptVerbs("POST")]
+        public async Task<IHttpActionResult> create_missing_profile_folder()
+        {
+            try
+            {
+                var context = new FLYEntities();
+                string rootDirectory = @"C:\Inetpub\vhosts\airpocket.app\ava.airpocket.app\upload\training\doc";
+                if (!Directory.Exists(rootDirectory))
+                    throw new DirectoryNotFoundException($"Root directory does not exist: {rootDirectory}");
+
+                var nids = context.ViewEmployees
+                    .Where(e => e.NID != null && e.NID.Trim() != "")
+                    .Select(e => e.NID.Trim())
+                    .Distinct()
+                    .ToList();
+
+                string[] subFolders =
+                {
+        "CERTIFICATES",
+        "GENERAL DOCUMENTS",
+        "LICENSES",
+        "LINE CHECK RECORDS",
+        "LOGBOOK RECORDS",
+        "MEDICAL RECORDS",
+        "OFFICIAL RECORDS",
+        "SIMULATOR TRAINING"
+    };
+
+                foreach (var nid in nids)
+                {
+                    string employeeFolder = Path.Combine(rootDirectory, nid);
+
+                    if (!Directory.Exists(employeeFolder))
+                        Directory.CreateDirectory(employeeFolder);
+
+                    foreach (var sub in subFolders)
+                    {
+                        string subFolder = Path.Combine(employeeFolder, sub);
+
+                        if (!Directory.Exists(subFolder))
+                            Directory.CreateDirectory(subFolder);
+                    }
+                }
+
+                return Ok();
             }
             catch (Exception ex)
             {

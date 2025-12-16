@@ -39,6 +39,8 @@ namespace AirpocketTRN.Models
         public string Remark { get; set; }
         public string TrainingDirector { get; set; }
         public string Title { get; set; }
+        public string RecurrentType { get; set; }
+        public string ProfileGroup { get; set; }
         public bool Recurrent { get; set; }
         public Nullable<int> Interval { get; set; }
         public Nullable<int> CalanderTypeId { get; set; }

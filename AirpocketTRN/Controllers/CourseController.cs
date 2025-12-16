@@ -1326,9 +1326,9 @@ namespace AirpocketTRN.Controllers
             return Ok(query);
         }
 
-        [Route("api/courses/{type}/{pid}")]
+        [Route("api/courses/{type}/{pid}/{period}/{group}")]
         [AcceptVerbs("GET")]
-        public async Task<IHttpActionResult> GetCourses(int type,int pid)
+        public async Task<IHttpActionResult> GetCourses(int type,int pid,string period, string group)
         {
 
 
@@ -1348,6 +1348,16 @@ namespace AirpocketTRN.Controllers
                       where cp.PersonId == pid
                       select c;
             }
+
+            if (period != "-1")
+            {
+                query = query.Where(q => q.RecurrentType == period);
+            }
+
+            if (group != "-1")
+            {
+                query = query.Where(q => q.ProfileGroup == group);
+            }
             var result=await query.OrderByDescending(q=>q.DateStart).ToListAsync();
             return Ok(result);
         }
@@ -1358,12 +1368,13 @@ namespace AirpocketTRN.Controllers
 
 
             FLYEntities context = new FLYEntities();
-            var query = await context.ViewProfiles.Select(q => new
+            var query = await context.ViewEmployeeAbs.Select(q => new
             {
                name= q.FirstName+" "+q.LastName,
                id= q.Id,
-               person_id=q.PersonId
-            }).OrderBy(q => q.name).ToListAsync();
+               person_id=q.PersonId,
+               q.JobGroup
+            }).Where(q => q.JobGroup != "FSG").OrderBy(q => q.name).ToListAsync();
             return Ok(query);
         }
 

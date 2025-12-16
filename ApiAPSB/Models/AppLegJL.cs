@@ -184,5 +184,6 @@ namespace ApiAPSB.Models
         public string PM2Name { get; set; }
         public string PF1Name { get; set; }
         public string PF2Name { get; set; }
+        public Nullable<System.DateTime> Reporting { get; set; }
     }
 }

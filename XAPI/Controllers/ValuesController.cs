@@ -87,7 +87,7 @@ namespace XAPI.Controllers
             if (!string.IsNullOrEmpty(no))
                 query = query.Where(q => q.FlightNumber == no);
 
-            var result = query.ToList().OrderBy(q=>q.Register).ThenBy(q => q.STD).Select(q => new
+            var result = query.ToList().OrderBy(q => q.Register).ThenBy(q => q.STD).Select(q => new
             {
                 FlightId = q.ID,
                 Date = ((DateTime)q.STDLocal).Date,
@@ -136,7 +136,7 @@ namespace XAPI.Controllers
             var context = new PPAEntities();
             var date = new DateTime(year, month, day);
 
-            var summary =   context.ViewBoardSummaries.Where(q => q.Date == date).FirstOrDefault ();
+            var summary = context.ViewBoardSummaries.Where(q => q.Date == date).FirstOrDefault();
             if (summary == null)
                 return null;
             double? delayRatio = null;
@@ -5769,6 +5769,72 @@ namespace XAPI.Controllers
             }
         }
 
+
+        [Route("api/save/history/loadsheet")]
+        [AcceptVerbs("POST")]
+        public IHttpActionResult load_sheet_history(dynamic dto)
+        {
+            try
+            {
+                var context = new PPAEntities();
+
+                int flight_id = dto.TripInfo.RefID;  
+                var entity = context.load_sheet_history.FirstOrDefault(q => q.flight_id == flight_id);
+
+                if (entity == null)
+                {
+                    entity = new load_sheet_history();
+                    entity.flight_id = flight_id;
+                    context.load_sheet_history.Add(entity);
+                }
+
+                entity.cockpit = dto.TripInfo.DOWData.CockpitCrew;
+                entity.cabin = dto.TripInfo.DOWData.CabinCrew;
+                entity.fsg = dto.TripInfo.DOWData.FSGCount;
+                entity.mos = dto.TripInfo.DOWData.MOS;
+                entity.pantry_code = dto.TripInfo.DOWData.Pantry;
+
+                entity.density = dto.TripInfo.FuelData.Density;
+                entity.total_fuel = dto.TripInfo.FuelData.TotalFuel;
+                entity.taxi_fuel = dto.TripInfo.FuelData.TaxiFuel;
+                entity.trip_fuel = dto.TripInfo.FuelData.TripFuel;
+
+                entity.rtow = dto.TripInfo.WeightLimitData.RTOW;
+
+                context.SaveChanges();
+
+                return Ok(new { IsSuccess = true, message = "succeeded" });
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += "   INNER: " + ex.InnerException.Message;
+
+                return Ok(new { IsSuccess = false, message = msg });
+            }
+        }
+
+        [Route("api/get/history/loadsheet/{fid}")]
+        [AcceptVerbs("POST")]
+        public IHttpActionResult get_load_sheet_history(int fid)
+        {
+            try
+            {
+                var context = new PPAEntities();
+                var entity = context.load_sheet_history.FirstOrDefault(q => q.flight_id == fid);
+
+
+                return Ok(new { IsSuccess = true, date = entity });
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += "   INNER: " + ex.InnerException.Message;
+                return Ok(new { IsSuccess = false, message = msg });
+            }
+        }
 
         [Route("api/get/loadsheet")]
         [AcceptVerbs("POST")]

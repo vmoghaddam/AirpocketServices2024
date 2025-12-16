@@ -470,6 +470,23 @@
           <Property Name="PF2Time" Type="int" />
           <Property Name="PM2Time" Type="int" />
         </EntityType>
+        <EntityType Name="load_sheet_history">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="flight_id" Type="int" />
+          <Property Name="pantry_code" Type="varchar" MaxLength="255" />
+          <Property Name="rtow" Type="int" />
+          <Property Name="cockpit" Type="int" />
+          <Property Name="cabin" Type="int" />
+          <Property Name="mos" Type="int" />
+          <Property Name="fsg" Type="int" />
+          <Property Name="trip_fuel" Type="int" />
+          <Property Name="total_fuel" Type="int" />
+          <Property Name="density" Type="int" />
+          <Property Name="taxi_fuel" Type="int" />
+        </EntityType>
         <EntityType Name="load_sheet_raw">
           <Key>
             <PropertyRef Name="id" />
@@ -2014,6 +2031,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
           <EntitySet Name="EFBDSPRelease" EntityType="Self.EFBDSPRelease" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FlightCard" EntityType="Self.FlightCard" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FlightInformation" EntityType="Self.FlightInformation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="load_sheet_history" EntityType="Self.load_sheet_history" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="load_sheet_raw" EntityType="Self.load_sheet_raw" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OFPB_BurnOffAdjustment" EntityType="Self.OFPB_BurnOffAdjustment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OFPB_Distances" EntityType="Self.OFPB_Distances" Schema="dbo" store:Type="Tables" />
@@ -2998,6 +3016,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
           <EntitySet Name="ViewBoardSummaries" EntityType="ppa_tabanModel.ViewBoardSummary" />
           <EntitySet Name="AppLegs" EntityType="ppa_tabanModel.AppLeg" />
           <EntitySet Name="ViewEmployees" EntityType="ppa_tabanModel.ViewEmployee" />
+          <EntitySet Name="load_sheet_history" EntityType="ppa_tabanModel.load_sheet_history" />
           </EntityContainer>
         <EntityType Name="OFPSkyPuter">
           <Key>
@@ -4886,6 +4905,23 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
           <Property Name="TypeMDExpireDate" Type="DateTime" Precision="7" />
           <Property Name="LicNo" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="load_sheet_history">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="flight_id" Type="Int32" />
+          <Property Name="pantry_code" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="rtow" Type="Int32" />
+          <Property Name="cockpit" Type="Int32" />
+          <Property Name="cabin" Type="Int32" />
+          <Property Name="mos" Type="Int32" />
+          <Property Name="fsg" Type="Int32" />
+          <Property Name="trip_fuel" Type="Int32" />
+          <Property Name="total_fuel" Type="Int32" />
+          <Property Name="density" Type="Int32" />
+          <Property Name="taxi_fuel" Type="Int32" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -6628,6 +6664,24 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
                 <ScalarProperty Name="BaseAirport" ColumnName="BaseAirport" />
                 <ScalarProperty Name="BaseAirportId" ColumnName="BaseAirportId" />
                 <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="load_sheet_history">
+            <EntityTypeMapping TypeName="ppa_tabanModel.load_sheet_history">
+              <MappingFragment StoreEntitySet="load_sheet_history">
+                <ScalarProperty Name="taxi_fuel" ColumnName="taxi_fuel" />
+                <ScalarProperty Name="density" ColumnName="density" />
+                <ScalarProperty Name="total_fuel" ColumnName="total_fuel" />
+                <ScalarProperty Name="trip_fuel" ColumnName="trip_fuel" />
+                <ScalarProperty Name="fsg" ColumnName="fsg" />
+                <ScalarProperty Name="mos" ColumnName="mos" />
+                <ScalarProperty Name="cabin" ColumnName="cabin" />
+                <ScalarProperty Name="cockpit" ColumnName="cockpit" />
+                <ScalarProperty Name="rtow" ColumnName="rtow" />
+                <ScalarProperty Name="pantry_code" ColumnName="pantry_code" />
+                <ScalarProperty Name="flight_id" ColumnName="flight_id" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
