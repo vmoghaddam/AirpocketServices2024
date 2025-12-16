@@ -11,17 +11,45 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="username" Type="varchar" MaxLength="500" />
-          <Property Name="is_visited" Type="int" />
-          <Property Name="is_read" Type="int" />
+          <Property Name="is_asr_visited" Type="int" />
+          <Property Name="is_asr_read" Type="int" />
           <Property Name="is_pinned" Type="int" />
           <Property Name="tags" Type="nvarchar" MaxLength="1000" />
-          <Property Name="date_visited" Type="datetime2" Precision="7" />
-          <Property Name="date_read" Type="datetime2" Precision="7" />
-          <Property Name="date_pinned" Type="datetime2" Precision="7" />
+          <Property Name="date_asr_visited" Type="datetime2" Precision="7" />
+          <Property Name="date_asr_read" Type="datetime2" Precision="7" />
+          <Property Name="date_asr_pinned" Type="datetime2" Precision="7" />
           <Property Name="cms_label" Type="varchar" MaxLength="500" />
           <Property Name="ops_label" Type="varchar" MaxLength="500" />
           <Property Name="comments" Type="nvarchar" MaxLength="4000" />
           <Property Name="flight_id" Type="int" />
+          <Property Name="is_vr_visited" Type="int" />
+          <Property Name="is_vr_read" Type="int" />
+          <Property Name="date_vr_visited" Type="datetime2" Precision="7" />
+          <Property Name="date_vr_read" Type="datetime2" Precision="7" />
+          <Property Name="is_csr_visited" Type="int" />
+          <Property Name="is_csr_read" Type="int" />
+          <Property Name="date_csr_visited" Type="datetime2" Precision="7" />
+          <Property Name="date_csr_read" Type="datetime2" Precision="7" />
+          <Property Name="is_gr_visited" Type="int" />
+          <Property Name="is_gr_read" Type="int" />
+          <Property Name="date_gr_visited" Type="datetime2" Precision="7" />
+          <Property Name="date_gr_read" Type="datetime2" Precision="7" />
+          <Property Name="is_vhr_visited" Type="int" />
+          <Property Name="is_vhr_read" Type="int" />
+          <Property Name="date_vhr_visited" Type="datetime2" Precision="7" />
+          <Property Name="date_vhr_read" Type="datetime2" Precision="7" />
+          <Property Name="is_mor_visited" Type="int" />
+          <Property Name="is_mor_read" Type="int" />
+          <Property Name="date_mor_visited" Type="datetime2" Precision="7" />
+          <Property Name="date_mor_read" Type="datetime2" Precision="7" />
+          <Property Name="is_chr_visited" Type="int" />
+          <Property Name="is_chr_read" Type="int" />
+          <Property Name="date_chr_visited" Type="datetime2" Precision="7" />
+          <Property Name="date_chr_read" Type="datetime2" Precision="7" />
+          <Property Name="is_shr_visited" Type="int" />
+          <Property Name="is_shr_read" Type="int" />
+          <Property Name="date_shr_visited" Type="datetime2" Precision="7" />
+          <Property Name="date_shr_read" Type="datetime2" Precision="7" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.AppFuel' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -136,6 +164,33 @@ warning 6002: The table/view 'ppa_varesh.dbo.AppFuel' does not have a primary ke
           <Property Name="std_hour_1216" Type="int" Nullable="false" />
           <Property Name="std_hour_1620" Type="int" Nullable="false" />
           <Property Name="std_hour_2024" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.view_cms_report' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_cms_report">
+          <Key>
+            <PropertyRef Name="type" />
+            <PropertyRef Name="TypeTitle" />
+            <PropertyRef Name="EntityId" />
+            <PropertyRef Name="CreatorName" />
+          </Key>
+          <Property Name="type" Type="int" Nullable="false" />
+          <Property Name="TypeTitle" Type="varchar" MaxLength="38" Nullable="false" />
+          <Property Name="EntityId" Type="int" Nullable="false" />
+          <Property Name="DateOccurrence" Type="datetime2" Precision="3" />
+          <Property Name="DateCreation" Type="datetime2" Precision="3" />
+          <Property Name="CreatorId" Type="int" />
+          <Property Name="CreatorName" Type="nvarchar" MaxLength="1003" Nullable="false" />
+          <Property Name="StatusEmployeeId" Type="int" />
+          <Property Name="StatusEmployeeName" Type="nvarchar" MaxLength="1003" />
+          <Property Name="Result" Type="nvarchar" MaxLength="4000" />
+          <Property Name="FlightId" Type="int" />
+          <Property Name="FlightNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="Route" Type="nvarchar" MaxLength="566" />
+          <Property Name="STDLocal" Type="datetime" />
+          <Property Name="Register" Type="nvarchar" MaxLength="50" />
+          <Property Name="Describtion" Type="nvarchar(max)" />
+          <Property Name="DateSign" Type="datetime" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.view_efb_report' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -457,6 +512,27 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_efb_report' does not have a pr
     [AppFuel].[std_hour_2024] AS [std_hour_2024]
     FROM [dbo].[AppFuel] AS [AppFuel]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="view_cms_report" EntityType="Self.view_cms_report" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_cms_report].[type] AS [type], 
+    [view_cms_report].[TypeTitle] AS [TypeTitle], 
+    [view_cms_report].[EntityId] AS [EntityId], 
+    [view_cms_report].[DateOccurrence] AS [DateOccurrence], 
+    [view_cms_report].[DateCreation] AS [DateCreation], 
+    [view_cms_report].[CreatorId] AS [CreatorId], 
+    [view_cms_report].[CreatorName] AS [CreatorName], 
+    [view_cms_report].[StatusEmployeeId] AS [StatusEmployeeId], 
+    [view_cms_report].[StatusEmployeeName] AS [StatusEmployeeName], 
+    [view_cms_report].[Result] AS [Result], 
+    [view_cms_report].[FlightId] AS [FlightId], 
+    [view_cms_report].[FlightNumber] AS [FlightNumber], 
+    [view_cms_report].[Route] AS [Route], 
+    [view_cms_report].[STDLocal] AS [STDLocal], 
+    [view_cms_report].[Register] AS [Register], 
+    [view_cms_report].[Describtion] AS [Describtion], 
+    [view_cms_report].[DateSign] AS [DateSign]
+    FROM [dbo].[view_cms_report] AS [view_cms_report]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="view_efb_report" EntityType="Self.view_efb_report" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [view_efb_report].[ID] AS [ID], 
@@ -669,8 +745,9 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_efb_report' does not have a pr
       <Schema Namespace="ppaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="ppa_entities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="AppFuels" EntityType="ppaModel.AppFuel" />
-          <EntitySet Name="cms_user_flight" EntityType="ppaModel.cms_user_flight" />
           <EntitySet Name="view_efb_report" EntityType="ppaModel.view_efb_report" />
+          <EntitySet Name="view_cms_report" EntityType="ppaModel.view_cms_report" />
+          <EntitySet Name="cms_user_flight" EntityType="ppaModel.cms_user_flight" />
         </EntityContainer>
         <EntityType Name="AppFuel">
           <Key>
@@ -783,24 +860,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_efb_report' does not have a pr
           <Property Name="std_hour_1216" Type="Int32" Nullable="false" />
           <Property Name="std_hour_1620" Type="Int32" Nullable="false" />
           <Property Name="std_hour_2024" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="cms_user_flight">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="username" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="is_visited" Type="Int32" />
-          <Property Name="is_read" Type="Int32" />
-          <Property Name="is_pinned" Type="Int32" />
-          <Property Name="tags" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="date_visited" Type="DateTime" Precision="7" />
-          <Property Name="date_read" Type="DateTime" Precision="7" />
-          <Property Name="date_pinned" Type="DateTime" Precision="7" />
-          <Property Name="cms_label" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="ops_label" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="comments" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
-          <Property Name="flight_id" Type="Int32" />
         </EntityType>
         <EntityType Name="view_efb_report">
           <Key>
@@ -1025,6 +1084,77 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_efb_report' does not have a pr
           <Property Name="cms_label" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="ops_label" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="view_cms_report">
+          <Key>
+            <PropertyRef Name="type" />
+            <PropertyRef Name="TypeTitle" />
+            <PropertyRef Name="EntityId" />
+            <PropertyRef Name="CreatorName" />
+          </Key>
+          <Property Name="type" Type="Int32" Nullable="false" />
+          <Property Name="TypeTitle" Type="String" Nullable="false" MaxLength="38" FixedLength="false" Unicode="false" />
+          <Property Name="EntityId" Type="Int32" Nullable="false" />
+          <Property Name="DateOccurrence" Type="DateTime" Precision="3" />
+          <Property Name="DateCreation" Type="DateTime" Precision="3" />
+          <Property Name="CreatorId" Type="Int32" />
+          <Property Name="CreatorName" Type="String" Nullable="false" MaxLength="1003" FixedLength="false" Unicode="true" />
+          <Property Name="StatusEmployeeId" Type="Int32" />
+          <Property Name="StatusEmployeeName" Type="String" MaxLength="1003" FixedLength="false" Unicode="true" />
+          <Property Name="Result" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="FlightId" Type="Int32" />
+          <Property Name="FlightNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Route" Type="String" MaxLength="566" FixedLength="false" Unicode="true" />
+          <Property Name="STDLocal" Type="DateTime" Precision="3" />
+          <Property Name="Register" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Describtion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DateSign" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="cms_user_flight">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="username" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="is_asr_visited" Type="Int32" />
+          <Property Name="is_asr_read" Type="Int32" />
+          <Property Name="is_pinned" Type="Int32" />
+          <Property Name="tags" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="date_asr_visited" Type="DateTime" Precision="7" />
+          <Property Name="date_asr_read" Type="DateTime" Precision="7" />
+          <Property Name="date_asr_pinned" Type="DateTime" Precision="7" />
+          <Property Name="cms_label" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ops_label" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="comments" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="flight_id" Type="Int32" />
+          <Property Name="is_vr_visited" Type="Int32" />
+          <Property Name="is_vr_read" Type="Int32" />
+          <Property Name="date_vr_visited" Type="DateTime" Precision="7" />
+          <Property Name="date_vr_read" Type="DateTime" Precision="7" />
+          <Property Name="is_csr_visited" Type="Int32" />
+          <Property Name="is_csr_read" Type="Int32" />
+          <Property Name="date_csr_visited" Type="DateTime" Precision="7" />
+          <Property Name="date_csr_read" Type="DateTime" Precision="7" />
+          <Property Name="is_gr_visited" Type="Int32" />
+          <Property Name="is_gr_read" Type="Int32" />
+          <Property Name="date_gr_visited" Type="DateTime" Precision="7" />
+          <Property Name="date_gr_read" Type="DateTime" Precision="7" />
+          <Property Name="is_vhr_visited" Type="Int32" />
+          <Property Name="is_vhr_read" Type="Int32" />
+          <Property Name="date_vhr_visited" Type="DateTime" Precision="7" />
+          <Property Name="date_vhr_read" Type="DateTime" Precision="7" />
+          <Property Name="is_mor_visited" Type="Int32" />
+          <Property Name="is_mor_read" Type="Int32" />
+          <Property Name="date_mor_visited" Type="DateTime" Precision="7" />
+          <Property Name="date_mor_read" Type="DateTime" Precision="7" />
+          <Property Name="is_chr_visited" Type="Int32" />
+          <Property Name="is_chr_read" Type="Int32" />
+          <Property Name="date_chr_visited" Type="DateTime" Precision="7" />
+          <Property Name="date_chr_read" Type="DateTime" Precision="7" />
+          <Property Name="is_shr_visited" Type="Int32" />
+          <Property Name="is_shr_read" Type="Int32" />
+          <Property Name="date_shr_visited" Type="DateTime" Precision="7" />
+          <Property Name="date_shr_read" Type="DateTime" Precision="7" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1123,25 +1253,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_efb_report' does not have a pr
                 <ScalarProperty Name="FuelTotal" ColumnName="FuelTotal" />
                 <ScalarProperty Name="UpLift" ColumnName="UpLift" />
                 <ScalarProperty Name="FlightId" ColumnName="FlightId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="cms_user_flight">
-            <EntityTypeMapping TypeName="ppaModel.cms_user_flight">
-              <MappingFragment StoreEntitySet="cms_user_flight">
-                <ScalarProperty Name="flight_id" ColumnName="flight_id" />
-                <ScalarProperty Name="comments" ColumnName="comments" />
-                <ScalarProperty Name="ops_label" ColumnName="ops_label" />
-                <ScalarProperty Name="cms_label" ColumnName="cms_label" />
-                <ScalarProperty Name="date_pinned" ColumnName="date_pinned" />
-                <ScalarProperty Name="date_read" ColumnName="date_read" />
-                <ScalarProperty Name="date_visited" ColumnName="date_visited" />
-                <ScalarProperty Name="tags" ColumnName="tags" />
-                <ScalarProperty Name="is_pinned" ColumnName="is_pinned" />
-                <ScalarProperty Name="is_read" ColumnName="is_read" />
-                <ScalarProperty Name="is_visited" ColumnName="is_visited" />
-                <ScalarProperty Name="username" ColumnName="username" />
-                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1349,6 +1460,76 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_efb_report' does not have a pr
                 <ScalarProperty Name="BlockOn" ColumnName="BlockOn" />
                 <ScalarProperty Name="FlightId" ColumnName="FlightId" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_cms_report">
+            <EntityTypeMapping TypeName="ppaModel.view_cms_report">
+              <MappingFragment StoreEntitySet="view_cms_report">
+                <ScalarProperty Name="DateSign" ColumnName="DateSign" />
+                <ScalarProperty Name="Describtion" ColumnName="Describtion" />
+                <ScalarProperty Name="Register" ColumnName="Register" />
+                <ScalarProperty Name="STDLocal" ColumnName="STDLocal" />
+                <ScalarProperty Name="Route" ColumnName="Route" />
+                <ScalarProperty Name="FlightNumber" ColumnName="FlightNumber" />
+                <ScalarProperty Name="FlightId" ColumnName="FlightId" />
+                <ScalarProperty Name="Result" ColumnName="Result" />
+                <ScalarProperty Name="StatusEmployeeName" ColumnName="StatusEmployeeName" />
+                <ScalarProperty Name="StatusEmployeeId" ColumnName="StatusEmployeeId" />
+                <ScalarProperty Name="CreatorName" ColumnName="CreatorName" />
+                <ScalarProperty Name="CreatorId" ColumnName="CreatorId" />
+                <ScalarProperty Name="DateCreation" ColumnName="DateCreation" />
+                <ScalarProperty Name="DateOccurrence" ColumnName="DateOccurrence" />
+                <ScalarProperty Name="EntityId" ColumnName="EntityId" />
+                <ScalarProperty Name="TypeTitle" ColumnName="TypeTitle" />
+                <ScalarProperty Name="type" ColumnName="type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cms_user_flight">
+            <EntityTypeMapping TypeName="ppaModel.cms_user_flight">
+              <MappingFragment StoreEntitySet="cms_user_flight">
+                <ScalarProperty Name="date_shr_read" ColumnName="date_shr_read" />
+                <ScalarProperty Name="date_shr_visited" ColumnName="date_shr_visited" />
+                <ScalarProperty Name="is_shr_read" ColumnName="is_shr_read" />
+                <ScalarProperty Name="is_shr_visited" ColumnName="is_shr_visited" />
+                <ScalarProperty Name="date_chr_read" ColumnName="date_chr_read" />
+                <ScalarProperty Name="date_chr_visited" ColumnName="date_chr_visited" />
+                <ScalarProperty Name="is_chr_read" ColumnName="is_chr_read" />
+                <ScalarProperty Name="is_chr_visited" ColumnName="is_chr_visited" />
+                <ScalarProperty Name="date_mor_read" ColumnName="date_mor_read" />
+                <ScalarProperty Name="date_mor_visited" ColumnName="date_mor_visited" />
+                <ScalarProperty Name="is_mor_read" ColumnName="is_mor_read" />
+                <ScalarProperty Name="is_mor_visited" ColumnName="is_mor_visited" />
+                <ScalarProperty Name="date_vhr_read" ColumnName="date_vhr_read" />
+                <ScalarProperty Name="date_vhr_visited" ColumnName="date_vhr_visited" />
+                <ScalarProperty Name="is_vhr_read" ColumnName="is_vhr_read" />
+                <ScalarProperty Name="is_vhr_visited" ColumnName="is_vhr_visited" />
+                <ScalarProperty Name="date_gr_read" ColumnName="date_gr_read" />
+                <ScalarProperty Name="date_gr_visited" ColumnName="date_gr_visited" />
+                <ScalarProperty Name="is_gr_read" ColumnName="is_gr_read" />
+                <ScalarProperty Name="is_gr_visited" ColumnName="is_gr_visited" />
+                <ScalarProperty Name="date_csr_read" ColumnName="date_csr_read" />
+                <ScalarProperty Name="date_csr_visited" ColumnName="date_csr_visited" />
+                <ScalarProperty Name="is_csr_read" ColumnName="is_csr_read" />
+                <ScalarProperty Name="is_csr_visited" ColumnName="is_csr_visited" />
+                <ScalarProperty Name="date_vr_read" ColumnName="date_vr_read" />
+                <ScalarProperty Name="date_vr_visited" ColumnName="date_vr_visited" />
+                <ScalarProperty Name="is_vr_read" ColumnName="is_vr_read" />
+                <ScalarProperty Name="is_vr_visited" ColumnName="is_vr_visited" />
+                <ScalarProperty Name="flight_id" ColumnName="flight_id" />
+                <ScalarProperty Name="comments" ColumnName="comments" />
+                <ScalarProperty Name="ops_label" ColumnName="ops_label" />
+                <ScalarProperty Name="cms_label" ColumnName="cms_label" />
+                <ScalarProperty Name="date_asr_pinned" ColumnName="date_asr_pinned" />
+                <ScalarProperty Name="date_asr_read" ColumnName="date_asr_read" />
+                <ScalarProperty Name="date_asr_visited" ColumnName="date_asr_visited" />
+                <ScalarProperty Name="tags" ColumnName="tags" />
+                <ScalarProperty Name="is_pinned" ColumnName="is_pinned" />
+                <ScalarProperty Name="is_asr_read" ColumnName="is_asr_read" />
+                <ScalarProperty Name="is_asr_visited" ColumnName="is_asr_visited" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

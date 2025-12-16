@@ -91,13 +91,13 @@ namespace ApiCMS.Controllers
                 if (us!= null)
                 {
                     x.is_pinned = us.is_pinned;
-                    x.is_read = us.is_read;
-                    x.is_visited= us.is_visited;
+                  //  x.is_read = us.is_read;
+                  //  x.is_visited= us.is_visited;
                     x.comments= us.comments;
                     x.tags= us.tags;
-                    x.date_pinned= us.date_pinned;
-                    x.date_read= us.date_read;
-                    x.date_visited= us.date_visited;
+                  //  x.date_pinned= us.date_pinned;
+                  //  x.date_read= us.date_read;
+                  //  x.date_visited= us.date_visited;
 
                 }
             }
@@ -106,5 +106,49 @@ namespace ApiCMS.Controllers
             return Ok(result);
 
         }
+
+
+
+
+        [Route("api/cms/reports/{token}")]
+
+        ////nookp
+        public IHttpActionResult GetReports(DateTime? df, DateTime? dt,int type,int flight_id,string register, string token)
+        {
+            //nooz
+            //ppa_entities context = new ppa_entities();
+            //this.context.Database.CommandTimeout = 160;
+            df = df != null ? ((DateTime)df).Date : DateTime.MinValue.Date;
+            dt = dt != null ? ((DateTime)dt).Date : DateTime.MaxValue.Date;
+            var context = new ppa_entities();
+            var query = from x in context.view_cms_report
+                            // where x.FlightStatusID != 1 && x.FlightStatusID != 4
+                            
+                        select x;
+            query = query.Where(q => q.DateOccurrence >= df && q.DateOccurrence <= dt).OrderByDescending(q=>q.DateOccurrence).ThenBy(q=>q.TypeTitle).ThenBy(q=>q.FlightNumber);
+
+            if (flight_id != -1)
+            {
+                query=query.Where(q=>q.FlightId==flight_id);
+            }
+            if (type != -1)
+            {
+                query = query.Where(q => q.type == type);
+            }
+            if (!string.IsNullOrEmpty(register))
+            {
+                query=query.Where(q=>q.Register== register);
+            }
+
+            var result = query.ToList();
+             
+
+            // return result.OrderBy(q => q.STD);
+            return Ok(result);
+
+        }
+
+
+
     }
 }
