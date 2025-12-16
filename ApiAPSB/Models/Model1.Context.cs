@@ -25,7 +25,6 @@ namespace ApiAPSB.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<AppCrewFlight> AppCrewFlights { get; set; }
         public virtual DbSet<FDPItem> FDPItems { get; set; }
         public virtual DbSet<XAppLeg> XAppLegs { get; set; }
         public virtual DbSet<OFPImportProp> OFPImportProps { get; set; }
@@ -55,7 +54,6 @@ namespace ApiAPSB.Models
         public virtual DbSet<ViewProfile> ViewProfiles { get; set; }
         public virtual DbSet<OFPB_WindTemperature> OFPB_WindTemperature { get; set; }
         public virtual DbSet<view_discretion_form> view_discretion_form { get; set; }
-        public virtual DbSet<ViewEmployee> ViewEmployees { get; set; }
         public virtual DbSet<ViewLegTime> ViewLegTimes { get; set; }
         public virtual DbSet<OFPB_Prop> OFPB_Prop { get; set; }
         public virtual DbSet<ViewFDPRest> ViewFDPRests { get; set; }
@@ -96,5 +94,7 @@ namespace ApiAPSB.Models
         public virtual DbSet<ViewQAGround> ViewQAGrounds { get; set; }
         public virtual DbSet<ViewQAHazard> ViewQAHazards { get; set; }
         public virtual DbSet<AppLegJL> AppLegJLs { get; set; }
+        public virtual DbSet<AppCrewFlight> AppCrewFlights { get; set; }
+        public virtual DbSet<ViewEmployee> ViewEmployees { get; set; }
     }
 }
