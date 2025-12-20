@@ -26,7 +26,8 @@ namespace ApiCMS.Models
         }
     
         public virtual DbSet<AppFuel> AppFuels { get; set; }
-        public virtual DbSet<cms_user_flight> cms_user_flight { get; set; }
         public virtual DbSet<view_efb_report> view_efb_report { get; set; }
+        public virtual DbSet<view_cms_report> view_cms_report { get; set; }
+        public virtual DbSet<cms_user_flight> cms_user_flight { get; set; }
     }
 }

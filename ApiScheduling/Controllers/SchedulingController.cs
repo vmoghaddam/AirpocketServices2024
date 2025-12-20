@@ -2580,7 +2580,7 @@ namespace ApiScheduling.Controllers
 
                 });
         }
-
+        //2025-12-14
         [Route("api/roster/stby/save")]
         [AcceptVerbs("POST")]
         //goh
@@ -2588,10 +2588,22 @@ namespace ApiScheduling.Controllers
         {
             var type = Convert.ToInt32(dto.type);
             var context = new Models.dbEntities();
-            var sbam_start = 0 * 60;
-            var sbam_durattion = 11 * 60 + 59;
-            var sbpm_start = 12 * 60;
-            var sbpm_duration = 11 * 60 + 59;
+
+            var _am=ConfigurationManager.AppSettings["sb_am_start"];
+            var _am_duration = ConfigurationManager.AppSettings["sb_am_duration"];
+
+            var _pm = ConfigurationManager.AppSettings["sb_pm_start"];
+            var _pm_duration = ConfigurationManager.AppSettings["sb_pm_duration"];
+
+
+            var sbam_start = _am !=null ? Convert.ToInt32(_am)*60 : 0 * 60;
+            var sbam_durattion = _am_duration!=null ? Convert.ToInt32(_am_duration) *60 -1 : 11 * 60 + 59;
+
+
+            var sbpm_start = _pm != null ? Convert.ToInt32(_pm) * 60 : 12 * 60;
+            var sbpm_duration = _pm_duration != null ? Convert.ToInt32(_pm_duration) * 60 - 1 : 11 * 60 + 59;
+
+
             var res_start = 4 * 60;
             var res_duration = 17 * 60 + 59;
 
@@ -2620,12 +2632,12 @@ namespace ApiScheduling.Controllers
             {
                 switch (type)
                 {
-                    case 1167:
+                    case 1168:
                         _from = day.AddMinutes(sbam_start).ToString("yyyyMMddHHmm");
 
                         _end = day.AddMinutes(sbam_start).AddMinutes(sbam_durattion).ToString("yyyyMMddHHmm");
                         break;
-                    case 1168:
+                    case 1167:
                         _from = day.AddMinutes(sbpm_start).ToString("yyyyMMddHHmm");
                         _end = day.AddMinutes(sbpm_start).AddMinutes(sbam_durattion).ToString("yyyyMMddHHmm");
                         break;
@@ -2777,7 +2789,7 @@ namespace ApiScheduling.Controllers
                                                           );
             }
 
-            if (_interupted != null && _interupted.DutyType != 1165)
+            if (_interupted != null /*&& _interupted.DutyType != 1165*/)
             {
                 if (_interupted.InitStart >= duty.InitEnd)
                     _interupted = null;
