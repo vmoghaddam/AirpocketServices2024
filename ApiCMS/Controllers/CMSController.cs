@@ -135,7 +135,7 @@ namespace ApiCMS.Controllers
             {
                 query = query.Where(q => q.type == type);
             }
-            if (!string.IsNullOrEmpty(register))
+            if (register!="-1")
             {
                 query=query.Where(q=>q.Register== register);
             }
