@@ -2,6 +2,7 @@
 using Antlr.Runtime;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Entity;
 using System.IO;
 using System.Linq;
@@ -68,9 +69,14 @@ namespace AirpocketTRN.Services
 
             try
             {
+                var root = ConfigurationManager.AppSettings["training_doc"];
+                if (string.IsNullOrWhiteSpace(root))
+                    throw new ConfigurationErrorsException("Missing appSetting: TrainingUploadRoot");
 
-                var rootPath = @"C:\Inetpub\vhosts\airpocket.app\ava.airpocket.app\upload\training\linecheck";
-                string targetPath = Path.Combine(rootPath, nid);
+                root = Path.GetFullPath(root);
+                string targetPath = Path.Combine(root, "linecheck/" + nid);
+                //var rootPath = @"C:\Inetpub\vhosts\airpocket.app\ava.airpocket.app\upload\training\linecheck";
+                //string targetPath = Path.Combine(rootPath, nid);
 
                 if (!Directory.Exists(targetPath))
                     throw new DirectoryNotFoundException($"Folder not found: {targetPath}");
@@ -127,9 +133,14 @@ namespace AirpocketTRN.Services
 
             try
             {
-                var rootPath = @"C:/Inetpub/vhosts/airpocket.app/ava.airpocket.app/upload/training/doc/";
-                string targetPath = Path.Combine(rootPath, nid);
 
+                var root = ConfigurationManager.AppSettings["training_doc"];
+                if (string.IsNullOrWhiteSpace(root))
+                    throw new ConfigurationErrorsException("Missing appSetting: TrainingUploadRoot");
+
+                root = Path.GetFullPath(root);
+                string targetPath = Path.Combine(root, "doc/" + nid);
+                
                 var result = new Dictionary<string, List<string>>();
 
                 foreach (var dir in Directory.GetDirectories(targetPath, "*", SearchOption.AllDirectories))
@@ -189,9 +200,17 @@ namespace AirpocketTRN.Services
 
             try
             {
-                var rootPath = @"C:\inetpub\vhosts\airpocket.app\ava.airpocket.app\upload\training\crew\cockpit";
-                //var rootPath = "C:\\inetpub\\vhosts\\airpocket.app\\ava.airpocket.app\\upload\\training\\crew\\cockpit\\";
-                string targetPath = Path.Combine(rootPath, nid);
+
+                var root = ConfigurationManager.AppSettings["training_doc"];
+                if (string.IsNullOrWhiteSpace(root))
+                    throw new ConfigurationErrorsException("Missing appSetting: TrainingUploadRoot");
+
+                root = Path.GetFullPath(root);
+                string targetPath = Path.Combine(root, "crew/cockpit/" + nid);
+
+                //var rootPath = @"C:\inetpub\vhosts\airpocket.app\ava.airpocket.app\upload\training\crew\cockpit";
+                ////var rootPath = "C:\\inetpub\\vhosts\\airpocket.app\\ava.airpocket.app\\upload\\training\\crew\\cockpit\\";
+                //string targetPath = Path.Combine(rootPath, nid);
 
                 //if (!Directory.Exists(targetPath))
                 //    throw new DirectoryNotFoundException($"Folder not found: {targetPath}");

@@ -245,13 +245,25 @@ namespace AirpocketTRN.Controllers
                                 // code block
                                 break;
                         }
-                        var filePath = $"C:/Inetpub/vhosts/airpocket.app/ava.airpocket.app/upload/training/doc/" + nid + "/" + doc_type + "/" + postedFile.FileName;
+                        var root = ConfigurationManager.AppSettings["training_doc"];
+                        if (string.IsNullOrWhiteSpace(root))
+                            throw new ConfigurationErrorsException("Missing appSetting: TrainingUploadRoot");
+
+                        root = Path.GetFullPath(root);
+                        string filePath = Path.Combine(root, "doc/" + nid + "/" + doc_type + "/" + postedFile.FileName);
+                        //var filePath = $"C:/Inetpub/vhosts/airpocket.app/ava.airpocket.app/upload/training/doc/" + nid + "/" + doc_type + "/" + postedFile.FileName;
                         postedFile.SaveAs(filePath);
                         docfiles.Add(filePath);
                     }
                     else
                     {
-                        var filePath = $"C:/Inetpub/vhosts/airpocket.app/ava.airpocket.app/upload/training/doc/" + nid + "/CERTIFICATES/" + postedFile.FileName;
+                        var root = ConfigurationManager.AppSettings["training_doc"];
+                        if (string.IsNullOrWhiteSpace(root))
+                            throw new ConfigurationErrorsException("Missing appSetting: TrainingUploadRoot");
+
+                        root = Path.GetFullPath(root);
+                        string filePath = Path.Combine(root, "doc/" + nid + "/" + doc_type + "/" + postedFile.FileName);
+                        //var filePath = $"C:/Inetpub/vhosts/airpocket.app/ava.airpocket.app/upload/training/doc/" + nid + "/CERTIFICATES/" + postedFile.FileName;
                         postedFile.SaveAs(filePath);
                         docfiles.Add(filePath);
 
@@ -280,19 +292,31 @@ namespace AirpocketTRN.Controllers
             }
         }
 
-        [Route("api/upload/certificates")]
+        [Route("api/upload/certificates/{Id}")]
         [HttpPost]
-        public Task<IHttpActionResult> UploadCertificates()
+        public Task<IHttpActionResult> UploadCertificates(int Id)
         {
             try
             {
+                var context = new FLYEntities();
                 var req = HttpContext.Current.Request;
 
                 if (req.Files == null || req.Files.Count == 0)
                     return Task.FromResult<IHttpActionResult>(BadRequest("No files uploaded."));
 
-                var targetFolder = @"C:\Inetpub\vhosts\airpocket.app\ava.airpocket.app\upload\training\certificates";
+                var root = ConfigurationManager.AppSettings["training_doc"];
+                if (string.IsNullOrWhiteSpace(root))
+                    throw new ConfigurationErrorsException("Missing appSetting: TrainingUploadRoot");
 
+                root = Path.GetFullPath(root);
+
+                var baseFolder = Path.Combine(root, "certificates");
+
+                Directory.CreateDirectory(baseFolder);
+
+                var targetFolder = Path.Combine(root, "certificates" + Id); 
+
+                var _nid = "";
                 Directory.CreateDirectory(targetFolder);
 
                 var saved = new List<string>();
@@ -302,21 +326,33 @@ namespace AirpocketTRN.Controllers
                     var file = req.Files[i];
                     if (file == null || file.ContentLength == 0) continue;
 
-                    var safeName = Path.GetFileName(file.FileName);
+                    var originalName = Path.GetFileName(file.FileName);
+                    var safeName = string.Concat(originalName.Split(Path.GetInvalidFileNameChars()));
 
-                    var uniqueName = $"{Path.GetFileNameWithoutExtension(safeName)}_{Guid.NewGuid():N}{Path.GetExtension(safeName)}";
+                    var fullPath = Path.Combine(targetFolder, safeName);
+                    var nid =Path.GetFileNameWithoutExtension(file.FileName);
+                    _nid = nid;
+                    var person=context.ViewProfiles.FirstOrDefault(q=>q.NID == nid);
+                    if (  person!=null )
+                    {
+                        var cp = context.CoursePeoples.Where(q => q.PersonId == person.PersonId && q.CourseId == Id).FirstOrDefault();
+                        if (cp != null)
+                            cp.ImgUrl = Id + "/" + originalName;
+                    }
 
-                    var fullPath = Path.Combine(targetFolder, uniqueName);
+                   
 
                     file.SaveAs(fullPath);
-                    saved.Add(uniqueName);
+                    saved.Add(safeName);
                 }
 
+                context.SaveChanges();
                 return Task.FromResult<IHttpActionResult>(Ok(new
                 {
                     message = "Uploaded",
                     count = saved.Count,
-                    files = saved
+                    files = saved,
+                    nid=_nid
                 }));
             }
             catch (Exception ex)
@@ -333,7 +369,14 @@ namespace AirpocketTRN.Controllers
             try
             {
                 var context = new FLYEntities();
-                string rootDirectory = @"C:\Inetpub\vhosts\airpocket.app\ava.airpocket.app\upload\training\doc";
+                var root = ConfigurationManager.AppSettings["training_doc"];
+                if (string.IsNullOrWhiteSpace(root))
+                    throw new ConfigurationErrorsException("Missing appSetting: TrainingUploadRoot");
+
+                root = Path.GetFullPath(root);
+
+                var rootDirectory = Path.Combine(root, "doc");
+                //string rootDirectory = @"C:\Inetpub\vhosts\airpocket.app\ava.airpocket.app\upload\training\doc";
                 if (!Directory.Exists(rootDirectory))
                     throw new DirectoryNotFoundException($"Root directory does not exist: {rootDirectory}");
 
