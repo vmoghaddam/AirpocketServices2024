@@ -58,11 +58,5 @@ namespace ApiWorld.Models
         public Nullable<decimal> LegFuel { get; set; }
         public int Id_Point { get; set; }
         public string PlanType { get; set; }
-        public string  _key { get; set; }
-
-        public string FRE { get; set; }
-        public string FUS { get; set; }
-        public string TME { get; set; }
-        public string TTM { get; set; }
     }
 }

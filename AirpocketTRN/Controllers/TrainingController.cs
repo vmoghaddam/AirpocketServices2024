@@ -196,6 +196,7 @@ namespace AirpocketTRN.Controllers
                 string nid = httpRequest.Form["nid"];
                 int type = Convert.ToInt32(httpRequest.Form["DocumentTypeId"]);
                 string ac_type = httpRequest.Form["ac_type"];
+                string year = httpRequest.Form["year"];
                 //DateTime idt = Convert.ToDateTime(httpRequest.Form["DateIssue"]);
                 //DateTime edt =Convert.ToDateTime(httpRequest.Form["DateExpire"]);
                 string title = httpRequest.Form["Remark"];
@@ -214,6 +215,7 @@ namespace AirpocketTRN.Controllers
                 foreach (string file in httpRequest.Files)
                 {
                     var postedFile = httpRequest.Files[file];
+                    var file_name = " ";
                     var doc_type = "";
 
                     if (type != 8)
@@ -222,24 +224,31 @@ namespace AirpocketTRN.Controllers
                         {
                             case 1:
                                 doc_type = "GENERAL DOCUMENTS";
+                                file_name = postedFile.FileName;
                                 break;
                             case 2:
                                 doc_type = "LICENSES";
+                                file_name = year + '_' + postedFile.FileName;
                                 break;
                             case 3:
                                 doc_type = "MEDICAL RECORDS";
+                                file_name = year + '_' + postedFile.FileName;
                                 break;
                             case 4:
                                 doc_type = ac_type != "null" ? "LINE CHECK RECORDS/" + ac_type : "LINE CHECK RECORDS";
+                                file_name = year + '_' + postedFile.FileName;
                                 break;
                             case 5:
                                 doc_type = "OFFICIAL RECORDS";
+                                file_name = year + '_' + postedFile.FileName;
                                 break;
                             case 6:
                                 doc_type = "SIMULATOR TRAINING";
+                                file_name = year + '_' + postedFile.FileName;
                                 break;
                             case 7:
                                 doc_type = "LOGBOOK RECORDS";
+                                file_name = year + '_' + postedFile.FileName;
                                 break;
                             default:
                                 // code block
@@ -250,7 +259,7 @@ namespace AirpocketTRN.Controllers
                             throw new ConfigurationErrorsException("Missing appSetting: TrainingUploadRoot");
 
                         root = Path.GetFullPath(root);
-                        string filePath = Path.Combine(root, "doc/" + nid + "/" + doc_type + "/" + postedFile.FileName);
+                        string filePath = Path.Combine(root, "doc/" + nid + "/" + doc_type + "/" + file_name);
                         //var filePath = $"C:/Inetpub/vhosts/airpocket.app/ava.airpocket.app/upload/training/doc/" + nid + "/" + doc_type + "/" + postedFile.FileName;
                         postedFile.SaveAs(filePath);
                         docfiles.Add(filePath);
@@ -261,8 +270,10 @@ namespace AirpocketTRN.Controllers
                         if (string.IsNullOrWhiteSpace(root))
                             throw new ConfigurationErrorsException("Missing appSetting: TrainingUploadRoot");
 
+                        file_name = year + '_' + postedFile.FileName;
+
                         root = Path.GetFullPath(root);
-                        string filePath = Path.Combine(root, "doc/" + nid + "/" + doc_type + "/" + postedFile.FileName);
+                        string filePath = Path.Combine(root, "doc/" + nid + "/" + doc_type + "/" + file_name);
                         //var filePath = $"C:/Inetpub/vhosts/airpocket.app/ava.airpocket.app/upload/training/doc/" + nid + "/CERTIFICATES/" + postedFile.FileName;
                         postedFile.SaveAs(filePath);
                         docfiles.Add(filePath);
@@ -314,7 +325,7 @@ namespace AirpocketTRN.Controllers
 
                 Directory.CreateDirectory(baseFolder);
 
-                var targetFolder = Path.Combine(root, "certificates" + Id); 
+                var targetFolder = Path.Combine(baseFolder, Id.ToString());
 
                 var _nid = "";
                 Directory.CreateDirectory(targetFolder);
@@ -330,17 +341,17 @@ namespace AirpocketTRN.Controllers
                     var safeName = string.Concat(originalName.Split(Path.GetInvalidFileNameChars()));
 
                     var fullPath = Path.Combine(targetFolder, safeName);
-                    var nid =Path.GetFileNameWithoutExtension(file.FileName);
+                    var nid = Path.GetFileNameWithoutExtension(file.FileName);
                     _nid = nid;
-                    var person=context.ViewProfiles.FirstOrDefault(q=>q.NID == nid);
-                    if (  person!=null )
+                    var person = context.ViewProfiles.FirstOrDefault(q => q.NID == nid);
+                    if (person != null)
                     {
                         var cp = context.CoursePeoples.Where(q => q.PersonId == person.PersonId && q.CourseId == Id).FirstOrDefault();
                         if (cp != null)
                             cp.ImgUrl = Id + "/" + originalName;
                     }
 
-                   
+
 
                     file.SaveAs(fullPath);
                     saved.Add(safeName);
@@ -352,7 +363,7 @@ namespace AirpocketTRN.Controllers
                     message = "Uploaded",
                     count = saved.Count,
                     files = saved,
-                    nid=_nid
+                    nid = _nid
                 }));
             }
             catch (Exception ex)
@@ -360,9 +371,9 @@ namespace AirpocketTRN.Controllers
                 return Task.FromResult<IHttpActionResult>(InternalServerError(ex));
             }
         }
-    
 
-    [Route("api/create/profile/folder")]
+
+        [Route("api/create/profile/folder")]
         [AcceptVerbs("POST")]
         public async Task<IHttpActionResult> create_missing_profile_folder()
         {

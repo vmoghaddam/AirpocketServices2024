@@ -1033,7 +1033,6 @@
           <Property Name="HoldingFuelId" Type="int" />
           <Property Name="ResponseId" Type="int" />
           <Property Name="FlightId" Type="int" />
-          <Property Name="pps_id" Type="int" />
         </EntityType>
         <EntityType Name="FlightInformation">
           <Key>
@@ -1338,14 +1337,7 @@
           <Property Name="AttForms" Type="varchar" MaxLength="500" />
           <Property Name="PaxMale" Type="int" />
           <Property Name="PaxFemale" Type="int" />
-          <Property Name="PF1Id" Type="int" />
-          <Property Name="PM1Id" Type="int" />
-          <Property Name="PF2Id" Type="int" />
-          <Property Name="PM2Id" Type="int" />
-          <Property Name="PF1Time" Type="int" />
-          <Property Name="PM1Time" Type="int" />
-          <Property Name="PF2Time" Type="int" />
-          <Property Name="PM2Time" Type="int" />
+          <Property Name="remark_correction" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="FlightLevel">
           <Key>
@@ -1643,6 +1635,26 @@
           <Property Name="MRMP" Type="float" />
           <Property Name="MaxCargo" Type="float" />
         </EntityType>
+        <EntityType Name="load_sheet_raw">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="airline" Type="varchar" MaxLength="500" />
+          <Property Name="date_create" Type="datetime2" Precision="7" />
+          <Property Name="content" Type="nvarchar(max)" />
+          <Property Name="remark" Type="varchar" MaxLength="1000" />
+          <Property Name="flight_id" Type="int" />
+          <Property Name="signed_by_id" Type="int" />
+          <Property Name="date_sign" Type="datetime2" Precision="7" />
+          <Property Name="pic" Type="varchar" MaxLength="255" />
+          <Property Name="lic_no" Type="varchar" MaxLength="255" />
+          <Property Name="flight_no" Type="varchar" MaxLength="255" />
+          <Property Name="RefId" Type="int" />
+          <Property Name="Edition" Type="varchar" MaxLength="255" />
+          <Property Name="RowRefID" Type="varchar" MaxLength="255" />
+          <Property Name="MessageType" Type="varchar" MaxLength="255" />
+        </EntityType>
         <EntityType Name="LoadCargoSection">
           <Key>
             <PropertyRef Name="Id_key" />
@@ -1783,6 +1795,24 @@
           <Property Name="DEST" Type="nvarchar" MaxLength="500" />
           <Property Name="MINFUEL" Type="int" />
           <Property Name="FlightID" Type="int" />
+        </EntityType>
+        <EntityType Name="ofp_prop_history">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="OFPId" Type="int" Nullable="false" />
+          <Property Name="PropName" Type="varchar" MaxLength="500" />
+          <Property Name="PropValue" Type="varchar" MaxLength="500" />
+          <Property Name="PropType" Type="varchar" MaxLength="255" />
+          <Property Name="User" Type="varchar" MaxLength="255" />
+          <Property Name="DateCreate" Type="varchar" MaxLength="255" />
+          <Property Name="DateCreateLocal" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="Remark" Type="varchar" MaxLength="255" />
+          <Property Name="Identifier" Type="varchar" MaxLength="500" />
+          <Property Name="IP" Type="varchar" MaxLength="255" />
+          <Property Name="HardWare" Type="varchar" MaxLength="255" />
+          <Property Name="ISP" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="OFPA_aldrf">
           <Key>
@@ -2107,7 +2137,7 @@
           <Property Name="VDT" Type="varchar" MaxLength="2000" />
           <Property Name="MAXSHEER" Type="varchar" MaxLength="2000" />
           <Property Name="MINDIVFUEL" Type="varchar" MaxLength="2000" />
-          <Property Name="WDTMP" Type="varchar" MaxLength="4000" />
+          <Property Name="WDTMP" Type="varchar" MaxLength="5000" />
           <Property Name="DID" Type="varchar" MaxLength="500" />
           <Property Name="WDCLB" Type="varchar" MaxLength="4000" />
           <Property Name="WDDES" Type="varchar" MaxLength="4000" />
@@ -2311,16 +2341,6 @@
           <Property Name="LegFuel" Type="decimal" Precision="18" Scale="6" />
           <Property Name="Id_Point" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
-        <EntityType Name="plan_flight">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="flight_id" Type="int" Nullable="false" />
-          <Property Name="plan_id" Type="int" Nullable="false" />
-          <Property Name="date_create" Type="datetime2" Precision="7" />
-          <Property Name="remark" Type="varchar" MaxLength="500" />
-        </EntityType>
         <EntityType Name="PlanningEnRouteAlternateAirport">
           <Key>
             <PropertyRef Name="Id" />
@@ -2394,7 +2414,6 @@
           <Property Name="LegFuel" Type="decimal" Precision="18" Scale="3" />
           <Property Name="Id_Point" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PlanType" Type="varchar" MaxLength="255" />
-          <Property Name="_key" Type="varchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="RCFAltRoutePoints">
           <Key>
@@ -4274,8 +4293,24 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_nl_flt">
+          <End Role="Flight" Type="Self.Flight" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="NextLeg" Type="Self.NextLeg" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Flight">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="NextLeg">
+              <PropertyRef Name="FlightID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_ofp_flt">
-          <End Role="FlightInformation" Type="Self.FlightInformation" Multiplicity="0..1" />
+          <End Role="FlightInformation" Type="Self.FlightInformation" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="OFPImport" Type="Self.OFPImport" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="FlightInformation">
@@ -4286,7 +4321,161 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="fk_ofpp_ofp">
+        <Association Name="FK_OFPA_aldrf_Main">
+          <End Role="OFPA_Main" Type="Self.OFPA_Main" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="OFPA_aldrf" Type="Self.OFPA_aldrf" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OFPA_Main">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OFPA_aldrf">
+              <PropertyRef Name="FlightPlanId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OFPA_apln_Main">
+          <End Role="OFPA_Main" Type="Self.OFPA_Main" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="OFPA_apln" Type="Self.OFPA_apln" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OFPA_Main">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OFPA_apln">
+              <PropertyRef Name="FlightPlanId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OFPA_bpln_Main">
+          <End Role="OFPA_Main" Type="Self.OFPA_Main" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="OFPA_bpln" Type="Self.OFPA_bpln" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OFPA_Main">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OFPA_bpln">
+              <PropertyRef Name="FlightPlanId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OFPA_cstbl_Main">
+          <End Role="OFPA_Main" Type="Self.OFPA_Main" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="OFPA_cstbl" Type="Self.OFPA_cstbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OFPA_Main">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OFPA_cstbl">
+              <PropertyRef Name="FlightPlanId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OFPA_futbl_Main_FlightPlanId">
+          <End Role="OFPA_Main" Type="Self.OFPA_Main" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="OFPA_futbl" Type="Self.OFPA_futbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OFPA_Main">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OFPA_futbl">
+              <PropertyRef Name="FlightPlanId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OFPA_mpln_Main">
+          <End Role="OFPA_Main" Type="Self.OFPA_Main" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="OFPA_mpln" Type="Self.OFPA_mpln" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OFPA_Main">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OFPA_mpln">
+              <PropertyRef Name="FlightPlanId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OFPA_pdptbl_Main">
+          <End Role="OFPA_Main" Type="Self.OFPA_Main" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="OFPA_pdptbl" Type="Self.OFPA_pdptbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OFPA_Main">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OFPA_pdptbl">
+              <PropertyRef Name="FlightPlanId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OFPA_wdclb_Main">
+          <End Role="OFPA_Main" Type="Self.OFPA_Main" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="OFPA_wdclb" Type="Self.OFPA_wdclb" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OFPA_Main">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OFPA_wdclb">
+              <PropertyRef Name="FlightPlanId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OFPA_wddes_Main">
+          <End Role="OFPA_Main" Type="Self.OFPA_Main" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="OFPA_wddes" Type="Self.OFPA_wddes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OFPA_Main">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OFPA_wddes">
+              <PropertyRef Name="FlightPlanId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OFPA_wdtmp_Main">
+          <End Role="OFPA_Main" Type="Self.OFPA_Main" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="OFPA_wdtmp" Type="Self.OFPA_wdtmp" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OFPA_Main">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OFPA_wdtmp">
+              <PropertyRef Name="FlightPlanId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OFPA_wtdrf_Main">
+          <End Role="OFPA_Main" Type="Self.OFPA_Main" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="OFPA_wtdrf" Type="Self.OFPA_wtdrf" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OFPA_Main">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OFPA_wtdrf">
+              <PropertyRef Name="FlightPlanId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_ofpprop_ofp">
           <End Role="OFPImport" Type="Self.OFPImport" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -4351,30 +4540,6 @@
             </Principal>
             <Dependent Role="PDPPoints">
               <PropertyRef Name="FlightID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="fk_plan_flt_flt">
-          <End Role="FlightInformation" Type="Self.FlightInformation" Multiplicity="1" />
-          <End Role="plan_flight" Type="Self.plan_flight" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="FlightInformation">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="plan_flight">
-              <PropertyRef Name="flight_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="fk_plan_flt_plan">
-          <End Role="Flight" Type="Self.Flight" Multiplicity="1" />
-          <End Role="plan_flight" Type="Self.plan_flight" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Flight">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="plan_flight">
-              <PropertyRef Name="plan_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4569,6 +4734,7 @@
           <EntitySet Name="Load_PaxData" EntityType="Self.Load_PaxData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Load_PaxSection" EntityType="Self.Load_PaxSection" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Load_Payload" EntityType="Self.Load_Payload" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="load_sheet_raw" EntityType="Self.load_sheet_raw" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LoadCargoSection" EntityType="Self.LoadCargoSection" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LoadFuelSection" EntityType="Self.LoadFuelSection" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LoadPaxSection" EntityType="Self.LoadPaxSection" Schema="dbo" store:Type="Tables" />
@@ -4583,6 +4749,7 @@
           <EntitySet Name="MessageRecipient" EntityType="Self.MessageRecipient" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Metar" EntityType="Self.Metar" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NextLeg" EntityType="Self.NextLeg" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ofp_prop_history" EntityType="Self.ofp_prop_history" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OFPA_aldrf" EntityType="Self.OFPA_aldrf" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OFPA_apln" EntityType="Self.OFPA_apln" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OFPA_bpln" EntityType="Self.OFPA_bpln" Schema="dbo" store:Type="Tables" />
@@ -4605,7 +4772,6 @@
           <EntitySet Name="Pax" EntityType="Self.Pax" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Payload" EntityType="Self.Payload" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PDPPoints" EntityType="Self.PDPPoints" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="plan_flight" EntityType="Self.plan_flight" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PlanningEnRouteAlternateAirport" EntityType="Self.PlanningEnRouteAlternateAirport" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Position" EntityType="Self.Position" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PpsVersionInformation" EntityType="Self.PpsVersionInformation" Schema="dbo" store:Type="Tables" />
@@ -5098,11 +5264,59 @@
             <End Role="Message" EntitySet="Message" />
             <End Role="MessageRecipient" EntitySet="MessageRecipient" />
           </AssociationSet>
+          <AssociationSet Name="fk_nl_flt" Association="Self.fk_nl_flt">
+            <End Role="Flight" EntitySet="Flight" />
+            <End Role="NextLeg" EntitySet="NextLeg" />
+          </AssociationSet>
           <AssociationSet Name="fk_ofp_flt" Association="Self.fk_ofp_flt">
             <End Role="FlightInformation" EntitySet="FlightInformation" />
             <End Role="OFPImport" EntitySet="OFPImport" />
           </AssociationSet>
-          <AssociationSet Name="fk_ofpp_ofp" Association="Self.fk_ofpp_ofp">
+          <AssociationSet Name="FK_OFPA_aldrf_Main" Association="Self.FK_OFPA_aldrf_Main">
+            <End Role="OFPA_Main" EntitySet="OFPA_Main" />
+            <End Role="OFPA_aldrf" EntitySet="OFPA_aldrf" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OFPA_apln_Main" Association="Self.FK_OFPA_apln_Main">
+            <End Role="OFPA_Main" EntitySet="OFPA_Main" />
+            <End Role="OFPA_apln" EntitySet="OFPA_apln" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OFPA_bpln_Main" Association="Self.FK_OFPA_bpln_Main">
+            <End Role="OFPA_Main" EntitySet="OFPA_Main" />
+            <End Role="OFPA_bpln" EntitySet="OFPA_bpln" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OFPA_cstbl_Main" Association="Self.FK_OFPA_cstbl_Main">
+            <End Role="OFPA_Main" EntitySet="OFPA_Main" />
+            <End Role="OFPA_cstbl" EntitySet="OFPA_cstbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OFPA_futbl_Main_FlightPlanId" Association="Self.FK_OFPA_futbl_Main_FlightPlanId">
+            <End Role="OFPA_Main" EntitySet="OFPA_Main" />
+            <End Role="OFPA_futbl" EntitySet="OFPA_futbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OFPA_mpln_Main" Association="Self.FK_OFPA_mpln_Main">
+            <End Role="OFPA_Main" EntitySet="OFPA_Main" />
+            <End Role="OFPA_mpln" EntitySet="OFPA_mpln" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OFPA_pdptbl_Main" Association="Self.FK_OFPA_pdptbl_Main">
+            <End Role="OFPA_Main" EntitySet="OFPA_Main" />
+            <End Role="OFPA_pdptbl" EntitySet="OFPA_pdptbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OFPA_wdclb_Main" Association="Self.FK_OFPA_wdclb_Main">
+            <End Role="OFPA_Main" EntitySet="OFPA_Main" />
+            <End Role="OFPA_wdclb" EntitySet="OFPA_wdclb" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OFPA_wddes_Main" Association="Self.FK_OFPA_wddes_Main">
+            <End Role="OFPA_Main" EntitySet="OFPA_Main" />
+            <End Role="OFPA_wddes" EntitySet="OFPA_wddes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OFPA_wdtmp_Main" Association="Self.FK_OFPA_wdtmp_Main">
+            <End Role="OFPA_Main" EntitySet="OFPA_Main" />
+            <End Role="OFPA_wdtmp" EntitySet="OFPA_wdtmp" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OFPA_wtdrf_Main" Association="Self.FK_OFPA_wtdrf_Main">
+            <End Role="OFPA_Main" EntitySet="OFPA_Main" />
+            <End Role="OFPA_wtdrf" EntitySet="OFPA_wtdrf" />
+          </AssociationSet>
+          <AssociationSet Name="fk_ofpprop_ofp" Association="Self.fk_ofpprop_ofp">
             <End Role="OFPImport" EntitySet="OFPImport" />
             <End Role="OFPImportProp" EntitySet="OFPImportProp" />
           </AssociationSet>
@@ -5121,14 +5335,6 @@
           <AssociationSet Name="FK_PDPPoints_Flights" Association="Self.FK_PDPPoints_Flights">
             <End Role="Flight" EntitySet="Flight" />
             <End Role="PDPPoints" EntitySet="PDPPoints" />
-          </AssociationSet>
-          <AssociationSet Name="fk_plan_flt_flt" Association="Self.fk_plan_flt_flt">
-            <End Role="FlightInformation" EntitySet="FlightInformation" />
-            <End Role="plan_flight" EntitySet="plan_flight" />
-          </AssociationSet>
-          <AssociationSet Name="fk_plan_flt_plan" Association="Self.fk_plan_flt_plan">
-            <End Role="Flight" EntitySet="Flight" />
-            <End Role="plan_flight" EntitySet="plan_flight" />
           </AssociationSet>
           <AssociationSet Name="fk_point_ofp" Association="Self.fk_point_ofp">
             <End Role="OFPImport" EntitySet="OFPImport" />
@@ -5666,7 +5872,6 @@
             <End Role="OFPImport" EntitySet="OFPImports" />
             <End Role="OFPImportProp" EntitySet="OFPImportProps" />
           </AssociationSet>
-          <EntitySet Name="PSSPoints" EntityType="ppaModel.PSSPoint" />
           <EntitySet Name="Flights" EntityType="ppaModel.Flight" />
           <EntitySet Name="plan_flight" EntityType="ppaModel.plan_flight" />
           <AssociationSet Name="fk_adapt_flt" Association="ppaModel.fk_adapt_flt">
@@ -5889,6 +6094,13 @@
             <End Role="FlightInformation" EntitySet="FlightInformations" />
             <End Role="plan_flight" EntitySet="plan_flight" />
           </AssociationSet>
+          <EntitySet Name="load_sheet_raw" EntityType="ppaModel.load_sheet_raw" />
+          <AssociationSet Name="fk_nl_flt" Association="ppaModel.fk_nl_flt">
+            <End Role="Flight" EntitySet="Flights" />
+            <End Role="NextLeg" EntitySet="NextLegs" />
+          </AssociationSet>
+          <EntitySet Name="ofp_prop_history" EntityType="ppaModel.ofp_prop_history" />
+          <EntitySet Name="PSSPoints" EntityType="ppaModel.PSSPoint" />
           </EntityContainer>
         <EntityType Name="AdequateNotamPartInformation">
           <Key>
@@ -6823,6 +7035,7 @@
           <Property Name="MINFUEL" Type="Int32" />
           <Property Name="FlightID" Type="Int32" />
           <NavigationProperty Name="Flights" Relationship="ppaModel.FK_Flight_NextLeg" FromRole="NextLeg" ToRole="Flight" />
+          <NavigationProperty Name="Flight" Relationship="ppaModel.fk_nl_flt" FromRole="NextLeg" ToRole="Flight" />
           </EntityType>
         <EntityType Name="OverflightCost">
           <Key>
@@ -9361,7 +9574,7 @@
           <Property Name="VDT" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
           <Property Name="MAXSHEER" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
           <Property Name="MINDIVFUEL" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
-          <Property Name="WDTMP" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Name="WDTMP" Type="String" MaxLength="5000" FixedLength="false" Unicode="false" />
           <Property Name="DID" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="WDCLB" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
           <Property Name="WDDES" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
@@ -9752,6 +9965,7 @@
           <Property Name="PM2Time" Type="Int32" />
           <NavigationProperty Name="OFPImports" Relationship="ppaModel.fk_ofp_flt" FromRole="FlightInformation" ToRole="OFPImport" />
           <NavigationProperty Name="plan_flight" Relationship="ppaModel.fk_plan_flt_flt" FromRole="FlightInformation" ToRole="plan_flight" />
+          <Property Name="remark_correction" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="fk_ofp_flt">
           <End Type="ppaModel.FlightInformation" Role="FlightInformation" Multiplicity="0..1" />
@@ -9795,56 +10009,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="PSSPoint">
-          <Key>
-            <PropertyRef Name="Id_Point" />
-          </Key>
-          <Property Name="FlightID" Type="Int32" />
-          <Property Name="PointSet" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
-          <Property Name="ID" Type="Int32" />
-          <Property Name="IDENT" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="FL" Type="Int32" />
-          <Property Name="Wind" Type="Int32" />
-          <Property Name="Vol" Type="Int32" />
-          <Property Name="ISA" Type="Int32" />
-          <Property Name="LegTime" Type="Int32" />
-          <Property Name="LegCourse" Type="Decimal" Precision="9" Scale="4" />
-          <Property Name="LegDistance" Type="Int32" />
-          <Property Name="LegCAT" Type="Int32" />
-          <Property Name="LegName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="LegAWY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="FuelUsed" Type="Decimal" Precision="18" Scale="3" />
-          <Property Name="FuelFlow" Type="Int32" />
-          <Property Name="LAT" Type="Decimal" Precision="12" Scale="6" />
-          <Property Name="LON" Type="Decimal" Precision="12" Scale="6" />
-          <Property Name="VARIATION" Type="Int32" />
-          <Property Name="ACCDIST" Type="Int32" />
-          <Property Name="ACCTIME" Type="Int32" />
-          <Property Name="MagCourse" Type="Decimal" Precision="9" Scale="4" />
-          <Property Name="TrueAirSpeed" Type="Int32" />
-          <Property Name="GroundSpeed" Type="Int32" />
-          <Property Name="FuelRemaining" Type="Decimal" Precision="18" Scale="3" />
-          <Property Name="DistRemaining" Type="Int32" />
-          <Property Name="TimeRemaining" Type="Int32" />
-          <Property Name="MinReqFuel" Type="Decimal" Precision="18" Scale="3" />
-          <Property Name="FuelFlowPerEng" Type="Decimal" Precision="18" Scale="3" />
-          <Property Name="Temperature" Type="Int32" />
-          <Property Name="MORA" Type="Int32" />
-          <Property Name="Frequency" Type="Decimal" Precision="18" Scale="6" />
-          <Property Name="WindComponent" Type="Int32" />
-          <Property Name="MinimumEnrouteAltitude" Type="Int32" />
-          <Property Name="MagneticHeading" Type="Decimal" Precision="9" Scale="4" />
-          <Property Name="TrueHeading" Type="Decimal" Precision="9" Scale="4" />
-          <Property Name="MagneticTrack" Type="Int32" />
-          <Property Name="TrueTrack" Type="Int32" />
-          <Property Name="HLAEntryExit" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
-          <Property Name="FIR" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="ClimbDescent" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
-          <Property Name="LegFuel" Type="Decimal" Precision="18" Scale="3" />
-          <Property Name="Id_Point" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="PlanType" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="C_key" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="Flight">
           <Key>
             <PropertyRef Name="Id" />
@@ -10068,6 +10232,7 @@
           <NavigationProperty Name="StdAlternates" Relationship="ppaModel.FK_StdAlternates_Flight" FromRole="Flight" ToRole="StdAlternate" />
           <NavigationProperty Name="PlanningEnRouteAlternateAirports" Relationship="ppaModel.fk_tbl_flt" FromRole="Flight" ToRole="PlanningEnRouteAlternateAirport" />
           <NavigationProperty Name="ToAlt1Points" Relationship="ppaModel.FK_ToAlt1Points_Flights" FromRole="Flight" ToRole="ToAlt1Points" />
+          <NavigationProperty Name="NextLegs" Relationship="ppaModel.fk_nl_flt" FromRole="Flight" ToRole="NextLeg" />
         </EntityType>
         <EntityType Name="plan_flight">
           <Key>
@@ -10803,6 +10968,107 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="load_sheet_raw">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="airline" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="date_create" Type="DateTime" Precision="7" />
+          <Property Name="content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="remark" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="flight_id" Type="Int32" />
+          <Property Name="signed_by_id" Type="Int32" />
+          <Property Name="date_sign" Type="DateTime" Precision="7" />
+          <Property Name="pic" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="lic_no" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="flight_no" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="RefId" Type="Int32" />
+          <Property Name="Edition" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="RowRefID" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="MessageType" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="fk_nl_flt">
+          <End Type="ppaModel.Flight" Role="Flight" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ppaModel.NextLeg" Role="NextLeg" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Flight">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="NextLeg">
+              <PropertyRef Name="FlightID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ofp_prop_history">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="OFPId" Type="Int32" Nullable="false" />
+          <Property Name="PropName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="PropValue" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="PropType" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="User" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="DateCreate" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="DateCreateLocal" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="Remark" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Identifier" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="IP" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="HardWare" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ISP" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="PSSPoint">
+          <Key>
+            <PropertyRef Name="Id_Point" />
+          </Key>
+          <Property Name="FlightID" Type="Int32" />
+          <Property Name="PointSet" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Name="ID" Type="Int32" />
+          <Property Name="IDENT" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="FL" Type="Int32" />
+          <Property Name="Wind" Type="Int32" />
+          <Property Name="Vol" Type="Int32" />
+          <Property Name="ISA" Type="Int32" />
+          <Property Name="LegTime" Type="Int32" />
+          <Property Name="LegCourse" Type="Decimal" Precision="9" Scale="4" />
+          <Property Name="LegDistance" Type="Int32" />
+          <Property Name="LegCAT" Type="Int32" />
+          <Property Name="LegName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LegAWY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FuelUsed" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="FuelFlow" Type="Int32" />
+          <Property Name="LAT" Type="Decimal" Precision="12" Scale="6" />
+          <Property Name="LON" Type="Decimal" Precision="12" Scale="6" />
+          <Property Name="VARIATION" Type="Int32" />
+          <Property Name="ACCDIST" Type="Int32" />
+          <Property Name="ACCTIME" Type="Int32" />
+          <Property Name="MagCourse" Type="Decimal" Precision="9" Scale="4" />
+          <Property Name="TrueAirSpeed" Type="Int32" />
+          <Property Name="GroundSpeed" Type="Int32" />
+          <Property Name="FuelRemaining" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="DistRemaining" Type="Int32" />
+          <Property Name="TimeRemaining" Type="Int32" />
+          <Property Name="MinReqFuel" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="FuelFlowPerEng" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="Temperature" Type="Int32" />
+          <Property Name="MORA" Type="Int32" />
+          <Property Name="Frequency" Type="Decimal" Precision="18" Scale="6" />
+          <Property Name="WindComponent" Type="Int32" />
+          <Property Name="MinimumEnrouteAltitude" Type="Int32" />
+          <Property Name="MagneticHeading" Type="Decimal" Precision="9" Scale="4" />
+          <Property Name="TrueHeading" Type="Decimal" Precision="9" Scale="4" />
+          <Property Name="MagneticTrack" Type="Int32" />
+          <Property Name="TrueTrack" Type="Int32" />
+          <Property Name="HLAEntryExit" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Name="FIR" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ClimbDescent" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Name="LegFuel" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="Id_Point" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PlanType" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -13120,14 +13386,7 @@
           <EntitySetMapping Name="FlightInformations">
             <EntityTypeMapping TypeName="ppaModel.FlightInformation">
               <MappingFragment StoreEntitySet="FlightInformation">
-                <ScalarProperty Name="PM2Time" ColumnName="PM2Time" />
-                <ScalarProperty Name="PF2Time" ColumnName="PF2Time" />
-                <ScalarProperty Name="PM1Time" ColumnName="PM1Time" />
-                <ScalarProperty Name="PF1Time" ColumnName="PF1Time" />
-                <ScalarProperty Name="PM2Id" ColumnName="PM2Id" />
-                <ScalarProperty Name="PF2Id" ColumnName="PF2Id" />
-                <ScalarProperty Name="PM1Id" ColumnName="PM1Id" />
-                <ScalarProperty Name="PF1Id" ColumnName="PF1Id" />
+                <ScalarProperty Name="remark_correction" ColumnName="remark_correction" />
                 <ScalarProperty Name="PaxFemale" ColumnName="PaxFemale" />
                 <ScalarProperty Name="PaxMale" ColumnName="PaxMale" />
                 <ScalarProperty Name="AttForms" ColumnName="AttForms" />
@@ -13446,61 +13705,9 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="PSSPoints">
-            <EntityTypeMapping TypeName="ppaModel.PSSPoint">
-              <MappingFragment StoreEntitySet="PSSPoint">
-                <ScalarProperty Name="C_key" ColumnName="_key" />
-                <ScalarProperty Name="PlanType" ColumnName="PlanType" />
-                <ScalarProperty Name="Id_Point" ColumnName="Id_Point" />
-                <ScalarProperty Name="LegFuel" ColumnName="LegFuel" />
-                <ScalarProperty Name="ClimbDescent" ColumnName="ClimbDescent" />
-                <ScalarProperty Name="FIR" ColumnName="FIR" />
-                <ScalarProperty Name="HLAEntryExit" ColumnName="HLAEntryExit" />
-                <ScalarProperty Name="TrueTrack" ColumnName="TrueTrack" />
-                <ScalarProperty Name="MagneticTrack" ColumnName="MagneticTrack" />
-                <ScalarProperty Name="TrueHeading" ColumnName="TrueHeading" />
-                <ScalarProperty Name="MagneticHeading" ColumnName="MagneticHeading" />
-                <ScalarProperty Name="MinimumEnrouteAltitude" ColumnName="MinimumEnrouteAltitude" />
-                <ScalarProperty Name="WindComponent" ColumnName="WindComponent" />
-                <ScalarProperty Name="Frequency" ColumnName="Frequency" />
-                <ScalarProperty Name="MORA" ColumnName="MORA" />
-                <ScalarProperty Name="Temperature" ColumnName="Temperature" />
-                <ScalarProperty Name="FuelFlowPerEng" ColumnName="FuelFlowPerEng" />
-                <ScalarProperty Name="MinReqFuel" ColumnName="MinReqFuel" />
-                <ScalarProperty Name="TimeRemaining" ColumnName="TimeRemaining" />
-                <ScalarProperty Name="DistRemaining" ColumnName="DistRemaining" />
-                <ScalarProperty Name="FuelRemaining" ColumnName="FuelRemaining" />
-                <ScalarProperty Name="GroundSpeed" ColumnName="GroundSpeed" />
-                <ScalarProperty Name="TrueAirSpeed" ColumnName="TrueAirSpeed" />
-                <ScalarProperty Name="MagCourse" ColumnName="MagCourse" />
-                <ScalarProperty Name="ACCTIME" ColumnName="ACCTIME" />
-                <ScalarProperty Name="ACCDIST" ColumnName="ACCDIST" />
-                <ScalarProperty Name="VARIATION" ColumnName="VARIATION" />
-                <ScalarProperty Name="LON" ColumnName="LON" />
-                <ScalarProperty Name="LAT" ColumnName="LAT" />
-                <ScalarProperty Name="FuelFlow" ColumnName="FuelFlow" />
-                <ScalarProperty Name="FuelUsed" ColumnName="FuelUsed" />
-                <ScalarProperty Name="LegAWY" ColumnName="LegAWY" />
-                <ScalarProperty Name="LegName" ColumnName="LegName" />
-                <ScalarProperty Name="LegCAT" ColumnName="LegCAT" />
-                <ScalarProperty Name="LegDistance" ColumnName="LegDistance" />
-                <ScalarProperty Name="LegCourse" ColumnName="LegCourse" />
-                <ScalarProperty Name="LegTime" ColumnName="LegTime" />
-                <ScalarProperty Name="ISA" ColumnName="ISA" />
-                <ScalarProperty Name="Vol" ColumnName="Vol" />
-                <ScalarProperty Name="Wind" ColumnName="Wind" />
-                <ScalarProperty Name="FL" ColumnName="FL" />
-                <ScalarProperty Name="IDENT" ColumnName="IDENT" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="PointSet" ColumnName="PointSet" />
-                <ScalarProperty Name="FlightID" ColumnName="FlightID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Flights">
             <EntityTypeMapping TypeName="ppaModel.Flight">
               <MappingFragment StoreEntitySet="Flight">
-                <ScalarProperty Name="pps_id" ColumnName="pps_id" />
                 <ScalarProperty Name="FlightId" ColumnName="FlightId" />
                 <ScalarProperty Name="ResponseId" ColumnName="ResponseId" />
                 <ScalarProperty Name="HoldingFuelId" ColumnName="HoldingFuelId" />
@@ -13668,14 +13875,93 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="plan_flight">
-            <EntityTypeMapping TypeName="ppaModel.plan_flight">
-              <MappingFragment StoreEntitySet="plan_flight">
-                <ScalarProperty Name="remark" ColumnName="remark" />
-                <ScalarProperty Name="date_create" ColumnName="date_create" />
-                <ScalarProperty Name="plan_id" ColumnName="plan_id" />
+          <EntitySetMapping Name="load_sheet_raw">
+            <EntityTypeMapping TypeName="ppaModel.load_sheet_raw">
+              <MappingFragment StoreEntitySet="load_sheet_raw">
+                <ScalarProperty Name="MessageType" ColumnName="MessageType" />
+                <ScalarProperty Name="RowRefID" ColumnName="RowRefID" />
+                <ScalarProperty Name="Edition" ColumnName="Edition" />
+                <ScalarProperty Name="RefId" ColumnName="RefId" />
+                <ScalarProperty Name="flight_no" ColumnName="flight_no" />
+                <ScalarProperty Name="lic_no" ColumnName="lic_no" />
+                <ScalarProperty Name="pic" ColumnName="pic" />
+                <ScalarProperty Name="date_sign" ColumnName="date_sign" />
+                <ScalarProperty Name="signed_by_id" ColumnName="signed_by_id" />
                 <ScalarProperty Name="flight_id" ColumnName="flight_id" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="content" ColumnName="content" />
+                <ScalarProperty Name="date_create" ColumnName="date_create" />
+                <ScalarProperty Name="airline" ColumnName="airline" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ofp_prop_history">
+            <EntityTypeMapping TypeName="ppaModel.ofp_prop_history">
+              <MappingFragment StoreEntitySet="ofp_prop_history">
+                <ScalarProperty Name="ISP" ColumnName="ISP" />
+                <ScalarProperty Name="HardWare" ColumnName="HardWare" />
+                <ScalarProperty Name="IP" ColumnName="IP" />
+                <ScalarProperty Name="Identifier" ColumnName="Identifier" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="DateCreateLocal" ColumnName="DateCreateLocal" />
+                <ScalarProperty Name="DateCreate" ColumnName="DateCreate" />
+                <ScalarProperty Name="User" ColumnName="User" />
+                <ScalarProperty Name="PropType" ColumnName="PropType" />
+                <ScalarProperty Name="PropValue" ColumnName="PropValue" />
+                <ScalarProperty Name="PropName" ColumnName="PropName" />
+                <ScalarProperty Name="OFPId" ColumnName="OFPId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PSSPoints">
+            <EntityTypeMapping TypeName="ppaModel.PSSPoint">
+              <MappingFragment StoreEntitySet="PSSPoint">
+                <ScalarProperty Name="PlanType" ColumnName="PlanType" />
+                <ScalarProperty Name="Id_Point" ColumnName="Id_Point" />
+                <ScalarProperty Name="LegFuel" ColumnName="LegFuel" />
+                <ScalarProperty Name="ClimbDescent" ColumnName="ClimbDescent" />
+                <ScalarProperty Name="FIR" ColumnName="FIR" />
+                <ScalarProperty Name="HLAEntryExit" ColumnName="HLAEntryExit" />
+                <ScalarProperty Name="TrueTrack" ColumnName="TrueTrack" />
+                <ScalarProperty Name="MagneticTrack" ColumnName="MagneticTrack" />
+                <ScalarProperty Name="TrueHeading" ColumnName="TrueHeading" />
+                <ScalarProperty Name="MagneticHeading" ColumnName="MagneticHeading" />
+                <ScalarProperty Name="MinimumEnrouteAltitude" ColumnName="MinimumEnrouteAltitude" />
+                <ScalarProperty Name="WindComponent" ColumnName="WindComponent" />
+                <ScalarProperty Name="Frequency" ColumnName="Frequency" />
+                <ScalarProperty Name="MORA" ColumnName="MORA" />
+                <ScalarProperty Name="Temperature" ColumnName="Temperature" />
+                <ScalarProperty Name="FuelFlowPerEng" ColumnName="FuelFlowPerEng" />
+                <ScalarProperty Name="MinReqFuel" ColumnName="MinReqFuel" />
+                <ScalarProperty Name="TimeRemaining" ColumnName="TimeRemaining" />
+                <ScalarProperty Name="DistRemaining" ColumnName="DistRemaining" />
+                <ScalarProperty Name="FuelRemaining" ColumnName="FuelRemaining" />
+                <ScalarProperty Name="GroundSpeed" ColumnName="GroundSpeed" />
+                <ScalarProperty Name="TrueAirSpeed" ColumnName="TrueAirSpeed" />
+                <ScalarProperty Name="MagCourse" ColumnName="MagCourse" />
+                <ScalarProperty Name="ACCTIME" ColumnName="ACCTIME" />
+                <ScalarProperty Name="ACCDIST" ColumnName="ACCDIST" />
+                <ScalarProperty Name="VARIATION" ColumnName="VARIATION" />
+                <ScalarProperty Name="LON" ColumnName="LON" />
+                <ScalarProperty Name="LAT" ColumnName="LAT" />
+                <ScalarProperty Name="FuelFlow" ColumnName="FuelFlow" />
+                <ScalarProperty Name="FuelUsed" ColumnName="FuelUsed" />
+                <ScalarProperty Name="LegAWY" ColumnName="LegAWY" />
+                <ScalarProperty Name="LegName" ColumnName="LegName" />
+                <ScalarProperty Name="LegCAT" ColumnName="LegCAT" />
+                <ScalarProperty Name="LegDistance" ColumnName="LegDistance" />
+                <ScalarProperty Name="LegCourse" ColumnName="LegCourse" />
+                <ScalarProperty Name="LegTime" ColumnName="LegTime" />
+                <ScalarProperty Name="ISA" ColumnName="ISA" />
+                <ScalarProperty Name="Vol" ColumnName="Vol" />
+                <ScalarProperty Name="Wind" ColumnName="Wind" />
+                <ScalarProperty Name="FL" ColumnName="FL" />
+                <ScalarProperty Name="IDENT" ColumnName="IDENT" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="PointSet" ColumnName="PointSet" />
+                <ScalarProperty Name="FlightID" ColumnName="FlightID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

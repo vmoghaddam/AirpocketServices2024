@@ -524,11 +524,11 @@ namespace ApiWorld.Controllers
                         Wind = x.Wind,
                         WindComponent = x.WindComponent,
                         PlanType = "MAIN",
-                        _key = _key,
-                        FRE = round_int(x.FuelRemaining).ToString(),
-                        FUS = round_int(x.FuelUsed).ToString(),
-                        TME = get_tme(x.LegTime),
-                        TTM = get_tme(x.ACCTIME)
+                        //_key = _key,
+                        //FRE = round_int(x.FuelRemaining).ToString(),
+                        //FUS = round_int(x.FuelUsed).ToString(),
+                        //TME = get_tme(x.LegTime),
+                        //TTM = get_tme(x.ACCTIME)
 
                     };
                     // "TME": "00:00:00.0000000",
@@ -897,11 +897,11 @@ namespace ApiWorld.Controllers
                             Wind = x.Wind,
                             WindComponent = x.WindComponent,
                             PlanType = "ALT1",
-                            _key = _key,
-                            FRE = round_int(x.FuelRemaining).ToString(),
-                            FUS = round_int(x.FuelUsed).ToString(),
-                            TME = get_tme(x.LegTime),
-                            TTM = get_tme(x.ACCTIME)
+                            //_key = _key,
+                            //FRE = round_int(x.FuelRemaining).ToString(),
+                            //FUS = round_int(x.FuelUsed).ToString(),
+                            //TME = get_tme(x.LegTime),
+                            //TTM = get_tme(x.ACCTIME)
                         };
 
                         alt1_points.Add(point);
@@ -1059,11 +1059,11 @@ namespace ApiWorld.Controllers
                             Wind = x.Wind,
                             WindComponent = x.WindComponent,
                             PlanType = "ALT2",
-                            _key = _key,
-                            FRE = round_int(x.FuelRemaining).ToString(),
-                            FUS = round_int(x.FuelUsed).ToString(),
-                            TME = get_tme(x.LegTime),
-                            TTM = get_tme(x.ACCTIME)
+                            //_key = _key,
+                            //FRE = round_int(x.FuelRemaining).ToString(),
+                            //FUS = round_int(x.FuelUsed).ToString(),
+                            //TME = get_tme(x.LegTime),
+                            //TTM = get_tme(x.ACCTIME)
                         };
                         alt2_points.Add(point);
 

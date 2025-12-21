@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace XAPI.Models
+namespace ApiWorld.Models
 {
     using System;
     using System.Collections.Generic;
@@ -24,6 +24,7 @@ namespace XAPI.Models
         public Nullable<System.DateTime> date_sign { get; set; }
         public string pic { get; set; }
         public string lic_no { get; set; }
+        public string flight_no { get; set; }
         public Nullable<int> RefId { get; set; }
         public string Edition { get; set; }
         public string RowRefID { get; set; }

@@ -469,6 +469,7 @@
           <Property Name="PM1Time" Type="int" />
           <Property Name="PF2Time" Type="int" />
           <Property Name="PM2Time" Type="int" />
+          <Property Name="PermissionUrl" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="load_sheet_history">
           <Key>
@@ -501,6 +502,10 @@
           <Property Name="date_sign" Type="datetime2" Precision="7" />
           <Property Name="pic" Type="varchar" MaxLength="255" />
           <Property Name="lic_no" Type="varchar" MaxLength="255" />
+          <Property Name="RefId" Type="int" />
+          <Property Name="Edition" Type="varchar" MaxLength="255" />
+          <Property Name="RowRefID" Type="varchar" MaxLength="255" />
+          <Property Name="MessageType" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="OFPB_BurnOffAdjustment">
           <Key>
@@ -1230,6 +1235,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.AppLeg' does not have a primary key
           <Property Name="PF2Time" Type="int" />
           <Property Name="PM2Time" Type="int" />
           <Property Name="Reporting" Type="datetime" />
+          <Property Name="PermissionUrl" Type="varchar" MaxLength="255" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.ViewBoardSummary' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1677,6 +1683,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewEmployee' does not have a prima
           <Property Name="Type737ExpireDate" Type="datetime2" Precision="7" />
           <Property Name="TypeMDExpireDate" Type="datetime2" Precision="7" />
           <Property Name="LicNo" Type="nvarchar" MaxLength="200" />
+          <Property Name="IsLIFUS" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.ViewLegTime' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1813,6 +1820,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewLegTime' does not have a primar
           <Property Name="FuelPlanned" Type="decimal" Precision="18" Scale="4" />
           <Property Name="PF" Type="varchar" MaxLength="255" />
           <Property Name="OFPTOTALFUEL" Type="int" />
+          <Property Name="dep_utc" Type="int" />
+          <Property Name="arr_utc" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -2232,7 +2241,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
     [AppLeg].[PM1Time] AS [PM1Time], 
     [AppLeg].[PF2Time] AS [PF2Time], 
     [AppLeg].[PM2Time] AS [PM2Time], 
-    [AppLeg].[Reporting] AS [Reporting]
+    [AppLeg].[Reporting] AS [Reporting], 
+    [AppLeg].[PermissionUrl] AS [PermissionUrl]
     FROM [dbo].[AppLeg] AS [AppLeg]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ViewBoardSummary" EntityType="Self.ViewBoardSummary" store:Type="Views" store:Schema="dbo">
@@ -2590,7 +2600,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
     [ViewEmployee].[JobGroupParentId] AS [JobGroupParentId], 
     [ViewEmployee].[Type737ExpireDate] AS [Type737ExpireDate], 
     [ViewEmployee].[TypeMDExpireDate] AS [TypeMDExpireDate], 
-    [ViewEmployee].[LicNo] AS [LicNo]
+    [ViewEmployee].[LicNo] AS [LicNo], 
+    [ViewEmployee].[IsLIFUS] AS [IsLIFUS]
     FROM [dbo].[ViewEmployee] AS [ViewEmployee]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ViewLegTime" EntityType="Self.ViewLegTime" store:Type="Views" store:Schema="dbo">
@@ -2716,7 +2727,9 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
     [ViewLegTime].[PILOTREQFUEL] AS [PILOTREQFUEL], 
     [ViewLegTime].[FuelPlanned] AS [FuelPlanned], 
     [ViewLegTime].[PF] AS [PF], 
-    [ViewLegTime].[OFPTOTALFUEL] AS [OFPTOTALFUEL]
+    [ViewLegTime].[OFPTOTALFUEL] AS [OFPTOTALFUEL], 
+    [ViewLegTime].[dep_utc] AS [dep_utc], 
+    [ViewLegTime].[arr_utc] AS [arr_utc]
     FROM [dbo].[ViewLegTime] AS [ViewLegTime]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ViewOFPPoint" EntityType="Self.ViewOFPPoint" store:Type="Views" store:Schema="dbo">
@@ -2940,6 +2953,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
           <Property Name="FuelPlanned" Type="Decimal" Precision="18" Scale="4" />
           <Property Name="PF" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="OFPTOTALFUEL" Type="Int32" />
+          <Property Name="dep_utc" Type="Int32" />
+          <Property Name="arr_utc" Type="Int32" />
         </EntityType>
         <EntityContainer Name="PPAEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="ViewLegTimes" EntityType="Self.ViewLegTime" />
@@ -2995,7 +3010,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
             <End Role="OFPB_Root" EntitySet="OFPB_Root" />
             <End Role="OFPB_MainNavLog" EntitySet="OFPB_MainNavLog" />
           </AssociationSet>
-          <EntitySet Name="load_sheet_raw" EntityType="ppa_tabanModel.load_sheet_raw" />
           <EntitySet Name="OFPImports" EntityType="ppa_tabanModel.OFPImport" />
           <AssociationSet Name="fk_ofp_flt" Association="ppa_tabanModel.fk_ofp_flt">
             <End Role="FlightInformation" EntitySet="FlightInformations" />
@@ -3017,6 +3031,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
           <EntitySet Name="AppLegs" EntityType="ppa_tabanModel.AppLeg" />
           <EntitySet Name="ViewEmployees" EntityType="ppa_tabanModel.ViewEmployee" />
           <EntitySet Name="load_sheet_history" EntityType="ppa_tabanModel.load_sheet_history" />
+          <EntitySet Name="load_sheet_raw" EntityType="ppa_tabanModel.load_sheet_raw" />
           </EntityContainer>
         <EntityType Name="OFPSkyPuter">
           <Key>
@@ -3525,6 +3540,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
           <Property Name="PM1Time" Type="Int32" />
           <Property Name="PF2Time" Type="Int32" />
           <Property Name="PM2Time" Type="Int32" />
+          <Property Name="PermissionUrl" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="fk_EFB_FI">
           <End Type="ppa_tabanModel.FlightInformation" Role="FlightInformation" Multiplicity="0..1" />
@@ -4084,21 +4100,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="load_sheet_raw">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="airline" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="date_create" Type="DateTime" Precision="7" />
-          <Property Name="content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="remark" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
-          <Property Name="flight_id" Type="Int32" />
-          <Property Name="signed_by_id" Type="Int32" />
-          <Property Name="date_sign" Type="DateTime" Precision="7" />
-          <Property Name="pic" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="lic_no" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="OFPImport">
           <Key>
             <PropertyRef Name="Id" />
@@ -4508,6 +4509,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
           <Property Name="PF2Time" Type="Int32" />
           <Property Name="PM2Time" Type="Int32" />
           <Property Name="Reporting" Type="DateTime" Precision="3" />
+          <Property Name="PermissionUrl" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ViewEmployee">
           <Key>
@@ -4904,6 +4906,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
           <Property Name="Type737ExpireDate" Type="DateTime" Precision="7" />
           <Property Name="TypeMDExpireDate" Type="DateTime" Precision="7" />
           <Property Name="LicNo" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="IsLIFUS" Type="Boolean" />
         </EntityType>
         <EntityType Name="load_sheet_history">
           <Key>
@@ -4922,6 +4925,25 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
           <Property Name="density" Type="Int32" />
           <Property Name="taxi_fuel" Type="Int32" />
         </EntityType>
+        <EntityType Name="load_sheet_raw">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="airline" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="date_create" Type="DateTime" Precision="7" />
+          <Property Name="content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="remark" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="flight_id" Type="Int32" />
+          <Property Name="signed_by_id" Type="Int32" />
+          <Property Name="date_sign" Type="DateTime" Precision="7" />
+          <Property Name="pic" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="lic_no" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="RefId" Type="Int32" />
+          <Property Name="Edition" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="RowRefID" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="MessageType" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4931,6 +4953,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
           <EntitySetMapping Name="ViewLegTimes">
             <EntityTypeMapping TypeName="ppa_tabanModel.ViewLegTime">
               <MappingFragment StoreEntitySet="ViewLegTime">
+                <ScalarProperty Name="arr_utc" ColumnName="arr_utc" />
+                <ScalarProperty Name="dep_utc" ColumnName="dep_utc" />
                 <ScalarProperty Name="OFPTOTALFUEL" ColumnName="OFPTOTALFUEL" />
                 <ScalarProperty Name="PF" ColumnName="PF" />
                 <ScalarProperty Name="FuelPlanned" ColumnName="FuelPlanned" />
@@ -5254,6 +5278,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
           <EntitySetMapping Name="FlightInformations">
             <EntityTypeMapping TypeName="ppa_tabanModel.FlightInformation">
               <MappingFragment StoreEntitySet="FlightInformation">
+                <ScalarProperty Name="PermissionUrl" ColumnName="PermissionUrl" />
                 <ScalarProperty Name="PM2Time" ColumnName="PM2Time" />
                 <ScalarProperty Name="PF2Time" ColumnName="PF2Time" />
                 <ScalarProperty Name="PM1Time" ColumnName="PM1Time" />
@@ -5992,22 +6017,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="load_sheet_raw">
-            <EntityTypeMapping TypeName="ppa_tabanModel.load_sheet_raw">
-              <MappingFragment StoreEntitySet="load_sheet_raw">
-                <ScalarProperty Name="lic_no" ColumnName="lic_no" />
-                <ScalarProperty Name="pic" ColumnName="pic" />
-                <ScalarProperty Name="date_sign" ColumnName="date_sign" />
-                <ScalarProperty Name="signed_by_id" ColumnName="signed_by_id" />
-                <ScalarProperty Name="flight_id" ColumnName="flight_id" />
-                <ScalarProperty Name="remark" ColumnName="remark" />
-                <ScalarProperty Name="content" ColumnName="content" />
-                <ScalarProperty Name="date_create" ColumnName="date_create" />
-                <ScalarProperty Name="airline" ColumnName="airline" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="OFPImports">
             <EntityTypeMapping TypeName="ppa_tabanModel.OFPImport">
               <MappingFragment StoreEntitySet="OFPImport">
@@ -6148,6 +6157,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
           <EntitySetMapping Name="AppLegs">
             <EntityTypeMapping TypeName="ppa_tabanModel.AppLeg">
               <MappingFragment StoreEntitySet="AppLeg">
+                <ScalarProperty Name="PermissionUrl" ColumnName="PermissionUrl" />
                 <ScalarProperty Name="Reporting" ColumnName="Reporting" />
                 <ScalarProperty Name="PM2Time" ColumnName="PM2Time" />
                 <ScalarProperty Name="PF2Time" ColumnName="PF2Time" />
@@ -6339,6 +6349,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
           <EntitySetMapping Name="ViewEmployees">
             <EntityTypeMapping TypeName="ppa_tabanModel.ViewEmployee">
               <MappingFragment StoreEntitySet="ViewEmployee">
+                <ScalarProperty Name="IsLIFUS" ColumnName="IsLIFUS" />
                 <ScalarProperty Name="LicNo" ColumnName="LicNo" />
                 <ScalarProperty Name="TypeMDExpireDate" ColumnName="TypeMDExpireDate" />
                 <ScalarProperty Name="Type737ExpireDate" ColumnName="Type737ExpireDate" />
@@ -6683,6 +6694,26 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewOFPPoint' does not have a prima
                 <ScalarProperty Name="pantry_code" ColumnName="pantry_code" />
                 <ScalarProperty Name="flight_id" ColumnName="flight_id" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="load_sheet_raw">
+            <EntityTypeMapping TypeName="ppa_tabanModel.load_sheet_raw">
+              <MappingFragment StoreEntitySet="load_sheet_raw">
+                <ScalarProperty Name="MessageType" ColumnName="MessageType" />
+                <ScalarProperty Name="RowRefID" ColumnName="RowRefID" />
+                <ScalarProperty Name="Edition" ColumnName="Edition" />
+                <ScalarProperty Name="RefId" ColumnName="RefId" />
+                <ScalarProperty Name="lic_no" ColumnName="lic_no" />
+                <ScalarProperty Name="pic" ColumnName="pic" />
+                <ScalarProperty Name="date_sign" ColumnName="date_sign" />
+                <ScalarProperty Name="signed_by_id" ColumnName="signed_by_id" />
+                <ScalarProperty Name="flight_id" ColumnName="flight_id" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="content" ColumnName="content" />
+                <ScalarProperty Name="date_create" ColumnName="date_create" />
+                <ScalarProperty Name="airline" ColumnName="airline" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

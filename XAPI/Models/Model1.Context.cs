@@ -42,11 +42,11 @@ namespace XAPI.Models
         public virtual DbSet<OFPB_WindTemperature> OFPB_WindTemperature { get; set; }
         public virtual DbSet<OFPB_Root> OFPB_Root { get; set; }
         public virtual DbSet<OFPB_MainNavLog> OFPB_MainNavLog { get; set; }
-        public virtual DbSet<load_sheet_raw> load_sheet_raw { get; set; }
         public virtual DbSet<OFPImport> OFPImports { get; set; }
         public virtual DbSet<ViewBoardSummary> ViewBoardSummaries { get; set; }
         public virtual DbSet<AppLeg> AppLegs { get; set; }
         public virtual DbSet<ViewEmployee> ViewEmployees { get; set; }
         public virtual DbSet<load_sheet_history> load_sheet_history { get; set; }
+        public virtual DbSet<load_sheet_raw> load_sheet_raw { get; set; }
     }
 }

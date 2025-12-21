@@ -36,6 +36,7 @@ using System.Data.SqlClient;
 using System.Threading;
 using System.Web.Script.Serialization;
 using System.Collections.Specialized;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace XAPI.Controllers
 {
@@ -1730,7 +1731,8 @@ namespace XAPI.Controllers
         [AcceptVerbs("POST")]
         public IHttpActionResult PostLoadSheet(load_sheet_dto dto)
         {
-            //05-02
+          
+           
             try
             {
                 if (string.IsNullOrEmpty(dto.key))
@@ -1757,12 +1759,45 @@ namespace XAPI.Controllers
                         error_message = "Authorization key is wrong.",
                         ref_id = -1,
                     });
+               
                 var ctx = new PPAEntities();
                 ctx.Database.CommandTimeout = 1000;
+
+                FlightInformation flight = new FlightInformation();
+                var m = Regex.Match(dto.content, @"\bCPN(?<flightNo>\d{3,4})/(?<day>\d{2})\b");
+                if (m.Success)
+                {
+                    string flightNo = m.Groups["flightNo"].Value;
+                    //string day = m.Groups["day"].Value;
+                    int targetDay = int.Parse(m.Groups["day"].Value); 
+
+                    DateTime now = DateTime.Now;
+
+                    int maxDay = DateTime.DaysInMonth(now.Year, now.Month);
+                    if (targetDay < 1 || targetDay > maxDay)
+                        throw new ArgumentOutOfRangeException(nameof(targetDay), $"Day must be 1..{maxDay} for {now:yyyy-MM}.");
+
+                    DateTime adjusted_date = new DateTime(
+                        now.Year, now.Month, targetDay,
+                        00, 00, 00, 00,
+                        00
+                    );
+                    var d = adjusted_date.Date;   
+                    var next = d.AddDays(1);
+                    flight = ctx.FlightInformations.SingleOrDefault(q => q.FlightNumber == flightNo && q.STD >= d && q.STD < next);
+                }
+
+
+
                 var entity = new load_sheet_raw()
                 {
                     content = dto.content,
+                    flight_id = flight.ID,
                     date_create = DateTime.Now,
+                    RefId = dto.RefId,
+                    RowRefID = dto.RowRefID,
+                    Edition = dto.Edition,
+                    MessageType = dto.MessageType,
                     airline = "CASPIAN",
 
 
@@ -5781,7 +5816,7 @@ namespace XAPI.Controllers
             {
                 var context = new PPAEntities();
 
-                int flight_id = dto.TripInfo.RefID;  
+                int flight_id = dto.TripInfo.RefID;
                 var entity = context.load_sheet_history.FirstOrDefault(q => q.flight_id == flight_id);
 
                 if (entity == null)
@@ -6138,7 +6173,10 @@ namespace XAPI.Controllers
         public class load_sheet_dto
         {
             public string content { get; set; }
-
+            public int RefId { get; set; }
+            public string Edition { get; set; }
+            public string RowRefID { get; set; }
+            public string MessageType { get; set; }
 
             public string key { get; set; }
         }

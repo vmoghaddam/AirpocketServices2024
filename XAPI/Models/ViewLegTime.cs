@@ -136,5 +136,7 @@ namespace XAPI.Models
         public Nullable<decimal> FuelPlanned { get; set; }
         public string PF { get; set; }
         public Nullable<int> OFPTOTALFUEL { get; set; }
+        public Nullable<int> dep_utc { get; set; }
+        public Nullable<int> arr_utc { get; set; }
     }
 }

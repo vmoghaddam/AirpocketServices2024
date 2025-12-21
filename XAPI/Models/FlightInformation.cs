@@ -328,6 +328,7 @@ namespace XAPI.Models
         public Nullable<int> PM1Time { get; set; }
         public Nullable<int> PF2Time { get; set; }
         public Nullable<int> PM2Time { get; set; }
+        public string PermissionUrl { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EFBDSPRelease> EFBDSPReleases { get; set; }
