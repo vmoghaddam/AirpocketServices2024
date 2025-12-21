@@ -494,6 +494,73 @@
           <Property Name="landing" Type="datetime" />
           <Property Name="onblock" Type="datetime" />
         </EntityType>
+        <EntityType Name="frms_cabin_line_check">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="instructor_id" Type="int" />
+          <Property Name="crew_id" Type="int" />
+          <Property Name="flight_id" Type="int" />
+          <Property Name="experience" Type="nvarchar" MaxLength="1000" />
+          <Property Name="final_score" Type="int" />
+          <Property Name="line_evaluator_id" Type="int" />
+          <Property Name="line_evaluator" Type="varchar" MaxLength="500" />
+          <Property Name="line_evaluator_sign_date" Type="datetime2" Precision="7" />
+          <Property Name="instructor_sign_date" Type="datetime2" Precision="7" />
+          <Property Name="crew_sign_date" Type="datetime2" Precision="7" />
+          <Property Name="crew_remark" Type="nvarchar(max)" />
+          <Property Name="instructor_remark" Type="nvarchar(max)" />
+          <Property Name="on_grnd_emergency" Type="int" />
+          <Property Name="evacuation_not_required" Type="int" />
+          <Property Name="inflight_emergency" Type="int" />
+          <Property Name="brace_emergency_landing" Type="int" />
+          <Property Name="emergency_evacuation_command" Type="int" />
+          <Property Name="emergencies_takeoff_landing" Type="int" />
+          <Property Name="incident" Type="int" />
+          <Property Name="brace_impact" Type="int" />
+          <Property Name="emergency_descent" Type="int" />
+          <Property Name="flight_crew_incapacitation" Type="int" />
+          <Property Name="unlawful" Type="int" />
+          <Property Name="turbulence" Type="int" />
+        </EntityType>
+        <EntityType Name="frms_checklist_category">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="parent_id" Type="int" />
+          <Property Name="form_type_id" Type="int" Nullable="false" />
+          <Property Name="code" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="title" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="sort_order" Type="int" Nullable="false" />
+          <Property Name="created_at" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="frms_checklist_item">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="category_id" Type="int" Nullable="false" />
+          <Property Name="code" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="title" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="sort_order" Type="int" Nullable="false" />
+          <Property Name="created_at" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="frms_checklist_item_result">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="item_id" Type="int" Nullable="false" />
+          <Property Name="crew_id" Type="int" Nullable="false" />
+          <Property Name="result" Type="int" />
+          <Property Name="recommendation" Type="nvarchar" MaxLength="1000" />
+          <Property Name="instructor_id" Type="int" />
+          <Property Name="date_result" Type="datetime2" Precision="7" />
+          <Property Name="flight_id" Type="int" />
+          <Property Name="fdp_id" Type="int" />
+        </EntityType>
         <EntityType Name="JobGroup">
           <Key>
             <PropertyRef Name="Id" />
@@ -1105,6 +1172,26 @@
           <Property Name="IssueDate83" Type="datetime2" Precision="7" />
           <Property Name="IssueDate84" Type="datetime2" Precision="7" />
           <Property Name="IssueDate85" Type="datetime2" Precision="7" />
+          <Property Name="IssueDate90" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate90" Type="datetime2" Precision="7" />
+          <Property Name="IssueDate91" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate91" Type="datetime2" Precision="7" />
+          <Property Name="IssueDate92" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate92" Type="datetime2" Precision="7" />
+          <Property Name="IssueDate93" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate93" Type="datetime2" Precision="7" />
+          <Property Name="IssueDate94" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate94" Type="datetime2" Precision="7" />
+          <Property Name="IssueDate95" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate95" Type="datetime2" Precision="7" />
+          <Property Name="IssueDate86" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate86" Type="datetime2" Precision="7" />
+          <Property Name="IssueDate87" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate87" Type="datetime2" Precision="7" />
+          <Property Name="IssueDate88" Type="datetime2" Precision="7" />
+          <Property Name="IssueDate89" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate89" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate88" Type="datetime2" Precision="7" />
         </EntityType>
         <EntityType Name="person_folder">
           <Key>
@@ -2061,6 +2148,128 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_coursetype_profile' does not h
           <Property Name="expire_field" Type="varchar" MaxLength="500" />
           <Property Name="remaining_field" Type="varchar" MaxLength="509" />
           <Property Name="abbreviation" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.view_frms_cabin_line_check' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_frms_cabin_line_check">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="instructor_name" />
+            <PropertyRef Name="crew_name" />
+            <PropertyRef Name="crew_rank" />
+            <PropertyRef Name="position" />
+            <PropertyRef Name="crew_pid" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="instructor_id" Type="int" />
+          <Property Name="crew_id" Type="int" />
+          <Property Name="flight_id" Type="int" />
+          <Property Name="experience" Type="nvarchar" MaxLength="1000" />
+          <Property Name="final_score" Type="int" />
+          <Property Name="line_evaluator_id" Type="int" />
+          <Property Name="line_evaluator" Type="varchar" MaxLength="500" />
+          <Property Name="line_evaluator_sign_date" Type="datetime2" Precision="7" />
+          <Property Name="instructor_sign_date" Type="datetime2" Precision="7" />
+          <Property Name="crew_sign_date" Type="datetime2" Precision="7" />
+          <Property Name="crew_remark" Type="nvarchar(max)" />
+          <Property Name="instructor_remark" Type="nvarchar(max)" />
+          <Property Name="on_grnd_emergency" Type="int" />
+          <Property Name="evacuation_not_required" Type="int" />
+          <Property Name="inflight_emergency" Type="int" />
+          <Property Name="brace_emergency_landing" Type="int" />
+          <Property Name="emergency_evacuation_command" Type="int" />
+          <Property Name="emergencies_takeoff_landing" Type="int" />
+          <Property Name="incident" Type="int" />
+          <Property Name="brace_impact" Type="int" />
+          <Property Name="emergency_descent" Type="int" />
+          <Property Name="flight_crew_incapacitation" Type="int" />
+          <Property Name="unlawful" Type="int" />
+          <Property Name="turbulence" Type="int" />
+          <Property Name="flt_no" Type="nvarchar" MaxLength="50" />
+          <Property Name="std" Type="datetime" />
+          <Property Name="sta" Type="datetime" />
+          <Property Name="dep" Type="nvarchar" MaxLength="255" />
+          <Property Name="arr" Type="nvarchar" MaxLength="255" />
+          <Property Name="dep_iata" Type="nvarchar" MaxLength="255" />
+          <Property Name="arr_iata" Type="nvarchar" MaxLength="255" />
+          <Property Name="instructor_name" Type="nvarchar" MaxLength="1003" Nullable="false" />
+          <Property Name="crew_name" Type="nvarchar" MaxLength="1003" Nullable="false" />
+          <Property Name="crew_rank" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="position" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="crew_pid" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="Register" Type="nvarchar" MaxLength="50" />
+          <Property Name="aircraft_type" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.view_frms_checklist_category' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_frms_checklist_category">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="parent_id" Type="int" />
+          <Property Name="form_type_id" Type="int" />
+          <Property Name="code" Type="nvarchar" MaxLength="20" />
+          <Property Name="title" Type="nvarchar" MaxLength="500" />
+          <Property Name="level" Type="int" />
+          <Property Name="path" Type="nvarchar" MaxLength="500" />
+          <Property Name="sort_order" Type="int" />
+          <Property Name="item_count" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.view_frms_checklist_item_result' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_frms_checklist_item_result">
+          <Key>
+            <PropertyRef Name="item_id" />
+            <PropertyRef Name="result_id" />
+            <PropertyRef Name="crew_id" />
+            <PropertyRef Name="flight_no" />
+            <PropertyRef Name="register" />
+            <PropertyRef Name="route" />
+            <PropertyRef Name="dep" />
+            <PropertyRef Name="arr" />
+            <PropertyRef Name="std" />
+            <PropertyRef Name="sta" />
+            <PropertyRef Name="offblock" />
+            <PropertyRef Name="onblock" />
+            <PropertyRef Name="takeoff" />
+            <PropertyRef Name="landing" />
+            <PropertyRef Name="instructor" />
+            <PropertyRef Name="position" />
+            <PropertyRef Name="jobgroup" />
+            <PropertyRef Name="work_position" />
+          </Key>
+          <Property Name="item_id" Type="int" Nullable="false" />
+          <Property Name="category_id" Type="int" />
+          <Property Name="code" Type="nvarchar" MaxLength="20" />
+          <Property Name="title" Type="nvarchar" MaxLength="1000" />
+          <Property Name="sort_order" Type="int" />
+          <Property Name="created_at" Type="datetime" />
+          <Property Name="result" Type="int" />
+          <Property Name="result_id" Type="int" Nullable="false" />
+          <Property Name="crew_id" Type="int" Nullable="false" />
+          <Property Name="recommendation" Type="nvarchar" MaxLength="1000" />
+          <Property Name="instructor_id" Type="int" />
+          <Property Name="date_result" Type="datetime2" Precision="7" />
+          <Property Name="flight_id" Type="int" />
+          <Property Name="fdp_id" Type="int" />
+          <Property Name="first_name" Type="nvarchar" MaxLength="500" />
+          <Property Name="last_name" Type="nvarchar" MaxLength="500" />
+          <Property Name="flight_no" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="register" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="route" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="dep" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="arr" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="std" Type="datetime" Nullable="false" />
+          <Property Name="sta" Type="datetime" Nullable="false" />
+          <Property Name="offblock" Type="datetime" Nullable="false" />
+          <Property Name="onblock" Type="datetime" Nullable="false" />
+          <Property Name="takeoff" Type="datetime" Nullable="false" />
+          <Property Name="landing" Type="datetime" Nullable="false" />
+          <Property Name="instructor" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="position" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="jobgroup" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="work_position" Type="varchar" MaxLength="1" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.view_person_folder' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -4130,6 +4339,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewEmployee' does not have a prima
           <Property Name="Type737ExpireDate" Type="datetime2" Precision="7" />
           <Property Name="TypeMDExpireDate" Type="datetime2" Precision="7" />
           <Property Name="LicNo" Type="nvarchar" MaxLength="200" />
+          <Property Name="IsLIFUS" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.ViewEmployeeAbs' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -5025,6 +5235,10 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewProfile' does not have a primar
           <Property Name="Remain83" Type="int" />
           <Property Name="Remain84" Type="int" />
           <Property Name="Remain85" Type="int" />
+          <Property Name="Remain86" Type="int" />
+          <Property Name="Remain87" Type="int" />
+          <Property Name="Remain88" Type="int" />
+          <Property Name="Remain89" Type="int" />
           <Property Name="RemainRIGHT_SEAT_QUALIFICATION" Type="int" />
           <Property Name="RemainELT" Type="int" />
           <Property Name="RemainRVSM" Type="int" />
@@ -5194,6 +5408,10 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewProfile' does not have a primar
           <Property Name="ExpireDate83" Type="datetime2" Precision="7" />
           <Property Name="ExpireDate84" Type="datetime2" Precision="7" />
           <Property Name="ExpireDate85" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate86" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate87" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate88" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate89" Type="datetime2" Precision="7" />
           <Property Name="ExpireDate9" Type="datetime2" Precision="7" />
           <Property Name="ExpireDateTRG02" Type="datetime" />
           <Property Name="FDMFAMExpireDate" Type="datetime2" Precision="7" />
@@ -5830,6 +6048,30 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_checklist_category_parent">
+          <End Role="frms_checklist_category" Type="Self.frms_checklist_category" Multiplicity="0..1" />
+          <End Role="frms_checklist_category1" Type="Self.frms_checklist_category" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="frms_checklist_category">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="frms_checklist_category1">
+              <PropertyRef Name="parent_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_checklist_item_category">
+          <End Role="frms_checklist_category" Type="Self.frms_checklist_category" Multiplicity="1" />
+          <End Role="frms_checklist_item" Type="Self.frms_checklist_item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="frms_checklist_category">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="frms_checklist_item">
+              <PropertyRef Name="category_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_course_instructor">
           <End Role="Teacher" Type="Self.Teacher" Multiplicity="0..1" />
           <End Role="Course" Type="Self.Course" Multiplicity="*" />
@@ -6130,6 +6372,18 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_frms_cl_ins">
+          <End Role="Person" Type="Self.Person" Multiplicity="0..1" />
+          <End Role="frms_cabin_line_check" Type="Self.frms_cabin_line_check" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="frms_cabin_line_check">
+              <PropertyRef Name="instructor_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_JOBGROUP_PARENT">
           <End Role="JobGroup" Type="Self.JobGroup" Multiplicity="0..1" />
           <End Role="JobGroup1" Type="Self.JobGroup" Multiplicity="*" />
@@ -6382,6 +6636,10 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <EntitySet Name="EmployeeDocument" EntityType="Self.EmployeeDocument" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FDP" EntityType="Self.FDP" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FDPItem" EntityType="Self.FDPItem" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="frms_cabin_line_check" EntityType="Self.frms_cabin_line_check" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="frms_checklist_category" EntityType="Self.frms_checklist_category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="frms_checklist_item" EntityType="Self.frms_checklist_item" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="frms_checklist_item_result" EntityType="Self.frms_checklist_item_result" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="JobGroup" EntityType="Self.JobGroup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Manager" EntityType="Self.Manager" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ManagerGroup" EntityType="Self.ManagerGroup" Schema="dbo" store:Type="Tables" />
@@ -6642,6 +6900,97 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
     [view_coursetype_profile].[remaining_field] AS [remaining_field], 
     [view_coursetype_profile].[abbreviation] AS [abbreviation]
     FROM [dbo].[view_coursetype_profile] AS [view_coursetype_profile]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="view_frms_cabin_line_check" EntityType="Self.view_frms_cabin_line_check" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_frms_cabin_line_check].[id] AS [id], 
+    [view_frms_cabin_line_check].[instructor_id] AS [instructor_id], 
+    [view_frms_cabin_line_check].[crew_id] AS [crew_id], 
+    [view_frms_cabin_line_check].[flight_id] AS [flight_id], 
+    [view_frms_cabin_line_check].[experience] AS [experience], 
+    [view_frms_cabin_line_check].[final_score] AS [final_score], 
+    [view_frms_cabin_line_check].[line_evaluator_id] AS [line_evaluator_id], 
+    [view_frms_cabin_line_check].[line_evaluator] AS [line_evaluator], 
+    [view_frms_cabin_line_check].[line_evaluator_sign_date] AS [line_evaluator_sign_date], 
+    [view_frms_cabin_line_check].[instructor_sign_date] AS [instructor_sign_date], 
+    [view_frms_cabin_line_check].[crew_sign_date] AS [crew_sign_date], 
+    [view_frms_cabin_line_check].[crew_remark] AS [crew_remark], 
+    [view_frms_cabin_line_check].[instructor_remark] AS [instructor_remark], 
+    [view_frms_cabin_line_check].[on_grnd_emergency] AS [on_grnd_emergency], 
+    [view_frms_cabin_line_check].[evacuation_not_required] AS [evacuation_not_required], 
+    [view_frms_cabin_line_check].[inflight_emergency] AS [inflight_emergency], 
+    [view_frms_cabin_line_check].[brace_emergency_landing] AS [brace_emergency_landing], 
+    [view_frms_cabin_line_check].[emergency_evacuation_command] AS [emergency_evacuation_command], 
+    [view_frms_cabin_line_check].[emergencies_takeoff_landing] AS [emergencies_takeoff_landing], 
+    [view_frms_cabin_line_check].[incident] AS [incident], 
+    [view_frms_cabin_line_check].[brace_impact] AS [brace_impact], 
+    [view_frms_cabin_line_check].[emergency_descent] AS [emergency_descent], 
+    [view_frms_cabin_line_check].[flight_crew_incapacitation] AS [flight_crew_incapacitation], 
+    [view_frms_cabin_line_check].[unlawful] AS [unlawful], 
+    [view_frms_cabin_line_check].[turbulence] AS [turbulence], 
+    [view_frms_cabin_line_check].[flt_no] AS [flt_no], 
+    [view_frms_cabin_line_check].[std] AS [std], 
+    [view_frms_cabin_line_check].[sta] AS [sta], 
+    [view_frms_cabin_line_check].[dep] AS [dep], 
+    [view_frms_cabin_line_check].[arr] AS [arr], 
+    [view_frms_cabin_line_check].[dep_iata] AS [dep_iata], 
+    [view_frms_cabin_line_check].[arr_iata] AS [arr_iata], 
+    [view_frms_cabin_line_check].[instructor_name] AS [instructor_name], 
+    [view_frms_cabin_line_check].[crew_name] AS [crew_name], 
+    [view_frms_cabin_line_check].[crew_rank] AS [crew_rank], 
+    [view_frms_cabin_line_check].[position] AS [position], 
+    [view_frms_cabin_line_check].[crew_pid] AS [crew_pid], 
+    [view_frms_cabin_line_check].[Register] AS [Register], 
+    [view_frms_cabin_line_check].[aircraft_type] AS [aircraft_type]
+    FROM [dbo].[view_frms_cabin_line_check] AS [view_frms_cabin_line_check]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="view_frms_checklist_category" EntityType="Self.view_frms_checklist_category" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_frms_checklist_category].[id] AS [id], 
+    [view_frms_checklist_category].[parent_id] AS [parent_id], 
+    [view_frms_checklist_category].[form_type_id] AS [form_type_id], 
+    [view_frms_checklist_category].[code] AS [code], 
+    [view_frms_checklist_category].[title] AS [title], 
+    [view_frms_checklist_category].[level] AS [level], 
+    [view_frms_checklist_category].[path] AS [path], 
+    [view_frms_checklist_category].[sort_order] AS [sort_order], 
+    [view_frms_checklist_category].[item_count] AS [item_count]
+    FROM [dbo].[view_frms_checklist_category] AS [view_frms_checklist_category]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="view_frms_checklist_item_result" EntityType="Self.view_frms_checklist_item_result" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_frms_checklist_item_result].[item_id] AS [item_id], 
+    [view_frms_checklist_item_result].[category_id] AS [category_id], 
+    [view_frms_checklist_item_result].[code] AS [code], 
+    [view_frms_checklist_item_result].[title] AS [title], 
+    [view_frms_checklist_item_result].[sort_order] AS [sort_order], 
+    [view_frms_checklist_item_result].[created_at] AS [created_at], 
+    [view_frms_checklist_item_result].[result] AS [result], 
+    [view_frms_checklist_item_result].[result_id] AS [result_id], 
+    [view_frms_checklist_item_result].[crew_id] AS [crew_id], 
+    [view_frms_checklist_item_result].[recommendation] AS [recommendation], 
+    [view_frms_checklist_item_result].[instructor_id] AS [instructor_id], 
+    [view_frms_checklist_item_result].[date_result] AS [date_result], 
+    [view_frms_checklist_item_result].[flight_id] AS [flight_id], 
+    [view_frms_checklist_item_result].[fdp_id] AS [fdp_id], 
+    [view_frms_checklist_item_result].[first_name] AS [first_name], 
+    [view_frms_checklist_item_result].[last_name] AS [last_name], 
+    [view_frms_checklist_item_result].[flight_no] AS [flight_no], 
+    [view_frms_checklist_item_result].[register] AS [register], 
+    [view_frms_checklist_item_result].[route] AS [route], 
+    [view_frms_checklist_item_result].[dep] AS [dep], 
+    [view_frms_checklist_item_result].[arr] AS [arr], 
+    [view_frms_checklist_item_result].[std] AS [std], 
+    [view_frms_checklist_item_result].[sta] AS [sta], 
+    [view_frms_checklist_item_result].[offblock] AS [offblock], 
+    [view_frms_checklist_item_result].[onblock] AS [onblock], 
+    [view_frms_checklist_item_result].[takeoff] AS [takeoff], 
+    [view_frms_checklist_item_result].[landing] AS [landing], 
+    [view_frms_checklist_item_result].[instructor] AS [instructor], 
+    [view_frms_checklist_item_result].[position] AS [position], 
+    [view_frms_checklist_item_result].[jobgroup] AS [jobgroup], 
+    [view_frms_checklist_item_result].[work_position] AS [work_position]
+    FROM [dbo].[view_frms_checklist_item_result] AS [view_frms_checklist_item_result]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="view_person_folder" EntityType="Self.view_person_folder" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -8269,7 +8618,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
     [ViewEmployee].[JobGroupParentId] AS [JobGroupParentId], 
     [ViewEmployee].[Type737ExpireDate] AS [Type737ExpireDate], 
     [ViewEmployee].[TypeMDExpireDate] AS [TypeMDExpireDate], 
-    [ViewEmployee].[LicNo] AS [LicNo]
+    [ViewEmployee].[LicNo] AS [LicNo], 
+    [ViewEmployee].[IsLIFUS] AS [IsLIFUS]
     FROM [dbo].[ViewEmployee] AS [ViewEmployee]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ViewEmployeeAbs" EntityType="Self.ViewEmployeeAbs" store:Type="Views" store:Schema="dbo">
@@ -9020,6 +9370,10 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
     [ViewProfile].[Remain83] AS [Remain83], 
     [ViewProfile].[Remain84] AS [Remain84], 
     [ViewProfile].[Remain85] AS [Remain85], 
+    [ViewProfile].[Remain86] AS [Remain86], 
+    [ViewProfile].[Remain87] AS [Remain87], 
+    [ViewProfile].[Remain88] AS [Remain88], 
+    [ViewProfile].[Remain89] AS [Remain89], 
     [ViewProfile].[RemainRIGHT_SEAT_QUALIFICATION] AS [RemainRIGHT_SEAT_QUALIFICATION], 
     [ViewProfile].[RemainELT] AS [RemainELT], 
     [ViewProfile].[RemainRVSM] AS [RemainRVSM], 
@@ -9189,6 +9543,10 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
     [ViewProfile].[ExpireDate83] AS [ExpireDate83], 
     [ViewProfile].[ExpireDate84] AS [ExpireDate84], 
     [ViewProfile].[ExpireDate85] AS [ExpireDate85], 
+    [ViewProfile].[ExpireDate86] AS [ExpireDate86], 
+    [ViewProfile].[ExpireDate87] AS [ExpireDate87], 
+    [ViewProfile].[ExpireDate88] AS [ExpireDate88], 
+    [ViewProfile].[ExpireDate89] AS [ExpireDate89], 
     [ViewProfile].[ExpireDate9] AS [ExpireDate9], 
     [ViewProfile].[ExpireDateTRG02] AS [ExpireDateTRG02], 
     [ViewProfile].[FDMFAMExpireDate] AS [FDMFAMExpireDate], 
@@ -9548,6 +9906,14 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
             <End Role="Person" EntitySet="Person" />
             <End Role="CertificateHistory" EntitySet="CertificateHistory" />
           </AssociationSet>
+          <AssociationSet Name="fk_checklist_category_parent" Association="Self.fk_checklist_category_parent">
+            <End Role="frms_checklist_category" EntitySet="frms_checklist_category" />
+            <End Role="frms_checklist_category1" EntitySet="frms_checklist_category" />
+          </AssociationSet>
+          <AssociationSet Name="fk_checklist_item_category" Association="Self.fk_checklist_item_category">
+            <End Role="frms_checklist_category" EntitySet="frms_checklist_category" />
+            <End Role="frms_checklist_item" EntitySet="frms_checklist_item" />
+          </AssociationSet>
           <AssociationSet Name="fk_course_instructor" Association="Self.fk_course_instructor">
             <End Role="Teacher" EntitySet="Teacher" />
             <End Role="Course" EntitySet="Course" />
@@ -9643,6 +10009,10 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <AssociationSet Name="fk_fdpitem_fdp" Association="Self.fk_fdpitem_fdp">
             <End Role="FDP" EntitySet="FDP" />
             <End Role="FDPItem" EntitySet="FDPItem" />
+          </AssociationSet>
+          <AssociationSet Name="fk_frms_cl_ins" Association="Self.fk_frms_cl_ins">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="frms_cabin_line_check" EntitySet="frms_cabin_line_check" />
           </AssociationSet>
           <AssociationSet Name="FK_JOBGROUP_PARENT" Association="Self.FK_JOBGROUP_PARENT">
             <End Role="JobGroup" EntitySet="JobGroup" />
@@ -10156,6 +10526,25 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
             <End Role="coursetype_profile" EntitySet="coursetype_profile" />
           </AssociationSet>
           <EntitySet Name="ViewCourseTypes" EntityType="FLYModel.ViewCourseType" />
+          <EntitySet Name="frms_checklist_category" EntityType="FLYModel.frms_checklist_category" />
+          <EntitySet Name="frms_checklist_item" EntityType="FLYModel.frms_checklist_item" />
+          <EntitySet Name="frms_checklist_item_result" EntityType="FLYModel.frms_checklist_item_result" />
+          <EntitySet Name="view_frms_checklist_item_result" EntityType="FLYModel.view_frms_checklist_item_result" />
+          <AssociationSet Name="fk_checklist_category_parent" Association="FLYModel.fk_checklist_category_parent">
+            <End Role="frms_checklist_category" EntitySet="frms_checklist_category" />
+            <End Role="frms_checklist_category1" EntitySet="frms_checklist_category" />
+          </AssociationSet>
+          <AssociationSet Name="fk_checklist_item_category" Association="FLYModel.fk_checklist_item_category">
+            <End Role="frms_checklist_category" EntitySet="frms_checklist_category" />
+            <End Role="frms_checklist_item" EntitySet="frms_checklist_item" />
+          </AssociationSet>
+          <EntitySet Name="view_frms_checklist_category" EntityType="FLYModel.view_frms_checklist_category" />
+          <EntitySet Name="frms_cabin_line_check" EntityType="FLYModel.frms_cabin_line_check" />
+          <EntitySet Name="view_frms_cabin_line_check" EntityType="FLYModel.view_frms_cabin_line_check" />
+          <AssociationSet Name="fk_frms_cl_ins" Association="FLYModel.fk_frms_cl_ins">
+            <End Role="Person" EntitySet="People" />
+            <End Role="frms_cabin_line_check" EntitySet="frms_cabin_line_check" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="ExpFlight">
           <Key>
@@ -11984,6 +12373,27 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <Property Name="IssueDate83" Type="DateTime" Precision="7" />
           <Property Name="IssueDate84" Type="DateTime" Precision="7" />
           <Property Name="IssueDate85" Type="DateTime" Precision="7" />
+          <Property Name="IssueDate90" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate90" Type="DateTime" Precision="7" />
+          <Property Name="IssueDate91" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate91" Type="DateTime" Precision="7" />
+          <Property Name="IssueDate92" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate92" Type="DateTime" Precision="7" />
+          <Property Name="IssueDate93" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate93" Type="DateTime" Precision="7" />
+          <Property Name="IssueDate94" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate94" Type="DateTime" Precision="7" />
+          <Property Name="IssueDate95" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate95" Type="DateTime" Precision="7" />
+          <Property Name="IssueDate86" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate86" Type="DateTime" Precision="7" />
+          <Property Name="IssueDate87" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate87" Type="DateTime" Precision="7" />
+          <Property Name="IssueDate88" Type="DateTime" Precision="7" />
+          <Property Name="IssueDate89" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate89" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate88" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="frms_cabin_line_check" Relationship="FLYModel.fk_frms_cl_ins" FromRole="Person" ToRole="frms_cabin_line_check" />
         </EntityType>
         <Association Name="fk_psco_person">
           <End Type="FLYModel.Person" Role="Person" Multiplicity="0..1">
@@ -15511,6 +15921,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <Property Name="Type737ExpireDate" Type="DateTime" Precision="7" />
           <Property Name="TypeMDExpireDate" Type="DateTime" Precision="7" />
           <Property Name="LicNo" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="IsLIFUS" Type="Boolean" />
         </EntityType>
         <EntityType Name="ViewProfile">
           <Key>
@@ -16005,6 +16416,14 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <Property Name="ProficiencyValidUntilOPC" Type="DateTime" Precision="3" />
           <Property Name="ProficiencyValidUntil" Type="DateTime" Precision="3" />
           <Property Name="ICAOLPRValidUntil" Type="DateTime" Precision="3" />
+          <Property Name="Remain86" Type="Int32" />
+          <Property Name="Remain87" Type="Int32" />
+          <Property Name="Remain88" Type="Int32" />
+          <Property Name="Remain89" Type="Int32" />
+          <Property Name="ExpireDate86" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate87" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate88" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate89" Type="DateTime" Precision="7" />
         </EntityType>
         <EntityType Name="C_view_trncard">
           <Key>
@@ -16518,6 +16937,230 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <Property Name="Intervals" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
           <Property Name="MapIntervals" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="frms_checklist_category">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="parent_id" Type="Int32" />
+          <Property Name="form_type_id" Type="Int32" Nullable="false" />
+          <Property Name="code" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="title" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="sort_order" Type="Int32" Nullable="false" />
+          <Property Name="created_at" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="frms_checklist_category1" Relationship="FLYModel.fk_checklist_category_parent" FromRole="frms_checklist_category" ToRole="frms_checklist_category1" />
+          <NavigationProperty Name="frms_checklist_category2" Relationship="FLYModel.fk_checklist_category_parent" FromRole="frms_checklist_category1" ToRole="frms_checklist_category" />
+          <NavigationProperty Name="frms_checklist_item" Relationship="FLYModel.fk_checklist_item_category" FromRole="frms_checklist_category" ToRole="frms_checklist_item" />
+        </EntityType>
+        <EntityType Name="frms_checklist_item">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="category_id" Type="Int32" Nullable="false" />
+          <Property Name="code" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="title" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="sort_order" Type="Int32" Nullable="false" />
+          <Property Name="created_at" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="frms_checklist_category" Relationship="FLYModel.fk_checklist_item_category" FromRole="frms_checklist_item" ToRole="frms_checklist_category" />
+        </EntityType>
+        <EntityType Name="frms_checklist_item_result">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="item_id" Type="Int32" Nullable="false" />
+          <Property Name="crew_id" Type="Int32" Nullable="false" />
+          <Property Name="result" Type="Int32" />
+          <Property Name="recommendation" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="instructor_id" Type="Int32" />
+          <Property Name="date_result" Type="DateTime" Precision="7" />
+          <Property Name="flight_id" Type="Int32" />
+          <Property Name="fdp_id" Type="Int32" />
+        </EntityType>
+        <EntityType Name="view_frms_checklist_item_result">
+          <Key>
+            <PropertyRef Name="item_id" />
+            <PropertyRef Name="result_id" />
+            <PropertyRef Name="crew_id" />
+            <PropertyRef Name="flight_no" />
+            <PropertyRef Name="register" />
+            <PropertyRef Name="route" />
+            <PropertyRef Name="dep" />
+            <PropertyRef Name="arr" />
+            <PropertyRef Name="std" />
+            <PropertyRef Name="sta" />
+            <PropertyRef Name="offblock" />
+            <PropertyRef Name="onblock" />
+            <PropertyRef Name="takeoff" />
+            <PropertyRef Name="landing" />
+            <PropertyRef Name="instructor" />
+            <PropertyRef Name="position" />
+            <PropertyRef Name="jobgroup" />
+            <PropertyRef Name="work_position" />
+          </Key>
+          <Property Name="item_id" Type="Int32" Nullable="false" />
+          <Property Name="category_id" Type="Int32" />
+          <Property Name="code" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="title" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="sort_order" Type="Int32" />
+          <Property Name="created_at" Type="DateTime" Precision="3" />
+          <Property Name="result" Type="Int32" />
+          <Property Name="result_id" Type="Int32" Nullable="false" />
+          <Property Name="crew_id" Type="Int32" Nullable="false" />
+          <Property Name="recommendation" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="instructor_id" Type="Int32" />
+          <Property Name="date_result" Type="DateTime" Precision="7" />
+          <Property Name="flight_id" Type="Int32" />
+          <Property Name="fdp_id" Type="Int32" />
+          <Property Name="first_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="last_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="flight_no" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="register" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="route" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="dep" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="arr" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="std" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="sta" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="offblock" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="onblock" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="takeoff" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="landing" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="instructor" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="position" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="jobgroup" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="work_position" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="fk_checklist_category_parent">
+          <End Type="FLYModel.frms_checklist_category" Role="frms_checklist_category" Multiplicity="0..1" />
+          <End Type="FLYModel.frms_checklist_category" Role="frms_checklist_category1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="frms_checklist_category">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="frms_checklist_category1">
+              <PropertyRef Name="parent_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_checklist_item_category">
+          <End Type="FLYModel.frms_checklist_category" Role="frms_checklist_category" Multiplicity="1" />
+          <End Type="FLYModel.frms_checklist_item" Role="frms_checklist_item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="frms_checklist_category">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="frms_checklist_item">
+              <PropertyRef Name="category_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="view_frms_checklist_category">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="parent_id" Type="Int32" />
+          <Property Name="form_type_id" Type="Int32" />
+          <Property Name="code" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="title" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="level" Type="Int32" />
+          <Property Name="path" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="sort_order" Type="Int32" />
+          <Property Name="item_count" Type="Int32" />
+        </EntityType>
+        <EntityType Name="frms_cabin_line_check">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="instructor_id" Type="Int32" />
+          <Property Name="crew_id" Type="Int32" />
+          <Property Name="flight_id" Type="Int32" />
+          <Property Name="experience" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="final_score" Type="Int32" />
+          <Property Name="line_evaluator_id" Type="Int32" />
+          <Property Name="line_evaluator" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="line_evaluator_sign_date" Type="DateTime" Precision="7" />
+          <Property Name="instructor_sign_date" Type="DateTime" Precision="7" />
+          <Property Name="crew_sign_date" Type="DateTime" Precision="7" />
+          <Property Name="crew_remark" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="instructor_remark" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="on_grnd_emergency" Type="Int32" />
+          <Property Name="evacuation_not_required" Type="Int32" />
+          <Property Name="inflight_emergency" Type="Int32" />
+          <Property Name="brace_emergency_landing" Type="Int32" />
+          <Property Name="emergency_evacuation_command" Type="Int32" />
+          <Property Name="emergencies_takeoff_landing" Type="Int32" />
+          <Property Name="incident" Type="Int32" />
+          <Property Name="brace_impact" Type="Int32" />
+          <Property Name="emergency_descent" Type="Int32" />
+          <Property Name="flight_crew_incapacitation" Type="Int32" />
+          <Property Name="unlawful" Type="Int32" />
+          <Property Name="turbulence" Type="Int32" />
+          <NavigationProperty Name="Person" Relationship="FLYModel.fk_frms_cl_ins" FromRole="frms_cabin_line_check" ToRole="Person" />
+        </EntityType>
+        <EntityType Name="view_frms_cabin_line_check">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="instructor_name" />
+            <PropertyRef Name="crew_name" />
+            <PropertyRef Name="crew_rank" />
+            <PropertyRef Name="position" />
+            <PropertyRef Name="crew_pid" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="instructor_id" Type="Int32" />
+          <Property Name="crew_id" Type="Int32" />
+          <Property Name="flight_id" Type="Int32" />
+          <Property Name="experience" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="final_score" Type="Int32" />
+          <Property Name="line_evaluator_id" Type="Int32" />
+          <Property Name="line_evaluator" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="line_evaluator_sign_date" Type="DateTime" Precision="7" />
+          <Property Name="instructor_sign_date" Type="DateTime" Precision="7" />
+          <Property Name="crew_sign_date" Type="DateTime" Precision="7" />
+          <Property Name="crew_remark" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="instructor_remark" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="on_grnd_emergency" Type="Int32" />
+          <Property Name="evacuation_not_required" Type="Int32" />
+          <Property Name="inflight_emergency" Type="Int32" />
+          <Property Name="brace_emergency_landing" Type="Int32" />
+          <Property Name="emergency_evacuation_command" Type="Int32" />
+          <Property Name="emergencies_takeoff_landing" Type="Int32" />
+          <Property Name="incident" Type="Int32" />
+          <Property Name="brace_impact" Type="Int32" />
+          <Property Name="emergency_descent" Type="Int32" />
+          <Property Name="flight_crew_incapacitation" Type="Int32" />
+          <Property Name="unlawful" Type="Int32" />
+          <Property Name="turbulence" Type="Int32" />
+          <Property Name="flt_no" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="std" Type="DateTime" Precision="3" />
+          <Property Name="sta" Type="DateTime" Precision="3" />
+          <Property Name="dep" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="arr" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="dep_iata" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="arr_iata" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="instructor_name" Type="String" Nullable="false" MaxLength="1003" FixedLength="false" Unicode="true" />
+          <Property Name="crew_name" Type="String" Nullable="false" MaxLength="1003" FixedLength="false" Unicode="true" />
+          <Property Name="crew_rank" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="position" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="crew_pid" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="Register" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="aircraft_type" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="fk_frms_cl_ins">
+          <End Type="FLYModel.Person" Role="Person" Multiplicity="0..1" />
+          <End Type="FLYModel.frms_cabin_line_check" Role="frms_cabin_line_check" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="frms_cabin_line_check">
+              <PropertyRef Name="instructor_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -17541,6 +18184,26 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <EntitySetMapping Name="People">
             <EntityTypeMapping TypeName="FLYModel.Person">
               <MappingFragment StoreEntitySet="Person">
+                <ScalarProperty Name="ExpireDate88" ColumnName="ExpireDate88" />
+                <ScalarProperty Name="ExpireDate89" ColumnName="ExpireDate89" />
+                <ScalarProperty Name="IssueDate89" ColumnName="IssueDate89" />
+                <ScalarProperty Name="IssueDate88" ColumnName="IssueDate88" />
+                <ScalarProperty Name="ExpireDate87" ColumnName="ExpireDate87" />
+                <ScalarProperty Name="IssueDate87" ColumnName="IssueDate87" />
+                <ScalarProperty Name="ExpireDate86" ColumnName="ExpireDate86" />
+                <ScalarProperty Name="IssueDate86" ColumnName="IssueDate86" />
+                <ScalarProperty Name="ExpireDate95" ColumnName="ExpireDate95" />
+                <ScalarProperty Name="IssueDate95" ColumnName="IssueDate95" />
+                <ScalarProperty Name="ExpireDate94" ColumnName="ExpireDate94" />
+                <ScalarProperty Name="IssueDate94" ColumnName="IssueDate94" />
+                <ScalarProperty Name="ExpireDate93" ColumnName="ExpireDate93" />
+                <ScalarProperty Name="IssueDate93" ColumnName="IssueDate93" />
+                <ScalarProperty Name="ExpireDate92" ColumnName="ExpireDate92" />
+                <ScalarProperty Name="IssueDate92" ColumnName="IssueDate92" />
+                <ScalarProperty Name="ExpireDate91" ColumnName="ExpireDate91" />
+                <ScalarProperty Name="IssueDate91" ColumnName="IssueDate91" />
+                <ScalarProperty Name="ExpireDate90" ColumnName="ExpireDate90" />
+                <ScalarProperty Name="IssueDate90" ColumnName="IssueDate90" />
                 <ScalarProperty Name="IssueDate85" ColumnName="IssueDate85" />
                 <ScalarProperty Name="IssueDate84" ColumnName="IssueDate84" />
                 <ScalarProperty Name="IssueDate83" ColumnName="IssueDate83" />
@@ -20456,6 +21119,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <EntitySetMapping Name="ViewEmployees">
             <EntityTypeMapping TypeName="FLYModel.ViewEmployee">
               <MappingFragment StoreEntitySet="ViewEmployee">
+                <ScalarProperty Name="IsLIFUS" ColumnName="IsLIFUS" />
                 <ScalarProperty Name="LicNo" ColumnName="LicNo" />
                 <ScalarProperty Name="TypeMDExpireDate" ColumnName="TypeMDExpireDate" />
                 <ScalarProperty Name="Type737ExpireDate" ColumnName="Type737ExpireDate" />
@@ -20788,6 +21452,14 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
           <EntitySetMapping Name="ViewProfiles">
             <EntityTypeMapping TypeName="FLYModel.ViewProfile">
               <MappingFragment StoreEntitySet="ViewProfile">
+                <ScalarProperty Name="ExpireDate89" ColumnName="ExpireDate89" />
+                <ScalarProperty Name="ExpireDate88" ColumnName="ExpireDate88" />
+                <ScalarProperty Name="ExpireDate87" ColumnName="ExpireDate87" />
+                <ScalarProperty Name="ExpireDate86" ColumnName="ExpireDate86" />
+                <ScalarProperty Name="Remain89" ColumnName="Remain89" />
+                <ScalarProperty Name="Remain88" ColumnName="Remain88" />
+                <ScalarProperty Name="Remain87" ColumnName="Remain87" />
+                <ScalarProperty Name="Remain86" ColumnName="Remain86" />
                 <ScalarProperty Name="ICAOLPRValidUntil" ColumnName="ICAOLPRValidUntil" />
                 <ScalarProperty Name="ProficiencyValidUntil" ColumnName="ProficiencyValidUntil" />
                 <ScalarProperty Name="ProficiencyValidUntilOPC" ColumnName="ProficiencyValidUntilOPC" />
@@ -21509,6 +22181,174 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTeacherDocument' does not have 
                 <ScalarProperty Name="CourseCategoryId" ColumnName="CourseCategoryId" />
                 <ScalarProperty Name="CalenderTypeId" ColumnName="CalenderTypeId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="frms_checklist_category">
+            <EntityTypeMapping TypeName="FLYModel.frms_checklist_category">
+              <MappingFragment StoreEntitySet="frms_checklist_category">
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="sort_order" ColumnName="sort_order" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="code" ColumnName="code" />
+                <ScalarProperty Name="form_type_id" ColumnName="form_type_id" />
+                <ScalarProperty Name="parent_id" ColumnName="parent_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="frms_checklist_item">
+            <EntityTypeMapping TypeName="FLYModel.frms_checklist_item">
+              <MappingFragment StoreEntitySet="frms_checklist_item">
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="sort_order" ColumnName="sort_order" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="code" ColumnName="code" />
+                <ScalarProperty Name="category_id" ColumnName="category_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="frms_checklist_item_result">
+            <EntityTypeMapping TypeName="FLYModel.frms_checklist_item_result">
+              <MappingFragment StoreEntitySet="frms_checklist_item_result">
+                <ScalarProperty Name="fdp_id" ColumnName="fdp_id" />
+                <ScalarProperty Name="flight_id" ColumnName="flight_id" />
+                <ScalarProperty Name="date_result" ColumnName="date_result" />
+                <ScalarProperty Name="instructor_id" ColumnName="instructor_id" />
+                <ScalarProperty Name="recommendation" ColumnName="recommendation" />
+                <ScalarProperty Name="result" ColumnName="result" />
+                <ScalarProperty Name="crew_id" ColumnName="crew_id" />
+                <ScalarProperty Name="item_id" ColumnName="item_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_frms_checklist_item_result">
+            <EntityTypeMapping TypeName="FLYModel.view_frms_checklist_item_result">
+              <MappingFragment StoreEntitySet="view_frms_checklist_item_result">
+                <ScalarProperty Name="work_position" ColumnName="work_position" />
+                <ScalarProperty Name="jobgroup" ColumnName="jobgroup" />
+                <ScalarProperty Name="position" ColumnName="position" />
+                <ScalarProperty Name="instructor" ColumnName="instructor" />
+                <ScalarProperty Name="landing" ColumnName="landing" />
+                <ScalarProperty Name="takeoff" ColumnName="takeoff" />
+                <ScalarProperty Name="onblock" ColumnName="onblock" />
+                <ScalarProperty Name="offblock" ColumnName="offblock" />
+                <ScalarProperty Name="sta" ColumnName="sta" />
+                <ScalarProperty Name="std" ColumnName="std" />
+                <ScalarProperty Name="arr" ColumnName="arr" />
+                <ScalarProperty Name="dep" ColumnName="dep" />
+                <ScalarProperty Name="route" ColumnName="route" />
+                <ScalarProperty Name="register" ColumnName="register" />
+                <ScalarProperty Name="flight_no" ColumnName="flight_no" />
+                <ScalarProperty Name="last_name" ColumnName="last_name" />
+                <ScalarProperty Name="first_name" ColumnName="first_name" />
+                <ScalarProperty Name="fdp_id" ColumnName="fdp_id" />
+                <ScalarProperty Name="flight_id" ColumnName="flight_id" />
+                <ScalarProperty Name="date_result" ColumnName="date_result" />
+                <ScalarProperty Name="instructor_id" ColumnName="instructor_id" />
+                <ScalarProperty Name="recommendation" ColumnName="recommendation" />
+                <ScalarProperty Name="crew_id" ColumnName="crew_id" />
+                <ScalarProperty Name="result_id" ColumnName="result_id" />
+                <ScalarProperty Name="result" ColumnName="result" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="sort_order" ColumnName="sort_order" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="code" ColumnName="code" />
+                <ScalarProperty Name="category_id" ColumnName="category_id" />
+                <ScalarProperty Name="item_id" ColumnName="item_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_frms_checklist_category">
+            <EntityTypeMapping TypeName="FLYModel.view_frms_checklist_category">
+              <MappingFragment StoreEntitySet="view_frms_checklist_category">
+                <ScalarProperty Name="item_count" ColumnName="item_count" />
+                <ScalarProperty Name="sort_order" ColumnName="sort_order" />
+                <ScalarProperty Name="path" ColumnName="path" />
+                <ScalarProperty Name="level" ColumnName="level" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="code" ColumnName="code" />
+                <ScalarProperty Name="form_type_id" ColumnName="form_type_id" />
+                <ScalarProperty Name="parent_id" ColumnName="parent_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="frms_cabin_line_check">
+            <EntityTypeMapping TypeName="FLYModel.frms_cabin_line_check">
+              <MappingFragment StoreEntitySet="frms_cabin_line_check">
+                <ScalarProperty Name="turbulence" ColumnName="turbulence" />
+                <ScalarProperty Name="unlawful" ColumnName="unlawful" />
+                <ScalarProperty Name="flight_crew_incapacitation" ColumnName="flight_crew_incapacitation" />
+                <ScalarProperty Name="emergency_descent" ColumnName="emergency_descent" />
+                <ScalarProperty Name="brace_impact" ColumnName="brace_impact" />
+                <ScalarProperty Name="incident" ColumnName="incident" />
+                <ScalarProperty Name="emergencies_takeoff_landing" ColumnName="emergencies_takeoff_landing" />
+                <ScalarProperty Name="emergency_evacuation_command" ColumnName="emergency_evacuation_command" />
+                <ScalarProperty Name="brace_emergency_landing" ColumnName="brace_emergency_landing" />
+                <ScalarProperty Name="inflight_emergency" ColumnName="inflight_emergency" />
+                <ScalarProperty Name="evacuation_not_required" ColumnName="evacuation_not_required" />
+                <ScalarProperty Name="on_grnd_emergency" ColumnName="on_grnd_emergency" />
+                <ScalarProperty Name="instructor_remark" ColumnName="instructor_remark" />
+                <ScalarProperty Name="crew_remark" ColumnName="crew_remark" />
+                <ScalarProperty Name="crew_sign_date" ColumnName="crew_sign_date" />
+                <ScalarProperty Name="instructor_sign_date" ColumnName="instructor_sign_date" />
+                <ScalarProperty Name="line_evaluator_sign_date" ColumnName="line_evaluator_sign_date" />
+                <ScalarProperty Name="line_evaluator" ColumnName="line_evaluator" />
+                <ScalarProperty Name="line_evaluator_id" ColumnName="line_evaluator_id" />
+                <ScalarProperty Name="final_score" ColumnName="final_score" />
+                <ScalarProperty Name="experience" ColumnName="experience" />
+                <ScalarProperty Name="flight_id" ColumnName="flight_id" />
+                <ScalarProperty Name="crew_id" ColumnName="crew_id" />
+                <ScalarProperty Name="instructor_id" ColumnName="instructor_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_frms_cabin_line_check">
+            <EntityTypeMapping TypeName="FLYModel.view_frms_cabin_line_check">
+              <MappingFragment StoreEntitySet="view_frms_cabin_line_check">
+                <ScalarProperty Name="aircraft_type" ColumnName="aircraft_type" />
+                <ScalarProperty Name="Register" ColumnName="Register" />
+                <ScalarProperty Name="crew_pid" ColumnName="crew_pid" />
+                <ScalarProperty Name="position" ColumnName="position" />
+                <ScalarProperty Name="crew_rank" ColumnName="crew_rank" />
+                <ScalarProperty Name="crew_name" ColumnName="crew_name" />
+                <ScalarProperty Name="instructor_name" ColumnName="instructor_name" />
+                <ScalarProperty Name="arr_iata" ColumnName="arr_iata" />
+                <ScalarProperty Name="dep_iata" ColumnName="dep_iata" />
+                <ScalarProperty Name="arr" ColumnName="arr" />
+                <ScalarProperty Name="dep" ColumnName="dep" />
+                <ScalarProperty Name="sta" ColumnName="sta" />
+                <ScalarProperty Name="std" ColumnName="std" />
+                <ScalarProperty Name="flt_no" ColumnName="flt_no" />
+                <ScalarProperty Name="turbulence" ColumnName="turbulence" />
+                <ScalarProperty Name="unlawful" ColumnName="unlawful" />
+                <ScalarProperty Name="flight_crew_incapacitation" ColumnName="flight_crew_incapacitation" />
+                <ScalarProperty Name="emergency_descent" ColumnName="emergency_descent" />
+                <ScalarProperty Name="brace_impact" ColumnName="brace_impact" />
+                <ScalarProperty Name="incident" ColumnName="incident" />
+                <ScalarProperty Name="emergencies_takeoff_landing" ColumnName="emergencies_takeoff_landing" />
+                <ScalarProperty Name="emergency_evacuation_command" ColumnName="emergency_evacuation_command" />
+                <ScalarProperty Name="brace_emergency_landing" ColumnName="brace_emergency_landing" />
+                <ScalarProperty Name="inflight_emergency" ColumnName="inflight_emergency" />
+                <ScalarProperty Name="evacuation_not_required" ColumnName="evacuation_not_required" />
+                <ScalarProperty Name="on_grnd_emergency" ColumnName="on_grnd_emergency" />
+                <ScalarProperty Name="instructor_remark" ColumnName="instructor_remark" />
+                <ScalarProperty Name="crew_remark" ColumnName="crew_remark" />
+                <ScalarProperty Name="crew_sign_date" ColumnName="crew_sign_date" />
+                <ScalarProperty Name="instructor_sign_date" ColumnName="instructor_sign_date" />
+                <ScalarProperty Name="line_evaluator_sign_date" ColumnName="line_evaluator_sign_date" />
+                <ScalarProperty Name="line_evaluator" ColumnName="line_evaluator" />
+                <ScalarProperty Name="line_evaluator_id" ColumnName="line_evaluator_id" />
+                <ScalarProperty Name="final_score" ColumnName="final_score" />
+                <ScalarProperty Name="experience" ColumnName="experience" />
+                <ScalarProperty Name="flight_id" ColumnName="flight_id" />
+                <ScalarProperty Name="crew_id" ColumnName="crew_id" />
+                <ScalarProperty Name="instructor_id" ColumnName="instructor_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

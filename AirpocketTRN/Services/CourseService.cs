@@ -2561,6 +2561,9 @@ namespace AirpocketTRN.Services
             //var result = await query.OrderByDescending(q => q.MandatoryExpired).ThenBy(q => q.JobGroup).ThenBy(q => q.LastName).ToListAsync();
 
             var p_ids = ids.Split('_').Select(q =>(Nullable<int>) Convert.ToInt32(q)).ToList();
+            var ds = context.ViewCoursePeoplePassedRankeds.Where(q => p_ids.Contains(q.PersonId) /*&& (q.Instructor.Contains("TALEBI") || q.Instructor.Contains("SHAFIEI"))*/ ).Select(q => q.CourseId).ToList();
+        
+
             var obj = context.ViewCoursePeoplePassedRankeds.Where(q =>p_ids.Contains( q.PersonId) /*&& (q.Instructor.Contains("TALEBI") || q.Instructor.Contains("SHAFIEI"))*/ ).Select(q =>
 
              new

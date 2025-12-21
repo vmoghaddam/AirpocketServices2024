@@ -495,6 +495,7 @@ namespace ApiReportFlight.Controllers
 
             var qry_crew = from x in context.ViewCrews
                            where crew_grps.Contains(x.JobGroup)
+                           
                            select x;
             if (!string.IsNullOrEmpty(crew_types))
             {

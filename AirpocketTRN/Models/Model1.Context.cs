@@ -175,5 +175,12 @@ namespace AirpocketTRN.Models
         public virtual DbSet<ViewCourseNew> ViewCourseNews { get; set; }
         public virtual DbSet<CourseType> CourseTypes { get; set; }
         public virtual DbSet<ViewCourseType> ViewCourseTypes { get; set; }
+        public virtual DbSet<frms_checklist_category> frms_checklist_category { get; set; }
+        public virtual DbSet<frms_checklist_item> frms_checklist_item { get; set; }
+        public virtual DbSet<frms_checklist_item_result> frms_checklist_item_result { get; set; }
+        public virtual DbSet<view_frms_checklist_item_result> view_frms_checklist_item_result { get; set; }
+        public virtual DbSet<view_frms_checklist_category> view_frms_checklist_category { get; set; }
+        public virtual DbSet<frms_cabin_line_check> frms_cabin_line_check { get; set; }
+        public virtual DbSet<view_frms_cabin_line_check> view_frms_cabin_line_check { get; set; }
     }
 }
