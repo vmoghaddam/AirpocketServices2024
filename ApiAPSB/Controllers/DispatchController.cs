@@ -104,6 +104,24 @@ namespace ApiAPSB.Controllers
             // return new DataResponse() { IsSuccess = false };
         }
 
+        [Route("api/get/atl/{flightid}")]
+        [AcceptVerbs("GET")]
+        public async Task<IHttpActionResult> GetATL(int flightid)
+        {
+            var context = new Models.dbEntities();
+            var appleg = context.AppLegs.FirstOrDefault(q => q.FlightId == flightid);
+            var pid = appleg.PICId;
+            var appFlight = context.AppCrewFlightJLs.Where(q => q.FlightId == flightid && q.CrewId == pid).FirstOrDefault();
+            var atl = context.Docs.FirstOrDefault(q => q.FDPId == appFlight.FDPId);
+
+
+            return Ok(atl);
+
+            // return new DataResponse() { IsSuccess = false };
+        }
+
+
+
 
         [Route("api/dr/test/{fltid}")]
         [AcceptVerbs("GET")]

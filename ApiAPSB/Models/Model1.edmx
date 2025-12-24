@@ -73,6 +73,18 @@
           <Property Name="planned_flt_duty_time" Type="int" />
           <Property Name="actual_flt_duty_time" Type="int" />
         </EntityType>
+        <EntityType Name="Doc">
+          <Key>
+            <PropertyRef Name="FDPId" />
+            <PropertyRef Name="FlightId" />
+            <PropertyRef Name="Type" />
+          </Key>
+          <Property Name="FDPId" Type="int" Nullable="false" />
+          <Property Name="FlightId" Type="int" Nullable="false" />
+          <Property Name="Type" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Data" Type="varchar(max)" />
+          <Property Name="Date" Type="datetime2" Precision="7" />
+        </EntityType>
         <EntityType Name="EFBASR">
           <Key>
             <PropertyRef Name="Id" />
@@ -2036,6 +2048,26 @@
           <Property Name="IssueDate83" Type="datetime2" Precision="7" />
           <Property Name="IssueDate84" Type="datetime2" Precision="7" />
           <Property Name="IssueDate85" Type="datetime2" Precision="7" />
+          <Property Name="IssueDate90" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate90" Type="datetime2" Precision="7" />
+          <Property Name="IssueDate91" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate91" Type="datetime2" Precision="7" />
+          <Property Name="IssueDate92" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate92" Type="datetime2" Precision="7" />
+          <Property Name="IssueDate93" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate93" Type="datetime2" Precision="7" />
+          <Property Name="IssueDate94" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate94" Type="datetime2" Precision="7" />
+          <Property Name="IssueDate95" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate95" Type="datetime2" Precision="7" />
+          <Property Name="IssueDate86" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate86" Type="datetime2" Precision="7" />
+          <Property Name="IssueDate87" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate87" Type="datetime2" Precision="7" />
+          <Property Name="IssueDate88" Type="datetime2" Precision="7" />
+          <Property Name="IssueDate89" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate89" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate88" Type="datetime2" Precision="7" />
         </EntityType>
         <EntityType Name="PersonCustomer">
           <Key>
@@ -5998,6 +6030,10 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewProfile' does not have a primar
           <Property Name="Remain83" Type="int" />
           <Property Name="Remain84" Type="int" />
           <Property Name="Remain85" Type="int" />
+          <Property Name="Remain86" Type="int" />
+          <Property Name="Remain87" Type="int" />
+          <Property Name="Remain88" Type="int" />
+          <Property Name="Remain89" Type="int" />
           <Property Name="RemainRIGHT_SEAT_QUALIFICATION" Type="int" />
           <Property Name="RemainELT" Type="int" />
           <Property Name="RemainRVSM" Type="int" />
@@ -6167,6 +6203,10 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewProfile' does not have a primar
           <Property Name="ExpireDate83" Type="datetime2" Precision="7" />
           <Property Name="ExpireDate84" Type="datetime2" Precision="7" />
           <Property Name="ExpireDate85" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate86" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate87" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate88" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate89" Type="datetime2" Precision="7" />
           <Property Name="ExpireDate9" Type="datetime2" Precision="7" />
           <Property Name="ExpireDateTRG02" Type="datetime" />
           <Property Name="FDMFAMExpireDate" Type="datetime2" Precision="7" />
@@ -6862,6 +6902,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySet Name="Airport" EntityType="Self.Airport" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DayGP" EntityType="Self.DayGP" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="discretion_form" EntityType="Self.discretion_form" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Doc" EntityType="Self.Doc" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EFBASR" EntityType="Self.EFBASR" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EFBDSPRelease" EntityType="Self.EFBDSPRelease" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EFBDutyDisorder" EntityType="Self.EFBDutyDisorder" Schema="dbo" store:Type="Tables" />
@@ -10426,6 +10467,10 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
     [ViewProfile].[Remain83] AS [Remain83], 
     [ViewProfile].[Remain84] AS [Remain84], 
     [ViewProfile].[Remain85] AS [Remain85], 
+    [ViewProfile].[Remain86] AS [Remain86], 
+    [ViewProfile].[Remain87] AS [Remain87], 
+    [ViewProfile].[Remain88] AS [Remain88], 
+    [ViewProfile].[Remain89] AS [Remain89], 
     [ViewProfile].[RemainRIGHT_SEAT_QUALIFICATION] AS [RemainRIGHT_SEAT_QUALIFICATION], 
     [ViewProfile].[RemainELT] AS [RemainELT], 
     [ViewProfile].[RemainRVSM] AS [RemainRVSM], 
@@ -10595,6 +10640,10 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
     [ViewProfile].[ExpireDate83] AS [ExpireDate83], 
     [ViewProfile].[ExpireDate84] AS [ExpireDate84], 
     [ViewProfile].[ExpireDate85] AS [ExpireDate85], 
+    [ViewProfile].[ExpireDate86] AS [ExpireDate86], 
+    [ViewProfile].[ExpireDate87] AS [ExpireDate87], 
+    [ViewProfile].[ExpireDate88] AS [ExpireDate88], 
+    [ViewProfile].[ExpireDate89] AS [ExpireDate89], 
     [ViewProfile].[ExpireDate9] AS [ExpireDate9], 
     [ViewProfile].[ExpireDateTRG02] AS [ExpireDateTRG02], 
     [ViewProfile].[FDMFAMExpireDate] AS [FDMFAMExpireDate], 
@@ -11214,6 +11263,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySet Name="AppLegJLs" EntityType="dbModel.AppLegJL" />
           <EntitySet Name="AppCrewFlights" EntityType="dbModel.AppCrewFlight" />
           <EntitySet Name="ViewEmployees" EntityType="dbModel.ViewEmployee" />
+          <EntitySet Name="Docs" EntityType="dbModel.Doc" />
           </EntityContainer>
         <EntityType Name="FDPItem">
           <Key>
@@ -12972,6 +13022,26 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="IssueDate83" Type="DateTime" Precision="7" />
           <Property Name="IssueDate84" Type="DateTime" Precision="7" />
           <Property Name="IssueDate85" Type="DateTime" Precision="7" />
+          <Property Name="IssueDate90" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate90" Type="DateTime" Precision="7" />
+          <Property Name="IssueDate91" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate91" Type="DateTime" Precision="7" />
+          <Property Name="IssueDate92" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate92" Type="DateTime" Precision="7" />
+          <Property Name="IssueDate93" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate93" Type="DateTime" Precision="7" />
+          <Property Name="IssueDate94" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate94" Type="DateTime" Precision="7" />
+          <Property Name="IssueDate95" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate95" Type="DateTime" Precision="7" />
+          <Property Name="IssueDate86" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate86" Type="DateTime" Precision="7" />
+          <Property Name="IssueDate87" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate87" Type="DateTime" Precision="7" />
+          <Property Name="IssueDate88" Type="DateTime" Precision="7" />
+          <Property Name="IssueDate89" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate89" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate88" Type="DateTime" Precision="7" />
         </EntityType>
         <Association Name="FK_PERSONCUSTOMER_PERSON">
           <End Type="dbModel.Person" Role="Person" Multiplicity="1">
@@ -14332,6 +14402,14 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="ProficiencyValidUntilOPC" Type="DateTime" Precision="3" />
           <Property Name="ProficiencyValidUntil" Type="DateTime" Precision="3" />
           <Property Name="ICAOLPRValidUntil" Type="DateTime" Precision="3" />
+          <Property Name="Remain86" Type="Int32" />
+          <Property Name="Remain87" Type="Int32" />
+          <Property Name="Remain88" Type="Int32" />
+          <Property Name="Remain89" Type="Int32" />
+          <Property Name="ExpireDate86" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate87" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate88" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate89" Type="DateTime" Precision="7" />
         </EntityType>
         <EntityType Name="OFPB_WindTemperature">
           <Key>
@@ -18040,6 +18118,18 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="LicNo" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="IsLIFUS" Type="Boolean" />
         </EntityType>
+        <EntityType Name="Doc">
+          <Key>
+            <PropertyRef Name="FDPId" />
+            <PropertyRef Name="FlightId" />
+            <PropertyRef Name="Type" />
+          </Key>
+          <Property Name="FDPId" Type="Int32" Nullable="false" />
+          <Property Name="FlightId" Type="Int32" Nullable="false" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Data" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Date" Type="DateTime" Precision="7" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -19151,6 +19241,26 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySetMapping Name="People">
             <EntityTypeMapping TypeName="dbModel.Person">
               <MappingFragment StoreEntitySet="Person">
+                <ScalarProperty Name="ExpireDate88" ColumnName="ExpireDate88" />
+                <ScalarProperty Name="ExpireDate89" ColumnName="ExpireDate89" />
+                <ScalarProperty Name="IssueDate89" ColumnName="IssueDate89" />
+                <ScalarProperty Name="IssueDate88" ColumnName="IssueDate88" />
+                <ScalarProperty Name="ExpireDate87" ColumnName="ExpireDate87" />
+                <ScalarProperty Name="IssueDate87" ColumnName="IssueDate87" />
+                <ScalarProperty Name="ExpireDate86" ColumnName="ExpireDate86" />
+                <ScalarProperty Name="IssueDate86" ColumnName="IssueDate86" />
+                <ScalarProperty Name="ExpireDate95" ColumnName="ExpireDate95" />
+                <ScalarProperty Name="IssueDate95" ColumnName="IssueDate95" />
+                <ScalarProperty Name="ExpireDate94" ColumnName="ExpireDate94" />
+                <ScalarProperty Name="IssueDate94" ColumnName="IssueDate94" />
+                <ScalarProperty Name="ExpireDate93" ColumnName="ExpireDate93" />
+                <ScalarProperty Name="IssueDate93" ColumnName="IssueDate93" />
+                <ScalarProperty Name="ExpireDate92" ColumnName="ExpireDate92" />
+                <ScalarProperty Name="IssueDate92" ColumnName="IssueDate92" />
+                <ScalarProperty Name="ExpireDate91" ColumnName="ExpireDate91" />
+                <ScalarProperty Name="IssueDate91" ColumnName="IssueDate91" />
+                <ScalarProperty Name="ExpireDate90" ColumnName="ExpireDate90" />
+                <ScalarProperty Name="IssueDate90" ColumnName="IssueDate90" />
                 <ScalarProperty Name="IssueDate85" ColumnName="IssueDate85" />
                 <ScalarProperty Name="IssueDate84" ColumnName="IssueDate84" />
                 <ScalarProperty Name="IssueDate83" ColumnName="IssueDate83" />
@@ -20413,6 +20523,14 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySetMapping Name="ViewProfiles">
             <EntityTypeMapping TypeName="dbModel.ViewProfile">
               <MappingFragment StoreEntitySet="ViewProfile">
+                <ScalarProperty Name="ExpireDate89" ColumnName="ExpireDate89" />
+                <ScalarProperty Name="ExpireDate88" ColumnName="ExpireDate88" />
+                <ScalarProperty Name="ExpireDate87" ColumnName="ExpireDate87" />
+                <ScalarProperty Name="ExpireDate86" ColumnName="ExpireDate86" />
+                <ScalarProperty Name="Remain89" ColumnName="Remain89" />
+                <ScalarProperty Name="Remain88" ColumnName="Remain88" />
+                <ScalarProperty Name="Remain87" ColumnName="Remain87" />
+                <ScalarProperty Name="Remain86" ColumnName="Remain86" />
                 <ScalarProperty Name="ICAOLPRValidUntil" ColumnName="ICAOLPRValidUntil" />
                 <ScalarProperty Name="ProficiencyValidUntil" ColumnName="ProficiencyValidUntil" />
                 <ScalarProperty Name="ProficiencyValidUntilOPC" ColumnName="ProficiencyValidUntilOPC" />
@@ -24333,6 +24451,17 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
                 <ScalarProperty Name="BaseAirportId" ColumnName="BaseAirportId" />
                 <ScalarProperty Name="PID" ColumnName="PID" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Docs">
+            <EntityTypeMapping TypeName="dbModel.Doc">
+              <MappingFragment StoreEntitySet="Doc">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Data" ColumnName="Data" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="FlightId" ColumnName="FlightId" />
+                <ScalarProperty Name="FDPId" ColumnName="FDPId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

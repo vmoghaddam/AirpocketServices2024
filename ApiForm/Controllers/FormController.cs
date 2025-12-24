@@ -79,9 +79,9 @@ namespace ApiForm.Controllers
                 var cockpit_grps = new List<string>() { "TRE", "TRI", "LTC", "NC", "P1", "P2" };
                 //4811
                 if (cockpit_grps.IndexOf(requester.JobGroup) != -1)
-                    form.ResponsibleId = 3965;
+                    form.ResponsibleId = 4794;
                 else
-                    form.ResponsibleId = 3965;
+                    form.ResponsibleId = 4811;
 
 
 

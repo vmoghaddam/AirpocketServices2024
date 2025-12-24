@@ -96,5 +96,6 @@ namespace ApiAPSB.Models
         public virtual DbSet<AppLegJL> AppLegJLs { get; set; }
         public virtual DbSet<AppCrewFlight> AppCrewFlights { get; set; }
         public virtual DbSet<ViewEmployee> ViewEmployees { get; set; }
+        public virtual DbSet<Doc> Docs { get; set; }
     }
 }

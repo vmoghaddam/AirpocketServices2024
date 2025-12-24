@@ -136,5 +136,9 @@ namespace ApiReportFlight.Models
         public int FixTime { get; set; }
         public string PYear { get; set; }
         public int IsINT { get; set; }
+        public string cnl_reason { get; set; }
+        public Nullable<int> cnl_reason_id { get; set; }
+        public string cnl_remark { get; set; }
+        public string flttype_title { get; set; }
     }
 }

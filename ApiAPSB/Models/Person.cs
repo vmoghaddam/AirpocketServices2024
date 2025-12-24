@@ -591,6 +591,26 @@ namespace ApiAPSB.Models
         public Nullable<System.DateTime> IssueDate83 { get; set; }
         public Nullable<System.DateTime> IssueDate84 { get; set; }
         public Nullable<System.DateTime> IssueDate85 { get; set; }
+        public Nullable<System.DateTime> IssueDate90 { get; set; }
+        public Nullable<System.DateTime> ExpireDate90 { get; set; }
+        public Nullable<System.DateTime> IssueDate91 { get; set; }
+        public Nullable<System.DateTime> ExpireDate91 { get; set; }
+        public Nullable<System.DateTime> IssueDate92 { get; set; }
+        public Nullable<System.DateTime> ExpireDate92 { get; set; }
+        public Nullable<System.DateTime> IssueDate93 { get; set; }
+        public Nullable<System.DateTime> ExpireDate93 { get; set; }
+        public Nullable<System.DateTime> IssueDate94 { get; set; }
+        public Nullable<System.DateTime> ExpireDate94 { get; set; }
+        public Nullable<System.DateTime> IssueDate95 { get; set; }
+        public Nullable<System.DateTime> ExpireDate95 { get; set; }
+        public Nullable<System.DateTime> IssueDate86 { get; set; }
+        public Nullable<System.DateTime> ExpireDate86 { get; set; }
+        public Nullable<System.DateTime> IssueDate87 { get; set; }
+        public Nullable<System.DateTime> ExpireDate87 { get; set; }
+        public Nullable<System.DateTime> IssueDate88 { get; set; }
+        public Nullable<System.DateTime> IssueDate89 { get; set; }
+        public Nullable<System.DateTime> ExpireDate89 { get; set; }
+        public Nullable<System.DateTime> ExpireDate88 { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PersonCustomer> PersonCustomers { get; set; }

@@ -488,5 +488,13 @@ namespace ApiAPSB.Models
         public Nullable<System.DateTime> ProficiencyValidUntilOPC { get; set; }
         public Nullable<System.DateTime> ProficiencyValidUntil { get; set; }
         public Nullable<System.DateTime> ICAOLPRValidUntil { get; set; }
+        public Nullable<int> Remain86 { get; set; }
+        public Nullable<int> Remain87 { get; set; }
+        public Nullable<int> Remain88 { get; set; }
+        public Nullable<int> Remain89 { get; set; }
+        public Nullable<System.DateTime> ExpireDate86 { get; set; }
+        public Nullable<System.DateTime> ExpireDate87 { get; set; }
+        public Nullable<System.DateTime> ExpireDate88 { get; set; }
+        public Nullable<System.DateTime> ExpireDate89 { get; set; }
     }
 }

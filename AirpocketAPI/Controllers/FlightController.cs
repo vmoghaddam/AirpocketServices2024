@@ -28,7 +28,7 @@ using Formatting = Newtonsoft.Json.Formatting;
 
 namespace AirpocketAPI.Controllers
 {
-    [EnableCors(origins: "*", headers: "*", methods: "*")]
+    //[EnableCors(origins: "*", headers: "*", methods: "*")]
     public class FlightController : ApiController
     {
 
