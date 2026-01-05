@@ -1953,7 +1953,7 @@ namespace XAPI.Controllers
                         var reqparm = new System.Collections.Specialized.NameValueCollection();
                         reqparm.Add("key", dto.key);
                         reqparm.Add("plan", dto.plan);
-                        byte[] responsebytes = client.UploadValues(/*"https://xpi.chb.skybag.click/api/skyputer/chb"*/"https://chb.skybag.app/xpi/api/skyputer/chb", "POST", reqparm);
+                        byte[] responsebytes = client.UploadValues(/*"https://xpi.chb.skybag.click/api/skyputer/chb"*/"https://xpi.chabahar.app/api/skyputer/chb", "POST", reqparm);
                         responsebody = Encoding.UTF8.GetString(responsebytes);
 
                     }
@@ -2189,6 +2189,35 @@ namespace XAPI.Controllers
                         reqparm.Add("key", dto.key);
                         reqparm.Add("plan", dto.plan);
                         byte[] responsebytes = client.UploadValues("https://xpi.flyxaero.tech/api/skyputer/flyx", "POST", reqparm);
+                        responsebody = Encoding.UTF8.GetString(responsebytes);
+
+                    }
+                    return Ok(true);
+                }
+                else if (dto.plan.Contains("LADAIRWAYS"))
+                {
+                    result = "LADAIRWAYS";
+                    var entity = new OFPSkyPuter()
+                    {
+                        OFP = dto.plan,
+                        DateCreate = DateTime.Now,
+                        UploadStatus = 0,
+
+
+                    };
+                    var ctx = new PPAEntities();
+                    ctx.Database.CommandTimeout = 1000;
+                    ctx.OFPSkyPuters.Add(entity);
+                    ctx.SaveChanges();
+
+
+                    string responsebody = "NO";
+                    using (WebClient client = new WebClient())
+                    {
+                        var reqparm = new System.Collections.Specialized.NameValueCollection();
+                        reqparm.Add("key", dto.key);
+                        reqparm.Add("plan", dto.plan);
+                        byte[] responsebytes = client.UploadValues("https://xpi.ladair.tech/api/skyputer/lad", "POST", reqparm);
                         responsebody = Encoding.UTF8.GetString(responsebytes);
 
                     }
@@ -2813,6 +2842,53 @@ namespace XAPI.Controllers
         [Route("api/skyputer/flyx")]
         [AcceptVerbs("POST")]
         public IHttpActionResult PostSkyputerFLYX(skyputer dto)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(dto.key))
+                    return Ok("Authorization key not found.");
+                if (string.IsNullOrEmpty(dto.plan))
+                    return Ok("Plan cannot be empty.");
+                if (dto.key != "Skyputer@1359#")
+                    return Ok("Authorization key is wrong.");
+
+
+
+                var entity = new OFPSkyPuter()
+                {
+                    OFP = dto.plan,
+                    DateCreate = DateTime.Now,
+                    UploadStatus = 0,
+
+
+                };
+                var ctx = new PPAEntities();
+                ctx.Database.CommandTimeout = 1000;
+                ctx.OFPSkyPuters.Add(entity);
+                ctx.SaveChanges();
+                new Thread(async () =>
+                {
+                    GetSkyputerImport(entity.Id);
+                }).Start();
+                return Ok(true);
+
+
+
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += " Inner: " + ex.InnerException.Message;
+                return Ok(msg);
+            }
+
+        }
+
+
+        [Route("api/skyputer/lad")]
+        [AcceptVerbs("POST")]
+        public IHttpActionResult PostSkyputerLad(skyputer dto)
         {
             try
             {
@@ -3585,44 +3661,53 @@ namespace XAPI.Controllers
                 var aldrf = parts.FirstOrDefault(q => q.StartsWith("aldrf:|"));
                 if (aldrf != null)
                 {
-                    aldrf = aldrf.Replace("aldrf:|", "");
-                    var aldrfRows = aldrf.Split('/').Where(q => !string.IsNullOrEmpty(q)).ToList();
-                    List<JObject> aldrfJson = new List<JObject>();
-                    idx = 0;
 
-                    foreach (var r in aldrfRows)
+                    try
                     {
-                        var procStr = "";
-                        var _r = r.Replace("=;", "= ;");
-                        var prts = _r.Split(new string[] { "  " }, StringSplitOptions.None).Where(q => !string.IsNullOrEmpty(q)).ToList();
-                        //  var prts2 = _r.Split(new string[] { " " }, StringSplitOptions.None);
-                        //foreach (var x in prts)
-                        //{
-                        //    var str = x.Replace("\"", "^").Replace("'", "#");
-                        //    var substr = str.Split('=')[0] + ":'" + str.Split('=')[1] + "'";
+                        aldrf = aldrf.Replace("aldrf:|", "");
+                        var aldrfRows = aldrf.Split('/').Where(q => !string.IsNullOrEmpty(q)).ToList();
+                        List<JObject> aldrfJson = new List<JObject>();
+                        idx = 0;
 
-                        //    procStr += substr;
-                        //    if (x != prts.Last())
-                        //        procStr += ",";
-                        //}
-                        procStr += "FL:'" + prts[0].Replace(" ", "").Replace("|", "") + "'";
-                        procStr += ",WIND:'" + prts[1].Replace(" ", "") + "'";
-                        procStr += ",FUEL:'" + prts[2].Replace(" ", "") + "'";
-                        procStr += ",T:'" + prts[3].Replace(" ", "") + "'";
-                        procStr += ",SH1:'" + prts[4].Replace(" ", "") + "'";
-                        procStr += ",SH2:'" + prts[5].Replace(" ", "") + "'";
-                        procStr += ",DEV:'" + prts[6].Replace(" ", "") + "'";
-                        procStr = "{" + procStr + "}";
+                        foreach (var r in aldrfRows)
+                        {
+                            var procStr = "";
+                            var _r = r.Replace("=;", "= ;");
+                            var prts = _r.Split(new string[] { "  " }, StringSplitOptions.None).Where(q => !string.IsNullOrEmpty(q)).ToList();
+                            //  var prts2 = _r.Split(new string[] { " " }, StringSplitOptions.None);
+                            //foreach (var x in prts)
+                            //{
+                            //    var str = x.Replace("\"", "^").Replace("'", "#");
+                            //    var substr = str.Split('=')[0] + ":'" + str.Split('=')[1] + "'";
 
-                        var jsonObj = JsonConvert.DeserializeObject<JObject>(procStr);
-                        var _key = ("aldrf_FL_" + jsonObj.GetValue("FL").ToString()).Replace(" ", "").ToLower();
-                        jsonObj.Add("_key", _key);
+                            //    procStr += substr;
+                            //    if (x != prts.Last())
+                            //        procStr += ",";
+                            //}
+                            procStr += "FL:'" + prts[0].Replace(" ", "").Replace("|", "") + "'";
+                            procStr += ",WIND:'" + prts[1].Replace(" ", "") + "'";
+                            procStr += ",FUEL:'" + prts[2].Replace(" ", "") + "'";
+                            procStr += ",T:'" + prts[3].Replace(" ", "") + "'";
+                            procStr += ",SH1:'" + prts[4].Replace(" ", "") + "'";
+                            procStr += ",SH2:'" + prts[5].Replace(" ", "") + "'";
+                            procStr += ",DEV:'" + prts[6].Replace(" ", "") + "'";
+                            procStr = "{" + procStr + "}";
 
-                        aldrfJson.Add(jsonObj);
-                        idx++;
+                            var jsonObj = JsonConvert.DeserializeObject<JObject>(procStr);
+                            var _key = ("aldrf_FL_" + jsonObj.GetValue("FL").ToString()).Replace(" ", "").ToLower();
+                            jsonObj.Add("_key", _key);
+
+                            aldrfJson.Add(jsonObj);
+                            idx++;
+
+                        }
+                        plan.JALDRF = "[" + string.Join(",", aldrfJson) + "]";
+                    }
+                    catch(Exception ex)
+                    {
 
                     }
-                    plan.JALDRF = "[" + string.Join(",", aldrfJson) + "]";
+                   
                     //FUCK
                 }
 

@@ -12,15 +12,14 @@ namespace ApiWorld.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class plan_flight
+    public partial class load_sheet_visit_history
     {
-        public int Id { get; set; }
-        public int flight_id { get; set; }
-        public int plan_id { get; set; }
-        public Nullable<System.DateTime> date_create { get; set; }
-        public string remark { get; set; }
+        public int id { get; set; }
+        public int load_sheet_id { get; set; }
+        public Nullable<int> crew_id { get; set; }
+        public Nullable<System.DateTime> date_visit { get; set; }
+        public Nullable<System.DateTime> date_sign { get; set; }
     
-        public virtual FlightInformation FlightInformation { get; set; }
-        public virtual Flight Flight { get; set; }
+        public virtual load_sheet_raw load_sheet_raw { get; set; }
     }
 }
