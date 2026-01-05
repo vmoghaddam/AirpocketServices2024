@@ -180,7 +180,49 @@ namespace AirpocketTRN.Controllers
         }
 
 
+        public class delete_file {
+            public string file_name{ get; set; } 
+            public string folder_name{ get; set; } 
+        }
 
+        [Route("api/trn/delete/profile/doc")]
+        [AcceptVerbs("Post")]
+
+        public async Task<IHttpActionResult> get_profile_doc(List<delete_file> files)
+        {
+            try {
+                var BaseDir = ConfigurationManager.AppSettings["training_doc"];
+                
+                if (files == null || files.Count == 0)
+                    throw new ArgumentException("selected files must not be empty");
+
+                foreach (var file in files) { 
+                string combined = Path.Combine( BaseDir + "doc\\", file.folder_name ?? "",  file.file_name);
+
+                string fullBase = Path.GetFullPath(BaseDir)
+                    .TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)
+                    + Path.DirectorySeparatorChar;
+
+                string fullTarget = Path.GetFullPath(combined);
+
+                if (!fullTarget.StartsWith(fullBase, StringComparison.OrdinalIgnoreCase))
+                    throw new InvalidOperationException("Invalid path (outside base directory).");
+
+                //if (!File.Exists(fullTarget))
+                //    return false;
+
+                File.Delete(fullTarget);
+                }
+                return Ok();
+            } catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += "   " + ex.InnerException.Message;
+                return Ok(msg);
+            }
+            
+        }
 
         [Route("api/upload/profile/doc")]
         [AcceptVerbs("POST")]
@@ -197,8 +239,6 @@ namespace AirpocketTRN.Controllers
                 int type = Convert.ToInt32(httpRequest.Form["DocumentTypeId"]);
                 string ac_type = httpRequest.Form["ac_type"];
                 string year = httpRequest.Form["year"];
-                //DateTime idt = Convert.ToDateTime(httpRequest.Form["DateIssue"]);
-                //DateTime edt =Convert.ToDateTime(httpRequest.Form["DateExpire"]);
                 string title = httpRequest.Form["Remark"];
 
                 string issueStr = httpRequest.Form["DateIssue"];
@@ -250,8 +290,16 @@ namespace AirpocketTRN.Controllers
                                 doc_type = "LOGBOOK RECORDS";
                                 file_name = year + '_' + postedFile.FileName;
                                 break;
+                            case 9:
+                                doc_type = "LICENSES";
+                                file_name = year + '_' + postedFile.FileName;
+                                break;
+                           case 10:
+                                doc_type = "GROUND TRAINING";
+                                file_name = year + '_' + postedFile.FileName;
+                                break;
                             default:
-                                // code block
+                               
                                 break;
                         }
                         var root = ConfigurationManager.AppSettings["training_doc"];
@@ -260,7 +308,6 @@ namespace AirpocketTRN.Controllers
 
                         root = Path.GetFullPath(root);
                         string filePath = Path.Combine(root, "doc/" + nid + "/" + doc_type + "/" + file_name);
-                        //var filePath = $"C:/Inetpub/vhosts/airpocket.app/ava.airpocket.app/upload/training/doc/" + nid + "/" + doc_type + "/" + postedFile.FileName;
                         postedFile.SaveAs(filePath);
                         docfiles.Add(filePath);
                     }
@@ -274,7 +321,6 @@ namespace AirpocketTRN.Controllers
 
                         root = Path.GetFullPath(root);
                         string filePath = Path.Combine(root, "doc/" + nid + "/" + doc_type + "/" + file_name);
-                        //var filePath = $"C:/Inetpub/vhosts/airpocket.app/ava.airpocket.app/upload/training/doc/" + nid + "/CERTIFICATES/" + postedFile.FileName;
                         postedFile.SaveAs(filePath);
                         docfiles.Add(filePath);
 

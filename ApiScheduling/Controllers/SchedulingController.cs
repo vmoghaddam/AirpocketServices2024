@@ -1324,7 +1324,7 @@ namespace ApiScheduling.Controllers
                 };
                 offFDP.CanceledNo = string.Join(",", allRemovedFlights.Select(q => q.FlightNumber));
                 offFDP.CanceledRoute = string.Join(",", allRemovedFlights.Select(q => q.FromAirportIATA)) + "," + allRemovedFlights.Last().ToAirportIATA;
-                offFDP.DutyType = 100020;
+                offFDP.DutyType = reason;
                 offFDP.Remark2 = remark2;
                 //switch (reason)
                 //{

@@ -694,7 +694,7 @@ namespace ApiAPSB.Controllers
                 case "IP":
                     return "IP";
                 case "Captain":
-                    return "PIC";
+                    return "CPT";
                 case "SAFETY":
                 case "SO":
                 case "Safety":
@@ -1677,8 +1677,8 @@ namespace ApiAPSB.Controllers
                     STDLocal = legs.First().STDLocal,
                     STA = legs.Last().STA,
                     STALocal = legs.Last().STALocal,
-                    OffBlockLocal = legs.First().BlockOffLocal,
-                    OnBlockLocal = legs.Last().BlockOnLocal,
+                    OffBlock = legs.First().BlockOff,
+                    OnBlock = legs.Last().BlockOn,
                     fdp.ReportingTime,
                     fdp.ReportingTimeLocal,
                     fdp.DutyEnd,
@@ -1715,21 +1715,22 @@ namespace ApiAPSB.Controllers
                 Worksheet sheet = workbook.Worksheets[0];
 
                 var ln_leg_assignedcockpit = 34;
+                var col_leg_ln_leg_assignedcockpit = 2;
                 foreach (var x in legs)
                 {
 
                     TimeSpan PF1Time = TimeSpan.FromMinutes(Convert.ToDouble(x.PF1Time));
-                    sheet.Range[ln_leg_assignedcockpit, 2].Text = string.IsNullOrWhiteSpace(x.PF1Name) ? " " : x.PF1Name;
-                    sheet.Range[ln_leg_assignedcockpit, 3].Text = PF1Time.ToString(@"hh\:mm");
+                    sheet.Range[ln_leg_assignedcockpit, col_leg_ln_leg_assignedcockpit].Text = string.IsNullOrWhiteSpace(x.PF1Name) ? " " : x.PF1Name;
+                    sheet.Range[ln_leg_assignedcockpit, col_leg_ln_leg_assignedcockpit + 1].Text = PF1Time.ToString(@"hh\:mm");
                     TimeSpan PM1Time = TimeSpan.FromMinutes(Convert.ToDouble(x.PM1Time));
-                    sheet.Range[ln_leg_assignedcockpit, 2].Text = string.IsNullOrWhiteSpace(x.PM1Name) ? " " : x.PM1Name;
-                    sheet.Range[ln_leg_assignedcockpit, 6].Text = PM1Time.ToString(@"hh\:mm");
+                    sheet.Range[ln_leg_assignedcockpit + 1, col_leg_ln_leg_assignedcockpit].Text = string.IsNullOrWhiteSpace(x.PM1Name) ? " " : x.PM1Name;
+                    sheet.Range[ln_leg_assignedcockpit + 1, col_leg_ln_leg_assignedcockpit + 1].Text = PM1Time.ToString(@"hh\:mm");
                     TimeSpan PF2Time = TimeSpan.FromMinutes(Convert.ToDouble(x.PF2Time));
-                    sheet.Range[ln_leg_assignedcockpit, 2].Text = string.IsNullOrWhiteSpace(x.PF2Name) ? " " : x.PF2Name;
-                    sheet.Range[ln_leg_assignedcockpit, 9].Text = PF2Time.ToString(@"hh\:mm");
+                    sheet.Range[ln_leg_assignedcockpit + 2, col_leg_ln_leg_assignedcockpit].Text = string.IsNullOrWhiteSpace(x.PF2Name) ? " " : x.PF2Name;
+                    sheet.Range[ln_leg_assignedcockpit + 2, col_leg_ln_leg_assignedcockpit + 1].Text = PF2Time.ToString(@"hh\:mm");
                     TimeSpan PM2Time = TimeSpan.FromMinutes(Convert.ToDouble(x.PM2Time));
-                    sheet.Range[ln_leg_assignedcockpit, 2].Text = string.IsNullOrWhiteSpace(x.PM2Name) ? " " : x.PM2Name;
-                    sheet.Range[ln_leg_assignedcockpit, 12].Text = PM2Time.ToString(@"hh\:mm");
+                    sheet.Range[ln_leg_assignedcockpit + 3, col_leg_ln_leg_assignedcockpit].Text = string.IsNullOrWhiteSpace(x.PM2Name) ? " " : x.PM2Name;
+                    sheet.Range[ln_leg_assignedcockpit + 3, col_leg_ln_leg_assignedcockpit + 1].Text = PM2Time.ToString(@"hh\:mm");
 
                     ////sheet.Range[ln_leg_assignedcockpit, 2].Text = TimeSpan.FromMinutes((int)).ToString(@"hh\:mm");
                     //sheet.Range[ln_leg_assignedcockpit, 4].Text = format_to_time(); 
@@ -1737,7 +1738,7 @@ namespace ApiAPSB.Controllers
                     //sheet.Range[ln_leg_assignedcockpit, 8].Text = format_to_time(x.PM2Time);
 
                     ln_leg_assignedcockpit++;
-
+                    col_leg_ln_leg_assignedcockpit += 3;
                 }
                 if (result.asr) { sheet.Range[28, 3].Text = "*"; }
                 if (result.vr) { sheet.Range[29, 3].Text = "*"; }
@@ -1760,19 +1761,21 @@ namespace ApiAPSB.Controllers
 
                 //reporting time local => stdlocal - 60 min
                 sheet.Range[5, 4].Text = ((DateTime)reporting_time_local).ToString("HH:mm");
+                sheet.Range[5, 2].Text = legs[legs.Count - 1].ATLNO;
                 // var _start =
                 //sheet.Range[12, 14].Text = ((result.OnBlockLocal == null ? (DateTime)result.STALocal : (DateTime)result.OnBlockLocal)).AddMinutes(30).ToString("HH:mm");
 
                 // ((DateTime)result.DutyEndLoccal).ToString("HH:mm");
 
 
+                
                 var _duty = Convert.ToInt32(Math.Round((
 
-                       (result.OnBlockLocal != null ? ((DateTime)result.OnBlockLocal) : ((DateTime)result.STALocal))
+                       (result.OnBlock != null ? ((DateTime)result.OnBlock) : ((DateTime)result.STA))
 
-                        //- (result.OffBlockLocal != null ? ((DateTime)result.OffBlockLocal)  : ((DateTime)result.STDLocal) )
-                        - ((DateTime)result.ReportingTimeLocal)
-                        ).TotalMinutes));
+                        - (result.OffBlock != null ? ((DateTime)result.OffBlock)  : ((DateTime)result.STD) )
+                        //- ((DateTime)result.ReportingTime)
+                        ).TotalMinutes) + 60);
 
                 //sheet.Range[11, 20].Text = format_to_time(result.MaxFDP);
                 //var scheduled_fdp =Convert.ToInt32( Math.Round( (((DateTime)result.STALocal) - ((DateTime)result.ReportingTimeLocal)).TotalMinutes));
@@ -1805,30 +1808,30 @@ namespace ApiAPSB.Controllers
 
 
                 int ln_cockpit = 15;
-                int ln_cabin = 21;
-                int ln_other = 15;
+                int ln_cabin = 15;
+                int ln_other = 21;
 
-                var cockpit = new List<string>() { "TRI", "TRE", "P1", "P2" };
-                var cabin = new List<string>() { "ISCCM", "SCCM", "CCM" };
+                var cockpit = new List<string>() { "Captain", "FO", "SO", "IP", "TRI", "TRE", "OBS", "OBSP1", "OBSP2", "Check" };
+                var cabin = new List<string>() { "ISCCM", "SCCM", "SCCM2", "SCCM3", "CCM" };
 
                 foreach (var c in result.crew)
                 {
-                    if (cockpit.Contains(c.JobGroup))
+                    if (cockpit.Contains(c.Position))
                     {
                         sheet.Range[ln_cockpit, 2].Text = string.IsNullOrEmpty(c.Position) ? "" : get_position(c.Position);
                         sheet.Range[ln_cockpit, 3].Text = string.IsNullOrEmpty(c.Name) ? "" : c.Name + " (" + c.JobGroup + ")";
                         ln_cockpit++;
                     }
-                    else if (cabin.Contains(c.JobGroup))
+                    else if (cabin.Contains(c.Position))
                     {
-                        sheet.Range[ln_cabin, 2].Text = string.IsNullOrEmpty(c.Position) ? "" : get_position(c.Position);
-                        sheet.Range[ln_cabin, 3].Text = string.IsNullOrEmpty(c.Name) ? "" : c.Name + " (" + c.JobGroup + ")";
+                        sheet.Range[ln_cabin, 7].Text = string.IsNullOrEmpty(c.Position) ? "" : get_position(c.Position);
+                        sheet.Range[ln_cabin, 8].Text = string.IsNullOrEmpty(c.Name) ? "" : c.Name + " (" + c.JobGroup + ")";
                         ln_cabin++;
                     }
                     else
                     {
-                        sheet.Range[ln_other, 7].Text = string.IsNullOrEmpty(c.Position) ? "" : get_position(c.Position);
-                        sheet.Range[ln_other, 8].Text = string.IsNullOrEmpty(c.Name) ? "" : c.Name + " (" + c.JobGroup + ")";
+                        sheet.Range[ln_other, 2].Text = string.IsNullOrEmpty(c.Position) ? "" : get_position(c.Position);
+                        sheet.Range[ln_other, 3].Text = string.IsNullOrEmpty(c.Name) ? "" : c.Name + " (" + c.JobGroup + ")";
                         ln_other++;
                     }
                 }
@@ -1868,7 +1871,7 @@ namespace ApiAPSB.Controllers
                     sheet.Range[ln_leg, 7].Text = leg.BlockTime == null ? "" : format_to_time(leg.BlockTime);
                     sheet.Range[ln_leg, 8].Text = leg.TakeOff == null ? "" : ((DateTime)leg.TakeOff).ToString("HH:mm");
                     sheet.Range[ln_leg, 9].Text = leg.Landing == null ? "" : ((DateTime)leg.Landing).ToString("HH:mm");
-                    sheet.Range[ln_leg, 10].Text = leg.FlightTime == null ? "" : format_to_time(leg.FlightTime);
+                    sheet.Range[ln_leg, 11].Text = leg.FlightTime == null ? "" : format_to_time(leg.FlightTime);
 
                     //sheet.Range[ln_leg, 26].Text = leg.RemDuty == null ? "" : ((DateTime)leg.RemDuty).ToString("HH:mm");
                     //sheet.Range[ln_leg, 26].Text = leg.RemDuty == null ? "" : TimeSpan.FromMinutes((int)leg.RemDuty).ToString(@"hh\:mm");
@@ -1889,6 +1892,7 @@ namespace ApiAPSB.Controllers
 
                 TimeSpan blockTime = TimeSpan.FromMinutes(result.block);
                 sheet.Range[13, 7].Text = blockTime.ToString(@"hh\:mm");
+                sheet.Range[3, 10].Text = legs[0].FlightType;
                 //var nots = new List<string>();
                 //ln_leg = 27;
                 //foreach (var leg in result.legs)
