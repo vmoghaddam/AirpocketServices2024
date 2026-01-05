@@ -12,14 +12,8 @@ namespace ApiWorld.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class load_sheet_raw
+    public partial class view_load_sheet_raw
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public load_sheet_raw()
-        {
-            this.load_sheet_visit_history = new HashSet<load_sheet_visit_history>();
-        }
-    
         public int id { get; set; }
         public string airline { get; set; }
         public Nullable<System.DateTime> date_create { get; set; }
@@ -44,8 +38,6 @@ namespace ApiWorld.Models
         public Nullable<System.DateTime> popup_date { get; set; }
         public Nullable<System.DateTime> pic_visited_date { get; set; }
         public Nullable<int> popup_count { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<load_sheet_visit_history> load_sheet_visit_history { get; set; }
+        public Nullable<long> rank_last { get; set; }
     }
 }

@@ -39,6 +39,7 @@ namespace ApiWorld.Models
             this.FreeTexts = new HashSet<FreeText>();
             this.MelItems = new HashSet<MelItem>();
             this.Messages = new HashSet<Message>();
+            this.NextLegs = new HashSet<NextLeg>();
             this.OptFlightLevels = new HashSet<OptFlightLevel>();
             this.PassThroughValues = new HashSet<PassThroughValue>();
             this.PDPPoints = new HashSet<PDPPoint>();
@@ -49,7 +50,6 @@ namespace ApiWorld.Models
             this.StdAlternates = new HashSet<StdAlternate>();
             this.PlanningEnRouteAlternateAirports = new HashSet<PlanningEnRouteAlternateAirport>();
             this.ToAlt1Points = new HashSet<ToAlt1Points>();
-            this.NextLegs = new HashSet<NextLeg>();
         }
     
         public int Id { get; set; }
@@ -285,6 +285,8 @@ namespace ApiWorld.Models
         public virtual OverflightCost OverflightCost { get; set; }
         public virtual Response Response1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<NextLeg> NextLegs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OptFlightLevel> OptFlightLevels { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PassThroughValue> PassThroughValues { get; set; }
@@ -304,7 +306,5 @@ namespace ApiWorld.Models
         public virtual ICollection<PlanningEnRouteAlternateAirport> PlanningEnRouteAlternateAirports { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ToAlt1Points> ToAlt1Points { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<NextLeg> NextLegs { get; set; }
     }
 }

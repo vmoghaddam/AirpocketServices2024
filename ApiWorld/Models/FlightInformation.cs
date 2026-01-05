@@ -320,6 +320,7 @@ namespace ApiWorld.Models
         public string AttForms { get; set; }
         public Nullable<int> PaxMale { get; set; }
         public Nullable<int> PaxFemale { get; set; }
+        public string remark_correction { get; set; }
         public Nullable<int> PF1Id { get; set; }
         public Nullable<int> PM1Id { get; set; }
         public Nullable<int> PF2Id { get; set; }
@@ -328,7 +329,6 @@ namespace ApiWorld.Models
         public Nullable<int> PM1Time { get; set; }
         public Nullable<int> PF2Time { get; set; }
         public Nullable<int> PM2Time { get; set; }
-        public string remark_correction { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OFPImport> OFPImports { get; set; }

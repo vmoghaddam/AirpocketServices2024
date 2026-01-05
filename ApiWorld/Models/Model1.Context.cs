@@ -169,12 +169,16 @@ namespace ApiWorld.Models
         public virtual DbSet<OFPPoint> OFPPoints { get; set; }
         public virtual DbSet<OFPImport> OFPImports { get; set; }
         public virtual DbSet<OptFlightLevel> OptFlightLevels { get; set; }
-        public virtual DbSet<FlightInformation> FlightInformations { get; set; }
         public virtual DbSet<OFPImportProp> OFPImportProps { get; set; }
-        public virtual DbSet<Flight> Flights { get; set; }
-        public virtual DbSet<plan_flight> plan_flight { get; set; }
-        public virtual DbSet<load_sheet_raw> load_sheet_raw { get; set; }
         public virtual DbSet<ofp_prop_history> ofp_prop_history { get; set; }
         public virtual DbSet<PSSPoint> PSSPoints { get; set; }
+        public virtual DbSet<plan_flight> plan_flight { get; set; }
+        public virtual DbSet<FlightInformation> FlightInformations { get; set; }
+        public virtual DbSet<Flight> Flights { get; set; }
+        public virtual DbSet<ato> atoes { get; set; }
+        public virtual DbSet<load_sheet_history> load_sheet_history { get; set; }
+        public virtual DbSet<load_sheet_raw> load_sheet_raw { get; set; }
+        public virtual DbSet<load_sheet_visit_history> load_sheet_visit_history { get; set; }
+        public virtual DbSet<view_load_sheet_raw> view_load_sheet_raw { get; set; }
     }
 }

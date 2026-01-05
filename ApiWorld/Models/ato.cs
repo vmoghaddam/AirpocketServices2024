@@ -12,15 +12,13 @@ namespace ApiWorld.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class plan_flight
+    public partial class ato
     {
-        public int Id { get; set; }
-        public int flight_id { get; set; }
-        public int plan_id { get; set; }
-        public Nullable<System.DateTime> date_create { get; set; }
-        public string remark { get; set; }
-    
-        public virtual FlightInformation FlightInformation { get; set; }
-        public virtual Flight Flight { get; set; }
+        public string ROW { get; set; }
+        public string FIRSTNAME { get; set; }
+        public string LASTNAME { get; set; }
+        public string NID { get; set; }
+        public string PASSPORT { get; set; }
+        public string MOBILE { get; set; }
     }
 }

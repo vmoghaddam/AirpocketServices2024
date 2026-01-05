@@ -125,8 +125,8 @@ namespace ApiWorld.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OFPPoint> OFPPoints { get; set; }
-        public virtual FlightInformation FlightInformation { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OFPImportProp> OFPImportProps { get; set; }
+        public virtual FlightInformation FlightInformation { get; set; }
     }
 }
