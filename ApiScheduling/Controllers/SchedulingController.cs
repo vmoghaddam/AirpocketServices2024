@@ -534,7 +534,7 @@ namespace ApiScheduling.Controllers
 
         }
 
-        
+
 
 
 
@@ -565,7 +565,7 @@ namespace ApiScheduling.Controllers
                     LastFlightId = flightId,
                     DateStart = std,
                     DateEnd = sta,
-                    DateConfirmed =  DateTime.Now,
+                    DateConfirmed = DateTime.Now,
                     Split = 0,
 
 
@@ -584,7 +584,7 @@ namespace ApiScheduling.Controllers
 
                 context.FDPs.Add(fdp);
                 var saveResult = await context.SaveChangesAsync();
-             
+
 
                 return Ok(true);
             }
@@ -2205,12 +2205,12 @@ namespace ApiScheduling.Controllers
             }
             else
             {
-                var rest = new List<int>() { 1167, 1168, 1170 };
+                var rest = new List<int>() { 1167, 1168, 1170, 300013 };
                 duty.InitRestTo = rest.Contains(duty.DutyType) ? ((DateTime)duty.InitEnd).AddHours(12) : duty.DateEnd;
 
             }
             int rerrp_check = Convert.ToInt32(ConfigurationManager.AppSettings["rerrp_check"]);
-            if (rerrp_check == 1 && (new List<int>() { 1167, 1168 }).Contains(duty.DutyType))
+            if (rerrp_check == 1 && (new List<int>() { 1167, 1168, 300013 }).Contains(duty.DutyType))
             {
                 var _dtdate = ((DateTime)duty.InitStart).Date;
                 var _rerrp = await context.AppFTLs.Where(q => q.CrewId == duty.CrewId && q.CDate == _dtdate && q.RERRP > 0).FirstOrDefaultAsync();
@@ -2374,6 +2374,7 @@ namespace ApiScheduling.Controllers
                         || _interupted_norest.DutyType == 1167
                         || _interupted_norest.DutyType == 1170
                         || _interupted_norest.DutyType == 1168
+                        || _interupted_norest.DutyType == 300013
                         || _interupted_norest.DutyType == 300010))//other airline stby
                         return new CustomActionResult(HttpStatusCode.OK, new
                         {
@@ -2391,6 +2392,7 @@ namespace ApiScheduling.Controllers
                        || _interupted_norest.DutyType == 1167
                        || _interupted_norest.DutyType == 1170
                        || _interupted_norest.DutyType == 1168
+                       || _interupted_norest.DutyType == 300013
                        || _interupted_norest.DutyType == 300010 //ostby
                        || _interupted_norest.DutyType == 5000
                        || _interupted_norest.DutyType == 5001
@@ -2431,6 +2433,7 @@ namespace ApiScheduling.Controllers
                        || _interupted.DutyType == 1167
                        || _interupted.DutyType == 1170
                        || _interupted.DutyType == 1168
+                       || _interupted.DutyType == 300013
                        || _interupted.DutyType == 300010 //ostby
                        || _interupted.DutyType == 5000
                         || _interupted.DutyType == 300014
@@ -2454,7 +2457,7 @@ namespace ApiScheduling.Controllers
                     break;
                 case 300010://other airline stby
                 case 100025://mission
-                    var types = new List<int>() { 1165, 1167, 1168, 1170, 5000, 5001, 300014, 100001, 100025, 100002, 100008, 1166, 1169, 10000, 10001 };
+                    var types = new List<int>() { 1165, 1167, 1168, 300013, 1170, 5000, 5001, 300014, 100001, 100025, 100002, 100008, 1166, 1169, 10000, 10001 };
                     if (_interupted != null && types.IndexOf(_interupted.DutyType) != -1)
                         return new CustomActionResult(HttpStatusCode.OK, new
                         {
@@ -2464,7 +2467,7 @@ namespace ApiScheduling.Controllers
                         });
                     break;
                 case 100003://sim
-                    var types2 = new List<int>() { 100003, 1165, 1167, 1168, 1170, 5000, 5001, 300014, 1166, 1169, 10000, 10001, 100001, 300010, 100025, 100008 };
+                    var types2 = new List<int>() { 100003, 1165, 1167, 1168, 300013, 1170, 5000, 5001, 300014, 1166, 1169, 10000, 10001, 100001, 300010, 100025, 100008 };
                     if (_interupted_norest != null && types2.IndexOf(_interupted_norest.DutyType) != -1)
                         return new CustomActionResult(HttpStatusCode.OK, new
                         {
@@ -2484,7 +2487,7 @@ namespace ApiScheduling.Controllers
                         });
                     break;
                 case 300009://rest
-                    var types4 = new List<int>() { 1165, 1167, 1168, 1170, 100003, 5000, 5001, 300014, 100025, 300008, 100001, 300010 };
+                    var types4 = new List<int>() { 1165, 1167, 1168, 300013, 1170, 100003, 5000, 5001, 300014, 100025, 300008, 100001, 300010 };
                     if (_interupted_norest != null && types4.IndexOf(_interupted_norest.DutyType) != -1)
                         return new CustomActionResult(HttpStatusCode.OK, new
                         {
@@ -2495,7 +2498,7 @@ namespace ApiScheduling.Controllers
                     break;
                 case 10000://rerrp
                 case 10001:
-                    var types5 = new List<int>() { 1165, 1167, 1168, 1170, 100003, 5000, 5001, 300014, 100025, 300008, 100001, 300010 };
+                    var types5 = new List<int>() { 1165, 1167, 1168, 300013, 1170, 100003, 5000, 5001, 300014, 100025, 300008, 100001, 300010 };
                     if (_interupted_norest != null && types5.IndexOf(_interupted_norest.DutyType) != -1)
                         return new CustomActionResult(HttpStatusCode.OK, new
                         {
@@ -2589,15 +2592,15 @@ namespace ApiScheduling.Controllers
             var type = Convert.ToInt32(dto.type);
             var context = new Models.dbEntities();
 
-            var _am=ConfigurationManager.AppSettings["sb_am_start"];
+            var _am = ConfigurationManager.AppSettings["sb_am_start"];
             var _am_duration = ConfigurationManager.AppSettings["sb_am_duration"];
 
             var _pm = ConfigurationManager.AppSettings["sb_pm_start"];
             var _pm_duration = ConfigurationManager.AppSettings["sb_pm_duration"];
 
 
-            var sbam_start = _am !=null ? Convert.ToInt32(_am)*60 : 0 * 60;
-            var sbam_durattion = _am_duration!=null ? Convert.ToInt32(_am_duration) *60 -1 : 11 * 60 + 59;
+            var sbam_start = _am != null ? Convert.ToInt32(_am) * 60 : 0 * 60;
+            var sbam_durattion = _am_duration != null ? Convert.ToInt32(_am_duration) * 60 - 1 : 11 * 60 + 59;
 
 
             var sbpm_start = _pm != null ? Convert.ToInt32(_pm) * 60 : 12 * 60;
@@ -2663,7 +2666,7 @@ namespace ApiScheduling.Controllers
 
 
             int rerrp_check = Convert.ToInt32(ConfigurationManager.AppSettings["rerrp_check"]);
-            if (rerrp_check == 1 && (new List<int>() { 1167, 1168 }).Contains(type))
+            if (rerrp_check == 1 && (new List<int>() { 1167, 1168, 300013 }).Contains(type))
             {
                 var _dtdate = ((DateTime)day).Date;
                 var _rerrp = await context.AppFTLs.Where(q => q.CrewId == crewId && q.CDate == _dtdate && q.RERRP > 0).FirstOrDefaultAsync();
@@ -3614,7 +3617,7 @@ namespace ApiScheduling.Controllers
                         //    && (_activeq && _interupted.DutyType != 1167 && _interupted.DutyType != 1168 && _interupted.DutyType != 1170)
                         //    || !(dto.items.First().std >= _interupted.DateStart && dto.items.First().std <= _interupted.DateEnd))
                         if ((dto.IsAdmin == null || dto.IsAdmin == 0)
-                           && (_interupted.DutyType != 1167 && _interupted.DutyType != 1168 /*&& _interupted.DutyType != 1170*/)
+                           && (_interupted.DutyType != 1167 && _interupted.DutyType != 1168 && _interupted.DutyType != 300013 /*&& _interupted.DutyType != 1170*/)
                           )
                         {
                             //if (false)
@@ -3724,7 +3727,7 @@ namespace ApiScheduling.Controllers
                         }
                         else
                         {
-                            if (_interupted.DutyType == 1167 || _interupted.DutyType == 1168)
+                            if (_interupted.DutyType == 1167 || _interupted.DutyType == 1168 || _interupted.DutyType == 300013)
                                 return new CustomActionResult(HttpStatusCode.OK, new { Code = 501, data = /*_interupted*/new { Id = _interupted.Id } });
                             else if (_interupted.DutyType == 5000)
                                 return new CustomActionResult(HttpStatusCode.OK, new
@@ -4639,7 +4642,7 @@ namespace ApiScheduling.Controllers
                             coef = 1;
                             break;
                         case 100025:
-                        
+
                         case 1167:
                         case 1168:
                         case 300013:
