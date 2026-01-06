@@ -493,18 +493,26 @@ namespace ApiWorld.Controllers
         }
 
 
-        [Route("api/loadsheet/sign/{id}/{cid}/{lic}/{pic}")]
-        [AcceptVerbs("GET")]
-        public async Task<IHttpActionResult> GetSignLoadSheets(int id, int cid,string lic,string pic)
+        public class dto_ld_sign
+        {
+            public int id { get; set; }
+            public int cid { get; set; }
+            public string lic { get; set; }
+            public string pic{ get; set; }
+        }
+
+        [Route("api/loadsheet/sign")]
+        [AcceptVerbs("POST")]
+        public async Task<IHttpActionResult> GetSignLoadSheets(dto_ld_sign dto)
         {
             var ctx = new ppa_entities();
-            var load_sheet=ctx.load_sheet_raw.Where(q=>q.id==id).FirstOrDefault();
+            var load_sheet=ctx.load_sheet_raw.Where(q=>q.id==dto.id).FirstOrDefault();
             if (load_sheet==null)
                 return Ok(new { IsSuccess = false, message = "the load sheet was not found" });
             load_sheet.date_sign = DateTime.Now;
-            load_sheet.pic = pic;
-            load_sheet.lic_no= lic;
-            load_sheet.signed_by_id = cid;
+            load_sheet.pic = dto.pic;
+            load_sheet.lic_no= dto.lic;
+            load_sheet.signed_by_id = dto.cid;
             ctx.SaveChanges();
             return Ok(new { IsSuccess = true, message = "succeeded" });
 

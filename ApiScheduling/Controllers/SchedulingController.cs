@@ -860,7 +860,7 @@ namespace ApiScheduling.Controllers
                 switch (rank)
                 {
                     case "1":
-                        _query = _query.Where(q => q.JobGroup == "TRI" || q.JobGroup == "TRE" || q.JobGroup == "LTC" || q.JobGroup == "P1");
+                        _query = _query.Where(q => q.JobGroup == "TRI" || q.JobGroup == "TRE" || q.JobGroup == "LTC" || q.JobGroup == "P1" || q.JobGroup == "NC");
                         break;
                     case "2":
                         _query = _query.Where(q => q.JobGroup == "P1");
