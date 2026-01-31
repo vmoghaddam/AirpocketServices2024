@@ -140,5 +140,22 @@ namespace ApiReportFlight.Models
         public Nullable<int> cnl_reason_id { get; set; }
         public string cnl_remark { get; set; }
         public string flttype_title { get; set; }
+        public Nullable<decimal> FuelRemained { get; set; }
+        public Nullable<decimal> FuelActualTotal { get; set; }
+        public Nullable<decimal> FuelUsed { get; set; }
+        public Nullable<decimal> FuelRemaining { get; set; }
+        public Nullable<double> FuelRemainedKG { get; set; }
+        public Nullable<double> FuelActualTotalKG { get; set; }
+        public Nullable<double> FuelUsedKG { get; set; }
+        public Nullable<double> FuelRemainingKG { get; set; }
+        public Nullable<double> FuelRemainedLBS { get; set; }
+        public Nullable<double> FuelActualTotalLBS { get; set; }
+        public Nullable<double> FuelUsedLBS { get; set; }
+        public Nullable<double> FuelRemainingLBS { get; set; }
+        public Nullable<double> FuelRemainedLTR { get; set; }
+        public Nullable<double> FuelActualTotalLTR { get; set; }
+        public Nullable<double> FuelUsedLTR { get; set; }
+        public Nullable<double> FuelRemainingLTR { get; set; }
+        public Nullable<decimal> FuelDensity { get; set; }
     }
 }

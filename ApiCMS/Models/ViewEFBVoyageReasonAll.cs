@@ -7,17 +7,18 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AirpocketAPI.Models
+namespace ApiCMS.Models
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class FixTime
+    public partial class ViewEFBVoyageReasonAll
     {
-        public string Route { get; set; }
-        public Nullable<int> Duration { get; set; }
-        public string remark { get; set; }
-        public string ACTYPE { get; set; }
-        public string REGISTER { get; set; }
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public Nullable<int> ParentId { get; set; }
+        public int VoyageReportId { get; set; }
+        public Nullable<int> IrregularityId { get; set; }
+        public Nullable<bool> IsChecked { get; set; }
     }
 }

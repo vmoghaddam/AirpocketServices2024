@@ -335,6 +335,8 @@ namespace AirpocketAPI.Models
         public Nullable<int> PM1Time { get; set; }
         public Nullable<int> PF2Time { get; set; }
         public Nullable<int> PM2Time { get; set; }
+        public string PermissionUrl { get; set; }
+        public string AtlNo { get; set; }
     
         public virtual Ac_MSN Ac_MSN { get; set; }
         public virtual Airport Airport { get; set; }

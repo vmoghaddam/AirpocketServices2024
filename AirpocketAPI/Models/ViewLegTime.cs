@@ -138,5 +138,6 @@ namespace AirpocketAPI.Models
         public Nullable<int> OFPTOTALFUEL { get; set; }
         public Nullable<int> dep_utc { get; set; }
         public Nullable<int> arr_utc { get; set; }
+        public Nullable<System.DateTime> STDDayLocal { get; set; }
     }
 }

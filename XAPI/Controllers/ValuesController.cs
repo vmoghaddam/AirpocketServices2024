@@ -426,7 +426,8 @@ namespace XAPI.Controllers
 
                     // reqparm.Add("key", dto.key);
                     reqparm.Add("plan", result);
-                    byte[] responsebytes = client.UploadValues("https://airpocket.karunair.ir/xapi/api/ofp/karun", "POST", reqparm);
+                    //byte[] responsebytes = client.UploadValues("https://airpocket.karunair.ir/xapi/api/ofp/karun", "POST", reqparm);
+                    byte[] responsebytes = client.UploadValues("https://95.138.86.58/xapi/api/ofp/karun", "POST", reqparm);
                     responsebody = Encoding.UTF8.GetString(responsebytes);
 
                 }
@@ -2247,7 +2248,7 @@ namespace XAPI.Controllers
                         var reqparm = new System.Collections.Specialized.NameValueCollection();
                         reqparm.Add("key", dto.key);
                         reqparm.Add("plan", dto.plan);
-                        byte[] responsebytes = client.UploadValues("https://zxpi.airpocket.online/api/skyputer/varesh", "POST", reqparm);
+                        byte[] responsebytes = client.UploadValues("https://pya.wx.myaero.tech/api/skyputer/varesh", "POST", reqparm);
                         responsebody = Encoding.UTF8.GetString(responsebytes);
 
                     }

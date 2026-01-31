@@ -7,15 +7,26 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AirpocketAPI.Models
+namespace ApiCMS.Models
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class AppLeg
+    public partial class ViewEFBVoyageReport
     {
-        public int ID { get; set; }
-        public int FlightId { get; set; }
+        public int Id { get; set; }
+        public string Route { get; set; }
+        public Nullable<int> FlightId { get; set; }
+        public Nullable<int> RestReduction { get; set; }
+        public Nullable<int> DutyExtention { get; set; }
+        public string Report { get; set; }
+        public Nullable<System.DateTime> DatePICSignature { get; set; }
+        public Nullable<int> ActionedById { get; set; }
+        public Nullable<System.DateTime> DateActioned { get; set; }
+        public Nullable<System.DateTime> DateConfirmed { get; set; }
+        public string Irrs { get; set; }
+        public string Reasons { get; set; }
+        public string Name { get; set; }
         public Nullable<System.DateTime> BlockOn { get; set; }
         public Nullable<System.DateTime> Landing { get; set; }
         public Nullable<System.DateTime> TakeOff { get; set; }
@@ -36,24 +47,15 @@ namespace AirpocketAPI.Models
         public string FlightNumber { get; set; }
         public Nullable<int> FromAirport { get; set; }
         public Nullable<int> ToAirport { get; set; }
-        public Nullable<int> CustomerId { get; set; }
         public string FromAirportIATA { get; set; }
         public string ToAirportIATA { get; set; }
         public string Register { get; set; }
+        public int MSN { get; set; }
         public string FlightStatus { get; set; }
-        public string ArrivalRemark { get; set; }
-        public string DepartureRemark { get; set; }
         public Nullable<System.DateTime> STDDay { get; set; }
         public Nullable<System.DateTime> STADay { get; set; }
         public Nullable<System.DateTime> STDDayLocal { get; set; }
         public Nullable<System.DateTime> STADayLocal { get; set; }
-        public Nullable<int> DelayBlockOff { get; set; }
-        public Nullable<int> DelayTakeoff { get; set; }
-        public Nullable<System.DateTime> OSTA { get; set; }
-        public Nullable<int> OToAirportId { get; set; }
-        public string OToAirportIATA { get; set; }
-        public Nullable<int> FPFlightHH { get; set; }
-        public Nullable<int> FPFlightMM { get; set; }
         public Nullable<System.DateTime> Departure { get; set; }
         public Nullable<System.DateTime> Arrival { get; set; }
         public Nullable<System.DateTime> DepartureLocal { get; set; }
@@ -61,8 +63,8 @@ namespace AirpocketAPI.Models
         public Nullable<int> BlockTime { get; set; }
         public Nullable<int> FlightTime { get; set; }
         public Nullable<int> ScheduledFlightTime { get; set; }
-        public Nullable<int> FPFlightTime { get; set; }
         public Nullable<int> PFLR { get; set; }
+        public Nullable<int> FPFlightTime { get; set; }
         public Nullable<int> PaxChild { get; set; }
         public Nullable<int> PaxInfant { get; set; }
         public Nullable<int> PaxAdult { get; set; }
@@ -81,8 +83,6 @@ namespace AirpocketAPI.Models
         public Nullable<int> CargoCount { get; set; }
         public Nullable<int> BaggageCount { get; set; }
         public Nullable<decimal> FPFuel { get; set; }
-        public Nullable<int> AirlineOperatorsID { get; set; }
-        public string Airline { get; set; }
         public Nullable<int> CPCrewId { get; set; }
         public string CPRegister { get; set; }
         public Nullable<int> CPPositionId { get; set; }
@@ -99,8 +99,8 @@ namespace AirpocketAPI.Models
         public Nullable<int> DayTime { get; set; }
         public Nullable<int> JLUserId { get; set; }
         public Nullable<int> JLApproverId { get; set; }
-        public Nullable<System.DateTime> JLDate { get; set; }
         public Nullable<System.DateTime> JLDateApproved { get; set; }
+        public Nullable<System.DateTime> JLDate { get; set; }
         public string JLNo { get; set; }
         public string SerialNo { get; set; }
         public string LTR { get; set; }
@@ -115,15 +115,13 @@ namespace AirpocketAPI.Models
         public string CommanderNote { get; set; }
         public Nullable<bool> AttASR { get; set; }
         public Nullable<bool> AttVoyageReport { get; set; }
-        public int MSN { get; set; }
         public Nullable<bool> AttRepositioning1 { get; set; }
         public Nullable<bool> AttRepositioning2 { get; set; }
         public string JLUser { get; set; }
         public string JLApprover { get; set; }
         public int IsJL { get; set; }
-        public int IsJLApproved { get; set; }
         public Nullable<int> Version { get; set; }
-        public Nullable<bool> IsSynced { get; set; }
+        public int IsJLApproved { get; set; }
         public string PF { get; set; }
         public string IPName { get; set; }
         public Nullable<int> IPId { get; set; }
@@ -139,67 +137,21 @@ namespace AirpocketAPI.Models
         public string SIC { get; set; }
         public Nullable<int> SICId { get; set; }
         public Nullable<System.DateTime> JLDatePICApproved { get; set; }
-        public string JLSignedBy { get; set; }
-        public string ALT1 { get; set; }
-        public string ALT2 { get; set; }
-        public string ALT3 { get; set; }
-        public string ALT4 { get; set; }
-        public string ALT5 { get; set; }
-        public string FromAirportIATA2 { get; set; }
-        public string ToAirportIATA2 { get; set; }
-        public Nullable<decimal> FPTripFuel { get; set; }
-        public string ATL { get; set; }
-        public string ATCPlan { get; set; }
-        public Nullable<decimal> FuelPlanned { get; set; }
-        public Nullable<int> OFPMINTOFFUEL { get; set; }
-        public Nullable<int> OFPOFFBLOCKFUEL { get; set; }
-        public Nullable<int> OFPTRIPFUEL { get; set; }
-        public Nullable<int> PILOTREQFUEL { get; set; }
-        public Nullable<int> OFPExtra { get; set; }
-        public Nullable<int> OFPCONTFUEL { get; set; }
-        public Nullable<int> OFPALT1FUEL { get; set; }
-        public Nullable<int> OFPALT2FUEL { get; set; }
-        public Nullable<int> OFPFINALRESFUEL { get; set; }
-        public Nullable<int> OFPTAXIFUEL { get; set; }
-        public Nullable<int> OFPETOPSADDNLFUEL { get; set; }
-        public Nullable<int> OFPOPSEXTRAFUEL { get; set; }
-        public int OFPTANKERINGFUEL { get; set; }
-        public Nullable<int> OFPTOTALFUEL { get; set; }
-        public Nullable<int> FuelUsedEng1 { get; set; }
-        public Nullable<int> FuelUsedEng2 { get; set; }
-        public Nullable<int> ACTUALTANKERINGFUEL { get; set; }
-        public Nullable<int> TANKERINGDIFF { get; set; }
-        public Nullable<int> ACTUALTOTALFUEL { get; set; }
-        public string LTR2 { get; set; }
-        public Nullable<System.DateTime> BlockOffStation { get; set; }
-        public Nullable<System.DateTime> BlockOnStation { get; set; }
-        public Nullable<System.DateTime> LandingStation { get; set; }
-        public Nullable<System.DateTime> TakeoffStation { get; set; }
-        public Nullable<System.DateTime> dep_dawn { get; set; }
-        public Nullable<System.DateTime> dep_dusk { get; set; }
-        public Nullable<System.DateTime> arr_dawn { get; set; }
-        public Nullable<System.DateTime> arr_dusk { get; set; }
-        public string FlightTypeOPS { get; set; }
-        public string AttForms { get; set; }
-        public string RouteCountry { get; set; }
-        public Nullable<int> PaxFemale { get; set; }
-        public Nullable<int> PaxMale { get; set; }
-        public Nullable<System.DateTime> BlockOffStationLocal { get; set; }
-        public Nullable<System.DateTime> BlockOnStationLocal { get; set; }
-        public Nullable<System.DateTime> LandingStationLocal { get; set; }
-        public Nullable<System.DateTime> TakeoffStationLocal { get; set; }
-        public Nullable<bool> IsDomestic { get; set; }
-        public string AircraftModel { get; set; }
-        public Nullable<int> PF1Id { get; set; }
-        public Nullable<int> PM1Id { get; set; }
-        public Nullable<int> PF2Id { get; set; }
-        public Nullable<int> PM2Id { get; set; }
-        public Nullable<int> PF1Time { get; set; }
-        public Nullable<int> PM1Time { get; set; }
-        public Nullable<int> PF2Time { get; set; }
-        public Nullable<int> PM2Time { get; set; }
-        public Nullable<System.DateTime> Reporting { get; set; }
-        public string PermissionUrl { get; set; }
-        public string AtlNo { get; set; }
+        public Nullable<int> DepDelay { get; set; }
+        public string DateUpdate { get; set; }
+        public string User { get; set; }
+        public Nullable<int> ReporterId { get; set; }
+        public Nullable<int> FormNo { get; set; }
+        public Nullable<System.DateTime> DateOccurrence { get; set; }
+        public string Result { get; set; }
+        public Nullable<bool> AttForm_ASR { get; set; }
+        public Nullable<bool> AttForm_CSR { get; set; }
+        public Nullable<bool> AttForm_CR { get; set; }
+        public Nullable<bool> AttForm_Other { get; set; }
+        public string ActionTaken { get; set; }
+        public Nullable<bool> IsForInformation { get; set; }
+        public Nullable<bool> IsActionRequired { get; set; }
+        public string OtherForm { get; set; }
+        public Nullable<bool> AttForm_ACCIDET { get; set; }
     }
 }

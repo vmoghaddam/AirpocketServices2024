@@ -390,9 +390,9 @@ namespace ApiAPSB.Controllers
                 var appleg = context.AppLegs.FirstOrDefault(q => q.FlightId == fid);
                 var pid = appleg.PICId;
                 var appFlight = context.AppCrewFlightJLs.Where(q => q.FlightId == fid && q.CrewId == pid).FirstOrDefault();
-                var crewlegs = context.AppCrewFlightJLs.Where(q => q.FDPId == appFlight.FDPId).ToList();
+                var crewlegs = context.AppCrewFlightJLs.Where(q => q.FDPId == appFlight.FDPId && q.RegisterId == appFlight.RegisterId).ToList();
                 var clegs = crewlegs.Select(q => (int)q.FlightId).ToList();
-                var legs = context.AppLegJLs.Where(q => clegs.Contains(q.FlightId)).OrderBy(q => q.STD).ToList();
+                var legs = context.AppLegJLs.Where(q => clegs.Contains(q.FlightId)).OrderBy(q => q.BlockOffStation).ToList();
                 var fdp = context.ViewFDPRests.FirstOrDefault(q => q.Id == appFlight.FDPId);
                 foreach (var x in legs)
                 {
@@ -586,6 +586,12 @@ namespace ApiAPSB.Controllers
 
 
                     sheet.Range[ln_leg, 17].Text = leg.RemDuty == null ? "" : format_to_time(leg.RemDuty);
+                    if (leg.RemDuty.HasValue && leg.RemDuty.Value < 0)
+                    {
+                        sheet.Range[ln_leg, 17].Style.Color = Color.Tomato;
+                    }
+
+
                     sheet.Range[ln_leg, 18].Text = string.IsNullOrEmpty(leg.DelayCode) ? "" : leg.DelayCode;
                     ln_leg++;
 

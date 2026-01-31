@@ -27,7 +27,32 @@ namespace ApiCMS.Models
     
         public virtual DbSet<AppFuel> AppFuels { get; set; }
         public virtual DbSet<view_efb_report> view_efb_report { get; set; }
-        public virtual DbSet<view_cms_report> view_cms_report { get; set; }
         public virtual DbSet<cms_user_flight> cms_user_flight { get; set; }
+        public virtual DbSet<EFBASR> EFBASRs { get; set; }
+        public virtual DbSet<EFBBirdStrikeCAO> EFBBirdStrikeCAOs { get; set; }
+        public virtual DbSet<EFBConfidentialReport> EFBConfidentialReports { get; set; }
+        public virtual DbSet<EFBDSPRelease> EFBDSPReleases { get; set; }
+        public virtual DbSet<EFBDutyDisorder> EFBDutyDisorders { get; set; }
+        public virtual DbSet<EFBFlightIrregularity> EFBFlightIrregularities { get; set; }
+        public virtual DbSet<EFBOccurrenceCAO> EFBOccurrenceCAOs { get; set; }
+        public virtual DbSet<EFBReason> EFBReasons { get; set; }
+        public virtual DbSet<EFBValue> EFBValues { get; set; }
+        public virtual DbSet<EFBVoyageReport> EFBVoyageReports { get; set; }
+        public virtual DbSet<ViewEFBASR> ViewEFBASRs { get; set; }
+        public virtual DbSet<ViewEFBVoyageIrr> ViewEFBVoyageIrrs { get; set; }
+        public virtual DbSet<ViewEFBVoyageIrrAll> ViewEFBVoyageIrrAlls { get; set; }
+        public virtual DbSet<ViewEFBVoyageReason> ViewEFBVoyageReasons { get; set; }
+        public virtual DbSet<ViewEFBVoyageReasonAll> ViewEFBVoyageReasonAlls { get; set; }
+        public virtual DbSet<ViewEFBVoyageReport> ViewEFBVoyageReports { get; set; }
+        public virtual DbSet<ViewEFBVoyageReportsAll> ViewEFBVoyageReportsAlls { get; set; }
+        public virtual DbSet<AppLeg> AppLegs { get; set; }
+        public virtual DbSet<qa_notification_history> qa_notification_history { get; set; }
+        public virtual DbSet<ViewEmployee> ViewEmployees { get; set; }
+        public virtual DbSet<cms2_audit> cms2_audit { get; set; }
+        public virtual DbSet<cms2_audit_corrective_action> cms2_audit_corrective_action { get; set; }
+        public virtual DbSet<cms2_audit_finding> cms2_audit_finding { get; set; }
+        public virtual DbSet<cms_nav_log> cms_nav_log { get; set; }
+        public virtual DbSet<cms_notify_receiver> cms_notify_receiver { get; set; }
+        public virtual DbSet<view_cms_report> view_cms_report { get; set; }
     }
 }

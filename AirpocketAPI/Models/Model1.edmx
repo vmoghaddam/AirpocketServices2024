@@ -657,6 +657,8 @@
           <Property Name="Route" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="Duration" Type="int" />
           <Property Name="remark" Type="varchar" MaxLength="255" />
+          <Property Name="ACTYPE" Type="varchar" MaxLength="255" />
+          <Property Name="REGISTER" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="FlightCharterer">
           <Key>
@@ -996,6 +998,8 @@
           <Property Name="PM1Time" Type="int" />
           <Property Name="PF2Time" Type="int" />
           <Property Name="PM2Time" Type="int" />
+          <Property Name="PermissionUrl" Type="varchar" MaxLength="500" />
+          <Property Name="AtlNo" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="FTLSummary">
           <Key>
@@ -1939,6 +1943,40 @@
           <Property Name="IssueDate83" Type="datetime2" Precision="7" />
           <Property Name="IssueDate84" Type="datetime2" Precision="7" />
           <Property Name="IssueDate85" Type="datetime2" Precision="7" />
+          <Property Name="IssueDate90" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate90" Type="datetime2" Precision="7" />
+          <Property Name="IssueDate91" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate91" Type="datetime2" Precision="7" />
+          <Property Name="IssueDate92" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate92" Type="datetime2" Precision="7" />
+          <Property Name="IssueDate93" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate93" Type="datetime2" Precision="7" />
+          <Property Name="IssueDate94" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate94" Type="datetime2" Precision="7" />
+          <Property Name="IssueDate95" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate95" Type="datetime2" Precision="7" />
+          <Property Name="IssueDate86" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate86" Type="datetime2" Precision="7" />
+          <Property Name="IssueDate87" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate87" Type="datetime2" Precision="7" />
+          <Property Name="IssueDate88" Type="datetime2" Precision="7" />
+          <Property Name="IssueDate89" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate89" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate88" Type="datetime2" Precision="7" />
+          <Property Name="IssueDate96" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate96" Type="datetime2" Precision="7" />
+          <Property Name="IssueDate97" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate97" Type="datetime2" Precision="7" />
+          <Property Name="IssueDate98" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate98" Type="datetime2" Precision="7" />
+          <Property Name="IssueDate99" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate99" Type="datetime2" Precision="7" />
+          <Property Name="IssueDate100" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate100" Type="datetime2" Precision="7" />
+          <Property Name="IssueDate101" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate101" Type="datetime2" Precision="7" />
+          <Property Name="IssueDate102" Type="datetime2" Precision="7" />
+          <Property Name="ExpireDate102" Type="datetime2" Precision="7" />
         </EntityType>
         <EntityType Name="PersonHistory">
           <Key>
@@ -2228,6 +2266,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.AppCrewFlight' does not have a prim
           <Property Name="PF2Time" Type="int" />
           <Property Name="PM2Time" Type="int" />
           <Property Name="Reporting" Type="datetime" />
+          <Property Name="PermissionUrl" Type="varchar" MaxLength="255" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.AppCrewFlightJL' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -2674,6 +2713,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.AppLeg' does not have a primary key
           <Property Name="PF2Time" Type="int" />
           <Property Name="PM2Time" Type="int" />
           <Property Name="Reporting" Type="datetime" />
+          <Property Name="PermissionUrl" Type="varchar" MaxLength="500" />
+          <Property Name="AtlNo" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.AppLegJL' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -5471,6 +5512,27 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewFlightDaily' does not have a pr
           <Property Name="FixTime" Type="int" Nullable="false" />
           <Property Name="PYear" Type="nvarchar" MaxLength="4" />
           <Property Name="IsINT" Type="int" Nullable="false" />
+          <Property Name="cnl_reason" Type="nvarchar" MaxLength="1000" />
+          <Property Name="cnl_reason_id" Type="int" />
+          <Property Name="cnl_remark" Type="nvarchar" MaxLength="500" />
+          <Property Name="flttype_title" Type="nvarchar" MaxLength="1000" />
+          <Property Name="FuelRemained" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="FuelActualTotal" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="FuelUsed" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="FuelRemaining" Type="decimal" Precision="20" Scale="4" />
+          <Property Name="FuelRemainedKG" Type="float" />
+          <Property Name="FuelActualTotalKG" Type="float" />
+          <Property Name="FuelUsedKG" Type="float" />
+          <Property Name="FuelRemainingKG" Type="float" />
+          <Property Name="FuelRemainedLBS" Type="float" />
+          <Property Name="FuelActualTotalLBS" Type="float" />
+          <Property Name="FuelUsedLBS" Type="float" />
+          <Property Name="FuelRemainingLBS" Type="float" />
+          <Property Name="FuelRemainedLTR" Type="float" />
+          <Property Name="FuelActualTotalLTR" Type="float" />
+          <Property Name="FuelUsedLTR" Type="float" />
+          <Property Name="FuelRemainingLTR" Type="float" />
+          <Property Name="FuelDensity" Type="decimal" Precision="18" Scale="4" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.ViewFlightDelay' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -5971,6 +6033,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewLegTime' does not have a primar
           <Property Name="ArrivalRemark" Type="nvarchar" MaxLength="2000" />
           <Property Name="DepartureRemark" Type="nvarchar" MaxLength="2000" />
           <Property Name="STDDay" Type="date" />
+          <Property Name="STDDayLocal" Type="date" />
           <Property Name="STADay" Type="date" />
           <Property Name="DelayOffBlock" Type="int" />
           <Property Name="DelayTakeoff" Type="int" />
@@ -6846,7 +6909,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
     [AppCrewFlight].[PM1Time] AS [PM1Time], 
     [AppCrewFlight].[PF2Time] AS [PF2Time], 
     [AppCrewFlight].[PM2Time] AS [PM2Time], 
-    [AppCrewFlight].[Reporting] AS [Reporting]
+    [AppCrewFlight].[Reporting] AS [Reporting], 
+    [AppCrewFlight].[PermissionUrl] AS [PermissionUrl]
     FROM [dbo].[AppCrewFlight] AS [AppCrewFlight]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="AppCrewFlightJL" EntityType="Self.AppCrewFlightJL" store:Type="Views" store:Schema="dbo">
@@ -7241,7 +7305,9 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
     [AppLeg].[PM1Time] AS [PM1Time], 
     [AppLeg].[PF2Time] AS [PF2Time], 
     [AppLeg].[PM2Time] AS [PM2Time], 
-    [AppLeg].[Reporting] AS [Reporting]
+    [AppLeg].[Reporting] AS [Reporting], 
+    [AppLeg].[PermissionUrl] AS [PermissionUrl], 
+    [AppLeg].[AtlNo] AS [AtlNo]
     FROM [dbo].[AppLeg] AS [AppLeg]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="AppLegJL" EntityType="Self.AppLegJL" store:Type="Views" store:Schema="dbo">
@@ -9661,7 +9727,28 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
     [ViewFlightDaily].[XRoute] AS [XRoute], 
     [ViewFlightDaily].[FixTime] AS [FixTime], 
     [ViewFlightDaily].[PYear] AS [PYear], 
-    [ViewFlightDaily].[IsINT] AS [IsINT]
+    [ViewFlightDaily].[IsINT] AS [IsINT], 
+    [ViewFlightDaily].[cnl_reason] AS [cnl_reason], 
+    [ViewFlightDaily].[cnl_reason_id] AS [cnl_reason_id], 
+    [ViewFlightDaily].[cnl_remark] AS [cnl_remark], 
+    [ViewFlightDaily].[flttype_title] AS [flttype_title], 
+    [ViewFlightDaily].[FuelRemained] AS [FuelRemained], 
+    [ViewFlightDaily].[FuelActualTotal] AS [FuelActualTotal], 
+    [ViewFlightDaily].[FuelUsed] AS [FuelUsed], 
+    [ViewFlightDaily].[FuelRemaining] AS [FuelRemaining], 
+    [ViewFlightDaily].[FuelRemainedKG] AS [FuelRemainedKG], 
+    [ViewFlightDaily].[FuelActualTotalKG] AS [FuelActualTotalKG], 
+    [ViewFlightDaily].[FuelUsedKG] AS [FuelUsedKG], 
+    [ViewFlightDaily].[FuelRemainingKG] AS [FuelRemainingKG], 
+    [ViewFlightDaily].[FuelRemainedLBS] AS [FuelRemainedLBS], 
+    [ViewFlightDaily].[FuelActualTotalLBS] AS [FuelActualTotalLBS], 
+    [ViewFlightDaily].[FuelUsedLBS] AS [FuelUsedLBS], 
+    [ViewFlightDaily].[FuelRemainingLBS] AS [FuelRemainingLBS], 
+    [ViewFlightDaily].[FuelRemainedLTR] AS [FuelRemainedLTR], 
+    [ViewFlightDaily].[FuelActualTotalLTR] AS [FuelActualTotalLTR], 
+    [ViewFlightDaily].[FuelUsedLTR] AS [FuelUsedLTR], 
+    [ViewFlightDaily].[FuelRemainingLTR] AS [FuelRemainingLTR], 
+    [ViewFlightDaily].[FuelDensity] AS [FuelDensity]
     FROM [dbo].[ViewFlightDaily] AS [ViewFlightDaily]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ViewFlightDelay" EntityType="Self.ViewFlightDelay" store:Type="Views" store:Schema="dbo">
@@ -10083,6 +10170,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
     [ViewLegTime].[ArrivalRemark] AS [ArrivalRemark], 
     [ViewLegTime].[DepartureRemark] AS [DepartureRemark], 
     [ViewLegTime].[STDDay] AS [STDDay], 
+    [ViewLegTime].[STDDayLocal] AS [STDDayLocal], 
     [ViewLegTime].[STADay] AS [STADay], 
     [ViewLegTime].[DelayOffBlock] AS [DelayOffBlock], 
     [ViewLegTime].[DelayTakeoff] AS [DelayTakeoff], 
@@ -10668,11 +10756,11 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
           <EntitySet Name="AppLegJLs" EntityType="FLYModel.AppLegJL" />
           <EntitySet Name="AppLegOPS" EntityType="FLYModel.AppLegOP" />
           <EntitySet Name="ViewCrewDuties" EntityType="FLYModel.ViewCrewDuty" />
-          <EntitySet Name="FixTimes" EntityType="FLYModel.FixTime" />
           <EntitySet Name="view_efb_report" EntityType="FLYModel.view_efb_report" />
           <EntitySet Name="C_view_trncard" EntityType="FLYModel.C_view_trncard" />
           <EntitySet Name="ViewCertificateHistoryRankeds" EntityType="FLYModel.ViewCertificateHistoryRanked" />
           <EntitySet Name="ViewCrewLists" EntityType="FLYModel.ViewCrewList" />
+          <EntitySet Name="FixTimes" EntityType="FLYModel.FixTime" />
           </EntityContainer>
         <EntityType Name="DlyGrpFlight">
           <Key>
@@ -13789,6 +13877,40 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
           <Property Name="IssueDate83" Type="DateTime" Precision="7" />
           <Property Name="IssueDate84" Type="DateTime" Precision="7" />
           <Property Name="IssueDate85" Type="DateTime" Precision="7" />
+          <Property Name="IssueDate90" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate90" Type="DateTime" Precision="7" />
+          <Property Name="IssueDate91" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate91" Type="DateTime" Precision="7" />
+          <Property Name="IssueDate92" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate92" Type="DateTime" Precision="7" />
+          <Property Name="IssueDate93" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate93" Type="DateTime" Precision="7" />
+          <Property Name="IssueDate94" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate94" Type="DateTime" Precision="7" />
+          <Property Name="IssueDate95" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate95" Type="DateTime" Precision="7" />
+          <Property Name="IssueDate86" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate86" Type="DateTime" Precision="7" />
+          <Property Name="IssueDate87" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate87" Type="DateTime" Precision="7" />
+          <Property Name="IssueDate88" Type="DateTime" Precision="7" />
+          <Property Name="IssueDate89" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate89" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate88" Type="DateTime" Precision="7" />
+          <Property Name="IssueDate96" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate96" Type="DateTime" Precision="7" />
+          <Property Name="IssueDate97" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate97" Type="DateTime" Precision="7" />
+          <Property Name="IssueDate98" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate98" Type="DateTime" Precision="7" />
+          <Property Name="IssueDate99" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate99" Type="DateTime" Precision="7" />
+          <Property Name="IssueDate100" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate100" Type="DateTime" Precision="7" />
+          <Property Name="IssueDate101" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate101" Type="DateTime" Precision="7" />
+          <Property Name="IssueDate102" Type="DateTime" Precision="7" />
+          <Property Name="ExpireDate102" Type="DateTime" Precision="7" />
         </EntityType>
         <EntityType Name="OFPImportProp">
           <Key>
@@ -14399,6 +14521,27 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
           <Property Name="FixTime" Type="Int32" Nullable="false" />
           <Property Name="PYear" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
           <Property Name="IsINT" Type="Int32" Nullable="false" />
+          <Property Name="cnl_reason" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="cnl_reason_id" Type="Int32" />
+          <Property Name="cnl_remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="flttype_title" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="FuelRemained" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="FuelActualTotal" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="FuelUsed" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="FuelRemaining" Type="Decimal" Precision="20" Scale="4" />
+          <Property Name="FuelRemainedKG" Type="Double" />
+          <Property Name="FuelActualTotalKG" Type="Double" />
+          <Property Name="FuelUsedKG" Type="Double" />
+          <Property Name="FuelRemainingKG" Type="Double" />
+          <Property Name="FuelRemainedLBS" Type="Double" />
+          <Property Name="FuelActualTotalLBS" Type="Double" />
+          <Property Name="FuelUsedLBS" Type="Double" />
+          <Property Name="FuelRemainingLBS" Type="Double" />
+          <Property Name="FuelRemainedLTR" Type="Double" />
+          <Property Name="FuelActualTotalLTR" Type="Double" />
+          <Property Name="FuelUsedLTR" Type="Double" />
+          <Property Name="FuelRemainingLTR" Type="Double" />
+          <Property Name="FuelDensity" Type="Decimal" Precision="18" Scale="4" />
         </EntityType>
         <EntityType Name="EFBDSPRelease">
           <Key>
@@ -14865,6 +15008,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
           <Property Name="PM1Time" Type="Int32" />
           <Property Name="PF2Time" Type="Int32" />
           <Property Name="PM2Time" Type="Int32" />
+          <Property Name="PermissionUrl" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="AtlNo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_FlightInformation_Ac_MSN">
           <End Type="FLYModel.Ac_MSN" Role="Ac_MSN" Multiplicity="0..1" />
@@ -15138,6 +15283,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
           <Property Name="OFPTOTALFUEL" Type="Int32" />
           <Property Name="dep_utc" Type="Int32" />
           <Property Name="arr_utc" Type="Int32" />
+          <Property Name="STDDayLocal" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="AppLeg">
           <Key>
@@ -15337,6 +15483,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
           <Property Name="PF2Time" Type="Int32" />
           <Property Name="PM2Time" Type="Int32" />
           <Property Name="Reporting" Type="DateTime" Precision="3" />
+          <Property Name="PermissionUrl" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="AtlNo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="AppCertificate">
           <Key>
@@ -15752,6 +15900,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
           <Property Name="PF2Time" Type="Int32" />
           <Property Name="PM2Time" Type="Int32" />
           <Property Name="Reporting" Type="DateTime" Precision="3" />
+          <Property Name="PermissionUrl" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ReportRoster">
           <Key>
@@ -16759,14 +16908,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
           <Property Name="DutyTypeTitleAcType" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="Email" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="FixTime">
-          <Key>
-            <PropertyRef Name="Route" />
-          </Key>
-          <Property Name="Route" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Duration" Type="Int32" />
-          <Property Name="remark" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="view_efb_report">
           <Key>
             <PropertyRef Name="ID" />
@@ -17147,6 +17288,16 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
           <Property Name="DateBirth" Type="DateTime" Precision="0" />
           <Property Name="Gen" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
           <Property Name="DatePassportExpire" Type="DateTime" Precision="0" />
+        </EntityType>
+        <EntityType Name="FixTime">
+          <Key>
+            <PropertyRef Name="Route" />
+          </Key>
+          <Property Name="Route" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Duration" Type="Int32" />
+          <Property Name="remark" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ACTYPE" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="REGISTER" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -19428,6 +19579,40 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
           <EntitySetMapping Name="People">
             <EntityTypeMapping TypeName="FLYModel.Person">
               <MappingFragment StoreEntitySet="Person">
+                <ScalarProperty Name="ExpireDate102" ColumnName="ExpireDate102" />
+                <ScalarProperty Name="IssueDate102" ColumnName="IssueDate102" />
+                <ScalarProperty Name="ExpireDate101" ColumnName="ExpireDate101" />
+                <ScalarProperty Name="IssueDate101" ColumnName="IssueDate101" />
+                <ScalarProperty Name="ExpireDate100" ColumnName="ExpireDate100" />
+                <ScalarProperty Name="IssueDate100" ColumnName="IssueDate100" />
+                <ScalarProperty Name="ExpireDate99" ColumnName="ExpireDate99" />
+                <ScalarProperty Name="IssueDate99" ColumnName="IssueDate99" />
+                <ScalarProperty Name="ExpireDate98" ColumnName="ExpireDate98" />
+                <ScalarProperty Name="IssueDate98" ColumnName="IssueDate98" />
+                <ScalarProperty Name="ExpireDate97" ColumnName="ExpireDate97" />
+                <ScalarProperty Name="IssueDate97" ColumnName="IssueDate97" />
+                <ScalarProperty Name="ExpireDate96" ColumnName="ExpireDate96" />
+                <ScalarProperty Name="IssueDate96" ColumnName="IssueDate96" />
+                <ScalarProperty Name="ExpireDate88" ColumnName="ExpireDate88" />
+                <ScalarProperty Name="ExpireDate89" ColumnName="ExpireDate89" />
+                <ScalarProperty Name="IssueDate89" ColumnName="IssueDate89" />
+                <ScalarProperty Name="IssueDate88" ColumnName="IssueDate88" />
+                <ScalarProperty Name="ExpireDate87" ColumnName="ExpireDate87" />
+                <ScalarProperty Name="IssueDate87" ColumnName="IssueDate87" />
+                <ScalarProperty Name="ExpireDate86" ColumnName="ExpireDate86" />
+                <ScalarProperty Name="IssueDate86" ColumnName="IssueDate86" />
+                <ScalarProperty Name="ExpireDate95" ColumnName="ExpireDate95" />
+                <ScalarProperty Name="IssueDate95" ColumnName="IssueDate95" />
+                <ScalarProperty Name="ExpireDate94" ColumnName="ExpireDate94" />
+                <ScalarProperty Name="IssueDate94" ColumnName="IssueDate94" />
+                <ScalarProperty Name="ExpireDate93" ColumnName="ExpireDate93" />
+                <ScalarProperty Name="IssueDate93" ColumnName="IssueDate93" />
+                <ScalarProperty Name="ExpireDate92" ColumnName="ExpireDate92" />
+                <ScalarProperty Name="IssueDate92" ColumnName="IssueDate92" />
+                <ScalarProperty Name="ExpireDate91" ColumnName="ExpireDate91" />
+                <ScalarProperty Name="IssueDate91" ColumnName="IssueDate91" />
+                <ScalarProperty Name="ExpireDate90" ColumnName="ExpireDate90" />
+                <ScalarProperty Name="IssueDate90" ColumnName="IssueDate90" />
                 <ScalarProperty Name="IssueDate85" ColumnName="IssueDate85" />
                 <ScalarProperty Name="IssueDate84" ColumnName="IssueDate84" />
                 <ScalarProperty Name="IssueDate83" ColumnName="IssueDate83" />
@@ -20425,6 +20610,27 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
           <EntitySetMapping Name="ViewFlightDailies">
             <EntityTypeMapping TypeName="FLYModel.ViewFlightDaily">
               <MappingFragment StoreEntitySet="ViewFlightDaily">
+                <ScalarProperty Name="FuelDensity" ColumnName="FuelDensity" />
+                <ScalarProperty Name="FuelRemainingLTR" ColumnName="FuelRemainingLTR" />
+                <ScalarProperty Name="FuelUsedLTR" ColumnName="FuelUsedLTR" />
+                <ScalarProperty Name="FuelActualTotalLTR" ColumnName="FuelActualTotalLTR" />
+                <ScalarProperty Name="FuelRemainedLTR" ColumnName="FuelRemainedLTR" />
+                <ScalarProperty Name="FuelRemainingLBS" ColumnName="FuelRemainingLBS" />
+                <ScalarProperty Name="FuelUsedLBS" ColumnName="FuelUsedLBS" />
+                <ScalarProperty Name="FuelActualTotalLBS" ColumnName="FuelActualTotalLBS" />
+                <ScalarProperty Name="FuelRemainedLBS" ColumnName="FuelRemainedLBS" />
+                <ScalarProperty Name="FuelRemainingKG" ColumnName="FuelRemainingKG" />
+                <ScalarProperty Name="FuelUsedKG" ColumnName="FuelUsedKG" />
+                <ScalarProperty Name="FuelActualTotalKG" ColumnName="FuelActualTotalKG" />
+                <ScalarProperty Name="FuelRemainedKG" ColumnName="FuelRemainedKG" />
+                <ScalarProperty Name="FuelRemaining" ColumnName="FuelRemaining" />
+                <ScalarProperty Name="FuelUsed" ColumnName="FuelUsed" />
+                <ScalarProperty Name="FuelActualTotal" ColumnName="FuelActualTotal" />
+                <ScalarProperty Name="FuelRemained" ColumnName="FuelRemained" />
+                <ScalarProperty Name="flttype_title" ColumnName="flttype_title" />
+                <ScalarProperty Name="cnl_remark" ColumnName="cnl_remark" />
+                <ScalarProperty Name="cnl_reason_id" ColumnName="cnl_reason_id" />
+                <ScalarProperty Name="cnl_reason" ColumnName="cnl_reason" />
                 <ScalarProperty Name="IsINT" ColumnName="IsINT" />
                 <ScalarProperty Name="PYear" ColumnName="PYear" />
                 <ScalarProperty Name="FixTime" ColumnName="FixTime" />
@@ -20695,6 +20901,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
           <EntitySetMapping Name="FlightInformations">
             <EntityTypeMapping TypeName="FLYModel.FlightInformation">
               <MappingFragment StoreEntitySet="FlightInformation">
+                <ScalarProperty Name="AtlNo" ColumnName="AtlNo" />
+                <ScalarProperty Name="PermissionUrl" ColumnName="PermissionUrl" />
                 <ScalarProperty Name="PM2Time" ColumnName="PM2Time" />
                 <ScalarProperty Name="PF2Time" ColumnName="PF2Time" />
                 <ScalarProperty Name="PM1Time" ColumnName="PM1Time" />
@@ -21008,6 +21216,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
           <EntitySetMapping Name="ViewLegTimes">
             <EntityTypeMapping TypeName="FLYModel.ViewLegTime">
               <MappingFragment StoreEntitySet="ViewLegTime">
+                <ScalarProperty Name="STDDayLocal" ColumnName="STDDayLocal" />
                 <ScalarProperty Name="arr_utc" ColumnName="arr_utc" />
                 <ScalarProperty Name="dep_utc" ColumnName="dep_utc" />
                 <ScalarProperty Name="OFPTOTALFUEL" ColumnName="OFPTOTALFUEL" />
@@ -21138,6 +21347,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
           <EntitySetMapping Name="AppLegs">
             <EntityTypeMapping TypeName="FLYModel.AppLeg">
               <MappingFragment StoreEntitySet="AppLeg">
+                <ScalarProperty Name="AtlNo" ColumnName="AtlNo" />
+                <ScalarProperty Name="PermissionUrl" ColumnName="PermissionUrl" />
                 <ScalarProperty Name="Reporting" ColumnName="Reporting" />
                 <ScalarProperty Name="PM2Time" ColumnName="PM2Time" />
                 <ScalarProperty Name="PF2Time" ColumnName="PF2Time" />
@@ -21538,6 +21749,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
           <EntitySetMapping Name="AppCrewFlights">
             <EntityTypeMapping TypeName="FLYModel.AppCrewFlight">
               <MappingFragment StoreEntitySet="AppCrewFlight">
+                <ScalarProperty Name="PermissionUrl" ColumnName="PermissionUrl" />
                 <ScalarProperty Name="Reporting" ColumnName="Reporting" />
                 <ScalarProperty Name="PM2Time" ColumnName="PM2Time" />
                 <ScalarProperty Name="PF2Time" ColumnName="PF2Time" />
@@ -22623,15 +22835,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="FixTimes">
-            <EntityTypeMapping TypeName="FLYModel.FixTime">
-              <MappingFragment StoreEntitySet="FixTime">
-                <ScalarProperty Name="remark" ColumnName="remark" />
-                <ScalarProperty Name="Duration" ColumnName="Duration" />
-                <ScalarProperty Name="Route" ColumnName="Route" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="view_efb_report">
             <EntityTypeMapping TypeName="FLYModel.view_efb_report">
               <MappingFragment StoreEntitySet="view_efb_report">
@@ -22960,6 +23163,17 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
                 <ScalarProperty Name="CrewId" ColumnName="CrewId" />
                 <ScalarProperty Name="FDPItemId" ColumnName="FDPItemId" />
                 <ScalarProperty Name="FDPId" ColumnName="FDPId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FixTimes">
+            <EntityTypeMapping TypeName="FLYModel.FixTime">
+              <MappingFragment StoreEntitySet="FixTime">
+                <ScalarProperty Name="REGISTER" ColumnName="REGISTER" />
+                <ScalarProperty Name="ACTYPE" ColumnName="ACTYPE" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="Duration" ColumnName="Duration" />
+                <ScalarProperty Name="Route" ColumnName="Route" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

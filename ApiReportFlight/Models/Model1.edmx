@@ -1654,6 +1654,23 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewFlightDaily' does not have a pr
           <Property Name="cnl_reason_id" Type="int" />
           <Property Name="cnl_remark" Type="nvarchar" MaxLength="500" />
           <Property Name="flttype_title" Type="nvarchar" MaxLength="1000" />
+          <Property Name="FuelRemained" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="FuelActualTotal" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="FuelUsed" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="FuelRemaining" Type="decimal" Precision="20" Scale="4" />
+          <Property Name="FuelRemainedKG" Type="float" />
+          <Property Name="FuelActualTotalKG" Type="float" />
+          <Property Name="FuelUsedKG" Type="float" />
+          <Property Name="FuelRemainingKG" Type="float" />
+          <Property Name="FuelRemainedLBS" Type="float" />
+          <Property Name="FuelActualTotalLBS" Type="float" />
+          <Property Name="FuelUsedLBS" Type="float" />
+          <Property Name="FuelRemainingLBS" Type="float" />
+          <Property Name="FuelRemainedLTR" Type="float" />
+          <Property Name="FuelActualTotalLTR" Type="float" />
+          <Property Name="FuelUsedLTR" Type="float" />
+          <Property Name="FuelRemainingLTR" Type="float" />
+          <Property Name="FuelDensity" Type="decimal" Precision="18" Scale="4" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.ViewFlightDelay' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -3374,7 +3391,24 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
     [ViewFlightDaily].[cnl_reason] AS [cnl_reason], 
     [ViewFlightDaily].[cnl_reason_id] AS [cnl_reason_id], 
     [ViewFlightDaily].[cnl_remark] AS [cnl_remark], 
-    [ViewFlightDaily].[flttype_title] AS [flttype_title]
+    [ViewFlightDaily].[flttype_title] AS [flttype_title], 
+    [ViewFlightDaily].[FuelRemained] AS [FuelRemained], 
+    [ViewFlightDaily].[FuelActualTotal] AS [FuelActualTotal], 
+    [ViewFlightDaily].[FuelUsed] AS [FuelUsed], 
+    [ViewFlightDaily].[FuelRemaining] AS [FuelRemaining], 
+    [ViewFlightDaily].[FuelRemainedKG] AS [FuelRemainedKG], 
+    [ViewFlightDaily].[FuelActualTotalKG] AS [FuelActualTotalKG], 
+    [ViewFlightDaily].[FuelUsedKG] AS [FuelUsedKG], 
+    [ViewFlightDaily].[FuelRemainingKG] AS [FuelRemainingKG], 
+    [ViewFlightDaily].[FuelRemainedLBS] AS [FuelRemainedLBS], 
+    [ViewFlightDaily].[FuelActualTotalLBS] AS [FuelActualTotalLBS], 
+    [ViewFlightDaily].[FuelUsedLBS] AS [FuelUsedLBS], 
+    [ViewFlightDaily].[FuelRemainingLBS] AS [FuelRemainingLBS], 
+    [ViewFlightDaily].[FuelRemainedLTR] AS [FuelRemainedLTR], 
+    [ViewFlightDaily].[FuelActualTotalLTR] AS [FuelActualTotalLTR], 
+    [ViewFlightDaily].[FuelUsedLTR] AS [FuelUsedLTR], 
+    [ViewFlightDaily].[FuelRemainingLTR] AS [FuelRemainingLTR], 
+    [ViewFlightDaily].[FuelDensity] AS [FuelDensity]
     FROM [dbo].[ViewFlightDaily] AS [ViewFlightDaily]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ViewFlightDelay" EntityType="Self.ViewFlightDelay" store:Type="Views" store:Schema="dbo">
@@ -5932,6 +5966,23 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="cnl_reason_id" Type="Int32" />
           <Property Name="cnl_remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="flttype_title" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="FuelRemained" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="FuelActualTotal" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="FuelUsed" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="FuelRemaining" Type="Decimal" Precision="20" Scale="4" />
+          <Property Name="FuelRemainedKG" Type="Double" />
+          <Property Name="FuelActualTotalKG" Type="Double" />
+          <Property Name="FuelUsedKG" Type="Double" />
+          <Property Name="FuelRemainingKG" Type="Double" />
+          <Property Name="FuelRemainedLBS" Type="Double" />
+          <Property Name="FuelActualTotalLBS" Type="Double" />
+          <Property Name="FuelUsedLBS" Type="Double" />
+          <Property Name="FuelRemainingLBS" Type="Double" />
+          <Property Name="FuelRemainedLTR" Type="Double" />
+          <Property Name="FuelActualTotalLTR" Type="Double" />
+          <Property Name="FuelUsedLTR" Type="Double" />
+          <Property Name="FuelRemainingLTR" Type="Double" />
+          <Property Name="FuelDensity" Type="Decimal" Precision="18" Scale="4" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -7654,6 +7705,23 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySetMapping Name="ViewFlightDailies">
             <EntityTypeMapping TypeName="ModelEntities.ViewFlightDaily">
               <MappingFragment StoreEntitySet="ViewFlightDaily">
+                <ScalarProperty Name="FuelDensity" ColumnName="FuelDensity" />
+                <ScalarProperty Name="FuelRemainingLTR" ColumnName="FuelRemainingLTR" />
+                <ScalarProperty Name="FuelUsedLTR" ColumnName="FuelUsedLTR" />
+                <ScalarProperty Name="FuelActualTotalLTR" ColumnName="FuelActualTotalLTR" />
+                <ScalarProperty Name="FuelRemainedLTR" ColumnName="FuelRemainedLTR" />
+                <ScalarProperty Name="FuelRemainingLBS" ColumnName="FuelRemainingLBS" />
+                <ScalarProperty Name="FuelUsedLBS" ColumnName="FuelUsedLBS" />
+                <ScalarProperty Name="FuelActualTotalLBS" ColumnName="FuelActualTotalLBS" />
+                <ScalarProperty Name="FuelRemainedLBS" ColumnName="FuelRemainedLBS" />
+                <ScalarProperty Name="FuelRemainingKG" ColumnName="FuelRemainingKG" />
+                <ScalarProperty Name="FuelUsedKG" ColumnName="FuelUsedKG" />
+                <ScalarProperty Name="FuelActualTotalKG" ColumnName="FuelActualTotalKG" />
+                <ScalarProperty Name="FuelRemainedKG" ColumnName="FuelRemainedKG" />
+                <ScalarProperty Name="FuelRemaining" ColumnName="FuelRemaining" />
+                <ScalarProperty Name="FuelUsed" ColumnName="FuelUsed" />
+                <ScalarProperty Name="FuelActualTotal" ColumnName="FuelActualTotal" />
+                <ScalarProperty Name="FuelRemained" ColumnName="FuelRemained" />
                 <ScalarProperty Name="flttype_title" ColumnName="flttype_title" />
                 <ScalarProperty Name="cnl_remark" ColumnName="cnl_remark" />
                 <ScalarProperty Name="cnl_reason_id" ColumnName="cnl_reason_id" />

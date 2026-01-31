@@ -131,24 +131,39 @@ namespace AirpocketAPI.Controllers
             var fixtimes = context.FixTimes.ToList();
             return Ok(fixtimes);
         }
+
+
+        public class fixtime_dto
+        {
+            public string from { get; set; }
+            public string to { get; set; }
+            public int hours { get; set; }
+            public int minutes { get; set; }
+            public string remark { get; set; }
+            public string ac_type { get; set; }
+            public string register { get; set; }
+        }
+
         [HttpPost]
         [Route("api/fixtime/saves")]
-        public async Task<IHttpActionResult> SaveFixtime(FixTime model)
+        public async Task<IHttpActionResult> SaveFixtime(fixtime_dto model)
         {
 
 
-            if (model == null || string.IsNullOrEmpty(model.Route))
-                return BadRequest("Invalid data.");
+            model.from = model.from
+                .Trim()
+                .ToUpper();
 
-            model.Route = model.Route
-         .Trim()
-         .ToUpper()
-         .Replace("_", "-")
-         .Replace(" ", "");
+            model.to = model.to
+              .Trim()
+              .ToUpper();
+
+            string route = model.from + '-' + model.to;
+            int duration = model.hours * 60 + model.minutes;
 
             using (var context = new AirpocketAPI.Models.FLYEntities())
             {
-                var fixtime = context.FixTimes.FirstOrDefault(q => q.Route == model.Route);
+                var fixtime = context.FixTimes.FirstOrDefault(q => q.Route == route);
 
 
                 if (fixtime == null)
@@ -156,8 +171,10 @@ namespace AirpocketAPI.Controllers
 
                     fixtime = new FixTime()
                     {
-                        Route = model.Route,
-                        Duration = model.Duration,
+                        Route = route,
+                        Duration = duration,
+                        ACTYPE = model.ac_type,
+                        REGISTER = model.register,
                         remark = model.remark
 
                     };
@@ -166,7 +183,9 @@ namespace AirpocketAPI.Controllers
                 else
                 {
 
-                    fixtime.Duration = model.Duration;
+                    fixtime.Duration = duration;
+                    fixtime.ACTYPE = model.ac_type;
+                    fixtime.REGISTER = model.register;
                     fixtime.remark = model.remark;
 
                 }
@@ -184,13 +203,22 @@ namespace AirpocketAPI.Controllers
 
         [HttpPost]
         [Route("api/fixtime/delete")]
-        public async Task<IHttpActionResult> DeleteFixtime(FixTime model)
+        public async Task<IHttpActionResult> DeleteFixtime(fixtime_dto model)
         {
 
 
             using (var context = new AirpocketAPI.Models.FLYEntities())
             {
-                var fixtime = context.FixTimes.FirstOrDefault(q => q.Route == model.Route);
+                model.from = model.from
+              .Trim()
+              .ToUpper();
+
+                model.to = model.to
+                  .Trim()
+                  .ToUpper();
+
+                string route = model.from + '-' + model.to;
+                var fixtime = context.FixTimes.FirstOrDefault(q => q.Route == route);
 
 
                 if (fixtime == null)
@@ -2175,17 +2203,17 @@ namespace AirpocketAPI.Controllers
 
             if (airline == "AVA")
             {
-                 query_pgs = (from x in ext_context.ViewTimeTables
-                                 where x.Register == "SAP"
-                                 select x);
+                query_pgs = (from x in ext_context.ViewTimeTables
+                             where x.Register == "SAP"
+                             select x);
                 query_pgs = query_pgs.Where(q => (utcRef) ? q.STDDay >= _dt1 && q.STDDay <= _dt2 : q.STDDayLocal >= _dt1 && q.STDDayLocal <= _dt2);
                 if (cnl == -1)
                     query_pgs = query_pgs.Where(q => q.FlightStatusID != 4);
 
 
-            
 
-              
+
+
             }
 
 
@@ -3706,7 +3734,7 @@ namespace AirpocketAPI.Controllers
                 std = vflights.First().STD,
                 sta = vflights.Last().STA,
                 stdLocal = vflights.First().DepartureLocal,
-                staLocal = vflights.First().ArrivalLocal,
+                staLocal = vflights.Last().ArrivalLocal,
             };
 
             Workbook workbook = new Workbook();

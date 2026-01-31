@@ -7,17 +7,18 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AirpocketAPI.Models
+namespace ApiCMS.Models
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class FixTime
+    public partial class cms_notify_receiver
     {
-        public string Route { get; set; }
-        public Nullable<int> Duration { get; set; }
-        public string remark { get; set; }
-        public string ACTYPE { get; set; }
-        public string REGISTER { get; set; }
+        public int id { get; set; }
+        public string name { get; set; }
+        public string mobile { get; set; }
+        public string email { get; set; }
+        public Nullable<int> form_type { get; set; }
+        public Nullable<bool> is_active { get; set; }
     }
 }

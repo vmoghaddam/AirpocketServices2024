@@ -3420,10 +3420,10 @@ namespace ApiReportFlight.Controllers
                     switch (rank)
                     {
                         case "1":
-                            _baseQ = _baseQ.Where(q => q.JobGroup == "TRI" || q.JobGroup == "TRE" || q.JobGroup == "LTC" || q.JobGroup == "P1");
+                            _baseQ = _baseQ.Where(q => q.JobGroup == "TRI" || q.JobGroup == "TRE" || q.JobGroup == "LTC" || q.JobGroup == "NC" || q.JobGroup == "P1");
                             break;
                         case "10":
-                            _baseQ = _baseQ.Where(q => q.JobGroup == "TRI" || q.JobGroup == "TRE" || q.JobGroup == "LTC" || q.JobGroup == "P1" || q.JobGroup == "P2");
+                            _baseQ = _baseQ.Where(q => q.JobGroup == "TRI" || q.JobGroup == "TRE" || q.JobGroup == "LTC" || q.JobGroup == "NC" || q.JobGroup == "P1" || q.JobGroup == "P2");
                             break;
                         case "2":
                             _baseQ = _baseQ.Where(q => q.JobGroup == "P1");

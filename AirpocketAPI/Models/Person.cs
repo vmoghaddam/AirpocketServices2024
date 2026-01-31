@@ -585,5 +585,39 @@ namespace AirpocketAPI.Models
         public Nullable<System.DateTime> IssueDate83 { get; set; }
         public Nullable<System.DateTime> IssueDate84 { get; set; }
         public Nullable<System.DateTime> IssueDate85 { get; set; }
+        public Nullable<System.DateTime> IssueDate90 { get; set; }
+        public Nullable<System.DateTime> ExpireDate90 { get; set; }
+        public Nullable<System.DateTime> IssueDate91 { get; set; }
+        public Nullable<System.DateTime> ExpireDate91 { get; set; }
+        public Nullable<System.DateTime> IssueDate92 { get; set; }
+        public Nullable<System.DateTime> ExpireDate92 { get; set; }
+        public Nullable<System.DateTime> IssueDate93 { get; set; }
+        public Nullable<System.DateTime> ExpireDate93 { get; set; }
+        public Nullable<System.DateTime> IssueDate94 { get; set; }
+        public Nullable<System.DateTime> ExpireDate94 { get; set; }
+        public Nullable<System.DateTime> IssueDate95 { get; set; }
+        public Nullable<System.DateTime> ExpireDate95 { get; set; }
+        public Nullable<System.DateTime> IssueDate86 { get; set; }
+        public Nullable<System.DateTime> ExpireDate86 { get; set; }
+        public Nullable<System.DateTime> IssueDate87 { get; set; }
+        public Nullable<System.DateTime> ExpireDate87 { get; set; }
+        public Nullable<System.DateTime> IssueDate88 { get; set; }
+        public Nullable<System.DateTime> IssueDate89 { get; set; }
+        public Nullable<System.DateTime> ExpireDate89 { get; set; }
+        public Nullable<System.DateTime> ExpireDate88 { get; set; }
+        public Nullable<System.DateTime> IssueDate96 { get; set; }
+        public Nullable<System.DateTime> ExpireDate96 { get; set; }
+        public Nullable<System.DateTime> IssueDate97 { get; set; }
+        public Nullable<System.DateTime> ExpireDate97 { get; set; }
+        public Nullable<System.DateTime> IssueDate98 { get; set; }
+        public Nullable<System.DateTime> ExpireDate98 { get; set; }
+        public Nullable<System.DateTime> IssueDate99 { get; set; }
+        public Nullable<System.DateTime> ExpireDate99 { get; set; }
+        public Nullable<System.DateTime> IssueDate100 { get; set; }
+        public Nullable<System.DateTime> ExpireDate100 { get; set; }
+        public Nullable<System.DateTime> IssueDate101 { get; set; }
+        public Nullable<System.DateTime> ExpireDate101 { get; set; }
+        public Nullable<System.DateTime> IssueDate102 { get; set; }
+        public Nullable<System.DateTime> ExpireDate102 { get; set; }
     }
 }
