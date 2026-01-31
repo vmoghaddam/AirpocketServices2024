@@ -20,17 +20,31 @@ namespace ApiCMS.Models
         public string root_cause_analysis_desc { get; set; }
         public string action_title { get; set; }
         public string code { get; set; }
-        public Nullable<int> acceptance { get; set; }
         public Nullable<System.DateTime> request_implementation_date { get; set; }
         public Nullable<int> responsible_manager_id { get; set; }
         public Nullable<System.DateTime> sign_date { get; set; }
-        public Nullable<int> created_by { get; set; }
-        public Nullable<int> updated_by { get; set; }
-        public Nullable<System.DateTime> updated_date { get; set; }
+        public Nullable<bool> is_approved { get; set; }
         public Nullable<int> approved_by { get; set; }
         public Nullable<System.DateTime> approved_date { get; set; }
+        public Nullable<System.DateTime> follow_up1_date { get; set; }
+        public Nullable<bool> follow_up1_is_approved { get; set; }
+        public Nullable<System.DateTime> follow_up1_extended_deadline_date { get; set; }
+        public Nullable<System.DateTime> follow_up1_approved_date { get; set; }
+        public Nullable<int> follow_up1_approved_by { get; set; }
+        public Nullable<System.DateTime> follow_up2_date { get; set; }
+        public Nullable<bool> follow_up2_is_approved { get; set; }
+        public Nullable<System.DateTime> follow_up2_mrb_meeting_date { get; set; }
+        public Nullable<System.DateTime> follow_up2_approved_date { get; set; }
+        public Nullable<int> follow_up2_approved_by { get; set; }
+        public Nullable<int> created_by { get; set; }
+        public Nullable<System.DateTime> created_date { get; set; }
+        public Nullable<int> updated_by { get; set; }
+        public Nullable<System.DateTime> updated_date { get; set; }
     
         public virtual cms2_audit cms2_audit { get; set; }
+        public virtual cms2_auditors cms2_auditors { get; set; }
         public virtual cms2_audit_finding cms2_audit_finding { get; set; }
+        public virtual cms2_auditors cms2_auditors1 { get; set; }
+        public virtual cms2_auditors cms2_auditors2 { get; set; }
     }
 }

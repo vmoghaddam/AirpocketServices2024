@@ -340,6 +340,5 @@ namespace ApiCMS.Models
         public Nullable<System.DateTime> Type737ExpireDate { get; set; }
         public Nullable<System.DateTime> TypeMDExpireDate { get; set; }
         public string LicNo { get; set; }
-        public Nullable<bool> IsLIFUS { get; set; }
     }
 }

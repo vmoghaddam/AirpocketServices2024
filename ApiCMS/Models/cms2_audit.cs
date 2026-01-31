@@ -17,6 +17,8 @@ namespace ApiCMS.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public cms2_audit()
         {
+            this.cms2_audit_team = new HashSet<cms2_audit_team>();
+            this.cms2_audit_hazard = new HashSet<cms2_audit_hazard>();
             this.cms2_audit_finding = new HashSet<cms2_audit_finding>();
             this.cms2_audit_corrective_action = new HashSet<cms2_audit_corrective_action>();
         }
@@ -30,8 +32,7 @@ namespace ApiCMS.Models
         public int location_id { get; set; }
         public string scope { get; set; }
         public string objective { get; set; }
-        public string audit_team { get; set; }
-        public string lead_auditor { get; set; }
+        public Nullable<int> lead_auditor { get; set; }
         public Nullable<System.DateTime> audit_date { get; set; }
         public Nullable<System.DateTime> audit_close_date { get; set; }
         public string standards_refrences { get; set; }
@@ -41,8 +42,13 @@ namespace ApiCMS.Models
         public Nullable<System.DateTime> updated_at { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<cms2_audit_team> cms2_audit_team { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<cms2_audit_hazard> cms2_audit_hazard { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<cms2_audit_finding> cms2_audit_finding { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<cms2_audit_corrective_action> cms2_audit_corrective_action { get; set; }
+        public virtual cms2_auditors cms2_auditors { get; set; }
     }
 }

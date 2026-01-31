@@ -30,8 +30,6 @@ namespace ApiCMS.Models
         public string standard_description { get; set; }
         public string none_compliance_description { get; set; }
         public System.DateTime closure_deadline { get; set; }
-        public string auditor_name { get; set; }
-        public Nullable<System.DateTime> sent_car_date { get; set; }
         public Nullable<int> auditor_id { get; set; }
         public Nullable<System.DateTime> sent_report_date { get; set; }
         public Nullable<System.DateTime> closure_auditor_date { get; set; }
@@ -41,5 +39,6 @@ namespace ApiCMS.Models
         public virtual cms2_audit cms2_audit { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<cms2_audit_corrective_action> cms2_audit_corrective_action { get; set; }
+        public virtual cms2_auditors cms2_auditors { get; set; }
     }
 }

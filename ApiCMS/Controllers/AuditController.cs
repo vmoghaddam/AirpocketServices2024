@@ -99,8 +99,6 @@ namespace ApiCMS.Controllers
                 entity.location_id = dto.location_id;
                 entity.scope = dto.scope;
                 entity.objective = dto.objective;
-                entity.audit_team = dto.audit_team;
-                entity.lead_auditor = dto.lead_auditor;
                 entity.audit_date = dto.audit_date;
                 entity.audit_close_date = dto.audit_close_date;
                 entity.standards_refrences = dto.standards_refrences;
@@ -108,6 +106,8 @@ namespace ApiCMS.Controllers
                 entity.created_at = dto.created_at;
                 entity.updated_by = dto.updated_by;
                 entity.updated_at = dto.updated_at;
+
+                await context.SaveChangesAsync();
 
                 return new DataResponse()
                 {
