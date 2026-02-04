@@ -20,8 +20,8 @@ namespace ApiWorld.Models
         public Nullable<int> MetarId { get; set; }
         public Nullable<int> EtopsId { get; set; }
     
-        public virtual EtopsInformation EtopsInformation { get; set; }
         public virtual Metar Metar { get; set; }
         public virtual Taf Taf { get; set; }
+        public virtual EtopsInformation EtopsInformation { get; set; }
     }
 }

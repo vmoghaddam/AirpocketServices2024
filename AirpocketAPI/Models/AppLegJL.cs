@@ -172,5 +172,18 @@ namespace AirpocketAPI.Models
         public Nullable<int> exctra_bags_weight { get; set; }
         public Nullable<decimal> email_weight { get; set; }
         public Nullable<decimal> fob { get; set; }
+        public Nullable<int> PF1Id { get; set; }
+        public Nullable<int> PF2Id { get; set; }
+        public Nullable<int> PM2Id { get; set; }
+        public Nullable<int> PM1Id { get; set; }
+        public Nullable<int> PF1Time { get; set; }
+        public Nullable<int> PF2Time { get; set; }
+        public Nullable<int> PM1Time { get; set; }
+        public Nullable<int> PM2Time { get; set; }
+        public string PM1Name { get; set; }
+        public string PM2Name { get; set; }
+        public string PF1Name { get; set; }
+        public string PF2Name { get; set; }
+        public Nullable<System.DateTime> Reporting { get; set; }
     }
 }

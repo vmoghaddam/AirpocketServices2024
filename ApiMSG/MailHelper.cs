@@ -1139,11 +1139,11 @@ namespace ApiMSG
 
             try
             {
-                var fromAddress = new MailAddress("vrh@airpocketmail.click", "VARESH");
-                var toAddress = new MailAddress("v.moghaddam59@gmail.com", "ME 59");
-                var ccAddress = new MailAddress("v.moghaddam60@gmail.com", "ME 60");
+                var fromAddress = new MailAddress("aerotech@epatrin.com", "AEROTECH");
+                var toAddress = new MailAddress("shahraeinisepehr@gmail.com", "ME 59");
+                var ccAddress = new MailAddress("shahraeinisepehr@gmail.com", "ME 60");
                
-                string fromPassword = "Atrina1359";
+                string fromPassword = "Atrina1359@aA";
 
 
 
@@ -1151,7 +1151,7 @@ namespace ApiMSG
                 var smtp = new SmtpClient
                 {
                     //EnableSsl=true,
-                    Host = "mail.airpocketmail.click",
+                    Host = "epatrin.com",
                     Port = 25, //Convert.ToInt32(dispatchEmailPort),
                     EnableSsl = false,
                     // TargetName = "STARTTLS/Mail.flypersia.aero",
@@ -1563,10 +1563,10 @@ namespace ApiMSG
         //string domain = "magfa"; //"http://atlasairplus.com/";// "magfa";// "tabanair"; /*"tabanair";*/
         //string senderNumber = "300048000"; //"300082173";//"300085972";// ConfigurationManager.AppSettings["magfa_no"]; /*"30006327";*/ // ConfigurationManager.AppSettings["magfa_no"]; // "3000748907"; //"300048000";
 
-        string username =  "varesh_85972"; //ConfigurationManager.AppSettings["magfa_user"];/* "taban";*/ //ConfigurationManager.AppSettings["magfa_user"]; //"caspianline"; //"flypersia_48000";
-        string password = "ATCHZBTXCiLMFOVK";//"oJTyaWoLnQycrfdX"; //ConfigurationManager.AppSettings["magfa_pass"];/*"ZIECXHgRSJT1QLMy";*/ //ConfigurationManager.AppSettings["magfa_pass"]; // "ZQMihTmdLqCbnbrW"; //"YYDWMU5BAJQQHCuG";
-        string domain =  "varesh";// "tabanair"; /*"tabanair";*/
-        string senderNumber = "300085972";// ConfigurationManager.AppSettings["magfa_no"]; /*"30006327";*/ // ConfigurationManager.AppSettings["magfa_no"]; // "3000748907"; //"300048000";
+        string username = "flykish-71904"; //ConfigurationManager.AppSettings["magfa_user"];/* "taban";*/ //ConfigurationManager.AppSettings["magfa_user"]; //"caspianline"; //"flypersia_48000";
+        string password = "HAIUeLEkQnPXPRb6";//"oJTyaWoLnQycrfdX"; //ConfigurationManager.AppSettings["magfa_pass"];/*"ZIECXHgRSJT1QLMy";*/ //ConfigurationManager.AppSettings["magfa_pass"]; // "ZQMihTmdLqCbnbrW"; //"YYDWMU5BAJQQHCuG";
+        string domain =  "flykish";// "tabanair"; /*"tabanair";*/
+        string senderNumber = "300071904";// ConfigurationManager.AppSettings["magfa_no"]; /*"30006327";*/ // ConfigurationManager.AppSettings["magfa_no"]; // "3000748907"; //"300048000";
 
         public List<string> getStatus(List<Int64> refIds)
         {

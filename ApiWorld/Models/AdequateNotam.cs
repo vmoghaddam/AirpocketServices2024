@@ -24,17 +24,17 @@ namespace ApiWorld.Models
         public int FlightID { get; set; }
         public string Number { get; set; }
         public string Text { get; set; }
-        public System.DateTime FromDate { get; set; }
-        public System.DateTime ToDate { get; set; }
-        public int FromLevel { get; set; }
-        public int ToLevel { get; set; }
+        public Nullable<System.DateTime> FromDate { get; set; }
+        public Nullable<System.DateTime> ToDate { get; set; }
+        public Nullable<int> FromLevel { get; set; }
+        public Nullable<int> ToLevel { get; set; }
         public string Fir { get; set; }
         public string QCode { get; set; }
         public string ECode { get; set; }
         public string ICAO { get; set; }
         public string UniformAbbreviation { get; set; }
-        public int Year { get; set; }
-        public int RoutePart { get; set; }
+        public Nullable<int> Year { get; set; }
+        public Nullable<int> RoutePart { get; set; }
         public string Provider { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

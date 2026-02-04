@@ -21,7 +21,6 @@ namespace ApiWorld.Models
         }
     
         public int Id { get; set; }
-        public int FlightID { get; set; }
         public byte Type { get; set; }
         public string Text { get; set; }
         public string ICAO { get; set; }
@@ -29,7 +28,6 @@ namespace ApiWorld.Models
         public System.DateTime ForecastStartTime { get; set; }
         public System.DateTime ForecastEndTime { get; set; }
     
-        public virtual Flight Flight { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Flight> Flights { get; set; }
     }

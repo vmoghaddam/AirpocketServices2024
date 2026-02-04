@@ -57,7 +57,7 @@ namespace ApiForm.Controllers
 
                 if (log.Reason == 2)
                 {
-                    var exist = context.FormVacations.Where(q => q.Reason == 2 && q.DateFrom >= m_first && q.DateTo <= m_last && q.Status == "Accepted").FirstOrDefault();
+                    var exist = context.FormVacations.Where(q => q.Reason == 2 && q.DateFrom >= m_first && q.DateTo <= m_last && q.Status == "Accepted" && q.UserId == log.UserId).FirstOrDefault();
                     if (exist != null)
                         return Ok(new FormVacation() { Id = -1000, Remark = "Your request is not acceptable. You can request an OFF once in a month." });
 
@@ -79,9 +79,9 @@ namespace ApiForm.Controllers
                 var cockpit_grps = new List<string>() { "TRE", "TRI", "LTC", "NC", "P1", "P2" };
                 //4811
                 if (cockpit_grps.IndexOf(requester.JobGroup) != -1)
-                    form.ResponsibleId = 3965;
+                    form.ResponsibleId = 4794;
                 else
-                    form.ResponsibleId = 3965;
+                    form.ResponsibleId = 4811;
 
 
 
@@ -337,18 +337,19 @@ namespace ApiForm.Controllers
 
                     if (cockpit_grps.Contains(applicant.JobGroup))
                     {
-                        switch (applicant.ValidTypes)
-                        {
-                            case "28":
-                                type = "Cockpit_737";
-                                break;
-                            case "21":
-                                type = "Cockpit_MD";
-                                break;
-                            case "25":
-                                type = "Cockpit_Airbus";
-                                break;
-                        }
+                        type = "Cockpit_737";
+                        //switch (applicant.ValidTypes)
+                        //{
+                        //    case "28":
+                        //        type = "Cockpit_737";
+                        //        break;
+                        //    case "21":
+                        //        type = "Cockpit_MD";
+                        //        break;
+                        //    case "25":
+                        //        type = "Cockpit_Airbus";
+                        //        break;
+                        //}
                     }
                     else if (cabin_grps.Contains(applicant.JobGroup))
                     {

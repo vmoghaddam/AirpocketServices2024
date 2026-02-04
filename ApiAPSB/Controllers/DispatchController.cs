@@ -104,6 +104,24 @@ namespace ApiAPSB.Controllers
             // return new DataResponse() { IsSuccess = false };
         }
 
+        [Route("api/get/atl/{flightid}")]
+        [AcceptVerbs("GET")]
+        public async Task<IHttpActionResult> GetATL(int flightid)
+        {
+            var context = new Models.dbEntities();
+            var appleg = context.AppLegs.FirstOrDefault(q => q.FlightId == flightid);
+            var pid = appleg.PICId;
+            var appFlight = context.AppCrewFlightJLs.Where(q => q.FlightId == flightid && q.CrewId == pid).FirstOrDefault();
+            var atl = context.Docs.FirstOrDefault(q => q.FDPId == appFlight.FDPId);
+
+
+            return Ok(atl);
+
+            // return new DataResponse() { IsSuccess = false };
+        }
+
+
+
 
         [Route("api/dr/test/{fltid}")]
         [AcceptVerbs("GET")]
@@ -761,7 +779,9 @@ namespace ApiAPSB.Controllers
                     case "other":
                         flight.CPSCCM = doc.DocumentUrl;
                         break;
-
+                    case "per":
+                        flight.PermissionUrl = doc.DocumentUrl;
+                        break;
                     default:
                         break;
                 }
@@ -1971,6 +1991,7 @@ public IHttpActionResult PostDRDSPSIGNNew(dto_sign dto)
     try
     {
         var do_lic = Convert.ToInt32(ConfigurationManager.AppSettings["dsp_lic"]);
+        //var do_lic = 1;
         var context = new Models.dbEntities();
 
         int flight_id = Convert.ToInt32(dto.flight_id);
@@ -1979,24 +2000,21 @@ public IHttpActionResult PostDRDSPSIGNNew(dto_sign dto)
 
 
         ViewEmployee employee = null;
-        //try
-        //{
-        employee = context.ViewEmployees.Where(q => q.UserId == userid || q.PersonId.ToString() == userid || q.FatherName == userid).FirstOrDefault();
-        //}
-        //catch(Exception ex)
-        //{
-        //    employee = context.ViewEmployees.Where(q => q.PersonId.ToString() == userid).FirstOrDefault();
-        //}
-        //employee = context.ViewEmployees.Where(q => q.PersonId.ToString() == userid).FirstOrDefault();
+                //try
+                //{
+                    employee = context.ViewEmployees.Where(q => q.UserId == userid || q.PersonId.ToString() == userid || q.FatherName == userid).FirstOrDefault();
+                //}
+                //catch (Exception ex)
+                //{
+                //    employee = context.ViewEmployees.Where(q => q.PersonId.ToString() == userid).FirstOrDefault();
+                //}
+              
 
-        //if (employee==null)
-        //   employee=context.ViewEmployees.Where(q=>q.PersonId==userid).
-
-        if (do_lic == 1)
+                if (do_lic == 1)
         {
             if (employee != null)
             {
-                if (!employee.LicenceTitle.ToLower().Contains(lic_no.ToLower()))
+                if (!employee.NDTNumber.ToLower().Contains(lic_no.ToLower()))
                 {
                     return Ok(
                         new
@@ -2063,9 +2081,9 @@ public IHttpActionResult PostDRDSPSIGNNew(dto_sign dto)
         var dt = DateTime.UtcNow;
         foreach (var dr in drs)
         {
-            dr.JLDSPSignDate = dt;
+            dr.JLDSPSignDate = dt; 
             //dr.SgnDSPLicNo = lic_no.ToUpper();
-            dr.SgnDSPLicNo = employee.LicenceTitle.ToUpper();
+            dr.SgnDSPLicNo = employee.NDTNumber.ToUpper();
             dr.DispatcherId = employee != null ? employee.Id : -1;
             dr.SGNDSPName = employee != null ? employee.Name : "Dispatch User";
         }
@@ -2475,41 +2493,41 @@ public IHttpActionResult PostSIGNOfps(dto_sign dto)
         }
 
         List<sgn_ofp_result> sgn_result = new List<sgn_ofp_result>();
-        var ofps = context.OFPImports.Where(q => fids.Contains(q.FlightId)).ToList();
-        //var ofps = context.OFPB_Root.Where(q => fids.Contains(q.FlightID)).ToList();
+        //var ofps = context.OFPImports.Where(q => fids.Contains(q.FlightId)).ToList();
+        var ofps = context.OFPB_Root.Where(q => fids.Contains(q.FlightID)).ToList();
         foreach (var ofp in ofps)
         {
-            //karun
-            //ofp.DateSign = DateTime.UtcNow;
-            //ofp.SignedbyId = employee != null ? (Nullable<int>)employee.Id : null;
+                    //karun
+                    ofp.DateSign = DateTime.UtcNow;
+                    ofp.SignedbyId = employee != null ? (Nullable<int>)employee.Id : null;
 
 
-            ofp.PIC = employee != null ? employee.Name : lic_no;
-            ofp.PICId = employee.Id;
-            ofp.JLDatePICApproved = DateTime.UtcNow;
-            ofp.JLSignedBy = lic_no;
+                    //ofp.PIC = employee != null ? employee.Name : lic_no;
+                    //ofp.PICId = employee.Id;
+                    //ofp.JLDatePICApproved = DateTime.UtcNow;
+                    //ofp.JLSignedBy = lic_no;
 
 
-            //karun
-            //sgn_result.Add(new sgn_ofp_result()
+                    //karun
+                    sgn_result.Add(new sgn_ofp_result()
+                    {
+                        FlightId = (int)ofp.FlightID,
+                        Id = ofp.Id,
+                        JLDatePICApproved = (DateTime)ofp.DateSign, //ofp.JLDatePICApproved,
+                        JLSignedBy = employee.LicNo, //ofp.JLSignedBy,
+                        PIC = employee.Name, //ofp.PIC,
+                        PICId = (int)ofp.SignedbyId, //ofp.PICId
+                    });
+
+            //        sgn_result.Add(new sgn_ofp_result()
             //{
-            //    FlightId = (int)ofp.FlightID,
+            //    FlightId = (int)ofp.FlightId,
             //    Id = ofp.Id,
-            //    JLDatePICApproved = (DateTime)ofp.DateSign, //ofp.JLDatePICApproved,
-            //    JLSignedBy = employee.Name, //ofp.JLSignedBy,
-            //    PIC = employee.Name, //ofp.PIC,
-            //    PICId = (int)ofp.SignedbyId, //ofp.PICId
+            //    JLDatePICApproved = (DateTime)ofp.JLDatePICApproved,
+            //    JLSignedBy = ofp.JLSignedBy,
+            //    PIC = ofp.PIC,
+            //    PICId = (int)ofp.PICId
             //});
-
-            sgn_result.Add(new sgn_ofp_result()
-            {
-                FlightId = (int)ofp.FlightId,
-                Id = ofp.Id,
-                JLDatePICApproved = (DateTime)ofp.JLDatePICApproved,
-                JLSignedBy = ofp.JLSignedBy,
-                PIC = ofp.PIC,
-                PICId = (int)ofp.PICId
-            });
 
         }
 
@@ -3432,7 +3450,7 @@ public void send_vr_notification_magfa(EFBVoyageReport asr, ViewEmployee employe
         {
             var context = new dbEntities();
             var pic = employee; //context.ViewProfiles.Where(q => q.Id == asr.PICId).FirstOrDefault();
-
+            var not_history_rafiei = new qa_notification_history();
             //var pic_msg1 = "ضمن سپاس از ارسال گزارش، پس از بررسی و اقدامات انجام شده، حصول نتیجه در صورت لزوم به شما ابلاغ خواهد شد. با تشکر، مدیریت ایمنی و تضمین کیفیت هواپیمایی وارش";
 
 
@@ -3444,7 +3462,7 @@ public void send_vr_notification_magfa(EFBVoyageReport asr, ViewEmployee employe
             //prts.Add("Dear ");
             prts.Add("Dear " + asr.PIC);
             prts.Add("Please click on the below link to see details.");
-            prts.Add("https://report.apvaresh.com/frmreportview.aspx?type=19&fid=" + asr.FlightId);
+            prts.Add("https://fleet.caspianairlines.com/reportefb/frmreportview.aspx?type=19&fid=" + asr.FlightId);
             prts.Add("Date: " + ((DateTime)flight.STDLocal).ToString("yyyy-MM-dd"));
             prts.Add("Route: " + flight.FromAirportIATA + "-" + flight.ToAirportIATA);
             prts.Add("Register: " + flight.Register);
@@ -3456,6 +3474,47 @@ public void send_vr_notification_magfa(EFBVoyageReport asr, ViewEmployee employe
 
 
             var text = String.Join("\n", prts);
+
+            if(asr.DutyExtention > 0) { 
+
+            List<string> prts_rafiei = new List<string>();
+                prts_rafiei.Add("New Voyage Report Notification");
+                //prts.Add("Dear ");
+                prts_rafiei.Add("Dear " + "RAFIEI QALEH - HAMID REZA");
+                prts_rafiei.Add("Please click on the below link to see details.");
+                prts_rafiei.Add("https://fleet.caspianairlines.com/reportefb/frmreportview.aspx?type=19&fid=" + asr.FlightId);
+                prts_rafiei.Add("Date: " + ((DateTime)flight.STDLocal).ToString("yyyy-MM-dd"));
+                prts_rafiei.Add("Route: " + flight.FromAirportIATA + "-" + flight.ToAirportIATA);
+                prts_rafiei.Add("Register: " + flight.Register);
+                prts_rafiei.Add("PIC: " + asr.PIC);
+            //  prts.Add("FO: " + flight.P2Name);
+            //prts.Add("FP: " + flight.);
+            //prts.Add("Event Summary:");
+            //prts.Add(asr.Report);
+
+
+            var text_rafiei = String.Join("\n", prts_rafiei);
+
+                not_history_rafiei = new qa_notification_history()
+                {
+                    date_send = DateTime.Now,
+                    entity_id = asr.Id,
+                    entity_type = 9,
+                    message_text = text_rafiei,
+                    message_type = 1,
+                    rec_id = asr.PICId,
+                    rec_mobile = "09333315290", //pic.Mobile,
+                    rec_name = pic.Name,
+                    counter = 0,
+                };
+
+                
+                Magfa m_rafiei = new Magfa();
+                var m_rafiei_result = m_rafiei.enqueue(1, not_history_rafiei.rec_mobile, not_history_rafiei.message_text)[0];
+                not_history_rafiei.ref_id = m_rafiei_result.ToString();
+
+
+            }
             List<qa_notification_history> nots = new List<qa_notification_history>();
 
             var not_receivers = context.qa_notification_receiver.Where(q => q.is_active == true).ToList();
@@ -3468,7 +3527,7 @@ public void send_vr_notification_magfa(EFBVoyageReport asr, ViewEmployee employe
                 prts2.Add("Dear " + rec.rec_name);
                 prts2.Add("Please click on the below link to see details.");
 
-                prts2.Add("https://report.apvaresh.com/frmreportview.aspx?type=19&fid=" + asr.FlightId);
+                prts2.Add("https://fleet.caspianairlines.com/reportefb/frmreportview.aspx?type=19&fid=" + asr.FlightId);
                 prts2.Add("Date: " + ((DateTime)flight.STDLocal).ToString("yyyy-MM-dd"));
                 prts2.Add("Route: " + flight.FromAirportIATA + "-" + flight.ToAirportIATA);
                 prts2.Add("Register: EP-" + flight.Register);
@@ -3574,6 +3633,7 @@ public void send_vr_notification_magfa(EFBVoyageReport asr, ViewEmployee employe
 
             _result.Add(not_history_pic);
             _result.Add(not_history_pic2);
+            _result.Add(not_history_rafiei);
 
             System.Threading.Thread.Sleep(20000);
             foreach (var x in _result)
@@ -3837,7 +3897,7 @@ public class _h_error
     }
 
 }
-[Route("api/ofps/validate/{fids}")]
+[Route("api/ofps/validate/b/{fids}")]
 [AcceptVerbs("GET")]
 public IHttpActionResult ValidateOFPs_OLD(string fids)
 {
@@ -4430,7 +4490,7 @@ public IHttpActionResult ValidateOFPs_OLD_TEMP(string fids)
 }
 //karun
 //2025-08-27
-[Route("api/ofps/validate/b/{fids}")]
+[Route("api/ofps/validate/{fids}")]
 [AcceptVerbs("GET")]
 public IHttpActionResult ValidateOFPs(string fids)
 {

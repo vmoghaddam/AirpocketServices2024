@@ -24,6 +24,10 @@ namespace AirpocketTRN.Models
         public string Interval2 { get; set; }
         public Nullable<bool> IsGeneral { get; set; }
         public Nullable<bool> Status { get; set; }
+        public Nullable<int> IntervalInitial { get; set; }
+        public Nullable<int> DurationInitial { get; set; }
+        public string ProfileGroup { get; set; }
+        public Nullable<int> DurationRecurrent { get; set; }
         public string Category { get; set; }
         public string CalenderType { get; set; }
         public Nullable<int> CoursesCount { get; set; }

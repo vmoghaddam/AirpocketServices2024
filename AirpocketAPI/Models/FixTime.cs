@@ -17,5 +17,7 @@ namespace AirpocketAPI.Models
         public string Route { get; set; }
         public Nullable<int> Duration { get; set; }
         public string remark { get; set; }
+        public string ACTYPE { get; set; }
+        public string REGISTER { get; set; }
     }
 }

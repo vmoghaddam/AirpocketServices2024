@@ -190,5 +190,15 @@ namespace ApiAPSB.Models
         public Nullable<System.DateTime> TakeoffStationLocal { get; set; }
         public Nullable<bool> IsDomestic { get; set; }
         public string AircraftModel { get; set; }
+        public Nullable<int> PF1Id { get; set; }
+        public Nullable<int> PM1Id { get; set; }
+        public Nullable<int> PF2Id { get; set; }
+        public Nullable<int> PM2Id { get; set; }
+        public Nullable<int> PF1Time { get; set; }
+        public Nullable<int> PM1Time { get; set; }
+        public Nullable<int> PF2Time { get; set; }
+        public Nullable<int> PM2Time { get; set; }
+        public Nullable<System.DateTime> Reporting { get; set; }
+        public string PermissionUrl { get; set; }
     }
 }

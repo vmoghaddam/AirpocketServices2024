@@ -68,7 +68,7 @@ namespace ApiXLS.Controllers
                          where 
                            //x.CrewId == id && 
                           // x.JobGroup==grp &&  
-                           x.STDLocal >= df && x.STDLocal < dt
+                           x.STDLocal >= df && x.STDLocal < _dt
                          //flypersia
                          //&& x.FlightStatusID != 1 
                          && x.FlightStatusID != 4
@@ -89,7 +89,7 @@ namespace ApiXLS.Controllers
                                _grp.Key.ScheduleName,
                                _grp.Key.JobGroup,
                                _grp.Key.PID,
-                               Sheet= _grp.Key.JobGroup=="TRE" || _grp.Key.JobGroup=="TRI"?"IP": _grp.Key.JobGroup,
+                               Sheet= _grp.Key.JobGroup=="TRE" || _grp.Key.JobGroup=="TRI"   || _grp.Key.JobGroup == "LTC" ? "IP": _grp.Key.JobGroup,
                                _grp.Key.JobGroupCode,
                                _grp.Key.Name,
                                _grp.Key.Position,
@@ -115,12 +115,12 @@ namespace ApiXLS.Controllers
             var mappedPathSource = System.Web.Hosting.HostingEnvironment.MapPath("~/upload/" + "CrewFlights" + ".xlsx");
             workbook.LoadFromFile(mappedPathSource);
 
-            List<string> grps = new List<string>() {"IP","P1","P2","ISCCM","SCCM","CCM","F/M","CCI","CCE" };
+            List<string> grps = new List<string>() {"IP","P1","P2","ISCCM","SCCM","CCM","F/M"/*,"CCI","CCE"*/ };
             var sh = 0;
-            foreach(var sht in grps)
+            foreach (var sht in grps)
             {
                 var _grouped = grouped.Where(q => q.Sheet == sht).ToList();
-                //////////////////////////////////////
+                ////////////////////////////////////
                 Worksheet sheet = workbook.Worksheets[sh];
                 sheet.Range[1, 20].Text = (df).Date.ToString("yyyy-MM-dd");
                 sheet.Range[2, 20].Text = (dt).Date.ToString("yyyy-MM-dd");
@@ -228,11 +228,11 @@ namespace ApiXLS.Controllers
                     ln = ln + crew.Flights.Count + 1;
                 }
 
-                ////////////////////////////////////////
+                //////////////////////////////////////
                 sh++;
             }
 
-           
+
 
 
 

@@ -29,7 +29,6 @@ namespace ApiWorld.Models
         public System.DateTime ForecastStartTime { get; set; }
         public System.DateTime ForecastEndTime { get; set; }
     
-        public virtual Flight Flight { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Flight> Flights { get; set; }
     }

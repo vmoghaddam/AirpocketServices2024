@@ -69,9 +69,9 @@ namespace AirpocketTRN.Models
         public Nullable<bool> IsNotificationEnabled { get; set; }
         public string ImageUrl { get; set; }
         public int ValidStatus { get; set; }
-        public string ImgUrl { get; set; }
-        public Nullable<int> Remaining { get; set; }
-        public Nullable<bool> InActive { get; set; }
         public Nullable<bool> Continual { get; set; }
+        public string ImgUrl { get; set; }
+        public Nullable<bool> InActive { get; set; }
+        public Nullable<int> Remaining { get; set; }
     }
 }

@@ -36,7 +36,26 @@ namespace ApiReportFlight.Controllers
             df = df.Date;
             dt = dt.Date.AddDays(1);
             // dataSource: ['All', 'Cockpit', 'Cabin', 'IP', 'P1', 'P2', 'SCCM', 'CCM', 'ISCCM'],
-            var crew_grps = new List<string>() { "TRE", "TRI", "P1", "P2", "ISCCM", "SCCM", "CCM", "LTC", "CCE", "CCI" };
+            // var crew_grps = new List<string>() { "TRE", "TRI", "P1", "P2", "ISCCM", "SCCM", "CCM", "LTC", "CCE", "CCI" };
+            var crew_grps = new List<string>()
+{
+    "TRE", "TRI", "P1", "P2", "ISCCM", "SCCM", "CCM", "LTC", "CCI", "CCE", "F/M",
+
+    "ENGINEERING AND MAINTENANCE",
+    "AIRCRAFT MECHANIC TECHNICIAN",
+    "AIRCRAFT REPAIR CONTROL MANAGER",
+    "CABIN REPAIR TECHNICIAN",
+    "FLIGHT LINE AVIONICS EXPERT",
+    "FLIGHT LINE MANAGER",
+    "FLIGHT LINE MECHANIC EXPERT",
+    "FLIGHT LINE RESPONSIBLE",
+    "OFFICER",
+    "TECHNICAL AND ENGINEERING DEPUTY",
+    "TOOLS AND PARTS STOREKEEPER",
+    "AIRCRAFT MECHANIC"
+};
+
+
             if (grps == "Cockpit")
                 crew_grps = new List<string>() { "TRE", "TRI", "P1", "P2", "LTC" };
             else if (grps == "Cabin")
@@ -295,7 +314,7 @@ namespace ApiReportFlight.Controllers
                     crew.WOCLTO = fdp.WOCLTO;
                     crew.XAirportLND = fdp.XAirportLND;
                     crew.XAirportTO = fdp.XAirportTO + fdp.XAirportLND;
-                    //crew.FDPs = fdp.FDPs.
+                    crew.FDPs = fdp.FDPs;
                     crew.Instructor = fdp.Instructor;
                     crew.InstructorBlock = fdp.InstructorBlock;
                     crew.OBS = fdp.OBS;
@@ -431,7 +450,7 @@ namespace ApiReportFlight.Controllers
 
             if (string.IsNullOrEmpty(regs))
                 regs = "All";
-
+             
             var context = new ppa_Entities();
             context.Database.CommandTimeout = 600;
 
@@ -476,6 +495,7 @@ namespace ApiReportFlight.Controllers
 
             var qry_crew = from x in context.ViewCrews
                            where crew_grps.Contains(x.JobGroup)
+                           
                            select x;
             if (!string.IsNullOrEmpty(crew_types))
             {
@@ -741,73 +761,79 @@ namespace ApiReportFlight.Controllers
 
             //                        }).ToList();
 
-            //////var helper_layover = context.helper_layover_ranked_new.Where(q => q.date >= df && q.date < dt && crew_ids.Contains(q.crew_id)).ToList();
-            
-            //////var helper_grp = (from x in helper_layover
-            //////                  //5where x.crew_id == 4827
-            //////                  group x by new { x.crew_id, x.date, x.homebase } into grp
-            //////                  select new dto_helper_layover()
-            //////                  {
-            //////                      date = grp.Key.date,
-            //////                      crew_id = grp.Key.crew_id,
-            //////                      homebase = grp.Key.homebase,
-            //////                      apt = grp.OrderByDescending(q => q.onblock_last).First().arr_iata,
-            //////                      is_lo = 0,
-            //////                      rows = grp.ToList()
+            var helper_layover = new List<helper_layover_ranked_new>(); //context.helper_layover_ranked_new.Where(q => q.date >= df && q.date < dt && crew_ids.Contains(q.crew_id)).ToList();
 
-            //////                  }).OrderBy(q => q.crew_id).ThenBy(q => q.date).ToList() ;
+            var helper_grp = (from x in helper_layover
+                              
+                              group x by new { x.crew_id, x.date, x.homebase } into grp
+                              select new dto_helper_layover()
+                              {
+                                  date = grp.Key.date,
+                                  crew_id = grp.Key.crew_id,
+                                  homebase = grp.Key.homebase,
+                                  apt = grp.OrderByDescending(q => q.onblock_last).First().arr_iata,
+                                  is_lo = 0,
+                                  rows = grp.ToList()
 
-            //////var grp_layover = (from x in helper_grp
-            //////                   group x by new { x.crew_id } into grp
-            //////                   select new
-            //////                   {
-            //////                       grp.Key.crew_id,
-            //////                       items = grp.OrderBy(q => q.date).ToList()
-            //////                   }).ToList();
+                              }).OrderBy(q => q.crew_id).ThenBy(q => q.date).ToList();
 
-            //var empty_layover = (from x in grp_layover
-            //                     where string.IsNullOrEmpty(x.items.First().apt)
-            //                     select x.crew_id).ToList();
-            //var first_rows = context.view_layover.Where(q => empty_layover.Contains(q.crew_id) && q.date == df).Select(
-            //    q=>new
+            var grp_layover = (from x in helper_grp
+                               group x by new { x.crew_id } into grp
+                               select new
+                               {
+                                   grp.Key.crew_id,
+                                   items = grp.OrderBy(q => q.date).ToList()
+                               }).ToList();
+
+            var empty_layover = (from x in grp_layover
+                                 where string.IsNullOrEmpty(x.items.First().apt)
+                                 select x.crew_id).ToList();
+            //var first_rows = context.helper_layover_ranked_new_prev.Where(q => empty_layover.Contains(q.crew_id) && q.date == df).Select(
+            //    q => new
             //    {
-            //         q.crew_id,
-            //         q.date,
-            //         q.apt_x
+            //        q.crew_id,
+            //        q.date,
+            //        q.arr_iata_prev
 
             //    }
             //    ).ToList();
+            var first_rows = new List<helper_layover_ranked_new_prev>();
 
-            //////foreach(var c in grp_layover)
-            //////{
-            //////    var _c = 0;
-            //////    foreach(var item in c.items)
-            //////    {
-            //////        if (_c == 0)
-            //////        {
-            //////            if (string.IsNullOrEmpty(item.apt))
-            //////            {
-            //////                item.apt = item.rows[0].arr_iata_prev;
-            //////               // var fr = first_rows.Where(q => q.crew_id == c.crew_id).First().apt_x;
-            //////               // item.apt = fr;
-            //////            }
-            //////        }
-            //////        else
-            //////        {
-            //////            if (string.IsNullOrEmpty(item.apt))
-            //////                item.apt = c.items[_c - 1].apt;
-            //////        }
-            //////        item.is_lo = item.apt == item.homebase ? 0 : 1;
-            //////        _c++;
-            //////    }
-            //////}
+            foreach (var c in grp_layover)
+            {
+                var _c = 0;
+                foreach (var item in c.items)
+                {
+                    if (_c == 0)
+                    {
+                        if (string.IsNullOrEmpty(item.apt))
+                        {
+                            //item.apt = item.rows[0].arr_iata_prev;
 
-            //////var ds_layover_total = (from x in grp_layover
-            //////                       select new
-            //////                       {
-            //////                           x.crew_id,
-            //////                           total=x.items.Sum(q=>q.is_lo)
-            //////                       }).ToList();
+                            var fr = first_rows.Where(q => q.crew_id == c.crew_id).First().arr_iata_prev;
+                            item.apt = fr;
+                            if (item.apt == null)
+                            {
+                                item.apt = item.homebase;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(item.apt))
+                            item.apt = c.items[_c - 1].apt;
+                    }
+                    item.is_lo = item.apt == item.homebase ? 0 : 1;
+                    _c++;
+                }
+            }
+
+            var ds_layover_total = (from x in grp_layover
+                                    select new
+                                    {
+                                        x.crew_id,
+                                        total = x.items.Sum(q => q.is_lo)
+                                    }).ToList();
 
             foreach (var crew in ds_crew)
             {
@@ -815,12 +841,12 @@ namespace ApiReportFlight.Controllers
                 var nofdps = ds_nofdp_total.Where(q => q.CrewId == crew.CrewId).ToList();
                 var refs = ds_refuse_total.Where(q => q.CrewId == crew.CrewId).ToList();
 
-                ////var lay_over = ds_layover_total.FirstOrDefault(q => q.crew_id == crew.CrewId);
-                ////if (lay_over != null)
-                ////{
-                ////    crew.LayOver = lay_over.total;
-                ////}
-                ////else
+                var lay_over = ds_layover_total.FirstOrDefault(q => q.crew_id == crew.CrewId);
+                if (lay_over != null)
+                {
+                    crew.LayOver = lay_over.total;
+                }
+                else
                     crew.LayOver = 0;
 
                 var safety = ds_safety_total.FirstOrDefault(q => q.CrewId == crew.CrewId);
@@ -849,10 +875,20 @@ namespace ApiReportFlight.Controllers
                         crew.StandbyFixTime += rec.Count * Convert.ToInt32(ConfigurationManager.AppSettings["fix_stby"]); ;
 
                     }
+                    //STBY-AM
                     if (rec.DutyTypeTitle == "STBY-PM")
+                    { 
                         crew.StandbyPM += rec.Count;
+                        crew.Standby += rec.Count;
+                        crew.StandbyFixTime += rec.Count * Convert.ToInt32(ConfigurationManager.AppSettings["fix_stby"]); ;
+
+                    }
                     if (rec.DutyTypeTitle == "STBY-AM")
+                    { 
                         crew.StandbyAM += rec.Count;
+                        crew.Standby += rec.Count;
+                        crew.StandbyFixTime += rec.Count * Convert.ToInt32(ConfigurationManager.AppSettings["fix_stby"]); ;
+                    }
                     if (rec.DutyTypeTitle.StartsWith("Reserve"))
                         crew.Reserve += rec.Count;
                     if (rec.DutyTypeTitle == "Mission") { crew.Mission += rec.Duration; }
@@ -2818,7 +2854,7 @@ namespace ApiReportFlight.Controllers
             }
 
             // ذخیره در فایل
-            File.WriteAllText(filePath, sb.ToString(), Encoding.UTF8);
+           // File.WriteAllText(filePath, sb.ToString(), Encoding.UTF8);
         }
 
         // توابع برای ایمن‌سازی داده‌های CSV (مثل قرار دادن رشته‌هایی که شامل کاما یا نقل‌قول هستند داخل "...")
@@ -2944,12 +2980,13 @@ namespace ApiReportFlight.Controllers
                     break;
             }
             var query = from x in context.view_fdp_fixtime
+                       // where x.crew_id== 3512
                         select x;
             var query2 = from x in context.RptNoFDPMonthlyPersians
                          select x;
             if (period != "1")
             {
-                query = query.Where(x => x.pyear == year && x.period == _period);
+                query = query.Where(x => x.pyear == year && x.period == _period );
                 query2 = query2.Where(x => x.PYear == year && x.PeriodFixTime == _period);
 
             }
@@ -2957,9 +2994,11 @@ namespace ApiReportFlight.Controllers
             {
                 query = from x in query
                         where (x.pyear == year && x.period == _period) || (x.pyear == lyear && x.period == _periodx)
+                        //where (x.pyear == year) || (x.pyear == lyear)
                         select x;
                 query2 = from x in query2
-                         where (x.PYear == year && x.PeriodFixTime == _period) || (x.PYear == lyear && x.PeriodFixTime == _periodx)
+                         //where (x.PYear == year && x.PeriodFixTime == _period) || (x.PYear == lyear && x.PeriodFixTime == _periodx)
+                         where (x.PYear == year ) || (x.PYear == lyear)
                          select x;
 
             }
@@ -3002,6 +3041,19 @@ namespace ApiReportFlight.Controllers
                 default:
                     break;
             }
+            if (actype!="All")
+            switch (actype)
+            {
+                case "B737":
+                    query = query.Where(q => q.ac_type == "B737");
+                    break;
+
+                default:
+                    query = query.Where(q => q.ac_type == "MD");
+                    break;
+
+                    
+            }
 
             var grps = (from x in query
                         group x by new { x.crew_id, x.period, x.schedule_name, x.last_name, x.first_name, x.name, x.pyear, x.route, x.ac_type, x.rank } into grp
@@ -3020,7 +3072,8 @@ namespace ApiReportFlight.Controllers
                             block = grp.Sum(q => q.block),
                             block_jl = grp.Sum(q => q.block_jl),
                             fixtime = grp.Sum(q => q.fixtime),
-                            legs = grp.Sum(q => q.flt_count),
+                            legs =grp.Count(), //grp.Sum(q => q.flt_count),
+                            flts= grp.Sum(q => q.flt_count),
 
                         }).ToList();
 
@@ -3036,7 +3089,7 @@ namespace ApiReportFlight.Controllers
                              grp.Key.crew_id,
                              grp.Key.rank,
                              items = grp.ToList(),
-                             flts = grp.Sum(q => q.legs),
+                             flts = grp.Sum(q => q.flts),
                              block = grp.Sum(q => q.block),
                              block_jl = grp.Sum(q => q.block_jl),
                              fixtime = grp.Sum(q => q.fixtime),
@@ -3135,7 +3188,7 @@ namespace ApiReportFlight.Controllers
                 }
 
                 row["flt_count"] = rec.flts;
-                row["block_time"] = tohhmm(rec.block_jl);
+                row["block_time"] = tohhmm(rec.block);
                 row["fix_time"] = tohhmm(rec.fixtime);
                 row["total"] = tohhmm(fix);
 
@@ -3147,7 +3200,7 @@ namespace ApiReportFlight.Controllers
             {
                 ((DataColumn)c).ColumnName = ((DataColumn)c).ColumnName.Replace(" ", "\r\n");
             }
-            ExportDataTableToCsv(table_md, @"C:\Users\vahid\source\repos\AirpocketServices2024\ApiReportFlight\bin\output.csv");
+           // ExportDataTableToCsv(table_md, @"C:\Users\SEPEHR\source\repos\AirpocketServices2024\ApiReportFlight\bin\output.csv");
             return Ok(table_md);
 
 
@@ -3216,7 +3269,7 @@ namespace ApiReportFlight.Controllers
             var result = _query_x.OrderBy(q => q.Date).ThenBy(q => q.JobGroup).ThenBy(q => q.LastName).ThenBy(q => q.FirstName).ToList();
             return Ok(result);
         }
-
+        //2025-11-23
         [Route("api/crew/flights/{grp}/{type}")]
         [AcceptVerbs("GET")]
         public IHttpActionResult GetCrewFlightTimes(string grp, string type, DateTime df, DateTime dt)
@@ -3367,10 +3420,10 @@ namespace ApiReportFlight.Controllers
                     switch (rank)
                     {
                         case "1":
-                            _baseQ = _baseQ.Where(q => q.JobGroup == "TRI" || q.JobGroup == "TRE" || q.JobGroup == "LTC" || q.JobGroup == "P1");
+                            _baseQ = _baseQ.Where(q => q.JobGroup == "TRI" || q.JobGroup == "TRE" || q.JobGroup == "LTC" || q.JobGroup == "NC" || q.JobGroup == "P1");
                             break;
                         case "10":
-                            _baseQ = _baseQ.Where(q => q.JobGroup == "TRI" || q.JobGroup == "TRE" || q.JobGroup == "LTC" || q.JobGroup == "P1" || q.JobGroup == "P2");
+                            _baseQ = _baseQ.Where(q => q.JobGroup == "TRI" || q.JobGroup == "TRE" || q.JobGroup == "LTC" || q.JobGroup == "NC" || q.JobGroup == "P1" || q.JobGroup == "P2");
                             break;
                         case "2":
                             _baseQ = _baseQ.Where(q => q.JobGroup == "P1");
@@ -3716,6 +3769,49 @@ namespace ApiReportFlight.Controllers
             return Ok(total_result);
         }
 
+        [Route("api/report/citypair/daily/{df}/{dt}")]
+        [AcceptVerbs("GET")]
+        public IHttpActionResult GetCrewCalendar(DateTime df, DateTime dt)
+        {
+            var ctx = new ppa_Entities();
+            var dt2 = dt.Date.AddDays(1);
+            var query = (from x in ctx.rpt_citypair_daily
+                         where x.date_local >= df && x.date_local < dt2
+                         group x by new
+                         {
+                             x.date_local,
+                             x.arr,
+                             x.arr_icao,
+                             x.arr_id,
+                             x.route,
+                             x.dep,
+                             x.dep_icao,
+                             x.dep_id,
+
+                             x.route_icao,
+                         } into grp
+                         select new
+                         {
+                             grp.Key.dep,
+                             grp.Key.dep_icao,
+                             grp.Key.dep_id,
+                             grp.Key.arr,
+                             grp.Key.arr_icao,
+                             grp.Key.arr_id,
+                             grp.Key.route_icao,
+                             grp.Key.route,
+                             pax_adult = grp.Sum(q => q.pax_adults),
+                             pax_children = grp.Sum(q => q.pax_children),
+                             pax_infant = grp.Sum(q => q.pax_infants),
+                             pax_total = grp.Sum(q => q.pax_total),
+                             is_int=!(grp.Key.dep_icao.StartsWith("OI") && grp.Key.arr_icao.StartsWith("OI"))
+
+                         }).OrderBy(q=>q.pax_total).ToList();  
+
+
+            return Ok(query);
+        }
+
 
         [Route("api/flightpax/daily")]
         [AcceptVerbs("GET")]
@@ -3756,7 +3852,7 @@ namespace ApiReportFlight.Controllers
         {
             var ctx = new ppa_Entities();
 
-            var totalQuery = ctx.ViewRegHistoryYearlies.Where(q=>q.Year==year);
+            var totalQuery = ctx.ViewRegHistoryYearlies.Where(q => q.Year == year);
             var total = totalQuery.OrderBy(q => q.Year)
                 .ThenBy(q => q.Month)
 
@@ -3773,6 +3869,10 @@ namespace ApiReportFlight.Controllers
             };
             return Ok(result);
         }
+
+
+
+
         public partial class dto_summary_flight_pax
         {
             public int season { get; set; }

@@ -175,10 +175,28 @@
           <Property Name="onblock" Type="datetime" />
           <Property Name="takeoff" Type="datetime" />
           <Property Name="landing" Type="datetime" />
+          <Property Name="actual_route" Type="varchar" MaxLength="1000" />
+          <Property Name="update_trigger" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.helper_layover_ranked_new' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="helper_layover_ranked_new">
+          <Key>
+            <PropertyRef Name="date" />
+            <PropertyRef Name="crew_id" />
+            <PropertyRef Name="fdp_id" />
+          </Key>
+          <Property Name="date" Type="date" Nullable="false" />
+          <Property Name="crew_id" Type="int" Nullable="false" />
+          <Property Name="fdp_id" Type="int" Nullable="false" />
+          <Property Name="onblock_last" Type="datetime" />
+          <Property Name="arr_iata" Type="nvarchar" MaxLength="255" />
+          <Property Name="homebase" Type="nvarchar" MaxLength="255" />
+          <Property Name="is_lo" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_varesh.dbo.helper_layover_ranked_new_prev' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="helper_layover_ranked_new_prev">
           <Key>
             <PropertyRef Name="date" />
             <PropertyRef Name="crew_id" />
@@ -291,7 +309,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.RptFDP2' does not have a primary ke
           <Property Name="ScheduleName" Type="varchar" MaxLength="500" />
           <Property Name="JobGroup" Type="nvarchar" MaxLength="500" />
           <Property Name="JobGroupCode" Type="varchar" MaxLength="500" />
-          <Property Name="JobGroupRoot" Type="varchar" MaxLength="7" Nullable="false" />
+          <Property Name="JobGroupRoot" Type="varchar" MaxLength="16" Nullable="false" />
           <Property Name="STDDay" Type="date" />
           <Property Name="STDDayUTC" Type="date" />
           <Property Name="STDLocal" Type="datetime" />
@@ -774,7 +792,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.view_fdp_fixtime' does not have a p
           </Key>
           <Property Name="crew_id" Type="int" Nullable="false" />
           <Property Name="fdp_id" Type="int" Nullable="false" />
-          <Property Name="route" Type="varchar" MaxLength="8000" />
+          <Property Name="route" Type="varchar" MaxLength="1000" />
           <Property Name="schedule_name" Type="varchar" MaxLength="500" />
           <Property Name="name" Type="nvarchar" MaxLength="1001" Nullable="false" />
           <Property Name="first_name" Type="nvarchar" MaxLength="500" Nullable="false" />
@@ -1367,6 +1385,12 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewDelayedFlight' does not have a 
           <Property Name="DelayRemark1" Type="varchar" MaxLength="1" Nullable="false" />
           <Property Name="DelayRemark2" Type="varchar" MaxLength="1" Nullable="false" />
           <Property Name="DelayCodes" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="P1Name" Type="nvarchar" MaxLength="1001" />
+          <Property Name="IPName" Type="nvarchar" MaxLength="1001" />
+          <Property Name="P2Name" Type="nvarchar" MaxLength="1001" />
+          <Property Name="P1Id" Type="int" />
+          <Property Name="P2Id" Type="int" />
+          <Property Name="IPId" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.ViewFinMonthlyRoute' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1626,6 +1650,27 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewFlightDaily' does not have a pr
           <Property Name="FixTime" Type="int" Nullable="false" />
           <Property Name="PYear" Type="nvarchar" MaxLength="4" />
           <Property Name="IsINT" Type="int" Nullable="false" />
+          <Property Name="cnl_reason" Type="nvarchar" MaxLength="1000" />
+          <Property Name="cnl_reason_id" Type="int" />
+          <Property Name="cnl_remark" Type="nvarchar" MaxLength="500" />
+          <Property Name="flttype_title" Type="nvarchar" MaxLength="1000" />
+          <Property Name="FuelRemained" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="FuelActualTotal" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="FuelUsed" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="FuelRemaining" Type="decimal" Precision="20" Scale="4" />
+          <Property Name="FuelRemainedKG" Type="float" />
+          <Property Name="FuelActualTotalKG" Type="float" />
+          <Property Name="FuelUsedKG" Type="float" />
+          <Property Name="FuelRemainingKG" Type="float" />
+          <Property Name="FuelRemainedLBS" Type="float" />
+          <Property Name="FuelActualTotalLBS" Type="float" />
+          <Property Name="FuelUsedLBS" Type="float" />
+          <Property Name="FuelRemainingLBS" Type="float" />
+          <Property Name="FuelRemainedLTR" Type="float" />
+          <Property Name="FuelActualTotalLTR" Type="float" />
+          <Property Name="FuelUsedLTR" Type="float" />
+          <Property Name="FuelRemainingLTR" Type="float" />
+          <Property Name="FuelDensity" Type="decimal" Precision="18" Scale="4" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.ViewFlightDelay' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -2175,10 +2220,21 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
     [helper_layover_ranked_new].[fdp_id] AS [fdp_id], 
     [helper_layover_ranked_new].[onblock_last] AS [onblock_last], 
     [helper_layover_ranked_new].[arr_iata] AS [arr_iata], 
-    [helper_layover_ranked_new].[arr_iata_prev] AS [arr_iata_prev], 
     [helper_layover_ranked_new].[homebase] AS [homebase], 
     [helper_layover_ranked_new].[is_lo] AS [is_lo]
     FROM [dbo].[helper_layover_ranked_new] AS [helper_layover_ranked_new]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="helper_layover_ranked_new_prev" EntityType="Self.helper_layover_ranked_new_prev" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [helper_layover_ranked_new_prev].[date] AS [date], 
+    [helper_layover_ranked_new_prev].[crew_id] AS [crew_id], 
+    [helper_layover_ranked_new_prev].[fdp_id] AS [fdp_id], 
+    [helper_layover_ranked_new_prev].[onblock_last] AS [onblock_last], 
+    [helper_layover_ranked_new_prev].[arr_iata] AS [arr_iata], 
+    [helper_layover_ranked_new_prev].[arr_iata_prev] AS [arr_iata_prev], 
+    [helper_layover_ranked_new_prev].[homebase] AS [homebase], 
+    [helper_layover_ranked_new_prev].[is_lo] AS [is_lo]
+    FROM [dbo].[helper_layover_ranked_new_prev] AS [helper_layover_ranked_new_prev]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="rpt_citypair_daily" EntityType="Self.rpt_citypair_daily" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -3116,7 +3172,13 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
     [ViewDelayedFlight].[Items] AS [Items], 
     [ViewDelayedFlight].[DelayRemark1] AS [DelayRemark1], 
     [ViewDelayedFlight].[DelayRemark2] AS [DelayRemark2], 
-    [ViewDelayedFlight].[DelayCodes] AS [DelayCodes]
+    [ViewDelayedFlight].[DelayCodes] AS [DelayCodes], 
+    [ViewDelayedFlight].[P1Name] AS [P1Name], 
+    [ViewDelayedFlight].[IPName] AS [IPName], 
+    [ViewDelayedFlight].[P2Name] AS [P2Name], 
+    [ViewDelayedFlight].[P1Id] AS [P1Id], 
+    [ViewDelayedFlight].[P2Id] AS [P2Id], 
+    [ViewDelayedFlight].[IPId] AS [IPId]
     FROM [dbo].[ViewDelayedFlight] AS [ViewDelayedFlight]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ViewFinMonthlyRoute" EntityType="Self.ViewFinMonthlyRoute" store:Type="Views" store:Schema="dbo">
@@ -3325,7 +3387,28 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
     [ViewFlightDaily].[XRoute] AS [XRoute], 
     [ViewFlightDaily].[FixTime] AS [FixTime], 
     [ViewFlightDaily].[PYear] AS [PYear], 
-    [ViewFlightDaily].[IsINT] AS [IsINT]
+    [ViewFlightDaily].[IsINT] AS [IsINT], 
+    [ViewFlightDaily].[cnl_reason] AS [cnl_reason], 
+    [ViewFlightDaily].[cnl_reason_id] AS [cnl_reason_id], 
+    [ViewFlightDaily].[cnl_remark] AS [cnl_remark], 
+    [ViewFlightDaily].[flttype_title] AS [flttype_title], 
+    [ViewFlightDaily].[FuelRemained] AS [FuelRemained], 
+    [ViewFlightDaily].[FuelActualTotal] AS [FuelActualTotal], 
+    [ViewFlightDaily].[FuelUsed] AS [FuelUsed], 
+    [ViewFlightDaily].[FuelRemaining] AS [FuelRemaining], 
+    [ViewFlightDaily].[FuelRemainedKG] AS [FuelRemainedKG], 
+    [ViewFlightDaily].[FuelActualTotalKG] AS [FuelActualTotalKG], 
+    [ViewFlightDaily].[FuelUsedKG] AS [FuelUsedKG], 
+    [ViewFlightDaily].[FuelRemainingKG] AS [FuelRemainingKG], 
+    [ViewFlightDaily].[FuelRemainedLBS] AS [FuelRemainedLBS], 
+    [ViewFlightDaily].[FuelActualTotalLBS] AS [FuelActualTotalLBS], 
+    [ViewFlightDaily].[FuelUsedLBS] AS [FuelUsedLBS], 
+    [ViewFlightDaily].[FuelRemainingLBS] AS [FuelRemainingLBS], 
+    [ViewFlightDaily].[FuelRemainedLTR] AS [FuelRemainedLTR], 
+    [ViewFlightDaily].[FuelActualTotalLTR] AS [FuelActualTotalLTR], 
+    [ViewFlightDaily].[FuelUsedLTR] AS [FuelUsedLTR], 
+    [ViewFlightDaily].[FuelRemainingLTR] AS [FuelRemainingLTR], 
+    [ViewFlightDaily].[FuelDensity] AS [FuelDensity]
     FROM [dbo].[ViewFlightDaily] AS [ViewFlightDaily]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ViewFlightDelay" EntityType="Self.ViewFlightDelay" store:Type="Views" store:Schema="dbo">
@@ -3774,8 +3857,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySet Name="RptRefuses" EntityType="ModelEntities.RptRefuse" />
           <EntitySet Name="summary_flight_pax" EntityType="ModelEntities.summary_flight_pax" />
           <EntitySet Name="ViewCourseFDPs" EntityType="ModelEntities.ViewCourseFDP" />
-          <EntitySet Name="ViewDelayedFlights" EntityType="ModelEntities.ViewDelayedFlight" />
-          <EntitySet Name="ViewFlightDailies" EntityType="ModelEntities.ViewFlightDaily" />
           <EntitySet Name="ViewFlightPaxes" EntityType="ModelEntities.ViewFlightPax" />
           <EntitySet Name="ViewFormBs" EntityType="ModelEntities.ViewFormB" />
           <EntitySet Name="ViewFormCs" EntityType="ModelEntities.ViewFormC" />
@@ -3796,8 +3877,11 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySet Name="view_layover" EntityType="ModelEntities.view_layover" />
           <EntitySet Name="ViewCrews" EntityType="ModelEntities.ViewCrew" />
           <EntitySet Name="rpt_crew_route" EntityType="ModelEntities.rpt_crew_route" />
-          <EntitySet Name="helper_layover_ranked_new" EntityType="ModelEntities.helper_layover_ranked_new" />
           <EntitySet Name="rpt_citypair_daily" EntityType="ModelEntities.rpt_citypair_daily" />
+          <EntitySet Name="helper_layover_ranked_new" EntityType="ModelEntities.helper_layover_ranked_new" />
+          <EntitySet Name="helper_layover_ranked_new_prev" EntityType="ModelEntities.helper_layover_ranked_new_prev" />
+          <EntitySet Name="ViewDelayedFlights" EntityType="ModelEntities.ViewDelayedFlight" />
+          <EntitySet Name="ViewFlightDailies" EntityType="ModelEntities.ViewFlightDaily" />
         </EntityContainer>
         <EntityType Name="ViewFinMonthlyRoute">
           <Key>
@@ -4073,7 +4157,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           </Key>
           <Property Name="crew_id" Type="Int32" Nullable="false" />
           <Property Name="fdp_id" Type="Int32" Nullable="false" />
-          <Property Name="route" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
+          <Property Name="route" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
           <Property Name="schedule_name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="name" Type="String" Nullable="false" MaxLength="1001" FixedLength="false" Unicode="true" />
           <Property Name="first_name" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
@@ -4125,7 +4209,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="ScheduleName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="JobGroup" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="JobGroupCode" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="JobGroupRoot" Type="String" Nullable="false" MaxLength="7" FixedLength="false" Unicode="false" />
+          <Property Name="JobGroupRoot" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="false" />
           <Property Name="STDDay" Type="DateTime" Precision="0" />
           <Property Name="STDDayUTC" Type="DateTime" Precision="0" />
           <Property Name="STDLocal" Type="DateTime" Precision="3" />
@@ -4467,284 +4551,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="SessionStart" Type="DateTime" Precision="3" />
           <Property Name="SessionEnd" Type="DateTime" Precision="3" />
         </EntityType>
-        <EntityType Name="ViewDelayedFlight">
-          <Key>
-            <PropertyRef Name="ID" />
-            <PropertyRef Name="FlightId" />
-            <PropertyRef Name="FlightStatus" />
-            <PropertyRef Name="Delay" />
-            <PropertyRef Name="PaxChild" />
-            <PropertyRef Name="PaxInfant" />
-            <PropertyRef Name="PaxAdult" />
-            <PropertyRef Name="BaggageWeight" />
-            <PropertyRef Name="CargoWeight" />
-            <PropertyRef Name="FlightType2" />
-            <PropertyRef Name="FlightIndex" />
-            <PropertyRef Name="TotalRemark" />
-            <PropertyRef Name="IsDepInt" />
-            <PropertyRef Name="IsArrInt" />
-            <PropertyRef Name="DelayRemark1" />
-            <PropertyRef Name="DelayRemark2" />
-            <PropertyRef Name="DelayCodes" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="FlightId" Type="Int32" Nullable="false" />
-          <Property Name="FlightPlanId" Type="Int32" />
-          <Property Name="STD" Type="DateTime" Precision="3" />
-          <Property Name="STA" Type="DateTime" Precision="3" />
-          <Property Name="STDLocal" Type="DateTime" Precision="3" />
-          <Property Name="STALocal" Type="DateTime" Precision="3" />
-          <Property Name="Date" Type="DateTime" Precision="0" />
-          <Property Name="DateLocal" Type="DateTime" Precision="0" />
-          <Property Name="FlightStatusID" Type="Int32" />
-          <Property Name="RegisterID" Type="Int32" />
-          <Property Name="FlightTypeID" Type="Int32" />
-          <Property Name="AircraftType" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="TypeId" Type="Int32" />
-          <Property Name="FlightNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="FromAirport" Type="Int32" />
-          <Property Name="FromAirportICAO" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="ToAirport" Type="Int32" />
-          <Property Name="ToAirportICAO" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="CustomerId" Type="Int32" />
-          <Property Name="FromAirportIATA" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="ToAirportIATA" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Register" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="FlightStatus" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="true" />
-          <Property Name="ArrivalRemark" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
-          <Property Name="DepartureRemark" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
-          <Property Name="STDDay" Type="DateTime" Precision="0" />
-          <Property Name="STDDayLocal" Type="DateTime" Precision="0" />
-          <Property Name="STADay" Type="DateTime" Precision="0" />
-          <Property Name="DelayOffBlock" Type="Int32" />
-          <Property Name="DelayTakeoff" Type="Int32" />
-          <Property Name="Delay" Type="Int32" Nullable="false" />
-          <Property Name="OSTA" Type="DateTime" Precision="3" />
-          <Property Name="OToAirportId" Type="Int32" />
-          <Property Name="OToAirportIATA" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="FPFlightHH" Type="Int32" />
-          <Property Name="FPFlightMM" Type="Int32" />
-          <Property Name="Departure" Type="DateTime" Precision="3" />
-          <Property Name="Arrival" Type="DateTime" Precision="3" />
-          <Property Name="BlockOff" Type="DateTime" Precision="3" />
-          <Property Name="BlockOn" Type="DateTime" Precision="3" />
-          <Property Name="TakeOff" Type="DateTime" Precision="3" />
-          <Property Name="Landing" Type="DateTime" Precision="3" />
-          <Property Name="BlockOffLocal" Type="DateTime" Precision="3" />
-          <Property Name="BlockOnLocal" Type="DateTime" Precision="3" />
-          <Property Name="TakeOffLocal" Type="DateTime" Precision="3" />
-          <Property Name="LandingLocal" Type="DateTime" Precision="3" />
-          <Property Name="DepartureLocal" Type="DateTime" Precision="3" />
-          <Property Name="ArrivalLocal" Type="DateTime" Precision="3" />
-          <Property Name="BlockTime" Type="Int32" />
-          <Property Name="ScheduledTime" Type="Int32" />
-          <Property Name="FlightTime" Type="Int32" />
-          <Property Name="status" Type="Int32" />
-          <Property Name="JLOffBlock" Type="DateTime" Precision="3" />
-          <Property Name="JLOnBlock" Type="DateTime" Precision="3" />
-          <Property Name="JLTakeOff" Type="DateTime" Precision="3" />
-          <Property Name="JLLanding" Type="DateTime" Precision="3" />
-          <Property Name="PFLR" Type="Int32" />
-          <Property Name="PaxChild" Type="Int32" Nullable="false" />
-          <Property Name="PaxInfant" Type="Int32" Nullable="false" />
-          <Property Name="PaxAdult" Type="Int32" Nullable="false" />
-          <Property Name="RevPax" Type="Int32" />
-          <Property Name="TotalPax" Type="Int32" />
-          <Property Name="FuelUnitID" Type="Int32" />
-          <Property Name="FuelArrival" Type="Decimal" Precision="18" Scale="4" />
-          <Property Name="FuelDeparture" Type="Decimal" Precision="18" Scale="4" />
-          <Property Name="UpliftLtr" Type="Double" />
-          <Property Name="UpliftLbs" Type="Double" />
-          <Property Name="UpliftKg" Type="Double" />
-          <Property Name="UsedFuel" Type="Decimal" Precision="18" Scale="4" />
-          <Property Name="TotalSeat" Type="Int32" />
-          <Property Name="BaggageWeight" Type="Int32" Nullable="false" />
-          <Property Name="CargoWeight" Type="Int32" Nullable="false" />
-          <Property Name="Freight" Type="Int32" />
-          <Property Name="BaggageWeightLbs" Type="Double" />
-          <Property Name="BaggageWeightKg" Type="Double" />
-          <Property Name="CargoWeightLbs" Type="Double" />
-          <Property Name="CargoWeightKg" Type="Double" />
-          <Property Name="FreightLbs" Type="Double" />
-          <Property Name="FreightKg" Type="Double" />
-          <Property Name="FlightDate" Type="DateTime" Precision="3" />
-          <Property Name="CargoCount" Type="Int32" />
-          <Property Name="BaggageCount" Type="Int32" />
-          <Property Name="JLBlockTime" Type="Int32" />
-          <Property Name="JLFlightTime" Type="Int32" />
-          <Property Name="FPFuel" Type="Decimal" Precision="18" Scale="4" />
-          <Property Name="FPTripFuel" Type="Decimal" Precision="18" Scale="4" />
-          <Property Name="MaxWeightTO" Type="Int32" />
-          <Property Name="MaxWeightLND" Type="Int32" />
-          <Property Name="MaxWeighUnit" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
-          <Property Name="ChrCode" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="ChrTitle" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="ChrCapacity" Type="Int32" />
-          <Property Name="ChrAdult" Type="Int32" />
-          <Property Name="ChrChild" Type="Int32" />
-          <Property Name="ChrInfant" Type="Int32" />
-          <Property Name="PMonth" Type="Int32" />
-          <Property Name="PMonthName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="PDayName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="FlightType2" Type="String" Nullable="false" MaxLength="11" FixedLength="false" Unicode="true" />
-          <Property Name="FlightIndex" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
-          <Property Name="AirlineSold" Type="Int32" />
-          <Property Name="CherterSold" Type="Int32" />
-          <Property Name="OverSeat" Type="Int32" />
-          <Property Name="EmptySeat" Type="Int32" />
-          <Property Name="DelayReason" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="StationIncome" Type="Double" />
-          <Property Name="TotalRemark" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Name="Route" Type="String" MaxLength="511" FixedLength="false" Unicode="true" />
-          <Property Name="PDate" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="IsDepInt" Type="Int32" Nullable="false" />
-          <Property Name="IsArrInt" Type="Int32" Nullable="false" />
-          <Property Name="Items" Type="Int32" />
-          <Property Name="DelayRemark1" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Name="DelayRemark2" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Name="DelayCodes" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="ViewFlightDaily">
-          <Key>
-            <PropertyRef Name="ID" />
-            <PropertyRef Name="FlightId" />
-            <PropertyRef Name="FlightStatus" />
-            <PropertyRef Name="PaxChild" />
-            <PropertyRef Name="PaxInfant" />
-            <PropertyRef Name="PaxAdult" />
-            <PropertyRef Name="BaggageWeight" />
-            <PropertyRef Name="CargoWeight" />
-            <PropertyRef Name="FlightType2" />
-            <PropertyRef Name="FlightIndex" />
-            <PropertyRef Name="TotalRemark" />
-            <PropertyRef Name="IsDepInt" />
-            <PropertyRef Name="IsArrInt" />
-            <PropertyRef Name="FixTime" />
-            <PropertyRef Name="IsINT" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="FlightId" Type="Int32" Nullable="false" />
-          <Property Name="FlightPlanId" Type="Int32" />
-          <Property Name="STD" Type="DateTime" Precision="3" />
-          <Property Name="STA" Type="DateTime" Precision="3" />
-          <Property Name="STDLocal" Type="DateTime" Precision="3" />
-          <Property Name="STALocal" Type="DateTime" Precision="3" />
-          <Property Name="Date" Type="DateTime" Precision="0" />
-          <Property Name="DateLocal" Type="DateTime" Precision="0" />
-          <Property Name="FlightStatusID" Type="Int32" />
-          <Property Name="RegisterID" Type="Int32" />
-          <Property Name="FlightTypeID" Type="Int32" />
-          <Property Name="AircraftType" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="TypeId" Type="Int32" />
-          <Property Name="FlightNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="FromAirport" Type="Int32" />
-          <Property Name="FromAirportICAO" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="ToAirport" Type="Int32" />
-          <Property Name="ToAirportICAO" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="CustomerId" Type="Int32" />
-          <Property Name="FromAirportIATA" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="ToAirportIATA" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Register" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="FlightStatus" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="true" />
-          <Property Name="ArrivalRemark" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
-          <Property Name="DepartureRemark" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
-          <Property Name="STDDay" Type="DateTime" Precision="0" />
-          <Property Name="STDDayLocal" Type="DateTime" Precision="0" />
-          <Property Name="STADay" Type="DateTime" Precision="0" />
-          <Property Name="TakeOffDay" Type="DateTime" Precision="0" />
-          <Property Name="TakeOffDayLocal" Type="DateTime" Precision="0" />
-          <Property Name="DelayOffBlock" Type="Int32" />
-          <Property Name="DelayTakeoff" Type="Int32" />
-          <Property Name="OSTA" Type="DateTime" Precision="3" />
-          <Property Name="OToAirportId" Type="Int32" />
-          <Property Name="OToAirportIATA" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="FPFlightHH" Type="Int32" />
-          <Property Name="FPFlightMM" Type="Int32" />
-          <Property Name="Departure" Type="DateTime" Precision="3" />
-          <Property Name="Arrival" Type="DateTime" Precision="3" />
-          <Property Name="BlockOff" Type="DateTime" Precision="3" />
-          <Property Name="BlockOn" Type="DateTime" Precision="3" />
-          <Property Name="TakeOff" Type="DateTime" Precision="3" />
-          <Property Name="Landing" Type="DateTime" Precision="3" />
-          <Property Name="BlockOffLocal" Type="DateTime" Precision="3" />
-          <Property Name="BlockOnLocal" Type="DateTime" Precision="3" />
-          <Property Name="TakeOffLocal" Type="DateTime" Precision="3" />
-          <Property Name="LandingLocal" Type="DateTime" Precision="3" />
-          <Property Name="DepartureLocal" Type="DateTime" Precision="3" />
-          <Property Name="ArrivalLocal" Type="DateTime" Precision="3" />
-          <Property Name="BlockTime" Type="Int32" />
-          <Property Name="ScheduledTime" Type="Int32" />
-          <Property Name="FlightTime" Type="Int32" />
-          <Property Name="status" Type="Int32" />
-          <Property Name="JLOffBlock" Type="DateTime" Precision="3" />
-          <Property Name="JLOnBlock" Type="DateTime" Precision="3" />
-          <Property Name="JLTakeOff" Type="DateTime" Precision="3" />
-          <Property Name="JLLanding" Type="DateTime" Precision="3" />
-          <Property Name="PFLR" Type="Int32" />
-          <Property Name="PaxChild" Type="Int32" Nullable="false" />
-          <Property Name="PaxInfant" Type="Int32" Nullable="false" />
-          <Property Name="PaxAdult" Type="Int32" Nullable="false" />
-          <Property Name="RevPax" Type="Int32" />
-          <Property Name="TotalPax" Type="Int32" />
-          <Property Name="FuelUnitID" Type="Int32" />
-          <Property Name="FuelArrival" Type="Decimal" Precision="18" Scale="4" />
-          <Property Name="FuelDeparture" Type="Decimal" Precision="18" Scale="4" />
-          <Property Name="UpliftLtr" Type="Double" />
-          <Property Name="UpliftLbs" Type="Double" />
-          <Property Name="UpliftKg" Type="Double" />
-          <Property Name="UsedFuel" Type="Decimal" Precision="18" Scale="4" />
-          <Property Name="TotalSeat" Type="Int32" />
-          <Property Name="BaggageWeight" Type="Int32" Nullable="false" />
-          <Property Name="CargoWeight" Type="Int32" Nullable="false" />
-          <Property Name="Freight" Type="Int32" />
-          <Property Name="BaggageWeightLbs" Type="Double" />
-          <Property Name="BaggageWeightKg" Type="Double" />
-          <Property Name="CargoWeightLbs" Type="Double" />
-          <Property Name="CargoWeightKg" Type="Double" />
-          <Property Name="FreightLbs" Type="Double" />
-          <Property Name="FreightKg" Type="Double" />
-          <Property Name="FlightDate" Type="DateTime" Precision="3" />
-          <Property Name="CargoCount" Type="Int32" />
-          <Property Name="BaggageCount" Type="Int32" />
-          <Property Name="JLBlockTime" Type="Int32" />
-          <Property Name="JLFlightTime" Type="Int32" />
-          <Property Name="FPFuel" Type="Decimal" Precision="18" Scale="4" />
-          <Property Name="FPTripFuel" Type="Decimal" Precision="18" Scale="4" />
-          <Property Name="MaxWeightTO" Type="Int32" />
-          <Property Name="MaxWeightLND" Type="Int32" />
-          <Property Name="MaxWeighUnit" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
-          <Property Name="ChrCode" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="ChrTitle" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="ChrCapacity" Type="Int32" />
-          <Property Name="ChrAdult" Type="Int32" />
-          <Property Name="ChrChild" Type="Int32" />
-          <Property Name="ChrInfant" Type="Int32" />
-          <Property Name="PMonth" Type="Int32" />
-          <Property Name="PMonthName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="PDayName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="PMonthTakeOff" Type="Int32" />
-          <Property Name="PMonthNameTakeOff" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="PDayNameTakeOff" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="FlightType2" Type="String" Nullable="false" MaxLength="11" FixedLength="false" Unicode="true" />
-          <Property Name="FlightIndex" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
-          <Property Name="AirlineSold" Type="Int32" />
-          <Property Name="CherterSold" Type="Int32" />
-          <Property Name="OverSeat" Type="Int32" />
-          <Property Name="EmptySeat" Type="Int32" />
-          <Property Name="DelayReason" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Distance" Type="Double" />
-          <Property Name="StationIncome" Type="Double" />
-          <Property Name="TotalRemark" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Name="Route" Type="String" MaxLength="511" FixedLength="false" Unicode="true" />
-          <Property Name="PDate" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="PDateTakeOff" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="IsDepInt" Type="Int32" Nullable="false" />
-          <Property Name="IsArrInt" Type="Int32" Nullable="false" />
-          <Property Name="XRoute" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="FixTime" Type="Int32" Nullable="false" />
-          <Property Name="PYear" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
-          <Property Name="IsINT" Type="Int32" Nullable="false" />
-        </EntityType>
         <EntityType Name="ViewFlightPax">
           <Key>
             <PropertyRef Name="Id" />
@@ -4968,6 +4774,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="landing" Type="DateTime" Precision="3" />
           <NavigationProperty Name="FDP1" Relationship="ModelEntities.fk_fdp_fdp" FromRole="FDP" ToRole="FDP1" />
           <NavigationProperty Name="FDP2" Relationship="ModelEntities.fk_fdp_fdp" FromRole="FDP1" ToRole="FDP" />
+          <Property Name="actual_route" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="update_trigger" Type="Int32" />
         </EntityType>
         <Association Name="fk_fdp_fdp">
           <End Type="ModelEntities.FDP" Role="FDP" Multiplicity="0..1" />
@@ -5815,21 +5623,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="block_jl" Type="Int32" />
           <Property Name="flt_count" Type="Int32" />
         </EntityType>
-        <EntityType Name="helper_layover_ranked_new">
-          <Key>
-            <PropertyRef Name="date" />
-            <PropertyRef Name="crew_id" />
-            <PropertyRef Name="fdp_id" />
-          </Key>
-          <Property Name="date" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="crew_id" Type="Int32" Nullable="false" />
-          <Property Name="fdp_id" Type="Int32" Nullable="false" />
-          <Property Name="onblock_last" Type="DateTime" Precision="3" />
-          <Property Name="arr_iata" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="arr_iata_prev" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="homebase" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="is_lo" Type="Int32" />
-        </EntityType>
         <EntityType Name="rpt_citypair_daily">
           <Key>
             <PropertyRef Name="pax_adults" />
@@ -5856,6 +5649,340 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="arr_id" Type="Int32" />
           <Property Name="route" Type="String" MaxLength="511" FixedLength="false" Unicode="true" />
           <Property Name="route_icao" Type="String" MaxLength="511" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="helper_layover_ranked_new">
+          <Key>
+            <PropertyRef Name="date" />
+            <PropertyRef Name="crew_id" />
+            <PropertyRef Name="fdp_id" />
+          </Key>
+          <Property Name="date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="crew_id" Type="Int32" Nullable="false" />
+          <Property Name="fdp_id" Type="Int32" Nullable="false" />
+          <Property Name="onblock_last" Type="DateTime" Precision="3" />
+          <Property Name="arr_iata" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="homebase" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="is_lo" Type="Int32" />
+        </EntityType>
+        <EntityType Name="helper_layover_ranked_new_prev">
+          <Key>
+            <PropertyRef Name="date" />
+            <PropertyRef Name="crew_id" />
+            <PropertyRef Name="fdp_id" />
+          </Key>
+          <Property Name="date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="crew_id" Type="Int32" Nullable="false" />
+          <Property Name="fdp_id" Type="Int32" Nullable="false" />
+          <Property Name="onblock_last" Type="DateTime" Precision="3" />
+          <Property Name="arr_iata" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="arr_iata_prev" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="homebase" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="is_lo" Type="Int32" />
+        </EntityType>
+        <EntityType Name="ViewDelayedFlight">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="FlightId" />
+            <PropertyRef Name="FlightStatus" />
+            <PropertyRef Name="Delay" />
+            <PropertyRef Name="PaxChild" />
+            <PropertyRef Name="PaxInfant" />
+            <PropertyRef Name="PaxAdult" />
+            <PropertyRef Name="BaggageWeight" />
+            <PropertyRef Name="CargoWeight" />
+            <PropertyRef Name="FlightType2" />
+            <PropertyRef Name="FlightIndex" />
+            <PropertyRef Name="TotalRemark" />
+            <PropertyRef Name="IsDepInt" />
+            <PropertyRef Name="IsArrInt" />
+            <PropertyRef Name="DelayRemark1" />
+            <PropertyRef Name="DelayRemark2" />
+            <PropertyRef Name="DelayCodes" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="FlightId" Type="Int32" Nullable="false" />
+          <Property Name="FlightPlanId" Type="Int32" />
+          <Property Name="STD" Type="DateTime" Precision="3" />
+          <Property Name="STA" Type="DateTime" Precision="3" />
+          <Property Name="STDLocal" Type="DateTime" Precision="3" />
+          <Property Name="STALocal" Type="DateTime" Precision="3" />
+          <Property Name="Date" Type="DateTime" Precision="0" />
+          <Property Name="DateLocal" Type="DateTime" Precision="0" />
+          <Property Name="FlightStatusID" Type="Int32" />
+          <Property Name="RegisterID" Type="Int32" />
+          <Property Name="FlightTypeID" Type="Int32" />
+          <Property Name="AircraftType" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="TypeId" Type="Int32" />
+          <Property Name="FlightNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FromAirport" Type="Int32" />
+          <Property Name="FromAirportICAO" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ToAirport" Type="Int32" />
+          <Property Name="ToAirportICAO" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerId" Type="Int32" />
+          <Property Name="FromAirportIATA" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ToAirportIATA" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Register" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FlightStatus" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="ArrivalRemark" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="DepartureRemark" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="STDDay" Type="DateTime" Precision="0" />
+          <Property Name="STDDayLocal" Type="DateTime" Precision="0" />
+          <Property Name="STADay" Type="DateTime" Precision="0" />
+          <Property Name="DelayOffBlock" Type="Int32" />
+          <Property Name="DelayTakeoff" Type="Int32" />
+          <Property Name="Delay" Type="Int32" Nullable="false" />
+          <Property Name="OSTA" Type="DateTime" Precision="3" />
+          <Property Name="OToAirportId" Type="Int32" />
+          <Property Name="OToAirportIATA" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="FPFlightHH" Type="Int32" />
+          <Property Name="FPFlightMM" Type="Int32" />
+          <Property Name="Departure" Type="DateTime" Precision="3" />
+          <Property Name="Arrival" Type="DateTime" Precision="3" />
+          <Property Name="BlockOff" Type="DateTime" Precision="3" />
+          <Property Name="BlockOn" Type="DateTime" Precision="3" />
+          <Property Name="TakeOff" Type="DateTime" Precision="3" />
+          <Property Name="Landing" Type="DateTime" Precision="3" />
+          <Property Name="BlockOffLocal" Type="DateTime" Precision="3" />
+          <Property Name="BlockOnLocal" Type="DateTime" Precision="3" />
+          <Property Name="TakeOffLocal" Type="DateTime" Precision="3" />
+          <Property Name="LandingLocal" Type="DateTime" Precision="3" />
+          <Property Name="DepartureLocal" Type="DateTime" Precision="3" />
+          <Property Name="ArrivalLocal" Type="DateTime" Precision="3" />
+          <Property Name="BlockTime" Type="Int32" />
+          <Property Name="ScheduledTime" Type="Int32" />
+          <Property Name="FlightTime" Type="Int32" />
+          <Property Name="status" Type="Int32" />
+          <Property Name="JLOffBlock" Type="DateTime" Precision="3" />
+          <Property Name="JLOnBlock" Type="DateTime" Precision="3" />
+          <Property Name="JLTakeOff" Type="DateTime" Precision="3" />
+          <Property Name="JLLanding" Type="DateTime" Precision="3" />
+          <Property Name="PFLR" Type="Int32" />
+          <Property Name="PaxChild" Type="Int32" Nullable="false" />
+          <Property Name="PaxInfant" Type="Int32" Nullable="false" />
+          <Property Name="PaxAdult" Type="Int32" Nullable="false" />
+          <Property Name="RevPax" Type="Int32" />
+          <Property Name="TotalPax" Type="Int32" />
+          <Property Name="FuelUnitID" Type="Int32" />
+          <Property Name="FuelArrival" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="FuelDeparture" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="UpliftLtr" Type="Double" />
+          <Property Name="UpliftLbs" Type="Double" />
+          <Property Name="UpliftKg" Type="Double" />
+          <Property Name="UsedFuel" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="TotalSeat" Type="Int32" />
+          <Property Name="BaggageWeight" Type="Int32" Nullable="false" />
+          <Property Name="CargoWeight" Type="Int32" Nullable="false" />
+          <Property Name="Freight" Type="Int32" />
+          <Property Name="BaggageWeightLbs" Type="Double" />
+          <Property Name="BaggageWeightKg" Type="Double" />
+          <Property Name="CargoWeightLbs" Type="Double" />
+          <Property Name="CargoWeightKg" Type="Double" />
+          <Property Name="FreightLbs" Type="Double" />
+          <Property Name="FreightKg" Type="Double" />
+          <Property Name="FlightDate" Type="DateTime" Precision="3" />
+          <Property Name="CargoCount" Type="Int32" />
+          <Property Name="BaggageCount" Type="Int32" />
+          <Property Name="JLBlockTime" Type="Int32" />
+          <Property Name="JLFlightTime" Type="Int32" />
+          <Property Name="FPFuel" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="FPTripFuel" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="MaxWeightTO" Type="Int32" />
+          <Property Name="MaxWeightLND" Type="Int32" />
+          <Property Name="MaxWeighUnit" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="ChrCode" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ChrTitle" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ChrCapacity" Type="Int32" />
+          <Property Name="ChrAdult" Type="Int32" />
+          <Property Name="ChrChild" Type="Int32" />
+          <Property Name="ChrInfant" Type="Int32" />
+          <Property Name="PMonth" Type="Int32" />
+          <Property Name="PMonthName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PDayName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FlightType2" Type="String" Nullable="false" MaxLength="11" FixedLength="false" Unicode="true" />
+          <Property Name="FlightIndex" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="AirlineSold" Type="Int32" />
+          <Property Name="CherterSold" Type="Int32" />
+          <Property Name="OverSeat" Type="Int32" />
+          <Property Name="EmptySeat" Type="Int32" />
+          <Property Name="DelayReason" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="StationIncome" Type="Double" />
+          <Property Name="TotalRemark" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="Route" Type="String" MaxLength="511" FixedLength="false" Unicode="true" />
+          <Property Name="PDate" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IsDepInt" Type="Int32" Nullable="false" />
+          <Property Name="IsArrInt" Type="Int32" Nullable="false" />
+          <Property Name="Items" Type="Int32" />
+          <Property Name="DelayRemark1" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="DelayRemark2" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="DelayCodes" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="P1Name" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="IPName" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="P2Name" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="P1Id" Type="Int32" />
+          <Property Name="P2Id" Type="Int32" />
+          <Property Name="IPId" Type="Int32" />
+        </EntityType>
+        <EntityType Name="ViewFlightDaily">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="FlightId" />
+            <PropertyRef Name="FlightStatus" />
+            <PropertyRef Name="PaxChild" />
+            <PropertyRef Name="PaxInfant" />
+            <PropertyRef Name="PaxAdult" />
+            <PropertyRef Name="BaggageWeight" />
+            <PropertyRef Name="CargoWeight" />
+            <PropertyRef Name="FlightType2" />
+            <PropertyRef Name="FlightIndex" />
+            <PropertyRef Name="TotalRemark" />
+            <PropertyRef Name="IsDepInt" />
+            <PropertyRef Name="IsArrInt" />
+            <PropertyRef Name="FixTime" />
+            <PropertyRef Name="IsINT" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="FlightId" Type="Int32" Nullable="false" />
+          <Property Name="FlightPlanId" Type="Int32" />
+          <Property Name="STD" Type="DateTime" Precision="3" />
+          <Property Name="STA" Type="DateTime" Precision="3" />
+          <Property Name="STDLocal" Type="DateTime" Precision="3" />
+          <Property Name="STALocal" Type="DateTime" Precision="3" />
+          <Property Name="Date" Type="DateTime" Precision="0" />
+          <Property Name="DateLocal" Type="DateTime" Precision="0" />
+          <Property Name="FlightStatusID" Type="Int32" />
+          <Property Name="RegisterID" Type="Int32" />
+          <Property Name="FlightTypeID" Type="Int32" />
+          <Property Name="AircraftType" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="TypeId" Type="Int32" />
+          <Property Name="FlightNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FromAirport" Type="Int32" />
+          <Property Name="FromAirportICAO" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ToAirport" Type="Int32" />
+          <Property Name="ToAirportICAO" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerId" Type="Int32" />
+          <Property Name="FromAirportIATA" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ToAirportIATA" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Register" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FlightStatus" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="ArrivalRemark" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="DepartureRemark" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="STDDay" Type="DateTime" Precision="0" />
+          <Property Name="STDDayLocal" Type="DateTime" Precision="0" />
+          <Property Name="STADay" Type="DateTime" Precision="0" />
+          <Property Name="TakeOffDay" Type="DateTime" Precision="0" />
+          <Property Name="TakeOffDayLocal" Type="DateTime" Precision="0" />
+          <Property Name="DelayOffBlock" Type="Int32" />
+          <Property Name="DelayTakeoff" Type="Int32" />
+          <Property Name="OSTA" Type="DateTime" Precision="3" />
+          <Property Name="OToAirportId" Type="Int32" />
+          <Property Name="OToAirportIATA" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="FPFlightHH" Type="Int32" />
+          <Property Name="FPFlightMM" Type="Int32" />
+          <Property Name="Departure" Type="DateTime" Precision="3" />
+          <Property Name="Arrival" Type="DateTime" Precision="3" />
+          <Property Name="BlockOff" Type="DateTime" Precision="3" />
+          <Property Name="BlockOn" Type="DateTime" Precision="3" />
+          <Property Name="TakeOff" Type="DateTime" Precision="3" />
+          <Property Name="Landing" Type="DateTime" Precision="3" />
+          <Property Name="BlockOffLocal" Type="DateTime" Precision="3" />
+          <Property Name="BlockOnLocal" Type="DateTime" Precision="3" />
+          <Property Name="TakeOffLocal" Type="DateTime" Precision="3" />
+          <Property Name="LandingLocal" Type="DateTime" Precision="3" />
+          <Property Name="DepartureLocal" Type="DateTime" Precision="3" />
+          <Property Name="ArrivalLocal" Type="DateTime" Precision="3" />
+          <Property Name="BlockTime" Type="Int32" />
+          <Property Name="ScheduledTime" Type="Int32" />
+          <Property Name="FlightTime" Type="Int32" />
+          <Property Name="status" Type="Int32" />
+          <Property Name="JLOffBlock" Type="DateTime" Precision="3" />
+          <Property Name="JLOnBlock" Type="DateTime" Precision="3" />
+          <Property Name="JLTakeOff" Type="DateTime" Precision="3" />
+          <Property Name="JLLanding" Type="DateTime" Precision="3" />
+          <Property Name="PFLR" Type="Int32" />
+          <Property Name="PaxChild" Type="Int32" Nullable="false" />
+          <Property Name="PaxInfant" Type="Int32" Nullable="false" />
+          <Property Name="PaxAdult" Type="Int32" Nullable="false" />
+          <Property Name="RevPax" Type="Int32" />
+          <Property Name="TotalPax" Type="Int32" />
+          <Property Name="FuelUnitID" Type="Int32" />
+          <Property Name="FuelArrival" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="FuelDeparture" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="UpliftLtr" Type="Double" />
+          <Property Name="UpliftLbs" Type="Double" />
+          <Property Name="UpliftKg" Type="Double" />
+          <Property Name="UsedFuel" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="TotalSeat" Type="Int32" />
+          <Property Name="BaggageWeight" Type="Int32" Nullable="false" />
+          <Property Name="CargoWeight" Type="Int32" Nullable="false" />
+          <Property Name="Freight" Type="Int32" />
+          <Property Name="BaggageWeightLbs" Type="Double" />
+          <Property Name="BaggageWeightKg" Type="Double" />
+          <Property Name="CargoWeightLbs" Type="Double" />
+          <Property Name="CargoWeightKg" Type="Double" />
+          <Property Name="FreightLbs" Type="Double" />
+          <Property Name="FreightKg" Type="Double" />
+          <Property Name="FlightDate" Type="DateTime" Precision="3" />
+          <Property Name="CargoCount" Type="Int32" />
+          <Property Name="BaggageCount" Type="Int32" />
+          <Property Name="JLBlockTime" Type="Int32" />
+          <Property Name="JLFlightTime" Type="Int32" />
+          <Property Name="FPFuel" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="FPTripFuel" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="MaxWeightTO" Type="Int32" />
+          <Property Name="MaxWeightLND" Type="Int32" />
+          <Property Name="MaxWeighUnit" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="ChrCode" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ChrTitle" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ChrCapacity" Type="Int32" />
+          <Property Name="ChrAdult" Type="Int32" />
+          <Property Name="ChrChild" Type="Int32" />
+          <Property Name="ChrInfant" Type="Int32" />
+          <Property Name="PMonth" Type="Int32" />
+          <Property Name="PMonthName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PDayName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PMonthTakeOff" Type="Int32" />
+          <Property Name="PMonthNameTakeOff" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PDayNameTakeOff" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FlightType2" Type="String" Nullable="false" MaxLength="11" FixedLength="false" Unicode="true" />
+          <Property Name="FlightIndex" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="AirlineSold" Type="Int32" />
+          <Property Name="CherterSold" Type="Int32" />
+          <Property Name="OverSeat" Type="Int32" />
+          <Property Name="EmptySeat" Type="Int32" />
+          <Property Name="DelayReason" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Distance" Type="Double" />
+          <Property Name="StationIncome" Type="Double" />
+          <Property Name="TotalRemark" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="Route" Type="String" MaxLength="511" FixedLength="false" Unicode="true" />
+          <Property Name="PDate" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="PDateTakeOff" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IsDepInt" Type="Int32" Nullable="false" />
+          <Property Name="IsArrInt" Type="Int32" Nullable="false" />
+          <Property Name="XRoute" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="FixTime" Type="Int32" Nullable="false" />
+          <Property Name="PYear" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="IsINT" Type="Int32" Nullable="false" />
+          <Property Name="cnl_reason" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="cnl_reason_id" Type="Int32" />
+          <Property Name="cnl_remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="flttype_title" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="FuelRemained" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="FuelActualTotal" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="FuelUsed" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="FuelRemaining" Type="Decimal" Precision="20" Scale="4" />
+          <Property Name="FuelRemainedKG" Type="Double" />
+          <Property Name="FuelActualTotalKG" Type="Double" />
+          <Property Name="FuelUsedKG" Type="Double" />
+          <Property Name="FuelRemainingKG" Type="Double" />
+          <Property Name="FuelRemainedLBS" Type="Double" />
+          <Property Name="FuelActualTotalLBS" Type="Double" />
+          <Property Name="FuelUsedLBS" Type="Double" />
+          <Property Name="FuelRemainingLBS" Type="Double" />
+          <Property Name="FuelRemainedLTR" Type="Double" />
+          <Property Name="FuelActualTotalLTR" Type="Double" />
+          <Property Name="FuelUsedLTR" Type="Double" />
+          <Property Name="FuelRemainingLTR" Type="Double" />
+          <Property Name="FuelDensity" Type="Decimal" Precision="18" Scale="4" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -6464,256 +6591,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ViewDelayedFlights">
-            <EntityTypeMapping TypeName="ModelEntities.ViewDelayedFlight">
-              <MappingFragment StoreEntitySet="ViewDelayedFlight">
-                <ScalarProperty Name="DelayCodes" ColumnName="DelayCodes" />
-                <ScalarProperty Name="DelayRemark2" ColumnName="DelayRemark2" />
-                <ScalarProperty Name="DelayRemark1" ColumnName="DelayRemark1" />
-                <ScalarProperty Name="Items" ColumnName="Items" />
-                <ScalarProperty Name="IsArrInt" ColumnName="IsArrInt" />
-                <ScalarProperty Name="IsDepInt" ColumnName="IsDepInt" />
-                <ScalarProperty Name="PDate" ColumnName="PDate" />
-                <ScalarProperty Name="Route" ColumnName="Route" />
-                <ScalarProperty Name="TotalRemark" ColumnName="TotalRemark" />
-                <ScalarProperty Name="StationIncome" ColumnName="StationIncome" />
-                <ScalarProperty Name="DelayReason" ColumnName="DelayReason" />
-                <ScalarProperty Name="EmptySeat" ColumnName="EmptySeat" />
-                <ScalarProperty Name="OverSeat" ColumnName="OverSeat" />
-                <ScalarProperty Name="CherterSold" ColumnName="CherterSold" />
-                <ScalarProperty Name="AirlineSold" ColumnName="AirlineSold" />
-                <ScalarProperty Name="FlightIndex" ColumnName="FlightIndex" />
-                <ScalarProperty Name="FlightType2" ColumnName="FlightType2" />
-                <ScalarProperty Name="PDayName" ColumnName="PDayName" />
-                <ScalarProperty Name="PMonthName" ColumnName="PMonthName" />
-                <ScalarProperty Name="PMonth" ColumnName="PMonth" />
-                <ScalarProperty Name="ChrInfant" ColumnName="ChrInfant" />
-                <ScalarProperty Name="ChrChild" ColumnName="ChrChild" />
-                <ScalarProperty Name="ChrAdult" ColumnName="ChrAdult" />
-                <ScalarProperty Name="ChrCapacity" ColumnName="ChrCapacity" />
-                <ScalarProperty Name="ChrTitle" ColumnName="ChrTitle" />
-                <ScalarProperty Name="ChrCode" ColumnName="ChrCode" />
-                <ScalarProperty Name="MaxWeighUnit" ColumnName="MaxWeighUnit" />
-                <ScalarProperty Name="MaxWeightLND" ColumnName="MaxWeightLND" />
-                <ScalarProperty Name="MaxWeightTO" ColumnName="MaxWeightTO" />
-                <ScalarProperty Name="FPTripFuel" ColumnName="FPTripFuel" />
-                <ScalarProperty Name="FPFuel" ColumnName="FPFuel" />
-                <ScalarProperty Name="JLFlightTime" ColumnName="JLFlightTime" />
-                <ScalarProperty Name="JLBlockTime" ColumnName="JLBlockTime" />
-                <ScalarProperty Name="BaggageCount" ColumnName="BaggageCount" />
-                <ScalarProperty Name="CargoCount" ColumnName="CargoCount" />
-                <ScalarProperty Name="FlightDate" ColumnName="FlightDate" />
-                <ScalarProperty Name="FreightKg" ColumnName="FreightKg" />
-                <ScalarProperty Name="FreightLbs" ColumnName="FreightLbs" />
-                <ScalarProperty Name="CargoWeightKg" ColumnName="CargoWeightKg" />
-                <ScalarProperty Name="CargoWeightLbs" ColumnName="CargoWeightLbs" />
-                <ScalarProperty Name="BaggageWeightKg" ColumnName="BaggageWeightKg" />
-                <ScalarProperty Name="BaggageWeightLbs" ColumnName="BaggageWeightLbs" />
-                <ScalarProperty Name="Freight" ColumnName="Freight" />
-                <ScalarProperty Name="CargoWeight" ColumnName="CargoWeight" />
-                <ScalarProperty Name="BaggageWeight" ColumnName="BaggageWeight" />
-                <ScalarProperty Name="TotalSeat" ColumnName="TotalSeat" />
-                <ScalarProperty Name="UsedFuel" ColumnName="UsedFuel" />
-                <ScalarProperty Name="UpliftKg" ColumnName="UpliftKg" />
-                <ScalarProperty Name="UpliftLbs" ColumnName="UpliftLbs" />
-                <ScalarProperty Name="UpliftLtr" ColumnName="UpliftLtr" />
-                <ScalarProperty Name="FuelDeparture" ColumnName="FuelDeparture" />
-                <ScalarProperty Name="FuelArrival" ColumnName="FuelArrival" />
-                <ScalarProperty Name="FuelUnitID" ColumnName="FuelUnitID" />
-                <ScalarProperty Name="TotalPax" ColumnName="TotalPax" />
-                <ScalarProperty Name="RevPax" ColumnName="RevPax" />
-                <ScalarProperty Name="PaxAdult" ColumnName="PaxAdult" />
-                <ScalarProperty Name="PaxInfant" ColumnName="PaxInfant" />
-                <ScalarProperty Name="PaxChild" ColumnName="PaxChild" />
-                <ScalarProperty Name="PFLR" ColumnName="PFLR" />
-                <ScalarProperty Name="JLLanding" ColumnName="JLLanding" />
-                <ScalarProperty Name="JLTakeOff" ColumnName="JLTakeOff" />
-                <ScalarProperty Name="JLOnBlock" ColumnName="JLOnBlock" />
-                <ScalarProperty Name="JLOffBlock" ColumnName="JLOffBlock" />
-                <ScalarProperty Name="status" ColumnName="status" />
-                <ScalarProperty Name="FlightTime" ColumnName="FlightTime" />
-                <ScalarProperty Name="ScheduledTime" ColumnName="ScheduledTime" />
-                <ScalarProperty Name="BlockTime" ColumnName="BlockTime" />
-                <ScalarProperty Name="ArrivalLocal" ColumnName="ArrivalLocal" />
-                <ScalarProperty Name="DepartureLocal" ColumnName="DepartureLocal" />
-                <ScalarProperty Name="LandingLocal" ColumnName="LandingLocal" />
-                <ScalarProperty Name="TakeOffLocal" ColumnName="TakeOffLocal" />
-                <ScalarProperty Name="BlockOnLocal" ColumnName="BlockOnLocal" />
-                <ScalarProperty Name="BlockOffLocal" ColumnName="BlockOffLocal" />
-                <ScalarProperty Name="Landing" ColumnName="Landing" />
-                <ScalarProperty Name="TakeOff" ColumnName="TakeOff" />
-                <ScalarProperty Name="BlockOn" ColumnName="BlockOn" />
-                <ScalarProperty Name="BlockOff" ColumnName="BlockOff" />
-                <ScalarProperty Name="Arrival" ColumnName="Arrival" />
-                <ScalarProperty Name="Departure" ColumnName="Departure" />
-                <ScalarProperty Name="FPFlightMM" ColumnName="FPFlightMM" />
-                <ScalarProperty Name="FPFlightHH" ColumnName="FPFlightHH" />
-                <ScalarProperty Name="OToAirportIATA" ColumnName="OToAirportIATA" />
-                <ScalarProperty Name="OToAirportId" ColumnName="OToAirportId" />
-                <ScalarProperty Name="OSTA" ColumnName="OSTA" />
-                <ScalarProperty Name="Delay" ColumnName="Delay" />
-                <ScalarProperty Name="DelayTakeoff" ColumnName="DelayTakeoff" />
-                <ScalarProperty Name="DelayOffBlock" ColumnName="DelayOffBlock" />
-                <ScalarProperty Name="STADay" ColumnName="STADay" />
-                <ScalarProperty Name="STDDayLocal" ColumnName="STDDayLocal" />
-                <ScalarProperty Name="STDDay" ColumnName="STDDay" />
-                <ScalarProperty Name="DepartureRemark" ColumnName="DepartureRemark" />
-                <ScalarProperty Name="ArrivalRemark" ColumnName="ArrivalRemark" />
-                <ScalarProperty Name="FlightStatus" ColumnName="FlightStatus" />
-                <ScalarProperty Name="Register" ColumnName="Register" />
-                <ScalarProperty Name="ToAirportIATA" ColumnName="ToAirportIATA" />
-                <ScalarProperty Name="FromAirportIATA" ColumnName="FromAirportIATA" />
-                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
-                <ScalarProperty Name="ToAirportICAO" ColumnName="ToAirportICAO" />
-                <ScalarProperty Name="ToAirport" ColumnName="ToAirport" />
-                <ScalarProperty Name="FromAirportICAO" ColumnName="FromAirportICAO" />
-                <ScalarProperty Name="FromAirport" ColumnName="FromAirport" />
-                <ScalarProperty Name="FlightNumber" ColumnName="FlightNumber" />
-                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
-                <ScalarProperty Name="AircraftType" ColumnName="AircraftType" />
-                <ScalarProperty Name="FlightTypeID" ColumnName="FlightTypeID" />
-                <ScalarProperty Name="RegisterID" ColumnName="RegisterID" />
-                <ScalarProperty Name="FlightStatusID" ColumnName="FlightStatusID" />
-                <ScalarProperty Name="DateLocal" ColumnName="DateLocal" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="STALocal" ColumnName="STALocal" />
-                <ScalarProperty Name="STDLocal" ColumnName="STDLocal" />
-                <ScalarProperty Name="STA" ColumnName="STA" />
-                <ScalarProperty Name="STD" ColumnName="STD" />
-                <ScalarProperty Name="FlightPlanId" ColumnName="FlightPlanId" />
-                <ScalarProperty Name="FlightId" ColumnName="FlightId" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ViewFlightDailies">
-            <EntityTypeMapping TypeName="ModelEntities.ViewFlightDaily">
-              <MappingFragment StoreEntitySet="ViewFlightDaily">
-                <ScalarProperty Name="IsINT" ColumnName="IsINT" />
-                <ScalarProperty Name="PYear" ColumnName="PYear" />
-                <ScalarProperty Name="FixTime" ColumnName="FixTime" />
-                <ScalarProperty Name="XRoute" ColumnName="XRoute" />
-                <ScalarProperty Name="IsArrInt" ColumnName="IsArrInt" />
-                <ScalarProperty Name="IsDepInt" ColumnName="IsDepInt" />
-                <ScalarProperty Name="PDateTakeOff" ColumnName="PDateTakeOff" />
-                <ScalarProperty Name="PDate" ColumnName="PDate" />
-                <ScalarProperty Name="Route" ColumnName="Route" />
-                <ScalarProperty Name="TotalRemark" ColumnName="TotalRemark" />
-                <ScalarProperty Name="StationIncome" ColumnName="StationIncome" />
-                <ScalarProperty Name="Distance" ColumnName="Distance" />
-                <ScalarProperty Name="DelayReason" ColumnName="DelayReason" />
-                <ScalarProperty Name="EmptySeat" ColumnName="EmptySeat" />
-                <ScalarProperty Name="OverSeat" ColumnName="OverSeat" />
-                <ScalarProperty Name="CherterSold" ColumnName="CherterSold" />
-                <ScalarProperty Name="AirlineSold" ColumnName="AirlineSold" />
-                <ScalarProperty Name="FlightIndex" ColumnName="FlightIndex" />
-                <ScalarProperty Name="FlightType2" ColumnName="FlightType2" />
-                <ScalarProperty Name="PDayNameTakeOff" ColumnName="PDayNameTakeOff" />
-                <ScalarProperty Name="PMonthNameTakeOff" ColumnName="PMonthNameTakeOff" />
-                <ScalarProperty Name="PMonthTakeOff" ColumnName="PMonthTakeOff" />
-                <ScalarProperty Name="PDayName" ColumnName="PDayName" />
-                <ScalarProperty Name="PMonthName" ColumnName="PMonthName" />
-                <ScalarProperty Name="PMonth" ColumnName="PMonth" />
-                <ScalarProperty Name="ChrInfant" ColumnName="ChrInfant" />
-                <ScalarProperty Name="ChrChild" ColumnName="ChrChild" />
-                <ScalarProperty Name="ChrAdult" ColumnName="ChrAdult" />
-                <ScalarProperty Name="ChrCapacity" ColumnName="ChrCapacity" />
-                <ScalarProperty Name="ChrTitle" ColumnName="ChrTitle" />
-                <ScalarProperty Name="ChrCode" ColumnName="ChrCode" />
-                <ScalarProperty Name="MaxWeighUnit" ColumnName="MaxWeighUnit" />
-                <ScalarProperty Name="MaxWeightLND" ColumnName="MaxWeightLND" />
-                <ScalarProperty Name="MaxWeightTO" ColumnName="MaxWeightTO" />
-                <ScalarProperty Name="FPTripFuel" ColumnName="FPTripFuel" />
-                <ScalarProperty Name="FPFuel" ColumnName="FPFuel" />
-                <ScalarProperty Name="JLFlightTime" ColumnName="JLFlightTime" />
-                <ScalarProperty Name="JLBlockTime" ColumnName="JLBlockTime" />
-                <ScalarProperty Name="BaggageCount" ColumnName="BaggageCount" />
-                <ScalarProperty Name="CargoCount" ColumnName="CargoCount" />
-                <ScalarProperty Name="FlightDate" ColumnName="FlightDate" />
-                <ScalarProperty Name="FreightKg" ColumnName="FreightKg" />
-                <ScalarProperty Name="FreightLbs" ColumnName="FreightLbs" />
-                <ScalarProperty Name="CargoWeightKg" ColumnName="CargoWeightKg" />
-                <ScalarProperty Name="CargoWeightLbs" ColumnName="CargoWeightLbs" />
-                <ScalarProperty Name="BaggageWeightKg" ColumnName="BaggageWeightKg" />
-                <ScalarProperty Name="BaggageWeightLbs" ColumnName="BaggageWeightLbs" />
-                <ScalarProperty Name="Freight" ColumnName="Freight" />
-                <ScalarProperty Name="CargoWeight" ColumnName="CargoWeight" />
-                <ScalarProperty Name="BaggageWeight" ColumnName="BaggageWeight" />
-                <ScalarProperty Name="TotalSeat" ColumnName="TotalSeat" />
-                <ScalarProperty Name="UsedFuel" ColumnName="UsedFuel" />
-                <ScalarProperty Name="UpliftKg" ColumnName="UpliftKg" />
-                <ScalarProperty Name="UpliftLbs" ColumnName="UpliftLbs" />
-                <ScalarProperty Name="UpliftLtr" ColumnName="UpliftLtr" />
-                <ScalarProperty Name="FuelDeparture" ColumnName="FuelDeparture" />
-                <ScalarProperty Name="FuelArrival" ColumnName="FuelArrival" />
-                <ScalarProperty Name="FuelUnitID" ColumnName="FuelUnitID" />
-                <ScalarProperty Name="TotalPax" ColumnName="TotalPax" />
-                <ScalarProperty Name="RevPax" ColumnName="RevPax" />
-                <ScalarProperty Name="PaxAdult" ColumnName="PaxAdult" />
-                <ScalarProperty Name="PaxInfant" ColumnName="PaxInfant" />
-                <ScalarProperty Name="PaxChild" ColumnName="PaxChild" />
-                <ScalarProperty Name="PFLR" ColumnName="PFLR" />
-                <ScalarProperty Name="JLLanding" ColumnName="JLLanding" />
-                <ScalarProperty Name="JLTakeOff" ColumnName="JLTakeOff" />
-                <ScalarProperty Name="JLOnBlock" ColumnName="JLOnBlock" />
-                <ScalarProperty Name="JLOffBlock" ColumnName="JLOffBlock" />
-                <ScalarProperty Name="status" ColumnName="status" />
-                <ScalarProperty Name="FlightTime" ColumnName="FlightTime" />
-                <ScalarProperty Name="ScheduledTime" ColumnName="ScheduledTime" />
-                <ScalarProperty Name="BlockTime" ColumnName="BlockTime" />
-                <ScalarProperty Name="ArrivalLocal" ColumnName="ArrivalLocal" />
-                <ScalarProperty Name="DepartureLocal" ColumnName="DepartureLocal" />
-                <ScalarProperty Name="LandingLocal" ColumnName="LandingLocal" />
-                <ScalarProperty Name="TakeOffLocal" ColumnName="TakeOffLocal" />
-                <ScalarProperty Name="BlockOnLocal" ColumnName="BlockOnLocal" />
-                <ScalarProperty Name="BlockOffLocal" ColumnName="BlockOffLocal" />
-                <ScalarProperty Name="Landing" ColumnName="Landing" />
-                <ScalarProperty Name="TakeOff" ColumnName="TakeOff" />
-                <ScalarProperty Name="BlockOn" ColumnName="BlockOn" />
-                <ScalarProperty Name="BlockOff" ColumnName="BlockOff" />
-                <ScalarProperty Name="Arrival" ColumnName="Arrival" />
-                <ScalarProperty Name="Departure" ColumnName="Departure" />
-                <ScalarProperty Name="FPFlightMM" ColumnName="FPFlightMM" />
-                <ScalarProperty Name="FPFlightHH" ColumnName="FPFlightHH" />
-                <ScalarProperty Name="OToAirportIATA" ColumnName="OToAirportIATA" />
-                <ScalarProperty Name="OToAirportId" ColumnName="OToAirportId" />
-                <ScalarProperty Name="OSTA" ColumnName="OSTA" />
-                <ScalarProperty Name="DelayTakeoff" ColumnName="DelayTakeoff" />
-                <ScalarProperty Name="DelayOffBlock" ColumnName="DelayOffBlock" />
-                <ScalarProperty Name="TakeOffDayLocal" ColumnName="TakeOffDayLocal" />
-                <ScalarProperty Name="TakeOffDay" ColumnName="TakeOffDay" />
-                <ScalarProperty Name="STADay" ColumnName="STADay" />
-                <ScalarProperty Name="STDDayLocal" ColumnName="STDDayLocal" />
-                <ScalarProperty Name="STDDay" ColumnName="STDDay" />
-                <ScalarProperty Name="DepartureRemark" ColumnName="DepartureRemark" />
-                <ScalarProperty Name="ArrivalRemark" ColumnName="ArrivalRemark" />
-                <ScalarProperty Name="FlightStatus" ColumnName="FlightStatus" />
-                <ScalarProperty Name="Register" ColumnName="Register" />
-                <ScalarProperty Name="ToAirportIATA" ColumnName="ToAirportIATA" />
-                <ScalarProperty Name="FromAirportIATA" ColumnName="FromAirportIATA" />
-                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
-                <ScalarProperty Name="ToAirportICAO" ColumnName="ToAirportICAO" />
-                <ScalarProperty Name="ToAirport" ColumnName="ToAirport" />
-                <ScalarProperty Name="FromAirportICAO" ColumnName="FromAirportICAO" />
-                <ScalarProperty Name="FromAirport" ColumnName="FromAirport" />
-                <ScalarProperty Name="FlightNumber" ColumnName="FlightNumber" />
-                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
-                <ScalarProperty Name="AircraftType" ColumnName="AircraftType" />
-                <ScalarProperty Name="FlightTypeID" ColumnName="FlightTypeID" />
-                <ScalarProperty Name="RegisterID" ColumnName="RegisterID" />
-                <ScalarProperty Name="FlightStatusID" ColumnName="FlightStatusID" />
-                <ScalarProperty Name="DateLocal" ColumnName="DateLocal" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="STALocal" ColumnName="STALocal" />
-                <ScalarProperty Name="STDLocal" ColumnName="STDLocal" />
-                <ScalarProperty Name="STA" ColumnName="STA" />
-                <ScalarProperty Name="STD" ColumnName="STD" />
-                <ScalarProperty Name="FlightPlanId" ColumnName="FlightPlanId" />
-                <ScalarProperty Name="FlightId" ColumnName="FlightId" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ViewFlightPaxes">
             <EntityTypeMapping TypeName="ModelEntities.ViewFlightPax">
               <MappingFragment StoreEntitySet="ViewFlightPax">
@@ -6834,6 +6711,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySetMapping Name="FDPs">
             <EntityTypeMapping TypeName="ModelEntities.FDP">
               <MappingFragment StoreEntitySet="FDP">
+                <ScalarProperty Name="update_trigger" ColumnName="update_trigger" />
+                <ScalarProperty Name="actual_route" ColumnName="actual_route" />
                 <ScalarProperty Name="landing" ColumnName="landing" />
                 <ScalarProperty Name="takeoff" ColumnName="takeoff" />
                 <ScalarProperty Name="onblock" ColumnName="onblock" />
@@ -7642,20 +7521,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="helper_layover_ranked_new">
-            <EntityTypeMapping TypeName="ModelEntities.helper_layover_ranked_new">
-              <MappingFragment StoreEntitySet="helper_layover_ranked_new">
-                <ScalarProperty Name="is_lo" ColumnName="is_lo" />
-                <ScalarProperty Name="homebase" ColumnName="homebase" />
-                <ScalarProperty Name="arr_iata_prev" ColumnName="arr_iata_prev" />
-                <ScalarProperty Name="arr_iata" ColumnName="arr_iata" />
-                <ScalarProperty Name="onblock_last" ColumnName="onblock_last" />
-                <ScalarProperty Name="fdp_id" ColumnName="fdp_id" />
-                <ScalarProperty Name="crew_id" ColumnName="crew_id" />
-                <ScalarProperty Name="date" ColumnName="date" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="rpt_citypair_daily">
             <EntityTypeMapping TypeName="ModelEntities.rpt_citypair_daily">
               <MappingFragment StoreEntitySet="rpt_citypair_daily">
@@ -7679,6 +7544,310 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
                 <ScalarProperty Name="std" ColumnName="std" />
                 <ScalarProperty Name="date" ColumnName="date" />
                 <ScalarProperty Name="date_local" ColumnName="date_local" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="helper_layover_ranked_new">
+            <EntityTypeMapping TypeName="ModelEntities.helper_layover_ranked_new">
+              <MappingFragment StoreEntitySet="helper_layover_ranked_new">
+                <ScalarProperty Name="is_lo" ColumnName="is_lo" />
+                <ScalarProperty Name="homebase" ColumnName="homebase" />
+                <ScalarProperty Name="arr_iata" ColumnName="arr_iata" />
+                <ScalarProperty Name="onblock_last" ColumnName="onblock_last" />
+                <ScalarProperty Name="fdp_id" ColumnName="fdp_id" />
+                <ScalarProperty Name="crew_id" ColumnName="crew_id" />
+                <ScalarProperty Name="date" ColumnName="date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="helper_layover_ranked_new_prev">
+            <EntityTypeMapping TypeName="ModelEntities.helper_layover_ranked_new_prev">
+              <MappingFragment StoreEntitySet="helper_layover_ranked_new_prev">
+                <ScalarProperty Name="is_lo" ColumnName="is_lo" />
+                <ScalarProperty Name="homebase" ColumnName="homebase" />
+                <ScalarProperty Name="arr_iata_prev" ColumnName="arr_iata_prev" />
+                <ScalarProperty Name="arr_iata" ColumnName="arr_iata" />
+                <ScalarProperty Name="onblock_last" ColumnName="onblock_last" />
+                <ScalarProperty Name="fdp_id" ColumnName="fdp_id" />
+                <ScalarProperty Name="crew_id" ColumnName="crew_id" />
+                <ScalarProperty Name="date" ColumnName="date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ViewDelayedFlights">
+            <EntityTypeMapping TypeName="ModelEntities.ViewDelayedFlight">
+              <MappingFragment StoreEntitySet="ViewDelayedFlight">
+                <ScalarProperty Name="IPId" ColumnName="IPId" />
+                <ScalarProperty Name="P2Id" ColumnName="P2Id" />
+                <ScalarProperty Name="P1Id" ColumnName="P1Id" />
+                <ScalarProperty Name="P2Name" ColumnName="P2Name" />
+                <ScalarProperty Name="IPName" ColumnName="IPName" />
+                <ScalarProperty Name="P1Name" ColumnName="P1Name" />
+                <ScalarProperty Name="DelayCodes" ColumnName="DelayCodes" />
+                <ScalarProperty Name="DelayRemark2" ColumnName="DelayRemark2" />
+                <ScalarProperty Name="DelayRemark1" ColumnName="DelayRemark1" />
+                <ScalarProperty Name="Items" ColumnName="Items" />
+                <ScalarProperty Name="IsArrInt" ColumnName="IsArrInt" />
+                <ScalarProperty Name="IsDepInt" ColumnName="IsDepInt" />
+                <ScalarProperty Name="PDate" ColumnName="PDate" />
+                <ScalarProperty Name="Route" ColumnName="Route" />
+                <ScalarProperty Name="TotalRemark" ColumnName="TotalRemark" />
+                <ScalarProperty Name="StationIncome" ColumnName="StationIncome" />
+                <ScalarProperty Name="DelayReason" ColumnName="DelayReason" />
+                <ScalarProperty Name="EmptySeat" ColumnName="EmptySeat" />
+                <ScalarProperty Name="OverSeat" ColumnName="OverSeat" />
+                <ScalarProperty Name="CherterSold" ColumnName="CherterSold" />
+                <ScalarProperty Name="AirlineSold" ColumnName="AirlineSold" />
+                <ScalarProperty Name="FlightIndex" ColumnName="FlightIndex" />
+                <ScalarProperty Name="FlightType2" ColumnName="FlightType2" />
+                <ScalarProperty Name="PDayName" ColumnName="PDayName" />
+                <ScalarProperty Name="PMonthName" ColumnName="PMonthName" />
+                <ScalarProperty Name="PMonth" ColumnName="PMonth" />
+                <ScalarProperty Name="ChrInfant" ColumnName="ChrInfant" />
+                <ScalarProperty Name="ChrChild" ColumnName="ChrChild" />
+                <ScalarProperty Name="ChrAdult" ColumnName="ChrAdult" />
+                <ScalarProperty Name="ChrCapacity" ColumnName="ChrCapacity" />
+                <ScalarProperty Name="ChrTitle" ColumnName="ChrTitle" />
+                <ScalarProperty Name="ChrCode" ColumnName="ChrCode" />
+                <ScalarProperty Name="MaxWeighUnit" ColumnName="MaxWeighUnit" />
+                <ScalarProperty Name="MaxWeightLND" ColumnName="MaxWeightLND" />
+                <ScalarProperty Name="MaxWeightTO" ColumnName="MaxWeightTO" />
+                <ScalarProperty Name="FPTripFuel" ColumnName="FPTripFuel" />
+                <ScalarProperty Name="FPFuel" ColumnName="FPFuel" />
+                <ScalarProperty Name="JLFlightTime" ColumnName="JLFlightTime" />
+                <ScalarProperty Name="JLBlockTime" ColumnName="JLBlockTime" />
+                <ScalarProperty Name="BaggageCount" ColumnName="BaggageCount" />
+                <ScalarProperty Name="CargoCount" ColumnName="CargoCount" />
+                <ScalarProperty Name="FlightDate" ColumnName="FlightDate" />
+                <ScalarProperty Name="FreightKg" ColumnName="FreightKg" />
+                <ScalarProperty Name="FreightLbs" ColumnName="FreightLbs" />
+                <ScalarProperty Name="CargoWeightKg" ColumnName="CargoWeightKg" />
+                <ScalarProperty Name="CargoWeightLbs" ColumnName="CargoWeightLbs" />
+                <ScalarProperty Name="BaggageWeightKg" ColumnName="BaggageWeightKg" />
+                <ScalarProperty Name="BaggageWeightLbs" ColumnName="BaggageWeightLbs" />
+                <ScalarProperty Name="Freight" ColumnName="Freight" />
+                <ScalarProperty Name="CargoWeight" ColumnName="CargoWeight" />
+                <ScalarProperty Name="BaggageWeight" ColumnName="BaggageWeight" />
+                <ScalarProperty Name="TotalSeat" ColumnName="TotalSeat" />
+                <ScalarProperty Name="UsedFuel" ColumnName="UsedFuel" />
+                <ScalarProperty Name="UpliftKg" ColumnName="UpliftKg" />
+                <ScalarProperty Name="UpliftLbs" ColumnName="UpliftLbs" />
+                <ScalarProperty Name="UpliftLtr" ColumnName="UpliftLtr" />
+                <ScalarProperty Name="FuelDeparture" ColumnName="FuelDeparture" />
+                <ScalarProperty Name="FuelArrival" ColumnName="FuelArrival" />
+                <ScalarProperty Name="FuelUnitID" ColumnName="FuelUnitID" />
+                <ScalarProperty Name="TotalPax" ColumnName="TotalPax" />
+                <ScalarProperty Name="RevPax" ColumnName="RevPax" />
+                <ScalarProperty Name="PaxAdult" ColumnName="PaxAdult" />
+                <ScalarProperty Name="PaxInfant" ColumnName="PaxInfant" />
+                <ScalarProperty Name="PaxChild" ColumnName="PaxChild" />
+                <ScalarProperty Name="PFLR" ColumnName="PFLR" />
+                <ScalarProperty Name="JLLanding" ColumnName="JLLanding" />
+                <ScalarProperty Name="JLTakeOff" ColumnName="JLTakeOff" />
+                <ScalarProperty Name="JLOnBlock" ColumnName="JLOnBlock" />
+                <ScalarProperty Name="JLOffBlock" ColumnName="JLOffBlock" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="FlightTime" ColumnName="FlightTime" />
+                <ScalarProperty Name="ScheduledTime" ColumnName="ScheduledTime" />
+                <ScalarProperty Name="BlockTime" ColumnName="BlockTime" />
+                <ScalarProperty Name="ArrivalLocal" ColumnName="ArrivalLocal" />
+                <ScalarProperty Name="DepartureLocal" ColumnName="DepartureLocal" />
+                <ScalarProperty Name="LandingLocal" ColumnName="LandingLocal" />
+                <ScalarProperty Name="TakeOffLocal" ColumnName="TakeOffLocal" />
+                <ScalarProperty Name="BlockOnLocal" ColumnName="BlockOnLocal" />
+                <ScalarProperty Name="BlockOffLocal" ColumnName="BlockOffLocal" />
+                <ScalarProperty Name="Landing" ColumnName="Landing" />
+                <ScalarProperty Name="TakeOff" ColumnName="TakeOff" />
+                <ScalarProperty Name="BlockOn" ColumnName="BlockOn" />
+                <ScalarProperty Name="BlockOff" ColumnName="BlockOff" />
+                <ScalarProperty Name="Arrival" ColumnName="Arrival" />
+                <ScalarProperty Name="Departure" ColumnName="Departure" />
+                <ScalarProperty Name="FPFlightMM" ColumnName="FPFlightMM" />
+                <ScalarProperty Name="FPFlightHH" ColumnName="FPFlightHH" />
+                <ScalarProperty Name="OToAirportIATA" ColumnName="OToAirportIATA" />
+                <ScalarProperty Name="OToAirportId" ColumnName="OToAirportId" />
+                <ScalarProperty Name="OSTA" ColumnName="OSTA" />
+                <ScalarProperty Name="Delay" ColumnName="Delay" />
+                <ScalarProperty Name="DelayTakeoff" ColumnName="DelayTakeoff" />
+                <ScalarProperty Name="DelayOffBlock" ColumnName="DelayOffBlock" />
+                <ScalarProperty Name="STADay" ColumnName="STADay" />
+                <ScalarProperty Name="STDDayLocal" ColumnName="STDDayLocal" />
+                <ScalarProperty Name="STDDay" ColumnName="STDDay" />
+                <ScalarProperty Name="DepartureRemark" ColumnName="DepartureRemark" />
+                <ScalarProperty Name="ArrivalRemark" ColumnName="ArrivalRemark" />
+                <ScalarProperty Name="FlightStatus" ColumnName="FlightStatus" />
+                <ScalarProperty Name="Register" ColumnName="Register" />
+                <ScalarProperty Name="ToAirportIATA" ColumnName="ToAirportIATA" />
+                <ScalarProperty Name="FromAirportIATA" ColumnName="FromAirportIATA" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="ToAirportICAO" ColumnName="ToAirportICAO" />
+                <ScalarProperty Name="ToAirport" ColumnName="ToAirport" />
+                <ScalarProperty Name="FromAirportICAO" ColumnName="FromAirportICAO" />
+                <ScalarProperty Name="FromAirport" ColumnName="FromAirport" />
+                <ScalarProperty Name="FlightNumber" ColumnName="FlightNumber" />
+                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+                <ScalarProperty Name="AircraftType" ColumnName="AircraftType" />
+                <ScalarProperty Name="FlightTypeID" ColumnName="FlightTypeID" />
+                <ScalarProperty Name="RegisterID" ColumnName="RegisterID" />
+                <ScalarProperty Name="FlightStatusID" ColumnName="FlightStatusID" />
+                <ScalarProperty Name="DateLocal" ColumnName="DateLocal" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="STALocal" ColumnName="STALocal" />
+                <ScalarProperty Name="STDLocal" ColumnName="STDLocal" />
+                <ScalarProperty Name="STA" ColumnName="STA" />
+                <ScalarProperty Name="STD" ColumnName="STD" />
+                <ScalarProperty Name="FlightPlanId" ColumnName="FlightPlanId" />
+                <ScalarProperty Name="FlightId" ColumnName="FlightId" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ViewFlightDailies">
+            <EntityTypeMapping TypeName="ModelEntities.ViewFlightDaily">
+              <MappingFragment StoreEntitySet="ViewFlightDaily">
+                <ScalarProperty Name="FuelDensity" ColumnName="FuelDensity" />
+                <ScalarProperty Name="FuelRemainingLTR" ColumnName="FuelRemainingLTR" />
+                <ScalarProperty Name="FuelUsedLTR" ColumnName="FuelUsedLTR" />
+                <ScalarProperty Name="FuelActualTotalLTR" ColumnName="FuelActualTotalLTR" />
+                <ScalarProperty Name="FuelRemainedLTR" ColumnName="FuelRemainedLTR" />
+                <ScalarProperty Name="FuelRemainingLBS" ColumnName="FuelRemainingLBS" />
+                <ScalarProperty Name="FuelUsedLBS" ColumnName="FuelUsedLBS" />
+                <ScalarProperty Name="FuelActualTotalLBS" ColumnName="FuelActualTotalLBS" />
+                <ScalarProperty Name="FuelRemainedLBS" ColumnName="FuelRemainedLBS" />
+                <ScalarProperty Name="FuelRemainingKG" ColumnName="FuelRemainingKG" />
+                <ScalarProperty Name="FuelUsedKG" ColumnName="FuelUsedKG" />
+                <ScalarProperty Name="FuelActualTotalKG" ColumnName="FuelActualTotalKG" />
+                <ScalarProperty Name="FuelRemainedKG" ColumnName="FuelRemainedKG" />
+                <ScalarProperty Name="FuelRemaining" ColumnName="FuelRemaining" />
+                <ScalarProperty Name="FuelUsed" ColumnName="FuelUsed" />
+                <ScalarProperty Name="FuelActualTotal" ColumnName="FuelActualTotal" />
+                <ScalarProperty Name="FuelRemained" ColumnName="FuelRemained" />
+                <ScalarProperty Name="flttype_title" ColumnName="flttype_title" />
+                <ScalarProperty Name="cnl_remark" ColumnName="cnl_remark" />
+                <ScalarProperty Name="cnl_reason_id" ColumnName="cnl_reason_id" />
+                <ScalarProperty Name="cnl_reason" ColumnName="cnl_reason" />
+                <ScalarProperty Name="IsINT" ColumnName="IsINT" />
+                <ScalarProperty Name="PYear" ColumnName="PYear" />
+                <ScalarProperty Name="FixTime" ColumnName="FixTime" />
+                <ScalarProperty Name="XRoute" ColumnName="XRoute" />
+                <ScalarProperty Name="IsArrInt" ColumnName="IsArrInt" />
+                <ScalarProperty Name="IsDepInt" ColumnName="IsDepInt" />
+                <ScalarProperty Name="PDateTakeOff" ColumnName="PDateTakeOff" />
+                <ScalarProperty Name="PDate" ColumnName="PDate" />
+                <ScalarProperty Name="Route" ColumnName="Route" />
+                <ScalarProperty Name="TotalRemark" ColumnName="TotalRemark" />
+                <ScalarProperty Name="StationIncome" ColumnName="StationIncome" />
+                <ScalarProperty Name="Distance" ColumnName="Distance" />
+                <ScalarProperty Name="DelayReason" ColumnName="DelayReason" />
+                <ScalarProperty Name="EmptySeat" ColumnName="EmptySeat" />
+                <ScalarProperty Name="OverSeat" ColumnName="OverSeat" />
+                <ScalarProperty Name="CherterSold" ColumnName="CherterSold" />
+                <ScalarProperty Name="AirlineSold" ColumnName="AirlineSold" />
+                <ScalarProperty Name="FlightIndex" ColumnName="FlightIndex" />
+                <ScalarProperty Name="FlightType2" ColumnName="FlightType2" />
+                <ScalarProperty Name="PDayNameTakeOff" ColumnName="PDayNameTakeOff" />
+                <ScalarProperty Name="PMonthNameTakeOff" ColumnName="PMonthNameTakeOff" />
+                <ScalarProperty Name="PMonthTakeOff" ColumnName="PMonthTakeOff" />
+                <ScalarProperty Name="PDayName" ColumnName="PDayName" />
+                <ScalarProperty Name="PMonthName" ColumnName="PMonthName" />
+                <ScalarProperty Name="PMonth" ColumnName="PMonth" />
+                <ScalarProperty Name="ChrInfant" ColumnName="ChrInfant" />
+                <ScalarProperty Name="ChrChild" ColumnName="ChrChild" />
+                <ScalarProperty Name="ChrAdult" ColumnName="ChrAdult" />
+                <ScalarProperty Name="ChrCapacity" ColumnName="ChrCapacity" />
+                <ScalarProperty Name="ChrTitle" ColumnName="ChrTitle" />
+                <ScalarProperty Name="ChrCode" ColumnName="ChrCode" />
+                <ScalarProperty Name="MaxWeighUnit" ColumnName="MaxWeighUnit" />
+                <ScalarProperty Name="MaxWeightLND" ColumnName="MaxWeightLND" />
+                <ScalarProperty Name="MaxWeightTO" ColumnName="MaxWeightTO" />
+                <ScalarProperty Name="FPTripFuel" ColumnName="FPTripFuel" />
+                <ScalarProperty Name="FPFuel" ColumnName="FPFuel" />
+                <ScalarProperty Name="JLFlightTime" ColumnName="JLFlightTime" />
+                <ScalarProperty Name="JLBlockTime" ColumnName="JLBlockTime" />
+                <ScalarProperty Name="BaggageCount" ColumnName="BaggageCount" />
+                <ScalarProperty Name="CargoCount" ColumnName="CargoCount" />
+                <ScalarProperty Name="FlightDate" ColumnName="FlightDate" />
+                <ScalarProperty Name="FreightKg" ColumnName="FreightKg" />
+                <ScalarProperty Name="FreightLbs" ColumnName="FreightLbs" />
+                <ScalarProperty Name="CargoWeightKg" ColumnName="CargoWeightKg" />
+                <ScalarProperty Name="CargoWeightLbs" ColumnName="CargoWeightLbs" />
+                <ScalarProperty Name="BaggageWeightKg" ColumnName="BaggageWeightKg" />
+                <ScalarProperty Name="BaggageWeightLbs" ColumnName="BaggageWeightLbs" />
+                <ScalarProperty Name="Freight" ColumnName="Freight" />
+                <ScalarProperty Name="CargoWeight" ColumnName="CargoWeight" />
+                <ScalarProperty Name="BaggageWeight" ColumnName="BaggageWeight" />
+                <ScalarProperty Name="TotalSeat" ColumnName="TotalSeat" />
+                <ScalarProperty Name="UsedFuel" ColumnName="UsedFuel" />
+                <ScalarProperty Name="UpliftKg" ColumnName="UpliftKg" />
+                <ScalarProperty Name="UpliftLbs" ColumnName="UpliftLbs" />
+                <ScalarProperty Name="UpliftLtr" ColumnName="UpliftLtr" />
+                <ScalarProperty Name="FuelDeparture" ColumnName="FuelDeparture" />
+                <ScalarProperty Name="FuelArrival" ColumnName="FuelArrival" />
+                <ScalarProperty Name="FuelUnitID" ColumnName="FuelUnitID" />
+                <ScalarProperty Name="TotalPax" ColumnName="TotalPax" />
+                <ScalarProperty Name="RevPax" ColumnName="RevPax" />
+                <ScalarProperty Name="PaxAdult" ColumnName="PaxAdult" />
+                <ScalarProperty Name="PaxInfant" ColumnName="PaxInfant" />
+                <ScalarProperty Name="PaxChild" ColumnName="PaxChild" />
+                <ScalarProperty Name="PFLR" ColumnName="PFLR" />
+                <ScalarProperty Name="JLLanding" ColumnName="JLLanding" />
+                <ScalarProperty Name="JLTakeOff" ColumnName="JLTakeOff" />
+                <ScalarProperty Name="JLOnBlock" ColumnName="JLOnBlock" />
+                <ScalarProperty Name="JLOffBlock" ColumnName="JLOffBlock" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="FlightTime" ColumnName="FlightTime" />
+                <ScalarProperty Name="ScheduledTime" ColumnName="ScheduledTime" />
+                <ScalarProperty Name="BlockTime" ColumnName="BlockTime" />
+                <ScalarProperty Name="ArrivalLocal" ColumnName="ArrivalLocal" />
+                <ScalarProperty Name="DepartureLocal" ColumnName="DepartureLocal" />
+                <ScalarProperty Name="LandingLocal" ColumnName="LandingLocal" />
+                <ScalarProperty Name="TakeOffLocal" ColumnName="TakeOffLocal" />
+                <ScalarProperty Name="BlockOnLocal" ColumnName="BlockOnLocal" />
+                <ScalarProperty Name="BlockOffLocal" ColumnName="BlockOffLocal" />
+                <ScalarProperty Name="Landing" ColumnName="Landing" />
+                <ScalarProperty Name="TakeOff" ColumnName="TakeOff" />
+                <ScalarProperty Name="BlockOn" ColumnName="BlockOn" />
+                <ScalarProperty Name="BlockOff" ColumnName="BlockOff" />
+                <ScalarProperty Name="Arrival" ColumnName="Arrival" />
+                <ScalarProperty Name="Departure" ColumnName="Departure" />
+                <ScalarProperty Name="FPFlightMM" ColumnName="FPFlightMM" />
+                <ScalarProperty Name="FPFlightHH" ColumnName="FPFlightHH" />
+                <ScalarProperty Name="OToAirportIATA" ColumnName="OToAirportIATA" />
+                <ScalarProperty Name="OToAirportId" ColumnName="OToAirportId" />
+                <ScalarProperty Name="OSTA" ColumnName="OSTA" />
+                <ScalarProperty Name="DelayTakeoff" ColumnName="DelayTakeoff" />
+                <ScalarProperty Name="DelayOffBlock" ColumnName="DelayOffBlock" />
+                <ScalarProperty Name="TakeOffDayLocal" ColumnName="TakeOffDayLocal" />
+                <ScalarProperty Name="TakeOffDay" ColumnName="TakeOffDay" />
+                <ScalarProperty Name="STADay" ColumnName="STADay" />
+                <ScalarProperty Name="STDDayLocal" ColumnName="STDDayLocal" />
+                <ScalarProperty Name="STDDay" ColumnName="STDDay" />
+                <ScalarProperty Name="DepartureRemark" ColumnName="DepartureRemark" />
+                <ScalarProperty Name="ArrivalRemark" ColumnName="ArrivalRemark" />
+                <ScalarProperty Name="FlightStatus" ColumnName="FlightStatus" />
+                <ScalarProperty Name="Register" ColumnName="Register" />
+                <ScalarProperty Name="ToAirportIATA" ColumnName="ToAirportIATA" />
+                <ScalarProperty Name="FromAirportIATA" ColumnName="FromAirportIATA" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="ToAirportICAO" ColumnName="ToAirportICAO" />
+                <ScalarProperty Name="ToAirport" ColumnName="ToAirport" />
+                <ScalarProperty Name="FromAirportICAO" ColumnName="FromAirportICAO" />
+                <ScalarProperty Name="FromAirport" ColumnName="FromAirport" />
+                <ScalarProperty Name="FlightNumber" ColumnName="FlightNumber" />
+                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+                <ScalarProperty Name="AircraftType" ColumnName="AircraftType" />
+                <ScalarProperty Name="FlightTypeID" ColumnName="FlightTypeID" />
+                <ScalarProperty Name="RegisterID" ColumnName="RegisterID" />
+                <ScalarProperty Name="FlightStatusID" ColumnName="FlightStatusID" />
+                <ScalarProperty Name="DateLocal" ColumnName="DateLocal" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="STALocal" ColumnName="STALocal" />
+                <ScalarProperty Name="STDLocal" ColumnName="STDLocal" />
+                <ScalarProperty Name="STA" ColumnName="STA" />
+                <ScalarProperty Name="STD" ColumnName="STD" />
+                <ScalarProperty Name="FlightPlanId" ColumnName="FlightPlanId" />
+                <ScalarProperty Name="FlightId" ColumnName="FlightId" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

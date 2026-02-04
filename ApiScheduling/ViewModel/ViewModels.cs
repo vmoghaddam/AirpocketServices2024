@@ -292,6 +292,10 @@ namespace ApiScheduling.ViewModel
 
         public static int getRank(string rank)
         {
+            if (rank.StartsWith("TRI"))
+                return 13001;
+            if (rank.StartsWith("AP"))
+                return 13000;
             if (rank.StartsWith("IP"))
                 return 12000;
             if (rank.StartsWith("P1"))
@@ -320,6 +324,8 @@ namespace ApiScheduling.ViewModel
                 return 12002;
             if (rank.StartsWith("005"))
                 return 12003;
+            if (rank.StartsWith("004"))
+                return 12002;
 
             return -1;
 

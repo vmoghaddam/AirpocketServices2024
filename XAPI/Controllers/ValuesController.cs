@@ -36,6 +36,7 @@ using System.Data.SqlClient;
 using System.Threading;
 using System.Web.Script.Serialization;
 using System.Collections.Specialized;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace XAPI.Controllers
 {
@@ -56,11 +57,11 @@ namespace XAPI.Controllers
             catch (Exception ex)
             {
                 var msg = ex.Message;
-                if (ex.InnerException!= null)
-                    msg+=" "+ex.InnerException.Message;
+                if (ex.InnerException != null)
+                    msg += " " + ex.InnerException.Message;
                 return Ok(msg);
             }
-           
+
 
         }
 
@@ -87,7 +88,7 @@ namespace XAPI.Controllers
             if (!string.IsNullOrEmpty(no))
                 query = query.Where(q => q.FlightNumber == no);
 
-            var result = query.ToList().OrderBy(q => q.STD).Select(q => new
+            var result = query.ToList().OrderBy(q => q.Register).ThenBy(q => q.STD).Select(q => new
             {
                 FlightId = q.ID,
                 Date = ((DateTime)q.STDLocal).Date,
@@ -104,7 +105,10 @@ namespace XAPI.Controllers
                 DepartureUtc = q.Departure,
                 ArrivalUtc = q.Arrival,
                 q.Register,
-                q.FlightStatus
+                q.FlightStatus,
+                q.DelayOffBlock,
+                q.DelayTakeoff,
+                TotalDelay = q.DelayOffBlock
 
 
 
@@ -113,7 +117,74 @@ namespace XAPI.Controllers
             return Ok(result);
 
         }
+        private string FormatTwoDigits(Int32 i)
+        {
+            string functionReturnValue = null;
+            if (10 > i)
+            {
+                functionReturnValue = "0" + i.ToString();
+            }
+            else
+            {
+                functionReturnValue = i.ToString();
+            }
+            return functionReturnValue;
+        }
+        [Route("api/board/summary/{year}/{month}/{day}")]
+        [AcceptVerbs("POST", "GET")]
+        public IHttpActionResult GetBoardSummary(int cid, int year, int month, int day)
+        {
+            var context = new PPAEntities();
+            var date = new DateTime(year, month, day);
 
+            var summary = context.ViewBoardSummaries.Where(q => q.Date == date).FirstOrDefault();
+            if (summary == null)
+                return null;
+            double? delayRatio = null;
+            if (summary.BlockTime != 0)
+                delayRatio = Math.Round(summary.Delay * 1.0 / summary.BlockTime, 1, MidpointRounding.AwayFromZero) * 100;
+            double? cargoPerPax = null;
+            if (summary.Pax != 0)
+                cargoPerPax = Math.Round(summary.BaggageWeight * 1.0 / summary.Pax, 1, MidpointRounding.AwayFromZero);
+            double? paxLoad = null;
+            if (summary.TotalSeat != 0)
+                paxLoad = Math.Round(summary.Pax * 1.0 / summary.TotalSeat, 1, MidpointRounding.AwayFromZero) * 100;
+            var Hour = summary.Delay / 60;
+            var Minute = summary.Delay % 60;
+            var delayStr = FormatTwoDigits(Hour) + ":" + FormatTwoDigits(Minute);
+
+            Hour = summary.BlockTime / 60;
+            Minute = summary.BlockTime % 60;
+            var blockTimeStr = FormatTwoDigits(Hour) + ":" + FormatTwoDigits(Minute);
+
+            if (summary.Canceled != null && summary.TotalFlight != null)
+                summary.TotalFlight = (int)summary.TotalFlight - (int)summary.Canceled;
+
+            var result = new
+            {
+                summary.Arrived,
+                summary.Departed,
+                summary.TotalFlight,
+                summary.BaggageWeight,
+                summary.BlockTime,
+                summary.Canceled,
+                summary.Date,
+                summary.Delay,
+                summary.Diverted,
+                FuelActual = Math.Round(summary.FuelActual / 1000, 2),
+                summary.Pax,
+                summary.TotalSeat,
+                CargoPerPax = cargoPerPax,
+                DelayRatio = delayRatio,
+                PaxLoad = paxLoad,
+                DelayStr = delayStr,
+                BlockTimeStr = blockTimeStr,
+
+            };
+
+
+            return Ok(result);
+        }
 
         public class fltQry
         {
@@ -355,7 +426,8 @@ namespace XAPI.Controllers
 
                     // reqparm.Add("key", dto.key);
                     reqparm.Add("plan", result);
-                    byte[] responsebytes = client.UploadValues("https://airpocket.karunair.ir/xapi/api/ofp/karun", "POST", reqparm);
+                    //byte[] responsebytes = client.UploadValues("https://airpocket.karunair.ir/xapi/api/ofp/karun", "POST", reqparm);
+                    byte[] responsebytes = client.UploadValues("https://95.138.86.58/xapi/api/ofp/karun", "POST", reqparm);
                     responsebody = Encoding.UTF8.GetString(responsebytes);
 
                 }
@@ -1653,11 +1725,15 @@ namespace XAPI.Controllers
             }
 
         }
+
+
+        //2025-12-20
         [Route("api/loadsheet")]
         [AcceptVerbs("POST")]
         public IHttpActionResult PostLoadSheet(load_sheet_dto dto)
         {
-            //05-02
+          
+           
             try
             {
                 if (string.IsNullOrEmpty(dto.key))
@@ -1684,12 +1760,45 @@ namespace XAPI.Controllers
                         error_message = "Authorization key is wrong.",
                         ref_id = -1,
                     });
+               
                 var ctx = new PPAEntities();
                 ctx.Database.CommandTimeout = 1000;
+
+                FlightInformation flight = new FlightInformation();
+                var m = Regex.Match(dto.content, @"\bCPN(?<flightNo>\d{3,4})/(?<day>\d{2})\b");
+                if (m.Success)
+                {
+                    string flightNo = m.Groups["flightNo"].Value;
+                    //string day = m.Groups["day"].Value;
+                    int targetDay = int.Parse(m.Groups["day"].Value); 
+
+                    DateTime now = DateTime.Now;
+
+                    int maxDay = DateTime.DaysInMonth(now.Year, now.Month);
+                    if (targetDay < 1 || targetDay > maxDay)
+                        throw new ArgumentOutOfRangeException(nameof(targetDay), $"Day must be 1..{maxDay} for {now:yyyy-MM}.");
+
+                    DateTime adjusted_date = new DateTime(
+                        now.Year, now.Month, targetDay,
+                        00, 00, 00, 00,
+                        00
+                    );
+                    var d = adjusted_date.Date;   
+                    var next = d.AddDays(1);
+                    flight = ctx.FlightInformations.SingleOrDefault(q => q.FlightNumber == flightNo && q.STD >= d && q.STD < next);
+                }
+
+
+
                 var entity = new load_sheet_raw()
                 {
                     content = dto.content,
+                    flight_id = flight.ID,
                     date_create = DateTime.Now,
+                    RefId = dto.RefId,
+                    RowRefID = dto.RowRefID,
+                    Edition = dto.Edition,
+                    MessageType = dto.MessageType,
                     airline = "CASPIAN",
 
 
@@ -1763,7 +1872,8 @@ namespace XAPI.Controllers
 
                     }
                     return Ok(true);
-                } else if (dto.plan.Contains("JSKY") || dto.plan.Contains("Jsky"))
+                }
+                else if (dto.plan.Contains("JSKY") || dto.plan.Contains("Jsky"))
                 {
                     result = "JSKY";
                     var entity = new OFPSkyPuter()
@@ -1844,7 +1954,7 @@ namespace XAPI.Controllers
                         var reqparm = new System.Collections.Specialized.NameValueCollection();
                         reqparm.Add("key", dto.key);
                         reqparm.Add("plan", dto.plan);
-                        byte[] responsebytes = client.UploadValues(/*"https://xpi.chb.skybag.click/api/skyputer/chb"*/"https://chb.skybag.app/xpi/api/skyputer/chb", "POST", reqparm);
+                        byte[] responsebytes = client.UploadValues(/*"https://xpi.chb.skybag.click/api/skyputer/chb"*/"https://xpi.chabahar.app/api/skyputer/chb", "POST", reqparm);
                         responsebody = Encoding.UTF8.GetString(responsebytes);
 
                     }
@@ -2085,6 +2195,35 @@ namespace XAPI.Controllers
                     }
                     return Ok(true);
                 }
+                else if (dto.plan.Contains("LADAIRWAYS"))
+                {
+                    result = "LADAIRWAYS";
+                    var entity = new OFPSkyPuter()
+                    {
+                        OFP = dto.plan,
+                        DateCreate = DateTime.Now,
+                        UploadStatus = 0,
+
+
+                    };
+                    var ctx = new PPAEntities();
+                    ctx.Database.CommandTimeout = 1000;
+                    ctx.OFPSkyPuters.Add(entity);
+                    ctx.SaveChanges();
+
+
+                    string responsebody = "NO";
+                    using (WebClient client = new WebClient())
+                    {
+                        var reqparm = new System.Collections.Specialized.NameValueCollection();
+                        reqparm.Add("key", dto.key);
+                        reqparm.Add("plan", dto.plan);
+                        byte[] responsebytes = client.UploadValues("https://xpi.ladair.tech/api/skyputer/lad", "POST", reqparm);
+                        responsebody = Encoding.UTF8.GetString(responsebytes);
+
+                    }
+                    return Ok(true);
+                }
                 //VARESH
                 else if (dto.plan.Contains("VARESH"))
                 {
@@ -2109,7 +2248,7 @@ namespace XAPI.Controllers
                         var reqparm = new System.Collections.Specialized.NameValueCollection();
                         reqparm.Add("key", dto.key);
                         reqparm.Add("plan", dto.plan);
-                        byte[] responsebytes = client.UploadValues("https://zxpi.airpocket.online/api/skyputer/varesh", "POST", reqparm);
+                        byte[] responsebytes = client.UploadValues("https://pya.wx.myaero.tech/api/skyputer/varesh", "POST", reqparm);
                         responsebody = Encoding.UTF8.GetString(responsebytes);
 
                     }
@@ -2748,6 +2887,53 @@ namespace XAPI.Controllers
         }
 
 
+        [Route("api/skyputer/lad")]
+        [AcceptVerbs("POST")]
+        public IHttpActionResult PostSkyputerLad(skyputer dto)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(dto.key))
+                    return Ok("Authorization key not found.");
+                if (string.IsNullOrEmpty(dto.plan))
+                    return Ok("Plan cannot be empty.");
+                if (dto.key != "Skyputer@1359#")
+                    return Ok("Authorization key is wrong.");
+
+
+
+                var entity = new OFPSkyPuter()
+                {
+                    OFP = dto.plan,
+                    DateCreate = DateTime.Now,
+                    UploadStatus = 0,
+
+
+                };
+                var ctx = new PPAEntities();
+                ctx.Database.CommandTimeout = 1000;
+                ctx.OFPSkyPuters.Add(entity);
+                ctx.SaveChanges();
+                new Thread(async () =>
+                {
+                    GetSkyputerImport(entity.Id);
+                }).Start();
+                return Ok(true);
+
+
+
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += " Inner: " + ex.InnerException.Message;
+                return Ok(msg);
+            }
+
+        }
+
+
         [Route("api/skyputer/varesh")]
         [AcceptVerbs("POST")]
         public IHttpActionResult PostSkyputerVARESH(skyputer dto)
@@ -3064,7 +3250,7 @@ namespace XAPI.Controllers
                 fln = fln.Trim();
                 var no = fln.Contains(" ") ? fln.Substring(4) : fln.Substring(3);
                 var main_flight_no = fln.Replace(" ", "").ToUpper();
-                if (no.Length == 3 && no.StartsWith("0"))
+                if (no.Length == 3 && no.StartsWith("0") && opt != "FLYX")
                     no = "0" + no;
                 no = no.Replace(" ", "");
                 if (no.StartsWith("A"))
@@ -3191,13 +3377,13 @@ namespace XAPI.Controllers
                     try
                     {
                         plan.mod1_stn = _moda.Split(',')[0];
-                        plan.mod1 =Convert.ToInt32( _moda.Split(',')[1]);
+                        plan.mod1 = Convert.ToInt32(_moda.Split(',')[1]);
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
 
                     }
-                    
+
                 }
                 if (!string.IsNullOrEmpty(modb))
                 {
@@ -3211,7 +3397,7 @@ namespace XAPI.Controllers
                     {
 
                     }
-                    
+
                 }
                 try
                 {
@@ -3223,11 +3409,11 @@ namespace XAPI.Controllers
                                 plan.ralt += s + " ";
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
 
                 }
-                
+
 
 
                 plan.Source = "SkyPuter";
@@ -3476,44 +3662,53 @@ namespace XAPI.Controllers
                 var aldrf = parts.FirstOrDefault(q => q.StartsWith("aldrf:|"));
                 if (aldrf != null)
                 {
-                    aldrf = aldrf.Replace("aldrf:|", "");
-                    var aldrfRows = aldrf.Split('/').Where(q => !string.IsNullOrEmpty(q)).ToList();
-                    List<JObject> aldrfJson = new List<JObject>();
-                    idx = 0;
 
-                    foreach (var r in aldrfRows)
+                    try
                     {
-                        var procStr = "";
-                        var _r = r.Replace("=;", "= ;");
-                        var prts = _r.Split(new string[] { "  " }, StringSplitOptions.None).Where(q => !string.IsNullOrEmpty(q)).ToList();
-                        //  var prts2 = _r.Split(new string[] { " " }, StringSplitOptions.None);
-                        //foreach (var x in prts)
-                        //{
-                        //    var str = x.Replace("\"", "^").Replace("'", "#");
-                        //    var substr = str.Split('=')[0] + ":'" + str.Split('=')[1] + "'";
+                        aldrf = aldrf.Replace("aldrf:|", "");
+                        var aldrfRows = aldrf.Split('/').Where(q => !string.IsNullOrEmpty(q)).ToList();
+                        List<JObject> aldrfJson = new List<JObject>();
+                        idx = 0;
 
-                        //    procStr += substr;
-                        //    if (x != prts.Last())
-                        //        procStr += ",";
-                        //}
-                        procStr += "FL:'" + prts[0].Replace(" ", "").Replace("|", "") + "'";
-                        procStr += ",WIND:'" + prts[1].Replace(" ", "") + "'";
-                        procStr += ",FUEL:'" + prts[2].Replace(" ", "") + "'";
-                        procStr += ",T:'" + prts[3].Replace(" ", "") + "'";
-                        procStr += ",SH1:'" + prts[4].Replace(" ", "") + "'";
-                        procStr += ",SH2:'" + prts[5].Replace(" ", "") + "'";
-                        procStr += ",DEV:'" + prts[6].Replace(" ", "") + "'";
-                        procStr = "{" + procStr + "}";
+                        foreach (var r in aldrfRows)
+                        {
+                            var procStr = "";
+                            var _r = r.Replace("=;", "= ;");
+                            var prts = _r.Split(new string[] { "  " }, StringSplitOptions.None).Where(q => !string.IsNullOrEmpty(q)).ToList();
+                            //  var prts2 = _r.Split(new string[] { " " }, StringSplitOptions.None);
+                            //foreach (var x in prts)
+                            //{
+                            //    var str = x.Replace("\"", "^").Replace("'", "#");
+                            //    var substr = str.Split('=')[0] + ":'" + str.Split('=')[1] + "'";
 
-                        var jsonObj = JsonConvert.DeserializeObject<JObject>(procStr);
-                        var _key = ("aldrf_FL_" + jsonObj.GetValue("FL").ToString()).Replace(" ", "").ToLower();
-                        jsonObj.Add("_key", _key);
+                            //    procStr += substr;
+                            //    if (x != prts.Last())
+                            //        procStr += ",";
+                            //}
+                            procStr += "FL:'" + prts[0].Replace(" ", "").Replace("|", "") + "'";
+                            procStr += ",WIND:'" + prts[1].Replace(" ", "") + "'";
+                            procStr += ",FUEL:'" + prts[2].Replace(" ", "") + "'";
+                            procStr += ",T:'" + prts[3].Replace(" ", "") + "'";
+                            procStr += ",SH1:'" + prts[4].Replace(" ", "") + "'";
+                            procStr += ",SH2:'" + prts[5].Replace(" ", "") + "'";
+                            procStr += ",DEV:'" + prts[6].Replace(" ", "") + "'";
+                            procStr = "{" + procStr + "}";
 
-                        aldrfJson.Add(jsonObj);
-                        idx++;
+                            var jsonObj = JsonConvert.DeserializeObject<JObject>(procStr);
+                            var _key = ("aldrf_FL_" + jsonObj.GetValue("FL").ToString()).Replace(" ", "").ToLower();
+                            jsonObj.Add("_key", _key);
+
+                            aldrfJson.Add(jsonObj);
+                            idx++;
+
+                        }
+                        plan.JALDRF = "[" + string.Join(",", aldrfJson) + "]";
+                    }
+                    catch(Exception ex)
+                    {
 
                     }
-                    plan.JALDRF = "[" + string.Join(",", aldrfJson) + "]";
+                   
                     //FUCK
                 }
 
@@ -3794,7 +3989,7 @@ namespace XAPI.Controllers
 
                 }
 
-
+                //2025-11-30
                 var other = new List<fuelPrm>();
 
                 other.Add(new fuelPrm() { prm = "FPF", value = fpf });
@@ -4183,7 +4378,7 @@ namespace XAPI.Controllers
                 fltobj.ALT2 = alt2;
 
                 fltobj.ALT4 = plan.mod1_stn;
-                fltobj.ALT5=plan.mod2_stn;
+                fltobj.ALT5 = plan.mod2_stn;
 
 
                 plan.TextOutput = JsonConvert.SerializeObject(other);
@@ -4329,7 +4524,7 @@ namespace XAPI.Controllers
 
                 */
 
-               return Ok(true);
+                return Ok(true);
             }
             catch (DbEntityValidationException e)
             {
@@ -5617,6 +5812,157 @@ namespace XAPI.Controllers
         //    }
         //}
 
+
+        [Route("api/sign/loadsheet")]
+        [AcceptVerbs("POST")]
+        public IHttpActionResult sign_load_sheet(dynamic dto)
+        {
+            try
+            {
+                var context = new PPAEntities();
+
+                int flight_id = Convert.ToInt32(dto.flight_id);
+                int ld_id = Convert.ToInt32(dto.ld_id);
+                string flight_no = Convert.ToString(dto.flight_no);
+                DateTime flight_date = Convert.ToDateTime(dto.flight_date);
+                string lic_no = Convert.ToString(dto.lic_no);
+                string userid = Convert.ToString(dto.user_id);
+
+
+
+                var employee = context.ViewEmployees.Where(q => q.UserId == userid).FirstOrDefault();
+                if (employee != null)
+                {
+                    if (!employee.NDTNumber.ToLower().Contains(lic_no.ToLower()))
+                    {
+                        return Ok(
+                            new
+                            {
+                                IsSuccess = false,
+                                code = 100,
+                                message = "The license number is wrong."
+                            }
+                        );
+                    }
+                }
+                else
+                {
+                    if (lic_no.ToLower() != "lic4806")
+                    {
+                        return Ok(
+                            new
+                            {
+                                // done = false,
+                                IsSuccess = false,
+                                code = 100,
+                                message = "The license number is wrong."
+                            }
+                        );
+                    }
+                }
+
+
+
+                var appleg = context.AppLegs.FirstOrDefault(q => q.FlightNumber == flight_no && q.STD == flight_date);
+                var ld = context.load_sheet_raw.FirstOrDefault(q => q.id == ld_id);
+
+
+                ld.signed_by_id = employee != null ? employee.Id : -1;
+                ld.date_sign = DateTime.Now;
+
+                ld.pic = employee != null ? employee.Name : "PIC";
+                ld.lic_no = employee.NDTNumber.ToUpper();
+
+                context.SaveChanges();
+
+
+                return Ok(new { IsSuccess = true, message = "succeeded" });
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += "   INNER: " + ex.InnerException.Message;
+                //return Ok(new
+                //{
+                //    done = false,
+                //    code = 1,
+                //    message = msg,
+                //});
+                return Ok(new { IsSuccess = false, message = msg });
+            }
+        }
+
+
+        [Route("api/save/history/loadsheet")]
+        [AcceptVerbs("POST")]
+        public IHttpActionResult load_sheet_history(dynamic dto)
+        {
+            try
+            {
+                var context = new PPAEntities();
+
+                int flight_id = dto.TripInfo.RefID;
+                var entity = context.load_sheet_history.FirstOrDefault(q => q.flight_id == flight_id);
+
+                if (entity == null)
+                {
+                    entity = new load_sheet_history();
+                    entity.flight_id = flight_id;
+                    context.load_sheet_history.Add(entity);
+                }
+
+                entity.cockpit = dto.TripInfo.DOWData.CockpitCrew;
+                entity.cabin = dto.TripInfo.DOWData.CabinCrew;
+                entity.fsg = dto.TripInfo.DOWData.FSGCount;
+                entity.mos = dto.TripInfo.DOWData.MOS;
+                entity.pantry_code = dto.TripInfo.DOWData.Pantry;
+
+                entity.density = dto.TripInfo.FuelData.Density;
+                entity.total_fuel = dto.TripInfo.FuelData.TotalFuel;
+                entity.taxi_fuel = dto.TripInfo.FuelData.TaxiFuel;
+                entity.trip_fuel = dto.TripInfo.FuelData.TripFuel;
+
+                entity.rtow = dto.TripInfo.WeightLimitData.RTOW;
+
+                context.SaveChanges();
+
+                return Ok(new { IsSuccess = true, message = "succeeded" });
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += "   INNER: " + ex.InnerException.Message;
+
+                return Ok(new { IsSuccess = false, message = msg });
+            }
+        }
+
+        [Route("api/get/history/loadsheet/{fid}")]
+        [AcceptVerbs("POST")]
+        public IHttpActionResult get_load_sheet_history(int fid)
+        {
+            try
+            {
+                var context = new PPAEntities();
+                var entity = context.load_sheet_history.FirstOrDefault(q => q.flight_id == fid);
+
+
+                return Ok(new { IsSuccess = true, date = entity });
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += "   INNER: " + ex.InnerException.Message;
+                return Ok(new { IsSuccess = false, message = msg });
+            }
+        }
+
+
+
+        //2025-12-20
         [Route("api/get/loadsheet")]
         [AcceptVerbs("POST")]
         public IHttpActionResult GetLoadSheet(string flight_no, DateTime date)
@@ -5626,7 +5972,12 @@ namespace XAPI.Controllers
                 string date_formatted = " " + date.ToString("ddMMMyy").ToUpper() + " ";
                 string flight_number = $"%{flight_no}%";
                 string flight_date = $"%{date_formatted}%";
-                string query = "SELECT * FROM load_sheet_raw WHERE content LIKE @p0 and content LIKE @p1";
+                string query = @"
+    SELECT TOP 1 *
+    FROM load_sheet_raw
+    WHERE content LIKE @p0
+      AND content LIKE @p1
+    ORDER BY date_create DESC;";
                 try
                 {
                     load_sheet_raw raw_text = context.Database.SqlQuery<load_sheet_raw>(query, flight_number, flight_date).FirstOrDefault();
@@ -5723,9 +6074,18 @@ namespace XAPI.Controllers
                         }
                     }
 
+                    data.pic = raw_text.pic;
+                    data.date_sign = raw_text.date_sign;
+                    data.lic_no = raw_text.lic_no;
+                    data.Id = raw_text.id;
 
                     var result = new
                     {
+                        raw = text,
+                        pic = data.pic,
+                        date_sign = data.date_sign,
+                        lic_no = data.lic_no,
+                        Id = data.Id,
                         flight = data.Flight,
                         //route = GetRouteFromFlightString(data.Flight), // You can implement this logic
                         aircraft = data.AircraftReg,
@@ -5846,6 +6206,7 @@ namespace XAPI.Controllers
 
         public class LoadSheetData
         {
+            public int Id { get; set; }
             public string Airline { get; set; }
             public string Flight { get; set; }
             public string AircraftReg { get; set; }
@@ -5878,6 +6239,12 @@ namespace XAPI.Controllers
             public double FuelDensity { get; set; }
 
             public string RawLDM { get; set; }
+
+            public Nullable<int> flight_id { get; set; }
+            public Nullable<int> signed_by_id { get; set; }
+            public Nullable<System.DateTime> date_sign { get; set; }
+            public string pic { get; set; }
+            public string lic_no { get; set; }
         }
 
         public class skyputer
@@ -5892,7 +6259,10 @@ namespace XAPI.Controllers
         public class load_sheet_dto
         {
             public string content { get; set; }
-
+            public int RefId { get; set; }
+            public string Edition { get; set; }
+            public string RowRefID { get; set; }
+            public string MessageType { get; set; }
 
             public string key { get; set; }
         }

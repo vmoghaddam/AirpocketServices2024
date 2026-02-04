@@ -17,10 +17,12 @@ namespace AirpocketTRN.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public CourseType()
         {
+            this.Courses = new HashSet<Course>();
+            this.course_external = new HashSet<course_external>();
+            this.course_type_subject = new HashSet<course_type_subject>();
             this.CourseSyllabus = new HashSet<CourseSyllabu>();
             this.CourseTypeJobGroups = new HashSet<CourseTypeJobGroup>();
-            this.course_type_subject = new HashSet<course_type_subject>();
-            this.Courses = new HashSet<Course>();
+            this.coursetype_profile = new HashSet<coursetype_profile>();
         }
     
         public int Id { get; set; }
@@ -42,15 +44,23 @@ namespace AirpocketTRN.Models
         public Nullable<bool> ShowInList { get; set; }
         public Nullable<bool> IsMonitoringEnabled { get; set; }
         public string Abbreviation { get; set; }
+        public Nullable<int> IntervalInitial { get; set; }
+        public Nullable<int> DurationInitial { get; set; }
+        public string ProfileGroup { get; set; }
+        public Nullable<int> DurationRecurrent { get; set; }
     
         public virtual CertificateType CertificateType { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Course> Courses { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<course_external> course_external { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<course_type_subject> course_type_subject { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CourseSyllabu> CourseSyllabus { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CourseTypeJobGroup> CourseTypeJobGroups { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<course_type_subject> course_type_subject { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Course> Courses { get; set; }
+        public virtual ICollection<coursetype_profile> coursetype_profile { get; set; }
     }
 }

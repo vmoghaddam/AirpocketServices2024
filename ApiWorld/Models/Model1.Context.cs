@@ -25,7 +25,6 @@ namespace ApiWorld.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<AdequateNotam> AdequateNotams { get; set; }
         public virtual DbSet<AdequateNotamPartInformation> AdequateNotamPartInformations { get; set; }
         public virtual DbSet<AircraftConfiguration> AircraftConfigurations { get; set; }
         public virtual DbSet<AircraftConfigurationCrew> AircraftConfigurationCrews { get; set; }
@@ -49,10 +48,8 @@ namespace ApiWorld.Models
         public virtual DbSet<CustomReference> CustomReferences { get; set; }
         public virtual DbSet<DEPNotam> DEPNotams { get; set; }
         public virtual DbSet<DEPNotamPartInformation> DEPNotamPartInformations { get; set; }
-        public virtual DbSet<DEPTaf> DEPTafs { get; set; }
         public virtual DbSet<DESTNotam> DESTNotams { get; set; }
         public virtual DbSet<DESTNotamPartInformation> DESTNotamPartInformations { get; set; }
-        public virtual DbSet<DESTTaf> DESTTafs { get; set; }
         public virtual DbSet<DryOperating> DryOperatings { get; set; }
         public virtual DbSet<EcoInfo> EcoInfoes { get; set; }
         public virtual DbSet<EntryPoint> EntryPoints { get; set; }
@@ -65,13 +62,11 @@ namespace ApiWorld.Models
         public virtual DbSet<EtopsExitPoint> EtopsExitPoints { get; set; }
         public virtual DbSet<EtopsFullETP> EtopsFullETPs { get; set; }
         public virtual DbSet<EtopsFullETPAirport> EtopsFullETPAirports { get; set; }
-        public virtual DbSet<EtopsInformation> EtopsInformations { get; set; }
         public virtual DbSet<EtopsLimit> EtopsLimits { get; set; }
         public virtual DbSet<EtopsProfile> EtopsProfiles { get; set; }
         public virtual DbSet<ETOPSSuitableAirport> ETOPSSuitableAirports { get; set; }
         public virtual DbSet<ExitPoint> ExitPoints { get; set; }
         public virtual DbSet<ExtraFuel> ExtraFuels { get; set; }
-        public virtual DbSet<FIRNotam> FIRNotams { get; set; }
         public virtual DbSet<FIRNotamPartInformation> FIRNotamPartInformations { get; set; }
         public virtual DbSet<FIROverflightCost> FIROverflightCosts { get; set; }
         public virtual DbSet<FlightLevel> FlightLevels { get; set; }
@@ -102,9 +97,6 @@ namespace ApiWorld.Models
         public virtual DbSet<MessageRecipient> MessageRecipients { get; set; }
         public virtual DbSet<Metar> Metars { get; set; }
         public virtual DbSet<NextLeg> NextLegs { get; set; }
-        public virtual DbSet<Notam> Notams { get; set; }
-        public virtual DbSet<NotamPartInformation> NotamPartInformations { get; set; }
-        public virtual DbSet<OptFlightLevel> OptFlightLevels { get; set; }
         public virtual DbSet<OverflightCost> OverflightCosts { get; set; }
         public virtual DbSet<PassThroughValue> PassThroughValues { get; set; }
         public virtual DbSet<Pax> Paxes { get; set; }
@@ -169,6 +161,24 @@ namespace ApiWorld.Models
         public virtual DbSet<DepartureAlternateAirport> DepartureAlternateAirports { get; set; }
         public virtual DbSet<EnRouteAlternateAirport> EnRouteAlternateAirports { get; set; }
         public virtual DbSet<PlanningEnRouteAlternateAirport> PlanningEnRouteAlternateAirports { get; set; }
+        public virtual DbSet<FIRNotam> FIRNotams { get; set; }
+        public virtual DbSet<EtopsInformation> EtopsInformations { get; set; }
+        public virtual DbSet<DEPTaf> DEPTafs { get; set; }
+        public virtual DbSet<DESTTaf> DESTTafs { get; set; }
+        public virtual DbSet<AdequateNotam> AdequateNotams { get; set; }
+        public virtual DbSet<OFPPoint> OFPPoints { get; set; }
+        public virtual DbSet<OFPImport> OFPImports { get; set; }
+        public virtual DbSet<OptFlightLevel> OptFlightLevels { get; set; }
+        public virtual DbSet<OFPImportProp> OFPImportProps { get; set; }
+        public virtual DbSet<ofp_prop_history> ofp_prop_history { get; set; }
+        public virtual DbSet<PSSPoint> PSSPoints { get; set; }
+        public virtual DbSet<plan_flight> plan_flight { get; set; }
+        public virtual DbSet<FlightInformation> FlightInformations { get; set; }
         public virtual DbSet<Flight> Flights { get; set; }
+        public virtual DbSet<ato> atoes { get; set; }
+        public virtual DbSet<load_sheet_history> load_sheet_history { get; set; }
+        public virtual DbSet<load_sheet_raw> load_sheet_raw { get; set; }
+        public virtual DbSet<load_sheet_visit_history> load_sheet_visit_history { get; set; }
+        public virtual DbSet<view_load_sheet_raw> view_load_sheet_raw { get; set; }
     }
 }

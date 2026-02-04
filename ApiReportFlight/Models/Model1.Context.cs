@@ -40,8 +40,6 @@ namespace ApiReportFlight.Models
         public virtual DbSet<RptRefuse> RptRefuses { get; set; }
         public virtual DbSet<summary_flight_pax> summary_flight_pax { get; set; }
         public virtual DbSet<ViewCourseFDP> ViewCourseFDPs { get; set; }
-        public virtual DbSet<ViewDelayedFlight> ViewDelayedFlights { get; set; }
-        public virtual DbSet<ViewFlightDaily> ViewFlightDailies { get; set; }
         public virtual DbSet<ViewFlightPax> ViewFlightPaxes { get; set; }
         public virtual DbSet<ViewFormB> ViewFormBs { get; set; }
         public virtual DbSet<ViewFormC> ViewFormCs { get; set; }
@@ -58,7 +56,10 @@ namespace ApiReportFlight.Models
         public virtual DbSet<view_layover> view_layover { get; set; }
         public virtual DbSet<ViewCrew> ViewCrews { get; set; }
         public virtual DbSet<rpt_crew_route> rpt_crew_route { get; set; }
-        public virtual DbSet<helper_layover_ranked_new> helper_layover_ranked_new { get; set; }
         public virtual DbSet<rpt_citypair_daily> rpt_citypair_daily { get; set; }
+        public virtual DbSet<helper_layover_ranked_new> helper_layover_ranked_new { get; set; }
+        public virtual DbSet<helper_layover_ranked_new_prev> helper_layover_ranked_new_prev { get; set; }
+        public virtual DbSet<ViewDelayedFlight> ViewDelayedFlights { get; set; }
+        public virtual DbSet<ViewFlightDaily> ViewFlightDailies { get; set; }
     }
 }

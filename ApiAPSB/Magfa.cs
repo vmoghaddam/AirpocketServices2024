@@ -1,12 +1,15 @@
 ﻿using System.Collections.Generic;
 using System;
+using System.Configuration;
 
 public class Magfa
 {
-    string username = "varesh_85972"; //"caspianline";// "varesh_85972"; //; //"atlas_82173";// "varesh_85972"; //ConfigurationManager.AppSettings["magfa_user"];/* "taban";*/ //ConfigurationManager.AppSettings["magfa_user"]; //"caspianline"; //"flypersia_48000";
-    string password = "ATCHZBTXCiLMFOVK"; //"oJTyaWoLnQycrfdX"; //"ZQMihTmdLqCbnbrW";// "Ux4D3tBnYvOlZGd6";// //"YYDWMU5BAJQQHCuG"; //"Ot9V0CWKbH1HUQGK";// "oJTyaWoLnQycrfdX"; //ConfigurationManager.AppSettings["magfa_pass"];/*"ZIECXHgRSJT1QLMy";*/ //ConfigurationManager.AppSettings["magfa_pass"]; // "ZQMihTmdLqCbnbrW"; //"YYDWMU5BAJQQHCuG";
-    string domain = "varesh"; //"varesh"; //"http://atlasairplus.com/";// "magfa";// "tabanair"; /*"tabanair";*/
-    string senderNumber = "300085972"; //"3000748907"; //"300085972";//"300048000"; ////"300085972";// ConfigurationManager.AppSettings["magfa_no"]; /*"30006327";*/ // ConfigurationManager.AppSettings["magfa_no"]; // "3000748907"; //"300048000";
+  
+    string username = ConfigurationManager.AppSettings["magfa_user"];
+    string password = ConfigurationManager.AppSettings["magfa_pass"];
+    string domain = "magfa";
+    string senderNumber = ConfigurationManager.AppSettings["magfa_no"];
+
     public List<string> getStatus(List<Int64> refIds)
     {
 

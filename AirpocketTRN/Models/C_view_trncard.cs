@@ -34,5 +34,7 @@ namespace AirpocketTRN.Models
         public Nullable<System.DateTime> ExpireDate { get; set; }
         public Nullable<int> interval_month { get; set; }
         public Nullable<int> Remain { get; set; }
+        public string Status { get; set; }
+        public int StatusId { get; set; }
     }
 }

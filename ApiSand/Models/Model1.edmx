@@ -20,6 +20,12 @@
           <Property Name="filepath" Type="nvarchar(max)" />
           <Property Name="participants_count" Type="int" />
           <Property Name="sessions_count" Type="int" />
+          <Property Name="course_key" Type="varchar" MaxLength="1000" />
+          <Property Name="course_type" Type="varchar" MaxLength="255" />
+          <Property Name="ins1_id" Type="int" />
+          <Property Name="ins2_id" Type="int" />
+          <Property Name="remark" Type="varchar" MaxLength="500" />
+          <Property Name="temp_id" Type="int" />
         </EntityType>
         <EntityType Name="ava_error">
           <Key>
@@ -30,6 +36,15 @@
           <Property Name="file_path" Type="nvarchar(max)" />
           <Property Name="file_name" Type="nvarchar" MaxLength="1000" />
         </EntityType>
+        <EntityType Name="ava_folder">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="folder_name" Type="nvarchar" MaxLength="1000" />
+          <Property Name="person_id" Type="int" />
+          <Property Name="nid" Type="nvarchar" MaxLength="1000" />
+        </EntityType>
         <EntityType Name="ava_session">
           <Key>
             <PropertyRef Name="id" />
@@ -37,6 +52,7 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="course_id" Type="int" Nullable="false" />
           <Property Name="remark" Type="varchar" MaxLength="255" />
+          <Property Name="id2" Type="int" />
         </EntityType>
         <EntityType Name="ava_student">
           <Key>
@@ -47,6 +63,127 @@
           <Property Name="name" Type="nvarchar" MaxLength="1000" />
           <Property Name="name_fa" Type="nvarchar" MaxLength="1000" />
           <Property Name="attendance" Type="varchar" MaxLength="1000" />
+          <Property Name="source_name" Type="nvarchar" MaxLength="1000" />
+          <Property Name="source_person_id" Type="int" />
+        </EntityType>
+        <EntityType Name="ava_sub">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="title" Type="nvarchar" MaxLength="1000" />
+          <Property Name="fullpath" Type="nvarchar" MaxLength="2000" />
+          <Property Name="remark" Type="varchar" MaxLength="255" />
+          <Property Name="nid" Type="varchar" MaxLength="500" />
+          <Property Name="title2" Type="nvarchar" MaxLength="1000" />
+        </EntityType>
+        <EntityType Name="ava_sub_file">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="sub_id" Type="int" Nullable="false" />
+          <Property Name="title" Type="nvarchar" MaxLength="1000" />
+          <Property Name="fullpath" Type="nvarchar" MaxLength="2000" />
+          <Property Name="remark" Type="nvarchar" MaxLength="2000" />
+        </EntityType>
+        <EntityType Name="Course">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CourseTypeId" Type="int" Nullable="false" />
+          <Property Name="DateStart" Type="date" Nullable="false" />
+          <Property Name="DateStartP" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="DateEnd" Type="date" />
+          <Property Name="DateEndP" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="Instructor" Type="nvarchar" MaxLength="500" />
+          <Property Name="Location" Type="nvarchar" MaxLength="500" />
+          <Property Name="Department" Type="nvarchar" MaxLength="500" />
+          <Property Name="OrganizationId" Type="int" />
+          <Property Name="Duration" Type="int" />
+          <Property Name="DurationUnitId" Type="int" />
+          <Property Name="StatusId" Type="int" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="2000" />
+          <Property Name="Capacity" Type="int" />
+          <Property Name="Tuition" Type="int" />
+          <Property Name="CurrencyId" Type="int" />
+          <Property Name="DateDeadlineRegistration" Type="date" />
+          <Property Name="DateDeadlineRegistrationP" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="TrainingDirector" Type="nvarchar" MaxLength="500" />
+          <Property Name="Title" Type="nvarchar" MaxLength="500" />
+          <Property Name="AircraftTypeId" Type="int" />
+          <Property Name="AircraftModelId" Type="int" />
+          <Property Name="CaoTypeId" Type="int" />
+          <Property Name="Recurrent" Type="bit" />
+          <Property Name="Interval" Type="int" />
+          <Property Name="CalanderTypeId" Type="int" />
+          <Property Name="IsInside" Type="bit" />
+          <Property Name="Quarantine" Type="bit" />
+          <Property Name="DateStartPractical" Type="date" />
+          <Property Name="DateEndPractical" Type="date" />
+          <Property Name="DateStartPracticalP" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="DateEndPracticalP" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="DurationPractical" Type="int" />
+          <Property Name="DurationPracticalUnitId" Type="int" />
+          <Property Name="IsGeneral" Type="bit" />
+          <Property Name="CustomerId" Type="int" />
+          <Property Name="No" Type="nvarchar" MaxLength="500" />
+          <Property Name="IsNotificationEnabled" Type="bit" />
+          <Property Name="HoldingType" Type="varchar" MaxLength="500" />
+          <Property Name="SendLetter" Type="bit" />
+          <Property Name="InForm" Type="bit" />
+          <Property Name="Financial" Type="bit" />
+          <Property Name="Certificate" Type="bit" />
+          <Property Name="Instructor2" Type="int" />
+          <Property Name="SMSIns1" Type="varchar" MaxLength="2000" />
+          <Property Name="SMSIns2" Type="varchar" MaxLength="2000" />
+          <Property Name="SMSIns1Status" Type="varchar" MaxLength="500" />
+          <Property Name="SMSIns2Status" Type="varchar" MaxLength="500" />
+          <Property Name="SMSInsDate" Type="datetime2" Precision="7" />
+          <Property Name="Cost" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="AttForm" Type="varchar" MaxLength="1000" />
+          <Property Name="Date_Sign_Ins1" Type="datetime2" Precision="7" />
+          <Property Name="Date_Sign_Ins2" Type="datetime2" Precision="7" />
+          <Property Name="Date_Sign_Director" Type="datetime2" Precision="7" />
+          <Property Name="Date_Sign_Staff" Type="datetime2" Precision="7" />
+          <Property Name="Date_Sign_OPS" Type="datetime2" Precision="7" />
+          <Property Name="Date_Exam_Sign_Ins1" Type="datetime2" Precision="7" />
+          <Property Name="Date_Exam_Sign_Ins2" Type="datetime2" Precision="7" />
+          <Property Name="Date_Sessions_Synced" Type="datetime2" Precision="7" />
+          <Property Name="Date_Sessions_Instructor_Synced" Type="datetime2" Precision="7" />
+          <Property Name="ParentId" Type="int" />
+          <Property Name="Instructor3" Type="int" />
+          <Property Name="ExamType" Type="varchar" MaxLength="500" />
+          <Property Name="course_key" Type="varchar" MaxLength="255" />
+          <Property Name="ext_id" Type="int" />
+          <Property Name="course_key2" Type="varchar" MaxLength="1000" />
+        </EntityType>
+        <EntityType Name="CourseSession">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CourseId" Type="int" Nullable="false" />
+          <Property Name="DateStart" Type="datetime" />
+          <Property Name="DateEnd" Type="datetime" />
+          <Property Name="Done" Type="bit" Nullable="false" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="1000" />
+          <Property Name="Key" Type="varchar" MaxLength="500" />
+          <Property Name="DateStartUtc" Type="datetime" />
+          <Property Name="DateEndUtc" Type="datetime" />
+        </EntityType>
+        <EntityType Name="CourseSessionPresence">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SessionId" Type="int" />
+          <Property Name="Date" Type="datetime" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="500" />
+          <Property Name="PersonId" Type="int" />
+          <Property Name="SessionKey" Type="varchar" MaxLength="255" />
+          <Property Name="CourseId" Type="int" />
         </EntityType>
         <EntityType Name="fly_course">
           <Key>
@@ -86,6 +223,266 @@
           <Property Name="person_id" Type="int" />
           <Property Name="course_id" Type="int" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_ava.dbo.ava_view_student' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ava_view_student">
+          <Key>
+            <PropertyRef Name="person_id" />
+            <PropertyRef Name="course_id" />
+          </Key>
+          <Property Name="person_id" Type="int" Nullable="false" />
+          <Property Name="course_id" Type="int" Nullable="false" />
+          <Property Name="attendance" Type="varchar" MaxLength="1000" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_ava.dbo.ViewProfile' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ViewProfile">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Name2" />
+            <PropertyRef Name="PID" />
+            <PropertyRef Name="IsActive" />
+            <PropertyRef Name="JobGroup" />
+            <PropertyRef Name="JobGroupCode" />
+            <PropertyRef Name="JobGroupRoot" />
+            <PropertyRef Name="NID" />
+            <PropertyRef Name="FirstName" />
+            <PropertyRef Name="LastName" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="PersonId" />
+            <PropertyRef Name="Reserved1" />
+            <PropertyRef Name="Reserved2" />
+            <PropertyRef Name="Reserved3" />
+            <PropertyRef Name="Reserved4" />
+            <PropertyRef Name="Reserved5" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name2" Type="nvarchar" MaxLength="1001" Nullable="false" />
+          <Property Name="PID" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="CustomerId" Type="int" />
+          <Property Name="GroupId" Type="int" />
+          <Property Name="C1GroupId" Type="int" />
+          <Property Name="JobGroupC1" Type="varchar" MaxLength="500" />
+          <Property Name="JobGroupCodeC1" Type="varchar" MaxLength="500" />
+          <Property Name="C2GroupId" Type="int" />
+          <Property Name="JobGroupC2" Type="nvarchar" MaxLength="500" />
+          <Property Name="JobGroupCodeC2" Type="varchar" MaxLength="500" />
+          <Property Name="C3GroupId" Type="int" />
+          <Property Name="JobGroup" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="JobGroupCode" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="JobGroupRoot" Type="varchar" MaxLength="16" Nullable="false" />
+          <Property Name="PostRoot" Type="varchar" MaxLength="10" />
+          <Property Name="NID" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="1003" Nullable="false" />
+          <Property Name="Mobile" Type="nvarchar" MaxLength="500" />
+          <Property Name="PassportNumber" Type="nvarchar" MaxLength="500" />
+          <Property Name="IDNo" Type="nvarchar" MaxLength="500" />
+          <Property Name="PersonId" Type="int" Nullable="false" />
+          <Property Name="InActive" Type="bit" />
+          <Property Name="JobGroupMain" Type="nvarchar" MaxLength="500" />
+          <Property Name="JobGroupMainCode" Type="varchar" MaxLength="500" />
+          <Property Name="JobGroupCode2" Type="varchar" MaxLength="500" />
+          <Property Name="JobGroup2RootCode" Type="varchar" MaxLength="3" />
+          <Property Name="RemainNDT" Type="int" />
+          <Property Name="RemainCAO" Type="int" />
+          <Property Name="RemainPassport" Type="int" />
+          <Property Name="RemainFirstAid" Type="int" />
+          <Property Name="RemainCMC" Type="int" />
+          <Property Name="RemainLicence" Type="int" />
+          <Property Name="RemainLicenceIR" Type="int" />
+          <Property Name="RemainProficiency" Type="int" />
+          <Property Name="RemainProficiencyOPC" Type="int" />
+          <Property Name="RemainLPR" Type="int" />
+          <Property Name="RemainMedical" Type="int" />
+          <Property Name="RemainSEPT" Type="int" />
+          <Property Name="RemainSEPTP" Type="int" />
+          <Property Name="RemainDG" Type="int" />
+          <Property Name="RemainCRM" Type="int" />
+          <Property Name="RemainCCRM" Type="int" />
+          <Property Name="RemainAvSec" Type="int" />
+          <Property Name="RemainUpsetRecoveryTraining" Type="int" />
+          <Property Name="RemainColdWeather" Type="int" />
+          <Property Name="RemainHotWeather" Type="int" />
+          <Property Name="RemainTRI" Type="int" />
+          <Property Name="RemainTRE" Type="int" />
+          <Property Name="RemainRecurrent" Type="int" />
+          <Property Name="RemainLine" Type="int" />
+          <Property Name="RemainEGPWS" Type="int" />
+          <Property Name="RemainRSP" Type="int" />
+          <Property Name="RemainLRC" Type="int" />
+          <Property Name="RemainTypeMD" Type="int" />
+          <Property Name="RemainType737" Type="int" />
+          <Property Name="RemainTypeAirbus" Type="int" />
+          <Property Name="RemainHF" Type="int" />
+          <Property Name="RemainASD" Type="int" />
+          <Property Name="RemainGOM" Type="int" />
+          <Property Name="RemainASF" Type="int" />
+          <Property Name="RemainCC" Type="int" />
+          <Property Name="RemainERP" Type="int" />
+          <Property Name="RemainMB" Type="int" />
+          <Property Name="RemainPS" Type="int" />
+          <Property Name="RemainANNEX" Type="int" />
+          <Property Name="RemainDRM" Type="int" />
+          <Property Name="RemainFMTD" Type="int" />
+          <Property Name="RemainMEL" Type="int" />
+          <Property Name="RemainMET" Type="int" />
+          <Property Name="RemainPER" Type="int" />
+          <Property Name="RemainLPCC1" Type="int" />
+          <Property Name="RemainLPCC2" Type="int" />
+          <Property Name="RemainLPCC3" Type="int" />
+          <Property Name="RemainLineC1" Type="int" />
+          <Property Name="RemainLineC2" Type="int" />
+          <Property Name="RemainLineC3" Type="int" />
+          <Property Name="RemainRamp" Type="int" />
+          <Property Name="RemainAC" Type="int" />
+          <Property Name="RemainUPRT" Type="int" />
+          <Property Name="RemainSFI" Type="int" />
+          <Property Name="RemainSFE" Type="int" />
+          <Property Name="RemainTRI2" Type="int" />
+          <Property Name="RemainTRE2" Type="int" />
+          <Property Name="RemainIRI" Type="int" />
+          <Property Name="RemainIRE" Type="int" />
+          <Property Name="RemainCRI" Type="int" />
+          <Property Name="RemainCRE" Type="int" />
+          <Property Name="RemainSFI2" Type="int" />
+          <Property Name="RemainSFE2" Type="int" />
+          <Property Name="RemainAirCrew" Type="int" />
+          <Property Name="RemainAirOps" Type="int" />
+          <Property Name="RemainSOP" Type="int" />
+          <Property Name="RemainDiff31" Type="int" />
+          <Property Name="RemainDiff34" Type="int" />
+          <Property Name="RemainOMA1" Type="int" />
+          <Property Name="RemainOMB1" Type="int" />
+          <Property Name="RemainOMC1" Type="int" />
+          <Property Name="RemainOMA2" Type="int" />
+          <Property Name="RemainOMB2" Type="int" />
+          <Property Name="RemainOMC2" Type="int" />
+          <Property Name="RemainOMA3" Type="int" />
+          <Property Name="RemainOMB3" Type="int" />
+          <Property Name="RemainOMC3" Type="int" />
+          <Property Name="RemainMap" Type="int" />
+          <Property Name="RemainComRes" Type="int" />
+          <Property Name="RemainOPCC1" Type="int" />
+          <Property Name="RemainOPCC2" Type="int" />
+          <Property Name="RemainOPCC3" Type="int" />
+          <Property Name="Remain1" Type="int" />
+          <Property Name="Remain2" Type="int" />
+          <Property Name="Remain3" Type="int" />
+          <Property Name="Remain4" Type="int" />
+          <Property Name="Remain5" Type="int" />
+          <Property Name="Remain6" Type="int" />
+          <Property Name="Remain7" Type="int" />
+          <Property Name="Remain8" Type="int" />
+          <Property Name="Remain9" Type="int" />
+          <Property Name="Remain10" Type="int" />
+          <Property Name="Remain11" Type="int" />
+          <Property Name="Remain12" Type="int" />
+          <Property Name="Remain13" Type="int" />
+          <Property Name="Remain14" Type="int" />
+          <Property Name="Remain15" Type="int" />
+          <Property Name="Remain16" Type="int" />
+          <Property Name="Remain17" Type="int" />
+          <Property Name="Remain18" Type="int" />
+          <Property Name="Remain19" Type="int" />
+          <Property Name="Remain20" Type="int" />
+          <Property Name="Remain21" Type="int" />
+          <Property Name="Remain22" Type="int" />
+          <Property Name="Remain23" Type="int" />
+          <Property Name="Remain24" Type="int" />
+          <Property Name="Remain25" Type="int" />
+          <Property Name="Remain26" Type="int" />
+          <Property Name="Remain27" Type="int" />
+          <Property Name="Remain28" Type="int" />
+          <Property Name="Remain29" Type="int" />
+          <Property Name="Remain30" Type="int" />
+          <Property Name="Remain31" Type="int" />
+          <Property Name="Remain32" Type="int" />
+          <Property Name="Remain33" Type="int" />
+          <Property Name="Remain34" Type="int" />
+          <Property Name="Remain35" Type="int" />
+          <Property Name="BaseAirline" Type="varchar" MaxLength="500" />
+          <Property Name="HomeBase" Type="nvarchar" MaxLength="255" />
+          <Property Name="IsType737" Type="bit" />
+          <Property Name="IsTypeMD" Type="bit" />
+          <Property Name="IsTypeAirbus" Type="bit" />
+          <Property Name="IsTypeFokker" Type="bit" />
+          <Property Name="RemainTRG02" Type="int" />
+          <Property Name="Remain36" Type="int" />
+          <Property Name="Remain37" Type="int" />
+          <Property Name="Remain38" Type="int" />
+          <Property Name="Remain39" Type="int" />
+          <Property Name="Remain40" Type="int" />
+          <Property Name="Remain41" Type="int" />
+          <Property Name="Remain42" Type="int" />
+          <Property Name="Remain43" Type="int" />
+          <Property Name="Remain44" Type="int" />
+          <Property Name="Remain45" Type="int" />
+          <Property Name="Remain46" Type="int" />
+          <Property Name="Remain47" Type="int" />
+          <Property Name="Remain48" Type="int" />
+          <Property Name="Remain49" Type="int" />
+          <Property Name="Remain50" Type="int" />
+          <Property Name="Remain56" Type="int" />
+          <Property Name="Remain66" Type="int" />
+          <Property Name="Remain67" Type="int" />
+          <Property Name="Remain68" Type="int" />
+          <Property Name="Remain69" Type="int" />
+          <Property Name="Remain70" Type="int" />
+          <Property Name="Remain71" Type="int" />
+          <Property Name="Remain72" Type="int" />
+          <Property Name="Remain73" Type="int" />
+          <Property Name="Remain74" Type="int" />
+          <Property Name="Remain75" Type="int" />
+          <Property Name="Remain76" Type="int" />
+          <Property Name="Remain77" Type="int" />
+          <Property Name="Remain78" Type="int" />
+          <Property Name="Remain79" Type="int" />
+          <Property Name="Remain80" Type="int" />
+          <Property Name="Remain81" Type="int" />
+          <Property Name="Remain82" Type="int" />
+          <Property Name="Remain83" Type="int" />
+          <Property Name="Remain84" Type="int" />
+          <Property Name="Remain85" Type="int" />
+          <Property Name="RemainRIGHT_SEAT_QUALIFICATION" Type="int" />
+          <Property Name="RemainELT" Type="int" />
+          <Property Name="RemainRVSM" Type="int" />
+          <Property Name="RemainPILOT_INCAPACITATION" Type="int" />
+          <Property Name="RemainEFB" Type="int" />
+          <Property Name="RemainSafetyPilot" Type="int" />
+          <Property Name="RemainRouteCheck" Type="int" />
+          <Property Name="RemainPROFICIENCY_ASSESSMENT" Type="int" />
+          <Property Name="RemainMP" Type="int" />
+          <Property Name="RemainCALR" Type="int" />
+          <Property Name="RemainSpecialApproval" Type="int" />
+          <Property Name="RemainTRG01" Type="int" />
+          <Property Name="RemainTRG16" Type="int" />
+          <Property Name="RemainLOAD_CONTROL" Type="int" />
+          <Property Name="RemainPhase1" Type="int" />
+          <Property Name="RemainPhase2" Type="int" />
+          <Property Name="RemainPhase3" Type="int" />
+          <Property Name="RemainGround" Type="int" />
+          <Property Name="RemainFirstAidCockpit" Type="int" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" />
+          <Property Name="RemainTypeFoker50" Type="int" />
+          <Property Name="RemainTypeFoker100" Type="int" />
+          <Property Name="RemainDisManual" Type="int" />
+          <Property Name="Reserved1" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="Reserved2" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="Reserved3" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="Reserved4" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="Reserved5" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="PostCode" Type="varchar" MaxLength="500" />
+          <Property Name="PostTitle" Type="nvarchar" MaxLength="500" />
+          <Property Name="RemainSMSL2L3" Type="int" />
+          <Property Name="RemainSMS" Type="int" />
+          <Property Name="RemainSMSL1L2L3" Type="int" />
+          <Property Name="RemainTRG07A" Type="int" />
+          <Property Name="ImageUrl" Type="nvarchar" MaxLength="1000" />
+        </EntityType>
         <Association Name="fk_1000">
           <End Role="ava_course" Type="Self.ava_course" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -114,14 +511,323 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_course_parent">
+          <End Role="Course" Type="Self.Course" Multiplicity="0..1" />
+          <End Role="Course1" Type="Self.Course" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Course1">
+              <PropertyRef Name="ParentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CourseSessionPresence_CourseSession_Id">
+          <End Role="CourseSession" Type="Self.CourseSession" Multiplicity="0..1" />
+          <End Role="CourseSessionPresence" Type="Self.CourseSessionPresence" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CourseSession">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CourseSessionPresence">
+              <PropertyRef Name="SessionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_f_sub">
+          <End Role="ava_sub" Type="Self.ava_sub" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ava_sub_file" Type="Self.ava_sub_file" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ava_sub">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ava_sub_file">
+              <PropertyRef Name="sub_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_psco_course">
+          <End Role="Course" Type="Self.Course" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CourseSessionPresence" Type="Self.CourseSessionPresence" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CourseSessionPresence">
+              <PropertyRef Name="CourseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_session_course">
+          <End Role="Course" Type="Self.Course" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CourseSession" Type="Self.CourseSession" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CourseSession">
+              <PropertyRef Name="CourseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="ppaModelStoreContainer">
           <EntitySet Name="ava_course" EntityType="Self.ava_course" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ava_error" EntityType="Self.ava_error" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ava_folder" EntityType="Self.ava_folder" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ava_session" EntityType="Self.ava_session" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ava_student" EntityType="Self.ava_student" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ava_sub" EntityType="Self.ava_sub" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ava_sub_file" EntityType="Self.ava_sub_file" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Course" EntityType="Self.Course" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CourseSession" EntityType="Self.CourseSession" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CourseSessionPresence" EntityType="Self.CourseSessionPresence" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="fly_course" EntityType="Self.fly_course" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="fly_course_session" EntityType="Self.fly_course_session" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="fly_course_student" EntityType="Self.fly_course_student" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ava_view_student" EntityType="Self.ava_view_student" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ava_view_student].[person_id] AS [person_id], 
+    [ava_view_student].[course_id] AS [course_id], 
+    [ava_view_student].[attendance] AS [attendance]
+    FROM [dbo].[ava_view_student] AS [ava_view_student]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="ViewProfile" EntityType="Self.ViewProfile" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ViewProfile].[Id] AS [Id], 
+    [ViewProfile].[Name2] AS [Name2], 
+    [ViewProfile].[PID] AS [PID], 
+    [ViewProfile].[IsActive] AS [IsActive], 
+    [ViewProfile].[IsDeleted] AS [IsDeleted], 
+    [ViewProfile].[CustomerId] AS [CustomerId], 
+    [ViewProfile].[GroupId] AS [GroupId], 
+    [ViewProfile].[C1GroupId] AS [C1GroupId], 
+    [ViewProfile].[JobGroupC1] AS [JobGroupC1], 
+    [ViewProfile].[JobGroupCodeC1] AS [JobGroupCodeC1], 
+    [ViewProfile].[C2GroupId] AS [C2GroupId], 
+    [ViewProfile].[JobGroupC2] AS [JobGroupC2], 
+    [ViewProfile].[JobGroupCodeC2] AS [JobGroupCodeC2], 
+    [ViewProfile].[C3GroupId] AS [C3GroupId], 
+    [ViewProfile].[JobGroup] AS [JobGroup], 
+    [ViewProfile].[JobGroupCode] AS [JobGroupCode], 
+    [ViewProfile].[JobGroupRoot] AS [JobGroupRoot], 
+    [ViewProfile].[PostRoot] AS [PostRoot], 
+    [ViewProfile].[NID] AS [NID], 
+    [ViewProfile].[FirstName] AS [FirstName], 
+    [ViewProfile].[LastName] AS [LastName], 
+    [ViewProfile].[Name] AS [Name], 
+    [ViewProfile].[Mobile] AS [Mobile], 
+    [ViewProfile].[PassportNumber] AS [PassportNumber], 
+    [ViewProfile].[IDNo] AS [IDNo], 
+    [ViewProfile].[PersonId] AS [PersonId], 
+    [ViewProfile].[InActive] AS [InActive], 
+    [ViewProfile].[JobGroupMain] AS [JobGroupMain], 
+    [ViewProfile].[JobGroupMainCode] AS [JobGroupMainCode], 
+    [ViewProfile].[JobGroupCode2] AS [JobGroupCode2], 
+    [ViewProfile].[JobGroup2RootCode] AS [JobGroup2RootCode], 
+    [ViewProfile].[RemainNDT] AS [RemainNDT], 
+    [ViewProfile].[RemainCAO] AS [RemainCAO], 
+    [ViewProfile].[RemainPassport] AS [RemainPassport], 
+    [ViewProfile].[RemainFirstAid] AS [RemainFirstAid], 
+    [ViewProfile].[RemainCMC] AS [RemainCMC], 
+    [ViewProfile].[RemainLicence] AS [RemainLicence], 
+    [ViewProfile].[RemainLicenceIR] AS [RemainLicenceIR], 
+    [ViewProfile].[RemainProficiency] AS [RemainProficiency], 
+    [ViewProfile].[RemainProficiencyOPC] AS [RemainProficiencyOPC], 
+    [ViewProfile].[RemainLPR] AS [RemainLPR], 
+    [ViewProfile].[RemainMedical] AS [RemainMedical], 
+    [ViewProfile].[RemainSEPT] AS [RemainSEPT], 
+    [ViewProfile].[RemainSEPTP] AS [RemainSEPTP], 
+    [ViewProfile].[RemainDG] AS [RemainDG], 
+    [ViewProfile].[RemainCRM] AS [RemainCRM], 
+    [ViewProfile].[RemainCCRM] AS [RemainCCRM], 
+    [ViewProfile].[RemainAvSec] AS [RemainAvSec], 
+    [ViewProfile].[RemainUpsetRecoveryTraining] AS [RemainUpsetRecoveryTraining], 
+    [ViewProfile].[RemainColdWeather] AS [RemainColdWeather], 
+    [ViewProfile].[RemainHotWeather] AS [RemainHotWeather], 
+    [ViewProfile].[RemainTRI] AS [RemainTRI], 
+    [ViewProfile].[RemainTRE] AS [RemainTRE], 
+    [ViewProfile].[RemainRecurrent] AS [RemainRecurrent], 
+    [ViewProfile].[RemainLine] AS [RemainLine], 
+    [ViewProfile].[RemainEGPWS] AS [RemainEGPWS], 
+    [ViewProfile].[RemainRSP] AS [RemainRSP], 
+    [ViewProfile].[RemainLRC] AS [RemainLRC], 
+    [ViewProfile].[RemainTypeMD] AS [RemainTypeMD], 
+    [ViewProfile].[RemainType737] AS [RemainType737], 
+    [ViewProfile].[RemainTypeAirbus] AS [RemainTypeAirbus], 
+    [ViewProfile].[RemainHF] AS [RemainHF], 
+    [ViewProfile].[RemainASD] AS [RemainASD], 
+    [ViewProfile].[RemainGOM] AS [RemainGOM], 
+    [ViewProfile].[RemainASF] AS [RemainASF], 
+    [ViewProfile].[RemainCC] AS [RemainCC], 
+    [ViewProfile].[RemainERP] AS [RemainERP], 
+    [ViewProfile].[RemainMB] AS [RemainMB], 
+    [ViewProfile].[RemainPS] AS [RemainPS], 
+    [ViewProfile].[RemainANNEX] AS [RemainANNEX], 
+    [ViewProfile].[RemainDRM] AS [RemainDRM], 
+    [ViewProfile].[RemainFMTD] AS [RemainFMTD], 
+    [ViewProfile].[RemainMEL] AS [RemainMEL], 
+    [ViewProfile].[RemainMET] AS [RemainMET], 
+    [ViewProfile].[RemainPER] AS [RemainPER], 
+    [ViewProfile].[RemainLPCC1] AS [RemainLPCC1], 
+    [ViewProfile].[RemainLPCC2] AS [RemainLPCC2], 
+    [ViewProfile].[RemainLPCC3] AS [RemainLPCC3], 
+    [ViewProfile].[RemainLineC1] AS [RemainLineC1], 
+    [ViewProfile].[RemainLineC2] AS [RemainLineC2], 
+    [ViewProfile].[RemainLineC3] AS [RemainLineC3], 
+    [ViewProfile].[RemainRamp] AS [RemainRamp], 
+    [ViewProfile].[RemainAC] AS [RemainAC], 
+    [ViewProfile].[RemainUPRT] AS [RemainUPRT], 
+    [ViewProfile].[RemainSFI] AS [RemainSFI], 
+    [ViewProfile].[RemainSFE] AS [RemainSFE], 
+    [ViewProfile].[RemainTRI2] AS [RemainTRI2], 
+    [ViewProfile].[RemainTRE2] AS [RemainTRE2], 
+    [ViewProfile].[RemainIRI] AS [RemainIRI], 
+    [ViewProfile].[RemainIRE] AS [RemainIRE], 
+    [ViewProfile].[RemainCRI] AS [RemainCRI], 
+    [ViewProfile].[RemainCRE] AS [RemainCRE], 
+    [ViewProfile].[RemainSFI2] AS [RemainSFI2], 
+    [ViewProfile].[RemainSFE2] AS [RemainSFE2], 
+    [ViewProfile].[RemainAirCrew] AS [RemainAirCrew], 
+    [ViewProfile].[RemainAirOps] AS [RemainAirOps], 
+    [ViewProfile].[RemainSOP] AS [RemainSOP], 
+    [ViewProfile].[RemainDiff31] AS [RemainDiff31], 
+    [ViewProfile].[RemainDiff34] AS [RemainDiff34], 
+    [ViewProfile].[RemainOMA1] AS [RemainOMA1], 
+    [ViewProfile].[RemainOMB1] AS [RemainOMB1], 
+    [ViewProfile].[RemainOMC1] AS [RemainOMC1], 
+    [ViewProfile].[RemainOMA2] AS [RemainOMA2], 
+    [ViewProfile].[RemainOMB2] AS [RemainOMB2], 
+    [ViewProfile].[RemainOMC2] AS [RemainOMC2], 
+    [ViewProfile].[RemainOMA3] AS [RemainOMA3], 
+    [ViewProfile].[RemainOMB3] AS [RemainOMB3], 
+    [ViewProfile].[RemainOMC3] AS [RemainOMC3], 
+    [ViewProfile].[RemainMap] AS [RemainMap], 
+    [ViewProfile].[RemainComRes] AS [RemainComRes], 
+    [ViewProfile].[RemainOPCC1] AS [RemainOPCC1], 
+    [ViewProfile].[RemainOPCC2] AS [RemainOPCC2], 
+    [ViewProfile].[RemainOPCC3] AS [RemainOPCC3], 
+    [ViewProfile].[Remain1] AS [Remain1], 
+    [ViewProfile].[Remain2] AS [Remain2], 
+    [ViewProfile].[Remain3] AS [Remain3], 
+    [ViewProfile].[Remain4] AS [Remain4], 
+    [ViewProfile].[Remain5] AS [Remain5], 
+    [ViewProfile].[Remain6] AS [Remain6], 
+    [ViewProfile].[Remain7] AS [Remain7], 
+    [ViewProfile].[Remain8] AS [Remain8], 
+    [ViewProfile].[Remain9] AS [Remain9], 
+    [ViewProfile].[Remain10] AS [Remain10], 
+    [ViewProfile].[Remain11] AS [Remain11], 
+    [ViewProfile].[Remain12] AS [Remain12], 
+    [ViewProfile].[Remain13] AS [Remain13], 
+    [ViewProfile].[Remain14] AS [Remain14], 
+    [ViewProfile].[Remain15] AS [Remain15], 
+    [ViewProfile].[Remain16] AS [Remain16], 
+    [ViewProfile].[Remain17] AS [Remain17], 
+    [ViewProfile].[Remain18] AS [Remain18], 
+    [ViewProfile].[Remain19] AS [Remain19], 
+    [ViewProfile].[Remain20] AS [Remain20], 
+    [ViewProfile].[Remain21] AS [Remain21], 
+    [ViewProfile].[Remain22] AS [Remain22], 
+    [ViewProfile].[Remain23] AS [Remain23], 
+    [ViewProfile].[Remain24] AS [Remain24], 
+    [ViewProfile].[Remain25] AS [Remain25], 
+    [ViewProfile].[Remain26] AS [Remain26], 
+    [ViewProfile].[Remain27] AS [Remain27], 
+    [ViewProfile].[Remain28] AS [Remain28], 
+    [ViewProfile].[Remain29] AS [Remain29], 
+    [ViewProfile].[Remain30] AS [Remain30], 
+    [ViewProfile].[Remain31] AS [Remain31], 
+    [ViewProfile].[Remain32] AS [Remain32], 
+    [ViewProfile].[Remain33] AS [Remain33], 
+    [ViewProfile].[Remain34] AS [Remain34], 
+    [ViewProfile].[Remain35] AS [Remain35], 
+    [ViewProfile].[BaseAirline] AS [BaseAirline], 
+    [ViewProfile].[HomeBase] AS [HomeBase], 
+    [ViewProfile].[IsType737] AS [IsType737], 
+    [ViewProfile].[IsTypeMD] AS [IsTypeMD], 
+    [ViewProfile].[IsTypeAirbus] AS [IsTypeAirbus], 
+    [ViewProfile].[IsTypeFokker] AS [IsTypeFokker], 
+    [ViewProfile].[RemainTRG02] AS [RemainTRG02], 
+    [ViewProfile].[Remain36] AS [Remain36], 
+    [ViewProfile].[Remain37] AS [Remain37], 
+    [ViewProfile].[Remain38] AS [Remain38], 
+    [ViewProfile].[Remain39] AS [Remain39], 
+    [ViewProfile].[Remain40] AS [Remain40], 
+    [ViewProfile].[Remain41] AS [Remain41], 
+    [ViewProfile].[Remain42] AS [Remain42], 
+    [ViewProfile].[Remain43] AS [Remain43], 
+    [ViewProfile].[Remain44] AS [Remain44], 
+    [ViewProfile].[Remain45] AS [Remain45], 
+    [ViewProfile].[Remain46] AS [Remain46], 
+    [ViewProfile].[Remain47] AS [Remain47], 
+    [ViewProfile].[Remain48] AS [Remain48], 
+    [ViewProfile].[Remain49] AS [Remain49], 
+    [ViewProfile].[Remain50] AS [Remain50], 
+    [ViewProfile].[Remain56] AS [Remain56], 
+    [ViewProfile].[Remain66] AS [Remain66], 
+    [ViewProfile].[Remain67] AS [Remain67], 
+    [ViewProfile].[Remain68] AS [Remain68], 
+    [ViewProfile].[Remain69] AS [Remain69], 
+    [ViewProfile].[Remain70] AS [Remain70], 
+    [ViewProfile].[Remain71] AS [Remain71], 
+    [ViewProfile].[Remain72] AS [Remain72], 
+    [ViewProfile].[Remain73] AS [Remain73], 
+    [ViewProfile].[Remain74] AS [Remain74], 
+    [ViewProfile].[Remain75] AS [Remain75], 
+    [ViewProfile].[Remain76] AS [Remain76], 
+    [ViewProfile].[Remain77] AS [Remain77], 
+    [ViewProfile].[Remain78] AS [Remain78], 
+    [ViewProfile].[Remain79] AS [Remain79], 
+    [ViewProfile].[Remain80] AS [Remain80], 
+    [ViewProfile].[Remain81] AS [Remain81], 
+    [ViewProfile].[Remain82] AS [Remain82], 
+    [ViewProfile].[Remain83] AS [Remain83], 
+    [ViewProfile].[Remain84] AS [Remain84], 
+    [ViewProfile].[Remain85] AS [Remain85], 
+    [ViewProfile].[RemainRIGHT_SEAT_QUALIFICATION] AS [RemainRIGHT_SEAT_QUALIFICATION], 
+    [ViewProfile].[RemainELT] AS [RemainELT], 
+    [ViewProfile].[RemainRVSM] AS [RemainRVSM], 
+    [ViewProfile].[RemainPILOT_INCAPACITATION] AS [RemainPILOT_INCAPACITATION], 
+    [ViewProfile].[RemainEFB] AS [RemainEFB], 
+    [ViewProfile].[RemainSafetyPilot] AS [RemainSafetyPilot], 
+    [ViewProfile].[RemainRouteCheck] AS [RemainRouteCheck], 
+    [ViewProfile].[RemainPROFICIENCY_ASSESSMENT] AS [RemainPROFICIENCY_ASSESSMENT], 
+    [ViewProfile].[RemainMP] AS [RemainMP], 
+    [ViewProfile].[RemainCALR] AS [RemainCALR], 
+    [ViewProfile].[RemainSpecialApproval] AS [RemainSpecialApproval], 
+    [ViewProfile].[RemainTRG01] AS [RemainTRG01], 
+    [ViewProfile].[RemainTRG16] AS [RemainTRG16], 
+    [ViewProfile].[RemainLOAD_CONTROL] AS [RemainLOAD_CONTROL], 
+    [ViewProfile].[RemainPhase1] AS [RemainPhase1], 
+    [ViewProfile].[RemainPhase2] AS [RemainPhase2], 
+    [ViewProfile].[RemainPhase3] AS [RemainPhase3], 
+    [ViewProfile].[RemainGround] AS [RemainGround], 
+    [ViewProfile].[RemainFirstAidCockpit] AS [RemainFirstAidCockpit], 
+    [ViewProfile].[UserId] AS [UserId], 
+    [ViewProfile].[RemainTypeFoker50] AS [RemainTypeFoker50], 
+    [ViewProfile].[RemainTypeFoker100] AS [RemainTypeFoker100], 
+    [ViewProfile].[RemainDisManual] AS [RemainDisManual], 
+    [ViewProfile].[Reserved1] AS [Reserved1], 
+    [ViewProfile].[Reserved2] AS [Reserved2], 
+    [ViewProfile].[Reserved3] AS [Reserved3], 
+    [ViewProfile].[Reserved4] AS [Reserved4], 
+    [ViewProfile].[Reserved5] AS [Reserved5], 
+    [ViewProfile].[PostCode] AS [PostCode], 
+    [ViewProfile].[PostTitle] AS [PostTitle], 
+    [ViewProfile].[RemainSMSL2L3] AS [RemainSMSL2L3], 
+    [ViewProfile].[RemainSMS] AS [RemainSMS], 
+    [ViewProfile].[RemainSMSL1L2L3] AS [RemainSMSL1L2L3], 
+    [ViewProfile].[RemainTRG07A] AS [RemainTRG07A], 
+    [ViewProfile].[ImageUrl] AS [ImageUrl]
+    FROM [dbo].[ViewProfile] AS [ViewProfile]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="fk_1000" Association="Self.fk_1000">
             <End Role="ava_course" EntitySet="ava_course" />
             <End Role="ava_session" EntitySet="ava_session" />
@@ -129,6 +835,26 @@
           <AssociationSet Name="fk_2002" Association="Self.fk_2002">
             <End Role="ava_course" EntitySet="ava_course" />
             <End Role="ava_student" EntitySet="ava_student" />
+          </AssociationSet>
+          <AssociationSet Name="fk_course_parent" Association="Self.fk_course_parent">
+            <End Role="Course" EntitySet="Course" />
+            <End Role="Course1" EntitySet="Course" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CourseSessionPresence_CourseSession_Id" Association="Self.FK_CourseSessionPresence_CourseSession_Id">
+            <End Role="CourseSession" EntitySet="CourseSession" />
+            <End Role="CourseSessionPresence" EntitySet="CourseSessionPresence" />
+          </AssociationSet>
+          <AssociationSet Name="fk_f_sub" Association="Self.fk_f_sub">
+            <End Role="ava_sub" EntitySet="ava_sub" />
+            <End Role="ava_sub_file" EntitySet="ava_sub_file" />
+          </AssociationSet>
+          <AssociationSet Name="fk_psco_course" Association="Self.fk_psco_course">
+            <End Role="Course" EntitySet="Course" />
+            <End Role="CourseSessionPresence" EntitySet="CourseSessionPresence" />
+          </AssociationSet>
+          <AssociationSet Name="fk_session_course" Association="Self.fk_session_course">
+            <End Role="Course" EntitySet="Course" />
+            <End Role="CourseSession" EntitySet="CourseSession" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -139,18 +865,46 @@
           <EntitySet Name="fly_course" EntityType="ppaModel.fly_course" />
           <EntitySet Name="fly_course_session" EntityType="ppaModel.fly_course_session" />
           <EntitySet Name="fly_course_student" EntityType="ppaModel.fly_course_student" />
-          <EntitySet Name="ava_course" EntityType="ppaModel.ava_course" />
           <EntitySet Name="ava_student" EntityType="ppaModel.ava_student" />
-          <AssociationSet Name="fk_2002" Association="ppaModel.fk_2002">
-            <End Role="ava_course" EntitySet="ava_course" />
-            <End Role="ava_student" EntitySet="ava_student" />
-          </AssociationSet>
           <EntitySet Name="ava_session" EntityType="ppaModel.ava_session" />
+          <EntitySet Name="ava_error" EntityType="ppaModel.ava_error" />
+          <EntitySet Name="ava_course" EntityType="ppaModel.ava_course" />
+          <EntitySet Name="Courses" EntityType="ppaModel.Course" />
+          <EntitySet Name="CourseSessions" EntityType="ppaModel.CourseSession" />
+          <EntitySet Name="CourseSessionPresences" EntityType="ppaModel.CourseSessionPresence" />
           <AssociationSet Name="fk_1000" Association="ppaModel.fk_1000">
             <End Role="ava_course" EntitySet="ava_course" />
             <End Role="ava_session" EntitySet="ava_session" />
           </AssociationSet>
-          <EntitySet Name="ava_error" EntityType="ppaModel.ava_error" />
+          <AssociationSet Name="fk_2002" Association="ppaModel.fk_2002">
+            <End Role="ava_course" EntitySet="ava_course" />
+            <End Role="ava_student" EntitySet="ava_student" />
+          </AssociationSet>
+          <AssociationSet Name="fk_course_parent" Association="ppaModel.fk_course_parent">
+            <End Role="Course" EntitySet="Courses" />
+            <End Role="Course1" EntitySet="Courses" />
+          </AssociationSet>
+          <AssociationSet Name="fk_psco_course" Association="ppaModel.fk_psco_course">
+            <End Role="Course" EntitySet="Courses" />
+            <End Role="CourseSessionPresence" EntitySet="CourseSessionPresences" />
+          </AssociationSet>
+          <AssociationSet Name="fk_session_course" Association="ppaModel.fk_session_course">
+            <End Role="Course" EntitySet="Courses" />
+            <End Role="CourseSession" EntitySet="CourseSessions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CourseSessionPresence_CourseSession_Id" Association="ppaModel.FK_CourseSessionPresence_CourseSession_Id">
+            <End Role="CourseSession" EntitySet="CourseSessions" />
+            <End Role="CourseSessionPresence" EntitySet="CourseSessionPresences" />
+          </AssociationSet>
+          <EntitySet Name="ava_folder" EntityType="ppaModel.ava_folder" />
+          <EntitySet Name="ava_sub_file" EntityType="ppaModel.ava_sub_file" />
+          <EntitySet Name="ava_sub" EntityType="ppaModel.ava_sub" />
+          <AssociationSet Name="fk_f_sub" Association="ppaModel.fk_f_sub">
+            <End Role="ava_sub" EntitySet="ava_sub" />
+            <End Role="ava_sub_file" EntitySet="ava_sub_file" />
+          </AssociationSet>
+          <EntitySet Name="ViewProfiles" EntityType="ppaModel.ViewProfile" />
+          <EntitySet Name="ava_view_student" EntityType="ppaModel.ava_view_student" />
         </EntityContainer>
         <EntityType Name="fly_course">
           <Key>
@@ -190,6 +944,38 @@
           <Property Name="person_id" Type="Int32" />
           <Property Name="course_id" Type="Int32" />
         </EntityType>
+        <EntityType Name="ava_student">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="course_id" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="name_fa" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="attendance" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="source_name" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="source_person_id" Type="Int32" />
+          <NavigationProperty Name="ava_course" Relationship="ppaModel.fk_2002" FromRole="ava_student" ToRole="ava_course" />
+        </EntityType>
+        <EntityType Name="ava_session">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="course_id" Type="Int32" Nullable="false" />
+          <Property Name="remark" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="id2" Type="Int32" />
+          <NavigationProperty Name="ava_course" Relationship="ppaModel.fk_1000" FromRole="ava_session" ToRole="ava_course" />
+        </EntityType>
+        <EntityType Name="ava_error">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="description" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="file_path" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="file_name" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+        </EntityType>
         <EntityType Name="ava_course">
           <Key>
             <PropertyRef Name="id" />
@@ -205,20 +991,135 @@
           <Property Name="filepath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="participants_count" Type="Int32" />
           <Property Name="sessions_count" Type="Int32" />
-          <NavigationProperty Name="ava_student" Relationship="ppaModel.fk_2002" FromRole="ava_course" ToRole="ava_student" />
+          <Property Name="course_key" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="course_type" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ins1_id" Type="Int32" />
+          <Property Name="ins2_id" Type="Int32" />
+          <Property Name="remark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="ava_session" Relationship="ppaModel.fk_1000" FromRole="ava_course" ToRole="ava_session" />
+          <NavigationProperty Name="ava_student" Relationship="ppaModel.fk_2002" FromRole="ava_course" ToRole="ava_student" />
+          <Property Name="temp_id" Type="Int32" />
         </EntityType>
-        <EntityType Name="ava_student">
+        <EntityType Name="Course">
           <Key>
-            <PropertyRef Name="id" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="course_id" Type="Int32" Nullable="false" />
-          <Property Name="name" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="name_fa" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="attendance" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="ava_course" Relationship="ppaModel.fk_2002" FromRole="ava_student" ToRole="ava_course" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CourseTypeId" Type="Int32" Nullable="false" />
+          <Property Name="DateStart" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DateStartP" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="DateEnd" Type="DateTime" Precision="0" />
+          <Property Name="DateEndP" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="Instructor" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Location" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Department" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="OrganizationId" Type="Int32" />
+          <Property Name="Duration" Type="Int32" />
+          <Property Name="DurationUnitId" Type="Int32" />
+          <Property Name="StatusId" Type="Int32" />
+          <Property Name="Remark" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="Capacity" Type="Int32" />
+          <Property Name="Tuition" Type="Int32" />
+          <Property Name="CurrencyId" Type="Int32" />
+          <Property Name="DateDeadlineRegistration" Type="DateTime" Precision="0" />
+          <Property Name="DateDeadlineRegistrationP" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="TrainingDirector" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Title" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="AircraftTypeId" Type="Int32" />
+          <Property Name="AircraftModelId" Type="Int32" />
+          <Property Name="CaoTypeId" Type="Int32" />
+          <Property Name="Recurrent" Type="Boolean" />
+          <Property Name="Interval" Type="Int32" />
+          <Property Name="CalanderTypeId" Type="Int32" />
+          <Property Name="IsInside" Type="Boolean" />
+          <Property Name="Quarantine" Type="Boolean" />
+          <Property Name="DateStartPractical" Type="DateTime" Precision="0" />
+          <Property Name="DateEndPractical" Type="DateTime" Precision="0" />
+          <Property Name="DateStartPracticalP" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="DateEndPracticalP" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="DurationPractical" Type="Int32" />
+          <Property Name="DurationPracticalUnitId" Type="Int32" />
+          <Property Name="IsGeneral" Type="Boolean" />
+          <Property Name="CustomerId" Type="Int32" />
+          <Property Name="No" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IsNotificationEnabled" Type="Boolean" />
+          <Property Name="HoldingType" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="SendLetter" Type="Boolean" />
+          <Property Name="InForm" Type="Boolean" />
+          <Property Name="Financial" Type="Boolean" />
+          <Property Name="Certificate" Type="Boolean" />
+          <Property Name="Instructor2" Type="Int32" />
+          <Property Name="SMSIns1" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="SMSIns2" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="SMSIns1Status" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="SMSIns2Status" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="SMSInsDate" Type="DateTime" Precision="7" />
+          <Property Name="Cost" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="AttForm" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="Date_Sign_Ins1" Type="DateTime" Precision="7" />
+          <Property Name="Date_Sign_Ins2" Type="DateTime" Precision="7" />
+          <Property Name="Date_Sign_Director" Type="DateTime" Precision="7" />
+          <Property Name="Date_Sign_Staff" Type="DateTime" Precision="7" />
+          <Property Name="Date_Sign_OPS" Type="DateTime" Precision="7" />
+          <Property Name="Date_Exam_Sign_Ins1" Type="DateTime" Precision="7" />
+          <Property Name="Date_Exam_Sign_Ins2" Type="DateTime" Precision="7" />
+          <Property Name="Date_Sessions_Synced" Type="DateTime" Precision="7" />
+          <Property Name="Date_Sessions_Instructor_Synced" Type="DateTime" Precision="7" />
+          <Property Name="ParentId" Type="Int32" />
+          <Property Name="Instructor3" Type="Int32" />
+          <Property Name="ExamType" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="course_key" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ext_id" Type="Int32" />
+          <NavigationProperty Name="Course1" Relationship="ppaModel.fk_course_parent" FromRole="Course" ToRole="Course1" />
+          <NavigationProperty Name="Course2" Relationship="ppaModel.fk_course_parent" FromRole="Course1" ToRole="Course" />
+          <NavigationProperty Name="CourseSessionPresences" Relationship="ppaModel.fk_psco_course" FromRole="Course" ToRole="CourseSessionPresence" />
+          <NavigationProperty Name="CourseSessions" Relationship="ppaModel.fk_session_course" FromRole="Course" ToRole="CourseSession" />
+          <Property Name="course_key2" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="CourseSession">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CourseId" Type="Int32" Nullable="false" />
+          <Property Name="DateStart" Type="DateTime" Precision="3" />
+          <Property Name="DateEnd" Type="DateTime" Precision="3" />
+          <Property Name="Done" Type="Boolean" Nullable="false" />
+          <Property Name="Remark" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Key" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="DateStartUtc" Type="DateTime" Precision="3" />
+          <Property Name="DateEndUtc" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Course" Relationship="ppaModel.fk_session_course" FromRole="CourseSession" ToRole="Course" />
+          <NavigationProperty Name="CourseSessionPresences" Relationship="ppaModel.FK_CourseSessionPresence_CourseSession_Id" FromRole="CourseSession" ToRole="CourseSessionPresence" />
+        </EntityType>
+        <EntityType Name="CourseSessionPresence">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SessionId" Type="Int32" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
+          <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="PersonId" Type="Int32" />
+          <Property Name="SessionKey" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="CourseId" Type="Int32" />
+          <NavigationProperty Name="Course" Relationship="ppaModel.fk_psco_course" FromRole="CourseSessionPresence" ToRole="Course" />
+          <NavigationProperty Name="CourseSession" Relationship="ppaModel.FK_CourseSessionPresence_CourseSession_Id" FromRole="CourseSessionPresence" ToRole="CourseSession" />
+        </EntityType>
+        <Association Name="fk_1000">
+          <End Type="ppaModel.ava_course" Role="ava_course" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ppaModel.ava_session" Role="ava_session" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ava_course">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ava_session">
+              <PropertyRef Name="course_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_2002">
           <End Type="ppaModel.ava_course" Role="ava_course" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -233,35 +1134,359 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="ava_session">
+        <Association Name="fk_course_parent">
+          <End Type="ppaModel.Course" Role="Course" Multiplicity="0..1" />
+          <End Type="ppaModel.Course" Role="Course1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Course1">
+              <PropertyRef Name="ParentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_psco_course">
+          <End Type="ppaModel.Course" Role="Course" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ppaModel.CourseSessionPresence" Role="CourseSessionPresence" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CourseSessionPresence">
+              <PropertyRef Name="CourseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_session_course">
+          <End Type="ppaModel.Course" Role="Course" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ppaModel.CourseSession" Role="CourseSession" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CourseSession">
+              <PropertyRef Name="CourseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CourseSessionPresence_CourseSession_Id">
+          <End Type="ppaModel.CourseSession" Role="CourseSession" Multiplicity="0..1" />
+          <End Type="ppaModel.CourseSessionPresence" Role="CourseSessionPresence" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CourseSession">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CourseSessionPresence">
+              <PropertyRef Name="SessionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ava_folder">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="course_id" Type="Int32" Nullable="false" />
-          <Property Name="remark" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="ava_course" Relationship="ppaModel.fk_1000" FromRole="ava_session" ToRole="ava_course" />
+          <Property Name="folder_name" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="person_id" Type="Int32" />
+          <Property Name="nid" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
         </EntityType>
-        <Association Name="fk_1000">
-          <End Type="ppaModel.ava_course" Role="ava_course" Multiplicity="1" />
-          <End Type="ppaModel.ava_session" Role="ava_session" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ava_course">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="ava_session">
-              <PropertyRef Name="course_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="ava_error">
+        <EntityType Name="ava_sub_file">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" />
-          <Property Name="description" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
-          <Property Name="file_path" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="file_name" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="sub_id" Type="Int32" Nullable="false" />
+          <Property Name="title" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="fullpath" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="remark" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ava_sub" Relationship="ppaModel.fk_f_sub" FromRole="ava_sub_file" ToRole="ava_sub" />
+        </EntityType>
+        <EntityType Name="ava_sub">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="title" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="fullpath" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="remark" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="nid" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="title2" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ava_sub_file" Relationship="ppaModel.fk_f_sub" FromRole="ava_sub" ToRole="ava_sub_file" />
+        </EntityType>
+        <Association Name="fk_f_sub">
+          <End Type="ppaModel.ava_sub" Role="ava_sub" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ppaModel.ava_sub_file" Role="ava_sub_file" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ava_sub">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ava_sub_file">
+              <PropertyRef Name="sub_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ViewProfile">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Name2" />
+            <PropertyRef Name="PID" />
+            <PropertyRef Name="IsActive" />
+            <PropertyRef Name="JobGroup" />
+            <PropertyRef Name="JobGroupCode" />
+            <PropertyRef Name="JobGroupRoot" />
+            <PropertyRef Name="NID" />
+            <PropertyRef Name="FirstName" />
+            <PropertyRef Name="LastName" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="PersonId" />
+            <PropertyRef Name="Reserved1" />
+            <PropertyRef Name="Reserved2" />
+            <PropertyRef Name="Reserved3" />
+            <PropertyRef Name="Reserved4" />
+            <PropertyRef Name="Reserved5" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name2" Type="String" Nullable="false" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="PID" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="CustomerId" Type="Int32" />
+          <Property Name="GroupId" Type="Int32" />
+          <Property Name="C1GroupId" Type="Int32" />
+          <Property Name="JobGroupC1" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="JobGroupCodeC1" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="C2GroupId" Type="Int32" />
+          <Property Name="JobGroupC2" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="JobGroupCodeC2" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="C3GroupId" Type="Int32" />
+          <Property Name="JobGroup" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="JobGroupCode" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="JobGroupRoot" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="false" />
+          <Property Name="PostRoot" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="NID" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="1003" FixedLength="false" Unicode="true" />
+          <Property Name="Mobile" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="PassportNumber" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IDNo" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="PersonId" Type="Int32" Nullable="false" />
+          <Property Name="InActive" Type="Boolean" />
+          <Property Name="JobGroupMain" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="JobGroupMainCode" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="JobGroupCode2" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="JobGroup2RootCode" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="RemainNDT" Type="Int32" />
+          <Property Name="RemainCAO" Type="Int32" />
+          <Property Name="RemainPassport" Type="Int32" />
+          <Property Name="RemainFirstAid" Type="Int32" />
+          <Property Name="RemainCMC" Type="Int32" />
+          <Property Name="RemainLicence" Type="Int32" />
+          <Property Name="RemainLicenceIR" Type="Int32" />
+          <Property Name="RemainProficiency" Type="Int32" />
+          <Property Name="RemainProficiencyOPC" Type="Int32" />
+          <Property Name="RemainLPR" Type="Int32" />
+          <Property Name="RemainMedical" Type="Int32" />
+          <Property Name="RemainSEPT" Type="Int32" />
+          <Property Name="RemainSEPTP" Type="Int32" />
+          <Property Name="RemainDG" Type="Int32" />
+          <Property Name="RemainCRM" Type="Int32" />
+          <Property Name="RemainCCRM" Type="Int32" />
+          <Property Name="RemainAvSec" Type="Int32" />
+          <Property Name="RemainUpsetRecoveryTraining" Type="Int32" />
+          <Property Name="RemainColdWeather" Type="Int32" />
+          <Property Name="RemainHotWeather" Type="Int32" />
+          <Property Name="RemainTRI" Type="Int32" />
+          <Property Name="RemainTRE" Type="Int32" />
+          <Property Name="RemainRecurrent" Type="Int32" />
+          <Property Name="RemainLine" Type="Int32" />
+          <Property Name="RemainEGPWS" Type="Int32" />
+          <Property Name="RemainRSP" Type="Int32" />
+          <Property Name="RemainLRC" Type="Int32" />
+          <Property Name="RemainTypeMD" Type="Int32" />
+          <Property Name="RemainType737" Type="Int32" />
+          <Property Name="RemainTypeAirbus" Type="Int32" />
+          <Property Name="RemainHF" Type="Int32" />
+          <Property Name="RemainASD" Type="Int32" />
+          <Property Name="RemainGOM" Type="Int32" />
+          <Property Name="RemainASF" Type="Int32" />
+          <Property Name="RemainCC" Type="Int32" />
+          <Property Name="RemainERP" Type="Int32" />
+          <Property Name="RemainMB" Type="Int32" />
+          <Property Name="RemainPS" Type="Int32" />
+          <Property Name="RemainANNEX" Type="Int32" />
+          <Property Name="RemainDRM" Type="Int32" />
+          <Property Name="RemainFMTD" Type="Int32" />
+          <Property Name="RemainMEL" Type="Int32" />
+          <Property Name="RemainMET" Type="Int32" />
+          <Property Name="RemainPER" Type="Int32" />
+          <Property Name="RemainLPCC1" Type="Int32" />
+          <Property Name="RemainLPCC2" Type="Int32" />
+          <Property Name="RemainLPCC3" Type="Int32" />
+          <Property Name="RemainLineC1" Type="Int32" />
+          <Property Name="RemainLineC2" Type="Int32" />
+          <Property Name="RemainLineC3" Type="Int32" />
+          <Property Name="RemainRamp" Type="Int32" />
+          <Property Name="RemainAC" Type="Int32" />
+          <Property Name="RemainUPRT" Type="Int32" />
+          <Property Name="RemainSFI" Type="Int32" />
+          <Property Name="RemainSFE" Type="Int32" />
+          <Property Name="RemainTRI2" Type="Int32" />
+          <Property Name="RemainTRE2" Type="Int32" />
+          <Property Name="RemainIRI" Type="Int32" />
+          <Property Name="RemainIRE" Type="Int32" />
+          <Property Name="RemainCRI" Type="Int32" />
+          <Property Name="RemainCRE" Type="Int32" />
+          <Property Name="RemainSFI2" Type="Int32" />
+          <Property Name="RemainSFE2" Type="Int32" />
+          <Property Name="RemainAirCrew" Type="Int32" />
+          <Property Name="RemainAirOps" Type="Int32" />
+          <Property Name="RemainSOP" Type="Int32" />
+          <Property Name="RemainDiff31" Type="Int32" />
+          <Property Name="RemainDiff34" Type="Int32" />
+          <Property Name="RemainOMA1" Type="Int32" />
+          <Property Name="RemainOMB1" Type="Int32" />
+          <Property Name="RemainOMC1" Type="Int32" />
+          <Property Name="RemainOMA2" Type="Int32" />
+          <Property Name="RemainOMB2" Type="Int32" />
+          <Property Name="RemainOMC2" Type="Int32" />
+          <Property Name="RemainOMA3" Type="Int32" />
+          <Property Name="RemainOMB3" Type="Int32" />
+          <Property Name="RemainOMC3" Type="Int32" />
+          <Property Name="RemainMap" Type="Int32" />
+          <Property Name="RemainComRes" Type="Int32" />
+          <Property Name="RemainOPCC1" Type="Int32" />
+          <Property Name="RemainOPCC2" Type="Int32" />
+          <Property Name="RemainOPCC3" Type="Int32" />
+          <Property Name="Remain1" Type="Int32" />
+          <Property Name="Remain2" Type="Int32" />
+          <Property Name="Remain3" Type="Int32" />
+          <Property Name="Remain4" Type="Int32" />
+          <Property Name="Remain5" Type="Int32" />
+          <Property Name="Remain6" Type="Int32" />
+          <Property Name="Remain7" Type="Int32" />
+          <Property Name="Remain8" Type="Int32" />
+          <Property Name="Remain9" Type="Int32" />
+          <Property Name="Remain10" Type="Int32" />
+          <Property Name="Remain11" Type="Int32" />
+          <Property Name="Remain12" Type="Int32" />
+          <Property Name="Remain13" Type="Int32" />
+          <Property Name="Remain14" Type="Int32" />
+          <Property Name="Remain15" Type="Int32" />
+          <Property Name="Remain16" Type="Int32" />
+          <Property Name="Remain17" Type="Int32" />
+          <Property Name="Remain18" Type="Int32" />
+          <Property Name="Remain19" Type="Int32" />
+          <Property Name="Remain20" Type="Int32" />
+          <Property Name="Remain21" Type="Int32" />
+          <Property Name="Remain22" Type="Int32" />
+          <Property Name="Remain23" Type="Int32" />
+          <Property Name="Remain24" Type="Int32" />
+          <Property Name="Remain25" Type="Int32" />
+          <Property Name="Remain26" Type="Int32" />
+          <Property Name="Remain27" Type="Int32" />
+          <Property Name="Remain28" Type="Int32" />
+          <Property Name="Remain29" Type="Int32" />
+          <Property Name="Remain30" Type="Int32" />
+          <Property Name="Remain31" Type="Int32" />
+          <Property Name="Remain32" Type="Int32" />
+          <Property Name="Remain33" Type="Int32" />
+          <Property Name="Remain34" Type="Int32" />
+          <Property Name="Remain35" Type="Int32" />
+          <Property Name="BaseAirline" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="HomeBase" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="IsType737" Type="Boolean" />
+          <Property Name="IsTypeMD" Type="Boolean" />
+          <Property Name="IsTypeAirbus" Type="Boolean" />
+          <Property Name="IsTypeFokker" Type="Boolean" />
+          <Property Name="RemainTRG02" Type="Int32" />
+          <Property Name="Remain36" Type="Int32" />
+          <Property Name="Remain37" Type="Int32" />
+          <Property Name="Remain38" Type="Int32" />
+          <Property Name="Remain39" Type="Int32" />
+          <Property Name="Remain40" Type="Int32" />
+          <Property Name="Remain41" Type="Int32" />
+          <Property Name="Remain42" Type="Int32" />
+          <Property Name="Remain43" Type="Int32" />
+          <Property Name="Remain44" Type="Int32" />
+          <Property Name="Remain45" Type="Int32" />
+          <Property Name="Remain46" Type="Int32" />
+          <Property Name="Remain47" Type="Int32" />
+          <Property Name="Remain48" Type="Int32" />
+          <Property Name="Remain49" Type="Int32" />
+          <Property Name="Remain50" Type="Int32" />
+          <Property Name="Remain56" Type="Int32" />
+          <Property Name="Remain66" Type="Int32" />
+          <Property Name="RemainRIGHT_SEAT_QUALIFICATION" Type="Int32" />
+          <Property Name="RemainELT" Type="Int32" />
+          <Property Name="RemainRVSM" Type="Int32" />
+          <Property Name="RemainPILOT_INCAPACITATION" Type="Int32" />
+          <Property Name="RemainEFB" Type="Int32" />
+          <Property Name="RemainSafetyPilot" Type="Int32" />
+          <Property Name="RemainRouteCheck" Type="Int32" />
+          <Property Name="RemainPROFICIENCY_ASSESSMENT" Type="Int32" />
+          <Property Name="RemainMP" Type="Int32" />
+          <Property Name="RemainCALR" Type="Int32" />
+          <Property Name="RemainSpecialApproval" Type="Int32" />
+          <Property Name="RemainTRG01" Type="Int32" />
+          <Property Name="RemainTRG16" Type="Int32" />
+          <Property Name="RemainLOAD_CONTROL" Type="Int32" />
+          <Property Name="RemainPhase1" Type="Int32" />
+          <Property Name="RemainPhase2" Type="Int32" />
+          <Property Name="RemainPhase3" Type="Int32" />
+          <Property Name="RemainGround" Type="Int32" />
+          <Property Name="RemainFirstAidCockpit" Type="Int32" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="RemainTypeFoker50" Type="Int32" />
+          <Property Name="RemainTypeFoker100" Type="Int32" />
+          <Property Name="RemainDisManual" Type="Int32" />
+          <Property Name="Reserved1" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="Reserved2" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="Reserved3" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="Reserved4" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="Reserved5" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="PostCode" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="PostTitle" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="RemainSMSL2L3" Type="Int32" />
+          <Property Name="RemainSMS" Type="Int32" />
+          <Property Name="RemainSMSL1L2L3" Type="Int32" />
+          <Property Name="RemainTRG07A" Type="Int32" />
+          <Property Name="ImageUrl" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Remain67" Type="Int32" />
+          <Property Name="Remain68" Type="Int32" />
+          <Property Name="Remain69" Type="Int32" />
+          <Property Name="Remain70" Type="Int32" />
+          <Property Name="Remain71" Type="Int32" />
+          <Property Name="Remain72" Type="Int32" />
+          <Property Name="Remain73" Type="Int32" />
+          <Property Name="Remain74" Type="Int32" />
+          <Property Name="Remain75" Type="Int32" />
+          <Property Name="Remain76" Type="Int32" />
+          <Property Name="Remain77" Type="Int32" />
+          <Property Name="Remain78" Type="Int32" />
+          <Property Name="Remain79" Type="Int32" />
+          <Property Name="Remain80" Type="Int32" />
+          <Property Name="Remain81" Type="Int32" />
+          <Property Name="Remain82" Type="Int32" />
+          <Property Name="Remain83" Type="Int32" />
+          <Property Name="Remain84" Type="Int32" />
+          <Property Name="Remain85" Type="Int32" />
+        </EntityType>
+        <EntityType Name="ava_view_student">
+          <Key>
+            <PropertyRef Name="person_id" />
+            <PropertyRef Name="course_id" />
+          </Key>
+          <Property Name="person_id" Type="Int32" Nullable="false" />
+          <Property Name="course_id" Type="Int32" Nullable="false" />
+          <Property Name="attendance" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -310,9 +1535,48 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="ava_student">
+            <EntityTypeMapping TypeName="ppaModel.ava_student">
+              <MappingFragment StoreEntitySet="ava_student">
+                <ScalarProperty Name="source_person_id" ColumnName="source_person_id" />
+                <ScalarProperty Name="source_name" ColumnName="source_name" />
+                <ScalarProperty Name="attendance" ColumnName="attendance" />
+                <ScalarProperty Name="name_fa" ColumnName="name_fa" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="course_id" ColumnName="course_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ava_session">
+            <EntityTypeMapping TypeName="ppaModel.ava_session">
+              <MappingFragment StoreEntitySet="ava_session">
+                <ScalarProperty Name="id2" ColumnName="id2" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="course_id" ColumnName="course_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ava_error">
+            <EntityTypeMapping TypeName="ppaModel.ava_error">
+              <MappingFragment StoreEntitySet="ava_error">
+                <ScalarProperty Name="file_name" ColumnName="file_name" />
+                <ScalarProperty Name="file_path" ColumnName="file_path" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="ava_course">
             <EntityTypeMapping TypeName="ppaModel.ava_course">
               <MappingFragment StoreEntitySet="ava_course">
+                <ScalarProperty Name="temp_id" ColumnName="temp_id" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="ins2_id" ColumnName="ins2_id" />
+                <ScalarProperty Name="ins1_id" ColumnName="ins1_id" />
+                <ScalarProperty Name="course_type" ColumnName="course_type" />
+                <ScalarProperty Name="course_key" ColumnName="course_key" />
                 <ScalarProperty Name="sessions_count" ColumnName="sessions_count" />
                 <ScalarProperty Name="participants_count" ColumnName="participants_count" />
                 <ScalarProperty Name="filepath" ColumnName="filepath" />
@@ -327,33 +1591,378 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ava_student">
-            <EntityTypeMapping TypeName="ppaModel.ava_student">
-              <MappingFragment StoreEntitySet="ava_student">
-                <ScalarProperty Name="attendance" ColumnName="attendance" />
-                <ScalarProperty Name="name_fa" ColumnName="name_fa" />
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="course_id" ColumnName="course_id" />
+          <EntitySetMapping Name="Courses">
+            <EntityTypeMapping TypeName="ppaModel.Course">
+              <MappingFragment StoreEntitySet="Course">
+                <ScalarProperty Name="course_key2" ColumnName="course_key2" />
+                <ScalarProperty Name="ext_id" ColumnName="ext_id" />
+                <ScalarProperty Name="course_key" ColumnName="course_key" />
+                <ScalarProperty Name="ExamType" ColumnName="ExamType" />
+                <ScalarProperty Name="Instructor3" ColumnName="Instructor3" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="Date_Sessions_Instructor_Synced" ColumnName="Date_Sessions_Instructor_Synced" />
+                <ScalarProperty Name="Date_Sessions_Synced" ColumnName="Date_Sessions_Synced" />
+                <ScalarProperty Name="Date_Exam_Sign_Ins2" ColumnName="Date_Exam_Sign_Ins2" />
+                <ScalarProperty Name="Date_Exam_Sign_Ins1" ColumnName="Date_Exam_Sign_Ins1" />
+                <ScalarProperty Name="Date_Sign_OPS" ColumnName="Date_Sign_OPS" />
+                <ScalarProperty Name="Date_Sign_Staff" ColumnName="Date_Sign_Staff" />
+                <ScalarProperty Name="Date_Sign_Director" ColumnName="Date_Sign_Director" />
+                <ScalarProperty Name="Date_Sign_Ins2" ColumnName="Date_Sign_Ins2" />
+                <ScalarProperty Name="Date_Sign_Ins1" ColumnName="Date_Sign_Ins1" />
+                <ScalarProperty Name="AttForm" ColumnName="AttForm" />
+                <ScalarProperty Name="Cost" ColumnName="Cost" />
+                <ScalarProperty Name="SMSInsDate" ColumnName="SMSInsDate" />
+                <ScalarProperty Name="SMSIns2Status" ColumnName="SMSIns2Status" />
+                <ScalarProperty Name="SMSIns1Status" ColumnName="SMSIns1Status" />
+                <ScalarProperty Name="SMSIns2" ColumnName="SMSIns2" />
+                <ScalarProperty Name="SMSIns1" ColumnName="SMSIns1" />
+                <ScalarProperty Name="Instructor2" ColumnName="Instructor2" />
+                <ScalarProperty Name="Certificate" ColumnName="Certificate" />
+                <ScalarProperty Name="Financial" ColumnName="Financial" />
+                <ScalarProperty Name="InForm" ColumnName="InForm" />
+                <ScalarProperty Name="SendLetter" ColumnName="SendLetter" />
+                <ScalarProperty Name="HoldingType" ColumnName="HoldingType" />
+                <ScalarProperty Name="IsNotificationEnabled" ColumnName="IsNotificationEnabled" />
+                <ScalarProperty Name="No" ColumnName="No" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="IsGeneral" ColumnName="IsGeneral" />
+                <ScalarProperty Name="DurationPracticalUnitId" ColumnName="DurationPracticalUnitId" />
+                <ScalarProperty Name="DurationPractical" ColumnName="DurationPractical" />
+                <ScalarProperty Name="DateEndPracticalP" ColumnName="DateEndPracticalP" />
+                <ScalarProperty Name="DateStartPracticalP" ColumnName="DateStartPracticalP" />
+                <ScalarProperty Name="DateEndPractical" ColumnName="DateEndPractical" />
+                <ScalarProperty Name="DateStartPractical" ColumnName="DateStartPractical" />
+                <ScalarProperty Name="Quarantine" ColumnName="Quarantine" />
+                <ScalarProperty Name="IsInside" ColumnName="IsInside" />
+                <ScalarProperty Name="CalanderTypeId" ColumnName="CalanderTypeId" />
+                <ScalarProperty Name="Interval" ColumnName="Interval" />
+                <ScalarProperty Name="Recurrent" ColumnName="Recurrent" />
+                <ScalarProperty Name="CaoTypeId" ColumnName="CaoTypeId" />
+                <ScalarProperty Name="AircraftModelId" ColumnName="AircraftModelId" />
+                <ScalarProperty Name="AircraftTypeId" ColumnName="AircraftTypeId" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="TrainingDirector" ColumnName="TrainingDirector" />
+                <ScalarProperty Name="DateDeadlineRegistrationP" ColumnName="DateDeadlineRegistrationP" />
+                <ScalarProperty Name="DateDeadlineRegistration" ColumnName="DateDeadlineRegistration" />
+                <ScalarProperty Name="CurrencyId" ColumnName="CurrencyId" />
+                <ScalarProperty Name="Tuition" ColumnName="Tuition" />
+                <ScalarProperty Name="Capacity" ColumnName="Capacity" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+                <ScalarProperty Name="DurationUnitId" ColumnName="DurationUnitId" />
+                <ScalarProperty Name="Duration" ColumnName="Duration" />
+                <ScalarProperty Name="OrganizationId" ColumnName="OrganizationId" />
+                <ScalarProperty Name="Department" ColumnName="Department" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="Instructor" ColumnName="Instructor" />
+                <ScalarProperty Name="DateEndP" ColumnName="DateEndP" />
+                <ScalarProperty Name="DateEnd" ColumnName="DateEnd" />
+                <ScalarProperty Name="DateStartP" ColumnName="DateStartP" />
+                <ScalarProperty Name="DateStart" ColumnName="DateStart" />
+                <ScalarProperty Name="CourseTypeId" ColumnName="CourseTypeId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CourseSessions">
+            <EntityTypeMapping TypeName="ppaModel.CourseSession">
+              <MappingFragment StoreEntitySet="CourseSession">
+                <ScalarProperty Name="DateEndUtc" ColumnName="DateEndUtc" />
+                <ScalarProperty Name="DateStartUtc" ColumnName="DateStartUtc" />
+                <ScalarProperty Name="Key" ColumnName="Key" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="Done" ColumnName="Done" />
+                <ScalarProperty Name="DateEnd" ColumnName="DateEnd" />
+                <ScalarProperty Name="DateStart" ColumnName="DateStart" />
+                <ScalarProperty Name="CourseId" ColumnName="CourseId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CourseSessionPresences">
+            <EntityTypeMapping TypeName="ppaModel.CourseSessionPresence">
+              <MappingFragment StoreEntitySet="CourseSessionPresence">
+                <ScalarProperty Name="CourseId" ColumnName="CourseId" />
+                <ScalarProperty Name="SessionKey" ColumnName="SessionKey" />
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="SessionId" ColumnName="SessionId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ava_folder">
+            <EntityTypeMapping TypeName="ppaModel.ava_folder">
+              <MappingFragment StoreEntitySet="ava_folder">
+                <ScalarProperty Name="nid" ColumnName="nid" />
+                <ScalarProperty Name="person_id" ColumnName="person_id" />
+                <ScalarProperty Name="folder_name" ColumnName="folder_name" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ava_session">
-            <EntityTypeMapping TypeName="ppaModel.ava_session">
-              <MappingFragment StoreEntitySet="ava_session">
+          <EntitySetMapping Name="ava_sub_file">
+            <EntityTypeMapping TypeName="ppaModel.ava_sub_file">
+              <MappingFragment StoreEntitySet="ava_sub_file">
                 <ScalarProperty Name="remark" ColumnName="remark" />
-                <ScalarProperty Name="course_id" ColumnName="course_id" />
+                <ScalarProperty Name="fullpath" ColumnName="fullpath" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="sub_id" ColumnName="sub_id" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ava_error">
-            <EntityTypeMapping TypeName="ppaModel.ava_error">
-              <MappingFragment StoreEntitySet="ava_error">
-                <ScalarProperty Name="file_name" ColumnName="file_name" />
-                <ScalarProperty Name="file_path" ColumnName="file_path" />
-                <ScalarProperty Name="description" ColumnName="description" />
+          <EntitySetMapping Name="ava_sub">
+            <EntityTypeMapping TypeName="ppaModel.ava_sub">
+              <MappingFragment StoreEntitySet="ava_sub">
+                <ScalarProperty Name="title2" ColumnName="title2" />
+                <ScalarProperty Name="nid" ColumnName="nid" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="fullpath" ColumnName="fullpath" />
+                <ScalarProperty Name="title" ColumnName="title" />
                 <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ViewProfiles">
+            <EntityTypeMapping TypeName="ppaModel.ViewProfile">
+              <MappingFragment StoreEntitySet="ViewProfile">
+                <ScalarProperty Name="Remain85" ColumnName="Remain85" />
+                <ScalarProperty Name="Remain84" ColumnName="Remain84" />
+                <ScalarProperty Name="Remain83" ColumnName="Remain83" />
+                <ScalarProperty Name="Remain82" ColumnName="Remain82" />
+                <ScalarProperty Name="Remain81" ColumnName="Remain81" />
+                <ScalarProperty Name="Remain80" ColumnName="Remain80" />
+                <ScalarProperty Name="Remain79" ColumnName="Remain79" />
+                <ScalarProperty Name="Remain78" ColumnName="Remain78" />
+                <ScalarProperty Name="Remain77" ColumnName="Remain77" />
+                <ScalarProperty Name="Remain76" ColumnName="Remain76" />
+                <ScalarProperty Name="Remain75" ColumnName="Remain75" />
+                <ScalarProperty Name="Remain74" ColumnName="Remain74" />
+                <ScalarProperty Name="Remain73" ColumnName="Remain73" />
+                <ScalarProperty Name="Remain72" ColumnName="Remain72" />
+                <ScalarProperty Name="Remain71" ColumnName="Remain71" />
+                <ScalarProperty Name="Remain70" ColumnName="Remain70" />
+                <ScalarProperty Name="Remain69" ColumnName="Remain69" />
+                <ScalarProperty Name="Remain68" ColumnName="Remain68" />
+                <ScalarProperty Name="Remain67" ColumnName="Remain67" />
+                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+                <ScalarProperty Name="RemainTRG07A" ColumnName="RemainTRG07A" />
+                <ScalarProperty Name="RemainSMSL1L2L3" ColumnName="RemainSMSL1L2L3" />
+                <ScalarProperty Name="RemainSMS" ColumnName="RemainSMS" />
+                <ScalarProperty Name="RemainSMSL2L3" ColumnName="RemainSMSL2L3" />
+                <ScalarProperty Name="PostTitle" ColumnName="PostTitle" />
+                <ScalarProperty Name="PostCode" ColumnName="PostCode" />
+                <ScalarProperty Name="Reserved5" ColumnName="Reserved5" />
+                <ScalarProperty Name="Reserved4" ColumnName="Reserved4" />
+                <ScalarProperty Name="Reserved3" ColumnName="Reserved3" />
+                <ScalarProperty Name="Reserved2" ColumnName="Reserved2" />
+                <ScalarProperty Name="Reserved1" ColumnName="Reserved1" />
+                <ScalarProperty Name="RemainDisManual" ColumnName="RemainDisManual" />
+                <ScalarProperty Name="RemainTypeFoker100" ColumnName="RemainTypeFoker100" />
+                <ScalarProperty Name="RemainTypeFoker50" ColumnName="RemainTypeFoker50" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="RemainFirstAidCockpit" ColumnName="RemainFirstAidCockpit" />
+                <ScalarProperty Name="RemainGround" ColumnName="RemainGround" />
+                <ScalarProperty Name="RemainPhase3" ColumnName="RemainPhase3" />
+                <ScalarProperty Name="RemainPhase2" ColumnName="RemainPhase2" />
+                <ScalarProperty Name="RemainPhase1" ColumnName="RemainPhase1" />
+                <ScalarProperty Name="RemainLOAD_CONTROL" ColumnName="RemainLOAD_CONTROL" />
+                <ScalarProperty Name="RemainTRG16" ColumnName="RemainTRG16" />
+                <ScalarProperty Name="RemainTRG01" ColumnName="RemainTRG01" />
+                <ScalarProperty Name="RemainSpecialApproval" ColumnName="RemainSpecialApproval" />
+                <ScalarProperty Name="RemainCALR" ColumnName="RemainCALR" />
+                <ScalarProperty Name="RemainMP" ColumnName="RemainMP" />
+                <ScalarProperty Name="RemainPROFICIENCY_ASSESSMENT" ColumnName="RemainPROFICIENCY_ASSESSMENT" />
+                <ScalarProperty Name="RemainRouteCheck" ColumnName="RemainRouteCheck" />
+                <ScalarProperty Name="RemainSafetyPilot" ColumnName="RemainSafetyPilot" />
+                <ScalarProperty Name="RemainEFB" ColumnName="RemainEFB" />
+                <ScalarProperty Name="RemainPILOT_INCAPACITATION" ColumnName="RemainPILOT_INCAPACITATION" />
+                <ScalarProperty Name="RemainRVSM" ColumnName="RemainRVSM" />
+                <ScalarProperty Name="RemainELT" ColumnName="RemainELT" />
+                <ScalarProperty Name="RemainRIGHT_SEAT_QUALIFICATION" ColumnName="RemainRIGHT_SEAT_QUALIFICATION" />
+                <ScalarProperty Name="Remain66" ColumnName="Remain66" />
+                <ScalarProperty Name="Remain56" ColumnName="Remain56" />
+                <ScalarProperty Name="Remain50" ColumnName="Remain50" />
+                <ScalarProperty Name="Remain49" ColumnName="Remain49" />
+                <ScalarProperty Name="Remain48" ColumnName="Remain48" />
+                <ScalarProperty Name="Remain47" ColumnName="Remain47" />
+                <ScalarProperty Name="Remain46" ColumnName="Remain46" />
+                <ScalarProperty Name="Remain45" ColumnName="Remain45" />
+                <ScalarProperty Name="Remain44" ColumnName="Remain44" />
+                <ScalarProperty Name="Remain43" ColumnName="Remain43" />
+                <ScalarProperty Name="Remain42" ColumnName="Remain42" />
+                <ScalarProperty Name="Remain41" ColumnName="Remain41" />
+                <ScalarProperty Name="Remain40" ColumnName="Remain40" />
+                <ScalarProperty Name="Remain39" ColumnName="Remain39" />
+                <ScalarProperty Name="Remain38" ColumnName="Remain38" />
+                <ScalarProperty Name="Remain37" ColumnName="Remain37" />
+                <ScalarProperty Name="Remain36" ColumnName="Remain36" />
+                <ScalarProperty Name="RemainTRG02" ColumnName="RemainTRG02" />
+                <ScalarProperty Name="IsTypeFokker" ColumnName="IsTypeFokker" />
+                <ScalarProperty Name="IsTypeAirbus" ColumnName="IsTypeAirbus" />
+                <ScalarProperty Name="IsTypeMD" ColumnName="IsTypeMD" />
+                <ScalarProperty Name="IsType737" ColumnName="IsType737" />
+                <ScalarProperty Name="HomeBase" ColumnName="HomeBase" />
+                <ScalarProperty Name="BaseAirline" ColumnName="BaseAirline" />
+                <ScalarProperty Name="Remain35" ColumnName="Remain35" />
+                <ScalarProperty Name="Remain34" ColumnName="Remain34" />
+                <ScalarProperty Name="Remain33" ColumnName="Remain33" />
+                <ScalarProperty Name="Remain32" ColumnName="Remain32" />
+                <ScalarProperty Name="Remain31" ColumnName="Remain31" />
+                <ScalarProperty Name="Remain30" ColumnName="Remain30" />
+                <ScalarProperty Name="Remain29" ColumnName="Remain29" />
+                <ScalarProperty Name="Remain28" ColumnName="Remain28" />
+                <ScalarProperty Name="Remain27" ColumnName="Remain27" />
+                <ScalarProperty Name="Remain26" ColumnName="Remain26" />
+                <ScalarProperty Name="Remain25" ColumnName="Remain25" />
+                <ScalarProperty Name="Remain24" ColumnName="Remain24" />
+                <ScalarProperty Name="Remain23" ColumnName="Remain23" />
+                <ScalarProperty Name="Remain22" ColumnName="Remain22" />
+                <ScalarProperty Name="Remain21" ColumnName="Remain21" />
+                <ScalarProperty Name="Remain20" ColumnName="Remain20" />
+                <ScalarProperty Name="Remain19" ColumnName="Remain19" />
+                <ScalarProperty Name="Remain18" ColumnName="Remain18" />
+                <ScalarProperty Name="Remain17" ColumnName="Remain17" />
+                <ScalarProperty Name="Remain16" ColumnName="Remain16" />
+                <ScalarProperty Name="Remain15" ColumnName="Remain15" />
+                <ScalarProperty Name="Remain14" ColumnName="Remain14" />
+                <ScalarProperty Name="Remain13" ColumnName="Remain13" />
+                <ScalarProperty Name="Remain12" ColumnName="Remain12" />
+                <ScalarProperty Name="Remain11" ColumnName="Remain11" />
+                <ScalarProperty Name="Remain10" ColumnName="Remain10" />
+                <ScalarProperty Name="Remain9" ColumnName="Remain9" />
+                <ScalarProperty Name="Remain8" ColumnName="Remain8" />
+                <ScalarProperty Name="Remain7" ColumnName="Remain7" />
+                <ScalarProperty Name="Remain6" ColumnName="Remain6" />
+                <ScalarProperty Name="Remain5" ColumnName="Remain5" />
+                <ScalarProperty Name="Remain4" ColumnName="Remain4" />
+                <ScalarProperty Name="Remain3" ColumnName="Remain3" />
+                <ScalarProperty Name="Remain2" ColumnName="Remain2" />
+                <ScalarProperty Name="Remain1" ColumnName="Remain1" />
+                <ScalarProperty Name="RemainOPCC3" ColumnName="RemainOPCC3" />
+                <ScalarProperty Name="RemainOPCC2" ColumnName="RemainOPCC2" />
+                <ScalarProperty Name="RemainOPCC1" ColumnName="RemainOPCC1" />
+                <ScalarProperty Name="RemainComRes" ColumnName="RemainComRes" />
+                <ScalarProperty Name="RemainMap" ColumnName="RemainMap" />
+                <ScalarProperty Name="RemainOMC3" ColumnName="RemainOMC3" />
+                <ScalarProperty Name="RemainOMB3" ColumnName="RemainOMB3" />
+                <ScalarProperty Name="RemainOMA3" ColumnName="RemainOMA3" />
+                <ScalarProperty Name="RemainOMC2" ColumnName="RemainOMC2" />
+                <ScalarProperty Name="RemainOMB2" ColumnName="RemainOMB2" />
+                <ScalarProperty Name="RemainOMA2" ColumnName="RemainOMA2" />
+                <ScalarProperty Name="RemainOMC1" ColumnName="RemainOMC1" />
+                <ScalarProperty Name="RemainOMB1" ColumnName="RemainOMB1" />
+                <ScalarProperty Name="RemainOMA1" ColumnName="RemainOMA1" />
+                <ScalarProperty Name="RemainDiff34" ColumnName="RemainDiff34" />
+                <ScalarProperty Name="RemainDiff31" ColumnName="RemainDiff31" />
+                <ScalarProperty Name="RemainSOP" ColumnName="RemainSOP" />
+                <ScalarProperty Name="RemainAirOps" ColumnName="RemainAirOps" />
+                <ScalarProperty Name="RemainAirCrew" ColumnName="RemainAirCrew" />
+                <ScalarProperty Name="RemainSFE2" ColumnName="RemainSFE2" />
+                <ScalarProperty Name="RemainSFI2" ColumnName="RemainSFI2" />
+                <ScalarProperty Name="RemainCRE" ColumnName="RemainCRE" />
+                <ScalarProperty Name="RemainCRI" ColumnName="RemainCRI" />
+                <ScalarProperty Name="RemainIRE" ColumnName="RemainIRE" />
+                <ScalarProperty Name="RemainIRI" ColumnName="RemainIRI" />
+                <ScalarProperty Name="RemainTRE2" ColumnName="RemainTRE2" />
+                <ScalarProperty Name="RemainTRI2" ColumnName="RemainTRI2" />
+                <ScalarProperty Name="RemainSFE" ColumnName="RemainSFE" />
+                <ScalarProperty Name="RemainSFI" ColumnName="RemainSFI" />
+                <ScalarProperty Name="RemainUPRT" ColumnName="RemainUPRT" />
+                <ScalarProperty Name="RemainAC" ColumnName="RemainAC" />
+                <ScalarProperty Name="RemainRamp" ColumnName="RemainRamp" />
+                <ScalarProperty Name="RemainLineC3" ColumnName="RemainLineC3" />
+                <ScalarProperty Name="RemainLineC2" ColumnName="RemainLineC2" />
+                <ScalarProperty Name="RemainLineC1" ColumnName="RemainLineC1" />
+                <ScalarProperty Name="RemainLPCC3" ColumnName="RemainLPCC3" />
+                <ScalarProperty Name="RemainLPCC2" ColumnName="RemainLPCC2" />
+                <ScalarProperty Name="RemainLPCC1" ColumnName="RemainLPCC1" />
+                <ScalarProperty Name="RemainPER" ColumnName="RemainPER" />
+                <ScalarProperty Name="RemainMET" ColumnName="RemainMET" />
+                <ScalarProperty Name="RemainMEL" ColumnName="RemainMEL" />
+                <ScalarProperty Name="RemainFMTD" ColumnName="RemainFMTD" />
+                <ScalarProperty Name="RemainDRM" ColumnName="RemainDRM" />
+                <ScalarProperty Name="RemainANNEX" ColumnName="RemainANNEX" />
+                <ScalarProperty Name="RemainPS" ColumnName="RemainPS" />
+                <ScalarProperty Name="RemainMB" ColumnName="RemainMB" />
+                <ScalarProperty Name="RemainERP" ColumnName="RemainERP" />
+                <ScalarProperty Name="RemainCC" ColumnName="RemainCC" />
+                <ScalarProperty Name="RemainASF" ColumnName="RemainASF" />
+                <ScalarProperty Name="RemainGOM" ColumnName="RemainGOM" />
+                <ScalarProperty Name="RemainASD" ColumnName="RemainASD" />
+                <ScalarProperty Name="RemainHF" ColumnName="RemainHF" />
+                <ScalarProperty Name="RemainTypeAirbus" ColumnName="RemainTypeAirbus" />
+                <ScalarProperty Name="RemainType737" ColumnName="RemainType737" />
+                <ScalarProperty Name="RemainTypeMD" ColumnName="RemainTypeMD" />
+                <ScalarProperty Name="RemainLRC" ColumnName="RemainLRC" />
+                <ScalarProperty Name="RemainRSP" ColumnName="RemainRSP" />
+                <ScalarProperty Name="RemainEGPWS" ColumnName="RemainEGPWS" />
+                <ScalarProperty Name="RemainLine" ColumnName="RemainLine" />
+                <ScalarProperty Name="RemainRecurrent" ColumnName="RemainRecurrent" />
+                <ScalarProperty Name="RemainTRE" ColumnName="RemainTRE" />
+                <ScalarProperty Name="RemainTRI" ColumnName="RemainTRI" />
+                <ScalarProperty Name="RemainHotWeather" ColumnName="RemainHotWeather" />
+                <ScalarProperty Name="RemainColdWeather" ColumnName="RemainColdWeather" />
+                <ScalarProperty Name="RemainUpsetRecoveryTraining" ColumnName="RemainUpsetRecoveryTraining" />
+                <ScalarProperty Name="RemainAvSec" ColumnName="RemainAvSec" />
+                <ScalarProperty Name="RemainCCRM" ColumnName="RemainCCRM" />
+                <ScalarProperty Name="RemainCRM" ColumnName="RemainCRM" />
+                <ScalarProperty Name="RemainDG" ColumnName="RemainDG" />
+                <ScalarProperty Name="RemainSEPTP" ColumnName="RemainSEPTP" />
+                <ScalarProperty Name="RemainSEPT" ColumnName="RemainSEPT" />
+                <ScalarProperty Name="RemainMedical" ColumnName="RemainMedical" />
+                <ScalarProperty Name="RemainLPR" ColumnName="RemainLPR" />
+                <ScalarProperty Name="RemainProficiencyOPC" ColumnName="RemainProficiencyOPC" />
+                <ScalarProperty Name="RemainProficiency" ColumnName="RemainProficiency" />
+                <ScalarProperty Name="RemainLicenceIR" ColumnName="RemainLicenceIR" />
+                <ScalarProperty Name="RemainLicence" ColumnName="RemainLicence" />
+                <ScalarProperty Name="RemainCMC" ColumnName="RemainCMC" />
+                <ScalarProperty Name="RemainFirstAid" ColumnName="RemainFirstAid" />
+                <ScalarProperty Name="RemainPassport" ColumnName="RemainPassport" />
+                <ScalarProperty Name="RemainCAO" ColumnName="RemainCAO" />
+                <ScalarProperty Name="RemainNDT" ColumnName="RemainNDT" />
+                <ScalarProperty Name="JobGroup2RootCode" ColumnName="JobGroup2RootCode" />
+                <ScalarProperty Name="JobGroupCode2" ColumnName="JobGroupCode2" />
+                <ScalarProperty Name="JobGroupMainCode" ColumnName="JobGroupMainCode" />
+                <ScalarProperty Name="JobGroupMain" ColumnName="JobGroupMain" />
+                <ScalarProperty Name="InActive" ColumnName="InActive" />
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="IDNo" ColumnName="IDNo" />
+                <ScalarProperty Name="PassportNumber" ColumnName="PassportNumber" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="NID" ColumnName="NID" />
+                <ScalarProperty Name="PostRoot" ColumnName="PostRoot" />
+                <ScalarProperty Name="JobGroupRoot" ColumnName="JobGroupRoot" />
+                <ScalarProperty Name="JobGroupCode" ColumnName="JobGroupCode" />
+                <ScalarProperty Name="JobGroup" ColumnName="JobGroup" />
+                <ScalarProperty Name="C3GroupId" ColumnName="C3GroupId" />
+                <ScalarProperty Name="JobGroupCodeC2" ColumnName="JobGroupCodeC2" />
+                <ScalarProperty Name="JobGroupC2" ColumnName="JobGroupC2" />
+                <ScalarProperty Name="C2GroupId" ColumnName="C2GroupId" />
+                <ScalarProperty Name="JobGroupCodeC1" ColumnName="JobGroupCodeC1" />
+                <ScalarProperty Name="JobGroupC1" ColumnName="JobGroupC1" />
+                <ScalarProperty Name="C1GroupId" ColumnName="C1GroupId" />
+                <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="Name2" ColumnName="Name2" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ava_view_student">
+            <EntityTypeMapping TypeName="ppaModel.ava_view_student">
+              <MappingFragment StoreEntitySet="ava_view_student">
+                <ScalarProperty Name="attendance" ColumnName="attendance" />
+                <ScalarProperty Name="course_id" ColumnName="course_id" />
+                <ScalarProperty Name="person_id" ColumnName="person_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

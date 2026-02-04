@@ -130,5 +130,11 @@ namespace ApiReportFlight.Models
         public string DelayRemark1 { get; set; }
         public string DelayRemark2 { get; set; }
         public string DelayCodes { get; set; }
+        public string P1Name { get; set; }
+        public string IPName { get; set; }
+        public string P2Name { get; set; }
+        public Nullable<int> P1Id { get; set; }
+        public Nullable<int> P2Id { get; set; }
+        public Nullable<int> IPId { get; set; }
     }
 }

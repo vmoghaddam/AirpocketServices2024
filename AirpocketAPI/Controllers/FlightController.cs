@@ -4,6 +4,7 @@ using Newtonsoft.Json.Linq;
 using Spire.Xls;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.Common;
 using System.Data.Entity;
@@ -27,7 +28,7 @@ using Formatting = Newtonsoft.Json.Formatting;
 
 namespace AirpocketAPI.Controllers
 {
-    [EnableCors(origins: "*", headers: "*", methods: "*")]
+    //[EnableCors(origins: "*", headers: "*", methods: "*")]
     public class FlightController : ApiController
     {
 
@@ -130,24 +131,39 @@ namespace AirpocketAPI.Controllers
             var fixtimes = context.FixTimes.ToList();
             return Ok(fixtimes);
         }
+
+
+        public class fixtime_dto
+        {
+            public string from { get; set; }
+            public string to { get; set; }
+            public int hours { get; set; }
+            public int minutes { get; set; }
+            public string remark { get; set; }
+            public string ac_type { get; set; }
+            public string register { get; set; }
+        }
+
         [HttpPost]
         [Route("api/fixtime/saves")]
-        public async Task<IHttpActionResult> SaveFixtime(FixTime model)
+        public async Task<IHttpActionResult> SaveFixtime(fixtime_dto model)
         {
 
 
-            if (model == null || string.IsNullOrEmpty(model.Route))
-                return BadRequest("Invalid data.");
+            model.from = model.from
+                .Trim()
+                .ToUpper();
 
-            model.Route = model.Route
-         .Trim()
-         .ToUpper()
-         .Replace("_", "-")
-         .Replace(" ", "");
+            model.to = model.to
+              .Trim()
+              .ToUpper();
+
+            string route = model.from + '-' + model.to;
+            int duration = model.hours * 60 + model.minutes;
 
             using (var context = new AirpocketAPI.Models.FLYEntities())
             {
-                var fixtime = context.FixTimes.FirstOrDefault(q => q.Route == model.Route);
+                var fixtime = context.FixTimes.FirstOrDefault(q => q.Route == route);
 
 
                 if (fixtime == null)
@@ -155,8 +171,10 @@ namespace AirpocketAPI.Controllers
 
                     fixtime = new FixTime()
                     {
-                        Route = model.Route,
-                        Duration = model.Duration,
+                        Route = route,
+                        Duration = duration,
+                        ACTYPE = model.ac_type,
+                        REGISTER = model.register,
                         remark = model.remark
 
                     };
@@ -165,7 +183,9 @@ namespace AirpocketAPI.Controllers
                 else
                 {
 
-                    fixtime.Duration = model.Duration;
+                    fixtime.Duration = duration;
+                    fixtime.ACTYPE = model.ac_type;
+                    fixtime.REGISTER = model.register;
                     fixtime.remark = model.remark;
 
                 }
@@ -180,20 +200,29 @@ namespace AirpocketAPI.Controllers
 
             });
         }
-         
+
         [HttpPost]
         [Route("api/fixtime/delete")]
-        public async Task<IHttpActionResult> DeleteFixtime(FixTime model)
+        public async Task<IHttpActionResult> DeleteFixtime(fixtime_dto model)
         {
 
 
             using (var context = new AirpocketAPI.Models.FLYEntities())
             {
-                var fixtime = context.FixTimes.FirstOrDefault(q => q.Route == model.Route);
+                model.from = model.from
+              .Trim()
+              .ToUpper();
+
+                model.to = model.to
+                  .Trim()
+                  .ToUpper();
+
+                string route = model.from + '-' + model.to;
+                var fixtime = context.FixTimes.FirstOrDefault(q => q.Route == route);
 
 
                 if (fixtime == null)
-            return NotFound();
+                    return NotFound();
 
                 context.FixTimes.Remove(fixtime);
                 await context.SaveChangesAsync();
@@ -202,7 +231,7 @@ namespace AirpocketAPI.Controllers
             return Ok(new DataResponse
             {
                 IsSuccess = true,
-                
+
             });
         }
 
@@ -1014,16 +1043,27 @@ namespace AirpocketAPI.Controllers
 
         [Route("api/xls/airport/daily")]
         [AcceptVerbs("GET")]
-        public HttpResponseMessage GetXLS(DateTime dt, string origin)
+        public HttpResponseMessage GetXLS(DateTime dt, string origin, string airline)
         {
 
             var _dt = dt.Date;
 
             var context = new AirpocketAPI.Models.FLYEntities();
-            var query = (from x in context.RptAirportDailies
+            List<RptAirportDaily> query = new List<RptAirportDaily>();
+            if (airline == "aran")
+            {
+                query = (from x in context.RptAirportDailies
+                         where x.STDDay == _dt && (x.FromAirportIATA == origin || x.ToAirportIATA == origin) && (x.Register == "SOL" || x.Register == "SOE")
+                         orderby x.STD
+                         select x).ToList();
+            }
+            else
+            {
+                query = (from x in context.RptAirportDailies
                          where x.STDDay == _dt && (x.FromAirportIATA == origin || x.ToAirportIATA == origin)
                          orderby x.STD
                          select x).ToList();
+            }
 
 
             string LData = "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiIHN0YW5kYWxvbmU9InllcyI/Pgo8TGljZW5zZSBLZXk9ImNyOERaN1hKMkR5MUs2UUJBTkRPSVRLdlpjTzZkelVod2lsSHBnVlluQ3k0cXlHV2V6TFZubFJGeFAxNU1mSWZnUmdNWm1XaEdOQWRFNFRqZWZnQ1ovbFR2b1BkSXRIbDZXdDVBNWk1TVhFbnFkQnVPMUthRnovRFFzYUdWTGhzdjlySG1ybnRxSElFRGxJeGRxYUpNcGtLb0Frd1A3d1N6T01KMVkrbUNmVTVVRmV6REwvTjd1enJ4M0Y0d2I1SGErd0E2VFQ5VFJ3SzAzejlFS01aRmwzU1lSL3o0YVU3TE0wZFNYWTlqU0ZKZ2dqZlZzRFVLaUJyVm5td1ljaXVyOUVrYmw5Q3RaWTAzdG1yZm01QlplKzZnaHRFTm4wb2gzMzh0WlJleWpjcjc0QWs3MWhnWWtuTE9CQzE1VllmalhzcXVBVW13MlI2TWNWMlBPT2JyY1RSYlhBZ3pvUWJPeWQ4U2JFWmN3aE43NktQd1dzUVFTMUowdGlZSFVLeE9tMnQ0ZkJWMGhQVmhhOUI4Y0swNHFKUVp0MDBaMWNKRGEwd2I4VWx6RWs5QkhVVzJlbk9mVDE0UnlIQ2krWUdlbVBLY2RDUXJoMXpyWVRGN0ltb0x4N3h1NGV2RFRZc2xzV0JrbFFJb3g4NnJWckVVa1N0dXErQUNTWS9xVTM5L1Zhd3Y5S0FmUjVUZUVicGt3RGhTYjBOQkFqVDhBeXRsRFZkR2ZpZzBxS0czVllpVHBYRnc1cHRMVmgrYmtkK2RnN3Z4dHZyNDVaVVdKZXlyekdOR0g3YUZZZDZwLzJNRy9YSlRsR3ovU05RbzJDUExraU83SlhuOU5HZXhaN3BIbTBkZ3pNWmJHRVhxVmR2bG04MTJhL1hMMVNxeEdVWStvNVpsVUM3WTV4Z2dhRCtGZVA5enpoeUpxSUVwcDk3My9ScTRteG1wQWZMcVNzTzJSeHlTcStpdjFDc3AwQ3JvMDc4OEhybDFteWt4dVQweWRSWVpDNkRTeDhNMi9MWTNkOXNud3U3NkFmYjVDOVF1ZE9Zc0wzREh2aGZncmNVSWUvcUhmVFo5QWF6Y3pUanlyM2RPQkFjczBLZk12Y0xVUzRSeHZDdW1NNDVyNDJnMXJ3UGluN2JBcmYvZnNMTzZtS3g0WWRoSURNWlF6V3RjbkhFSTF5TXJ6aU9pdXhMdE8xalRBV25uU2VLVDJ0cXI3Tm42Qmg5TURHNjZZK2lJaW4xV05TUCtMdDFYdXRkajNKTyt4b1FNUVB5ZFpoZkJYZXpVMEhRMnd0eEdwdzRNczRTMTVJbFg1TEdXR3dXeUdYTWNjVWd3b1RDeFRGYmgyZFo0Vkg3OVZHTEVFR1JRWEZrNTRBdlFLdFBpdUcxY0w4RFo3WEoyRHkxSzZUUWVORE9YeFl2NFNveitCMHNBS0VwTVRrNCtTYWpYNksrSjlUOFhZVXRTOE8wWWZGUFZqZkhIYTZORWQyODdVcUlqMnJnQlF1bjVDV3hCczFHUm5BYmd1Z3MyL2ZQakcwZmdQemdSYzR5Q3ZObFg4V2pKUnloc3U5VFRKTjd1R3NOdnprU2IyZWlyQmhEaG1vQ0Jqa0wyYnMzT3I2d2pnNnBUNVpmNGhEdDF0STBJNXo1aytxQXVSZnRhd1lmamhXYmpMS0xKOTlUVk1kRDZaTCtTenNtQkNWN05lYm96V0RUTWgrRnJPT292R09ZbUk1bWp4Smd1MVRXNnI1V0JUK2oxSjBFNmJIb2tEMWo0Wm1DWUQreVBPUW1PMm1yUTNGdC9jVmZwQWlJdzliRkgwZ1FIbXQ4QnNuZnQ2MVV3c1h6cSs2akNvY1hOOUMvRXZPblhTczZuVlNGSkVBL3l1QmNIazZxOWdqanBnRG1NTEcrNlpxR1VjRWMzZEp2THpuK3pNT0p3TDI4WUQxN3BLSXBUNnd6WFBFVFJwWS9qNHhoMkQvaFhJRVNHcTk1eTVmZE9MNmx1QT09IiBWZXJzaW9uPSI5LjkiPgogICAgPFR5cGU+UnVudGltZTwvVHlwZT4KICAgIDxVc2VybmFtZT5Vc2VyTmFtZTwvVXNlcm5hbWU+CiAgICA8RW1haWw+ZU1haWxAaG9zdC5jb208L0VtYWlsPgogICAgPE9yZ2FuaXphdGlvbj5Pcmdhbml6YXRpb248L09yZ2FuaXphdGlvbj4KICAgIDxMaWNlbnNlZERhdGU+MjAxNi0wMS0wMVQxMjowMDowMFo8L0xpY2Vuc2VkRGF0ZT4KICAgIDxFeHBpcmVkRGF0ZT4yMDk5LTEyLTMxVDEyOjAwOjAwWjwvRXhwaXJlZERhdGU+CiAgICA8UHJvZHVjdHM+CiAgICAgICAgPFByb2R1Y3Q+CiAgICAgICAgICAgIDxOYW1lPlNwaXJlLk9mZmljZSBQbGF0aW51bTwvTmFtZT4KICAgICAgICAgICAgPFZlcnNpb24+OS45OTwvVmVyc2lvbj4KICAgICAgICAgICAgPFN1YnNjcmlwdGlvbj4KICAgICAgICAgICAgICAgIDxOdW1iZXJPZlBlcm1pdHRlZERldmVsb3Blcj45OTk5OTwvTnVtYmVyT2ZQZXJtaXR0ZWREZXZlbG9wZXI+CiAgICAgICAgICAgICAgICA8TnVtYmVyT2ZQZXJtaXR0ZWRTaXRlPjk5OTk5PC9OdW1iZXJPZlBlcm1pdHRlZFNpdGU+CiAgICAgICAgICAgIDwvU3Vic2NyaXB0aW9uPgogICAgICAgIDwvUHJvZHVjdD4KICAgIDwvUHJvZHVjdHM+CiAgICA8SXNzdWVyPgogICAgICAgIDxOYW1lPklzc3VlcjwvTmFtZT4KICAgICAgICA8RW1haWw+aXNzdWVyQGlzc3Vlci5jb208L0VtYWlsPgogICAgICAgIDxVcmw+aHR0cDovL3d3dy5pc3N1ZXIuY29tPC9Vcmw+CiAgICA8L0lzc3Vlcj4KPC9MaWNlbnNlPg==";
@@ -2153,7 +2193,30 @@ namespace AirpocketAPI.Controllers
 
             var _dt1 = dt1.Date;
             var _dt2 = dt2.Date.AddDays(0);
+            var airline = ConfigurationManager.AppSettings["airline"];
+            ppa_pgs ext_context = null;
+            if (airline == "AVA")
+                ext_context = new ppa_pgs();
             var context = new AirpocketAPI.Models.FLYEntities();
+
+            IQueryable<ViewTimeTable> query_pgs = Enumerable.Empty<ViewTimeTable>().AsQueryable();
+
+            if (airline == "AVA")
+            {
+                query_pgs = (from x in ext_context.ViewTimeTables
+                             where x.Register == "SAP"
+                             select x);
+                query_pgs = query_pgs.Where(q => (utcRef) ? q.STDDay >= _dt1 && q.STDDay <= _dt2 : q.STDDayLocal >= _dt1 && q.STDDayLocal <= _dt2);
+                if (cnl == -1)
+                    query_pgs = query_pgs.Where(q => q.FlightStatusID != 4);
+
+
+
+
+
+            }
+
+
             var query = (from x in context.ViewTimeTables
                              //where x.STDDay >= _dt1 && x.STDDay <= _dt2
                          select x);
@@ -2162,14 +2225,35 @@ namespace AirpocketAPI.Controllers
                 query = query.Where(q => q.FlightStatusID != 4);
 
 
-            var totalcnt = query.Count();
+            var totalcnt = query.Count() + query_pgs.Count();
 
-            var grps = (from x in query
-                        group x by new { refSTD = utcRef ? x.STDDay : x.STDDayLocal } into grp
-                        orderby grp.Key.refSTD
-                        select grp).ToList();
+            //var grps = (from x in query
+            //            group x by new { refSTD = utcRef ? x.STDDay : x.STDDayLocal } into grp
+            //            orderby grp.Key.refSTD
+            //            select grp).ToList();
+
+            // run each query on its own context
+            var queryList = query.ToList();       // from context A
+            var queryPgsList = query_pgs.ToList();   // from context B
+
+            // combine in memory
+            var combined = queryList
+                .Concat(queryPgsList)
+                .ToList();
+
+            // now group in memory, no EF involved any more
+            var grps = combined
+                .GroupBy(x => new { refSTD = utcRef ? x.STDDay : x.STDDayLocal })
+                .OrderBy(g => g.Key.refSTD)
+                .ToList();
 
 
+            //var combined = query.Concat(query_pgs);
+
+            //var grps = (from x in combined
+            //            group x by new { refSTD = utcRef ? x.STDDay : x.STDDayLocal } into grp
+            //            orderby grp.Key.refSTD
+            //            select grp).ToList();
 
             //var query = from x in context.ViewRosterCrewCounts
             //            where x.DateLocal >= _dt1 && x.DateLocal <= _dt2
@@ -3014,9 +3098,181 @@ namespace AirpocketAPI.Controllers
 
 
 
+        //[Route("api/xls/gd")]
+        //[AcceptVerbs("GET")]
+        //public HttpResponseMessage GetXLSGD(string flts)
+        //{
+        //    // var flightIds = new List<int?>();
+        //    var flightIds = flts.Split('_').Select(q => (Nullable<int>)Convert.ToInt32(q)).ToList();
+        //    var context = new AirpocketAPI.Models.FLYEntities();
+        //    var vflights = context.ViewFlightInformations.Where(q => flightIds.Contains(q.ID)).OrderBy(q => q.STD).Select(q => new { q.Register, q.AircraftType, q.ID, q.STD, q.FlightNumber, q.FromAirportIATA, q.ToAirportIATA, q.DepartureLocal, q.STA, q.ArrivalLocal }).ToList();
+
+        //    //TOKO
+
+        //    var _crews2 = (from x in
+        //                            //this.context.ViewFlightCrewNews
+        //                            context.ViewCrewLists
+        //                       //where x.FlightId == flightId
+
+        //                   where flightIds.Contains(x.FlightId) //&& x.IsPositioning != true
+        //                   orderby x.IsPositioning, x.GroupOrder
+        //                       , x.RosterPositionId, x.Name
+
+        //                   select new CLJLData()
+        //                   {
+        //                       CrewId = x.CrewId,
+        //                       IsPositioning = x.IsPositioning,
+        //                       PositionId = x.RosterPositionId,
+        //                       Position = x.Position,
+        //                       Name = x.Name,
+        //                       GroupId = x.GroupId,
+        //                       JobGroup = x.JobGroup,
+        //                       JobGroupCode = x.JobGroupCode,
+        //                       GroupOrder = x.GroupOrder,
+        //                       IsCockpit = x.IsCockpit,
+        //                       FlightId = x.FlightId,
+        //                       PID = x.PID,
+        //                       Mobile = x.Mobile,
+        //                       Address = x.Address,
+        //                       PassportNo = x.Sex,
+        //                       DatePassportExpire = x.DatePassportExpire
+
+
+
+        //                   }).ToList();
+        //    var _gcrews = (from x in _crews2
+        //                   group x by new
+        //                   {
+        //                       x.CrewId,
+        //                       x.IsPositioning,
+        //                       x.PositionId,
+        //                       x.Position,
+        //                       x.Name,
+        //                       x.GroupId,
+        //                       x.JobGroup,
+        //                       x.JobGroupCode,
+        //                       x.GroupOrder,
+        //                       x.IsCockpit,
+        //                       x.PID,
+        //                       x.Mobile,
+        //                       x.Address,
+        //                       x.PassportNo,
+        //                       x.DatePassportExpire
+        //                   } into grp
+        //                   select grp).ToList();
+        //    var query = (from x in _gcrews
+        //                 let xfids = x.Select(q => Convert.ToInt32(q.FlightId)).ToList()
+        //                 select new CLJLData()
+        //                 {
+        //                     CrewId = x.Key.CrewId,
+        //                     IsPositioning = x.Key.IsPositioning,
+        //                     PositionId = x.Key.PositionId,
+        //                     Position = x.Key.Position,
+        //                     Name = x.Key.Name,
+        //                     GroupId = x.Key.GroupId,
+        //                     JobGroup = x.Key.JobGroup,
+        //                     JobGroupCode = x.Key.JobGroupCode,
+        //                     GroupOrder = x.Key.GroupOrder,
+        //                     PID = x.Key.PID,
+        //                     Mobile = x.Key.Mobile,
+        //                     Address = x.Key.Address,
+        //                     IsCockpit = x.Key.IsCockpit,
+        //                     PassportNo = x.Key.PassportNo,
+        //                     DatePassportExpire = x.Key.DatePassportExpire,
+        //                     Legs = vflights.Where(q => xfids.Contains((int)q.ID)).OrderBy(q => q.DepartureLocal).Select(q => q.FlightNumber).Distinct().ToList(),
+        //                     LegsStr = string.Join("-", vflights.Where(q => xfids.Contains((int)q.ID)).OrderBy(q => q.DepartureLocal).Select(q => q.FlightNumber).Distinct().ToList()),
+
+        //                 }).ToList();
+
+
+        //    foreach (var x in query)
+        //    {
+        //        if (x.Legs.Count == flightIds.Count)
+        //            x.LegsStr = "";
+        //    }
+
+        //    //select DISTINCT CrewId,IsPositioning,PositionId,[Position],Name,GroupId,JobGroup,JobGroupCode,GroupOrder,IsCockpit 
+        //    var _route = new List<string>();
+        //    var _flightNo = new List<string>();
+        //    var _regs = new List<string>();
+        //    var _types = new List<string>();
+        //    foreach (var x in vflights)
+        //    {
+        //        _route.Add(x.FromAirportIATA);
+        //        _flightNo.Add(x.FlightNumber);
+        //        _regs.Add("EP-" + x.Register);
+        //        _types.Add(x.AircraftType);
+
+
+        //    }
+        //    _route.Add(vflights.Last().ToAirportIATA);
+        //    _regs = _regs.Distinct().ToList();
+        //    _types = _types.Distinct().ToList();
+
+        //    var result = new
+        //    {
+        //        flights = vflights,
+        //        crew = query, //_crews,
+        //        route = string.Join("-", _route),
+        //        no = string.Join(",", _flightNo),
+        //        no2 = string.Join("-", _flightNo),
+        //        actype = string.Join(",", _types),
+        //        regs = string.Join(",", _regs),
+        //        std = vflights.First().STD,
+        //        sta = vflights.Last().STA,
+        //        stdLocal = vflights.First().DepartureLocal,
+        //        staLocal = vflights.First().ArrivalLocal,
+        //    };
+
+        //    Workbook workbook = new Workbook();
+        //    var mappedPathSource = System.Web.Hosting.HostingEnvironment.MapPath("~/upload/" + "_gd" + ".xlsx");
+        //    workbook.LoadFromFile(mappedPathSource);
+        //    Worksheet sheet = workbook.Worksheets[0];
+
+        //    sheet.Range[2, 5].Text = result.no2;
+        //    if (result.flights.Count > 1)
+        //        sheet.Range[2, 5].Text = result.no2 + " (" + result.route + ")";
+        //    sheet.Range[2, 7].Text = ((DateTime)result.std).ToString("yyyy-MM-dd");
+        //    sheet.Range[3, 1].Value = "Marks of Nationality and Registration:" + result.regs;
+
+        //    sheet.Range[3, 5].Text = result.flights.First().FromAirportIATA + " - " + ((DateTime)result.flights.First().STD).ToString("HH:mm");
+        //    sheet.Range[3, 7].Text = result.flights.Last().ToAirportIATA + " - " + ((DateTime)result.flights.Last().STA).ToString("HH:mm");
+
+        //    var r = 5;
+        //    foreach (var cr in result.crew)
+        //    {
+
+        //        sheet.Range[r, 2].Text = cr.Position;
+        //        sheet.Range[r, 3].Text = cr.Name;
+        //        sheet.Range[r, 4].Text = cr.PassportNo;
+        //        sheet.Range[r, 5].Text = cr.DatePassportExpire?.ToString("yyyy-MM-dd") ?? "";
+
+        //        r++;
+        //    }
+
+        //    var name = "gd-" + result.route + "-" + result.no2;
+        //    var mappedPath = System.Web.Hosting.HostingEnvironment.MapPath("~/upload/" + name + ".xlsx");
+
+
+
+        //    workbook.SaveToFile(mappedPath, ExcelVersion.Version2016);
+
+        //    HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
+        //    response.Content = new StreamContent(new FileStream(mappedPath, FileMode.Open, FileAccess.Read));
+        //    response.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+        //    response.Content.Headers.ContentDisposition.FileName = name + ".xlsx";
+        //    response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+
+
+        //    return response;
+
+
+
+        //}
+
         [Route("api/xls/gd")]
         [AcceptVerbs("GET")]
-        public HttpResponseMessage GetXLSGD(string flts)
+        public HttpResponseMessage GetXLSGD2(string flts)
         {
             // var flightIds = new List<int?>();
             var flightIds = flts.Split('_').Select(q => (Nullable<int>)Convert.ToInt32(q)).ToList();
@@ -3050,7 +3306,8 @@ namespace AirpocketAPI.Controllers
                                PID = x.PID,
                                Mobile = x.Mobile,
                                Address = x.Address,
-                               PassportNo = x.Sex,
+                               PassportNo = x.PassportNumber,
+                               NID = x.Sex,
                                DatePassportExpire = x.DatePassportExpire
 
 
@@ -3073,6 +3330,7 @@ namespace AirpocketAPI.Controllers
                                x.Mobile,
                                x.Address,
                                x.PassportNo,
+                               x.NID,
                                x.DatePassportExpire
                            } into grp
                            select grp).ToList();
@@ -3094,6 +3352,7 @@ namespace AirpocketAPI.Controllers
                              Address = x.Key.Address,
                              IsCockpit = x.Key.IsCockpit,
                              PassportNo = x.Key.PassportNo,
+                             NID = x.Key.NID,
                              DatePassportExpire = x.Key.DatePassportExpire,
                              Legs = vflights.Where(q => xfids.Contains((int)q.ID)).OrderBy(q => q.DepartureLocal).Select(q => q.FlightNumber).Distinct().ToList(),
                              LegsStr = string.Join("-", vflights.Where(q => xfids.Contains((int)q.ID)).OrderBy(q => q.DepartureLocal).Select(q => q.FlightNumber).Distinct().ToList()),
@@ -3116,7 +3375,7 @@ namespace AirpocketAPI.Controllers
             {
                 _route.Add(x.FromAirportIATA);
                 _flightNo.Add(x.FlightNumber);
-                _regs.Add("EP-" + x.Register);
+                _regs.Add(x.Register);
                 _types.Add(x.AircraftType);
 
 
@@ -3160,8 +3419,9 @@ namespace AirpocketAPI.Controllers
 
                 sheet.Range[r, 2].Text = cr.Position;
                 sheet.Range[r, 3].Text = cr.Name;
-                sheet.Range[r, 4].Text = cr.PassportNo;
-                sheet.Range[r, 5].Text = cr.DatePassportExpire?.ToString("yyyy-MM-dd") ?? "";
+                sheet.Range[r, 4].Text = cr.NID;
+                sheet.Range[r, 5].Text = cr.PassportNo;
+                sheet.Range[r, 6].Text = cr.DatePassportExpire?.ToString("yyyy-MM-dd") ?? "";
 
                 r++;
             }
@@ -3474,7 +3734,7 @@ namespace AirpocketAPI.Controllers
                 std = vflights.First().STD,
                 sta = vflights.Last().STA,
                 stdLocal = vflights.First().DepartureLocal,
-                staLocal = vflights.First().ArrivalLocal,
+                staLocal = vflights.Last().ArrivalLocal,
             };
 
             Workbook workbook = new Workbook();
@@ -8608,6 +8868,22 @@ namespace AirpocketAPI.Controllers
 
             return Ok(certs);
         }
+
+        [Route("api/crew/certificates/pp/{id}")]
+        [AcceptVerbs("GET")]
+        public async Task<IHttpActionResult> GetEmployeeCertificatesPP(int id)
+        {
+            var context = new AirpocketAPI.Models.FLYEntities();
+            var certs = context.ViewCertificateHistoryRankeds.Where(q =>
+                 q.PersonId == id
+
+           ).OrderBy(q => q.StatusId).ThenBy(q => q.Remain).ToList();
+
+
+            //var result = await courseService.GetEmployeeCertificates(id);
+
+            return Ok(certs);
+        }
         public class SQLCMD
         {
             public int type { get; set; }
@@ -9638,7 +9914,7 @@ new JsonSerializerSettings
                 positioning += "  TICKET(s): " + string.Join(" ", tickets);
             }
             var dutiesQuery = (from x in context.ViewCrewDuties
-                               where x.DateLocal == df && (x.DutyType == 1167 || x.DutyType == 1168 || x.DutyType == 300013 || x.DutyType == 1170 || x.DutyType == 5000 || x.DutyType == 5001
+                               where x.DateLocal == df && (x.DutyType == 1167 || x.DutyType == 1168 || x.DutyType == 300013 || x.DutyType == 1170 || x.DutyType == 5000 /*|| x.DutyType == 5001*/
                                || x.DutyType == 100001 || x.DutyType == 100003)
                                select x).ToList();
             var stby_ids = new List<int>() { 1167, 1168, 300013 };
@@ -9667,29 +9943,74 @@ new JsonSerializerSettings
                           }).OrderBy(q => q.DutyType).ToList();
             var stby_duties = (from x in dutiesQuery where stby_ids.Contains(x.DutyType) select x).ToList();
             var stby_out = new List<out_duty>() {
-             new out_duty(){DutyType=300013,DutyTypeTitle="STBY B737",aircraft_type="B737"},
-             new out_duty(){DutyType=300013,DutyTypeTitle="STBY MD", aircraft_type="MD"},
+                     new out_duty(){DutyType=1168,DutyTypeTitle="STBY AM",aircraft_type="-"},
+                          new out_duty(){DutyType=1167,DutyTypeTitle="STBY PM",aircraft_type="-"},
+            //     new out_duty(){DutyType=300013,DutyTypeTitle="STBY",aircraft_type="-"},
+            // new out_duty(){DutyType=300013,DutyTypeTitle="STBY B737",aircraft_type="B737"},
+            // new out_duty(){DutyType=300013,DutyTypeTitle="STBY MD", aircraft_type="MD"},
             // new out_duty(){DutyType=300013,DutyTypeTitle="STBY AIRBUS", aircraft_type="AIRBUS"},
             // new out_duty(){DutyType=300013,DutyTypeTitle="STBY ERJ", aircraft_type="ERJ"},
 
             };
             foreach (var row in stby_out)
             {
-                row.items = stby_duties.Where(q => q.ValidTypesStr.Contains(row.aircraft_type)).Select(q => new out_duty_item()
+                if (row.DutyType == 1168)
                 {
-                    Title = row.DutyType != 300013 ? q.ScheduleName + " (" + q.JobGroup + ")" : q.ScheduleName + " (" + q.JobGroup + ")" + " (" + ((DateTime)q.Start).ToString("HHmm") + " - " + ((DateTime)q.End).ToString("HHmm") + ")",
-                    IsCockpit = q.IsCockpit,
-                    JobGroup = q.JobGroup,
-                    GroupOrder = getOrder(q.JobGroup)
-                }).OrderBy(q => q.GroupOrder).ToList();
+                    row.items = stby_duties.Where(q => q.DutyType == 1168).Select(q => new out_duty_item()
+                    {
+                        Title = row.DutyType != 300013 ? q.ScheduleName + " (" + q.JobGroup + ")" : q.ScheduleName + " (" + q.JobGroup + ")" + " (" + ((DateTime)q.Start).ToString("HHmm") + " - " + ((DateTime)q.End).ToString("HHmm") + ")",
+                        IsCockpit = q.IsCockpit,
+                        JobGroup = q.JobGroup,
+                        GroupOrder = getOrder(q.JobGroup)
+                    }).OrderBy(q => q.GroupOrder).ToList();
 
-                row.itemsStr = string.Join(", ", stby_duties.Where(q => q.ValidTypesStr.Contains(row.aircraft_type)).Select(q => new
+                    row.itemsStr = string.Join(", ", stby_duties.Where(q => q.DutyType == 1168)/*.Where(q => q.ValidTypesStr.Contains(row.aircraft_type))*/.Select(q => new
+                    {
+                        Title = row.DutyType != 300013 ? q.ScheduleName + " (" + q.JobGroup + ")" : q.ScheduleName + " (" + q.JobGroup + ")" + " (" + ((DateTime)q.Start).ToString("HHmm") + " - " + ((DateTime)q.End).ToString("HHmm") + ")",
+                        q.IsCockpit,
+                        q.JobGroup,
+                        GroupOrder = getOrder(q.JobGroup)
+                    }).OrderBy(q => q.GroupOrder).Select(q => q.Title).ToList());
+
+                }
+                else if (row.DutyType == 1167)
                 {
-                    Title = row.DutyType != 300013 ? q.ScheduleName + " (" + q.JobGroup + ")" : q.ScheduleName + " (" + q.JobGroup + ")" + " (" + ((DateTime)q.Start).ToString("HHmm") + " - " + ((DateTime)q.End).ToString("HHmm") + ")",
-                    q.IsCockpit,
-                    q.JobGroup,
-                    GroupOrder = getOrder(q.JobGroup)
-                }).OrderBy(q => q.GroupOrder).Select(q => q.Title).ToList());
+                    row.items = stby_duties.Where(q => q.DutyType == 1167).Select(q => new out_duty_item()
+                    {
+                        Title = row.DutyType != 300013 ? q.ScheduleName + " (" + q.JobGroup + ")" : q.ScheduleName + " (" + q.JobGroup + ")" + " (" + ((DateTime)q.Start).ToString("HHmm") + " - " + ((DateTime)q.End).ToString("HHmm") + ")",
+                        IsCockpit = q.IsCockpit,
+                        JobGroup = q.JobGroup,
+                        GroupOrder = getOrder(q.JobGroup)
+                    }).OrderBy(q => q.GroupOrder).ToList();
+
+                    row.itemsStr = string.Join(", ", stby_duties.Where(q => q.DutyType == 1167)/*.Where(q => q.ValidTypesStr.Contains(row.aircraft_type))*/.Select(q => new
+                    {
+                        Title = row.DutyType != 300013 ? q.ScheduleName + " (" + q.JobGroup + ")" : q.ScheduleName + " (" + q.JobGroup + ")" + " (" + ((DateTime)q.Start).ToString("HHmm") + " - " + ((DateTime)q.End).ToString("HHmm") + ")",
+                        q.IsCockpit,
+                        q.JobGroup,
+                        GroupOrder = getOrder(q.JobGroup)
+                    }).OrderBy(q => q.GroupOrder).Select(q => q.Title).ToList());
+
+                }
+                else
+                {
+                    row.items = stby_duties.Where(q => q.ValidTypesStr.Contains(row.aircraft_type)).Select(q => new out_duty_item()
+                    {
+                        Title = row.DutyType != 300013 ? q.ScheduleName + " (" + q.JobGroup + ")" : q.ScheduleName + " (" + q.JobGroup + ")" + " (" + ((DateTime)q.Start).ToString("HHmm") + " - " + ((DateTime)q.End).ToString("HHmm") + ")",
+                        IsCockpit = q.IsCockpit,
+                        JobGroup = q.JobGroup,
+                        GroupOrder = getOrder(q.JobGroup)
+                    }).OrderBy(q => q.GroupOrder).ToList();
+
+                    row.itemsStr = string.Join(", ", stby_duties.Where(q => q.ValidTypesStr.Contains(row.aircraft_type)).Select(q => new
+                    {
+                        Title = row.DutyType != 300013 ? q.ScheduleName + " (" + q.JobGroup + ")" : q.ScheduleName + " (" + q.JobGroup + ")" + " (" + ((DateTime)q.Start).ToString("HHmm") + " - " + ((DateTime)q.End).ToString("HHmm") + ")",
+                        q.IsCockpit,
+                        q.JobGroup,
+                        GroupOrder = getOrder(q.JobGroup)
+                    }).OrderBy(q => q.GroupOrder).Select(q => q.Title).ToList());
+
+                }
 
 
             }

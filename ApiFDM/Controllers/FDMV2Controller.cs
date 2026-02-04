@@ -3149,5 +3149,140 @@ namespace ApiFDM.Controllers
 
         }
 
+
+        [Route("api/fdm/V2/events/{dt1}/{dt2}/{type}/{register_id}/{cpt_id}/{route}/{phase}/{severity}")]
+        public async Task<DataResponse> get_events_info_new(DateTime dt1, DateTime dt2, string type, int register_id, int cpt_id, 
+            string route, string phase, string severity)
+        {
+            try
+            {
+                using (var context = new FDMEntities())
+                {
+                    var dt2Exclusive = dt2.Date.AddDays(1);
+
+                    IQueryable<FDMProcessedDto> query;
+
+                    if (cpt_id != 0)
+                    {
+                        query = from x in context.view_fdm_processed
+                                join y in context.fdm_crew on x.id equals y.processed_id
+                                where x.std >= dt1 && x.std < dt2Exclusive && y.crew_id == cpt_id
+                                select new FDMProcessedDto
+                                {
+                                    register = x.register,
+                                    register_id = (int)x.register_id,
+                                    std = (DateTime)x.std,
+                                    flight_id = (int)x.flight_id,
+                                    flight_number = x.flight_number,
+                                    state_name = x.state_name,
+                                    type = x.type,
+                                    severity = x.severity,
+                                    ac_type = x.ac_type,
+                                    ac_type2 = x.ac_type2,
+                                    ac_type_id = (int)x.ac_type_id,
+                                    arr_iata = x.arr_iata,
+                                    dep_iata = x.dep_iata,
+                                    route = x.dep_iata + "-" + x.arr_iata,
+                                    cpt1_id = x.cpt1_id,
+                                    cpt1_first_name = x.cpt1_first_name,
+                                    cpt1_last_name = x.cpt1_last_name,
+                                    cp1_name = x.cpt1_first_name + " " + x.cpt1_last_name,
+                                    cpt2_id = x.cpt2_id,
+                                    cp2_name = x.cpt2_first_name + " " + x.cpt2_last_name,
+                                    ip1_id = x.ip1_id,
+                                    ip1_name = x.ip1_first_name + " " + x.ip1_last_name,
+                                    ip2_id = x.ip2_id,
+                                    ip2_name = x.ip2_first_name + " " + x.ip2_last_name,
+                                    phase = x.phase,
+                                    value = x.value,
+                                    event_name = x.event_name,
+                                    crew_id = y.crew_id,
+                                    position = y.position
+                                };
+                    }
+                    else
+                    {
+                        query = from x in context.view_fdm_processed
+                                where x.std >= dt1 && x.std < dt2Exclusive
+                                select new FDMProcessedDto
+                                {
+                                    register = x.register,
+                                    register_id = (int)x.register_id,
+                                    flight_id = (int)x.flight_id,
+                                    flight_number = x.flight_number,
+                                    std = (DateTime)x.std,
+                                    state_name = x.state_name,
+                                    type = x.type,
+                                    severity = x.severity,
+                                    ac_type = x.ac_type,
+                                    ac_type2 = x.ac_type2,
+                                    ac_type_id = (int)x.ac_type_id,
+                                    arr_iata = x.arr_iata,
+                                    dep_iata = x.dep_iata,
+                                    route = x.dep_iata + "-" + x.arr_iata,
+                                    cpt1_id = x.cpt1_id,
+                                    cpt1_first_name = x.cpt1_first_name,
+                                    cpt1_last_name = x.cpt1_last_name,
+                                    cp1_name = x.cpt1_first_name + " " + x.cpt1_last_name,
+                                    cpt2_id = x.cpt2_id,
+                                    cp2_name = x.cpt2_first_name + " " + x.cpt2_last_name,
+                                    ip1_id = x.ip1_id,
+                                    ip1_name = x.ip1_first_name + " " + x.ip1_last_name,
+                                    ip2_id = x.ip2_id,
+                                    ip2_name = x.ip2_first_name + " " + x.ip2_last_name,
+                                    phase = x.phase,
+                                    value = x.value,
+                                    event_name = x.event_name, 
+                                    crew_id = null,
+                                    position = null
+                                };
+                    }
+
+                    // فیلترها
+                    if (!string.IsNullOrEmpty(type) && type != "-")
+                    {
+                        query = query.Where(q => q.ac_type2 == type);
+                    }
+
+                    if (register_id != 0)
+                    {
+                        query = query.Where(q => q.register_id == register_id);
+                    }
+
+                    if (!string.IsNullOrEmpty(route) && route != "-")
+                    {
+                        query = query.Where(q => (q.dep_iata + "-" + q.arr_iata) == route);
+                    }
+
+                    if (!string.IsNullOrEmpty(phase) && phase != "-")
+                    {
+                        query = query.Where(q => q.phase == phase);
+                    }
+
+                    if (!string.IsNullOrEmpty(severity) && severity != "-")
+                    {
+                        query = query.Where(q => q.severity == severity);
+                    }
+
+                    var raw = query.ToList();
+
+                    return new DataResponse
+                    {
+                        Data = new { Items = raw },
+                        IsSuccess = true
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new DataResponse
+                {
+                    Data = new { error = ex.Message },
+                    IsSuccess = false
+                };
+            }
+
+        }
+
     }
 }

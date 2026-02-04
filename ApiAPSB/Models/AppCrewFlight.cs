@@ -19,8 +19,8 @@ namespace ApiAPSB.Models
         public int DutyType { get; set; }
         public string DutyTypeTitle { get; set; }
         public int FDPItemId { get; set; }
-        public int CrewId { get; set; }
-        public int FlightId { get; set; }
+        public Nullable<int> CrewId { get; set; }
+        public Nullable<int> FlightId { get; set; }
         public Nullable<bool> IsPositioning { get; set; }
         public Nullable<int> PositionId { get; set; }
         public string Position { get; set; }
@@ -73,6 +73,7 @@ namespace ApiAPSB.Models
         public string CPP2 { get; set; }
         public string CPSCCM { get; set; }
         public string CPISCCM { get; set; }
+        public string CPRegister { get; set; }
         public Nullable<bool> SplitDuty { get; set; }
         public int NightTime { get; set; }
         public Nullable<int> DayTime { get; set; }
@@ -174,5 +175,15 @@ namespace ApiAPSB.Models
         public Nullable<int> PaxMale { get; set; }
         public Nullable<System.DateTime> BlockOffStation { get; set; }
         public Nullable<System.DateTime> BlockOnStation { get; set; }
+        public Nullable<int> PF1Id { get; set; }
+        public Nullable<int> PM1Id { get; set; }
+        public Nullable<int> PF2Id { get; set; }
+        public Nullable<int> PM2Id { get; set; }
+        public Nullable<int> PF1Time { get; set; }
+        public Nullable<int> PM1Time { get; set; }
+        public Nullable<int> PF2Time { get; set; }
+        public Nullable<int> PM2Time { get; set; }
+        public Nullable<System.DateTime> Reporting { get; set; }
+        public string PermissionUrl { get; set; }
     }
 }

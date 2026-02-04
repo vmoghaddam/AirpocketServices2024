@@ -26,6 +26,10 @@ namespace AirpocketTRN.ViewModels
         public int? Duration { get; set; }
         public int? CertificateTypeId { get; set; }
         public int? Mandatory { get; set; }
+        public int? IntervalInitial { get; set; }
+        public int? DurationInitial { get; set; }
+        public int? DurationRecurrent { get; set; }
+        public string ProfileGroup { get; set; }
         public List<string> not_applicables
         {
             get; set;
@@ -53,6 +57,10 @@ namespace AirpocketTRN.ViewModels
             entity.ShowInList = coursetype.ShowInList;
             entity.ShowInProfile = coursetype.ShowInProfile;
             entity.Abbreviation = coursetype.Abbreviation;
+            entity.DurationInitial = coursetype.DurationInitial;
+            entity.DurationRecurrent = coursetype.DurationRecurrent;
+            entity.ProfileGroup = coursetype.ProfileGroup;
+            entity.IntervalInitial = coursetype.IntervalInitial;
 
 
         }
@@ -165,6 +173,8 @@ namespace AirpocketTRN.ViewModels
 
         public bool? Certificate { get; set; }
         public string ExamType { get; set; }
+        public string RecurrentType { get; set; }
+        public string ProfileGroup { get; set; }
         public List<CourseDoc> Documents { get; set; }
         public List<SyllabusDto> Syllabi { get; set; }
 

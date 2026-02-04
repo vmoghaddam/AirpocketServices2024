@@ -195,7 +195,7 @@ namespace AirpocketTRN.Controllers
         [Route("api/course/query")]
         [EnableQuery]
         // [Authorize]
-        public IQueryable<ViewCourseNew> GetCourseQuery()
+        public IQueryable<ViewCourseNew> GetCourseQuery( )
         {
            // if (DateTime.Now >= new DateTime(2022, 6, 28))
              //   return (new List<ViewCourseNew>()).AsQueryable();
@@ -943,6 +943,14 @@ namespace AirpocketTRN.Controllers
 
             return Ok(result);
         }
+        [Route("api/course/people/status/all/save/new")]
+        [AcceptVerbs("POST")]
+        public async Task<IHttpActionResult> PostUpdateCoursePeopleStatusAllNew(CoursePeopleStatusViewModel dto)
+        {
+            var result = await courseService.UpdateCoursePeopleStatusAllNew(dto);
+
+            return Ok(result);
+        }
 
         [Route("api/course/people/status/atlas/save")]
         [AcceptVerbs("POST")]
@@ -1301,6 +1309,73 @@ namespace AirpocketTRN.Controllers
             FLYEntities context = new FLYEntities();
             var ids = await context.Courses.OrderByDescending(q => q.Id).Select(q => q.Id).ToListAsync();
             return Ok(ids);
+        }
+
+        [Route("api/filter/types")]
+        [AcceptVerbs("GET")]
+        public async Task<IHttpActionResult> GetSavedCourseTypes()
+        {
+
+
+            FLYEntities context = new FLYEntities();
+            var query = await context.ViewCourseNews.Where(q=>q.ParentId==null).Select(q=>new
+            {
+               course_type_id= q.CourseTypeId,
+               course_Type=  q.CourseType
+            }).Distinct().OrderBy(q=>q.course_Type).ToListAsync();
+            return Ok(query);
+        }
+
+        [Route("api/courses/{type}/{pid}/{period}/{group}")]
+        [AcceptVerbs("GET")]
+        public async Task<IHttpActionResult> GetCourses(int type,int pid,string period, string group)
+        {
+
+
+            FLYEntities context = new FLYEntities();
+            var query =  from x in context.ViewCourseNews
+                         where x.ParentId==null
+                         select x;
+            if (type != -1)
+            {
+                query=query.Where(q=>q.CourseTypeId==type);
+            }
+
+            if (pid != -1)
+            {
+                query=from c in query
+                      join cp in context.CoursePeoples  on c.Id equals cp.CourseId
+                      where cp.PersonId == pid
+                      select c;
+            }
+
+            if (period != "-1")
+            {
+                query = query.Where(q => q.RecurrentType == period);
+            }
+
+            if (group != "-1")
+            {
+                query = query.Where(q => q.ProfileGroup == group);
+            }
+            var result=await query.OrderByDescending(q=>q.DateStart).ToListAsync();
+            return Ok(result);
+        }
+        [Route("api/filter/people")]
+        [AcceptVerbs("GET")]
+        public async Task<IHttpActionResult> GetPeopleFilter()
+        {
+
+
+            FLYEntities context = new FLYEntities();
+            var query = await context.ViewEmployeeAbs.Select(q => new
+            {
+               name= q.FirstName+" "+q.LastName,
+               id= q.Id,
+               person_id=q.PersonId,
+               q.JobGroup
+            }).Where(q => q.JobGroup != "FSG").OrderBy(q => q.name).ToListAsync();
+            return Ok(query);
         }
 
 

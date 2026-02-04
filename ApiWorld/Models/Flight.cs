@@ -31,9 +31,7 @@ namespace ApiWorld.Models
             this.CorrectionTables = new HashSet<CorrectionTable>();
             this.Crews = new HashSet<Crew>();
             this.DEPNotams = new HashSet<DEPNotam>();
-            this.DEPTafs = new HashSet<DEPTaf>();
             this.DESTNotams = new HashSet<DESTNotam>();
-            this.DESTTafs = new HashSet<DESTTaf>();
             this.EnrouteAlternates = new HashSet<EnrouteAlternate>();
             this.ExtraFuels = new HashSet<ExtraFuel>();
             this.FIRs = new HashSet<FIR>();
@@ -45,6 +43,7 @@ namespace ApiWorld.Models
             this.OptFlightLevels = new HashSet<OptFlightLevel>();
             this.PassThroughValues = new HashSet<PassThroughValue>();
             this.PDPPoints = new HashSet<PDPPoint>();
+            this.plan_flight = new HashSet<plan_flight>();
             this.PpsVersionInformations = new HashSet<PpsVersionInformation>();
             this.RoutePoints = new HashSet<RoutePoint>();
             this.SIDAlternatives = new HashSet<SIDAlternative>();
@@ -216,6 +215,8 @@ namespace ApiWorld.Models
         public Nullable<int> LocalTimeId { get; set; }
         public Nullable<int> HoldingFuelId { get; set; }
         public Nullable<int> ResponseId { get; set; }
+        public Nullable<int> FlightId { get; set; }
+        public Nullable<int> pps_id { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AdequateApt> AdequateApts { get; set; }
@@ -251,13 +252,9 @@ namespace ApiWorld.Models
         public virtual DepartureAlternateAirport DepartureAlternateAirport { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DEPNotam> DEPNotams { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DEPTaf> DEPTafs { get; set; }
         public virtual DEPTaf DEPTaf { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DESTNotam> DESTNotams { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DESTTaf> DESTTafs { get; set; }
         public virtual DESTTaf DESTTaf { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EnrouteAlternate> EnrouteAlternates { get; set; }
@@ -295,6 +292,8 @@ namespace ApiWorld.Models
         public virtual ICollection<PassThroughValue> PassThroughValues { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PDPPoint> PDPPoints { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<plan_flight> plan_flight { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PpsVersionInformation> PpsVersionInformations { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

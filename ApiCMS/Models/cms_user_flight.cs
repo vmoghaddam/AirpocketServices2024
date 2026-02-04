@@ -16,16 +16,44 @@ namespace ApiCMS.Models
     {
         public int id { get; set; }
         public string username { get; set; }
-        public Nullable<int> is_visited { get; set; }
-        public Nullable<int> is_read { get; set; }
+        public Nullable<int> is_asr_visited { get; set; }
+        public Nullable<int> is_asr_read { get; set; }
         public Nullable<int> is_pinned { get; set; }
         public string tags { get; set; }
-        public Nullable<System.DateTime> date_visited { get; set; }
-        public Nullable<System.DateTime> date_read { get; set; }
-        public Nullable<System.DateTime> date_pinned { get; set; }
+        public Nullable<System.DateTime> date_asr_visited { get; set; }
+        public Nullable<System.DateTime> date_asr_read { get; set; }
+        public Nullable<System.DateTime> date_asr_pinned { get; set; }
         public string cms_label { get; set; }
         public string ops_label { get; set; }
         public string comments { get; set; }
         public Nullable<int> flight_id { get; set; }
+        public Nullable<int> is_vr_visited { get; set; }
+        public Nullable<int> is_vr_read { get; set; }
+        public Nullable<System.DateTime> date_vr_visited { get; set; }
+        public Nullable<System.DateTime> date_vr_read { get; set; }
+        public Nullable<int> is_csr_visited { get; set; }
+        public Nullable<int> is_csr_read { get; set; }
+        public Nullable<System.DateTime> date_csr_visited { get; set; }
+        public Nullable<System.DateTime> date_csr_read { get; set; }
+        public Nullable<int> is_gr_visited { get; set; }
+        public Nullable<int> is_gr_read { get; set; }
+        public Nullable<System.DateTime> date_gr_visited { get; set; }
+        public Nullable<System.DateTime> date_gr_read { get; set; }
+        public Nullable<int> is_vhr_visited { get; set; }
+        public Nullable<int> is_vhr_read { get; set; }
+        public Nullable<System.DateTime> date_vhr_visited { get; set; }
+        public Nullable<System.DateTime> date_vhr_read { get; set; }
+        public Nullable<int> is_mor_visited { get; set; }
+        public Nullable<int> is_mor_read { get; set; }
+        public Nullable<System.DateTime> date_mor_visited { get; set; }
+        public Nullable<System.DateTime> date_mor_read { get; set; }
+        public Nullable<int> is_chr_visited { get; set; }
+        public Nullable<int> is_chr_read { get; set; }
+        public Nullable<System.DateTime> date_chr_visited { get; set; }
+        public Nullable<System.DateTime> date_chr_read { get; set; }
+        public Nullable<int> is_shr_visited { get; set; }
+        public Nullable<int> is_shr_read { get; set; }
+        public Nullable<System.DateTime> date_shr_visited { get; set; }
+        public Nullable<System.DateTime> date_shr_read { get; set; }
     }
 }

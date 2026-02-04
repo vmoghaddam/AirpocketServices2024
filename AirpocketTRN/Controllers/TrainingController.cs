@@ -11,6 +11,7 @@ using System.Web.Http.Cors;
 using PdfiumViewer;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Configuration;
 
 namespace AirpocketTRN.Controllers
 {
@@ -35,19 +36,34 @@ namespace AirpocketTRN.Controllers
             }
         }
 
+
+
         [Route("api/files/get/{nid}")]
         [AcceptVerbs("Get")]
 
         public async Task<IHttpActionResult> get_person_folder(string nid)
         {
             var context = new FLYEntities();
-            var result=context.view_person_folder.Where(q=>q.nid== nid).ToList();
+            var result = context.view_person_folder.Where(q => q.nid == nid).ToList();
+            return Ok(result);
+        }
+
+
+
+
+        [Route("api/profile/config")]
+        [AcceptVerbs("Get")]
+
+        public async Task<IHttpActionResult> get_profile_config()
+        {
+            var context = new FLYEntities();
+            var result = context.view_coursetype_profile.ToList();
             return Ok(result);
         }
         [Route("api/files/test")]
         [AcceptVerbs("Get")]
 
-        public async Task<IHttpActionResult> get_person_test( )
+        public async Task<IHttpActionResult> get_person_test()
         {
             using (var document = PdfDocument.Load(@"C:\Training_Folder\1.pdf"))
             {
@@ -104,22 +120,22 @@ namespace AirpocketTRN.Controllers
 
 
             var context = new FLYEntities();
-            var profile=context.ViewProfiles.Where(q=>q.NID==nid).FirstOrDefault();
+            var profile = context.ViewProfiles.Where(q => q.NID == nid).FirstOrDefault();
             foreach (var x in fileQuery)
             {
                 context.person_folder.Add(new person_folder()
                 {
                     creation_time = x.CreationTime,
                     directory = x.Directory,
-                    employee_id = profile!=null?(Nullable<int>)profile.Id:null,
-                    person_id = profile != null ? (Nullable<int>)profile.PersonId:null,
+                    employee_id = profile != null ? (Nullable<int>)profile.Id : null,
+                    person_id = profile != null ? (Nullable<int>)profile.PersonId : null,
                     file_extension = x.Extension.Replace(".", ""),
                     file_full_name = x.FullName,
                     file_name = x.Name,
                     folder = x.grp.ToUpper(),
                     nid = nid,
-                    last_name = profile != null ? profile.FirstName:null,
-                    first_name = profile != null ? profile.LastName:null,
+                    last_name = profile != null ? profile.FirstName : null,
+                    first_name = profile != null ? profile.LastName : null,
 
                 });
             }
@@ -133,6 +149,367 @@ namespace AirpocketTRN.Controllers
         public async Task<IHttpActionResult> get_crm_assessment(int flightId)
         {
             var result = await trainingService.get_trn_crm_assessment(flightId);
+            return Ok(result);
+        }
+
+        [Route("api/trn/get/person/files/{nid}")]
+        [AcceptVerbs("Get")]
+
+        public async Task<IHttpActionResult> get_person_files(string nid)
+        {
+            var result = await trainingService.get_person_files(nid);
+            return Ok(result);
+        }
+
+        [Route("api/trn/get/crew/files/{nid}")]
+        [AcceptVerbs("Get")]
+
+        public async Task<IHttpActionResult> get_crew_files(string nid)
+        {
+            var result = await trainingService.get_crew_files(nid);
+            return Ok(result);
+        }
+
+        [Route("api/trn/get/profile/doc/{nid}")]
+        [AcceptVerbs("Get")]
+
+        public async Task<IHttpActionResult> get_profile_doc(string nid)
+        {
+            var result = await trainingService.get_profile_doc(nid);
+            return Ok(result);
+        }
+
+
+        public class delete_file {
+            public string file_name{ get; set; } 
+            public string folder_name{ get; set; } 
+        }
+
+        [Route("api/trn/delete/profile/doc")]
+        [AcceptVerbs("Post")]
+
+        public async Task<IHttpActionResult> get_profile_doc(List<delete_file> files)
+        {
+            try {
+                var BaseDir = ConfigurationManager.AppSettings["training_doc"];
+                
+                if (files == null || files.Count == 0)
+                    throw new ArgumentException("selected files must not be empty");
+
+                foreach (var file in files) { 
+                string combined = Path.Combine( BaseDir + "doc\\", file.folder_name ?? "",  file.file_name);
+
+                string fullBase = Path.GetFullPath(BaseDir)
+                    .TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)
+                    + Path.DirectorySeparatorChar;
+
+                string fullTarget = Path.GetFullPath(combined);
+
+                if (!fullTarget.StartsWith(fullBase, StringComparison.OrdinalIgnoreCase))
+                    throw new InvalidOperationException("Invalid path (outside base directory).");
+
+                //if (!File.Exists(fullTarget))
+                //    return false;
+
+                File.Delete(fullTarget);
+                }
+                return Ok();
+            } catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += "   " + ex.InnerException.Message;
+                return Ok(msg);
+            }
+            
+        }
+
+        [Route("api/upload/profile/doc")]
+        [AcceptVerbs("POST")]
+        public async Task<IHttpActionResult> UploadProfileDoc()
+        {
+            try
+            {
+
+                var context = new FLYEntities();
+
+                string key = string.Empty;
+                var httpRequest = HttpContext.Current.Request;
+                string nid = httpRequest.Form["nid"];
+                int type = Convert.ToInt32(httpRequest.Form["DocumentTypeId"]);
+                string ac_type = httpRequest.Form["ac_type"];
+                string year = httpRequest.Form["year"];
+                string title = httpRequest.Form["Remark"];
+
+                string issueStr = httpRequest.Form["DateIssue"];
+                string expireStr = httpRequest.Form["DateExpire"];
+
+                bool hasIssue = DateTime.TryParse(issueStr, out DateTime issueDateValue);
+                bool hasExpire = DateTime.TryParse(expireStr, out DateTime expireDateValue);
+
+                DateTime? idt = hasIssue ? (DateTime?)issueDateValue : null;
+                DateTime? edt = hasExpire ? (DateTime?)expireDateValue : null;
+
+
+                var docfiles = new List<string>();
+                foreach (string file in httpRequest.Files)
+                {
+                    var postedFile = httpRequest.Files[file];
+                    var file_name = " ";
+                    var doc_type = "";
+
+                    if (type != 8)
+                    {
+                        switch (type)
+                        {
+                            case 1:
+                                doc_type = "GENERAL DOCUMENTS";
+                                file_name = postedFile.FileName;
+                                break;
+                            case 2:
+                                doc_type = "LICENSES";
+                                file_name = year + '_' + postedFile.FileName;
+                                break;
+                            case 3:
+                                doc_type = "MEDICAL RECORDS";
+                                file_name = year + '_' + postedFile.FileName;
+                                break;
+                            case 4:
+                                doc_type = ac_type != "null" ? "LINE CHECK RECORDS/" + ac_type : "LINE CHECK RECORDS";
+                                file_name = year + '_' + postedFile.FileName;
+                                break;
+                            case 5:
+                                doc_type = "OFFICIAL RECORDS";
+                                file_name = year + '_' + postedFile.FileName;
+                                break;
+                            case 6:
+                                doc_type = "SIMULATOR TRAINING";
+                                file_name = year + '_' + postedFile.FileName;
+                                break;
+                            case 7:
+                                doc_type = "LOGBOOK RECORDS";
+                                file_name = year + '_' + postedFile.FileName;
+                                break;
+                            case 9:
+                                doc_type = "LICENSES";
+                                file_name = year + '_' + postedFile.FileName;
+                                break;
+                           case 10:
+                                doc_type = "GROUND TRAINING";
+                                file_name = year + '_' + postedFile.FileName;
+                                break;
+                            default:
+                               
+                                break;
+                        }
+                        var root = ConfigurationManager.AppSettings["training_doc"];
+                        if (string.IsNullOrWhiteSpace(root))
+                            throw new ConfigurationErrorsException("Missing appSetting: TrainingUploadRoot");
+
+                        root = Path.GetFullPath(root);
+                        string filePath = Path.Combine(root, "doc/" + nid + "/" + doc_type + "/" + file_name);
+                        postedFile.SaveAs(filePath);
+                        docfiles.Add(filePath);
+                    }
+                    else
+                    {
+                        var root = ConfigurationManager.AppSettings["training_doc"];
+                        if (string.IsNullOrWhiteSpace(root))
+                            throw new ConfigurationErrorsException("Missing appSetting: TrainingUploadRoot");
+
+                        file_name = year + '_' + postedFile.FileName;
+
+                        root = Path.GetFullPath(root);
+                        string filePath = Path.Combine(root, "doc/" + nid + "/" + doc_type + "/" + file_name);
+                        postedFile.SaveAs(filePath);
+                        docfiles.Add(filePath);
+
+                        var course = new Models.course_external();
+                        course.file_url = filePath;
+                        course.date_issue = idt;
+                        course.date_expire = edt;
+                        course.title = title;
+                        context.course_external.Add(course);
+                        context.SaveChanges();
+
+                    }
+
+                }
+
+
+
+                return Ok("Succeded");
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += "   " + ex.InnerException.Message;
+                return Ok(msg);
+            }
+        }
+
+        [Route("api/upload/certificates/{Id}")]
+        [HttpPost]
+        public Task<IHttpActionResult> UploadCertificates(int Id)
+        {
+            try
+            {
+                var context = new FLYEntities();
+                var req = HttpContext.Current.Request;
+
+                if (req.Files == null || req.Files.Count == 0)
+                    return Task.FromResult<IHttpActionResult>(BadRequest("No files uploaded."));
+
+                var root = ConfigurationManager.AppSettings["training_doc"];
+                if (string.IsNullOrWhiteSpace(root))
+                    throw new ConfigurationErrorsException("Missing appSetting: TrainingUploadRoot");
+
+                root = Path.GetFullPath(root);
+
+                var baseFolder = Path.Combine(root, "certificates");
+
+                Directory.CreateDirectory(baseFolder);
+
+                var targetFolder = Path.Combine(baseFolder, Id.ToString());
+
+                var _nid = "";
+                Directory.CreateDirectory(targetFolder);
+
+                var saved = new List<string>();
+
+                for (int i = 0; i < req.Files.Count; i++)
+                {
+                    var file = req.Files[i];
+                    if (file == null || file.ContentLength == 0) continue;
+
+                    var originalName = Path.GetFileName(file.FileName);
+                    var safeName = string.Concat(originalName.Split(Path.GetInvalidFileNameChars()));
+
+                    var fullPath = Path.Combine(targetFolder, safeName);
+                    var nid = Path.GetFileNameWithoutExtension(file.FileName);
+                    _nid = nid;
+                    var person = context.ViewProfiles.FirstOrDefault(q => q.NID == nid);
+                    if (person != null)
+                    {
+                        var cp = context.CoursePeoples.Where(q => q.PersonId == person.PersonId && q.CourseId == Id).FirstOrDefault();
+                        if (cp != null)
+                            cp.ImgUrl = Id + "/" + originalName;
+                    }
+
+
+
+                    file.SaveAs(fullPath);
+                    saved.Add(safeName);
+                }
+
+                context.SaveChanges();
+                return Task.FromResult<IHttpActionResult>(Ok(new
+                {
+                    message = "Uploaded",
+                    count = saved.Count,
+                    files = saved,
+                    nid = _nid
+                }));
+            }
+            catch (Exception ex)
+            {
+                return Task.FromResult<IHttpActionResult>(InternalServerError(ex));
+            }
+        }
+
+
+        [Route("api/create/profile/folder")]
+        [AcceptVerbs("POST")]
+        public async Task<IHttpActionResult> create_missing_profile_folder()
+        {
+            try
+            {
+                var context = new FLYEntities();
+                var root = ConfigurationManager.AppSettings["training_doc"];
+                if (string.IsNullOrWhiteSpace(root))
+                    throw new ConfigurationErrorsException("Missing appSetting: TrainingUploadRoot");
+
+                root = Path.GetFullPath(root);
+
+                var rootDirectory = Path.Combine(root, "doc");
+                //string rootDirectory = @"C:\Inetpub\vhosts\airpocket.app\ava.airpocket.app\upload\training\doc";
+                if (!Directory.Exists(rootDirectory))
+                    throw new DirectoryNotFoundException($"Root directory does not exist: {rootDirectory}");
+
+                var nids = context.ViewEmployees
+                    .Where(e => e.NID != null && e.NID.Trim() != "")
+                    .Select(e => e.NID.Trim())
+                    .Distinct()
+                    .ToList();
+
+                string[] subFolders =
+                {
+        "CERTIFICATES",
+        "GENERAL DOCUMENTS",
+        "LICENSES",
+        "LINE CHECK RECORDS",
+        "LOGBOOK RECORDS",
+        "MEDICAL RECORDS",
+        "OFFICIAL RECORDS",
+        "SIMULATOR TRAINING"
+    };
+
+                foreach (var nid in nids)
+                {
+                    string employeeFolder = Path.Combine(rootDirectory, nid);
+
+                    if (!Directory.Exists(employeeFolder))
+                        Directory.CreateDirectory(employeeFolder);
+
+                    foreach (var sub in subFolders)
+                    {
+                        string subFolder = Path.Combine(employeeFolder, sub);
+
+                        if (!Directory.Exists(subFolder))
+                            Directory.CreateDirectory(subFolder);
+                    }
+                }
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += "   " + ex.InnerException.Message;
+                return Ok(msg);
+            }
+        }
+
+
+
+        [Route("api/trn/get/cabin/files/{nid}")]
+        [AcceptVerbs("Get")]
+
+        public async Task<IHttpActionResult> get_cabin_files(string nid)
+        {
+            var result = await trainingService.get_cabin_files(nid);
+            return Ok(result);
+        }
+
+
+        [Route("api/trn/get/dispatch/files/{nid}")]
+        [AcceptVerbs("Get")]
+
+        public async Task<IHttpActionResult> get_dispatch_files(string nid)
+        {
+            var result = await trainingService.get_dispatch_files(nid);
+            return Ok(result);
+        }
+
+
+        [Route("api/trn/get/course/ext/{pid}")]
+        [AcceptVerbs("Get")]
+
+        public async Task<IHttpActionResult> get_course_ext(int pid)
+        {
+            var result = await trainingService.get_course_ext(pid);
             return Ok(result);
         }
 

@@ -26,7 +26,53 @@ namespace ApiCMS.Models
         }
     
         public virtual DbSet<AppFuel> AppFuels { get; set; }
-        public virtual DbSet<cms_user_flight> cms_user_flight { get; set; }
         public virtual DbSet<view_efb_report> view_efb_report { get; set; }
+        public virtual DbSet<cms_user_flight> cms_user_flight { get; set; }
+        public virtual DbSet<EFBASR> EFBASRs { get; set; }
+        public virtual DbSet<EFBBirdStrikeCAO> EFBBirdStrikeCAOs { get; set; }
+        public virtual DbSet<EFBConfidentialReport> EFBConfidentialReports { get; set; }
+        public virtual DbSet<EFBDSPRelease> EFBDSPReleases { get; set; }
+        public virtual DbSet<EFBDutyDisorder> EFBDutyDisorders { get; set; }
+        public virtual DbSet<EFBFlightIrregularity> EFBFlightIrregularities { get; set; }
+        public virtual DbSet<EFBOccurrenceCAO> EFBOccurrenceCAOs { get; set; }
+        public virtual DbSet<EFBReason> EFBReasons { get; set; }
+        public virtual DbSet<EFBValue> EFBValues { get; set; }
+        public virtual DbSet<EFBVoyageReport> EFBVoyageReports { get; set; }
+        public virtual DbSet<ViewEFBASR> ViewEFBASRs { get; set; }
+        public virtual DbSet<ViewEFBVoyageIrr> ViewEFBVoyageIrrs { get; set; }
+        public virtual DbSet<ViewEFBVoyageIrrAll> ViewEFBVoyageIrrAlls { get; set; }
+        public virtual DbSet<ViewEFBVoyageReason> ViewEFBVoyageReasons { get; set; }
+        public virtual DbSet<ViewEFBVoyageReasonAll> ViewEFBVoyageReasonAlls { get; set; }
+        public virtual DbSet<ViewEFBVoyageReport> ViewEFBVoyageReports { get; set; }
+        public virtual DbSet<ViewEFBVoyageReportsAll> ViewEFBVoyageReportsAlls { get; set; }
+        public virtual DbSet<qa_notification_history> qa_notification_history { get; set; }
+        public virtual DbSet<cms_nav_log> cms_nav_log { get; set; }
+        public virtual DbSet<cms_notify_receiver> cms_notify_receiver { get; set; }
+        public virtual DbSet<view_cms_report> view_cms_report { get; set; }
+        public virtual DbSet<cms2_audit> cms2_audit { get; set; }
+        public virtual DbSet<cms2_audit_corrective_action> cms2_audit_corrective_action { get; set; }
+        public virtual DbSet<cms2_audit_finding> cms2_audit_finding { get; set; }
+        public virtual DbSet<cms2_audit_hazard> cms2_audit_hazard { get; set; }
+        public virtual DbSet<cms2_audit_team> cms2_audit_team { get; set; }
+        public virtual DbSet<cms2_auditors> cms2_auditors { get; set; }
+        public virtual DbSet<cms2_hazard> cms2_hazard { get; set; }
+        public virtual DbSet<cms2_hazard_cause> cms2_hazard_cause { get; set; }
+        public virtual DbSet<cms2_hazard_cause_type> cms2_hazard_cause_type { get; set; }
+        public virtual DbSet<cms2_hazard_consequence> cms2_hazard_consequence { get; set; }
+        public virtual DbSet<cms2_hazard_consequence_category> cms2_hazard_consequence_category { get; set; }
+        public virtual DbSet<cms2_hazard_org_unit> cms2_hazard_org_unit { get; set; }
+        public virtual DbSet<cms2_hazard_status> cms2_hazard_status { get; set; }
+        public virtual DbSet<cms2_occurrence> cms2_occurrence { get; set; }
+        public virtual DbSet<cms2_occurrence_hazard> cms2_occurrence_hazard { get; set; }
+        public virtual DbSet<cms2_occurrence_source> cms2_occurrence_source { get; set; }
+        public virtual DbSet<cms2_org_unit> cms2_org_unit { get; set; }
+        public virtual DbSet<cms2_risk_assessment_log> cms2_risk_assessment_log { get; set; }
+        public virtual DbSet<cms2_risk_level> cms2_risk_level { get; set; }
+        public virtual DbSet<cms2_risk_likelihood> cms2_risk_likelihood { get; set; }
+        public virtual DbSet<cms2_risk_matrix> cms2_risk_matrix { get; set; }
+        public virtual DbSet<cms2_risk_matrix_cell> cms2_risk_matrix_cell { get; set; }
+        public virtual DbSet<cms2_risk_severity> cms2_risk_severity { get; set; }
+        public virtual DbSet<AppLeg> AppLegs { get; set; }
+        public virtual DbSet<ViewEmployee> ViewEmployees { get; set; }
     }
 }
