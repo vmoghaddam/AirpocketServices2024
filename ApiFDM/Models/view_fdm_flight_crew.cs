@@ -20,6 +20,7 @@ namespace ApiFDM.Models
         public string ac_type2 { get; set; }
         public Nullable<System.DateTime> STD { get; set; }
         public Nullable<System.DateTime> STA { get; set; }
+        public string pf { get; set; }
         public Nullable<int> CrewId { get; set; }
         public string Name { get; set; }
         public string JobGroup { get; set; }

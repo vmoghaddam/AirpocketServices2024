@@ -818,6 +818,7 @@ warning 6002: The table/view 'EPACSPN25.dbo.view_fdm_flight_crew' does not have 
           <Property Name="ac_type2" Type="varchar" MaxLength="6" Nullable="false" />
           <Property Name="STD" Type="datetime" />
           <Property Name="STA" Type="datetime" />
+          <Property Name="pf" Type="varchar" MaxLength="255" />
           <Property Name="CrewId" Type="int" />
           <Property Name="Name" Type="nvarchar" MaxLength="1001" Nullable="false" />
           <Property Name="JobGroup" Type="nvarchar" MaxLength="500" Nullable="false" />
@@ -1007,7 +1008,9 @@ warning 6002: The table/view 'EPACSPN25.dbo.ViewMSN' does not have a primary key
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__fdm_proce__fdm_i__6C63F2D5">
-          <End Role="FDM" Type="Self.FDM" Multiplicity="0..1" />
+          <End Role="FDM" Type="Self.FDM" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="fdm_processed" Type="Self.fdm_processed" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="FDM">
@@ -1269,6 +1272,7 @@ warning 6002: The table/view 'EPACSPN25.dbo.ViewMSN' does not have a primary key
     [view_fdm_flight_crew].[ac_type2] AS [ac_type2], 
     [view_fdm_flight_crew].[STD] AS [STD], 
     [view_fdm_flight_crew].[STA] AS [STA], 
+    [view_fdm_flight_crew].[pf] AS [pf], 
     [view_fdm_flight_crew].[CrewId] AS [CrewId], 
     [view_fdm_flight_crew].[Name] AS [Name], 
     [view_fdm_flight_crew].[JobGroup] AS [JobGroup], 
@@ -1484,38 +1488,8 @@ warning 6002: The table/view 'EPACSPN25.dbo.ViewMSN' does not have a primary key
           <Property Name="aircraft_type_id" Type="Int32" />
           <NavigationProperty Name="fdm_processed" Relationship="ModelFDMV2.fk_fdm_crew_event" FromRole="fdm_crew" ToRole="fdm_processed" />
         </EntityType>
-        <EntityType Name="view_fdm_flight_crew">
-          <Key>
-            <PropertyRef Name="id" />
-            <PropertyRef Name="Register" />
-            <PropertyRef Name="ac_type2" />
-            <PropertyRef Name="Name" />
-            <PropertyRef Name="JobGroup" />
-            <PropertyRef Name="JobGroupCode" />
-            <PropertyRef Name="dep_id" />
-            <PropertyRef Name="arr_id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" />
-          <Property Name="RegisterID" Type="Int32" />
-          <Property Name="Register" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ac_type2" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="STD" Type="DateTime" Precision="3" />
-          <Property Name="STA" Type="DateTime" Precision="3" />
-          <Property Name="CrewId" Type="Int32" />
-          <Property Name="Name" Type="String" MaxLength="1001" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="JobGroup" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="JobGroupCode" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Position" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="dep_id" Type="Int32" Nullable="false" />
-          <Property Name="dep_iata" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="dep_icao" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="arr_id" Type="Int32" Nullable="false" />
-          <Property Name="arr_iata" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="arr_icao" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityContainer Name="FDMEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="fdm_crew" EntityType="Self.fdm_crew" />
-          <EntitySet Name="view_fdm_flight_crew" EntityType="Self.view_fdm_flight_crew" />
           <EntitySet Name="fly_course" EntityType="ModelFDMV2.fly_course" />
           <EntitySet Name="fly_course_session" EntityType="ModelFDMV2.fly_course_session" />
           <EntitySet Name="fly_course_student" EntityType="ModelFDMV2.fly_course_student" />
@@ -1552,6 +1526,7 @@ warning 6002: The table/view 'EPACSPN25.dbo.ViewMSN' does not have a primary key
           </AssociationSet>
           <EntitySet Name="view_fdm_processed" EntityType="ModelFDMV2.view_fdm_processed" />
           <EntitySet Name="AppLegs" EntityType="ModelFDMV2.AppLeg" />
+          <EntitySet Name="view_fdm_flight_crew" EntityType="ModelFDMV2.view_fdm_flight_crew" />
         </EntityContainer>
         <EntityType Name="fly_course">
           <Key>
@@ -2568,6 +2543,36 @@ warning 6002: The table/view 'EPACSPN25.dbo.ViewMSN' does not have a primary key
           <Property Name="IsDomestic" Type="Boolean" />
           <Property Name="AircraftModel" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="view_fdm_flight_crew">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="Register" />
+            <PropertyRef Name="ac_type2" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="JobGroup" />
+            <PropertyRef Name="JobGroupCode" />
+            <PropertyRef Name="dep_id" />
+            <PropertyRef Name="arr_id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="RegisterID" Type="Int32" />
+          <Property Name="Register" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ac_type2" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="STD" Type="DateTime" Precision="3" />
+          <Property Name="STA" Type="DateTime" Precision="3" />
+          <Property Name="pf" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="CrewId" Type="Int32" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="JobGroup" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="JobGroupCode" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Position" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="dep_id" Type="Int32" Nullable="false" />
+          <Property Name="dep_iata" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="dep_icao" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="arr_id" Type="Int32" Nullable="false" />
+          <Property Name="arr_iata" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="arr_icao" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2593,29 +2598,6 @@ warning 6002: The table/view 'EPACSPN25.dbo.ViewMSN' does not have a primary key
                 <ScalarProperty Name="reserved5" ColumnName="reserved5" />
                 <ScalarProperty Name="aircraft_type" ColumnName="aircraft_type" />
                 <ScalarProperty Name="aircraft_type_id" ColumnName="aircraft_type_id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="view_fdm_flight_crew">
-            <EntityTypeMapping TypeName="ModelFDMV2.view_fdm_flight_crew">
-              <MappingFragment StoreEntitySet="view_fdm_flight_crew">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="RegisterID" ColumnName="RegisterID" />
-                <ScalarProperty Name="Register" ColumnName="Register" />
-                <ScalarProperty Name="ac_type2" ColumnName="ac_type2" />
-                <ScalarProperty Name="STD" ColumnName="STD" />
-                <ScalarProperty Name="STA" ColumnName="STA" />
-                <ScalarProperty Name="CrewId" ColumnName="CrewId" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="JobGroup" ColumnName="JobGroup" />
-                <ScalarProperty Name="JobGroupCode" ColumnName="JobGroupCode" />
-                <ScalarProperty Name="Position" ColumnName="Position" />
-                <ScalarProperty Name="dep_id" ColumnName="dep_id" />
-                <ScalarProperty Name="dep_iata" ColumnName="dep_iata" />
-                <ScalarProperty Name="dep_icao" ColumnName="dep_icao" />
-                <ScalarProperty Name="arr_id" ColumnName="arr_id" />
-                <ScalarProperty Name="arr_iata" ColumnName="arr_iata" />
-                <ScalarProperty Name="arr_icao" ColumnName="arr_icao" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3538,6 +3520,30 @@ warning 6002: The table/view 'EPACSPN25.dbo.ViewMSN' does not have a primary key
                 <ScalarProperty Name="BlockOn" ColumnName="BlockOn" />
                 <ScalarProperty Name="FlightId" ColumnName="FlightId" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_fdm_flight_crew">
+            <EntityTypeMapping TypeName="ModelFDMV2.view_fdm_flight_crew">
+              <MappingFragment StoreEntitySet="view_fdm_flight_crew">
+                <ScalarProperty Name="arr_icao" ColumnName="arr_icao" />
+                <ScalarProperty Name="arr_iata" ColumnName="arr_iata" />
+                <ScalarProperty Name="arr_id" ColumnName="arr_id" />
+                <ScalarProperty Name="dep_icao" ColumnName="dep_icao" />
+                <ScalarProperty Name="dep_iata" ColumnName="dep_iata" />
+                <ScalarProperty Name="dep_id" ColumnName="dep_id" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="JobGroupCode" ColumnName="JobGroupCode" />
+                <ScalarProperty Name="JobGroup" ColumnName="JobGroup" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CrewId" ColumnName="CrewId" />
+                <ScalarProperty Name="pf" ColumnName="pf" />
+                <ScalarProperty Name="STA" ColumnName="STA" />
+                <ScalarProperty Name="STD" ColumnName="STD" />
+                <ScalarProperty Name="ac_type2" ColumnName="ac_type2" />
+                <ScalarProperty Name="Register" ColumnName="Register" />
+                <ScalarProperty Name="RegisterID" ColumnName="RegisterID" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
