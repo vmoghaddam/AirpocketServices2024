@@ -511,7 +511,7 @@ namespace ApiPlanning.Controllers
                 //var validate = unitOfWork.FlightRepository.ValidateFlight(dto);
                 //if (validate.Code != HttpStatusCode.OK)
                 //    return validate;
-                bool isUtc = true;
+                bool isUtc = false;
                 var nowOffset = isUtc ? 0 : TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).TotalMinutes;
                 dto.STD = parseDate(dto.STDRAW);
                 dto.STA = parseDate(dto.STARAW);
@@ -537,8 +537,8 @@ namespace ApiPlanning.Controllers
                 dto.IntervalTo = parseDate(dto.IntervalToRAW);
                 dto.Days = isUtc ? dto.DaysUTC.ToList() : dto.Days;
 
-
-                if (((DateTime)dto.IntervalFrom).Day!=((DateTime)dto.STD).Day)
+                //2026
+                if (((DateTime)dto.IntervalFrom).Day!=((DateTime)dto.STD).Day && 1==2)
                 {
                     dto.IntervalFrom = ((DateTime)dto.IntervalFrom).AddDays(-1);
                     dto.IntervalTo = ((DateTime)dto.IntervalTo).AddDays(-1);
@@ -586,8 +586,13 @@ namespace ApiPlanning.Controllers
                 var localSTD = ((DateTime)dto.STD).AddMinutes(stdOffset);
                 var _addDay = localSTD.Day == ((DateTime)dto.STD).Day ? 0 : 1;
 
+                var stdYear = ((DateTime)dto.STD).Year;
+                var stdMonth = ((DateTime)dto.STD).Month;
+                var stdDay = ((DateTime)dto.STD).Day;
                 var stdHours = ((DateTime)dto.STD).Hour;
                 var stdMinutes = ((DateTime)dto.STD).Minute;
+                var staYear = ((DateTime)dto.STA).Year;
+                var staMonth = ((DateTime)dto.STA).Month;
                 var staHours = ((DateTime)dto.STA).Hour;
                 var staMinutes = ((DateTime)dto.STA).Minute;
                 var duration = (((DateTime)dto.STA) - ((DateTime)dto.STD)).TotalMinutes;
@@ -670,7 +675,7 @@ namespace ApiPlanning.Controllers
 
 
 
-                        var newSTD = new DateTime(oldSTD.Year, oldSTD.Month, oldSTD.Day, stdHours, stdMinutes, 0);
+                        var newSTD = new DateTime(stdYear, stdMonth, stdDay, stdHours, stdMinutes, 0);
                         var newSTA = newSTD.AddMinutes(duration);
                         // if (oldSTD.AddMinutes(270).Date != newSTD.AddMinutes(270).Date)
                         //     entity.FlightDate = oldSTD.AddDays(utcDiff);

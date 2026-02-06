@@ -184,5 +184,6 @@ namespace ApiScheduling.Models
         public Nullable<int> PF2Time { get; set; }
         public Nullable<int> PM2Time { get; set; }
         public Nullable<System.DateTime> Reporting { get; set; }
+        public string PermissionUrl { get; set; }
     }
 }

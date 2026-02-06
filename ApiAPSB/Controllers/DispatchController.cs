@@ -2975,6 +2975,7 @@ public IHttpActionResult PostASRPICSIGNNew(dto_sign dto)
         var asr = context.EFBASRs.Where(q => q.FlightId == flight_id).FirstOrDefault();
         asr.JLSignedBy = employee != null ? employee.Name : "PIC";
         asr.JLDatePICApproved = dt;
+        asr.DateSign = dt;
         asr.PICId = employee != null ? employee.Id : -1;
         asr.PIC = employee != null ? employee.Name : "PIC";
 

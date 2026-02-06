@@ -9943,12 +9943,12 @@ new JsonSerializerSettings
                           }).OrderBy(q => q.DutyType).ToList();
             var stby_duties = (from x in dutiesQuery where stby_ids.Contains(x.DutyType) select x).ToList();
             var stby_out = new List<out_duty>() {
-                     new out_duty(){DutyType=1168,DutyTypeTitle="STBY AM",aircraft_type="-"},
-                          new out_duty(){DutyType=1167,DutyTypeTitle="STBY PM",aircraft_type="-"},
+                     //new out_duty(){DutyType=1168,DutyTypeTitle="STBY AM",aircraft_type="-"},
+                     //     new out_duty(){DutyType=1167,DutyTypeTitle="STBY PM",aircraft_type="-"},
             //     new out_duty(){DutyType=300013,DutyTypeTitle="STBY",aircraft_type="-"},
-            // new out_duty(){DutyType=300013,DutyTypeTitle="STBY B737",aircraft_type="B737"},
-            // new out_duty(){DutyType=300013,DutyTypeTitle="STBY MD", aircraft_type="MD"},
-            // new out_duty(){DutyType=300013,DutyTypeTitle="STBY AIRBUS", aircraft_type="AIRBUS"},
+             new out_duty(){DutyType=300013,DutyTypeTitle="STBY B737",aircraft_type="B737"},
+             new out_duty(){DutyType=300013,DutyTypeTitle="STBY MD", aircraft_type="MD"},
+             new out_duty(){DutyType=300013,DutyTypeTitle="STBY AIRBUS", aircraft_type="AIRBUS"},
             // new out_duty(){DutyType=300013,DutyTypeTitle="STBY ERJ", aircraft_type="ERJ"},
 
             };
@@ -9958,7 +9958,7 @@ new JsonSerializerSettings
                 {
                     row.items = stby_duties.Where(q => q.DutyType == 1168).Select(q => new out_duty_item()
                     {
-                        Title = row.DutyType != 300013 ? q.ScheduleName + " (" + q.JobGroup + ")" : q.ScheduleName + " (" + q.JobGroup + ")" + " (" + ((DateTime)q.Start).ToString("HHmm") + " - " + ((DateTime)q.End).ToString("HHmm") + ")",
+                        Title = row.DutyType != 300013 ? q.ScheduleName + " (" + q.JobGroup + ")" : q.ScheduleName + " (" + q.JobGroup + ")" + " (" + ((DateTime)q.Start).ToString("HHmm") + " - " + ((DateTime)q.End).ToString("HHmm") + ")" + " (" + q.HomeBase + ")",
                         IsCockpit = q.IsCockpit,
                         JobGroup = q.JobGroup,
                         GroupOrder = getOrder(q.JobGroup)
@@ -9966,7 +9966,7 @@ new JsonSerializerSettings
 
                     row.itemsStr = string.Join(", ", stby_duties.Where(q => q.DutyType == 1168)/*.Where(q => q.ValidTypesStr.Contains(row.aircraft_type))*/.Select(q => new
                     {
-                        Title = row.DutyType != 300013 ? q.ScheduleName + " (" + q.JobGroup + ")" : q.ScheduleName + " (" + q.JobGroup + ")" + " (" + ((DateTime)q.Start).ToString("HHmm") + " - " + ((DateTime)q.End).ToString("HHmm") + ")",
+                        Title = row.DutyType != 300013 ? q.ScheduleName + " (" + q.JobGroup + ")" : q.ScheduleName + " (" + q.JobGroup + ")" + " (" + ((DateTime)q.Start).ToString("HHmm") + " - " + ((DateTime)q.End).ToString("HHmm") + ")" + " (" + q.HomeBase + ")",
                         q.IsCockpit,
                         q.JobGroup,
                         GroupOrder = getOrder(q.JobGroup)
@@ -9977,7 +9977,7 @@ new JsonSerializerSettings
                 {
                     row.items = stby_duties.Where(q => q.DutyType == 1167).Select(q => new out_duty_item()
                     {
-                        Title = row.DutyType != 300013 ? q.ScheduleName + " (" + q.JobGroup + ")" : q.ScheduleName + " (" + q.JobGroup + ")" + " (" + ((DateTime)q.Start).ToString("HHmm") + " - " + ((DateTime)q.End).ToString("HHmm") + ")",
+                        Title = row.DutyType != 300013 ? q.ScheduleName + " (" + q.JobGroup + ")" : q.ScheduleName + " (" + q.JobGroup + ")" + " (" + ((DateTime)q.Start).ToString("HHmm") + " - " + ((DateTime)q.End).ToString("HHmm") + ")" + " (" + q.HomeBase + ")",
                         IsCockpit = q.IsCockpit,
                         JobGroup = q.JobGroup,
                         GroupOrder = getOrder(q.JobGroup)
@@ -9985,7 +9985,7 @@ new JsonSerializerSettings
 
                     row.itemsStr = string.Join(", ", stby_duties.Where(q => q.DutyType == 1167)/*.Where(q => q.ValidTypesStr.Contains(row.aircraft_type))*/.Select(q => new
                     {
-                        Title = row.DutyType != 300013 ? q.ScheduleName + " (" + q.JobGroup + ")" : q.ScheduleName + " (" + q.JobGroup + ")" + " (" + ((DateTime)q.Start).ToString("HHmm") + " - " + ((DateTime)q.End).ToString("HHmm") + ")",
+                        Title = row.DutyType != 300013 ? q.ScheduleName + " (" + q.JobGroup + ")" : q.ScheduleName + " (" + q.JobGroup + ")" + " (" + ((DateTime)q.Start).ToString("HHmm") + " - " + ((DateTime)q.End).ToString("HHmm") + ")" + " (" + q.HomeBase + ")",
                         q.IsCockpit,
                         q.JobGroup,
                         GroupOrder = getOrder(q.JobGroup)
@@ -9996,7 +9996,7 @@ new JsonSerializerSettings
                 {
                     row.items = stby_duties.Where(q => q.ValidTypesStr.Contains(row.aircraft_type)).Select(q => new out_duty_item()
                     {
-                        Title = row.DutyType != 300013 ? q.ScheduleName + " (" + q.JobGroup + ")" : q.ScheduleName + " (" + q.JobGroup + ")" + " (" + ((DateTime)q.Start).ToString("HHmm") + " - " + ((DateTime)q.End).ToString("HHmm") + ")",
+                        Title = row.DutyType != 300013 ? q.ScheduleName + " (" + q.JobGroup + ")" : q.ScheduleName + " (" + q.JobGroup + ")" + " (" + ((DateTime)q.Start).ToString("HHmm") + " - " + ((DateTime)q.End).ToString("HHmm") + ")" + " (" + q.HomeBase + ")",
                         IsCockpit = q.IsCockpit,
                         JobGroup = q.JobGroup,
                         GroupOrder = getOrder(q.JobGroup)
@@ -10004,7 +10004,7 @@ new JsonSerializerSettings
 
                     row.itemsStr = string.Join(", ", stby_duties.Where(q => q.ValidTypesStr.Contains(row.aircraft_type)).Select(q => new
                     {
-                        Title = row.DutyType != 300013 ? q.ScheduleName + " (" + q.JobGroup + ")" : q.ScheduleName + " (" + q.JobGroup + ")" + " (" + ((DateTime)q.Start).ToString("HHmm") + " - " + ((DateTime)q.End).ToString("HHmm") + ")",
+                        Title = row.DutyType != 300013 ? q.ScheduleName + " (" + q.JobGroup + ")" : q.ScheduleName + " (" + q.JobGroup + ")" + " (" + ((DateTime)q.Start).ToString("HHmm") + " - " + ((DateTime)q.End).ToString("HHmm") + ")" + " (" + q.HomeBase + ")",
                         q.IsCockpit,
                         q.JobGroup,
                         GroupOrder = getOrder(q.JobGroup)

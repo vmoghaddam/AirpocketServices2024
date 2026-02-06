@@ -23,6 +23,51 @@ namespace ApiCMS.Controllers
 
         }
 
+        public class audit_result
+        {
+            public int id { get; set; }
+            public string code { get; set; }
+            public string title { get; set; }
+            public string description { get; set; }
+            public int auditee_id { get; set; }
+            public int type_id { get; set; }
+            public int location_id { get; set; }
+            public string scope { get; set; }
+            public string objective { get; set; }
+            public string audit_team { get; set; }
+            public int? lead_auditor { get; set; }
+            public Nullable<System.DateTime> audit_date { get; set; }
+            public Nullable<System.DateTime> audit_close_date { get; set; }
+            public string standards_refrences { get; set; }
+            public int created_by { get; set; }
+            public System.DateTime created_at { get; set; }
+            public Nullable<int> updated_by { get; set; }
+            public Nullable<System.DateTime> updated_at { get; set; }
+
+        }
+
+        public class audit_dto
+        {
+            public int id { get; set; }
+            public string code { get; set; }
+            public string title { get; set; }
+            public string description { get; set; }
+            public int auditee_id { get; set; }
+            public int type_id { get; set; }
+            public int location_id { get; set; }
+            public string scope { get; set; }
+            public string objective { get; set; }
+            public string audit_team { get; set; }
+            public int? lead_auditor { get; set; }
+            public Nullable<System.DateTime> audit_date { get; set; }
+            public Nullable<System.DateTime> audit_close_date { get; set; }
+            public string standards_refrences { get; set; }
+            public int created_by { get; set; }
+            public System.DateTime created_at { get; set; }
+            public Nullable<int> updated_by { get; set; }
+            public Nullable<System.DateTime> updated_at { get; set; }
+        }
+
 
         [HttpGet]
         [Route("api/cms/get/audit/{id}")]
@@ -32,7 +77,21 @@ namespace ApiCMS.Controllers
             try
             {
                 var context = new ppa_entities();
-                var entity = context.cms2_audit.FirstOrDefault(q => q.id == id);
+                var entity = context.cms2_audit.Where(q => q.id == id).Select(q => new audit_result {
+                    id = q.id,
+                    type_id = q.type_id,
+                    title = q.title,
+                    description = q.description,
+                    audit_date = q.audit_date,
+                    audit_close_date = q.audit_close_date,
+                    lead_auditor = q.lead_auditor,
+                    scope = q.scope,
+                    location_id = q.location_id,
+                    auditee_id = q.auditee_id,  
+                    objective = q.objective,
+                    standards_refrences = q.standards_refrences
+                    
+                }).FirstOrDefault();
 
                 return new DataResponse()
                 {
@@ -53,27 +112,7 @@ namespace ApiCMS.Controllers
         }
 
 
-        public class audit_dto
-        {
-            public int id { get; set; }
-            public string code { get; set; }
-            public string title { get; set; }
-            public string description { get; set; }
-            public int auditee_id { get; set; }
-            public int type_id { get; set; }
-            public int location_id { get; set; }
-            public string scope { get; set; }
-            public string objective { get; set; }
-            public string audit_team { get; set; }
-            public string lead_auditor { get; set; }
-            public Nullable<System.DateTime> audit_date { get; set; }
-            public Nullable<System.DateTime> audit_close_date { get; set; }
-            public string standards_refrences { get; set; }
-            public int created_by { get; set; }
-            public System.DateTime created_at { get; set; }
-            public Nullable<int> updated_by { get; set; }
-            public Nullable<System.DateTime> updated_at { get; set; }
-        }
+       
 
 
         [HttpPost]
@@ -97,6 +136,7 @@ namespace ApiCMS.Controllers
                 entity.auditee_id = dto.auditee_id;
                 entity.type_id = dto.type_id;
                 entity.location_id = dto.location_id;
+                entity.lead_auditor = dto.lead_auditor;
                 entity.scope = dto.scope;
                 entity.objective = dto.objective;
                 entity.audit_date = dto.audit_date;
