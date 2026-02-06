@@ -12,14 +12,8 @@ namespace ApiCMS.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class cms2_audit_finding
+    public partial class view_cms2_audit_finding
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public cms2_audit_finding()
-        {
-            this.cms2_audit_corrective_action = new HashSet<cms2_audit_corrective_action>();
-        }
-    
         public int id { get; set; }
         public int audit_id { get; set; }
         public string code { get; set; }
@@ -30,15 +24,12 @@ namespace ApiCMS.Models
         public string standard_description { get; set; }
         public string none_compliance_description { get; set; }
         public System.DateTime closure_deadline { get; set; }
-        public Nullable<int> auditor_id { get; set; }
         public Nullable<System.DateTime> sent_report_date { get; set; }
         public Nullable<System.DateTime> closure_auditor_date { get; set; }
-        public Nullable<int> verified_qa_by { get; set; }
         public Nullable<System.DateTime> verified_qa_date { get; set; }
-    
-        public virtual cms2_audit cms2_audit { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<cms2_audit_corrective_action> cms2_audit_corrective_action { get; set; }
-        public virtual cms2_auditors cms2_auditors { get; set; }
+        public Nullable<int> auditor_id { get; set; }
+        public string auditor_name { get; set; }
+        public Nullable<int> verified_qa_by { get; set; }
+        public string verified_qa_name { get; set; }
     }
 }

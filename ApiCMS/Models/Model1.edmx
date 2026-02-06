@@ -88,22 +88,22 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="code" Type="nvarchar" MaxLength="50" />
+          <Property Name="audit_plan_id" Type="int" Nullable="false" />
           <Property Name="title" Type="nvarchar" MaxLength="200" Nullable="false" />
-          <Property Name="description" Type="nvarchar(max)" />
+          <Property Name="code" Type="nvarchar" MaxLength="50" />
           <Property Name="auditee_id" Type="int" Nullable="false" />
           <Property Name="type_id" Type="int" Nullable="false" />
           <Property Name="location_id" Type="int" Nullable="false" />
           <Property Name="scope" Type="nvarchar" MaxLength="200" />
-          <Property Name="objective" Type="nvarchar" MaxLength="200" />
-          <Property Name="lead_auditor" Type="int" />
+          <Property Name="area" Type="nvarchar" MaxLength="200" />
           <Property Name="audit_date" Type="datetime2" Precision="7" />
-          <Property Name="audit_close_date" Type="datetime2" Precision="7" />
           <Property Name="standards_refrences" Type="nvarchar" MaxLength="200" />
           <Property Name="created_by" Type="int" Nullable="false" />
           <Property Name="created_at" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="updated_by" Type="int" />
           <Property Name="updated_at" Type="datetime2" Precision="7" />
+          <Property Name="auditor_id" Type="int" Nullable="false" />
+          <Property Name="remark" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="cms2_audit_corrective_action">
           <Key>
@@ -144,7 +144,7 @@
           <Property Name="audit_id" Type="int" Nullable="false" />
           <Property Name="code" Type="nvarchar" MaxLength="50" />
           <Property Name="title" Type="nvarchar" MaxLength="200" />
-          <Property Name="level" Type="int" />
+          <Property Name="level" Type="nvarchar" MaxLength="50" />
           <Property Name="standard_id" Type="int" />
           <Property Name="standard_title" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="standard_description" Type="nvarchar" MaxLength="500" />
@@ -167,6 +167,29 @@
           <Property Name="comment" Type="nvarchar" MaxLength="500" />
           <Property Name="created_by" Type="int" />
           <Property Name="created_at" Type="datetime2" Precision="7" Nullable="false" />
+        </EntityType>
+        <EntityType Name="cms2_audit_plan">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="code" Type="nvarchar" MaxLength="50" />
+          <Property Name="title" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="description" Type="nvarchar(max)" />
+          <Property Name="type_id" Type="int" Nullable="false" />
+          <Property Name="objective" Type="nvarchar" MaxLength="200" />
+          <Property Name="lead_auditor" Type="int" />
+          <Property Name="issue_date" Type="datetime2" Precision="7" />
+          <Property Name="created_by" Type="int" Nullable="false" />
+          <Property Name="created_at" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="updated_by" Type="int" />
+          <Property Name="updated_at" Type="datetime2" Precision="7" />
+          <Property Name="opening_meeting_start" Type="datetime2" Precision="7" />
+          <Property Name="opening_meeting_end" Type="datetime2" Precision="7" />
+          <Property Name="opening_meeting_venue" Type="nvarchar" MaxLength="100" />
+          <Property Name="closing_meeting_start" Type="datetime2" Precision="7" />
+          <Property Name="closing_meeting_end" Type="datetime2" Precision="7" />
+          <Property Name="closing_meeting_venue" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="cms2_audit_team">
           <Key>
@@ -1317,6 +1340,160 @@ warning 6002: The table/view 'ppa_dev.dbo.view_cms_report' does not have a prima
           <Property Name="DateSign" Type="datetime" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_dev.dbo.view_cms2_audit' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_cms2_audit">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="audit_plan_id" />
+            <PropertyRef Name="title" />
+            <PropertyRef Name="type_id" />
+            <PropertyRef Name="created_by" />
+            <PropertyRef Name="created_at" />
+            <PropertyRef Name="auditee_id" />
+            <PropertyRef Name="location_id" />
+            <PropertyRef Name="auditor_id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="audit_plan_id" Type="int" Nullable="false" />
+          <Property Name="code" Type="nvarchar" MaxLength="50" />
+          <Property Name="title" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="remark" Type="nvarchar" MaxLength="500" />
+          <Property Name="type_id" Type="int" Nullable="false" />
+          <Property Name="scope" Type="nvarchar" MaxLength="200" />
+          <Property Name="area" Type="nvarchar" MaxLength="200" />
+          <Property Name="audit_date" Type="datetime2" Precision="7" />
+          <Property Name="standards_refrences" Type="nvarchar" MaxLength="200" />
+          <Property Name="created_by" Type="int" Nullable="false" />
+          <Property Name="created_at" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="updated_by" Type="int" />
+          <Property Name="updated_at" Type="datetime2" Precision="7" />
+          <Property Name="auditee_id" Type="int" Nullable="false" />
+          <Property Name="auditee_name" Type="nvarchar" MaxLength="1003" />
+          <Property Name="location_id" Type="int" Nullable="false" />
+          <Property Name="location_title" Type="nvarchar" MaxLength="1000" />
+          <Property Name="auditor_id" Type="int" Nullable="false" />
+          <Property Name="auditor_name" Type="nvarchar" MaxLength="101" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_dev.dbo.view_cms2_audit_corrective_action' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_cms2_audit_corrective_action">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="audit_id" />
+            <PropertyRef Name="finding_id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="audit_id" Type="int" Nullable="false" />
+          <Property Name="finding_id" Type="int" Nullable="false" />
+          <Property Name="root_cause_analysis_desc" Type="nvarchar" MaxLength="500" />
+          <Property Name="action_title" Type="nvarchar" MaxLength="200" />
+          <Property Name="code" Type="nvarchar" MaxLength="50" />
+          <Property Name="request_implementation_date" Type="datetime2" Precision="7" />
+          <Property Name="sign_date" Type="datetime2" Precision="7" />
+          <Property Name="is_approved" Type="bit" />
+          <Property Name="approved_date" Type="datetime2" Precision="7" />
+          <Property Name="follow_up1_date" Type="datetime2" Precision="7" />
+          <Property Name="follow_up1_is_approved" Type="bit" />
+          <Property Name="follow_up1_extended_deadline_date" Type="datetime2" Precision="7" />
+          <Property Name="follow_up1_approved_date" Type="datetime2" Precision="7" />
+          <Property Name="follow_up2_date" Type="datetime2" Precision="7" />
+          <Property Name="follow_up2_is_approved" Type="bit" />
+          <Property Name="follow_up2_mrb_meeting_date" Type="datetime2" Precision="7" />
+          <Property Name="created_date" Type="datetime2" Precision="7" />
+          <Property Name="created_by" Type="int" />
+          <Property Name="responsible_manager_id" Type="int" />
+          <Property Name="responsible_manager_name" Type="nvarchar" MaxLength="1003" />
+          <Property Name="approved_by" Type="int" />
+          <Property Name="approved_by_name" Type="nvarchar" MaxLength="1003" />
+          <Property Name="follow_up1_approved_by" Type="int" />
+          <Property Name="follow_up1_approved_by_name" Type="nvarchar" MaxLength="1003" />
+          <Property Name="follow_up2_approved_by" Type="int" />
+          <Property Name="follow_up2_approved_by_name" Type="nvarchar" MaxLength="1003" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_dev.dbo.view_cms2_audit_finding' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_cms2_audit_finding">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="audit_id" />
+            <PropertyRef Name="standard_title" />
+            <PropertyRef Name="none_compliance_description" />
+            <PropertyRef Name="closure_deadline" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="audit_id" Type="int" Nullable="false" />
+          <Property Name="code" Type="nvarchar" MaxLength="50" />
+          <Property Name="title" Type="nvarchar" MaxLength="200" />
+          <Property Name="level" Type="nvarchar" MaxLength="50" />
+          <Property Name="standard_id" Type="int" />
+          <Property Name="standard_title" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="standard_description" Type="nvarchar" MaxLength="500" />
+          <Property Name="none_compliance_description" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="closure_deadline" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="sent_report_date" Type="datetime2" Precision="7" />
+          <Property Name="closure_auditor_date" Type="datetime2" Precision="7" />
+          <Property Name="verified_qa_date" Type="datetime2" Precision="7" />
+          <Property Name="auditor_id" Type="int" />
+          <Property Name="auditor_name" Type="nvarchar" MaxLength="101" />
+          <Property Name="verified_qa_by" Type="int" />
+          <Property Name="verified_qa_name" Type="nvarchar" MaxLength="1003" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_dev.dbo.view_cms2_audit_plan' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_cms2_audit_plan">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="title" />
+            <PropertyRef Name="type_id" />
+            <PropertyRef Name="created_by" />
+            <PropertyRef Name="created_at" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="code" Type="nvarchar" MaxLength="50" />
+          <Property Name="title" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="description" Type="nvarchar(max)" />
+          <Property Name="type_id" Type="int" Nullable="false" />
+          <Property Name="objective" Type="nvarchar" MaxLength="200" />
+          <Property Name="issue_date" Type="datetime2" Precision="7" />
+          <Property Name="created_by" Type="int" Nullable="false" />
+          <Property Name="created_at" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="updated_by" Type="int" />
+          <Property Name="updated_at" Type="datetime2" Precision="7" />
+          <Property Name="opening_meeting_start" Type="datetime2" Precision="7" />
+          <Property Name="opening_meeting_end" Type="datetime2" Precision="7" />
+          <Property Name="opening_meeting_venue" Type="nvarchar" MaxLength="100" />
+          <Property Name="closing_meeting_start" Type="datetime2" Precision="7" />
+          <Property Name="closing_meeting_end" Type="datetime2" Precision="7" />
+          <Property Name="closing_meeting_venue" Type="nvarchar" MaxLength="100" />
+          <Property Name="lead_auditor" Type="int" />
+          <Property Name="lead_auditor_name" Type="nvarchar" MaxLength="101" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_dev.dbo.view_cms2_audit_team' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_cms2_audit_team">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="audit_id" />
+            <PropertyRef Name="is_leader" />
+            <PropertyRef Name="auditor_id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="audit_id" Type="int" Nullable="false" />
+          <Property Name="is_leader" Type="bit" Nullable="false" />
+          <Property Name="auditor_id" Type="int" Nullable="false" />
+          <Property Name="auditor_name" Type="nvarchar" MaxLength="101" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_dev.dbo.view_cms2_auditees' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_cms2_auditees">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="1003" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_dev.dbo.view_efb_report' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="view_efb_report">
           <Key>
@@ -2464,6 +2641,51 @@ warning 6002: The table/view 'ppa_dev.dbo.ViewEmployee' does not have a primary 
           <Property Name="TypeMDExpireDate" Type="datetime2" Precision="7" />
           <Property Name="LicNo" Type="nvarchar" MaxLength="200" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ppa_dev.dbo.ViewLocation' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ViewLocation">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Title" />
+            <PropertyRef Name="CustomerId" />
+            <PropertyRef Name="TypeId" />
+            <PropertyRef Name="IsVirtual" />
+            <PropertyRef Name="IsDeleted" />
+            <PropertyRef Name="IsActive" />
+            <PropertyRef Name="HasItems" />
+          </Key>
+          <Property Name="Parent" Type="nvarchar" MaxLength="1000" />
+          <Property Name="ParentCode" Type="nvarchar" MaxLength="500" />
+          <Property Name="Root" Type="nvarchar" MaxLength="1000" />
+          <Property Name="RootCode" Type="nvarchar" MaxLength="500" />
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="TitleFormated" Type="nvarchar" MaxLength="4000" />
+          <Property Name="Code" Type="nvarchar" MaxLength="100" />
+          <Property Name="FullCode" Type="nvarchar" MaxLength="500" />
+          <Property Name="CustomerId" Type="int" Nullable="false" />
+          <Property Name="TypeId" Type="int" Nullable="false" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="1000" />
+          <Property Name="IsVirtual" Type="bit" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="ParentId" Type="int" />
+          <Property Name="CityId" Type="int" />
+          <Property Name="Address" Type="nvarchar" MaxLength="2000" />
+          <Property Name="PostalCode" Type="nvarchar" MaxLength="200" />
+          <Property Name="Website" Type="nvarchar" MaxLength="500" />
+          <Property Name="RootLocation" Type="int" />
+          <Property Name="City" Type="nvarchar" MaxLength="500" />
+          <Property Name="State" Type="nvarchar" MaxLength="255" />
+          <Property Name="Country" Type="varchar" MaxLength="250" />
+          <Property Name="CountryId" Type="int" />
+          <Property Name="StateId" Type="int" />
+          <Property Name="SortName" Type="varchar" MaxLength="50" />
+          <Property Name="Type" Type="nvarchar" MaxLength="1000" />
+          <Property Name="Items" Type="int" />
+          <Property Name="HasItems" Type="int" Nullable="false" />
+          <Property Name="Employees" Type="int" />
+        </EntityType>
         <Association Name="FK__cms2_audi__appro__0920F86B">
           <End Role="cms2_auditors" Type="Self.cms2_auditors" Multiplicity="0..1" />
           <End Role="cms2_audit_corrective_action" Type="Self.cms2_audit_corrective_action" Multiplicity="*" />
@@ -2477,10 +2699,10 @@ warning 6002: The table/view 'ppa_dev.dbo.ViewEmployee' does not have a primary 
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__cms2_audi__audit__008BB26A">
-          <End Role="cms2_audit" Type="Self.cms2_audit" Multiplicity="1" />
+          <End Role="cms2_audit_plan" Type="Self.cms2_audit_plan" Multiplicity="1" />
           <End Role="cms2_audit_team" Type="Self.cms2_audit_team" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="cms2_audit">
+            <Principal Role="cms2_audit_plan">
               <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="cms2_audit_team">
@@ -2509,6 +2731,30 @@ warning 6002: The table/view 'ppa_dev.dbo.ViewEmployee' does not have a primary 
             </Principal>
             <Dependent Role="cms2_audit_hazard">
               <PropertyRef Name="audit_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__cms2_audi__audit__36E7C31B">
+          <End Role="cms2_audit_plan" Type="Self.cms2_audit_plan" Multiplicity="1" />
+          <End Role="cms2_audit" Type="Self.cms2_audit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cms2_audit_plan">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="cms2_audit">
+              <PropertyRef Name="audit_plan_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__cms2_audi__audit__3BAC7838">
+          <End Role="cms2_auditors" Type="Self.cms2_auditors" Multiplicity="1" />
+          <End Role="cms2_audit" Type="Self.cms2_audit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cms2_auditors">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="cms2_audit">
+              <PropertyRef Name="auditor_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2598,12 +2844,12 @@ warning 6002: The table/view 'ppa_dev.dbo.ViewEmployee' does not have a primary 
         </Association>
         <Association Name="FK__cms2_audi__lead___7DAF45BF">
           <End Role="cms2_auditors" Type="Self.cms2_auditors" Multiplicity="0..1" />
-          <End Role="cms2_audit" Type="Self.cms2_audit" Multiplicity="*" />
+          <End Role="cms2_audit_plan" Type="Self.cms2_audit_plan" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="cms2_auditors">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="cms2_audit">
+            <Dependent Role="cms2_audit_plan">
               <PropertyRef Name="lead_auditor" />
             </Dependent>
           </ReferentialConstraint>
@@ -3006,6 +3252,7 @@ warning 6002: The table/view 'ppa_dev.dbo.ViewEmployee' does not have a primary 
           <EntitySet Name="cms2_audit_corrective_action" EntityType="Self.cms2_audit_corrective_action" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="cms2_audit_finding" EntityType="Self.cms2_audit_finding" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="cms2_audit_hazard" EntityType="Self.cms2_audit_hazard" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="cms2_audit_plan" EntityType="Self.cms2_audit_plan" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="cms2_audit_team" EntityType="Self.cms2_audit_team" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="cms2_auditors" EntityType="Self.cms2_auditors" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="cms2_hazard" EntityType="Self.cms2_hazard" Schema="dbo" store:Type="Tables" />
@@ -3338,6 +3585,120 @@ warning 6002: The table/view 'ppa_dev.dbo.ViewEmployee' does not have a primary 
     [view_cms_report].[Describtion] AS [Describtion], 
     [view_cms_report].[DateSign] AS [DateSign]
     FROM [dbo].[view_cms_report] AS [view_cms_report]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="view_cms2_audit" EntityType="Self.view_cms2_audit" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_cms2_audit].[id] AS [id], 
+    [view_cms2_audit].[audit_plan_id] AS [audit_plan_id], 
+    [view_cms2_audit].[code] AS [code], 
+    [view_cms2_audit].[title] AS [title], 
+    [view_cms2_audit].[remark] AS [remark], 
+    [view_cms2_audit].[type_id] AS [type_id], 
+    [view_cms2_audit].[scope] AS [scope], 
+    [view_cms2_audit].[area] AS [area], 
+    [view_cms2_audit].[audit_date] AS [audit_date], 
+    [view_cms2_audit].[standards_refrences] AS [standards_refrences], 
+    [view_cms2_audit].[created_by] AS [created_by], 
+    [view_cms2_audit].[created_at] AS [created_at], 
+    [view_cms2_audit].[updated_by] AS [updated_by], 
+    [view_cms2_audit].[updated_at] AS [updated_at], 
+    [view_cms2_audit].[auditee_id] AS [auditee_id], 
+    [view_cms2_audit].[auditee_name] AS [auditee_name], 
+    [view_cms2_audit].[location_id] AS [location_id], 
+    [view_cms2_audit].[location_title] AS [location_title], 
+    [view_cms2_audit].[auditor_id] AS [auditor_id], 
+    [view_cms2_audit].[auditor_name] AS [auditor_name]
+    FROM [dbo].[view_cms2_audit] AS [view_cms2_audit]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="view_cms2_audit_corrective_action" EntityType="Self.view_cms2_audit_corrective_action" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_cms2_audit_corrective_action].[id] AS [id], 
+    [view_cms2_audit_corrective_action].[audit_id] AS [audit_id], 
+    [view_cms2_audit_corrective_action].[finding_id] AS [finding_id], 
+    [view_cms2_audit_corrective_action].[root_cause_analysis_desc] AS [root_cause_analysis_desc], 
+    [view_cms2_audit_corrective_action].[action_title] AS [action_title], 
+    [view_cms2_audit_corrective_action].[code] AS [code], 
+    [view_cms2_audit_corrective_action].[request_implementation_date] AS [request_implementation_date], 
+    [view_cms2_audit_corrective_action].[sign_date] AS [sign_date], 
+    [view_cms2_audit_corrective_action].[is_approved] AS [is_approved], 
+    [view_cms2_audit_corrective_action].[approved_date] AS [approved_date], 
+    [view_cms2_audit_corrective_action].[follow_up1_date] AS [follow_up1_date], 
+    [view_cms2_audit_corrective_action].[follow_up1_is_approved] AS [follow_up1_is_approved], 
+    [view_cms2_audit_corrective_action].[follow_up1_extended_deadline_date] AS [follow_up1_extended_deadline_date], 
+    [view_cms2_audit_corrective_action].[follow_up1_approved_date] AS [follow_up1_approved_date], 
+    [view_cms2_audit_corrective_action].[follow_up2_date] AS [follow_up2_date], 
+    [view_cms2_audit_corrective_action].[follow_up2_is_approved] AS [follow_up2_is_approved], 
+    [view_cms2_audit_corrective_action].[follow_up2_mrb_meeting_date] AS [follow_up2_mrb_meeting_date], 
+    [view_cms2_audit_corrective_action].[created_date] AS [created_date], 
+    [view_cms2_audit_corrective_action].[created_by] AS [created_by], 
+    [view_cms2_audit_corrective_action].[responsible_manager_id] AS [responsible_manager_id], 
+    [view_cms2_audit_corrective_action].[responsible_manager_name] AS [responsible_manager_name], 
+    [view_cms2_audit_corrective_action].[approved_by] AS [approved_by], 
+    [view_cms2_audit_corrective_action].[approved_by_name] AS [approved_by_name], 
+    [view_cms2_audit_corrective_action].[follow_up1_approved_by] AS [follow_up1_approved_by], 
+    [view_cms2_audit_corrective_action].[follow_up1_approved_by_name] AS [follow_up1_approved_by_name], 
+    [view_cms2_audit_corrective_action].[follow_up2_approved_by] AS [follow_up2_approved_by], 
+    [view_cms2_audit_corrective_action].[follow_up2_approved_by_name] AS [follow_up2_approved_by_name]
+    FROM [dbo].[view_cms2_audit_corrective_action] AS [view_cms2_audit_corrective_action]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="view_cms2_audit_finding" EntityType="Self.view_cms2_audit_finding" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_cms2_audit_finding].[id] AS [id], 
+    [view_cms2_audit_finding].[audit_id] AS [audit_id], 
+    [view_cms2_audit_finding].[code] AS [code], 
+    [view_cms2_audit_finding].[title] AS [title], 
+    [view_cms2_audit_finding].[level] AS [level], 
+    [view_cms2_audit_finding].[standard_id] AS [standard_id], 
+    [view_cms2_audit_finding].[standard_title] AS [standard_title], 
+    [view_cms2_audit_finding].[standard_description] AS [standard_description], 
+    [view_cms2_audit_finding].[none_compliance_description] AS [none_compliance_description], 
+    [view_cms2_audit_finding].[closure_deadline] AS [closure_deadline], 
+    [view_cms2_audit_finding].[sent_report_date] AS [sent_report_date], 
+    [view_cms2_audit_finding].[closure_auditor_date] AS [closure_auditor_date], 
+    [view_cms2_audit_finding].[verified_qa_date] AS [verified_qa_date], 
+    [view_cms2_audit_finding].[auditor_id] AS [auditor_id], 
+    [view_cms2_audit_finding].[auditor_name] AS [auditor_name], 
+    [view_cms2_audit_finding].[verified_qa_by] AS [verified_qa_by], 
+    [view_cms2_audit_finding].[verified_qa_name] AS [verified_qa_name]
+    FROM [dbo].[view_cms2_audit_finding] AS [view_cms2_audit_finding]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="view_cms2_audit_plan" EntityType="Self.view_cms2_audit_plan" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_cms2_audit_plan].[id] AS [id], 
+    [view_cms2_audit_plan].[code] AS [code], 
+    [view_cms2_audit_plan].[title] AS [title], 
+    [view_cms2_audit_plan].[description] AS [description], 
+    [view_cms2_audit_plan].[type_id] AS [type_id], 
+    [view_cms2_audit_plan].[objective] AS [objective], 
+    [view_cms2_audit_plan].[issue_date] AS [issue_date], 
+    [view_cms2_audit_plan].[created_by] AS [created_by], 
+    [view_cms2_audit_plan].[created_at] AS [created_at], 
+    [view_cms2_audit_plan].[updated_by] AS [updated_by], 
+    [view_cms2_audit_plan].[updated_at] AS [updated_at], 
+    [view_cms2_audit_plan].[opening_meeting_start] AS [opening_meeting_start], 
+    [view_cms2_audit_plan].[opening_meeting_end] AS [opening_meeting_end], 
+    [view_cms2_audit_plan].[opening_meeting_venue] AS [opening_meeting_venue], 
+    [view_cms2_audit_plan].[closing_meeting_start] AS [closing_meeting_start], 
+    [view_cms2_audit_plan].[closing_meeting_end] AS [closing_meeting_end], 
+    [view_cms2_audit_plan].[closing_meeting_venue] AS [closing_meeting_venue], 
+    [view_cms2_audit_plan].[lead_auditor] AS [lead_auditor], 
+    [view_cms2_audit_plan].[lead_auditor_name] AS [lead_auditor_name]
+    FROM [dbo].[view_cms2_audit_plan] AS [view_cms2_audit_plan]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="view_cms2_audit_team" EntityType="Self.view_cms2_audit_team" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_cms2_audit_team].[id] AS [id], 
+    [view_cms2_audit_team].[audit_id] AS [audit_id], 
+    [view_cms2_audit_team].[is_leader] AS [is_leader], 
+    [view_cms2_audit_team].[auditor_id] AS [auditor_id], 
+    [view_cms2_audit_team].[auditor_name] AS [auditor_name]
+    FROM [dbo].[view_cms2_audit_team] AS [view_cms2_audit_team]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="view_cms2_auditees" EntityType="Self.view_cms2_auditees" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_cms2_auditees].[id] AS [id], 
+    [view_cms2_auditees].[Name] AS [Name]
+    FROM [dbo].[view_cms2_auditees] AS [view_cms2_auditees]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="view_efb_report" EntityType="Self.view_efb_report" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -4357,12 +4718,47 @@ warning 6002: The table/view 'ppa_dev.dbo.ViewEmployee' does not have a primary 
     [ViewEmployee].[LicNo] AS [LicNo]
     FROM [dbo].[ViewEmployee] AS [ViewEmployee]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="ViewLocation" EntityType="Self.ViewLocation" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ViewLocation].[Parent] AS [Parent], 
+    [ViewLocation].[ParentCode] AS [ParentCode], 
+    [ViewLocation].[Root] AS [Root], 
+    [ViewLocation].[RootCode] AS [RootCode], 
+    [ViewLocation].[Id] AS [Id], 
+    [ViewLocation].[Title] AS [Title], 
+    [ViewLocation].[TitleFormated] AS [TitleFormated], 
+    [ViewLocation].[Code] AS [Code], 
+    [ViewLocation].[FullCode] AS [FullCode], 
+    [ViewLocation].[CustomerId] AS [CustomerId], 
+    [ViewLocation].[TypeId] AS [TypeId], 
+    [ViewLocation].[Remark] AS [Remark], 
+    [ViewLocation].[IsVirtual] AS [IsVirtual], 
+    [ViewLocation].[IsDeleted] AS [IsDeleted], 
+    [ViewLocation].[IsActive] AS [IsActive], 
+    [ViewLocation].[ParentId] AS [ParentId], 
+    [ViewLocation].[CityId] AS [CityId], 
+    [ViewLocation].[Address] AS [Address], 
+    [ViewLocation].[PostalCode] AS [PostalCode], 
+    [ViewLocation].[Website] AS [Website], 
+    [ViewLocation].[RootLocation] AS [RootLocation], 
+    [ViewLocation].[City] AS [City], 
+    [ViewLocation].[State] AS [State], 
+    [ViewLocation].[Country] AS [Country], 
+    [ViewLocation].[CountryId] AS [CountryId], 
+    [ViewLocation].[StateId] AS [StateId], 
+    [ViewLocation].[SortName] AS [SortName], 
+    [ViewLocation].[Type] AS [Type], 
+    [ViewLocation].[Items] AS [Items], 
+    [ViewLocation].[HasItems] AS [HasItems], 
+    [ViewLocation].[Employees] AS [Employees]
+    FROM [dbo].[ViewLocation] AS [ViewLocation]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK__cms2_audi__appro__0920F86B" Association="Self.FK__cms2_audi__appro__0920F86B">
             <End Role="cms2_auditors" EntitySet="cms2_auditors" />
             <End Role="cms2_audit_corrective_action" EntitySet="cms2_audit_corrective_action" />
           </AssociationSet>
           <AssociationSet Name="FK__cms2_audi__audit__008BB26A" Association="Self.FK__cms2_audi__audit__008BB26A">
-            <End Role="cms2_audit" EntitySet="cms2_audit" />
+            <End Role="cms2_audit_plan" EntitySet="cms2_audit_plan" />
             <End Role="cms2_audit_team" EntitySet="cms2_audit_team" />
           </AssociationSet>
           <AssociationSet Name="FK__cms2_audi__audit__017FD6A3" Association="Self.FK__cms2_audi__audit__017FD6A3">
@@ -4372,6 +4768,14 @@ warning 6002: The table/view 'ppa_dev.dbo.ViewEmployee' does not have a primary 
           <AssociationSet Name="FK__cms2_audi__audit__139E86DE" Association="Self.FK__cms2_audi__audit__139E86DE">
             <End Role="cms2_audit" EntitySet="cms2_audit" />
             <End Role="cms2_audit_hazard" EntitySet="cms2_audit_hazard" />
+          </AssociationSet>
+          <AssociationSet Name="FK__cms2_audi__audit__36E7C31B" Association="Self.FK__cms2_audi__audit__36E7C31B">
+            <End Role="cms2_audit_plan" EntitySet="cms2_audit_plan" />
+            <End Role="cms2_audit" EntitySet="cms2_audit" />
+          </AssociationSet>
+          <AssociationSet Name="FK__cms2_audi__audit__3BAC7838" Association="Self.FK__cms2_audi__audit__3BAC7838">
+            <End Role="cms2_auditors" EntitySet="cms2_auditors" />
+            <End Role="cms2_audit" EntitySet="cms2_audit" />
           </AssociationSet>
           <AssociationSet Name="FK__cms2_audi__audit__70554AA1" Association="Self.FK__cms2_audi__audit__70554AA1">
             <End Role="cms2_audit" EntitySet="cms2_audit" />
@@ -4403,7 +4807,7 @@ warning 6002: The table/view 'ppa_dev.dbo.ViewEmployee' does not have a primary 
           </AssociationSet>
           <AssociationSet Name="FK__cms2_audi__lead___7DAF45BF" Association="Self.FK__cms2_audi__lead___7DAF45BF">
             <End Role="cms2_auditors" EntitySet="cms2_auditors" />
-            <End Role="cms2_audit" EntitySet="cms2_audit" />
+            <End Role="cms2_audit_plan" EntitySet="cms2_audit_plan" />
           </AssociationSet>
           <AssociationSet Name="fk_cms2_hazard_cause_hazard" Association="Self.fk_cms2_hazard_cause_hazard">
             <End Role="cms2_hazard" EntitySet="cms2_hazard" />
@@ -4575,11 +4979,6 @@ warning 6002: The table/view 'ppa_dev.dbo.ViewEmployee' does not have a primary 
           <EntitySet Name="cms_nav_log" EntityType="ppaModel.cms_nav_log" />
           <EntitySet Name="cms_notify_receiver" EntityType="ppaModel.cms_notify_receiver" />
           <EntitySet Name="view_cms_report" EntityType="ppaModel.view_cms_report" />
-          <EntitySet Name="cms2_audit" EntityType="ppaModel.cms2_audit" />
-          <EntitySet Name="cms2_audit_corrective_action" EntityType="ppaModel.cms2_audit_corrective_action" />
-          <EntitySet Name="cms2_audit_finding" EntityType="ppaModel.cms2_audit_finding" />
-          <EntitySet Name="cms2_audit_hazard" EntityType="ppaModel.cms2_audit_hazard" />
-          <EntitySet Name="cms2_audit_team" EntityType="ppaModel.cms2_audit_team" />
           <EntitySet Name="cms2_auditors" EntityType="ppaModel.cms2_auditors" />
           <EntitySet Name="cms2_hazard" EntityType="ppaModel.cms2_hazard" />
           <EntitySet Name="cms2_hazard_cause" EntityType="ppaModel.cms2_hazard_cause" />
@@ -4598,54 +4997,6 @@ warning 6002: The table/view 'ppa_dev.dbo.ViewEmployee' does not have a primary 
           <EntitySet Name="cms2_risk_matrix" EntityType="ppaModel.cms2_risk_matrix" />
           <EntitySet Name="cms2_risk_matrix_cell" EntityType="ppaModel.cms2_risk_matrix_cell" />
           <EntitySet Name="cms2_risk_severity" EntityType="ppaModel.cms2_risk_severity" />
-          <AssociationSet Name="FK__cms2_audi__audit__008BB26A" Association="ppaModel.FK__cms2_audi__audit__008BB26A">
-            <End Role="cms2_audit" EntitySet="cms2_audit" />
-            <End Role="cms2_audit_team" EntitySet="cms2_audit_team" />
-          </AssociationSet>
-          <AssociationSet Name="FK__cms2_audi__audit__139E86DE" Association="ppaModel.FK__cms2_audi__audit__139E86DE">
-            <End Role="cms2_audit" EntitySet="cms2_audit" />
-            <End Role="cms2_audit_hazard" EntitySet="cms2_audit_hazard" />
-          </AssociationSet>
-          <AssociationSet Name="FK__cms2_audi__audit__70554AA1" Association="ppaModel.FK__cms2_audi__audit__70554AA1">
-            <End Role="cms2_audit" EntitySet="cms2_audit" />
-            <End Role="cms2_audit_finding" EntitySet="cms2_audit_finding" />
-          </AssociationSet>
-          <AssociationSet Name="FK__cms2_audi__audit__7331B74C" Association="ppaModel.FK__cms2_audi__audit__7331B74C">
-            <End Role="cms2_audit" EntitySet="cms2_audit" />
-            <End Role="cms2_audit_corrective_action" EntitySet="cms2_audit_corrective_action" />
-          </AssociationSet>
-          <AssociationSet Name="FK__cms2_audi__lead___7DAF45BF" Association="ppaModel.FK__cms2_audi__lead___7DAF45BF">
-            <End Role="cms2_auditors" EntitySet="cms2_auditors" />
-            <End Role="cms2_audit" EntitySet="cms2_audit" />
-          </AssociationSet>
-          <AssociationSet Name="FK__cms2_audi__appro__0920F86B" Association="ppaModel.FK__cms2_audi__appro__0920F86B">
-            <End Role="cms2_auditors" EntitySet="cms2_auditors" />
-            <End Role="cms2_audit_corrective_action" EntitySet="cms2_audit_corrective_action" />
-          </AssociationSet>
-          <AssociationSet Name="FK__cms2_audi__findi__7425DB85" Association="ppaModel.FK__cms2_audi__findi__7425DB85">
-            <End Role="cms2_audit_finding" EntitySet="cms2_audit_finding" />
-            <End Role="cms2_audit_corrective_action" EntitySet="cms2_audit_corrective_action" />
-          </AssociationSet>
-          <AssociationSet Name="FK__cms2_audi__follo__0B0940DD" Association="ppaModel.FK__cms2_audi__follo__0B0940DD">
-            <End Role="cms2_auditors" EntitySet="cms2_auditors" />
-            <End Role="cms2_audit_corrective_action" EntitySet="cms2_audit_corrective_action" />
-          </AssociationSet>
-          <AssociationSet Name="FK__cms2_audi__follo__0BFD6516" Association="ppaModel.FK__cms2_audi__follo__0BFD6516">
-            <End Role="cms2_auditors" EntitySet="cms2_auditors" />
-            <End Role="cms2_audit_corrective_action" EntitySet="cms2_audit_corrective_action" />
-          </AssociationSet>
-          <AssociationSet Name="FK__cms2_audi__audit__7CBB2186" Association="ppaModel.FK__cms2_audi__audit__7CBB2186">
-            <End Role="cms2_auditors" EntitySet="cms2_auditors" />
-            <End Role="cms2_audit_finding" EntitySet="cms2_audit_finding" />
-          </AssociationSet>
-          <AssociationSet Name="FK__cms2_audi__hazar__11B63E6C" Association="ppaModel.FK__cms2_audi__hazar__11B63E6C">
-            <End Role="cms2_hazard" EntitySet="cms2_hazard" />
-            <End Role="cms2_audit_hazard" EntitySet="cms2_audit_hazard" />
-          </AssociationSet>
-          <AssociationSet Name="FK__cms2_audi__audit__017FD6A3" Association="ppaModel.FK__cms2_audi__audit__017FD6A3">
-            <End Role="cms2_auditors" EntitySet="cms2_auditors" />
-            <End Role="cms2_audit_team" EntitySet="cms2_audit_team" />
-          </AssociationSet>
           <AssociationSet Name="fk_cms2_hazard_cause_hazard" Association="ppaModel.fk_cms2_hazard_cause_hazard">
             <End Role="cms2_hazard" EntitySet="cms2_hazard" />
             <End Role="cms2_hazard_cause" EntitySet="cms2_hazard_cause" />
@@ -4764,7 +5115,76 @@ warning 6002: The table/view 'ppa_dev.dbo.ViewEmployee' does not have a primary 
           </AssociationSet>
           <EntitySet Name="AppLegs" EntityType="ppaModel.AppLeg" />
           <EntitySet Name="ViewEmployees" EntityType="ppaModel.ViewEmployee" />
-        </EntityContainer>
+          <EntitySet Name="view_cms2_audit_plan" EntityType="ppaModel.view_cms2_audit_plan" />
+          <EntitySet Name="cms2_audit" EntityType="ppaModel.cms2_audit" />
+          <EntitySet Name="cms2_audit_corrective_action" EntityType="ppaModel.cms2_audit_corrective_action" />
+          <EntitySet Name="cms2_audit_finding" EntityType="ppaModel.cms2_audit_finding" />
+          <EntitySet Name="cms2_audit_hazard" EntityType="ppaModel.cms2_audit_hazard" />
+          <EntitySet Name="cms2_audit_plan" EntityType="ppaModel.cms2_audit_plan" />
+          <EntitySet Name="cms2_audit_team" EntityType="ppaModel.cms2_audit_team" />
+          <EntitySet Name="view_cms2_audit" EntityType="ppaModel.view_cms2_audit" />
+          <EntitySet Name="view_cms2_audit_corrective_action" EntityType="ppaModel.view_cms2_audit_corrective_action" />
+          <EntitySet Name="view_cms2_audit_finding" EntityType="ppaModel.view_cms2_audit_finding" />
+          <EntitySet Name="view_cms2_audit_team" EntityType="ppaModel.view_cms2_audit_team" />
+          <AssociationSet Name="FK__cms2_audi__audit__139E86DE" Association="ppaModel.FK__cms2_audi__audit__139E86DE">
+            <End Role="cms2_audit" EntitySet="cms2_audit" />
+            <End Role="cms2_audit_hazard" EntitySet="cms2_audit_hazard" />
+          </AssociationSet>
+          <AssociationSet Name="FK__cms2_audi__audit__36E7C31B" Association="ppaModel.FK__cms2_audi__audit__36E7C31B">
+            <End Role="cms2_audit_plan" EntitySet="cms2_audit_plan" />
+            <End Role="cms2_audit" EntitySet="cms2_audit" />
+          </AssociationSet>
+          <AssociationSet Name="FK__cms2_audi__audit__3BAC7838" Association="ppaModel.FK__cms2_audi__audit__3BAC7838">
+            <End Role="cms2_auditors" EntitySet="cms2_auditors" />
+            <End Role="cms2_audit" EntitySet="cms2_audit" />
+          </AssociationSet>
+          <AssociationSet Name="FK__cms2_audi__audit__70554AA1" Association="ppaModel.FK__cms2_audi__audit__70554AA1">
+            <End Role="cms2_audit" EntitySet="cms2_audit" />
+            <End Role="cms2_audit_finding" EntitySet="cms2_audit_finding" />
+          </AssociationSet>
+          <AssociationSet Name="FK__cms2_audi__audit__7331B74C" Association="ppaModel.FK__cms2_audi__audit__7331B74C">
+            <End Role="cms2_audit" EntitySet="cms2_audit" />
+            <End Role="cms2_audit_corrective_action" EntitySet="cms2_audit_corrective_action" />
+          </AssociationSet>
+          <AssociationSet Name="FK__cms2_audi__appro__0920F86B" Association="ppaModel.FK__cms2_audi__appro__0920F86B">
+            <End Role="cms2_auditors" EntitySet="cms2_auditors" />
+            <End Role="cms2_audit_corrective_action" EntitySet="cms2_audit_corrective_action" />
+          </AssociationSet>
+          <AssociationSet Name="FK__cms2_audi__findi__7425DB85" Association="ppaModel.FK__cms2_audi__findi__7425DB85">
+            <End Role="cms2_audit_finding" EntitySet="cms2_audit_finding" />
+            <End Role="cms2_audit_corrective_action" EntitySet="cms2_audit_corrective_action" />
+          </AssociationSet>
+          <AssociationSet Name="FK__cms2_audi__follo__0B0940DD" Association="ppaModel.FK__cms2_audi__follo__0B0940DD">
+            <End Role="cms2_auditors" EntitySet="cms2_auditors" />
+            <End Role="cms2_audit_corrective_action" EntitySet="cms2_audit_corrective_action" />
+          </AssociationSet>
+          <AssociationSet Name="FK__cms2_audi__follo__0BFD6516" Association="ppaModel.FK__cms2_audi__follo__0BFD6516">
+            <End Role="cms2_auditors" EntitySet="cms2_auditors" />
+            <End Role="cms2_audit_corrective_action" EntitySet="cms2_audit_corrective_action" />
+          </AssociationSet>
+          <AssociationSet Name="FK__cms2_audi__audit__7CBB2186" Association="ppaModel.FK__cms2_audi__audit__7CBB2186">
+            <End Role="cms2_auditors" EntitySet="cms2_auditors" />
+            <End Role="cms2_audit_finding" EntitySet="cms2_audit_finding" />
+          </AssociationSet>
+          <AssociationSet Name="FK__cms2_audi__hazar__11B63E6C" Association="ppaModel.FK__cms2_audi__hazar__11B63E6C">
+            <End Role="cms2_hazard" EntitySet="cms2_hazard" />
+            <End Role="cms2_audit_hazard" EntitySet="cms2_audit_hazard" />
+          </AssociationSet>
+          <AssociationSet Name="FK__cms2_audi__audit__008BB26A" Association="ppaModel.FK__cms2_audi__audit__008BB26A">
+            <End Role="cms2_audit_plan" EntitySet="cms2_audit_plan" />
+            <End Role="cms2_audit_team" EntitySet="cms2_audit_team" />
+          </AssociationSet>
+          <AssociationSet Name="FK__cms2_audi__lead___7DAF45BF" Association="ppaModel.FK__cms2_audi__lead___7DAF45BF">
+            <End Role="cms2_auditors" EntitySet="cms2_auditors" />
+            <End Role="cms2_audit_plan" EntitySet="cms2_audit_plan" />
+          </AssociationSet>
+          <AssociationSet Name="FK__cms2_audi__audit__017FD6A3" Association="ppaModel.FK__cms2_audi__audit__017FD6A3">
+            <End Role="cms2_auditors" EntitySet="cms2_auditors" />
+            <End Role="cms2_audit_team" EntitySet="cms2_audit_team" />
+          </AssociationSet>
+          <EntitySet Name="view_cms2_auditees" EntityType="ppaModel.view_cms2_auditees" />
+          <EntitySet Name="ViewLocations" EntityType="ppaModel.ViewLocation" />
+          </EntityContainer>
         <EntityType Name="AppFuel">
           <Key>
             <PropertyRef Name="FlightId" />
@@ -6284,117 +6704,6 @@ warning 6002: The table/view 'ppa_dev.dbo.ViewEmployee' does not have a primary 
           <Property Name="Describtion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="DateSign" Type="DateTime" Precision="3" />
         </EntityType>
-        <EntityType Name="cms2_audit">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="title" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="auditee_id" Type="Int32" Nullable="false" />
-          <Property Name="type_id" Type="Int32" Nullable="false" />
-          <Property Name="location_id" Type="Int32" Nullable="false" />
-          <Property Name="scope" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="objective" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="lead_auditor" Type="Int32" />
-          <Property Name="audit_date" Type="DateTime" Precision="7" />
-          <Property Name="audit_close_date" Type="DateTime" Precision="7" />
-          <Property Name="standards_refrences" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="created_by" Type="Int32" Nullable="false" />
-          <Property Name="created_at" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="updated_by" Type="Int32" />
-          <Property Name="updated_at" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="cms2_audit_team" Relationship="ppaModel.FK__cms2_audi__audit__008BB26A" FromRole="cms2_audit" ToRole="cms2_audit_team" />
-          <NavigationProperty Name="cms2_audit_hazard" Relationship="ppaModel.FK__cms2_audi__audit__139E86DE" FromRole="cms2_audit" ToRole="cms2_audit_hazard" />
-          <NavigationProperty Name="cms2_audit_finding" Relationship="ppaModel.FK__cms2_audi__audit__70554AA1" FromRole="cms2_audit" ToRole="cms2_audit_finding" />
-          <NavigationProperty Name="cms2_audit_corrective_action" Relationship="ppaModel.FK__cms2_audi__audit__7331B74C" FromRole="cms2_audit" ToRole="cms2_audit_corrective_action" />
-          <NavigationProperty Name="cms2_auditors" Relationship="ppaModel.FK__cms2_audi__lead___7DAF45BF" FromRole="cms2_audit" ToRole="cms2_auditors" />
-        </EntityType>
-        <EntityType Name="cms2_audit_corrective_action">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="audit_id" Type="Int32" Nullable="false" />
-          <Property Name="finding_id" Type="Int32" Nullable="false" />
-          <Property Name="root_cause_analysis_desc" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="action_title" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="request_implementation_date" Type="DateTime" Precision="7" />
-          <Property Name="responsible_manager_id" Type="Int32" />
-          <Property Name="sign_date" Type="DateTime" Precision="7" />
-          <Property Name="is_approved" Type="Boolean" />
-          <Property Name="approved_by" Type="Int32" />
-          <Property Name="approved_date" Type="DateTime" Precision="7" />
-          <Property Name="follow_up1_date" Type="DateTime" Precision="7" />
-          <Property Name="follow_up1_is_approved" Type="Boolean" />
-          <Property Name="follow_up1_extended_deadline_date" Type="DateTime" Precision="7" />
-          <Property Name="follow_up1_approved_date" Type="DateTime" Precision="7" />
-          <Property Name="follow_up1_approved_by" Type="Int32" />
-          <Property Name="follow_up2_date" Type="DateTime" Precision="7" />
-          <Property Name="follow_up2_is_approved" Type="Boolean" />
-          <Property Name="follow_up2_mrb_meeting_date" Type="DateTime" Precision="7" />
-          <Property Name="follow_up2_approved_date" Type="DateTime" Precision="7" />
-          <Property Name="follow_up2_approved_by" Type="Int32" />
-          <Property Name="created_by" Type="Int32" />
-          <Property Name="created_date" Type="DateTime" Precision="7" />
-          <Property Name="updated_by" Type="Int32" />
-          <Property Name="updated_date" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="cms2_audit" Relationship="ppaModel.FK__cms2_audi__audit__7331B74C" FromRole="cms2_audit_corrective_action" ToRole="cms2_audit" />
-          <NavigationProperty Name="cms2_auditors" Relationship="ppaModel.FK__cms2_audi__appro__0920F86B" FromRole="cms2_audit_corrective_action" ToRole="cms2_auditors" />
-          <NavigationProperty Name="cms2_audit_finding" Relationship="ppaModel.FK__cms2_audi__findi__7425DB85" FromRole="cms2_audit_corrective_action" ToRole="cms2_audit_finding" />
-          <NavigationProperty Name="cms2_auditors1" Relationship="ppaModel.FK__cms2_audi__follo__0B0940DD" FromRole="cms2_audit_corrective_action" ToRole="cms2_auditors" />
-          <NavigationProperty Name="cms2_auditors2" Relationship="ppaModel.FK__cms2_audi__follo__0BFD6516" FromRole="cms2_audit_corrective_action" ToRole="cms2_auditors" />
-        </EntityType>
-        <EntityType Name="cms2_audit_finding">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="audit_id" Type="Int32" Nullable="false" />
-          <Property Name="code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="title" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="level" Type="Int32" />
-          <Property Name="standard_id" Type="Int32" />
-          <Property Name="standard_title" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="standard_description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="none_compliance_description" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="closure_deadline" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="auditor_id" Type="Int32" />
-          <Property Name="sent_report_date" Type="DateTime" Precision="7" />
-          <Property Name="closure_auditor_date" Type="DateTime" Precision="7" />
-          <Property Name="verified_qa_by" Type="Int32" />
-          <Property Name="verified_qa_date" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="cms2_audit" Relationship="ppaModel.FK__cms2_audi__audit__70554AA1" FromRole="cms2_audit_finding" ToRole="cms2_audit" />
-          <NavigationProperty Name="cms2_audit_corrective_action" Relationship="ppaModel.FK__cms2_audi__findi__7425DB85" FromRole="cms2_audit_finding" ToRole="cms2_audit_corrective_action" />
-          <NavigationProperty Name="cms2_auditors" Relationship="ppaModel.FK__cms2_audi__audit__7CBB2186" FromRole="cms2_audit_finding" ToRole="cms2_auditors" />
-        </EntityType>
-        <EntityType Name="cms2_audit_hazard">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="hazard_id" Type="Int32" Nullable="false" />
-          <Property Name="audit_id" Type="Int32" Nullable="false" />
-          <Property Name="is_primary" Type="Boolean" Nullable="false" />
-          <Property Name="comment" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="created_by" Type="Int32" />
-          <Property Name="created_at" Type="DateTime" Nullable="false" Precision="7" />
-          <NavigationProperty Name="cms2_audit" Relationship="ppaModel.FK__cms2_audi__audit__139E86DE" FromRole="cms2_audit_hazard" ToRole="cms2_audit" />
-          <NavigationProperty Name="cms2_hazard" Relationship="ppaModel.FK__cms2_audi__hazar__11B63E6C" FromRole="cms2_audit_hazard" ToRole="cms2_hazard" />
-        </EntityType>
-        <EntityType Name="cms2_audit_team">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="audit_id" Type="Int32" Nullable="false" />
-          <Property Name="auditor_id" Type="Int32" Nullable="false" />
-          <Property Name="is_leader" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="cms2_audit" Relationship="ppaModel.FK__cms2_audi__audit__008BB26A" FromRole="cms2_audit_team" ToRole="cms2_audit" />
-          <NavigationProperty Name="cms2_auditors" Relationship="ppaModel.FK__cms2_audi__audit__017FD6A3" FromRole="cms2_audit_team" ToRole="cms2_auditors" />
-        </EntityType>
         <EntityType Name="cms2_auditors">
           <Key>
             <PropertyRef Name="id" />
@@ -6404,11 +6713,12 @@ warning 6002: The table/view 'ppa_dev.dbo.ViewEmployee' does not have a primary 
           <Property Name="last_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="mobile" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="active" Type="Boolean" />
-          <NavigationProperty Name="cms2_audit" Relationship="ppaModel.FK__cms2_audi__lead___7DAF45BF" FromRole="cms2_auditors" ToRole="cms2_audit" />
+          <NavigationProperty Name="cms2_audit" Relationship="ppaModel.FK__cms2_audi__audit__3BAC7838" FromRole="cms2_auditors" ToRole="cms2_audit" />
           <NavigationProperty Name="cms2_audit_corrective_action" Relationship="ppaModel.FK__cms2_audi__appro__0920F86B" FromRole="cms2_auditors" ToRole="cms2_audit_corrective_action" />
           <NavigationProperty Name="cms2_audit_corrective_action1" Relationship="ppaModel.FK__cms2_audi__follo__0B0940DD" FromRole="cms2_auditors" ToRole="cms2_audit_corrective_action" />
           <NavigationProperty Name="cms2_audit_corrective_action2" Relationship="ppaModel.FK__cms2_audi__follo__0BFD6516" FromRole="cms2_auditors" ToRole="cms2_audit_corrective_action" />
           <NavigationProperty Name="cms2_audit_finding" Relationship="ppaModel.FK__cms2_audi__audit__7CBB2186" FromRole="cms2_auditors" ToRole="cms2_audit_finding" />
+          <NavigationProperty Name="cms2_audit_plan" Relationship="ppaModel.FK__cms2_audi__lead___7DAF45BF" FromRole="cms2_auditors" ToRole="cms2_audit_plan" />
           <NavigationProperty Name="cms2_audit_team" Relationship="ppaModel.FK__cms2_audi__audit__017FD6A3" FromRole="cms2_auditors" ToRole="cms2_audit_team" />
         </EntityType>
         <EntityType Name="cms2_hazard">
@@ -6449,7 +6759,6 @@ warning 6002: The table/view 'ppa_dev.dbo.ViewEmployee' does not have a primary 
           <Property Name="residual_likelihood_id" Type="Int32" />
           <Property Name="residual_risk_level_id" Type="Int32" />
           <Property Name="risk_matrix_id" Type="Int32" />
-          <NavigationProperty Name="cms2_audit_hazard" Relationship="ppaModel.FK__cms2_audi__hazar__11B63E6C" FromRole="cms2_hazard" ToRole="cms2_audit_hazard" />
           <NavigationProperty Name="cms2_hazard_cause" Relationship="ppaModel.fk_cms2_hazard_cause_hazard" FromRole="cms2_hazard" ToRole="cms2_hazard_cause" />
           <NavigationProperty Name="cms2_hazard_consequence" Relationship="ppaModel.fk_cms2_hazard_consequence_hazard" FromRole="cms2_hazard" ToRole="cms2_hazard_consequence" />
           <NavigationProperty Name="cms2_risk_likelihood" Relationship="ppaModel.fk_cms2_hazard_initial_likelihood" FromRole="cms2_hazard" ToRole="cms2_risk_likelihood" />
@@ -6463,6 +6772,7 @@ warning 6002: The table/view 'ppa_dev.dbo.ViewEmployee' does not have a primary 
           <NavigationProperty Name="cms2_hazard_status" Relationship="ppaModel.fk_cms2_hazard_status" FromRole="cms2_hazard" ToRole="cms2_hazard_status" />
           <NavigationProperty Name="cms2_occurrence_hazard" Relationship="ppaModel.fk_cms2_occurrence_hazard_hazard" FromRole="cms2_hazard" ToRole="cms2_occurrence_hazard" />
           <NavigationProperty Name="cms2_risk_assessment_log" Relationship="ppaModel.fk_cms2_risk_assessment_hazard" FromRole="cms2_hazard" ToRole="cms2_risk_assessment_log" />
+          <NavigationProperty Name="cms2_audit_hazard" Relationship="ppaModel.FK__cms2_audi__hazar__11B63E6C" FromRole="cms2_hazard" ToRole="cms2_audit_hazard" />
         </EntityType>
         <EntityType Name="cms2_hazard_cause">
           <Key>
@@ -6735,150 +7045,6 @@ warning 6002: The table/view 'ppa_dev.dbo.ViewEmployee' does not have a primary 
           <NavigationProperty Name="cms2_risk_assessment_log1" Relationship="ppaModel.fk_cms2_risk_assessment_res_sev" FromRole="cms2_risk_severity" ToRole="cms2_risk_assessment_log" />
           <NavigationProperty Name="cms2_risk_matrix_cell" Relationship="ppaModel.fk_cms2_risk_matrix_cell_severity" FromRole="cms2_risk_severity" ToRole="cms2_risk_matrix_cell" />
         </EntityType>
-        <Association Name="FK__cms2_audi__audit__008BB26A">
-          <End Type="ppaModel.cms2_audit" Role="cms2_audit" Multiplicity="1" />
-          <End Type="ppaModel.cms2_audit_team" Role="cms2_audit_team" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="cms2_audit">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="cms2_audit_team">
-              <PropertyRef Name="audit_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__cms2_audi__audit__139E86DE">
-          <End Type="ppaModel.cms2_audit" Role="cms2_audit" Multiplicity="1" />
-          <End Type="ppaModel.cms2_audit_hazard" Role="cms2_audit_hazard" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="cms2_audit">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="cms2_audit_hazard">
-              <PropertyRef Name="audit_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__cms2_audi__audit__70554AA1">
-          <End Type="ppaModel.cms2_audit" Role="cms2_audit" Multiplicity="1" />
-          <End Type="ppaModel.cms2_audit_finding" Role="cms2_audit_finding" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="cms2_audit">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="cms2_audit_finding">
-              <PropertyRef Name="audit_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__cms2_audi__audit__7331B74C">
-          <End Type="ppaModel.cms2_audit" Role="cms2_audit" Multiplicity="1" />
-          <End Type="ppaModel.cms2_audit_corrective_action" Role="cms2_audit_corrective_action" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="cms2_audit">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="cms2_audit_corrective_action">
-              <PropertyRef Name="audit_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__cms2_audi__lead___7DAF45BF">
-          <End Type="ppaModel.cms2_auditors" Role="cms2_auditors" Multiplicity="0..1" />
-          <End Type="ppaModel.cms2_audit" Role="cms2_audit" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="cms2_auditors">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="cms2_audit">
-              <PropertyRef Name="lead_auditor" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__cms2_audi__appro__0920F86B">
-          <End Type="ppaModel.cms2_auditors" Role="cms2_auditors" Multiplicity="0..1" />
-          <End Type="ppaModel.cms2_audit_corrective_action" Role="cms2_audit_corrective_action" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="cms2_auditors">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="cms2_audit_corrective_action">
-              <PropertyRef Name="approved_by" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__cms2_audi__findi__7425DB85">
-          <End Type="ppaModel.cms2_audit_finding" Role="cms2_audit_finding" Multiplicity="1" />
-          <End Type="ppaModel.cms2_audit_corrective_action" Role="cms2_audit_corrective_action" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="cms2_audit_finding">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="cms2_audit_corrective_action">
-              <PropertyRef Name="finding_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__cms2_audi__follo__0B0940DD">
-          <End Type="ppaModel.cms2_auditors" Role="cms2_auditors" Multiplicity="0..1" />
-          <End Type="ppaModel.cms2_audit_corrective_action" Role="cms2_audit_corrective_action" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="cms2_auditors">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="cms2_audit_corrective_action">
-              <PropertyRef Name="follow_up1_approved_by" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__cms2_audi__follo__0BFD6516">
-          <End Type="ppaModel.cms2_auditors" Role="cms2_auditors" Multiplicity="0..1" />
-          <End Type="ppaModel.cms2_audit_corrective_action" Role="cms2_audit_corrective_action" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="cms2_auditors">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="cms2_audit_corrective_action">
-              <PropertyRef Name="follow_up2_approved_by" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__cms2_audi__audit__7CBB2186">
-          <End Type="ppaModel.cms2_auditors" Role="cms2_auditors" Multiplicity="0..1" />
-          <End Type="ppaModel.cms2_audit_finding" Role="cms2_audit_finding" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="cms2_auditors">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="cms2_audit_finding">
-              <PropertyRef Name="auditor_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__cms2_audi__hazar__11B63E6C">
-          <End Type="ppaModel.cms2_hazard" Role="cms2_hazard" Multiplicity="1" />
-          <End Type="ppaModel.cms2_audit_hazard" Role="cms2_audit_hazard" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="cms2_hazard">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="cms2_audit_hazard">
-              <PropertyRef Name="hazard_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__cms2_audi__audit__017FD6A3">
-          <End Type="ppaModel.cms2_auditors" Role="cms2_auditors" Multiplicity="1" />
-          <End Type="ppaModel.cms2_audit_team" Role="cms2_audit_team" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="cms2_auditors">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="cms2_audit_team">
-              <PropertyRef Name="auditor_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="fk_cms2_hazard_cause_hazard">
           <End Type="ppaModel.cms2_hazard" Role="cms2_hazard" Multiplicity="1" />
           <End Type="ppaModel.cms2_hazard_cause" Role="cms2_hazard_cause" Multiplicity="*" />
@@ -7821,6 +7987,496 @@ warning 6002: The table/view 'ppa_dev.dbo.ViewEmployee' does not have a primary 
           <Property Name="Type737ExpireDate" Type="DateTime" Precision="7" />
           <Property Name="TypeMDExpireDate" Type="DateTime" Precision="7" />
           <Property Name="LicNo" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="view_cms2_audit_plan">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="title" />
+            <PropertyRef Name="type_id" />
+            <PropertyRef Name="created_by" />
+            <PropertyRef Name="created_at" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="title" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="type_id" Type="Int32" Nullable="false" />
+          <Property Name="objective" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="issue_date" Type="DateTime" Precision="7" />
+          <Property Name="created_by" Type="Int32" Nullable="false" />
+          <Property Name="created_at" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="updated_by" Type="Int32" />
+          <Property Name="updated_at" Type="DateTime" Precision="7" />
+          <Property Name="opening_meeting_start" Type="DateTime" Precision="7" />
+          <Property Name="opening_meeting_end" Type="DateTime" Precision="7" />
+          <Property Name="opening_meeting_venue" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="closing_meeting_start" Type="DateTime" Precision="7" />
+          <Property Name="closing_meeting_end" Type="DateTime" Precision="7" />
+          <Property Name="closing_meeting_venue" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="lead_auditor" Type="Int32" />
+          <Property Name="lead_auditor_name" Type="String" MaxLength="101" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="cms2_audit">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="audit_plan_id" Type="Int32" Nullable="false" />
+          <Property Name="title" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="auditee_id" Type="Int32" Nullable="false" />
+          <Property Name="type_id" Type="Int32" Nullable="false" />
+          <Property Name="location_id" Type="Int32" Nullable="false" />
+          <Property Name="scope" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="area" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="audit_date" Type="DateTime" Precision="7" />
+          <Property Name="standards_refrences" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="created_by" Type="Int32" Nullable="false" />
+          <Property Name="created_at" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="updated_by" Type="Int32" />
+          <Property Name="updated_at" Type="DateTime" Precision="7" />
+          <Property Name="auditor_id" Type="Int32" Nullable="false" />
+          <Property Name="remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="cms2_audit_hazard" Relationship="ppaModel.FK__cms2_audi__audit__139E86DE" FromRole="cms2_audit" ToRole="cms2_audit_hazard" />
+          <NavigationProperty Name="cms2_audit_plan" Relationship="ppaModel.FK__cms2_audi__audit__36E7C31B" FromRole="cms2_audit" ToRole="cms2_audit_plan" />
+          <NavigationProperty Name="cms2_auditors" Relationship="ppaModel.FK__cms2_audi__audit__3BAC7838" FromRole="cms2_audit" ToRole="cms2_auditors" />
+          <NavigationProperty Name="cms2_audit_finding" Relationship="ppaModel.FK__cms2_audi__audit__70554AA1" FromRole="cms2_audit" ToRole="cms2_audit_finding" />
+          <NavigationProperty Name="cms2_audit_corrective_action" Relationship="ppaModel.FK__cms2_audi__audit__7331B74C" FromRole="cms2_audit" ToRole="cms2_audit_corrective_action" />
+        </EntityType>
+        <EntityType Name="cms2_audit_corrective_action">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="audit_id" Type="Int32" Nullable="false" />
+          <Property Name="finding_id" Type="Int32" Nullable="false" />
+          <Property Name="root_cause_analysis_desc" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="action_title" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="request_implementation_date" Type="DateTime" Precision="7" />
+          <Property Name="responsible_manager_id" Type="Int32" />
+          <Property Name="sign_date" Type="DateTime" Precision="7" />
+          <Property Name="is_approved" Type="Boolean" />
+          <Property Name="approved_by" Type="Int32" />
+          <Property Name="approved_date" Type="DateTime" Precision="7" />
+          <Property Name="follow_up1_date" Type="DateTime" Precision="7" />
+          <Property Name="follow_up1_is_approved" Type="Boolean" />
+          <Property Name="follow_up1_extended_deadline_date" Type="DateTime" Precision="7" />
+          <Property Name="follow_up1_approved_date" Type="DateTime" Precision="7" />
+          <Property Name="follow_up1_approved_by" Type="Int32" />
+          <Property Name="follow_up2_date" Type="DateTime" Precision="7" />
+          <Property Name="follow_up2_is_approved" Type="Boolean" />
+          <Property Name="follow_up2_mrb_meeting_date" Type="DateTime" Precision="7" />
+          <Property Name="follow_up2_approved_date" Type="DateTime" Precision="7" />
+          <Property Name="follow_up2_approved_by" Type="Int32" />
+          <Property Name="created_by" Type="Int32" />
+          <Property Name="created_date" Type="DateTime" Precision="7" />
+          <Property Name="updated_by" Type="Int32" />
+          <Property Name="updated_date" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="cms2_audit" Relationship="ppaModel.FK__cms2_audi__audit__7331B74C" FromRole="cms2_audit_corrective_action" ToRole="cms2_audit" />
+          <NavigationProperty Name="cms2_auditors" Relationship="ppaModel.FK__cms2_audi__appro__0920F86B" FromRole="cms2_audit_corrective_action" ToRole="cms2_auditors" />
+          <NavigationProperty Name="cms2_audit_finding" Relationship="ppaModel.FK__cms2_audi__findi__7425DB85" FromRole="cms2_audit_corrective_action" ToRole="cms2_audit_finding" />
+          <NavigationProperty Name="cms2_auditors1" Relationship="ppaModel.FK__cms2_audi__follo__0B0940DD" FromRole="cms2_audit_corrective_action" ToRole="cms2_auditors" />
+          <NavigationProperty Name="cms2_auditors2" Relationship="ppaModel.FK__cms2_audi__follo__0BFD6516" FromRole="cms2_audit_corrective_action" ToRole="cms2_auditors" />
+        </EntityType>
+        <EntityType Name="cms2_audit_finding">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="audit_id" Type="Int32" Nullable="false" />
+          <Property Name="code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="title" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="level" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="standard_id" Type="Int32" />
+          <Property Name="standard_title" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="standard_description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="none_compliance_description" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="closure_deadline" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="auditor_id" Type="Int32" />
+          <Property Name="sent_report_date" Type="DateTime" Precision="7" />
+          <Property Name="closure_auditor_date" Type="DateTime" Precision="7" />
+          <Property Name="verified_qa_by" Type="Int32" />
+          <Property Name="verified_qa_date" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="cms2_audit" Relationship="ppaModel.FK__cms2_audi__audit__70554AA1" FromRole="cms2_audit_finding" ToRole="cms2_audit" />
+          <NavigationProperty Name="cms2_audit_corrective_action" Relationship="ppaModel.FK__cms2_audi__findi__7425DB85" FromRole="cms2_audit_finding" ToRole="cms2_audit_corrective_action" />
+          <NavigationProperty Name="cms2_auditors" Relationship="ppaModel.FK__cms2_audi__audit__7CBB2186" FromRole="cms2_audit_finding" ToRole="cms2_auditors" />
+        </EntityType>
+        <EntityType Name="cms2_audit_hazard">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="hazard_id" Type="Int32" Nullable="false" />
+          <Property Name="audit_id" Type="Int32" Nullable="false" />
+          <Property Name="is_primary" Type="Boolean" Nullable="false" />
+          <Property Name="comment" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="created_by" Type="Int32" />
+          <Property Name="created_at" Type="DateTime" Nullable="false" Precision="7" />
+          <NavigationProperty Name="cms2_audit" Relationship="ppaModel.FK__cms2_audi__audit__139E86DE" FromRole="cms2_audit_hazard" ToRole="cms2_audit" />
+          <NavigationProperty Name="cms2_hazard" Relationship="ppaModel.FK__cms2_audi__hazar__11B63E6C" FromRole="cms2_audit_hazard" ToRole="cms2_hazard" />
+        </EntityType>
+        <EntityType Name="cms2_audit_plan">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="title" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="type_id" Type="Int32" Nullable="false" />
+          <Property Name="objective" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="lead_auditor" Type="Int32" />
+          <Property Name="issue_date" Type="DateTime" Precision="7" />
+          <Property Name="created_by" Type="Int32" Nullable="false" />
+          <Property Name="created_at" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="updated_by" Type="Int32" />
+          <Property Name="updated_at" Type="DateTime" Precision="7" />
+          <Property Name="opening_meeting_start" Type="DateTime" Precision="7" />
+          <Property Name="opening_meeting_end" Type="DateTime" Precision="7" />
+          <Property Name="opening_meeting_venue" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="closing_meeting_start" Type="DateTime" Precision="7" />
+          <Property Name="closing_meeting_end" Type="DateTime" Precision="7" />
+          <Property Name="closing_meeting_venue" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="cms2_audit" Relationship="ppaModel.FK__cms2_audi__audit__36E7C31B" FromRole="cms2_audit_plan" ToRole="cms2_audit" />
+          <NavigationProperty Name="cms2_audit_team" Relationship="ppaModel.FK__cms2_audi__audit__008BB26A" FromRole="cms2_audit_plan" ToRole="cms2_audit_team" />
+          <NavigationProperty Name="cms2_auditors" Relationship="ppaModel.FK__cms2_audi__lead___7DAF45BF" FromRole="cms2_audit_plan" ToRole="cms2_auditors" />
+        </EntityType>
+        <EntityType Name="cms2_audit_team">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="audit_id" Type="Int32" Nullable="false" />
+          <Property Name="auditor_id" Type="Int32" Nullable="false" />
+          <Property Name="is_leader" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="cms2_audit_plan" Relationship="ppaModel.FK__cms2_audi__audit__008BB26A" FromRole="cms2_audit_team" ToRole="cms2_audit_plan" />
+          <NavigationProperty Name="cms2_auditors" Relationship="ppaModel.FK__cms2_audi__audit__017FD6A3" FromRole="cms2_audit_team" ToRole="cms2_auditors" />
+        </EntityType>
+        <EntityType Name="view_cms2_audit">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="audit_plan_id" />
+            <PropertyRef Name="title" />
+            <PropertyRef Name="type_id" />
+            <PropertyRef Name="created_by" />
+            <PropertyRef Name="created_at" />
+            <PropertyRef Name="auditee_id" />
+            <PropertyRef Name="location_id" />
+            <PropertyRef Name="auditor_id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="audit_plan_id" Type="Int32" Nullable="false" />
+          <Property Name="code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="title" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="type_id" Type="Int32" Nullable="false" />
+          <Property Name="scope" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="area" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="audit_date" Type="DateTime" Precision="7" />
+          <Property Name="standards_refrences" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="created_by" Type="Int32" Nullable="false" />
+          <Property Name="created_at" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="updated_by" Type="Int32" />
+          <Property Name="updated_at" Type="DateTime" Precision="7" />
+          <Property Name="auditee_id" Type="Int32" Nullable="false" />
+          <Property Name="auditee_name" Type="String" MaxLength="1003" FixedLength="false" Unicode="true" />
+          <Property Name="location_id" Type="Int32" Nullable="false" />
+          <Property Name="location_title" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="auditor_id" Type="Int32" Nullable="false" />
+          <Property Name="auditor_name" Type="String" MaxLength="101" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="view_cms2_audit_corrective_action">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="audit_id" />
+            <PropertyRef Name="finding_id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="audit_id" Type="Int32" Nullable="false" />
+          <Property Name="finding_id" Type="Int32" Nullable="false" />
+          <Property Name="root_cause_analysis_desc" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="action_title" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="request_implementation_date" Type="DateTime" Precision="7" />
+          <Property Name="sign_date" Type="DateTime" Precision="7" />
+          <Property Name="is_approved" Type="Boolean" />
+          <Property Name="approved_date" Type="DateTime" Precision="7" />
+          <Property Name="follow_up1_date" Type="DateTime" Precision="7" />
+          <Property Name="follow_up1_is_approved" Type="Boolean" />
+          <Property Name="follow_up1_extended_deadline_date" Type="DateTime" Precision="7" />
+          <Property Name="follow_up1_approved_date" Type="DateTime" Precision="7" />
+          <Property Name="follow_up2_date" Type="DateTime" Precision="7" />
+          <Property Name="follow_up2_is_approved" Type="Boolean" />
+          <Property Name="follow_up2_mrb_meeting_date" Type="DateTime" Precision="7" />
+          <Property Name="created_date" Type="DateTime" Precision="7" />
+          <Property Name="created_by" Type="Int32" />
+          <Property Name="responsible_manager_id" Type="Int32" />
+          <Property Name="responsible_manager_name" Type="String" MaxLength="1003" FixedLength="false" Unicode="true" />
+          <Property Name="approved_by" Type="Int32" />
+          <Property Name="approved_by_name" Type="String" MaxLength="1003" FixedLength="false" Unicode="true" />
+          <Property Name="follow_up1_approved_by" Type="Int32" />
+          <Property Name="follow_up1_approved_by_name" Type="String" MaxLength="1003" FixedLength="false" Unicode="true" />
+          <Property Name="follow_up2_approved_by" Type="Int32" />
+          <Property Name="follow_up2_approved_by_name" Type="String" MaxLength="1003" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="view_cms2_audit_finding">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="audit_id" />
+            <PropertyRef Name="standard_title" />
+            <PropertyRef Name="none_compliance_description" />
+            <PropertyRef Name="closure_deadline" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="audit_id" Type="Int32" Nullable="false" />
+          <Property Name="code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="title" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="level" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="standard_id" Type="Int32" />
+          <Property Name="standard_title" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="standard_description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="none_compliance_description" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="closure_deadline" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="sent_report_date" Type="DateTime" Precision="7" />
+          <Property Name="closure_auditor_date" Type="DateTime" Precision="7" />
+          <Property Name="verified_qa_date" Type="DateTime" Precision="7" />
+          <Property Name="auditor_id" Type="Int32" />
+          <Property Name="auditor_name" Type="String" MaxLength="101" FixedLength="false" Unicode="true" />
+          <Property Name="verified_qa_by" Type="Int32" />
+          <Property Name="verified_qa_name" Type="String" MaxLength="1003" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="view_cms2_audit_team">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="audit_id" />
+            <PropertyRef Name="is_leader" />
+            <PropertyRef Name="auditor_id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="audit_id" Type="Int32" Nullable="false" />
+          <Property Name="is_leader" Type="Boolean" Nullable="false" />
+          <Property Name="auditor_id" Type="Int32" Nullable="false" />
+          <Property Name="auditor_name" Type="String" MaxLength="101" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK__cms2_audi__audit__139E86DE">
+          <End Type="ppaModel.cms2_audit" Role="cms2_audit" Multiplicity="1" />
+          <End Type="ppaModel.cms2_audit_hazard" Role="cms2_audit_hazard" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cms2_audit">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="cms2_audit_hazard">
+              <PropertyRef Name="audit_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__cms2_audi__audit__36E7C31B">
+          <End Type="ppaModel.cms2_audit_plan" Role="cms2_audit_plan" Multiplicity="1" />
+          <End Type="ppaModel.cms2_audit" Role="cms2_audit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cms2_audit_plan">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="cms2_audit">
+              <PropertyRef Name="audit_plan_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__cms2_audi__audit__3BAC7838">
+          <End Type="ppaModel.cms2_auditors" Role="cms2_auditors" Multiplicity="1" />
+          <End Type="ppaModel.cms2_audit" Role="cms2_audit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cms2_auditors">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="cms2_audit">
+              <PropertyRef Name="auditor_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__cms2_audi__audit__70554AA1">
+          <End Type="ppaModel.cms2_audit" Role="cms2_audit" Multiplicity="1" />
+          <End Type="ppaModel.cms2_audit_finding" Role="cms2_audit_finding" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cms2_audit">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="cms2_audit_finding">
+              <PropertyRef Name="audit_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__cms2_audi__audit__7331B74C">
+          <End Type="ppaModel.cms2_audit" Role="cms2_audit" Multiplicity="1" />
+          <End Type="ppaModel.cms2_audit_corrective_action" Role="cms2_audit_corrective_action" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cms2_audit">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="cms2_audit_corrective_action">
+              <PropertyRef Name="audit_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__cms2_audi__appro__0920F86B">
+          <End Type="ppaModel.cms2_auditors" Role="cms2_auditors" Multiplicity="0..1" />
+          <End Type="ppaModel.cms2_audit_corrective_action" Role="cms2_audit_corrective_action" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cms2_auditors">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="cms2_audit_corrective_action">
+              <PropertyRef Name="approved_by" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__cms2_audi__findi__7425DB85">
+          <End Type="ppaModel.cms2_audit_finding" Role="cms2_audit_finding" Multiplicity="1" />
+          <End Type="ppaModel.cms2_audit_corrective_action" Role="cms2_audit_corrective_action" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cms2_audit_finding">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="cms2_audit_corrective_action">
+              <PropertyRef Name="finding_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__cms2_audi__follo__0B0940DD">
+          <End Type="ppaModel.cms2_auditors" Role="cms2_auditors" Multiplicity="0..1" />
+          <End Type="ppaModel.cms2_audit_corrective_action" Role="cms2_audit_corrective_action" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cms2_auditors">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="cms2_audit_corrective_action">
+              <PropertyRef Name="follow_up1_approved_by" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__cms2_audi__follo__0BFD6516">
+          <End Type="ppaModel.cms2_auditors" Role="cms2_auditors" Multiplicity="0..1" />
+          <End Type="ppaModel.cms2_audit_corrective_action" Role="cms2_audit_corrective_action" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cms2_auditors">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="cms2_audit_corrective_action">
+              <PropertyRef Name="follow_up2_approved_by" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__cms2_audi__audit__7CBB2186">
+          <End Type="ppaModel.cms2_auditors" Role="cms2_auditors" Multiplicity="0..1" />
+          <End Type="ppaModel.cms2_audit_finding" Role="cms2_audit_finding" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cms2_auditors">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="cms2_audit_finding">
+              <PropertyRef Name="auditor_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__cms2_audi__hazar__11B63E6C">
+          <End Type="ppaModel.cms2_hazard" Role="cms2_hazard" Multiplicity="1" />
+          <End Type="ppaModel.cms2_audit_hazard" Role="cms2_audit_hazard" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cms2_hazard">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="cms2_audit_hazard">
+              <PropertyRef Name="hazard_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__cms2_audi__audit__008BB26A">
+          <End Type="ppaModel.cms2_audit_plan" Role="cms2_audit_plan" Multiplicity="1" />
+          <End Type="ppaModel.cms2_audit_team" Role="cms2_audit_team" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cms2_audit_plan">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="cms2_audit_team">
+              <PropertyRef Name="audit_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__cms2_audi__lead___7DAF45BF">
+          <End Type="ppaModel.cms2_auditors" Role="cms2_auditors" Multiplicity="0..1" />
+          <End Type="ppaModel.cms2_audit_plan" Role="cms2_audit_plan" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cms2_auditors">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="cms2_audit_plan">
+              <PropertyRef Name="lead_auditor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__cms2_audi__audit__017FD6A3">
+          <End Type="ppaModel.cms2_auditors" Role="cms2_auditors" Multiplicity="1" />
+          <End Type="ppaModel.cms2_audit_team" Role="cms2_audit_team" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cms2_auditors">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="cms2_audit_team">
+              <PropertyRef Name="auditor_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="view_cms2_auditees">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="1003" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ViewLocation">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Title" />
+            <PropertyRef Name="CustomerId" />
+            <PropertyRef Name="TypeId" />
+            <PropertyRef Name="IsVirtual" />
+            <PropertyRef Name="IsDeleted" />
+            <PropertyRef Name="IsActive" />
+            <PropertyRef Name="HasItems" />
+          </Key>
+          <Property Name="Parent" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="ParentCode" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Root" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="RootCode" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="TitleFormated" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="Code" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="FullCode" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerId" Type="Int32" Nullable="false" />
+          <Property Name="TypeId" Type="Int32" Nullable="false" />
+          <Property Name="Remark" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="IsVirtual" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="ParentId" Type="Int32" />
+          <Property Name="CityId" Type="Int32" />
+          <Property Name="Address" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="PostalCode" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Website" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="RootLocation" Type="Int32" />
+          <Property Name="City" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Country" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="CountryId" Type="Int32" />
+          <Property Name="StateId" Type="Int32" />
+          <Property Name="SortName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Type" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Items" Type="Int32" />
+          <Property Name="HasItems" Type="Int32" Nullable="false" />
+          <Property Name="Employees" Type="Int32" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -9264,105 +9920,6 @@ warning 6002: The table/view 'ppa_dev.dbo.ViewEmployee' does not have a primary 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="cms2_audit">
-            <EntityTypeMapping TypeName="ppaModel.cms2_audit">
-              <MappingFragment StoreEntitySet="cms2_audit">
-                <ScalarProperty Name="updated_at" ColumnName="updated_at" />
-                <ScalarProperty Name="updated_by" ColumnName="updated_by" />
-                <ScalarProperty Name="created_at" ColumnName="created_at" />
-                <ScalarProperty Name="created_by" ColumnName="created_by" />
-                <ScalarProperty Name="standards_refrences" ColumnName="standards_refrences" />
-                <ScalarProperty Name="audit_close_date" ColumnName="audit_close_date" />
-                <ScalarProperty Name="audit_date" ColumnName="audit_date" />
-                <ScalarProperty Name="lead_auditor" ColumnName="lead_auditor" />
-                <ScalarProperty Name="objective" ColumnName="objective" />
-                <ScalarProperty Name="scope" ColumnName="scope" />
-                <ScalarProperty Name="location_id" ColumnName="location_id" />
-                <ScalarProperty Name="type_id" ColumnName="type_id" />
-                <ScalarProperty Name="auditee_id" ColumnName="auditee_id" />
-                <ScalarProperty Name="description" ColumnName="description" />
-                <ScalarProperty Name="title" ColumnName="title" />
-                <ScalarProperty Name="code" ColumnName="code" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="cms2_audit_corrective_action">
-            <EntityTypeMapping TypeName="ppaModel.cms2_audit_corrective_action">
-              <MappingFragment StoreEntitySet="cms2_audit_corrective_action">
-                <ScalarProperty Name="updated_date" ColumnName="updated_date" />
-                <ScalarProperty Name="updated_by" ColumnName="updated_by" />
-                <ScalarProperty Name="created_date" ColumnName="created_date" />
-                <ScalarProperty Name="created_by" ColumnName="created_by" />
-                <ScalarProperty Name="follow_up2_approved_by" ColumnName="follow_up2_approved_by" />
-                <ScalarProperty Name="follow_up2_approved_date" ColumnName="follow_up2_approved_date" />
-                <ScalarProperty Name="follow_up2_mrb_meeting_date" ColumnName="follow_up2_mrb_meeting_date" />
-                <ScalarProperty Name="follow_up2_is_approved" ColumnName="follow_up2_is_approved" />
-                <ScalarProperty Name="follow_up2_date" ColumnName="follow_up2_date" />
-                <ScalarProperty Name="follow_up1_approved_by" ColumnName="follow_up1_approved_by" />
-                <ScalarProperty Name="follow_up1_approved_date" ColumnName="follow_up1_approved_date" />
-                <ScalarProperty Name="follow_up1_extended_deadline_date" ColumnName="follow_up1_extended_deadline_date" />
-                <ScalarProperty Name="follow_up1_is_approved" ColumnName="follow_up1_is_approved" />
-                <ScalarProperty Name="follow_up1_date" ColumnName="follow_up1_date" />
-                <ScalarProperty Name="approved_date" ColumnName="approved_date" />
-                <ScalarProperty Name="approved_by" ColumnName="approved_by" />
-                <ScalarProperty Name="is_approved" ColumnName="is_approved" />
-                <ScalarProperty Name="sign_date" ColumnName="sign_date" />
-                <ScalarProperty Name="responsible_manager_id" ColumnName="responsible_manager_id" />
-                <ScalarProperty Name="request_implementation_date" ColumnName="request_implementation_date" />
-                <ScalarProperty Name="code" ColumnName="code" />
-                <ScalarProperty Name="action_title" ColumnName="action_title" />
-                <ScalarProperty Name="root_cause_analysis_desc" ColumnName="root_cause_analysis_desc" />
-                <ScalarProperty Name="finding_id" ColumnName="finding_id" />
-                <ScalarProperty Name="audit_id" ColumnName="audit_id" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="cms2_audit_finding">
-            <EntityTypeMapping TypeName="ppaModel.cms2_audit_finding">
-              <MappingFragment StoreEntitySet="cms2_audit_finding">
-                <ScalarProperty Name="verified_qa_date" ColumnName="verified_qa_date" />
-                <ScalarProperty Name="verified_qa_by" ColumnName="verified_qa_by" />
-                <ScalarProperty Name="closure_auditor_date" ColumnName="closure_auditor_date" />
-                <ScalarProperty Name="sent_report_date" ColumnName="sent_report_date" />
-                <ScalarProperty Name="auditor_id" ColumnName="auditor_id" />
-                <ScalarProperty Name="closure_deadline" ColumnName="closure_deadline" />
-                <ScalarProperty Name="none_compliance_description" ColumnName="none_compliance_description" />
-                <ScalarProperty Name="standard_description" ColumnName="standard_description" />
-                <ScalarProperty Name="standard_title" ColumnName="standard_title" />
-                <ScalarProperty Name="standard_id" ColumnName="standard_id" />
-                <ScalarProperty Name="level" ColumnName="level" />
-                <ScalarProperty Name="title" ColumnName="title" />
-                <ScalarProperty Name="code" ColumnName="code" />
-                <ScalarProperty Name="audit_id" ColumnName="audit_id" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="cms2_audit_hazard">
-            <EntityTypeMapping TypeName="ppaModel.cms2_audit_hazard">
-              <MappingFragment StoreEntitySet="cms2_audit_hazard">
-                <ScalarProperty Name="created_at" ColumnName="created_at" />
-                <ScalarProperty Name="created_by" ColumnName="created_by" />
-                <ScalarProperty Name="comment" ColumnName="comment" />
-                <ScalarProperty Name="is_primary" ColumnName="is_primary" />
-                <ScalarProperty Name="audit_id" ColumnName="audit_id" />
-                <ScalarProperty Name="hazard_id" ColumnName="hazard_id" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="cms2_audit_team">
-            <EntityTypeMapping TypeName="ppaModel.cms2_audit_team">
-              <MappingFragment StoreEntitySet="cms2_audit_team">
-                <ScalarProperty Name="is_leader" ColumnName="is_leader" />
-                <ScalarProperty Name="auditor_id" ColumnName="auditor_id" />
-                <ScalarProperty Name="audit_id" ColumnName="audit_id" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="cms2_auditors">
             <EntityTypeMapping TypeName="ppaModel.cms2_auditors">
               <MappingFragment StoreEntitySet="cms2_auditors">
@@ -10176,6 +10733,292 @@ warning 6002: The table/view 'ppa_dev.dbo.ViewEmployee' does not have a primary 
                 <ScalarProperty Name="BaseAirportId" ColumnName="BaseAirportId" />
                 <ScalarProperty Name="PID" ColumnName="PID" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_cms2_audit_plan">
+            <EntityTypeMapping TypeName="ppaModel.view_cms2_audit_plan">
+              <MappingFragment StoreEntitySet="view_cms2_audit_plan">
+                <ScalarProperty Name="lead_auditor_name" ColumnName="lead_auditor_name" />
+                <ScalarProperty Name="lead_auditor" ColumnName="lead_auditor" />
+                <ScalarProperty Name="closing_meeting_venue" ColumnName="closing_meeting_venue" />
+                <ScalarProperty Name="closing_meeting_end" ColumnName="closing_meeting_end" />
+                <ScalarProperty Name="closing_meeting_start" ColumnName="closing_meeting_start" />
+                <ScalarProperty Name="opening_meeting_venue" ColumnName="opening_meeting_venue" />
+                <ScalarProperty Name="opening_meeting_end" ColumnName="opening_meeting_end" />
+                <ScalarProperty Name="opening_meeting_start" ColumnName="opening_meeting_start" />
+                <ScalarProperty Name="updated_at" ColumnName="updated_at" />
+                <ScalarProperty Name="updated_by" ColumnName="updated_by" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="issue_date" ColumnName="issue_date" />
+                <ScalarProperty Name="objective" ColumnName="objective" />
+                <ScalarProperty Name="type_id" ColumnName="type_id" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="code" ColumnName="code" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cms2_audit">
+            <EntityTypeMapping TypeName="ppaModel.cms2_audit">
+              <MappingFragment StoreEntitySet="cms2_audit">
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="auditor_id" ColumnName="auditor_id" />
+                <ScalarProperty Name="updated_at" ColumnName="updated_at" />
+                <ScalarProperty Name="updated_by" ColumnName="updated_by" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="standards_refrences" ColumnName="standards_refrences" />
+                <ScalarProperty Name="audit_date" ColumnName="audit_date" />
+                <ScalarProperty Name="area" ColumnName="area" />
+                <ScalarProperty Name="scope" ColumnName="scope" />
+                <ScalarProperty Name="location_id" ColumnName="location_id" />
+                <ScalarProperty Name="type_id" ColumnName="type_id" />
+                <ScalarProperty Name="auditee_id" ColumnName="auditee_id" />
+                <ScalarProperty Name="code" ColumnName="code" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="audit_plan_id" ColumnName="audit_plan_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cms2_audit_corrective_action">
+            <EntityTypeMapping TypeName="ppaModel.cms2_audit_corrective_action">
+              <MappingFragment StoreEntitySet="cms2_audit_corrective_action">
+                <ScalarProperty Name="updated_date" ColumnName="updated_date" />
+                <ScalarProperty Name="updated_by" ColumnName="updated_by" />
+                <ScalarProperty Name="created_date" ColumnName="created_date" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="follow_up2_approved_by" ColumnName="follow_up2_approved_by" />
+                <ScalarProperty Name="follow_up2_approved_date" ColumnName="follow_up2_approved_date" />
+                <ScalarProperty Name="follow_up2_mrb_meeting_date" ColumnName="follow_up2_mrb_meeting_date" />
+                <ScalarProperty Name="follow_up2_is_approved" ColumnName="follow_up2_is_approved" />
+                <ScalarProperty Name="follow_up2_date" ColumnName="follow_up2_date" />
+                <ScalarProperty Name="follow_up1_approved_by" ColumnName="follow_up1_approved_by" />
+                <ScalarProperty Name="follow_up1_approved_date" ColumnName="follow_up1_approved_date" />
+                <ScalarProperty Name="follow_up1_extended_deadline_date" ColumnName="follow_up1_extended_deadline_date" />
+                <ScalarProperty Name="follow_up1_is_approved" ColumnName="follow_up1_is_approved" />
+                <ScalarProperty Name="follow_up1_date" ColumnName="follow_up1_date" />
+                <ScalarProperty Name="approved_date" ColumnName="approved_date" />
+                <ScalarProperty Name="approved_by" ColumnName="approved_by" />
+                <ScalarProperty Name="is_approved" ColumnName="is_approved" />
+                <ScalarProperty Name="sign_date" ColumnName="sign_date" />
+                <ScalarProperty Name="responsible_manager_id" ColumnName="responsible_manager_id" />
+                <ScalarProperty Name="request_implementation_date" ColumnName="request_implementation_date" />
+                <ScalarProperty Name="code" ColumnName="code" />
+                <ScalarProperty Name="action_title" ColumnName="action_title" />
+                <ScalarProperty Name="root_cause_analysis_desc" ColumnName="root_cause_analysis_desc" />
+                <ScalarProperty Name="finding_id" ColumnName="finding_id" />
+                <ScalarProperty Name="audit_id" ColumnName="audit_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cms2_audit_finding">
+            <EntityTypeMapping TypeName="ppaModel.cms2_audit_finding">
+              <MappingFragment StoreEntitySet="cms2_audit_finding">
+                <ScalarProperty Name="verified_qa_date" ColumnName="verified_qa_date" />
+                <ScalarProperty Name="verified_qa_by" ColumnName="verified_qa_by" />
+                <ScalarProperty Name="closure_auditor_date" ColumnName="closure_auditor_date" />
+                <ScalarProperty Name="sent_report_date" ColumnName="sent_report_date" />
+                <ScalarProperty Name="auditor_id" ColumnName="auditor_id" />
+                <ScalarProperty Name="closure_deadline" ColumnName="closure_deadline" />
+                <ScalarProperty Name="none_compliance_description" ColumnName="none_compliance_description" />
+                <ScalarProperty Name="standard_description" ColumnName="standard_description" />
+                <ScalarProperty Name="standard_title" ColumnName="standard_title" />
+                <ScalarProperty Name="standard_id" ColumnName="standard_id" />
+                <ScalarProperty Name="level" ColumnName="level" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="code" ColumnName="code" />
+                <ScalarProperty Name="audit_id" ColumnName="audit_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cms2_audit_hazard">
+            <EntityTypeMapping TypeName="ppaModel.cms2_audit_hazard">
+              <MappingFragment StoreEntitySet="cms2_audit_hazard">
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="comment" ColumnName="comment" />
+                <ScalarProperty Name="is_primary" ColumnName="is_primary" />
+                <ScalarProperty Name="audit_id" ColumnName="audit_id" />
+                <ScalarProperty Name="hazard_id" ColumnName="hazard_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cms2_audit_plan">
+            <EntityTypeMapping TypeName="ppaModel.cms2_audit_plan">
+              <MappingFragment StoreEntitySet="cms2_audit_plan">
+                <ScalarProperty Name="closing_meeting_venue" ColumnName="closing_meeting_venue" />
+                <ScalarProperty Name="closing_meeting_end" ColumnName="closing_meeting_end" />
+                <ScalarProperty Name="closing_meeting_start" ColumnName="closing_meeting_start" />
+                <ScalarProperty Name="opening_meeting_venue" ColumnName="opening_meeting_venue" />
+                <ScalarProperty Name="opening_meeting_end" ColumnName="opening_meeting_end" />
+                <ScalarProperty Name="opening_meeting_start" ColumnName="opening_meeting_start" />
+                <ScalarProperty Name="updated_at" ColumnName="updated_at" />
+                <ScalarProperty Name="updated_by" ColumnName="updated_by" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="issue_date" ColumnName="issue_date" />
+                <ScalarProperty Name="lead_auditor" ColumnName="lead_auditor" />
+                <ScalarProperty Name="objective" ColumnName="objective" />
+                <ScalarProperty Name="type_id" ColumnName="type_id" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="code" ColumnName="code" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cms2_audit_team">
+            <EntityTypeMapping TypeName="ppaModel.cms2_audit_team">
+              <MappingFragment StoreEntitySet="cms2_audit_team">
+                <ScalarProperty Name="is_leader" ColumnName="is_leader" />
+                <ScalarProperty Name="auditor_id" ColumnName="auditor_id" />
+                <ScalarProperty Name="audit_id" ColumnName="audit_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_cms2_audit">
+            <EntityTypeMapping TypeName="ppaModel.view_cms2_audit">
+              <MappingFragment StoreEntitySet="view_cms2_audit">
+                <ScalarProperty Name="auditor_name" ColumnName="auditor_name" />
+                <ScalarProperty Name="auditor_id" ColumnName="auditor_id" />
+                <ScalarProperty Name="location_title" ColumnName="location_title" />
+                <ScalarProperty Name="location_id" ColumnName="location_id" />
+                <ScalarProperty Name="auditee_name" ColumnName="auditee_name" />
+                <ScalarProperty Name="auditee_id" ColumnName="auditee_id" />
+                <ScalarProperty Name="updated_at" ColumnName="updated_at" />
+                <ScalarProperty Name="updated_by" ColumnName="updated_by" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="standards_refrences" ColumnName="standards_refrences" />
+                <ScalarProperty Name="audit_date" ColumnName="audit_date" />
+                <ScalarProperty Name="area" ColumnName="area" />
+                <ScalarProperty Name="scope" ColumnName="scope" />
+                <ScalarProperty Name="type_id" ColumnName="type_id" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="code" ColumnName="code" />
+                <ScalarProperty Name="audit_plan_id" ColumnName="audit_plan_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_cms2_audit_corrective_action">
+            <EntityTypeMapping TypeName="ppaModel.view_cms2_audit_corrective_action">
+              <MappingFragment StoreEntitySet="view_cms2_audit_corrective_action">
+                <ScalarProperty Name="follow_up2_approved_by_name" ColumnName="follow_up2_approved_by_name" />
+                <ScalarProperty Name="follow_up2_approved_by" ColumnName="follow_up2_approved_by" />
+                <ScalarProperty Name="follow_up1_approved_by_name" ColumnName="follow_up1_approved_by_name" />
+                <ScalarProperty Name="follow_up1_approved_by" ColumnName="follow_up1_approved_by" />
+                <ScalarProperty Name="approved_by_name" ColumnName="approved_by_name" />
+                <ScalarProperty Name="approved_by" ColumnName="approved_by" />
+                <ScalarProperty Name="responsible_manager_name" ColumnName="responsible_manager_name" />
+                <ScalarProperty Name="responsible_manager_id" ColumnName="responsible_manager_id" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="created_date" ColumnName="created_date" />
+                <ScalarProperty Name="follow_up2_mrb_meeting_date" ColumnName="follow_up2_mrb_meeting_date" />
+                <ScalarProperty Name="follow_up2_is_approved" ColumnName="follow_up2_is_approved" />
+                <ScalarProperty Name="follow_up2_date" ColumnName="follow_up2_date" />
+                <ScalarProperty Name="follow_up1_approved_date" ColumnName="follow_up1_approved_date" />
+                <ScalarProperty Name="follow_up1_extended_deadline_date" ColumnName="follow_up1_extended_deadline_date" />
+                <ScalarProperty Name="follow_up1_is_approved" ColumnName="follow_up1_is_approved" />
+                <ScalarProperty Name="follow_up1_date" ColumnName="follow_up1_date" />
+                <ScalarProperty Name="approved_date" ColumnName="approved_date" />
+                <ScalarProperty Name="is_approved" ColumnName="is_approved" />
+                <ScalarProperty Name="sign_date" ColumnName="sign_date" />
+                <ScalarProperty Name="request_implementation_date" ColumnName="request_implementation_date" />
+                <ScalarProperty Name="code" ColumnName="code" />
+                <ScalarProperty Name="action_title" ColumnName="action_title" />
+                <ScalarProperty Name="root_cause_analysis_desc" ColumnName="root_cause_analysis_desc" />
+                <ScalarProperty Name="finding_id" ColumnName="finding_id" />
+                <ScalarProperty Name="audit_id" ColumnName="audit_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_cms2_audit_finding">
+            <EntityTypeMapping TypeName="ppaModel.view_cms2_audit_finding">
+              <MappingFragment StoreEntitySet="view_cms2_audit_finding">
+                <ScalarProperty Name="verified_qa_name" ColumnName="verified_qa_name" />
+                <ScalarProperty Name="verified_qa_by" ColumnName="verified_qa_by" />
+                <ScalarProperty Name="auditor_name" ColumnName="auditor_name" />
+                <ScalarProperty Name="auditor_id" ColumnName="auditor_id" />
+                <ScalarProperty Name="verified_qa_date" ColumnName="verified_qa_date" />
+                <ScalarProperty Name="closure_auditor_date" ColumnName="closure_auditor_date" />
+                <ScalarProperty Name="sent_report_date" ColumnName="sent_report_date" />
+                <ScalarProperty Name="closure_deadline" ColumnName="closure_deadline" />
+                <ScalarProperty Name="none_compliance_description" ColumnName="none_compliance_description" />
+                <ScalarProperty Name="standard_description" ColumnName="standard_description" />
+                <ScalarProperty Name="standard_title" ColumnName="standard_title" />
+                <ScalarProperty Name="standard_id" ColumnName="standard_id" />
+                <ScalarProperty Name="level" ColumnName="level" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="code" ColumnName="code" />
+                <ScalarProperty Name="audit_id" ColumnName="audit_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_cms2_audit_team">
+            <EntityTypeMapping TypeName="ppaModel.view_cms2_audit_team">
+              <MappingFragment StoreEntitySet="view_cms2_audit_team">
+                <ScalarProperty Name="auditor_name" ColumnName="auditor_name" />
+                <ScalarProperty Name="auditor_id" ColumnName="auditor_id" />
+                <ScalarProperty Name="is_leader" ColumnName="is_leader" />
+                <ScalarProperty Name="audit_id" ColumnName="audit_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_cms2_auditees">
+            <EntityTypeMapping TypeName="ppaModel.view_cms2_auditees">
+              <MappingFragment StoreEntitySet="view_cms2_auditees">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ViewLocations">
+            <EntityTypeMapping TypeName="ppaModel.ViewLocation">
+              <MappingFragment StoreEntitySet="ViewLocation">
+                <ScalarProperty Name="Employees" ColumnName="Employees" />
+                <ScalarProperty Name="HasItems" ColumnName="HasItems" />
+                <ScalarProperty Name="Items" ColumnName="Items" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="SortName" ColumnName="SortName" />
+                <ScalarProperty Name="StateId" ColumnName="StateId" />
+                <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="RootLocation" ColumnName="RootLocation" />
+                <ScalarProperty Name="Website" ColumnName="Website" />
+                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="CityId" ColumnName="CityId" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsVirtual" ColumnName="IsVirtual" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="FullCode" ColumnName="FullCode" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="TitleFormated" ColumnName="TitleFormated" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="RootCode" ColumnName="RootCode" />
+                <ScalarProperty Name="Root" ColumnName="Root" />
+                <ScalarProperty Name="ParentCode" ColumnName="ParentCode" />
+                <ScalarProperty Name="Parent" ColumnName="Parent" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -22,6 +22,7 @@ namespace ApiCMS.Models
             this.cms2_audit_corrective_action1 = new HashSet<cms2_audit_corrective_action>();
             this.cms2_audit_corrective_action2 = new HashSet<cms2_audit_corrective_action>();
             this.cms2_audit_finding = new HashSet<cms2_audit_finding>();
+            this.cms2_audit_plan = new HashSet<cms2_audit_plan>();
             this.cms2_audit_team = new HashSet<cms2_audit_team>();
         }
     
@@ -41,6 +42,8 @@ namespace ApiCMS.Models
         public virtual ICollection<cms2_audit_corrective_action> cms2_audit_corrective_action2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<cms2_audit_finding> cms2_audit_finding { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<cms2_audit_plan> cms2_audit_plan { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<cms2_audit_team> cms2_audit_team { get; set; }
     }
