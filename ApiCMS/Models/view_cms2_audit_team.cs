@@ -12,14 +12,12 @@ namespace ApiCMS.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class cms2_audit_team
+    public partial class view_cms2_audit_team
     {
         public int id { get; set; }
         public int audit_id { get; set; }
-        public int auditor_id { get; set; }
         public bool is_leader { get; set; }
-    
-        public virtual cms2_audit_plan cms2_audit_plan { get; set; }
-        public virtual cms2_auditors cms2_auditors { get; set; }
+        public int auditor_id { get; set; }
+        public string auditor_name { get; set; }
     }
 }

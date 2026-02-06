@@ -49,11 +49,6 @@ namespace ApiCMS.Models
         public virtual DbSet<cms_nav_log> cms_nav_log { get; set; }
         public virtual DbSet<cms_notify_receiver> cms_notify_receiver { get; set; }
         public virtual DbSet<view_cms_report> view_cms_report { get; set; }
-        public virtual DbSet<cms2_audit> cms2_audit { get; set; }
-        public virtual DbSet<cms2_audit_corrective_action> cms2_audit_corrective_action { get; set; }
-        public virtual DbSet<cms2_audit_finding> cms2_audit_finding { get; set; }
-        public virtual DbSet<cms2_audit_hazard> cms2_audit_hazard { get; set; }
-        public virtual DbSet<cms2_audit_team> cms2_audit_team { get; set; }
         public virtual DbSet<cms2_auditors> cms2_auditors { get; set; }
         public virtual DbSet<cms2_hazard> cms2_hazard { get; set; }
         public virtual DbSet<cms2_hazard_cause> cms2_hazard_cause { get; set; }
@@ -74,5 +69,18 @@ namespace ApiCMS.Models
         public virtual DbSet<cms2_risk_severity> cms2_risk_severity { get; set; }
         public virtual DbSet<AppLeg> AppLegs { get; set; }
         public virtual DbSet<ViewEmployee> ViewEmployees { get; set; }
+        public virtual DbSet<view_cms2_audit_plan> view_cms2_audit_plan { get; set; }
+        public virtual DbSet<cms2_audit> cms2_audit { get; set; }
+        public virtual DbSet<cms2_audit_corrective_action> cms2_audit_corrective_action { get; set; }
+        public virtual DbSet<cms2_audit_finding> cms2_audit_finding { get; set; }
+        public virtual DbSet<cms2_audit_hazard> cms2_audit_hazard { get; set; }
+        public virtual DbSet<cms2_audit_plan> cms2_audit_plan { get; set; }
+        public virtual DbSet<cms2_audit_team> cms2_audit_team { get; set; }
+        public virtual DbSet<view_cms2_audit> view_cms2_audit { get; set; }
+        public virtual DbSet<view_cms2_audit_corrective_action> view_cms2_audit_corrective_action { get; set; }
+        public virtual DbSet<view_cms2_audit_finding> view_cms2_audit_finding { get; set; }
+        public virtual DbSet<view_cms2_audit_team> view_cms2_audit_team { get; set; }
+        public virtual DbSet<view_cms2_auditees> view_cms2_auditees { get; set; }
+        public virtual DbSet<ViewLocation> ViewLocations { get; set; }
     }
 }

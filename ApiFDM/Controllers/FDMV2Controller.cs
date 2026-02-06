@@ -111,7 +111,7 @@ namespace ApiFDM.Controllers
             // پارامترها
             double alpha = 0.30; // 0..1
             double kFactor = 0.50; // بر حسب σ
-            double hFactor = 5.00; // بر حسب σ
+            double hFactor = 10.00; // بر حسب σ
 
             //FDMEntities context = new FDMEntities();
             try
@@ -192,6 +192,7 @@ namespace ApiFDM.Controllers
                     for (int i = 0; i < rates.Length; i++)
                         ewma[i] = i == 0 ? rates[i] : (alpha * rates[i] + (1 - alpha) * ewma[i - 1]);
 
+
                     // CUSUM
                     double mean = rates.Average();
                     double std = Math.Sqrt(rates.Select(r => Math.Pow(r - mean, 2)).DefaultIfEmpty(0).Average());
@@ -204,12 +205,47 @@ namespace ApiFDM.Controllers
                     var cneg = new double[rates.Length];
                     var alarm = new bool[rates.Length];
 
+                    cpos[0] = 0.0;
+                    cneg[0] = 0.0;
+                    alarm[0] = false;
+
                     for (int i = 1; i < rates.Length; i++)
                     {
                         cpos[i] = Math.Max(0, cpos[i - 1] + (rates[i] - mean - k));
                         cneg[i] = Math.Min(0, cneg[i - 1] + (rates[i] - mean + k));
-                        alarm[i] = cpos[i] > h;// || Math.Abs(cneg[i]) > h;
+                        //alarm[i] = cpos[i] > h;// || Math.Abs(cneg[i]) > h;
                     }
+                    // تشخیص "روند افزایشی" با پنجره‌ی قبلی (مثلاً window=3)
+                    int window = 3;
+                    //var alarmIncrease = new bool[rates.Length];
+                    for (int i = 0; i < rates.Length; i++)
+                    {
+                        // میانگین EWMA در پنجرهٔ قبلی (تا i-1)
+                        double prevAvgEwma = double.NaN;
+                        if (i > 0)
+                        {
+                            int start = Math.Max(0, i - window);
+                            int len = i - start;
+                            if (len > 0)
+                            {
+                                double s = 0;
+                                for (int j = start; j < i; j++) s += ewma[j];
+                                prevAvgEwma = s / len;
+                            }
+                        }
+
+                        bool isRising = false;
+                        if (!double.IsNaN(prevAvgEwma))
+                            isRising = ewma[i] > prevAvgEwma;
+                        else if (i > 0)
+                            isRising = ewma[i] > ewma[i - 1];
+
+                        // آلارم افزایشی فقط وقتی true که هم CUSUM+ از h عبور کرده و هم EWMA در حال صعود باشد
+                        //alarmIncrease[i] =
+                        alarm[i]=(cpos[i] > h) && isRising;
+                    }
+
+
                     // مونتاژ خروجی
                     var items = new List<TrendPoint>(rows.Count);
                     for (int i = 0; i < rows.Count; i++)
@@ -226,8 +262,8 @@ namespace ApiFDM.Controllers
                             TotalScore = r.total_score,
                             EventRatePer100 = r.event_rate_per_100,
                             Ewma = ewma[i],
-                            CusumPos = cpos[i],
-                            CusumNeg = cneg[i],
+                            //CusumPos = cpos[i],
+                            //CusumNeg = cneg[i],
                             Alarm = alarm[i]
                         });
                     }
@@ -360,12 +396,46 @@ namespace ApiFDM.Controllers
                     var cneg = new double[rates.Length];
                     var alarm = new bool[rates.Length];
 
+                    cpos[0] = 0.0;
+                    cneg[0] = 0.0;
+                    alarm[0] = false;
+
                     for (int i = 1; i < rates.Length; i++)
                     {
                         cpos[i] = Math.Max(0, cpos[i - 1] + (rates[i] - mean - k));
                         cneg[i] = Math.Min(0, cneg[i - 1] + (rates[i] - mean + k));
-                        alarm[i] = cpos[i] > h || Math.Abs(cneg[i]) > h;
+                        //alarm[i] = cpos[i] > h || Math.Abs(cneg[i]) > h;
                     }
+                    int window = 3;
+                    //var alarmIncrease = new bool[rates.Length];
+                    for (int i = 0; i < rates.Length; i++)
+                    {
+                        // میانگین EWMA در پنجرهٔ قبلی (تا i-1)
+                        double prevAvgEwma = double.NaN;
+                        if (i > 0)
+                        {
+                            int start = Math.Max(0, i - window);
+                            int len = i - start;
+                            if (len > 0)
+                            {
+                                double s = 0;
+                                for (int j = start; j < i; j++) s += ewma[j];
+                                prevAvgEwma = s / len;
+                            }
+                        }
+
+                        bool isRising = false;
+                        if (!double.IsNaN(prevAvgEwma))
+                            isRising = ewma[i] > prevAvgEwma;
+                        else if (i > 0)
+                            isRising = ewma[i] > ewma[i - 1];
+
+                        // آلارم افزایشی فقط وقتی true که هم CUSUM+ از h عبور کرده و هم EWMA در حال صعود باشد
+                        //alarmIncrease[i] =
+                        alarm[i] = (cpos[i] > h) && isRising;
+                    }
+
+
                     // مونتاژ خروجی
                     var items = new List<TrendPoint>(rows.Count);
                     for (int i = 0; i < rows.Count; i++)
@@ -382,8 +452,8 @@ namespace ApiFDM.Controllers
                             TotalScore = r.total_score,
                             EventRatePer100 = r.event_rate_per_100,
                             Ewma = ewma[i],
-                            CusumPos = cpos[i],
-                            CusumNeg = cneg[i],
+                           // CusumPos = cpos[i],
+                            //CusumNeg = cneg[i],
                             Alarm = alarm[i]
                         });
                     }
@@ -409,8 +479,8 @@ namespace ApiFDM.Controllers
             }
         }
 
-        [Route("api/fdm/V2/EWMACpt/{dt1}/{dt2}/{cpt_id}")]
-        public async Task<DataResponse> get_EWMACpt(DateTime dt1, DateTime dt2, int cpt_id)
+        [Route("api/fdm/V2/EWMACptFo/{dt1}/{dt2}/{cpt_id}/{position}")]
+        public async Task<DataResponse> get_EWMACpt(DateTime dt1, DateTime dt2, int cpt_id,string position)
         {
             // پارامترها
             double alpha = 0.30; // 0..1
@@ -427,7 +497,8 @@ namespace ApiFDM.Controllers
                     var daily = await (
                         from x in context.view_fdm_processed.AsNoTracking()
                         join y in context.fdm_crew on x.id equals y.processed_id
-                        where x.std >= dt1 && x.std < dt2Exclusive && y.crew_id == cpt_id && y.position == "CPT"
+                        where x.std >= dt1 && x.std < dt2Exclusive && y.crew_id == cpt_id && y.position == position && (position != "FO" || x.pf == "F")
+
                         group x by DbFunctions.TruncateTime(x.std) into grp
                         orderby grp.Key
                         select new
@@ -449,7 +520,7 @@ namespace ApiFDM.Controllers
                     ).ToListAsync();
 
                     var query_flights = await (from x in context.view_fdm_flight_crew
-                                               where x.STD >= dt1 && x.STD <= dt2Exclusive && x.CrewId == cpt_id
+                                               where x.STD >= dt1 && x.STD <= dt2Exclusive && x.CrewId == cpt_id && x.Position == position && (position != "FO" || x.pf == "F")
                                                group x by DbFunctions.TruncateTime(x.STD) into grp
                                                select new
                                                {
@@ -522,13 +593,47 @@ namespace ApiFDM.Controllers
                     var cpos = new double[rates.Length];
                     var cneg = new double[rates.Length];
                     var alarm = new bool[rates.Length];
+                    cpos[0] = 0.0;
+                    cneg[0] = 0.0;
+                    alarm[0] = false;
+
 
                     for (int i = 1; i < rates.Length; i++)
                     {
                         cpos[i] = Math.Max(0, cpos[i - 1] + (rates[i] - mean - k));
                         cneg[i] = Math.Min(0, cneg[i - 1] + (rates[i] - mean + k));
-                        alarm[i] = cpos[i] > h;//|| Math.Abs(cneg[i]) > h;
+                        //alarm[i] = cpos[i] > h;//|| Math.Abs(cneg[i]) > h;
                     }
+                    int window = 3;
+                    //var alarmIncrease = new bool[rates.Length];
+                    for (int i = 0; i < rates.Length; i++)
+                    {
+                        // میانگین EWMA در پنجرهٔ قبلی (تا i-1)
+                        double prevAvgEwma = double.NaN;
+                        if (i > 0)
+                        {
+                            int start = Math.Max(0, i - window);
+                            int len = i - start;
+                            if (len > 0)
+                            {
+                                double s = 0;
+                                for (int j = start; j < i; j++) s += ewma[j];
+                                prevAvgEwma = s / len;
+                            }
+                        }
+
+                        bool isRising = false;
+                        if (!double.IsNaN(prevAvgEwma))
+                            isRising = ewma[i] > prevAvgEwma;
+                        else if (i > 0)
+                            isRising = ewma[i] > ewma[i - 1];
+
+                        // آلارم افزایشی فقط وقتی true که هم CUSUM+ از h عبور کرده و هم EWMA در حال صعود باشد
+                        //alarmIncrease[i] =
+                        alarm[i] = (cpos[i] > h) && isRising;
+                    }
+
+
                     // مونتاژ خروجی
                     var items = new List<TrendPoint>(rows.Count);
                     for (int i = 0; i < rows.Count; i++)
@@ -545,8 +650,8 @@ namespace ApiFDM.Controllers
                             TotalScore = r.total_score,
                             EventRatePer100 = r.event_rate_per_100,
                             Ewma = ewma[i],
-                            CusumPos = cpos[i],
-                            CusumNeg = cneg[i],
+                           // CusumPos = cpos[i],
+                           // CusumNeg = cneg[i],
                             Alarm = alarm[i]
                         });
                     }
@@ -653,8 +758,8 @@ namespace ApiFDM.Controllers
             }
         }
 
-        [Route("api/fdm/V2/ParetoEventCpt/{dt1}/{dt2}/{top}/{cpt_id}")]
-        public async Task<DataResponse> Get_ParetoEventCpt(DateTime dt1, DateTime dt2, int top,int cpt_id)
+        [Route("api/fdm/V2/ParetoEventCptFo/{dt1}/{dt2}/{top}/{cpt_id}/{position}")]
+        public async Task<DataResponse> Get_ParetoEventCpt(DateTime dt1, DateTime dt2, int top,int cpt_id,string position)
         {
             try
             {
@@ -666,7 +771,7 @@ namespace ApiFDM.Controllers
                     var raw = await (
                         from x in context.view_fdm_processed
                         join y in context.fdm_crew on x.id equals y.processed_id
-                        where x.std >= dt1 && x.std < dt2Exclusive && y.crew_id == cpt_id && y.position == "CPT"
+                        where x.std >= dt1 && x.std < dt2Exclusive && y.crew_id == cpt_id && y.position == position && (position != "FO" || x.pf == "F")
                         group x by (x.event_name ?? "Unknown") into grp
                         select new
                         {
@@ -733,11 +838,10 @@ namespace ApiFDM.Controllers
             }
         }
 
-
         //-------------Comparison----------------------------------------
 
-        [Route("api/fdm/V2/MonthlyCPT/{dt1}/{dt2}")]
-        public async Task<DataResponse> GetCaptainMonthlyScore(DateTime dt1, DateTime dt2)
+        [Route("api/fdm/V2/MonthlyCPT/{dt1}/{dt2}/{cid}")]
+        public async Task<DataResponse> GetCaptainMonthlyScore(DateTime dt1, DateTime dt2,int cid)
         {
 
             try
@@ -749,7 +853,7 @@ namespace ApiFDM.Controllers
                     var eventsMonthly = await (
                            from x in context.view_fdm_processed
                            join c in context.fdm_crew on x.id equals c.processed_id
-                           where x.std >= dt1 && x.std < dt2Exclusive && c.position == "CPT"
+                           where x.std >= dt1 && x.std < dt2Exclusive &&  c.crew_id==cid && (c.position == "CPT" || (c.position == "FO" && x.pf == "F"))
                            let Ye = SqlFunctions.DatePart("year", x.std)
                            let Mo = SqlFunctions.DatePart("month", x.std)
                            group x by new
@@ -758,6 +862,7 @@ namespace ApiFDM.Controllers
                                month = (Mo ?? 0),
                                ac_type = x.ac_type2,
                                crew_id = c.crew_id,
+                               position=c.position,
                                crew_name = c.name
                            } into g
                            select new
@@ -767,6 +872,7 @@ namespace ApiFDM.Controllers
                                g.Key.ac_type,
                                g.Key.crew_id,
                                g.Key.crew_name,
+                               g.Key.position,
                                event_count = g.Count(),
                                high_count = g.Sum(r => r.severity == "High" ? 1 : 0),
                                medium_count = g.Sum(r => r.severity == "Medium" ? 1 : 0),
@@ -787,7 +893,7 @@ namespace ApiFDM.Controllers
                     var flightsMonthly = await
                     (
                         from x in context.view_fdm_flight_crew
-                        where x.STD >= dt1 && x.STD < dt2Exclusive && x.Position == "CPT"
+                        where x.STD >= dt1 && x.STD < dt2Exclusive && x.CrewId == cid && (x.Position == "CPT" || (x.Position == "FO" && x.pf == "F"))
                         let Ye = SqlFunctions.DatePart("year", x.STD)
                         let Mo = SqlFunctions.DatePart("month", x.STD)
                         group x by new
@@ -796,6 +902,7 @@ namespace ApiFDM.Controllers
                             month = (Mo ?? 0),
                             ac_type = x.ac_type2,
                             crew_id = (int)x.CrewId,
+                            position=x.Position,
                             crew_name = x.Name    // در ویو Name از LastName پر شده
                                                   // position = x.Position,
                         }
@@ -807,7 +914,7 @@ namespace ApiFDM.Controllers
                             grp.Key.ac_type,
                             grp.Key.crew_id,
                             grp.Key.crew_name,
-                            //grp.Key.position,
+                            grp.Key.position,
                             // لگ‌های یکتا برای این خلبان در این ماه
                             flight_count = grp.Select(z => z.id).Distinct().Count()
                         }
@@ -816,8 +923,8 @@ namespace ApiFDM.Controllers
                     var combined = (
                           from f in flightsMonthly
                           join e in eventsMonthly
-                          on new { f.year, f.month, f.ac_type, f.crew_id, f.crew_name }
-                          equals new { e.year, e.month, e.ac_type, e.crew_id, e.crew_name }
+                          on new { f.year, f.month, f.ac_type, f.crew_id, f.crew_name,f.position }
+                          equals new { e.year, e.month, e.ac_type, e.crew_id, e.crew_name,e.position }
                           into ge
                           from e in ge.DefaultIfEmpty() // Left Join
                           select new
@@ -827,7 +934,7 @@ namespace ApiFDM.Controllers
                               f.crew_name,
                               // rank = f.crew_job_group,         // اگر Rank جداگانه دارید، همان را بگذارید
                               //rank_code = f.crew_job_group_code,
-                              //position = f.crew_position,
+                              position = f.position,
 
                               f.year,
                               f.month,
@@ -865,12 +972,13 @@ namespace ApiFDM.Controllers
                     // -------------------------------
 
                     var fleetAvg = combined
-                        .GroupBy(x => new { x.ac_type, x.year, x.month })
+                        .GroupBy(x => new { x.ac_type, x.year, x.month ,x.position})
                         .Select(g => new
                         {
                             g.Key.ac_type,
                             g.Key.year,
                             g.Key.month,
+                            g.Key.position,
                             Metrics = new FleetAvgMetrics
                             {
                                 avg_high_count_per100 = g.Average(z => (double)z.high_count_per_100),  // میانگین کل امتیاز CPTها
@@ -883,20 +991,20 @@ namespace ApiFDM.Controllers
                                 avg_low_score_per_flight = g.Average(z => (double)z.low_score_per_flight),  // میانگین کل امتیاز CPTها
                                 avg_total_score_per_flight = g.Average(z => (double)z.score_per_flight)  // میانگین کل امتیاز CPTها
                             }
-                        }).ToDictionary(k => $"{k.ac_type}|{k.year:0000}-{k.month:00}",
+                        }).ToDictionary(k => $"{k.ac_type}|{k.position}|{k.year:0000}-{k.month:00}",
                                           v => v.Metrics
                      );
 
                     // گروه‌بندی ماهانه برای هر CPT
                     var items = combined.Select(x =>
                     {
-                        fleetAvg.TryGetValue($"{x.ac_type}|{x.year:0000}-{x.month:00}", out var avg);
+                        fleetAvg.TryGetValue($"{x.ac_type}|{x.position}|{x.year:0000}-{x.month:00}", out var avg);
                         return new
                         {
                             ac_type = x.ac_type,
                             crew_id = x.crew_id,
                             crew_name = x.crew_name,
-                            //position = x.position,
+                            position = x.position,
                             year = x.year,
                             month = x.month,
                             year_month = x.year_month,
@@ -1466,7 +1574,7 @@ namespace ApiFDM.Controllers
                 var eventsQuery =
                     from x in context.view_fdm_processed.AsNoTracking()
                     join y in context.fdm_crew.AsNoTracking() on x.id equals y.processed_id
-                    where x.std >= dt1Date && x.std < dt2Exclusive
+                    where x.std >= dt1Date && x.std < dt2Exclusive && (y.position == "CPT" || (y.position == "FO" && x.pf == "F"))
                     group new { x, y } by new
                     {
                         register_id = (int?)x.register_id,
@@ -1478,7 +1586,7 @@ namespace ApiFDM.Controllers
                         name = y.name,
                         rank = y.rank,
                         rank_code = y.rank_code,
-                        position = y.position
+                        position = y.position,
                     }
                     into grp
                     select new
@@ -1502,7 +1610,7 @@ namespace ApiFDM.Controllers
                 // ===== پروازها (فقط CPT)؛ گروه‌بندی در سطح Register/Crew/Position =====
                 var flightsQuery =
                     from x in context.view_fdm_flight_crew.AsNoTracking()
-                    where x.STD >= dt1Date && x.STD < dt2Exclusive && x.Position == "CPT"
+                    where x.STD >= dt1Date && x.STD < dt2Exclusive && (x.Position == "CPT" || (x.Position == "FO" && x.pf=="F"))
                     group x by new
                     {
                         register_id = (int?)x.RegisterID,
@@ -1512,7 +1620,7 @@ namespace ApiFDM.Controllers
                         crew_name = x.Name,
                         crew_job_group = x.JobGroup,
                         crew_job_group_code = x.JobGroupCode,
-                        crew_position = x.Position
+                        crew_position = x.Position,
                     }
                     into grp
                     select new
@@ -1583,7 +1691,7 @@ namespace ApiFDM.Controllers
                 // ===== تجمیع در سطح type/crew =====
                 var result_type_crew =
                     (from x in result_register_crew // همه CPT هستند
-                     group x by new { x.ac_type, x.crew_id, x.crew_name } into grp
+                     group x by new { x.ac_type, x.crew_id, x.crew_name,x.crew_position } into grp
                      let sumFlights = grp.Sum(q => q.flight_count)
                      let sumEvents = grp.Sum(q => q.event_count)
                      let highSum = grp.Sum(q => q.high_count)
@@ -1595,7 +1703,7 @@ namespace ApiFDM.Controllers
                          grp.Key.ac_type,
                          grp.Key.crew_id,
                          grp.Key.crew_name,
-
+                         grp.Key.crew_position,
                          flight_count = sumFlights,
                          count = sumEvents,
 
@@ -2180,7 +2288,7 @@ namespace ApiFDM.Controllers
             var query = from x in context.view_fdm_processed
                         join y in context.fdm_crew on x.id equals y.processed_id
                         where x.std >= dt1 && x.std <= dt2
-                        group x by new { x.register_id, x.register, x.ac_type2, y.crew_id, y.first_name, y.last_name, y.name, y.rank, y.rank_code, y.position, x.phase } into grp
+                        group x by new { x.register_id, x.register, x.ac_type2, y.crew_id, y.first_name, y.last_name, y.name, y.rank, y.rank_code, y.position,x.pf, x.phase } into grp
                         select new
                         {
                             grp.Key.register_id,
@@ -2193,6 +2301,7 @@ namespace ApiFDM.Controllers
                             grp.Key.rank,
                             grp.Key.rank_code,
                             grp.Key.position,
+                            grp.Key.pf,
                             grp.Key.phase,
                             count = grp.Count(),
                             high_count = grp.Sum(g => g.severity == "High" ? 1 : 0),
@@ -2205,7 +2314,7 @@ namespace ApiFDM.Controllers
 
             var query_flights = from x in context.view_fdm_flight_crew
                                 where x.STD >= dt1 && x.STD <= dt2
-                                group x by new { x.RegisterID, x.Register, x.ac_type2, x.CrewId, x.Name, x.JobGroup, x.JobGroupCode, x.Position } into grp
+                                group x by new { x.RegisterID, x.Register, x.ac_type2, x.CrewId, x.Name, x.JobGroup, x.JobGroupCode, x.Position ,x.pf} into grp
                                 select new
                                 {
                                     register_id = grp.Key.RegisterID,
@@ -2221,8 +2330,8 @@ namespace ApiFDM.Controllers
             var _ee = await query.ToListAsync();
             var _ff = await query_flights.ToListAsync();
             var result_register_crew_phase = (from q in _ee
-                                              where q.position == "CPT"
-                                              let matchedResult = _ff.FirstOrDefault(w => w.register_id == q.register_id && w.crew_id == q.crew_id && w.crew_position == q.position)
+                                              where (q.position == "CPT" || (q.position == "FO" && q.pf == "F"))
+                                              let matchedResult = _ff.FirstOrDefault(w => w.register_id == q.register_id && w.crew_id == q.crew_id && w.crew_position == q.position )
                                               select new
                                               {
                                                   q.register_id,
@@ -2246,14 +2355,15 @@ namespace ApiFDM.Controllers
                                               }).ToList();
 
             var result_type_crew_phase = (from x in result_register_crew_phase
-                                          where x.crew_position == "CPT"
-                                          group x by new { x.ac_type, x.crew_name, x.phase ,x.crew_id} into grp
+                                          //where x.crew_position == "CPT"
+                                          group x by new { x.ac_type, x.crew_name, x.phase ,x.crew_id,x.crew_position} into grp
                                           select new
                                           {
                                               
                                               grp.Key.crew_id,
                                               grp.Key.ac_type,
                                               grp.Key.crew_name,
+                                              grp.Key.crew_position,
                                               grp.Key.phase,
                                               count = grp.Sum(q => q.event_count),
                                               high_count = grp.Sum(q => q.high_count),
@@ -2410,8 +2520,8 @@ namespace ApiFDM.Controllers
 
         }
 
-        [Route("api/fdm/V2/eventsInfo/{dt1}/{dt2}/{type}/{register_id}/{cpt_id}/{route}/{phase}/")]
-        public async Task<DataResponse> get_events_info(DateTime dt1, DateTime dt2,string type,int register_id,int cpt_id, string route,string phase)
+        [Route("api/fdm/V2/eventsInfo/{dt1}/{dt2}/{type}/{register_id}/{cpt_id}/{route}/{phase}/{severity}/{position}")]
+        public async Task<DataResponse> get_events_info(DateTime dt1, DateTime dt2,string type,int register_id,int cpt_id, string route,string phase,string severity,string position)
         {
             try
             {
@@ -2425,7 +2535,7 @@ namespace ApiFDM.Controllers
                     {
                         query = from x in context.view_fdm_processed
                                 join y in context.fdm_crew on x.id equals y.processed_id
-                                where x.std >= dt1 && x.std < dt2Exclusive && y.crew_id == cpt_id
+                                where x.std >= dt1 && x.std < dt2Exclusive && y.crew_id == cpt_id && (y.position == "CPT" || (y.position == "FO" && x.pf == "F"))
                                 select new FDMProcessedDto
                                 {
                                     register = x.register,
@@ -2507,6 +2617,10 @@ namespace ApiFDM.Controllers
                     {
                         query = query.Where(q => q.register_id == register_id);
                     }
+                    if (severity != "0" && severity!="-")
+                    {
+                        query = query.Where(q => q.severity == severity);
+                    }
 
                     if (!string.IsNullOrEmpty(route) && route != "-")
                     {
@@ -2517,6 +2631,11 @@ namespace ApiFDM.Controllers
                     {
                         query = query.Where(q => q.phase == phase);
                     }
+                    if (!string.IsNullOrEmpty(position) && position != "-")
+                    {
+                        query = query.Where(q => q.position == position);
+                    }
+
 
                     var raw = query.ToList();
 
@@ -2535,6 +2654,498 @@ namespace ApiFDM.Controllers
                     IsSuccess = false
                 };
             }
+
+        }
+        
+        //------------selected crew-----------------------------
+        [Route("api/fdm/V2/crew/{cid}/{dt1}/{dt2}/{position}")]
+        public async Task<DataResponse> get_events_captain(int cid, DateTime dt1, DateTime dt2,string position)
+        {
+            FDMEntities context = new FDMEntities();
+
+            dt2 = dt2.AddDays(1);
+            var query = from x in context.view_fdm_processed
+                        join y in context.fdm_crew on x.id equals y.processed_id
+                        where x.std >= dt1 && x.std < dt2 && y.crew_id == cid && y.position == position && (position !="FO"|| x.pf == "F")
+
+                        group x by new { x.register_id, x.register, x.ac_type2, y.crew_id, y.first_name, y.last_name, y.name, y.rank, y.rank_code } into grp
+                        select new
+                        {
+                            grp.Key.register_id,
+                            grp.Key.register,
+                            ac_type = grp.Key.ac_type2,
+                            grp.Key.crew_id,
+                            grp.Key.first_name,
+                            grp.Key.last_name,
+                            grp.Key.name,
+                            grp.Key.rank,
+                            grp.Key.rank_code,
+
+                            count = grp.Count(),
+                            high_count = grp.Sum(g => g.severity == "High" ? 1 : 0),
+                            medium_count = grp.Sum(g => g.severity == "Medium" ? 1 : 0),
+                            low_count = grp.Sum(g => g.severity == "Low" ? 1 : 0),
+                            total_score = grp.Sum(g => g.severity == "High" ? 1 : 0) * 4 +
+                                     grp.Sum(g => g.severity == "Medium" ? 1 : 0) * 2 +
+                                     grp.Sum(g => g.severity == "Low" ? 1 : 0)
+                        };
+
+            var query_flights = from x in context.view_fdm_flight_crew
+                                where x.STD >= dt1 && x.STD < dt2 && x.CrewId == cid &&  x.Position == position && (position != "FO" || x.pf == "F")
+                                group x by new { x.RegisterID, x.Register, x.ac_type2, x.CrewId, x.Name, x.JobGroup, x.JobGroupCode } into grp
+                                select new
+                                {
+                                    register_id = grp.Key.RegisterID,
+                                    register = grp.Key.Register,
+                                    ac_type = grp.Key.ac_type2,
+                                    crew_id = grp.Key.CrewId,
+                                    crew_name = grp.Key.Name,
+                                    crew_job_group = grp.Key.JobGroup,
+                                    crew_job_group_code = grp.Key.JobGroupCode,
+                                    
+
+                                    count = grp.Count()
+                                };
+            var result_register = await query.ToListAsync();
+            var _xx = await query_flights.ToListAsync();
+            var result_register_crew = (from q in _xx
+                                            //  where (q.crew_position == "CPT" || q.crew_position == "FO")
+                                        select new
+                                        {
+                                            q.register_id,
+                                            q.register,
+                                            q.ac_type,
+                                            q.crew_id,
+                                            q.crew_name,
+                                            q.crew_job_group,
+                                            q.crew_job_group_code,
+                                            
+                                            flight_count = q.count,
+                                            event_count = result_register.FirstOrDefault(w => w.register_id == q.register_id && w.crew_id == q.crew_id )?.count ?? 0,
+                                            high_count = result_register.FirstOrDefault(w => w.register_id == q.register_id && w.crew_id == q.crew_id )?.high_count ?? 0,
+                                            medium_count = result_register.FirstOrDefault(w => w.register_id == q.register_id && w.crew_id == q.crew_id )?.medium_count ?? 0,
+                                            low_count = result_register.FirstOrDefault(w => w.register_id == q.register_id && w.crew_id == q.crew_id )?.low_count ?? 0,
+                                            high_score = result_register.FirstOrDefault(w => w.register_id == q.register_id && w.crew_id == q.crew_id )?.high_count * 4 ?? 0,
+                                            medium_score = result_register.FirstOrDefault(w => w.register_id == q.register_id && w.crew_id == q.crew_id )?.medium_count * 2 ?? 0,
+                                            low_score = result_register.FirstOrDefault(w => w.register_id == q.register_id && w.crew_id == q.crew_id )?.low_count * 1 ?? 0,
+                                            total_score = result_register.FirstOrDefault(w => w.register_id == q.register_id && w.crew_id == q.crew_id )?.total_score ?? 0
+                                        }).ToList();
+
+            var result_type_crew = (from x in result_register_crew
+                                        //where (x.crew_position == "CPT" || x.crew_position == "FO")
+                                    group x by new { x.ac_type, x.crew_id, x.crew_name} into grp
+                                    select new
+                                    {
+                                        grp.Key.ac_type,
+                                        grp.Key.crew_id,
+                                        grp.Key.crew_name,
+                                        
+                                        count = grp.Sum(q => q.event_count),
+                                        high_count = grp.Sum(q => q.high_count),
+                                        medium_count = grp.Sum(q => q.medium_count),
+                                        low_count = grp.Sum(q => q.low_count),
+                                        high_score = grp.Sum(q => q.high_score),
+                                        medium_score = grp.Sum(q => q.medium_score),
+                                        low_score = grp.Sum(q => q.low_score),
+                                        total_score = grp.Sum(q => q.total_score),
+                                        flight_count = grp.Sum(q => q.flight_count),
+                                        score_per_event = Math.Round(grp.Sum(q => q.total_score) * 1.0 / grp.Sum(q => q.event_count), 1),
+                                        score_per_flight = Math.Round(grp.Sum(q => q.total_score) * 1.0 / grp.Sum(q => q.flight_count), 1)
+                                    }).ToList();
+
+
+
+
+            var query_route = from x in context.view_fdm_processed
+                              join y in context.fdm_crew on x.id equals y.processed_id
+                              where x.std >= dt1 && x.std < dt2 && y.crew_id == cid &&  y.position == position && (position != "FO" || x.pf == "F")
+                              group x by new
+                              { x.register_id, x.register, x.ac_type2, y.crew_id, y.first_name, y.last_name, y.name, y.rank, y.rank_code, x.dep_id, x.dep_iata, x.dep_icao, x.arr_id, x.arr_iata, x.arr_icao } into grp
+                              select new
+                              {
+                                  grp.Key.register_id,
+                                  grp.Key.register,
+                                  ac_type = grp.Key.ac_type2,
+                                  grp.Key.crew_id,
+                                  grp.Key.first_name,
+                                  grp.Key.last_name,
+                                  grp.Key.name,
+                                  grp.Key.rank,
+                                  grp.Key.rank_code,
+                                  
+
+                                  grp.Key.dep_id,
+                                  grp.Key.dep_iata,
+                                  grp.Key.dep_icao,
+                                  grp.Key.arr_id,
+                                  grp.Key.arr_iata,
+                                  grp.Key.arr_icao,
+                                  route_iata = grp.Key.dep_iata + "-" + grp.Key.arr_iata,
+                                  route_icao = grp.Key.dep_icao + "-" + grp.Key.arr_icao,
+                                  count = grp.Count(),
+                                  high_count = grp.Sum(g => g.severity == "High" ? 1 : 0),
+                                  medium_count = grp.Sum(g => g.severity == "Medium" ? 1 : 0),
+                                  low_count = grp.Sum(g => g.severity == "Low" ? 1 : 0),
+                                  total_score = grp.Sum(g => g.severity == "High" ? 1 : 0) * 4 +
+                                           grp.Sum(g => g.severity == "Medium" ? 1 : 0) * 2 +
+                                           grp.Sum(g => g.severity == "Low" ? 1 : 0)
+                              };
+
+            var query_flights_route = from x in context.view_fdm_flight_crew
+                                      where x.STD >= dt1 && x.STD < dt2 && x.CrewId == cid && x.Position == position && (position != "FO" || x.pf == "F")
+                                      group x by new { x.RegisterID, x.Register, x.ac_type2, x.CrewId, x.Name, x.JobGroup, x.JobGroupCode,  x.dep_id, x.dep_iata, x.dep_icao, x.arr_id, x.arr_iata, x.arr_icao } into grp
+                                      select new
+                                      {
+                                          register_id = grp.Key.RegisterID,
+                                          register = grp.Key.Register,
+                                          ac_type = grp.Key.ac_type2,
+                                          crew_id = grp.Key.CrewId,
+                                          crew_name = grp.Key.Name,
+                                          crew_job_group = grp.Key.JobGroup,
+                                          crew_job_group_code = grp.Key.JobGroupCode,
+                                          
+                                          grp.Key.dep_id,
+                                          grp.Key.dep_iata,
+                                          grp.Key.dep_icao,
+                                          grp.Key.arr_id,
+                                          grp.Key.arr_iata,
+                                          grp.Key.arr_icao,
+                                          count = grp.Count()
+                                      };
+
+            var result_register_route = await query_route.ToListAsync();
+            var _xx_route = await query_flights_route.ToListAsync();
+            var result_register_crew_route = (from q in _xx_route
+                                                  //where q.crew_position == "CPT" || q.crew_position=="FO"   
+                                              let machedResult = result_register_route.FirstOrDefault(w => w.register_id == q.register_id && w.crew_id == q.crew_id && w.dep_id == q.dep_id && w.arr_id == q.arr_id)
+                                              select new
+                                              {
+                                                  q.register_id,
+                                                  q.register,
+                                                  q.ac_type,
+                                                  q.crew_id,
+                                                  q.crew_name,
+                                                  q.crew_job_group,
+                                                  q.crew_job_group_code,
+                                                  
+                                                  q.dep_id,
+                                                  q.dep_iata,
+                                                  q.dep_icao,
+                                                  q.arr_id,
+                                                  q.arr_iata,
+                                                  q.arr_icao,
+                                                  route_iata = q.dep_iata + '-' + q.arr_iata,
+                                                  flight_count = q.count,
+                                                  event_count = machedResult?.count ?? 0,
+                                                  high_count = machedResult?.high_count ?? 0,
+                                                  medium_count = machedResult?.medium_count ?? 0,
+                                                  low_count = machedResult?.low_count ?? 0,
+                                                  high_score = machedResult?.high_count * 4 ?? 0,
+                                                  medium_score = machedResult?.medium_count * 2 ?? 0,
+                                                  low_score = machedResult?.low_count * 1 ?? 0,
+                                                  total_score = machedResult?.total_score ?? 0
+                                              }).ToList();
+
+            var result_type_crew_route = (from x in result_register_crew_route
+                                              //where x.crew_position == "CPT" || x.crew_position == "FO"
+
+                                          group x by new { x.ac_type, x.crew_name, x.arr_iata, x.dep_iata, x.route_iata } into grp
+                                          select new
+                                          {
+                                              grp.Key.ac_type,
+                                              grp.Key.crew_name,
+                                              grp.Key.arr_iata,
+                                              grp.Key.dep_iata,
+                                              grp.Key.route_iata,
+                                              
+                                              count = grp.Sum(q => q.event_count),
+                                              high_count = grp.Sum(q => q.high_count),
+                                              medium_count = grp.Sum(q => q.medium_count),
+                                              low_count = grp.Sum(q => q.low_count),
+                                              high_score = grp.Sum(q => q.high_score),
+                                              medium_score = grp.Sum(q => q.medium_score),
+                                              low_score = grp.Sum(q => q.low_score),
+                                              total_score = grp.Sum(q => q.total_score),
+                                              score_per_event = Math.Round(grp.Sum(q => q.total_score) * 1.0 / grp.Sum(q => q.event_count), 1),
+                                              score_per_flight = Math.Round(grp.Sum(q => q.total_score) * 1.0 / grp.Sum(q => q.flight_count), 1)
+                                          }).ToList();
+
+
+
+            var query_events = from x in context.view_fdm_processed
+                               join y in context.fdm_crew on x.id equals y.processed_id
+                               where x.std >= dt1 && x.std < dt2 && y.crew_id == cid && y.position == position && (position != "FO" || x.pf == "F")
+                               group x by new { y.crew_id, y.first_name, y.last_name, y.name, y.rank, y.rank_code, x.event_name } into grp
+                               select new
+                               {
+                                   grp.Key.event_name,
+
+                                   grp.Key.crew_id,
+                                   grp.Key.first_name,
+                                   grp.Key.last_name,
+                                   grp.Key.name,
+                                   grp.Key.rank,
+                                   grp.Key.rank_code,
+                                   
+                                   count = grp.Count(),
+                                   high_count = grp.Sum(g => g.severity == "High" ? 1 : 0),
+                                   medium_count = grp.Sum(g => g.severity == "Medium" ? 1 : 0),
+                                   low_count = grp.Sum(g => g.severity == "Low" ? 1 : 0),
+                                   total_score = grp.Sum(g => g.severity == "High" ? 1 : 0) * 4 +
+                                            grp.Sum(g => g.severity == "Medium" ? 1 : 0) * 2 +
+                                            grp.Sum(g => g.severity == "Low" ? 1 : 0)
+                               };
+
+            var result_events = query_events.OrderByDescending(q => q.count).ToList();
+            return new DataResponse()
+            {
+                Data = new
+                {
+                    result_register_crew,
+                    result_type_crew,
+                    result_register_crew_route,
+                    result_type_crew_route,
+                    result_events
+                },
+                IsSuccess = true
+            };
+
+        }
+        [Route("api/fdm/V2/crew/phase/{cid}/{dt1}/{dt2}/{position}")]
+        public async Task<DataResponse> get_events_captain_phase(int cid, DateTime dt1, DateTime dt2,string position)
+        {
+            FDMEntities context = new FDMEntities();
+            dt2 = dt2.AddDays(1);
+            var query = from x in context.view_fdm_processed
+                        join y in context.fdm_crew on x.id equals y.processed_id
+                        where x.std >= dt1 && x.std < dt2 && y.crew_id == cid && y.position == position && (position != "FO" || x.pf == "F")
+                        group x by new { x.register_id, x.register, x.ac_type2, y.crew_id, y.first_name, y.last_name, y.name, y.rank, y.rank_code,  x.phase } into grp
+                        select new
+                        {
+                            grp.Key.register_id,
+                            grp.Key.register,
+                            ac_type = grp.Key.ac_type2,
+                            grp.Key.crew_id,
+                            grp.Key.first_name,
+                            grp.Key.last_name,
+                            grp.Key.name,
+                            grp.Key.rank,
+                            grp.Key.rank_code,
+                            
+                            grp.Key.phase,
+                            count = grp.Count(),
+                            high_count = grp.Sum(g => g.severity == "High" ? 1 : 0),
+                            medium_count = grp.Sum(g => g.severity == "Medium" ? 1 : 0),
+                            low_count = grp.Sum(g => g.severity == "Low" ? 1 : 0),
+                            total_score = grp.Sum(g => g.severity == "High" ? 1 : 0) * 4 +
+                                     grp.Sum(g => g.severity == "Medium" ? 1 : 0) * 2 +
+                                     grp.Sum(g => g.severity == "Low" ? 1 : 0)
+                        };
+
+            var query_flights = from x in context.view_fdm_flight_crew
+                                where x.STD >= dt1 && x.STD < dt2 && x.CrewId == cid && x.Position == position && (position != "FO" || x.pf == "F")
+                                group x by new { x.RegisterID, x.Register, x.ac_type2, x.CrewId, x.Name, x.JobGroup, x.JobGroupCode } into grp
+                                select new
+                                {
+                                    register_id = grp.Key.RegisterID,
+                                    register = grp.Key.Register,
+                                    ac_type = grp.Key.ac_type2,
+                                    crew_id = grp.Key.CrewId,
+                                    crew_name = grp.Key.Name,
+                                    crew_job_group = grp.Key.JobGroup,
+                                    crew_job_group_code = grp.Key.JobGroupCode,
+                                    
+                                    count = grp.Count()
+                                };
+            var _ee = await query.ToListAsync();
+            var _ff = await query_flights.ToListAsync();
+            var result_register_crew_phase = (from q in _ee
+                                                  //where q.position == "CPT" || q.position=="FO"
+                                              let matchedResult = _ff.FirstOrDefault(w => w.register_id == q.register_id && w.crew_id == q.crew_id )
+                                              select new
+                                              {
+                                                  q.register_id,
+                                                  q.register,
+                                                  q.ac_type,
+                                                  q.crew_id,
+                                                  crew_name = q.name,
+                                                  crew_job_group = matchedResult.crew_job_group,
+                                                  crew_job_group_code = matchedResult.crew_job_group_code,
+                                                  
+                                                  q.phase,
+                                                  flight_count = matchedResult.count,
+                                                  event_count = q?.count ?? 0,
+                                                  high_count = q?.high_count ?? 0,
+                                                  medium_count = q?.medium_count ?? 0,
+                                                  low_count = q?.low_count ?? 0,
+                                                  high_score = q?.high_count * 4 ?? 0,
+                                                  medium_score = q?.medium_count * 2 ?? 0,
+                                                  low_score = q?.low_count * 1 ?? 0,
+                                                  total_score = q?.total_score ?? 0
+                                              }).ToList();
+
+            var result_type_crew_phase = (from x in result_register_crew_phase
+                                              //where x.crew_position == "CPT" || x.crew_position == "FO"
+                                          group x by new { x.ac_type, x.crew_name, x.phase, x.crew_id } into grp
+                                          select new
+                                          {
+
+                                              grp.Key.crew_id,
+                                              grp.Key.ac_type,
+                                              grp.Key.crew_name,
+                                              grp.Key.phase,
+                                              count = grp.Sum(q => q.event_count),
+                                              high_count = grp.Sum(q => q.high_count),
+                                              medium_count = grp.Sum(q => q.medium_count),
+                                              low_count = grp.Sum(q => q.low_count),
+                                              high_score = grp.Sum(q => q.high_score),
+                                              medium_score = grp.Sum(q => q.medium_score),
+                                              low_score = grp.Sum(q => q.low_score),
+                                              total_score = grp.Sum(q => q.total_score),
+                                              score_per_event = Math.Round(grp.Sum(q => q.total_score) * 1.0 / grp.Sum(q => q.event_count), 1),
+                                              score_per_flight = Math.Round(grp.Sum(q => q.total_score) * 1.0 / grp.Sum(q => q.flight_count), 1)
+                                          }).ToList();
+
+
+            return new DataResponse()
+            {
+                Data = new
+                {
+                    result_register_crew_phase,
+                    result_type_crew_phase,
+
+                },
+                IsSuccess = true
+            };
+
+        }
+        [Route("api/fdm/V2/crew/route/phase/{cid}/{dt1}/{dt2}/{position}")]
+        public async Task<DataResponse> get_events_captain_route_phase(int cid, DateTime dt1, DateTime dt2,string position)
+        {
+            FDMEntities context = new FDMEntities();
+            dt2 = dt2.AddDays(1);
+            var query = from x in context.view_fdm_processed
+                        join y in context.fdm_crew on x.id equals y.processed_id
+                        where x.std >= dt1 && x.std < dt2 && y.crew_id == cid && y.position == position && (position != "FO" || x.pf == "F")
+                        group x by new { x.register_id, x.register, x.ac_type2, x.phase, y.crew_id, y.first_name, y.last_name, y.name, y.rank, y.rank_code, x.dep_id, x.dep_iata, x.dep_icao, x.arr_id, x.arr_iata, x.arr_icao } into grp
+                        select new
+                        {
+                            grp.Key.register_id,
+                            grp.Key.register,
+                            ac_type = grp.Key.ac_type2,
+                            grp.Key.phase,
+                            grp.Key.crew_id,
+                            grp.Key.first_name,
+                            grp.Key.last_name,
+                            grp.Key.name,
+                            grp.Key.rank,
+                            grp.Key.rank_code,
+                            
+                            grp.Key.dep_id,
+                            grp.Key.dep_iata,
+                            grp.Key.dep_icao,
+                            grp.Key.arr_id,
+                            grp.Key.arr_iata,
+                            grp.Key.arr_icao,
+                            count = grp.Count(),
+                            high_count = grp.Sum(g => g.severity == "High" ? 1 : 0),
+                            medium_count = grp.Sum(g => g.severity == "Medium" ? 1 : 0),
+                            low_count = grp.Sum(g => g.severity == "Low" ? 1 : 0),
+                            total_score = grp.Sum(g => g.severity == "High" ? 1 : 0) * 4 +
+                                     grp.Sum(g => g.severity == "Medium" ? 1 : 0) * 2 +
+                                     grp.Sum(g => g.severity == "Low" ? 1 : 0)
+                        };
+
+            var query_flights = from x in context.view_fdm_flight_crew
+                                where x.STD >= dt1 && x.STD < dt2 && x.CrewId == cid && x.Position == position && (position != "FO" || x.pf == "F")
+                                group x by new { x.RegisterID, x.Register, x.ac_type2, x.CrewId, x.Name, x.JobGroup, x.JobGroupCode, x.Position, x.dep_id, x.dep_iata, x.dep_icao, x.arr_id, x.arr_iata, x.arr_icao } into grp
+                                select new
+                                {
+                                    register_id = grp.Key.RegisterID,
+                                    register = grp.Key.Register,
+                                    ac_type = grp.Key.ac_type2,
+                                    crew_id = grp.Key.CrewId,
+                                    crew_name = grp.Key.Name,
+                                    crew_job_group = grp.Key.JobGroup,
+                                    crew_job_group_code = grp.Key.JobGroupCode,
+                                    
+                                    grp.Key.dep_id,
+                                    grp.Key.dep_iata,
+                                    grp.Key.dep_icao,
+                                    grp.Key.arr_id,
+                                    grp.Key.arr_iata,
+                                    grp.Key.arr_icao,
+                                    count = grp.Count()
+                                };
+            var _ee = await query.ToListAsync();
+            var _ff = await query_flights.ToListAsync();
+            var result_register_crew_route_phase = (from q in _ee
+                                                        //where q.position == "CPT" || q.position == "FO"
+                                                    let matchedResult = _ff.FirstOrDefault(w => w.register_id == q.register_id && w.crew_id == q.crew_id &&  w.arr_id == q.arr_id && w.dep_id == q.dep_id)
+
+                                                    select new
+                                                    {
+                                                        q.register_id,
+                                                        q.register,
+                                                        q.ac_type,
+                                                        q.phase,
+                                                        q.crew_id,
+                                                        crew_name = q.name,
+                                                        crew_job_group = matchedResult.crew_job_group,
+                                                        crew_job_group_code = matchedResult.crew_job_group_code,
+                                                        
+                                                        q.dep_id,
+                                                        q.dep_iata,
+                                                        q.dep_icao,
+                                                        q.arr_id,
+                                                        q.arr_iata,
+                                                        q.arr_icao,
+                                                        route = q.dep_iata + '_' + q.arr_iata,
+                                                        flight_count = matchedResult.count,
+                                                        event_count = q?.count ?? 0,
+                                                        high_count = q?.high_count ?? 0,
+                                                        medium_count = q?.medium_count ?? 0,
+                                                        low_count = q?.low_count ?? 0,
+                                                        high_score = q?.high_count * 4 ?? 0,
+                                                        medium_score = q?.medium_count * 2 ?? 0,
+                                                        low_score = q?.low_count * 1 ?? 0,
+                                                        total_score = q?.total_score ?? 0
+                                                    }).ToList();
+
+            var result_type_crew_route_phase = (from x in result_register_crew_route_phase
+                                                    //where x.crew_position == "CPT" || x.crew_position == "FO"
+                                                group x by new { x.ac_type, x.crew_name, x.arr_iata, x.dep_iata, x.route, x.phase } into grp
+                                                select new
+                                                {
+                                                    grp.Key.ac_type,
+                                                    grp.Key.phase,
+                                                    grp.Key.crew_name,
+                                                    grp.Key.arr_iata,
+                                                    grp.Key.dep_iata,
+                                                    grp.Key.route,
+                                                    count = grp.Sum(q => q.event_count),
+                                                    high_count = grp.Sum(q => q.high_count),
+                                                    medium_count = grp.Sum(q => q.medium_count),
+                                                    low_count = grp.Sum(q => q.low_count),
+                                                    high_score = grp.Sum(q => q.high_score),
+                                                    medium_score = grp.Sum(q => q.medium_score),
+                                                    low_score = grp.Sum(q => q.low_score),
+                                                    total_score = grp.Sum(q => q.total_score),
+                                                    score_per_event = Math.Round(grp.Sum(q => q.total_score) * 1.0 / grp.Sum(q => q.event_count), 1),
+                                                    score_per_flight = Math.Round(grp.Sum(q => q.total_score) * 1.0 / grp.Sum(q => q.flight_count), 1)
+                                                }).ToList();
+
+
+            return new DataResponse()
+            {
+                Data = new
+                {
+                    result_register_crew_route_phase,
+                    result_type_crew_route_phase,
+
+                },
+                IsSuccess = true
+            };
 
         }
 

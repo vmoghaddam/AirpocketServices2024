@@ -17,12 +17,12 @@ namespace ApiCMS.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public cms2_hazard()
         {
-            this.cms2_audit_hazard = new HashSet<cms2_audit_hazard>();
             this.cms2_hazard_cause = new HashSet<cms2_hazard_cause>();
             this.cms2_hazard_consequence = new HashSet<cms2_hazard_consequence>();
             this.cms2_hazard_org_unit = new HashSet<cms2_hazard_org_unit>();
             this.cms2_occurrence_hazard = new HashSet<cms2_occurrence_hazard>();
             this.cms2_risk_assessment_log = new HashSet<cms2_risk_assessment_log>();
+            this.cms2_audit_hazard = new HashSet<cms2_audit_hazard>();
         }
     
         public int id { get; set; }
@@ -61,8 +61,6 @@ namespace ApiCMS.Models
         public Nullable<int> risk_matrix_id { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<cms2_audit_hazard> cms2_audit_hazard { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<cms2_hazard_cause> cms2_hazard_cause { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<cms2_hazard_consequence> cms2_hazard_consequence { get; set; }
@@ -80,5 +78,7 @@ namespace ApiCMS.Models
         public virtual ICollection<cms2_occurrence_hazard> cms2_occurrence_hazard { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<cms2_risk_assessment_log> cms2_risk_assessment_log { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<cms2_audit_hazard> cms2_audit_hazard { get; set; }
     }
 }
