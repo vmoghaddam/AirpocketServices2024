@@ -59,5 +59,28 @@ namespace ApiScheduling.Models
         public virtual DbSet<view_route_count> view_route_count { get; set; }
         public virtual DbSet<CrewPickupSM> CrewPickupSMS { get; set; }
         public virtual DbSet<view_report_duty> view_report_duty { get; set; }
+        public virtual DbSet<qa_capa> qa_capa { get; set; }
+        public virtual DbSet<qa_consequence> qa_consequence { get; set; }
+        public virtual DbSet<qa_consequence_item> qa_consequence_item { get; set; }
+        public virtual DbSet<qa_corrective_action> qa_corrective_action { get; set; }
+        public virtual DbSet<qa_event_category> qa_event_category { get; set; }
+        public virtual DbSet<qa_form_visited_history> qa_form_visited_history { get; set; }
+        public virtual DbSet<qa_hazard> qa_hazard { get; set; }
+        public virtual DbSet<qa_hazard_attachment> qa_hazard_attachment { get; set; }
+        public virtual DbSet<qa_hazard_category> qa_hazard_category { get; set; }
+        public virtual DbSet<qa_hazard_involved_part> qa_hazard_involved_part { get; set; }
+        public virtual DbSet<qa_hazard_involved_person> qa_hazard_involved_person { get; set; }
+        public virtual DbSet<qa_hazard_relevant> qa_hazard_relevant { get; set; }
+        public virtual DbSet<qa_hazard_scope> qa_hazard_scope { get; set; }
+        public virtual DbSet<qa_hazard_source> qa_hazard_source { get; set; }
+        public virtual DbSet<qa_monitor> qa_monitor { get; set; }
+        public virtual DbSet<qa_notification_history> qa_notification_history { get; set; }
+        public virtual DbSet<qa_notification_receiver> qa_notification_receiver { get; set; }
+        public virtual DbSet<qa_risk_acceptability> qa_risk_acceptability { get; set; }
+        public virtual DbSet<qa_risk_assessment> qa_risk_assessment { get; set; }
+        public virtual DbSet<qa_risk_attachment> qa_risk_attachment { get; set; }
+        public virtual DbSet<qa_risks> qa_risks { get; set; }
+        public virtual DbSet<qa_root_cause> qa_root_cause { get; set; }
+        public virtual DbSet<qa_root_cause_item> qa_root_cause_item { get; set; }
     }
 }

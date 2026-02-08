@@ -104,6 +104,8 @@ namespace ApiScheduling.Models
         public Nullable<System.DateTime> onblock { get; set; }
         public Nullable<System.DateTime> takeoff { get; set; }
         public Nullable<System.DateTime> landing { get; set; }
+        public string actual_route { get; set; }
+        public Nullable<int> update_trigger { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ExtensionHistory> ExtensionHistories { get; set; }

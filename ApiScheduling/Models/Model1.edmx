@@ -137,6 +137,8 @@
           <Property Name="onblock" Type="datetime" />
           <Property Name="takeoff" Type="datetime" />
           <Property Name="landing" Type="datetime" />
+          <Property Name="actual_route" Type="varchar" MaxLength="1000" />
+          <Property Name="update_trigger" Type="int" />
         </EntityType>
         <EntityType Name="FDPExtra">
           <Key>
@@ -292,6 +294,339 @@
           <Property Name="mod1" Type="int" />
           <Property Name="mod2" Type="int" />
           <Property Name="ralt" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="qa_capa">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="risk_id" Type="int" />
+          <Property Name="action_type" Type="varchar" MaxLength="50" />
+          <Property Name="description" Type="nvarchar" MaxLength="2000" />
+          <Property Name="assigned_to" Type="int" />
+          <Property Name="due_date" Type="datetime2" Precision="7" />
+          <Property Name="status" Type="varchar" MaxLength="20" />
+          <Property Name="created_date" Type="datetime2" Precision="7" />
+          <Property Name="updated_date" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="qa_consequence">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="risk_id" Type="int" />
+          <Property Name="title" Type="nvarchar" MaxLength="2000" />
+          <Property Name="hazard_id" Type="int" />
+          <Property Name="consequence_id" Type="int" />
+          <Property Name="remark" Type="varchar" MaxLength="500" />
+          <Property Name="register_id" Type="int" />
+          <Property Name="flight_id" Type="int" />
+          <Property Name="flight_route" Type="varchar" MaxLength="50" />
+          <Property Name="department_id" Type="int" />
+        </EntityType>
+        <EntityType Name="qa_consequence_item">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="title" Type="nvarchar" MaxLength="500" />
+          <Property Name="parent_id" Type="int" />
+          <Property Name="remark" Type="varchar" MaxLength="500" />
+          <Property Name="code" Type="varchar" MaxLength="50" />
+          <Property Name="full_code" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="qa_corrective_action">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="risk_id" Type="int" />
+          <Property Name="action" Type="nvarchar" MaxLength="1000" />
+          <Property Name="responsible_staff" Type="varchar" MaxLength="500" />
+          <Property Name="responsible_staff_id" Type="int" />
+          <Property Name="time_limit_date" Type="datetime2" Precision="7" />
+          <Property Name="time_limit_remark" Type="nvarchar" MaxLength="1000" />
+          <Property Name="date" Type="datetime2" Precision="7" />
+          <Property Name="qa_approval" Type="varchar" MaxLength="500" />
+          <Property Name="qa_approval_id" Type="int" />
+          <Property Name="qa_approval_date" Type="datetime2" Precision="7" />
+          <Property Name="action_type" Type="varchar" MaxLength="50" />
+          <Property Name="action_category" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="qa_event_category">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="title" Type="nvarchar" MaxLength="1000" />
+          <Property Name="abbreviation" Type="varchar" MaxLength="255" />
+          <Property Name="tire" Type="varchar" MaxLength="255" />
+          <Property Name="parent_id" Type="int" />
+          <Property Name="remark" Type="varchar" MaxLength="1000" />
+          <Property Name="code" Type="varchar" MaxLength="50" />
+          <Property Name="full_code" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="qa_form_visited_history">
+          <Key>
+            <PropertyRef Name="form_type_id" />
+            <PropertyRef Name="form_id" />
+            <PropertyRef Name="employee_id" />
+          </Key>
+          <Property Name="form_type_id" Type="int" Nullable="false" />
+          <Property Name="form_id" Type="int" Nullable="false" />
+          <Property Name="employee_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="qa_hazard">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="title" Type="nvarchar" MaxLength="1000" />
+          <Property Name="description" Type="nvarchar" MaxLength="2000" />
+          <Property Name="priority" Type="varchar" MaxLength="255" />
+          <Property Name="scope" Type="varchar" MaxLength="500" />
+          <Property Name="scope_id" Type="int" />
+          <Property Name="location" Type="varchar" MaxLength="500" />
+          <Property Name="gps_coordinate" Type="varchar" MaxLength="500" />
+          <Property Name="date_occurred" Type="datetime2" Precision="7" />
+          <Property Name="tracking_no" Type="varchar" MaxLength="500" />
+          <Property Name="department_id" Type="int" />
+          <Property Name="remark" Type="nvarchar" MaxLength="1000" />
+          <Property Name="flight_id" Type="int" />
+          <Property Name="lat" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="lang" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="airport_id" Type="int" />
+        </EntityType>
+        <EntityType Name="qa_hazard_attachment">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="url" Type="varchar" MaxLength="1000" />
+          <Property Name="remark" Type="varchar" MaxLength="1000" />
+          <Property Name="hazard_id" Type="int" />
+          <Property Name="file_type" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="qa_hazard_category">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="hazard_id" Type="int" Nullable="false" />
+          <Property Name="category_id" Type="int" Nullable="false" />
+          <Property Name="remark" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="qa_hazard_involved_part">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="part" Type="varchar" MaxLength="500" />
+          <Property Name="remark" Type="varchar" MaxLength="500" />
+          <Property Name="hazard_id" Type="int" />
+          <Property Name="part_type" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="qa_hazard_involved_person">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="employee_id" Type="int" />
+          <Property Name="person_name" Type="varchar" MaxLength="500" />
+          <Property Name="person_nid" Type="varchar" MaxLength="200" />
+          <Property Name="person_mobile" Type="varchar" MaxLength="50" />
+          <Property Name="position" Type="varchar" MaxLength="200" />
+          <Property Name="remark" Type="varchar" MaxLength="500" />
+          <Property Name="hazard_id" Type="int" />
+        </EntityType>
+        <EntityType Name="qa_hazard_relevant">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="hazard_id" Type="int" />
+          <Property Name="relevant_id" Type="int" />
+          <Property Name="remark" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="qa_hazard_scope">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="scope_id" Type="int" />
+          <Property Name="scope" Type="nvarchar" MaxLength="500" />
+          <Property Name="remark" Type="nvarchar" MaxLength="1000" />
+          <Property Name="hazard_id" Type="int" />
+        </EntityType>
+        <EntityType Name="qa_hazard_source">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="source_type" Type="int" />
+          <Property Name="title" Type="varchar" MaxLength="500" />
+          <Property Name="form_id" Type="int" />
+          <Property Name="audit_id" Type="int" />
+          <Property Name="reporter_id" Type="int" />
+          <Property Name="reporter" Type="varchar" MaxLength="500" />
+          <Property Name="date_reported" Type="datetime2" Precision="7" />
+          <Property Name="remark" Type="varchar" MaxLength="500" />
+          <Property Name="hazard_id" Type="int" />
+          <Property Name="is_confidential" Type="bit" />
+          <Property Name="is_anonymous" Type="bit" />
+        </EntityType>
+        <EntityType Name="qa_monitor">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="risk_id" Type="int" />
+          <Property Name="date_last_updated" Type="datetime2" Precision="7" />
+          <Property Name="cpmment" Type="nvarchar" MaxLength="2000" />
+          <Property Name="prob_level" Type="int" />
+          <Property Name="severity_level" Type="varchar" MaxLength="255" />
+          <Property Name="index" Type="varchar" MaxLength="255" />
+          <Property Name="acceptability_id" Type="int" />
+          <Property Name="description_id" Type="int" />
+          <Property Name="approver_id" Type="int" />
+          <Property Name="operator_id" Type="int" />
+          <Property Name="date_operated" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="qa_notification_history">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="entity_id" Type="int" />
+          <Property Name="entity_type" Type="int" />
+          <Property Name="rec_name" Type="nvarchar" MaxLength="500" />
+          <Property Name="rec_mobile" Type="varchar" MaxLength="255" />
+          <Property Name="rec_id" Type="int" />
+          <Property Name="message_type" Type="int" />
+          <Property Name="date_send" Type="datetime2" Precision="7" />
+          <Property Name="ref_id" Type="varchar" MaxLength="500" />
+          <Property Name="status" Type="nvarchar" MaxLength="500" />
+          <Property Name="message_text" Type="nvarchar" MaxLength="2000" />
+          <Property Name="counter" Type="int" />
+        </EntityType>
+        <EntityType Name="qa_notification_receiver">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="rec_id" Type="int" />
+          <Property Name="rec_name" Type="varchar" MaxLength="500" />
+          <Property Name="is_active" Type="bit" />
+          <Property Name="mobile" Type="varchar" MaxLength="255" />
+          <Property Name="email" Type="varchar" MaxLength="255" />
+          <Property Name="mobile2" Type="varchar" MaxLength="255" />
+          <Property Name="email2" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="qa_risk_acceptability">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="risk_id" Type="int" />
+          <Property Name="risk_type" Type="varchar" MaxLength="500" />
+          <Property Name="responsible_manager" Type="nvarchar" MaxLength="500" />
+          <Property Name="responsible_manager_id" Type="int" />
+          <Property Name="responsible_manager_date" Type="datetime2" Precision="7" />
+          <Property Name="responsible_manager_qa_date" Type="datetime2" Precision="7" />
+          <Property Name="responsible_manager_qa_id" Type="int" />
+          <Property Name="level_id" Type="int" />
+          <Property Name="level_remark" Type="varchar" MaxLength="500" />
+          <Property Name="risk_description_id" Type="int" />
+        </EntityType>
+        <EntityType Name="qa_risk_assessment">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="initial_probability" Type="varchar" MaxLength="20" />
+          <Property Name="initial_severity" Type="varchar" MaxLength="20" />
+          <Property Name="initial_level" Type="varchar" MaxLength="20" />
+          <Property Name="final_probability" Type="varchar" MaxLength="20" />
+          <Property Name="final_severity" Type="varchar" MaxLength="20" />
+          <Property Name="final_level" Type="varchar" MaxLength="255" />
+          <Property Name="approval_relevant_department" Type="varchar" MaxLength="500" />
+          <Property Name="approval_relevant_department_id" Type="int" />
+          <Property Name="approval_relevant_department_date" Type="datetime2" Precision="7" />
+          <Property Name="approval_qa" Type="varchar" MaxLength="500" />
+          <Property Name="approval_qa_id" Type="int" />
+          <Property Name="approval_qa_date" Type="datetime2" Precision="7" />
+          <Property Name="om_form_no" Type="varchar" MaxLength="255" />
+          <Property Name="om_form_date" Type="varchar" MaxLength="255" />
+          <Property Name="om_form_rev" Type="varchar" MaxLength="255" />
+          <Property Name="om_form_issue" Type="varchar" MaxLength="255" />
+          <Property Name="remark" Type="varchar" MaxLength="2000" />
+          <Property Name="id_source" Type="nvarchar" MaxLength="1000" />
+          <Property Name="has_relevant" Type="bit" />
+          <Property Name="initial_acceptability_id" Type="int" />
+          <Property Name="initital_description_id" Type="int" />
+          <Property Name="initial_responsible_manager" Type="nvarchar" MaxLength="1000" />
+          <Property Name="initial_responsible_sign" Type="datetime2" Precision="7" />
+          <Property Name="initial_qa_approval" Type="varchar" MaxLength="1000" />
+          <Property Name="initial_qa_sign" Type="datetime2" Precision="7" />
+          <Property Name="final_acceptability_id" Type="int" />
+          <Property Name="final_description_id" Type="int" />
+          <Property Name="final_date" Type="datetime2" Precision="7" />
+          <Property Name="res1" Type="varchar" MaxLength="1000" />
+          <Property Name="res2" Type="varchar" MaxLength="1000" />
+          <Property Name="hazard_id" Type="int" />
+          <Property Name="risk_id" Type="int" />
+          <Property Name="initial_value" Type="int" />
+          <Property Name="final_value" Type="int" />
+        </EntityType>
+        <EntityType Name="qa_risk_attachment">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="url" Type="varchar" MaxLength="500" />
+          <Property Name="remark" Type="varchar" MaxLength="1000" />
+          <Property Name="risk_id" Type="int" />
+          <Property Name="file_type" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="qa_risks">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="risk_description" Type="varchar" MaxLength="2000" />
+          <Property Name="source_type" Type="varchar" MaxLength="50" />
+          <Property Name="source_id" Type="int" Nullable="false" />
+          <Property Name="severity" Type="varchar" MaxLength="20" />
+          <Property Name="likelihood" Type="varchar" MaxLength="20" />
+          <Property Name="risk_level" Type="varchar" MaxLength="20" />
+          <Property Name="risk_value" Type="int" />
+          <Property Name="mitigation_plan" Type="nvarchar" MaxLength="2000" />
+          <Property Name="responsible_person" Type="int" />
+          <Property Name="status" Type="varchar" MaxLength="20" />
+          <Property Name="review_date" Type="datetime2" Precision="7" />
+          <Property Name="created_at" Type="datetime2" Precision="7" />
+          <Property Name="updated_at" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="qa_root_cause">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="risk_id" Type="int" />
+          <Property Name="root_cause" Type="nvarchar" MaxLength="1000" />
+          <Property Name="root_cause_id" Type="int" />
+          <Property Name="hazard_id" Type="int" />
+          <Property Name="remark" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="qa_root_cause_item">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="title" Type="nvarchar" MaxLength="500" />
+          <Property Name="parent_id" Type="int" />
+          <Property Name="code" Type="varchar" MaxLength="50" />
+          <Property Name="full_code" Type="varchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="recency_route">
           <Key>
@@ -533,6 +868,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.AppCrewFlight' does not have a prim
           <Property Name="PF2Time" Type="int" />
           <Property Name="PM2Time" Type="int" />
           <Property Name="Reporting" Type="datetime" />
+          <Property Name="PermissionUrl" Type="varchar" MaxLength="255" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.AppFTL' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -791,6 +1127,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewCrewDuty' does not have a prima
             <PropertyRef Name="IsConfirmed" />
             <PropertyRef Name="ValidTypesStr" />
             <PropertyRef Name="DutyTypeTitleAcType" />
+            <PropertyRef Name="HomeBase" />
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="CrewId" Type="int" Nullable="false" />
@@ -865,6 +1202,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewCrewDuty' does not have a prima
           <Property Name="ValidTypesStr" Type="varchar" MaxLength="1" Nullable="false" />
           <Property Name="DutyTypeTitleAcType" Type="nvarchar" MaxLength="1000" Nullable="false" />
           <Property Name="Email" Type="nvarchar" MaxLength="500" />
+          <Property Name="HomeBase" Type="varchar" MaxLength="1" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.ViewCrewDutyNoReg' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1634,6 +1972,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewLegTime' does not have a primar
           <Property Name="ArrivalRemark" Type="nvarchar" MaxLength="2000" />
           <Property Name="DepartureRemark" Type="nvarchar" MaxLength="2000" />
           <Property Name="STDDay" Type="date" />
+          <Property Name="STDDayLocal" Type="date" />
           <Property Name="STADay" Type="date" />
           <Property Name="DelayOffBlock" Type="int" />
           <Property Name="DelayTakeoff" Type="int" />
@@ -1716,6 +2055,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewLegTime' does not have a primar
           <Property Name="FuelPlanned" Type="decimal" Precision="18" Scale="4" />
           <Property Name="PF" Type="varchar" MaxLength="255" />
           <Property Name="OFPTOTALFUEL" Type="int" />
+          <Property Name="dep_utc" Type="int" />
+          <Property Name="arr_utc" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1766,6 +2107,30 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
             </Principal>
             <Dependent Role="CrewPickupSMS">
               <PropertyRef Name="FDPId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__qa_capa__risk_id__5D8C8EF0">
+          <End Role="qa_risks" Type="Self.qa_risks" Multiplicity="0..1" />
+          <End Role="qa_capa" Type="Self.qa_capa" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="qa_risks">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="qa_capa">
+              <PropertyRef Name="risk_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__qa_risk_a__risk___5E80B329">
+          <End Role="qa_risks" Type="Self.qa_risks" Multiplicity="0..1" />
+          <End Role="qa_risk_assessment" Type="Self.qa_risk_assessment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="qa_risks">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="qa_risk_assessment">
+              <PropertyRef Name="risk_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1823,6 +2188,248 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_hsc_haz_01">
+          <End Role="qa_hazard" Type="Self.qa_hazard" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="qa_hazard_scope" Type="Self.qa_hazard_scope" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="qa_hazard">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="qa_hazard_scope">
+              <PropertyRef Name="hazard_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_q1_01">
+          <End Role="qa_event_category" Type="Self.qa_event_category" Multiplicity="0..1" />
+          <End Role="qa_event_category1" Type="Self.qa_event_category" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="qa_event_category">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="qa_event_category1">
+              <PropertyRef Name="parent_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_qa_consequence_item_qa_consequence_item_id">
+          <End Role="qa_consequence_item" Type="Self.qa_consequence_item" Multiplicity="0..1" />
+          <End Role="qa_consequence_item1" Type="Self.qa_consequence_item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="qa_consequence_item">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="qa_consequence_item1">
+              <PropertyRef Name="parent_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_qa_consequence_qa_consequence_item_id">
+          <End Role="qa_consequence_item" Type="Self.qa_consequence_item" Multiplicity="0..1" />
+          <End Role="qa_consequence" Type="Self.qa_consequence" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="qa_consequence_item">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="qa_consequence">
+              <PropertyRef Name="consequence_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_qa_consequence_qa_hazard_id">
+          <End Role="qa_hazard" Type="Self.qa_hazard" Multiplicity="0..1" />
+          <End Role="qa_consequence" Type="Self.qa_consequence" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="qa_hazard">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="qa_consequence">
+              <PropertyRef Name="hazard_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_qa_corrective_action_qa_risk_assessment_id">
+          <End Role="qa_risk_assessment" Type="Self.qa_risk_assessment" Multiplicity="0..1" />
+          <End Role="qa_corrective_action" Type="Self.qa_corrective_action" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="qa_risk_assessment">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="qa_corrective_action">
+              <PropertyRef Name="risk_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_qa_hazard_attachment_qa_hazard_id">
+          <End Role="qa_hazard" Type="Self.qa_hazard" Multiplicity="0..1" />
+          <End Role="qa_hazard_attachment" Type="Self.qa_hazard_attachment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="qa_hazard">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="qa_hazard_attachment">
+              <PropertyRef Name="hazard_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_qa_hazard_involved_part_qa_hazard_id">
+          <End Role="qa_hazard" Type="Self.qa_hazard" Multiplicity="0..1" />
+          <End Role="qa_hazard_involved_part" Type="Self.qa_hazard_involved_part" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="qa_hazard">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="qa_hazard_involved_part">
+              <PropertyRef Name="hazard_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_qa_hazard_involved_person_qa_hazard_id">
+          <End Role="qa_hazard" Type="Self.qa_hazard" Multiplicity="0..1" />
+          <End Role="qa_hazard_involved_person" Type="Self.qa_hazard_involved_person" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="qa_hazard">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="qa_hazard_involved_person">
+              <PropertyRef Name="hazard_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_qa_hazard_relevant_qa_hazard_id">
+          <End Role="qa_hazard" Type="Self.qa_hazard" Multiplicity="0..1" />
+          <End Role="qa_hazard_relevant" Type="Self.qa_hazard_relevant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="qa_hazard">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="qa_hazard_relevant">
+              <PropertyRef Name="hazard_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_qa_hazard_relevant_qa_hazard_id2">
+          <End Role="qa_hazard" Type="Self.qa_hazard" Multiplicity="0..1" />
+          <End Role="qa_hazard_relevant" Type="Self.qa_hazard_relevant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="qa_hazard">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="qa_hazard_relevant">
+              <PropertyRef Name="relevant_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_qa_hazard_source_qa_hazard_id">
+          <End Role="qa_hazard" Type="Self.qa_hazard" Multiplicity="0..1" />
+          <End Role="qa_hazard_source" Type="Self.qa_hazard_source" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="qa_hazard">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="qa_hazard_source">
+              <PropertyRef Name="hazard_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_qa_hc_qa_ec">
+          <End Role="qa_event_category" Type="Self.qa_event_category" Multiplicity="1" />
+          <End Role="qa_hazard_category" Type="Self.qa_hazard_category" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="qa_event_category">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="qa_hazard_category">
+              <PropertyRef Name="category_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_qa_hc_qa_h">
+          <End Role="qa_hazard" Type="Self.qa_hazard" Multiplicity="1" />
+          <End Role="qa_hazard_category" Type="Self.qa_hazard_category" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="qa_hazard">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="qa_hazard_category">
+              <PropertyRef Name="hazard_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_qa_monitor_qa_risk_assessment_id">
+          <End Role="qa_risk_assessment" Type="Self.qa_risk_assessment" Multiplicity="0..1" />
+          <End Role="qa_monitor" Type="Self.qa_monitor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="qa_risk_assessment">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="qa_monitor">
+              <PropertyRef Name="risk_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_qa_risk_assessment_qa_hazard_id">
+          <End Role="qa_hazard" Type="Self.qa_hazard" Multiplicity="0..1" />
+          <End Role="qa_risk_assessment" Type="Self.qa_risk_assessment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="qa_hazard">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="qa_risk_assessment">
+              <PropertyRef Name="hazard_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_qa_risk_attachment_qa_risk_assessment_id">
+          <End Role="qa_risk_assessment" Type="Self.qa_risk_assessment" Multiplicity="0..1" />
+          <End Role="qa_risk_attachment" Type="Self.qa_risk_attachment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="qa_risk_assessment">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="qa_risk_attachment">
+              <PropertyRef Name="risk_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_qa_root_cause_item_qa_root_cause_item_id">
+          <End Role="qa_root_cause_item" Type="Self.qa_root_cause_item" Multiplicity="0..1" />
+          <End Role="qa_root_cause_item1" Type="Self.qa_root_cause_item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="qa_root_cause_item">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="qa_root_cause_item1">
+              <PropertyRef Name="parent_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_qa_root_cause_qa_hazard_id">
+          <End Role="qa_hazard" Type="Self.qa_hazard" Multiplicity="0..1" />
+          <End Role="qa_root_cause" Type="Self.qa_root_cause" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="qa_hazard">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="qa_root_cause">
+              <PropertyRef Name="hazard_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_qa_root_cause_qa_root_cause_item_id">
+          <End Role="qa_root_cause_item" Type="Self.qa_root_cause_item" Multiplicity="0..1" />
+          <End Role="qa_root_cause" Type="Self.qa_root_cause" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="qa_root_cause_item">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="qa_root_cause">
+              <PropertyRef Name="root_cause_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="off_fdp">
           <End Role="FDP" Type="Self.FDP" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1847,6 +2454,29 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySet Name="FDPMaxDaily" EntityType="Self.FDPMaxDaily" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OffItem" EntityType="Self.OffItem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OFPImport" EntityType="Self.OFPImport" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="qa_capa" EntityType="Self.qa_capa" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="qa_consequence" EntityType="Self.qa_consequence" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="qa_consequence_item" EntityType="Self.qa_consequence_item" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="qa_corrective_action" EntityType="Self.qa_corrective_action" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="qa_event_category" EntityType="Self.qa_event_category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="qa_form_visited_history" EntityType="Self.qa_form_visited_history" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="qa_hazard" EntityType="Self.qa_hazard" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="qa_hazard_attachment" EntityType="Self.qa_hazard_attachment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="qa_hazard_category" EntityType="Self.qa_hazard_category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="qa_hazard_involved_part" EntityType="Self.qa_hazard_involved_part" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="qa_hazard_involved_person" EntityType="Self.qa_hazard_involved_person" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="qa_hazard_relevant" EntityType="Self.qa_hazard_relevant" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="qa_hazard_scope" EntityType="Self.qa_hazard_scope" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="qa_hazard_source" EntityType="Self.qa_hazard_source" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="qa_monitor" EntityType="Self.qa_monitor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="qa_notification_history" EntityType="Self.qa_notification_history" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="qa_notification_receiver" EntityType="Self.qa_notification_receiver" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="qa_risk_acceptability" EntityType="Self.qa_risk_acceptability" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="qa_risk_assessment" EntityType="Self.qa_risk_assessment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="qa_risk_attachment" EntityType="Self.qa_risk_attachment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="qa_risks" EntityType="Self.qa_risks" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="qa_root_cause" EntityType="Self.qa_root_cause" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="qa_root_cause_item" EntityType="Self.qa_root_cause_item" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="recency_route" EntityType="Self.recency_route" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TableDutyFDP" EntityType="Self.TableDutyFDP" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TableFlightFDP" EntityType="Self.TableFlightFDP" Schema="dbo" store:Type="Tables" />
@@ -2021,7 +2651,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
     [AppCrewFlight].[PM1Time] AS [PM1Time], 
     [AppCrewFlight].[PF2Time] AS [PF2Time], 
     [AppCrewFlight].[PM2Time] AS [PM2Time], 
-    [AppCrewFlight].[Reporting] AS [Reporting]
+    [AppCrewFlight].[Reporting] AS [Reporting], 
+    [AppCrewFlight].[PermissionUrl] AS [PermissionUrl]
     FROM [dbo].[AppCrewFlight] AS [AppCrewFlight]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="AppFTL" EntityType="Self.AppFTL" store:Type="Views" store:Schema="dbo">
@@ -2278,7 +2909,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
     [ViewCrewDuty].[PosTicketUrl] AS [PosTicketUrl], 
     [ViewCrewDuty].[ValidTypesStr] AS [ValidTypesStr], 
     [ViewCrewDuty].[DutyTypeTitleAcType] AS [DutyTypeTitleAcType], 
-    [ViewCrewDuty].[Email] AS [Email]
+    [ViewCrewDuty].[Email] AS [Email], 
+    [ViewCrewDuty].[HomeBase] AS [HomeBase]
     FROM [dbo].[ViewCrewDuty] AS [ViewCrewDuty]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ViewCrewDutyNoReg" EntityType="Self.ViewCrewDutyNoReg" store:Type="Views" store:Schema="dbo">
@@ -2925,6 +3557,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
     [ViewLegTime].[ArrivalRemark] AS [ArrivalRemark], 
     [ViewLegTime].[DepartureRemark] AS [DepartureRemark], 
     [ViewLegTime].[STDDay] AS [STDDay], 
+    [ViewLegTime].[STDDayLocal] AS [STDDayLocal], 
     [ViewLegTime].[STADay] AS [STADay], 
     [ViewLegTime].[DelayOffBlock] AS [DelayOffBlock], 
     [ViewLegTime].[DelayTakeoff] AS [DelayTakeoff], 
@@ -3006,7 +3639,9 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
     [ViewLegTime].[PILOTREQFUEL] AS [PILOTREQFUEL], 
     [ViewLegTime].[FuelPlanned] AS [FuelPlanned], 
     [ViewLegTime].[PF] AS [PF], 
-    [ViewLegTime].[OFPTOTALFUEL] AS [OFPTOTALFUEL]
+    [ViewLegTime].[OFPTOTALFUEL] AS [OFPTOTALFUEL], 
+    [ViewLegTime].[dep_utc] AS [dep_utc], 
+    [ViewLegTime].[arr_utc] AS [arr_utc]
     FROM [dbo].[ViewLegTime] AS [ViewLegTime]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="XFlightCrew" EntityType="Self.XFlightCrew" store:Type="Views" store:Schema="dbo">
@@ -3041,6 +3676,14 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
             <End Role="FDP" EntitySet="FDP" />
             <End Role="CrewPickupSMS" EntitySet="CrewPickupSMS" />
           </AssociationSet>
+          <AssociationSet Name="FK__qa_capa__risk_id__5D8C8EF0" Association="Self.FK__qa_capa__risk_id__5D8C8EF0">
+            <End Role="qa_risks" EntitySet="qa_risks" />
+            <End Role="qa_capa" EntitySet="qa_capa" />
+          </AssociationSet>
+          <AssociationSet Name="FK__qa_risk_a__risk___5E80B329" Association="Self.FK__qa_risk_a__risk___5E80B329">
+            <End Role="qa_risks" EntitySet="qa_risks" />
+            <End Role="qa_risk_assessment" EntitySet="qa_risk_assessment" />
+          </AssociationSet>
           <AssociationSet Name="fk_exh_fdp" Association="Self.fk_exh_fdp">
             <End Role="FDP" EntitySet="FDP" />
             <End Role="ExtensionHistory" EntitySet="ExtensionHistory" />
@@ -3056,6 +3699,86 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <AssociationSet Name="fk_fdpitem_fdp" Association="Self.fk_fdpitem_fdp">
             <End Role="FDP" EntitySet="FDP" />
             <End Role="FDPItem" EntitySet="FDPItem" />
+          </AssociationSet>
+          <AssociationSet Name="fk_hsc_haz_01" Association="Self.fk_hsc_haz_01">
+            <End Role="qa_hazard" EntitySet="qa_hazard" />
+            <End Role="qa_hazard_scope" EntitySet="qa_hazard_scope" />
+          </AssociationSet>
+          <AssociationSet Name="fk_q1_01" Association="Self.fk_q1_01">
+            <End Role="qa_event_category" EntitySet="qa_event_category" />
+            <End Role="qa_event_category1" EntitySet="qa_event_category" />
+          </AssociationSet>
+          <AssociationSet Name="FK_qa_consequence_item_qa_consequence_item_id" Association="Self.FK_qa_consequence_item_qa_consequence_item_id">
+            <End Role="qa_consequence_item" EntitySet="qa_consequence_item" />
+            <End Role="qa_consequence_item1" EntitySet="qa_consequence_item" />
+          </AssociationSet>
+          <AssociationSet Name="FK_qa_consequence_qa_consequence_item_id" Association="Self.FK_qa_consequence_qa_consequence_item_id">
+            <End Role="qa_consequence_item" EntitySet="qa_consequence_item" />
+            <End Role="qa_consequence" EntitySet="qa_consequence" />
+          </AssociationSet>
+          <AssociationSet Name="FK_qa_consequence_qa_hazard_id" Association="Self.FK_qa_consequence_qa_hazard_id">
+            <End Role="qa_hazard" EntitySet="qa_hazard" />
+            <End Role="qa_consequence" EntitySet="qa_consequence" />
+          </AssociationSet>
+          <AssociationSet Name="FK_qa_corrective_action_qa_risk_assessment_id" Association="Self.FK_qa_corrective_action_qa_risk_assessment_id">
+            <End Role="qa_risk_assessment" EntitySet="qa_risk_assessment" />
+            <End Role="qa_corrective_action" EntitySet="qa_corrective_action" />
+          </AssociationSet>
+          <AssociationSet Name="FK_qa_hazard_attachment_qa_hazard_id" Association="Self.FK_qa_hazard_attachment_qa_hazard_id">
+            <End Role="qa_hazard" EntitySet="qa_hazard" />
+            <End Role="qa_hazard_attachment" EntitySet="qa_hazard_attachment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_qa_hazard_involved_part_qa_hazard_id" Association="Self.FK_qa_hazard_involved_part_qa_hazard_id">
+            <End Role="qa_hazard" EntitySet="qa_hazard" />
+            <End Role="qa_hazard_involved_part" EntitySet="qa_hazard_involved_part" />
+          </AssociationSet>
+          <AssociationSet Name="FK_qa_hazard_involved_person_qa_hazard_id" Association="Self.FK_qa_hazard_involved_person_qa_hazard_id">
+            <End Role="qa_hazard" EntitySet="qa_hazard" />
+            <End Role="qa_hazard_involved_person" EntitySet="qa_hazard_involved_person" />
+          </AssociationSet>
+          <AssociationSet Name="FK_qa_hazard_relevant_qa_hazard_id" Association="Self.FK_qa_hazard_relevant_qa_hazard_id">
+            <End Role="qa_hazard" EntitySet="qa_hazard" />
+            <End Role="qa_hazard_relevant" EntitySet="qa_hazard_relevant" />
+          </AssociationSet>
+          <AssociationSet Name="FK_qa_hazard_relevant_qa_hazard_id2" Association="Self.FK_qa_hazard_relevant_qa_hazard_id2">
+            <End Role="qa_hazard" EntitySet="qa_hazard" />
+            <End Role="qa_hazard_relevant" EntitySet="qa_hazard_relevant" />
+          </AssociationSet>
+          <AssociationSet Name="FK_qa_hazard_source_qa_hazard_id" Association="Self.FK_qa_hazard_source_qa_hazard_id">
+            <End Role="qa_hazard" EntitySet="qa_hazard" />
+            <End Role="qa_hazard_source" EntitySet="qa_hazard_source" />
+          </AssociationSet>
+          <AssociationSet Name="FK_qa_hc_qa_ec" Association="Self.FK_qa_hc_qa_ec">
+            <End Role="qa_event_category" EntitySet="qa_event_category" />
+            <End Role="qa_hazard_category" EntitySet="qa_hazard_category" />
+          </AssociationSet>
+          <AssociationSet Name="FK_qa_hc_qa_h" Association="Self.FK_qa_hc_qa_h">
+            <End Role="qa_hazard" EntitySet="qa_hazard" />
+            <End Role="qa_hazard_category" EntitySet="qa_hazard_category" />
+          </AssociationSet>
+          <AssociationSet Name="FK_qa_monitor_qa_risk_assessment_id" Association="Self.FK_qa_monitor_qa_risk_assessment_id">
+            <End Role="qa_risk_assessment" EntitySet="qa_risk_assessment" />
+            <End Role="qa_monitor" EntitySet="qa_monitor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_qa_risk_assessment_qa_hazard_id" Association="Self.FK_qa_risk_assessment_qa_hazard_id">
+            <End Role="qa_hazard" EntitySet="qa_hazard" />
+            <End Role="qa_risk_assessment" EntitySet="qa_risk_assessment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_qa_risk_attachment_qa_risk_assessment_id" Association="Self.FK_qa_risk_attachment_qa_risk_assessment_id">
+            <End Role="qa_risk_assessment" EntitySet="qa_risk_assessment" />
+            <End Role="qa_risk_attachment" EntitySet="qa_risk_attachment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_qa_root_cause_item_qa_root_cause_item_id" Association="Self.FK_qa_root_cause_item_qa_root_cause_item_id">
+            <End Role="qa_root_cause_item" EntitySet="qa_root_cause_item" />
+            <End Role="qa_root_cause_item1" EntitySet="qa_root_cause_item" />
+          </AssociationSet>
+          <AssociationSet Name="FK_qa_root_cause_qa_hazard_id" Association="Self.FK_qa_root_cause_qa_hazard_id">
+            <End Role="qa_hazard" EntitySet="qa_hazard" />
+            <End Role="qa_root_cause" EntitySet="qa_root_cause" />
+          </AssociationSet>
+          <AssociationSet Name="FK_qa_root_cause_qa_root_cause_item_id" Association="Self.FK_qa_root_cause_qa_root_cause_item_id">
+            <End Role="qa_root_cause_item" EntitySet="qa_root_cause_item" />
+            <End Role="qa_root_cause" EntitySet="qa_root_cause" />
           </AssociationSet>
           <AssociationSet Name="off_fdp" Association="Self.off_fdp">
             <End Role="FDP" EntitySet="FDP" />
@@ -3125,6 +3848,117 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
             <End Role="CrewPickupSM" EntitySet="CrewPickupSMS" />
           </AssociationSet>
           <EntitySet Name="view_report_duty" EntityType="dbModel.view_report_duty" />
+          <EntitySet Name="qa_capa" EntityType="dbModel.qa_capa" />
+          <EntitySet Name="qa_consequence" EntityType="dbModel.qa_consequence" />
+          <EntitySet Name="qa_consequence_item" EntityType="dbModel.qa_consequence_item" />
+          <EntitySet Name="qa_corrective_action" EntityType="dbModel.qa_corrective_action" />
+          <EntitySet Name="qa_event_category" EntityType="dbModel.qa_event_category" />
+          <EntitySet Name="qa_form_visited_history" EntityType="dbModel.qa_form_visited_history" />
+          <EntitySet Name="qa_hazard" EntityType="dbModel.qa_hazard" />
+          <EntitySet Name="qa_hazard_attachment" EntityType="dbModel.qa_hazard_attachment" />
+          <EntitySet Name="qa_hazard_category" EntityType="dbModel.qa_hazard_category" />
+          <EntitySet Name="qa_hazard_involved_part" EntityType="dbModel.qa_hazard_involved_part" />
+          <EntitySet Name="qa_hazard_involved_person" EntityType="dbModel.qa_hazard_involved_person" />
+          <EntitySet Name="qa_hazard_relevant" EntityType="dbModel.qa_hazard_relevant" />
+          <EntitySet Name="qa_hazard_scope" EntityType="dbModel.qa_hazard_scope" />
+          <EntitySet Name="qa_hazard_source" EntityType="dbModel.qa_hazard_source" />
+          <EntitySet Name="qa_monitor" EntityType="dbModel.qa_monitor" />
+          <EntitySet Name="qa_notification_history" EntityType="dbModel.qa_notification_history" />
+          <EntitySet Name="qa_notification_receiver" EntityType="dbModel.qa_notification_receiver" />
+          <EntitySet Name="qa_risk_acceptability" EntityType="dbModel.qa_risk_acceptability" />
+          <EntitySet Name="qa_risk_assessment" EntityType="dbModel.qa_risk_assessment" />
+          <EntitySet Name="qa_risk_attachment" EntityType="dbModel.qa_risk_attachment" />
+          <EntitySet Name="qa_risks" EntityType="dbModel.qa_risks" />
+          <EntitySet Name="qa_root_cause" EntityType="dbModel.qa_root_cause" />
+          <EntitySet Name="qa_root_cause_item" EntityType="dbModel.qa_root_cause_item" />
+          <AssociationSet Name="FK__qa_capa__risk_id__5D8C8EF0" Association="dbModel.FK__qa_capa__risk_id__5D8C8EF0">
+            <End Role="qa_risks" EntitySet="qa_risks" />
+            <End Role="qa_capa" EntitySet="qa_capa" />
+          </AssociationSet>
+          <AssociationSet Name="FK_qa_consequence_qa_consequence_item_id" Association="dbModel.FK_qa_consequence_qa_consequence_item_id">
+            <End Role="qa_consequence_item" EntitySet="qa_consequence_item" />
+            <End Role="qa_consequence" EntitySet="qa_consequence" />
+          </AssociationSet>
+          <AssociationSet Name="FK_qa_consequence_qa_hazard_id" Association="dbModel.FK_qa_consequence_qa_hazard_id">
+            <End Role="qa_hazard" EntitySet="qa_hazard" />
+            <End Role="qa_consequence" EntitySet="qa_consequence" />
+          </AssociationSet>
+          <AssociationSet Name="FK_qa_consequence_item_qa_consequence_item_id" Association="dbModel.FK_qa_consequence_item_qa_consequence_item_id">
+            <End Role="qa_consequence_item" EntitySet="qa_consequence_item" />
+            <End Role="qa_consequence_item1" EntitySet="qa_consequence_item" />
+          </AssociationSet>
+          <AssociationSet Name="FK_qa_corrective_action_qa_risk_assessment_id" Association="dbModel.FK_qa_corrective_action_qa_risk_assessment_id">
+            <End Role="qa_risk_assessment" EntitySet="qa_risk_assessment" />
+            <End Role="qa_corrective_action" EntitySet="qa_corrective_action" />
+          </AssociationSet>
+          <AssociationSet Name="fk_q1_01" Association="dbModel.fk_q1_01">
+            <End Role="qa_event_category" EntitySet="qa_event_category" />
+            <End Role="qa_event_category1" EntitySet="qa_event_category" />
+          </AssociationSet>
+          <AssociationSet Name="FK_qa_hc_qa_ec" Association="dbModel.FK_qa_hc_qa_ec">
+            <End Role="qa_event_category" EntitySet="qa_event_category" />
+            <End Role="qa_hazard_category" EntitySet="qa_hazard_category" />
+          </AssociationSet>
+          <AssociationSet Name="fk_hsc_haz_01" Association="dbModel.fk_hsc_haz_01">
+            <End Role="qa_hazard" EntitySet="qa_hazard" />
+            <End Role="qa_hazard_scope" EntitySet="qa_hazard_scope" />
+          </AssociationSet>
+          <AssociationSet Name="FK_qa_hazard_attachment_qa_hazard_id" Association="dbModel.FK_qa_hazard_attachment_qa_hazard_id">
+            <End Role="qa_hazard" EntitySet="qa_hazard" />
+            <End Role="qa_hazard_attachment" EntitySet="qa_hazard_attachment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_qa_hazard_involved_part_qa_hazard_id" Association="dbModel.FK_qa_hazard_involved_part_qa_hazard_id">
+            <End Role="qa_hazard" EntitySet="qa_hazard" />
+            <End Role="qa_hazard_involved_part" EntitySet="qa_hazard_involved_part" />
+          </AssociationSet>
+          <AssociationSet Name="FK_qa_hazard_involved_person_qa_hazard_id" Association="dbModel.FK_qa_hazard_involved_person_qa_hazard_id">
+            <End Role="qa_hazard" EntitySet="qa_hazard" />
+            <End Role="qa_hazard_involved_person" EntitySet="qa_hazard_involved_person" />
+          </AssociationSet>
+          <AssociationSet Name="FK_qa_hazard_relevant_qa_hazard_id" Association="dbModel.FK_qa_hazard_relevant_qa_hazard_id">
+            <End Role="qa_hazard" EntitySet="qa_hazard" />
+            <End Role="qa_hazard_relevant" EntitySet="qa_hazard_relevant" />
+          </AssociationSet>
+          <AssociationSet Name="FK_qa_hazard_relevant_qa_hazard_id2" Association="dbModel.FK_qa_hazard_relevant_qa_hazard_id2">
+            <End Role="qa_hazard" EntitySet="qa_hazard" />
+            <End Role="qa_hazard_relevant" EntitySet="qa_hazard_relevant" />
+          </AssociationSet>
+          <AssociationSet Name="FK_qa_hazard_source_qa_hazard_id" Association="dbModel.FK_qa_hazard_source_qa_hazard_id">
+            <End Role="qa_hazard" EntitySet="qa_hazard" />
+            <End Role="qa_hazard_source" EntitySet="qa_hazard_source" />
+          </AssociationSet>
+          <AssociationSet Name="FK_qa_hc_qa_h" Association="dbModel.FK_qa_hc_qa_h">
+            <End Role="qa_hazard" EntitySet="qa_hazard" />
+            <End Role="qa_hazard_category" EntitySet="qa_hazard_category" />
+          </AssociationSet>
+          <AssociationSet Name="FK_qa_risk_assessment_qa_hazard_id" Association="dbModel.FK_qa_risk_assessment_qa_hazard_id">
+            <End Role="qa_hazard" EntitySet="qa_hazard" />
+            <End Role="qa_risk_assessment" EntitySet="qa_risk_assessment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_qa_root_cause_qa_hazard_id" Association="dbModel.FK_qa_root_cause_qa_hazard_id">
+            <End Role="qa_hazard" EntitySet="qa_hazard" />
+            <End Role="qa_root_cause" EntitySet="qa_root_cause" />
+          </AssociationSet>
+          <AssociationSet Name="FK_qa_monitor_qa_risk_assessment_id" Association="dbModel.FK_qa_monitor_qa_risk_assessment_id">
+            <End Role="qa_risk_assessment" EntitySet="qa_risk_assessment" />
+            <End Role="qa_monitor" EntitySet="qa_monitor" />
+          </AssociationSet>
+          <AssociationSet Name="FK__qa_risk_a__risk___5E80B329" Association="dbModel.FK__qa_risk_a__risk___5E80B329">
+            <End Role="qa_risks" EntitySet="qa_risks" />
+            <End Role="qa_risk_assessment" EntitySet="qa_risk_assessment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_qa_risk_attachment_qa_risk_assessment_id" Association="dbModel.FK_qa_risk_attachment_qa_risk_assessment_id">
+            <End Role="qa_risk_assessment" EntitySet="qa_risk_assessment" />
+            <End Role="qa_risk_attachment" EntitySet="qa_risk_attachment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_qa_root_cause_qa_root_cause_item_id" Association="dbModel.FK_qa_root_cause_qa_root_cause_item_id">
+            <End Role="qa_root_cause_item" EntitySet="qa_root_cause_item" />
+            <End Role="qa_root_cause" EntitySet="qa_root_cause" />
+          </AssociationSet>
+          <AssociationSet Name="FK_qa_root_cause_item_qa_root_cause_item_id" Association="dbModel.FK_qa_root_cause_item_qa_root_cause_item_id">
+            <End Role="qa_root_cause_item" EntitySet="qa_root_cause_item" />
+            <End Role="qa_root_cause_item1" EntitySet="qa_root_cause_item" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="ViewFDPLog">
           <Key>
@@ -3398,6 +4232,9 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="FuelPlanned" Type="Decimal" Precision="18" Scale="4" />
           <Property Name="PF" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="OFPTOTALFUEL" Type="Int32" />
+          <Property Name="STDDayLocal" Type="DateTime" Precision="0" />
+          <Property Name="dep_utc" Type="Int32" />
+          <Property Name="arr_utc" Type="Int32" />
         </EntityType>
         <EntityType Name="FDPMaxDaily">
           <Key>
@@ -4103,6 +4940,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="takeoff" Type="DateTime" Precision="3" />
           <Property Name="landing" Type="DateTime" Precision="3" />
           <NavigationProperty Name="CrewPickupSMS" Relationship="dbModel.cps_fdp" FromRole="FDP" ToRole="CrewPickupSM" />
+          <Property Name="actual_route" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="update_trigger" Type="Int32" />
         </EntityType>
         <Association Name="fk_exh_fdp">
           <End Type="dbModel.FDP" Role="FDP" Multiplicity="1">
@@ -4190,6 +5029,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
             <PropertyRef Name="IsConfirmed" />
             <PropertyRef Name="ValidTypesStr" />
             <PropertyRef Name="DutyTypeTitleAcType" />
+            <PropertyRef Name="HomeBase" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
           <Property Name="CrewId" Type="Int32" Nullable="false" />
@@ -4264,6 +5104,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="ValidTypesStr" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
           <Property Name="DutyTypeTitleAcType" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="Email" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="HomeBase" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ViewFDPRest">
           <Key>
@@ -4612,6 +5453,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="PF2Time" Type="Int32" />
           <Property Name="PM2Time" Type="Int32" />
           <Property Name="Reporting" Type="DateTime" Precision="3" />
+          <Property Name="PermissionUrl" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ViewCourseFDP">
           <Key>
@@ -4905,6 +5747,649 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <Property Name="DateEndLocal" Type="DateTime" Precision="3" />
           <Property Name="Duty" Type="Int32" />
         </EntityType>
+        <EntityType Name="qa_capa">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="risk_id" Type="Int32" />
+          <Property Name="action_type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="description" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="assigned_to" Type="Int32" />
+          <Property Name="due_date" Type="DateTime" Precision="7" />
+          <Property Name="status" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="created_date" Type="DateTime" Precision="7" />
+          <Property Name="updated_date" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="qa_risks" Relationship="dbModel.FK__qa_capa__risk_id__5D8C8EF0" FromRole="qa_capa" ToRole="qa_risks" />
+        </EntityType>
+        <EntityType Name="qa_consequence">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="risk_id" Type="Int32" />
+          <Property Name="title" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="hazard_id" Type="Int32" />
+          <Property Name="consequence_id" Type="Int32" />
+          <Property Name="remark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="register_id" Type="Int32" />
+          <Property Name="flight_id" Type="Int32" />
+          <Property Name="flight_route" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="department_id" Type="Int32" />
+          <NavigationProperty Name="qa_consequence_item" Relationship="dbModel.FK_qa_consequence_qa_consequence_item_id" FromRole="qa_consequence" ToRole="qa_consequence_item" />
+          <NavigationProperty Name="qa_hazard" Relationship="dbModel.FK_qa_consequence_qa_hazard_id" FromRole="qa_consequence" ToRole="qa_hazard" />
+        </EntityType>
+        <EntityType Name="qa_consequence_item">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="title" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="parent_id" Type="Int32" />
+          <Property Name="remark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="full_code" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="qa_consequence" Relationship="dbModel.FK_qa_consequence_qa_consequence_item_id" FromRole="qa_consequence_item" ToRole="qa_consequence" />
+          <NavigationProperty Name="qa_consequence_item1" Relationship="dbModel.FK_qa_consequence_item_qa_consequence_item_id" FromRole="qa_consequence_item" ToRole="qa_consequence_item1" />
+          <NavigationProperty Name="qa_consequence_item2" Relationship="dbModel.FK_qa_consequence_item_qa_consequence_item_id" FromRole="qa_consequence_item1" ToRole="qa_consequence_item" />
+        </EntityType>
+        <EntityType Name="qa_corrective_action">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="risk_id" Type="Int32" />
+          <Property Name="action" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="responsible_staff" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="responsible_staff_id" Type="Int32" />
+          <Property Name="time_limit_date" Type="DateTime" Precision="7" />
+          <Property Name="time_limit_remark" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="date" Type="DateTime" Precision="7" />
+          <Property Name="qa_approval" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="qa_approval_id" Type="Int32" />
+          <Property Name="qa_approval_date" Type="DateTime" Precision="7" />
+          <Property Name="action_type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="action_category" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="qa_risk_assessment" Relationship="dbModel.FK_qa_corrective_action_qa_risk_assessment_id" FromRole="qa_corrective_action" ToRole="qa_risk_assessment" />
+        </EntityType>
+        <EntityType Name="qa_event_category">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="title" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="abbreviation" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="tire" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="parent_id" Type="Int32" />
+          <Property Name="remark" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="full_code" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="qa_event_category1" Relationship="dbModel.fk_q1_01" FromRole="qa_event_category" ToRole="qa_event_category1" />
+          <NavigationProperty Name="qa_event_category2" Relationship="dbModel.fk_q1_01" FromRole="qa_event_category1" ToRole="qa_event_category" />
+          <NavigationProperty Name="qa_hazard_category" Relationship="dbModel.FK_qa_hc_qa_ec" FromRole="qa_event_category" ToRole="qa_hazard_category" />
+        </EntityType>
+        <EntityType Name="qa_form_visited_history">
+          <Key>
+            <PropertyRef Name="form_type_id" />
+            <PropertyRef Name="form_id" />
+            <PropertyRef Name="employee_id" />
+          </Key>
+          <Property Name="form_type_id" Type="Int32" Nullable="false" />
+          <Property Name="form_id" Type="Int32" Nullable="false" />
+          <Property Name="employee_id" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="qa_hazard">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="title" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="description" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="priority" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="scope" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="scope_id" Type="Int32" />
+          <Property Name="location" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="gps_coordinate" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="date_occurred" Type="DateTime" Precision="7" />
+          <Property Name="tracking_no" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="department_id" Type="Int32" />
+          <Property Name="remark" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="flight_id" Type="Int32" />
+          <Property Name="lat" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="lang" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="airport_id" Type="Int32" />
+          <NavigationProperty Name="qa_consequence" Relationship="dbModel.FK_qa_consequence_qa_hazard_id" FromRole="qa_hazard" ToRole="qa_consequence" />
+          <NavigationProperty Name="qa_hazard_scope" Relationship="dbModel.fk_hsc_haz_01" FromRole="qa_hazard" ToRole="qa_hazard_scope" />
+          <NavigationProperty Name="qa_hazard_attachment" Relationship="dbModel.FK_qa_hazard_attachment_qa_hazard_id" FromRole="qa_hazard" ToRole="qa_hazard_attachment" />
+          <NavigationProperty Name="qa_hazard_involved_part" Relationship="dbModel.FK_qa_hazard_involved_part_qa_hazard_id" FromRole="qa_hazard" ToRole="qa_hazard_involved_part" />
+          <NavigationProperty Name="qa_hazard_involved_person" Relationship="dbModel.FK_qa_hazard_involved_person_qa_hazard_id" FromRole="qa_hazard" ToRole="qa_hazard_involved_person" />
+          <NavigationProperty Name="qa_hazard_relevant" Relationship="dbModel.FK_qa_hazard_relevant_qa_hazard_id" FromRole="qa_hazard" ToRole="qa_hazard_relevant" />
+          <NavigationProperty Name="qa_hazard_relevant1" Relationship="dbModel.FK_qa_hazard_relevant_qa_hazard_id2" FromRole="qa_hazard" ToRole="qa_hazard_relevant" />
+          <NavigationProperty Name="qa_hazard_source" Relationship="dbModel.FK_qa_hazard_source_qa_hazard_id" FromRole="qa_hazard" ToRole="qa_hazard_source" />
+          <NavigationProperty Name="qa_hazard_category" Relationship="dbModel.FK_qa_hc_qa_h" FromRole="qa_hazard" ToRole="qa_hazard_category" />
+          <NavigationProperty Name="qa_risk_assessment" Relationship="dbModel.FK_qa_risk_assessment_qa_hazard_id" FromRole="qa_hazard" ToRole="qa_risk_assessment" />
+          <NavigationProperty Name="qa_root_cause" Relationship="dbModel.FK_qa_root_cause_qa_hazard_id" FromRole="qa_hazard" ToRole="qa_root_cause" />
+        </EntityType>
+        <EntityType Name="qa_hazard_attachment">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="url" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="remark" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="hazard_id" Type="Int32" />
+          <Property Name="file_type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="qa_hazard" Relationship="dbModel.FK_qa_hazard_attachment_qa_hazard_id" FromRole="qa_hazard_attachment" ToRole="qa_hazard" />
+        </EntityType>
+        <EntityType Name="qa_hazard_category">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="hazard_id" Type="Int32" Nullable="false" />
+          <Property Name="category_id" Type="Int32" Nullable="false" />
+          <Property Name="remark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="qa_event_category" Relationship="dbModel.FK_qa_hc_qa_ec" FromRole="qa_hazard_category" ToRole="qa_event_category" />
+          <NavigationProperty Name="qa_hazard" Relationship="dbModel.FK_qa_hc_qa_h" FromRole="qa_hazard_category" ToRole="qa_hazard" />
+        </EntityType>
+        <EntityType Name="qa_hazard_involved_part">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="part" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="remark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="hazard_id" Type="Int32" />
+          <Property Name="part_type" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="qa_hazard" Relationship="dbModel.FK_qa_hazard_involved_part_qa_hazard_id" FromRole="qa_hazard_involved_part" ToRole="qa_hazard" />
+        </EntityType>
+        <EntityType Name="qa_hazard_involved_person">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="employee_id" Type="Int32" />
+          <Property Name="person_name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="person_nid" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="person_mobile" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="position" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="remark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="hazard_id" Type="Int32" />
+          <NavigationProperty Name="qa_hazard" Relationship="dbModel.FK_qa_hazard_involved_person_qa_hazard_id" FromRole="qa_hazard_involved_person" ToRole="qa_hazard" />
+        </EntityType>
+        <EntityType Name="qa_hazard_relevant">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="hazard_id" Type="Int32" />
+          <Property Name="relevant_id" Type="Int32" />
+          <Property Name="remark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="qa_hazard" Relationship="dbModel.FK_qa_hazard_relevant_qa_hazard_id" FromRole="qa_hazard_relevant" ToRole="qa_hazard" />
+          <NavigationProperty Name="qa_hazard1" Relationship="dbModel.FK_qa_hazard_relevant_qa_hazard_id2" FromRole="qa_hazard_relevant" ToRole="qa_hazard" />
+        </EntityType>
+        <EntityType Name="qa_hazard_scope">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="scope_id" Type="Int32" />
+          <Property Name="scope" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="remark" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="hazard_id" Type="Int32" />
+          <NavigationProperty Name="qa_hazard" Relationship="dbModel.fk_hsc_haz_01" FromRole="qa_hazard_scope" ToRole="qa_hazard" />
+        </EntityType>
+        <EntityType Name="qa_hazard_source">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="source_type" Type="Int32" />
+          <Property Name="title" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="form_id" Type="Int32" />
+          <Property Name="audit_id" Type="Int32" />
+          <Property Name="reporter_id" Type="Int32" />
+          <Property Name="reporter" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="date_reported" Type="DateTime" Precision="7" />
+          <Property Name="remark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="hazard_id" Type="Int32" />
+          <Property Name="is_confidential" Type="Boolean" />
+          <Property Name="is_anonymous" Type="Boolean" />
+          <NavigationProperty Name="qa_hazard" Relationship="dbModel.FK_qa_hazard_source_qa_hazard_id" FromRole="qa_hazard_source" ToRole="qa_hazard" />
+        </EntityType>
+        <EntityType Name="qa_monitor">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="risk_id" Type="Int32" />
+          <Property Name="date_last_updated" Type="DateTime" Precision="7" />
+          <Property Name="cpmment" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="prob_level" Type="Int32" />
+          <Property Name="severity_level" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="index" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="acceptability_id" Type="Int32" />
+          <Property Name="description_id" Type="Int32" />
+          <Property Name="approver_id" Type="Int32" />
+          <Property Name="operator_id" Type="Int32" />
+          <Property Name="date_operated" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="qa_risk_assessment" Relationship="dbModel.FK_qa_monitor_qa_risk_assessment_id" FromRole="qa_monitor" ToRole="qa_risk_assessment" />
+        </EntityType>
+        <EntityType Name="qa_notification_history">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="entity_id" Type="Int32" />
+          <Property Name="entity_type" Type="Int32" />
+          <Property Name="rec_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="rec_mobile" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="rec_id" Type="Int32" />
+          <Property Name="message_type" Type="Int32" />
+          <Property Name="date_send" Type="DateTime" Precision="7" />
+          <Property Name="ref_id" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="status" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="message_text" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="counter" Type="Int32" />
+        </EntityType>
+        <EntityType Name="qa_notification_receiver">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="rec_id" Type="Int32" />
+          <Property Name="rec_name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="is_active" Type="Boolean" />
+          <Property Name="mobile" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="mobile2" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="email2" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="qa_risk_acceptability">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="risk_id" Type="Int32" />
+          <Property Name="risk_type" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="responsible_manager" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="responsible_manager_id" Type="Int32" />
+          <Property Name="responsible_manager_date" Type="DateTime" Precision="7" />
+          <Property Name="responsible_manager_qa_date" Type="DateTime" Precision="7" />
+          <Property Name="responsible_manager_qa_id" Type="Int32" />
+          <Property Name="level_id" Type="Int32" />
+          <Property Name="level_remark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="risk_description_id" Type="Int32" />
+        </EntityType>
+        <EntityType Name="qa_risk_assessment">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="initial_probability" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="initial_severity" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="initial_level" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="final_probability" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="final_severity" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="final_level" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="approval_relevant_department" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="approval_relevant_department_id" Type="Int32" />
+          <Property Name="approval_relevant_department_date" Type="DateTime" Precision="7" />
+          <Property Name="approval_qa" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="approval_qa_id" Type="Int32" />
+          <Property Name="approval_qa_date" Type="DateTime" Precision="7" />
+          <Property Name="om_form_no" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="om_form_date" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="om_form_rev" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="om_form_issue" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="remark" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="id_source" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="has_relevant" Type="Boolean" />
+          <Property Name="initial_acceptability_id" Type="Int32" />
+          <Property Name="initital_description_id" Type="Int32" />
+          <Property Name="initial_responsible_manager" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="initial_responsible_sign" Type="DateTime" Precision="7" />
+          <Property Name="initial_qa_approval" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="initial_qa_sign" Type="DateTime" Precision="7" />
+          <Property Name="final_acceptability_id" Type="Int32" />
+          <Property Name="final_description_id" Type="Int32" />
+          <Property Name="final_date" Type="DateTime" Precision="7" />
+          <Property Name="res1" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="res2" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="hazard_id" Type="Int32" />
+          <Property Name="risk_id" Type="Int32" />
+          <Property Name="initial_value" Type="Int32" />
+          <Property Name="final_value" Type="Int32" />
+          <NavigationProperty Name="qa_corrective_action" Relationship="dbModel.FK_qa_corrective_action_qa_risk_assessment_id" FromRole="qa_risk_assessment" ToRole="qa_corrective_action" />
+          <NavigationProperty Name="qa_hazard" Relationship="dbModel.FK_qa_risk_assessment_qa_hazard_id" FromRole="qa_risk_assessment" ToRole="qa_hazard" />
+          <NavigationProperty Name="qa_monitor" Relationship="dbModel.FK_qa_monitor_qa_risk_assessment_id" FromRole="qa_risk_assessment" ToRole="qa_monitor" />
+          <NavigationProperty Name="qa_risks" Relationship="dbModel.FK__qa_risk_a__risk___5E80B329" FromRole="qa_risk_assessment" ToRole="qa_risks" />
+          <NavigationProperty Name="qa_risk_attachment" Relationship="dbModel.FK_qa_risk_attachment_qa_risk_assessment_id" FromRole="qa_risk_assessment" ToRole="qa_risk_attachment" />
+        </EntityType>
+        <EntityType Name="qa_risk_attachment">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="url" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="remark" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="risk_id" Type="Int32" />
+          <Property Name="file_type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="qa_risk_assessment" Relationship="dbModel.FK_qa_risk_attachment_qa_risk_assessment_id" FromRole="qa_risk_attachment" ToRole="qa_risk_assessment" />
+        </EntityType>
+        <EntityType Name="qa_risks">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="risk_description" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="source_type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="source_id" Type="Int32" Nullable="false" />
+          <Property Name="severity" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="likelihood" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="risk_level" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="risk_value" Type="Int32" />
+          <Property Name="mitigation_plan" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="responsible_person" Type="Int32" />
+          <Property Name="status" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="review_date" Type="DateTime" Precision="7" />
+          <Property Name="created_at" Type="DateTime" Precision="7" />
+          <Property Name="updated_at" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="qa_capa" Relationship="dbModel.FK__qa_capa__risk_id__5D8C8EF0" FromRole="qa_risks" ToRole="qa_capa" />
+          <NavigationProperty Name="qa_risk_assessment" Relationship="dbModel.FK__qa_risk_a__risk___5E80B329" FromRole="qa_risks" ToRole="qa_risk_assessment" />
+        </EntityType>
+        <EntityType Name="qa_root_cause">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="risk_id" Type="Int32" />
+          <Property Name="root_cause" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="root_cause_id" Type="Int32" />
+          <Property Name="hazard_id" Type="Int32" />
+          <Property Name="remark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="qa_hazard" Relationship="dbModel.FK_qa_root_cause_qa_hazard_id" FromRole="qa_root_cause" ToRole="qa_hazard" />
+          <NavigationProperty Name="qa_root_cause_item" Relationship="dbModel.FK_qa_root_cause_qa_root_cause_item_id" FromRole="qa_root_cause" ToRole="qa_root_cause_item" />
+        </EntityType>
+        <EntityType Name="qa_root_cause_item">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="title" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="parent_id" Type="Int32" />
+          <Property Name="code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="full_code" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="qa_root_cause" Relationship="dbModel.FK_qa_root_cause_qa_root_cause_item_id" FromRole="qa_root_cause_item" ToRole="qa_root_cause" />
+          <NavigationProperty Name="qa_root_cause_item1" Relationship="dbModel.FK_qa_root_cause_item_qa_root_cause_item_id" FromRole="qa_root_cause_item" ToRole="qa_root_cause_item1" />
+          <NavigationProperty Name="qa_root_cause_item2" Relationship="dbModel.FK_qa_root_cause_item_qa_root_cause_item_id" FromRole="qa_root_cause_item1" ToRole="qa_root_cause_item" />
+        </EntityType>
+        <Association Name="FK__qa_capa__risk_id__5D8C8EF0">
+          <End Type="dbModel.qa_risks" Role="qa_risks" Multiplicity="0..1" />
+          <End Type="dbModel.qa_capa" Role="qa_capa" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="qa_risks">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="qa_capa">
+              <PropertyRef Name="risk_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_qa_consequence_qa_consequence_item_id">
+          <End Type="dbModel.qa_consequence_item" Role="qa_consequence_item" Multiplicity="0..1" />
+          <End Type="dbModel.qa_consequence" Role="qa_consequence" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="qa_consequence_item">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="qa_consequence">
+              <PropertyRef Name="consequence_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_qa_consequence_qa_hazard_id">
+          <End Type="dbModel.qa_hazard" Role="qa_hazard" Multiplicity="0..1" />
+          <End Type="dbModel.qa_consequence" Role="qa_consequence" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="qa_hazard">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="qa_consequence">
+              <PropertyRef Name="hazard_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_qa_consequence_item_qa_consequence_item_id">
+          <End Type="dbModel.qa_consequence_item" Role="qa_consequence_item" Multiplicity="0..1" />
+          <End Type="dbModel.qa_consequence_item" Role="qa_consequence_item1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="qa_consequence_item">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="qa_consequence_item1">
+              <PropertyRef Name="parent_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_qa_corrective_action_qa_risk_assessment_id">
+          <End Type="dbModel.qa_risk_assessment" Role="qa_risk_assessment" Multiplicity="0..1" />
+          <End Type="dbModel.qa_corrective_action" Role="qa_corrective_action" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="qa_risk_assessment">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="qa_corrective_action">
+              <PropertyRef Name="risk_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_q1_01">
+          <End Type="dbModel.qa_event_category" Role="qa_event_category" Multiplicity="0..1" />
+          <End Type="dbModel.qa_event_category" Role="qa_event_category1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="qa_event_category">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="qa_event_category1">
+              <PropertyRef Name="parent_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_qa_hc_qa_ec">
+          <End Type="dbModel.qa_event_category" Role="qa_event_category" Multiplicity="1" />
+          <End Type="dbModel.qa_hazard_category" Role="qa_hazard_category" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="qa_event_category">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="qa_hazard_category">
+              <PropertyRef Name="category_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_hsc_haz_01">
+          <End Type="dbModel.qa_hazard" Role="qa_hazard" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="dbModel.qa_hazard_scope" Role="qa_hazard_scope" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="qa_hazard">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="qa_hazard_scope">
+              <PropertyRef Name="hazard_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_qa_hazard_attachment_qa_hazard_id">
+          <End Type="dbModel.qa_hazard" Role="qa_hazard" Multiplicity="0..1" />
+          <End Type="dbModel.qa_hazard_attachment" Role="qa_hazard_attachment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="qa_hazard">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="qa_hazard_attachment">
+              <PropertyRef Name="hazard_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_qa_hazard_involved_part_qa_hazard_id">
+          <End Type="dbModel.qa_hazard" Role="qa_hazard" Multiplicity="0..1" />
+          <End Type="dbModel.qa_hazard_involved_part" Role="qa_hazard_involved_part" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="qa_hazard">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="qa_hazard_involved_part">
+              <PropertyRef Name="hazard_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_qa_hazard_involved_person_qa_hazard_id">
+          <End Type="dbModel.qa_hazard" Role="qa_hazard" Multiplicity="0..1" />
+          <End Type="dbModel.qa_hazard_involved_person" Role="qa_hazard_involved_person" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="qa_hazard">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="qa_hazard_involved_person">
+              <PropertyRef Name="hazard_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_qa_hazard_relevant_qa_hazard_id">
+          <End Type="dbModel.qa_hazard" Role="qa_hazard" Multiplicity="0..1" />
+          <End Type="dbModel.qa_hazard_relevant" Role="qa_hazard_relevant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="qa_hazard">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="qa_hazard_relevant">
+              <PropertyRef Name="hazard_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_qa_hazard_relevant_qa_hazard_id2">
+          <End Type="dbModel.qa_hazard" Role="qa_hazard" Multiplicity="0..1" />
+          <End Type="dbModel.qa_hazard_relevant" Role="qa_hazard_relevant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="qa_hazard">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="qa_hazard_relevant">
+              <PropertyRef Name="relevant_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_qa_hazard_source_qa_hazard_id">
+          <End Type="dbModel.qa_hazard" Role="qa_hazard" Multiplicity="0..1" />
+          <End Type="dbModel.qa_hazard_source" Role="qa_hazard_source" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="qa_hazard">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="qa_hazard_source">
+              <PropertyRef Name="hazard_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_qa_hc_qa_h">
+          <End Type="dbModel.qa_hazard" Role="qa_hazard" Multiplicity="1" />
+          <End Type="dbModel.qa_hazard_category" Role="qa_hazard_category" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="qa_hazard">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="qa_hazard_category">
+              <PropertyRef Name="hazard_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_qa_risk_assessment_qa_hazard_id">
+          <End Type="dbModel.qa_hazard" Role="qa_hazard" Multiplicity="0..1" />
+          <End Type="dbModel.qa_risk_assessment" Role="qa_risk_assessment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="qa_hazard">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="qa_risk_assessment">
+              <PropertyRef Name="hazard_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_qa_root_cause_qa_hazard_id">
+          <End Type="dbModel.qa_hazard" Role="qa_hazard" Multiplicity="0..1" />
+          <End Type="dbModel.qa_root_cause" Role="qa_root_cause" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="qa_hazard">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="qa_root_cause">
+              <PropertyRef Name="hazard_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_qa_monitor_qa_risk_assessment_id">
+          <End Type="dbModel.qa_risk_assessment" Role="qa_risk_assessment" Multiplicity="0..1" />
+          <End Type="dbModel.qa_monitor" Role="qa_monitor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="qa_risk_assessment">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="qa_monitor">
+              <PropertyRef Name="risk_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__qa_risk_a__risk___5E80B329">
+          <End Type="dbModel.qa_risks" Role="qa_risks" Multiplicity="0..1" />
+          <End Type="dbModel.qa_risk_assessment" Role="qa_risk_assessment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="qa_risks">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="qa_risk_assessment">
+              <PropertyRef Name="risk_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_qa_risk_attachment_qa_risk_assessment_id">
+          <End Type="dbModel.qa_risk_assessment" Role="qa_risk_assessment" Multiplicity="0..1" />
+          <End Type="dbModel.qa_risk_attachment" Role="qa_risk_attachment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="qa_risk_assessment">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="qa_risk_attachment">
+              <PropertyRef Name="risk_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_qa_root_cause_qa_root_cause_item_id">
+          <End Type="dbModel.qa_root_cause_item" Role="qa_root_cause_item" Multiplicity="0..1" />
+          <End Type="dbModel.qa_root_cause" Role="qa_root_cause" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="qa_root_cause_item">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="qa_root_cause">
+              <PropertyRef Name="root_cause_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_qa_root_cause_item_qa_root_cause_item_id">
+          <End Type="dbModel.qa_root_cause_item" Role="qa_root_cause_item" Multiplicity="0..1" />
+          <End Type="dbModel.qa_root_cause_item" Role="qa_root_cause_item1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="qa_root_cause_item">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="qa_root_cause_item1">
+              <PropertyRef Name="parent_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -5054,6 +6539,9 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySetMapping Name="ViewLegTimes">
             <EntityTypeMapping TypeName="dbModel.ViewLegTime">
               <MappingFragment StoreEntitySet="ViewLegTime">
+                <ScalarProperty Name="arr_utc" ColumnName="arr_utc" />
+                <ScalarProperty Name="dep_utc" ColumnName="dep_utc" />
+                <ScalarProperty Name="STDDayLocal" ColumnName="STDDayLocal" />
                 <ScalarProperty Name="OFPTOTALFUEL" ColumnName="OFPTOTALFUEL" />
                 <ScalarProperty Name="PF" ColumnName="PF" />
                 <ScalarProperty Name="FuelPlanned" ColumnName="FuelPlanned" />
@@ -5740,6 +7228,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySetMapping Name="FDPs">
             <EntityTypeMapping TypeName="dbModel.FDP">
               <MappingFragment StoreEntitySet="FDP">
+                <ScalarProperty Name="update_trigger" ColumnName="update_trigger" />
+                <ScalarProperty Name="actual_route" ColumnName="actual_route" />
                 <ScalarProperty Name="landing" ColumnName="landing" />
                 <ScalarProperty Name="takeoff" ColumnName="takeoff" />
                 <ScalarProperty Name="onblock" ColumnName="onblock" />
@@ -5825,6 +7315,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySetMapping Name="ViewCrewDuties">
             <EntityTypeMapping TypeName="dbModel.ViewCrewDuty">
               <MappingFragment StoreEntitySet="ViewCrewDuty">
+                <ScalarProperty Name="HomeBase" ColumnName="HomeBase" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="DutyTypeTitleAcType" ColumnName="DutyTypeTitleAcType" />
                 <ScalarProperty Name="ValidTypesStr" ColumnName="ValidTypesStr" />
@@ -6048,6 +7539,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
           <EntitySetMapping Name="AppCrewFlights">
             <EntityTypeMapping TypeName="dbModel.AppCrewFlight">
               <MappingFragment StoreEntitySet="AppCrewFlight">
+                <ScalarProperty Name="PermissionUrl" ColumnName="PermissionUrl" />
                 <ScalarProperty Name="Reporting" ColumnName="Reporting" />
                 <ScalarProperty Name="PM2Time" ColumnName="PM2Time" />
                 <ScalarProperty Name="PF2Time" ColumnName="PF2Time" />
@@ -6483,6 +7975,360 @@ warning 6002: The table/view 'ppa_varesh.dbo.XFlightCrew' does not have a primar
                 <ScalarProperty Name="DutyTypeId" ColumnName="DutyTypeId" />
                 <ScalarProperty Name="DutyType" ColumnName="DutyType" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="qa_capa">
+            <EntityTypeMapping TypeName="dbModel.qa_capa">
+              <MappingFragment StoreEntitySet="qa_capa">
+                <ScalarProperty Name="updated_date" ColumnName="updated_date" />
+                <ScalarProperty Name="created_date" ColumnName="created_date" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="due_date" ColumnName="due_date" />
+                <ScalarProperty Name="assigned_to" ColumnName="assigned_to" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="action_type" ColumnName="action_type" />
+                <ScalarProperty Name="risk_id" ColumnName="risk_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="qa_consequence">
+            <EntityTypeMapping TypeName="dbModel.qa_consequence">
+              <MappingFragment StoreEntitySet="qa_consequence">
+                <ScalarProperty Name="department_id" ColumnName="department_id" />
+                <ScalarProperty Name="flight_route" ColumnName="flight_route" />
+                <ScalarProperty Name="flight_id" ColumnName="flight_id" />
+                <ScalarProperty Name="register_id" ColumnName="register_id" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="consequence_id" ColumnName="consequence_id" />
+                <ScalarProperty Name="hazard_id" ColumnName="hazard_id" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="risk_id" ColumnName="risk_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="qa_consequence_item">
+            <EntityTypeMapping TypeName="dbModel.qa_consequence_item">
+              <MappingFragment StoreEntitySet="qa_consequence_item">
+                <ScalarProperty Name="full_code" ColumnName="full_code" />
+                <ScalarProperty Name="code" ColumnName="code" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="parent_id" ColumnName="parent_id" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="qa_corrective_action">
+            <EntityTypeMapping TypeName="dbModel.qa_corrective_action">
+              <MappingFragment StoreEntitySet="qa_corrective_action">
+                <ScalarProperty Name="action_category" ColumnName="action_category" />
+                <ScalarProperty Name="action_type" ColumnName="action_type" />
+                <ScalarProperty Name="qa_approval_date" ColumnName="qa_approval_date" />
+                <ScalarProperty Name="qa_approval_id" ColumnName="qa_approval_id" />
+                <ScalarProperty Name="qa_approval" ColumnName="qa_approval" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="time_limit_remark" ColumnName="time_limit_remark" />
+                <ScalarProperty Name="time_limit_date" ColumnName="time_limit_date" />
+                <ScalarProperty Name="responsible_staff_id" ColumnName="responsible_staff_id" />
+                <ScalarProperty Name="responsible_staff" ColumnName="responsible_staff" />
+                <ScalarProperty Name="action" ColumnName="action" />
+                <ScalarProperty Name="risk_id" ColumnName="risk_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="qa_event_category">
+            <EntityTypeMapping TypeName="dbModel.qa_event_category">
+              <MappingFragment StoreEntitySet="qa_event_category">
+                <ScalarProperty Name="full_code" ColumnName="full_code" />
+                <ScalarProperty Name="code" ColumnName="code" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="parent_id" ColumnName="parent_id" />
+                <ScalarProperty Name="tire" ColumnName="tire" />
+                <ScalarProperty Name="abbreviation" ColumnName="abbreviation" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="qa_form_visited_history">
+            <EntityTypeMapping TypeName="dbModel.qa_form_visited_history">
+              <MappingFragment StoreEntitySet="qa_form_visited_history">
+                <ScalarProperty Name="employee_id" ColumnName="employee_id" />
+                <ScalarProperty Name="form_id" ColumnName="form_id" />
+                <ScalarProperty Name="form_type_id" ColumnName="form_type_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="qa_hazard">
+            <EntityTypeMapping TypeName="dbModel.qa_hazard">
+              <MappingFragment StoreEntitySet="qa_hazard">
+                <ScalarProperty Name="airport_id" ColumnName="airport_id" />
+                <ScalarProperty Name="lang" ColumnName="lang" />
+                <ScalarProperty Name="lat" ColumnName="lat" />
+                <ScalarProperty Name="flight_id" ColumnName="flight_id" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="department_id" ColumnName="department_id" />
+                <ScalarProperty Name="tracking_no" ColumnName="tracking_no" />
+                <ScalarProperty Name="date_occurred" ColumnName="date_occurred" />
+                <ScalarProperty Name="gps_coordinate" ColumnName="gps_coordinate" />
+                <ScalarProperty Name="location" ColumnName="location" />
+                <ScalarProperty Name="scope_id" ColumnName="scope_id" />
+                <ScalarProperty Name="scope" ColumnName="scope" />
+                <ScalarProperty Name="priority" ColumnName="priority" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="qa_hazard_attachment">
+            <EntityTypeMapping TypeName="dbModel.qa_hazard_attachment">
+              <MappingFragment StoreEntitySet="qa_hazard_attachment">
+                <ScalarProperty Name="file_type" ColumnName="file_type" />
+                <ScalarProperty Name="hazard_id" ColumnName="hazard_id" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="url" ColumnName="url" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="qa_hazard_category">
+            <EntityTypeMapping TypeName="dbModel.qa_hazard_category">
+              <MappingFragment StoreEntitySet="qa_hazard_category">
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="category_id" ColumnName="category_id" />
+                <ScalarProperty Name="hazard_id" ColumnName="hazard_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="qa_hazard_involved_part">
+            <EntityTypeMapping TypeName="dbModel.qa_hazard_involved_part">
+              <MappingFragment StoreEntitySet="qa_hazard_involved_part">
+                <ScalarProperty Name="part_type" ColumnName="part_type" />
+                <ScalarProperty Name="hazard_id" ColumnName="hazard_id" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="part" ColumnName="part" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="qa_hazard_involved_person">
+            <EntityTypeMapping TypeName="dbModel.qa_hazard_involved_person">
+              <MappingFragment StoreEntitySet="qa_hazard_involved_person">
+                <ScalarProperty Name="hazard_id" ColumnName="hazard_id" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="position" ColumnName="position" />
+                <ScalarProperty Name="person_mobile" ColumnName="person_mobile" />
+                <ScalarProperty Name="person_nid" ColumnName="person_nid" />
+                <ScalarProperty Name="person_name" ColumnName="person_name" />
+                <ScalarProperty Name="employee_id" ColumnName="employee_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="qa_hazard_relevant">
+            <EntityTypeMapping TypeName="dbModel.qa_hazard_relevant">
+              <MappingFragment StoreEntitySet="qa_hazard_relevant">
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="relevant_id" ColumnName="relevant_id" />
+                <ScalarProperty Name="hazard_id" ColumnName="hazard_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="qa_hazard_scope">
+            <EntityTypeMapping TypeName="dbModel.qa_hazard_scope">
+              <MappingFragment StoreEntitySet="qa_hazard_scope">
+                <ScalarProperty Name="hazard_id" ColumnName="hazard_id" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="scope" ColumnName="scope" />
+                <ScalarProperty Name="scope_id" ColumnName="scope_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="qa_hazard_source">
+            <EntityTypeMapping TypeName="dbModel.qa_hazard_source">
+              <MappingFragment StoreEntitySet="qa_hazard_source">
+                <ScalarProperty Name="is_anonymous" ColumnName="is_anonymous" />
+                <ScalarProperty Name="is_confidential" ColumnName="is_confidential" />
+                <ScalarProperty Name="hazard_id" ColumnName="hazard_id" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="date_reported" ColumnName="date_reported" />
+                <ScalarProperty Name="reporter" ColumnName="reporter" />
+                <ScalarProperty Name="reporter_id" ColumnName="reporter_id" />
+                <ScalarProperty Name="audit_id" ColumnName="audit_id" />
+                <ScalarProperty Name="form_id" ColumnName="form_id" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="source_type" ColumnName="source_type" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="qa_monitor">
+            <EntityTypeMapping TypeName="dbModel.qa_monitor">
+              <MappingFragment StoreEntitySet="qa_monitor">
+                <ScalarProperty Name="date_operated" ColumnName="date_operated" />
+                <ScalarProperty Name="operator_id" ColumnName="operator_id" />
+                <ScalarProperty Name="approver_id" ColumnName="approver_id" />
+                <ScalarProperty Name="description_id" ColumnName="description_id" />
+                <ScalarProperty Name="acceptability_id" ColumnName="acceptability_id" />
+                <ScalarProperty Name="index" ColumnName="index" />
+                <ScalarProperty Name="severity_level" ColumnName="severity_level" />
+                <ScalarProperty Name="prob_level" ColumnName="prob_level" />
+                <ScalarProperty Name="cpmment" ColumnName="cpmment" />
+                <ScalarProperty Name="date_last_updated" ColumnName="date_last_updated" />
+                <ScalarProperty Name="risk_id" ColumnName="risk_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="qa_notification_history">
+            <EntityTypeMapping TypeName="dbModel.qa_notification_history">
+              <MappingFragment StoreEntitySet="qa_notification_history">
+                <ScalarProperty Name="counter" ColumnName="counter" />
+                <ScalarProperty Name="message_text" ColumnName="message_text" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="ref_id" ColumnName="ref_id" />
+                <ScalarProperty Name="date_send" ColumnName="date_send" />
+                <ScalarProperty Name="message_type" ColumnName="message_type" />
+                <ScalarProperty Name="rec_id" ColumnName="rec_id" />
+                <ScalarProperty Name="rec_mobile" ColumnName="rec_mobile" />
+                <ScalarProperty Name="rec_name" ColumnName="rec_name" />
+                <ScalarProperty Name="entity_type" ColumnName="entity_type" />
+                <ScalarProperty Name="entity_id" ColumnName="entity_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="qa_notification_receiver">
+            <EntityTypeMapping TypeName="dbModel.qa_notification_receiver">
+              <MappingFragment StoreEntitySet="qa_notification_receiver">
+                <ScalarProperty Name="email2" ColumnName="email2" />
+                <ScalarProperty Name="mobile2" ColumnName="mobile2" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="mobile" ColumnName="mobile" />
+                <ScalarProperty Name="is_active" ColumnName="is_active" />
+                <ScalarProperty Name="rec_name" ColumnName="rec_name" />
+                <ScalarProperty Name="rec_id" ColumnName="rec_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="qa_risk_acceptability">
+            <EntityTypeMapping TypeName="dbModel.qa_risk_acceptability">
+              <MappingFragment StoreEntitySet="qa_risk_acceptability">
+                <ScalarProperty Name="risk_description_id" ColumnName="risk_description_id" />
+                <ScalarProperty Name="level_remark" ColumnName="level_remark" />
+                <ScalarProperty Name="level_id" ColumnName="level_id" />
+                <ScalarProperty Name="responsible_manager_qa_id" ColumnName="responsible_manager_qa_id" />
+                <ScalarProperty Name="responsible_manager_qa_date" ColumnName="responsible_manager_qa_date" />
+                <ScalarProperty Name="responsible_manager_date" ColumnName="responsible_manager_date" />
+                <ScalarProperty Name="responsible_manager_id" ColumnName="responsible_manager_id" />
+                <ScalarProperty Name="responsible_manager" ColumnName="responsible_manager" />
+                <ScalarProperty Name="risk_type" ColumnName="risk_type" />
+                <ScalarProperty Name="risk_id" ColumnName="risk_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="qa_risk_assessment">
+            <EntityTypeMapping TypeName="dbModel.qa_risk_assessment">
+              <MappingFragment StoreEntitySet="qa_risk_assessment">
+                <ScalarProperty Name="final_value" ColumnName="final_value" />
+                <ScalarProperty Name="initial_value" ColumnName="initial_value" />
+                <ScalarProperty Name="risk_id" ColumnName="risk_id" />
+                <ScalarProperty Name="hazard_id" ColumnName="hazard_id" />
+                <ScalarProperty Name="res2" ColumnName="res2" />
+                <ScalarProperty Name="res1" ColumnName="res1" />
+                <ScalarProperty Name="final_date" ColumnName="final_date" />
+                <ScalarProperty Name="final_description_id" ColumnName="final_description_id" />
+                <ScalarProperty Name="final_acceptability_id" ColumnName="final_acceptability_id" />
+                <ScalarProperty Name="initial_qa_sign" ColumnName="initial_qa_sign" />
+                <ScalarProperty Name="initial_qa_approval" ColumnName="initial_qa_approval" />
+                <ScalarProperty Name="initial_responsible_sign" ColumnName="initial_responsible_sign" />
+                <ScalarProperty Name="initial_responsible_manager" ColumnName="initial_responsible_manager" />
+                <ScalarProperty Name="initital_description_id" ColumnName="initital_description_id" />
+                <ScalarProperty Name="initial_acceptability_id" ColumnName="initial_acceptability_id" />
+                <ScalarProperty Name="has_relevant" ColumnName="has_relevant" />
+                <ScalarProperty Name="id_source" ColumnName="id_source" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="om_form_issue" ColumnName="om_form_issue" />
+                <ScalarProperty Name="om_form_rev" ColumnName="om_form_rev" />
+                <ScalarProperty Name="om_form_date" ColumnName="om_form_date" />
+                <ScalarProperty Name="om_form_no" ColumnName="om_form_no" />
+                <ScalarProperty Name="approval_qa_date" ColumnName="approval_qa_date" />
+                <ScalarProperty Name="approval_qa_id" ColumnName="approval_qa_id" />
+                <ScalarProperty Name="approval_qa" ColumnName="approval_qa" />
+                <ScalarProperty Name="approval_relevant_department_date" ColumnName="approval_relevant_department_date" />
+                <ScalarProperty Name="approval_relevant_department_id" ColumnName="approval_relevant_department_id" />
+                <ScalarProperty Name="approval_relevant_department" ColumnName="approval_relevant_department" />
+                <ScalarProperty Name="final_level" ColumnName="final_level" />
+                <ScalarProperty Name="final_severity" ColumnName="final_severity" />
+                <ScalarProperty Name="final_probability" ColumnName="final_probability" />
+                <ScalarProperty Name="initial_level" ColumnName="initial_level" />
+                <ScalarProperty Name="initial_severity" ColumnName="initial_severity" />
+                <ScalarProperty Name="initial_probability" ColumnName="initial_probability" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="qa_risk_attachment">
+            <EntityTypeMapping TypeName="dbModel.qa_risk_attachment">
+              <MappingFragment StoreEntitySet="qa_risk_attachment">
+                <ScalarProperty Name="file_type" ColumnName="file_type" />
+                <ScalarProperty Name="risk_id" ColumnName="risk_id" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="url" ColumnName="url" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="qa_risks">
+            <EntityTypeMapping TypeName="dbModel.qa_risks">
+              <MappingFragment StoreEntitySet="qa_risks">
+                <ScalarProperty Name="updated_at" ColumnName="updated_at" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="review_date" ColumnName="review_date" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="responsible_person" ColumnName="responsible_person" />
+                <ScalarProperty Name="mitigation_plan" ColumnName="mitigation_plan" />
+                <ScalarProperty Name="risk_value" ColumnName="risk_value" />
+                <ScalarProperty Name="risk_level" ColumnName="risk_level" />
+                <ScalarProperty Name="likelihood" ColumnName="likelihood" />
+                <ScalarProperty Name="severity" ColumnName="severity" />
+                <ScalarProperty Name="source_id" ColumnName="source_id" />
+                <ScalarProperty Name="source_type" ColumnName="source_type" />
+                <ScalarProperty Name="risk_description" ColumnName="risk_description" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="qa_root_cause">
+            <EntityTypeMapping TypeName="dbModel.qa_root_cause">
+              <MappingFragment StoreEntitySet="qa_root_cause">
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="hazard_id" ColumnName="hazard_id" />
+                <ScalarProperty Name="root_cause_id" ColumnName="root_cause_id" />
+                <ScalarProperty Name="root_cause" ColumnName="root_cause" />
+                <ScalarProperty Name="risk_id" ColumnName="risk_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="qa_root_cause_item">
+            <EntityTypeMapping TypeName="dbModel.qa_root_cause_item">
+              <MappingFragment StoreEntitySet="qa_root_cause_item">
+                <ScalarProperty Name="full_code" ColumnName="full_code" />
+                <ScalarProperty Name="code" ColumnName="code" />
+                <ScalarProperty Name="parent_id" ColumnName="parent_id" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

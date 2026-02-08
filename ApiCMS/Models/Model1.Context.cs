@@ -82,5 +82,13 @@ namespace ApiCMS.Models
         public virtual DbSet<view_cms2_audit_team> view_cms2_audit_team { get; set; }
         public virtual DbSet<view_cms2_auditees> view_cms2_auditees { get; set; }
         public virtual DbSet<ViewLocation> ViewLocations { get; set; }
+        public virtual DbSet<qa_hazard> qa_hazard { get; set; }
+        public virtual DbSet<qa_hazard_attachment> qa_hazard_attachment { get; set; }
+        public virtual DbSet<qa_hazard_category> qa_hazard_category { get; set; }
+        public virtual DbSet<qa_hazard_involved_part> qa_hazard_involved_part { get; set; }
+        public virtual DbSet<qa_hazard_involved_person> qa_hazard_involved_person { get; set; }
+        public virtual DbSet<qa_hazard_relevant> qa_hazard_relevant { get; set; }
+        public virtual DbSet<qa_hazard_scope> qa_hazard_scope { get; set; }
+        public virtual DbSet<qa_hazard_source> qa_hazard_source { get; set; }
     }
 }

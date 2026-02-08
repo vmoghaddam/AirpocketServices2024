@@ -3795,6 +3795,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewCrewDuty' does not have a prima
             <PropertyRef Name="IsConfirmed" />
             <PropertyRef Name="ValidTypesStr" />
             <PropertyRef Name="DutyTypeTitleAcType" />
+            <PropertyRef Name="HomeBase" />
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="CrewId" Type="int" Nullable="false" />
@@ -3869,6 +3870,7 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewCrewDuty' does not have a prima
           <Property Name="ValidTypesStr" Type="varchar" MaxLength="1" Nullable="false" />
           <Property Name="DutyTypeTitleAcType" Type="nvarchar" MaxLength="1000" Nullable="false" />
           <Property Name="Email" Type="nvarchar" MaxLength="500" />
+          <Property Name="HomeBase" Type="varchar" MaxLength="1" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ppa_varesh.dbo.ViewCrewDutyTimeLine' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -8310,7 +8312,8 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
     [ViewCrewDuty].[PosTicketUrl] AS [PosTicketUrl], 
     [ViewCrewDuty].[ValidTypesStr] AS [ValidTypesStr], 
     [ViewCrewDuty].[DutyTypeTitleAcType] AS [DutyTypeTitleAcType], 
-    [ViewCrewDuty].[Email] AS [Email]
+    [ViewCrewDuty].[Email] AS [Email], 
+    [ViewCrewDuty].[HomeBase] AS [HomeBase]
     FROM [dbo].[ViewCrewDuty] AS [ViewCrewDuty]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ViewCrewDutyTimeLine" EntityType="Self.ViewCrewDutyTimeLine" store:Type="Views" store:Schema="dbo">
@@ -10755,12 +10758,12 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
           <EntitySet Name="AppCrewFlightJLs" EntityType="FLYModel.AppCrewFlightJL" />
           <EntitySet Name="AppLegJLs" EntityType="FLYModel.AppLegJL" />
           <EntitySet Name="AppLegOPS" EntityType="FLYModel.AppLegOP" />
-          <EntitySet Name="ViewCrewDuties" EntityType="FLYModel.ViewCrewDuty" />
           <EntitySet Name="view_efb_report" EntityType="FLYModel.view_efb_report" />
           <EntitySet Name="C_view_trncard" EntityType="FLYModel.C_view_trncard" />
           <EntitySet Name="ViewCertificateHistoryRankeds" EntityType="FLYModel.ViewCertificateHistoryRanked" />
           <EntitySet Name="ViewCrewLists" EntityType="FLYModel.ViewCrewList" />
           <EntitySet Name="FixTimes" EntityType="FLYModel.FixTime" />
+          <EntitySet Name="ViewCrewDuties" EntityType="FLYModel.ViewCrewDuty" />
           </EntityContainer>
         <EntityType Name="DlyGrpFlight">
           <Key>
@@ -16815,99 +16818,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
           <Property Name="PaxMale" Type="Int32" />
           <Property Name="PaxFemale" Type="Int32" />
         </EntityType>
-        <EntityType Name="ViewCrewDuty">
-          <Key>
-            <PropertyRef Name="Id" />
-            <PropertyRef Name="CrewId" />
-            <PropertyRef Name="Name" />
-            <PropertyRef Name="IsCockpit" />
-            <PropertyRef Name="IsCabin" />
-            <PropertyRef Name="DutyType" />
-            <PropertyRef Name="DutyTypeTitle" />
-            <PropertyRef Name="OrderIndex" />
-            <PropertyRef Name="IsVisited" />
-            <PropertyRef Name="IsVisitedStr" />
-            <PropertyRef Name="ExtendedBySplitDuty" />
-            <PropertyRef Name="IsExtendedBySplitDuty" />
-            <PropertyRef Name="IsExtension" />
-            <PropertyRef Name="IsConfirmed" />
-            <PropertyRef Name="ValidTypesStr" />
-            <PropertyRef Name="DutyTypeTitleAcType" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="CrewId" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="1001" FixedLength="false" Unicode="true" />
-          <Property Name="ScheduleName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="Mobile" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="JobGroup" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="GroupId" Type="Int32" />
-          <Property Name="JobGroupCode" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="IsCockpit" Type="Int32" Nullable="false" />
-          <Property Name="IsCabin" Type="Int32" Nullable="false" />
-          <Property Name="DateLocal" Type="DateTime" Precision="0" />
-          <Property Name="DateLocal2" Type="DateTime" Precision="0" />
-          <Property Name="FltNo" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="Route" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="DutyType" Type="Int32" Nullable="false" />
-          <Property Name="DutyTypeTitle" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="STDLocal" Type="DateTime" Precision="3" />
-          <Property Name="STALocal" Type="DateTime" Precision="3" />
-          <Property Name="DateStartLocal" Type="DateTime" Precision="3" />
-          <Property Name="DateEndLocal" Type="DateTime" Precision="3" />
-          <Property Name="Start" Type="DateTime" Precision="3" />
-          <Property Name="End" Type="DateTime" Precision="3" />
-          <Property Name="StartUTC" Type="DateTime" Precision="3" />
-          <Property Name="EndUTC" Type="DateTime" Precision="3" />
-          <Property Name="Register" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="AircraftType" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Remark" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
-          <Property Name="DateSent" Type="DateTime" Precision="3" />
-          <Property Name="Ref" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="ResId" Type="Int32" />
-          <Property Name="ResStr" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="ResDate" Type="DateTime" Precision="3" />
-          <Property Name="Delivery" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="SMSId" Type="Int32" />
-          <Property Name="SMS" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
-          <Property Name="OrderIndex" Type="Int32" Nullable="false" />
-          <Property Name="DateStartYear" Type="Int32" />
-          <Property Name="DateStartMonth" Type="Int32" />
-          <Property Name="DateStartDay" Type="Int32" />
-          <Property Name="RestUntil" Type="DateTime" Precision="3" />
-          <Property Name="RestUntilLocal" Type="DateTime" Precision="3" />
-          <Property Name="Remark2" Type="String" MaxLength="1013" FixedLength="false" Unicode="true" />
-          <Property Name="InitFlts" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="InitRoute" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="CanceledNo" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="CanceledRoute" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="DateVisit" Type="DateTime" Precision="3" />
-          <Property Name="IsVisited" Type="Int32" Nullable="false" />
-          <Property Name="IsVisitedStr" Type="String" Nullable="false" MaxLength="11" FixedLength="false" Unicode="false" />
-          <Property Name="ExtendedBySplitDuty" Type="Double" Nullable="false" />
-          <Property Name="IsExtendedBySplitDuty" Type="Int32" Nullable="false" />
-          <Property Name="MaxFDPExtended" Type="Double" />
-          <Property Name="DutyScheduled" Type="Double" />
-          <Property Name="Duty" Type="Double" />
-          <Property Name="IsOver" Type="Int32" />
-          <Property Name="Extension" Type="Int32" />
-          <Property Name="IsExtension" Type="Int32" Nullable="false" />
-          <Property Name="DateConfirmed" Type="DateTime" Precision="3" />
-          <Property Name="ConfirmedBy" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="IsConfirmed" Type="Int32" Nullable="false" />
-          <Property Name="UserName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="BaseAirportId" Type="Int32" />
-          <Property Name="PosFrom" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="PosTo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="PosDep" Type="DateTime" Precision="3" />
-          <Property Name="PosArr" Type="DateTime" Precision="3" />
-          <Property Name="PosAirline" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="PosFDPId" Type="Int32" />
-          <Property Name="PosRemark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="PosTicketUrl" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="ValidTypesStr" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Name="DutyTypeTitleAcType" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="Email" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="view_efb_report">
           <Key>
             <PropertyRef Name="ID" />
@@ -17298,6 +17208,101 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
           <Property Name="remark" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="ACTYPE" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="REGISTER" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="ViewCrewDuty">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="CrewId" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="IsCockpit" />
+            <PropertyRef Name="IsCabin" />
+            <PropertyRef Name="DutyType" />
+            <PropertyRef Name="DutyTypeTitle" />
+            <PropertyRef Name="OrderIndex" />
+            <PropertyRef Name="IsVisited" />
+            <PropertyRef Name="IsVisitedStr" />
+            <PropertyRef Name="ExtendedBySplitDuty" />
+            <PropertyRef Name="IsExtendedBySplitDuty" />
+            <PropertyRef Name="IsExtension" />
+            <PropertyRef Name="IsConfirmed" />
+            <PropertyRef Name="ValidTypesStr" />
+            <PropertyRef Name="DutyTypeTitleAcType" />
+            <PropertyRef Name="HomeBase" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="CrewId" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="1001" FixedLength="false" Unicode="true" />
+          <Property Name="ScheduleName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Mobile" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="JobGroup" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="GroupId" Type="Int32" />
+          <Property Name="JobGroupCode" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="IsCockpit" Type="Int32" Nullable="false" />
+          <Property Name="IsCabin" Type="Int32" Nullable="false" />
+          <Property Name="DateLocal" Type="DateTime" Precision="0" />
+          <Property Name="DateLocal2" Type="DateTime" Precision="0" />
+          <Property Name="FltNo" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Route" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="DutyType" Type="Int32" Nullable="false" />
+          <Property Name="DutyTypeTitle" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="STDLocal" Type="DateTime" Precision="3" />
+          <Property Name="STALocal" Type="DateTime" Precision="3" />
+          <Property Name="DateStartLocal" Type="DateTime" Precision="3" />
+          <Property Name="DateEndLocal" Type="DateTime" Precision="3" />
+          <Property Name="Start" Type="DateTime" Precision="3" />
+          <Property Name="End" Type="DateTime" Precision="3" />
+          <Property Name="StartUTC" Type="DateTime" Precision="3" />
+          <Property Name="EndUTC" Type="DateTime" Precision="3" />
+          <Property Name="Register" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AircraftType" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Remark" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="DateSent" Type="DateTime" Precision="3" />
+          <Property Name="Ref" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ResId" Type="Int32" />
+          <Property Name="ResStr" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ResDate" Type="DateTime" Precision="3" />
+          <Property Name="Delivery" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="SMSId" Type="Int32" />
+          <Property Name="SMS" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="OrderIndex" Type="Int32" Nullable="false" />
+          <Property Name="DateStartYear" Type="Int32" />
+          <Property Name="DateStartMonth" Type="Int32" />
+          <Property Name="DateStartDay" Type="Int32" />
+          <Property Name="RestUntil" Type="DateTime" Precision="3" />
+          <Property Name="RestUntilLocal" Type="DateTime" Precision="3" />
+          <Property Name="Remark2" Type="String" MaxLength="1013" FixedLength="false" Unicode="true" />
+          <Property Name="InitFlts" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="InitRoute" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="CanceledNo" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="CanceledRoute" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="DateVisit" Type="DateTime" Precision="3" />
+          <Property Name="IsVisited" Type="Int32" Nullable="false" />
+          <Property Name="IsVisitedStr" Type="String" Nullable="false" MaxLength="11" FixedLength="false" Unicode="false" />
+          <Property Name="ExtendedBySplitDuty" Type="Double" Nullable="false" />
+          <Property Name="IsExtendedBySplitDuty" Type="Int32" Nullable="false" />
+          <Property Name="MaxFDPExtended" Type="Double" />
+          <Property Name="DutyScheduled" Type="Double" />
+          <Property Name="Duty" Type="Double" />
+          <Property Name="IsOver" Type="Int32" />
+          <Property Name="Extension" Type="Int32" />
+          <Property Name="IsExtension" Type="Int32" Nullable="false" />
+          <Property Name="DateConfirmed" Type="DateTime" Precision="3" />
+          <Property Name="ConfirmedBy" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="IsConfirmed" Type="Int32" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="BaseAirportId" Type="Int32" />
+          <Property Name="PosFrom" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="PosTo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="PosDep" Type="DateTime" Precision="3" />
+          <Property Name="PosArr" Type="DateTime" Precision="3" />
+          <Property Name="PosAirline" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="PosFDPId" Type="Int32" />
+          <Property Name="PosRemark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="PosTicketUrl" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ValidTypesStr" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="DutyTypeTitleAcType" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="HomeBase" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -22756,85 +22761,6 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ViewCrewDuties">
-            <EntityTypeMapping TypeName="FLYModel.ViewCrewDuty">
-              <MappingFragment StoreEntitySet="ViewCrewDuty">
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="DutyTypeTitleAcType" ColumnName="DutyTypeTitleAcType" />
-                <ScalarProperty Name="ValidTypesStr" ColumnName="ValidTypesStr" />
-                <ScalarProperty Name="PosTicketUrl" ColumnName="PosTicketUrl" />
-                <ScalarProperty Name="PosRemark" ColumnName="PosRemark" />
-                <ScalarProperty Name="PosFDPId" ColumnName="PosFDPId" />
-                <ScalarProperty Name="PosAirline" ColumnName="PosAirline" />
-                <ScalarProperty Name="PosArr" ColumnName="PosArr" />
-                <ScalarProperty Name="PosDep" ColumnName="PosDep" />
-                <ScalarProperty Name="PosTo" ColumnName="PosTo" />
-                <ScalarProperty Name="PosFrom" ColumnName="PosFrom" />
-                <ScalarProperty Name="BaseAirportId" ColumnName="BaseAirportId" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
-                <ScalarProperty Name="IsConfirmed" ColumnName="IsConfirmed" />
-                <ScalarProperty Name="ConfirmedBy" ColumnName="ConfirmedBy" />
-                <ScalarProperty Name="DateConfirmed" ColumnName="DateConfirmed" />
-                <ScalarProperty Name="IsExtension" ColumnName="IsExtension" />
-                <ScalarProperty Name="Extension" ColumnName="Extension" />
-                <ScalarProperty Name="IsOver" ColumnName="IsOver" />
-                <ScalarProperty Name="Duty" ColumnName="Duty" />
-                <ScalarProperty Name="DutyScheduled" ColumnName="DutyScheduled" />
-                <ScalarProperty Name="MaxFDPExtended" ColumnName="MaxFDPExtended" />
-                <ScalarProperty Name="IsExtendedBySplitDuty" ColumnName="IsExtendedBySplitDuty" />
-                <ScalarProperty Name="ExtendedBySplitDuty" ColumnName="ExtendedBySplitDuty" />
-                <ScalarProperty Name="IsVisitedStr" ColumnName="IsVisitedStr" />
-                <ScalarProperty Name="IsVisited" ColumnName="IsVisited" />
-                <ScalarProperty Name="DateVisit" ColumnName="DateVisit" />
-                <ScalarProperty Name="CanceledRoute" ColumnName="CanceledRoute" />
-                <ScalarProperty Name="CanceledNo" ColumnName="CanceledNo" />
-                <ScalarProperty Name="InitRoute" ColumnName="InitRoute" />
-                <ScalarProperty Name="InitFlts" ColumnName="InitFlts" />
-                <ScalarProperty Name="Remark2" ColumnName="Remark2" />
-                <ScalarProperty Name="RestUntilLocal" ColumnName="RestUntilLocal" />
-                <ScalarProperty Name="RestUntil" ColumnName="RestUntil" />
-                <ScalarProperty Name="DateStartDay" ColumnName="DateStartDay" />
-                <ScalarProperty Name="DateStartMonth" ColumnName="DateStartMonth" />
-                <ScalarProperty Name="DateStartYear" ColumnName="DateStartYear" />
-                <ScalarProperty Name="OrderIndex" ColumnName="OrderIndex" />
-                <ScalarProperty Name="SMS" ColumnName="SMS" />
-                <ScalarProperty Name="SMSId" ColumnName="SMSId" />
-                <ScalarProperty Name="Delivery" ColumnName="Delivery" />
-                <ScalarProperty Name="ResDate" ColumnName="ResDate" />
-                <ScalarProperty Name="ResStr" ColumnName="ResStr" />
-                <ScalarProperty Name="ResId" ColumnName="ResId" />
-                <ScalarProperty Name="Ref" ColumnName="Ref" />
-                <ScalarProperty Name="DateSent" ColumnName="DateSent" />
-                <ScalarProperty Name="Remark" ColumnName="Remark" />
-                <ScalarProperty Name="AircraftType" ColumnName="AircraftType" />
-                <ScalarProperty Name="Register" ColumnName="Register" />
-                <ScalarProperty Name="EndUTC" ColumnName="EndUTC" />
-                <ScalarProperty Name="StartUTC" ColumnName="StartUTC" />
-                <ScalarProperty Name="End" ColumnName="End" />
-                <ScalarProperty Name="Start" ColumnName="Start" />
-                <ScalarProperty Name="DateEndLocal" ColumnName="DateEndLocal" />
-                <ScalarProperty Name="DateStartLocal" ColumnName="DateStartLocal" />
-                <ScalarProperty Name="STALocal" ColumnName="STALocal" />
-                <ScalarProperty Name="STDLocal" ColumnName="STDLocal" />
-                <ScalarProperty Name="DutyTypeTitle" ColumnName="DutyTypeTitle" />
-                <ScalarProperty Name="DutyType" ColumnName="DutyType" />
-                <ScalarProperty Name="Route" ColumnName="Route" />
-                <ScalarProperty Name="FltNo" ColumnName="FltNo" />
-                <ScalarProperty Name="DateLocal2" ColumnName="DateLocal2" />
-                <ScalarProperty Name="DateLocal" ColumnName="DateLocal" />
-                <ScalarProperty Name="IsCabin" ColumnName="IsCabin" />
-                <ScalarProperty Name="IsCockpit" ColumnName="IsCockpit" />
-                <ScalarProperty Name="JobGroupCode" ColumnName="JobGroupCode" />
-                <ScalarProperty Name="GroupId" ColumnName="GroupId" />
-                <ScalarProperty Name="JobGroup" ColumnName="JobGroup" />
-                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
-                <ScalarProperty Name="ScheduleName" ColumnName="ScheduleName" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="CrewId" ColumnName="CrewId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="view_efb_report">
             <EntityTypeMapping TypeName="FLYModel.view_efb_report">
               <MappingFragment StoreEntitySet="view_efb_report">
@@ -23174,6 +23100,86 @@ warning 6002: The table/view 'ppa_varesh.dbo.ViewTrainingSMSHistory' does not ha
                 <ScalarProperty Name="remark" ColumnName="remark" />
                 <ScalarProperty Name="Duration" ColumnName="Duration" />
                 <ScalarProperty Name="Route" ColumnName="Route" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ViewCrewDuties">
+            <EntityTypeMapping TypeName="FLYModel.ViewCrewDuty">
+              <MappingFragment StoreEntitySet="ViewCrewDuty">
+                <ScalarProperty Name="HomeBase" ColumnName="HomeBase" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="DutyTypeTitleAcType" ColumnName="DutyTypeTitleAcType" />
+                <ScalarProperty Name="ValidTypesStr" ColumnName="ValidTypesStr" />
+                <ScalarProperty Name="PosTicketUrl" ColumnName="PosTicketUrl" />
+                <ScalarProperty Name="PosRemark" ColumnName="PosRemark" />
+                <ScalarProperty Name="PosFDPId" ColumnName="PosFDPId" />
+                <ScalarProperty Name="PosAirline" ColumnName="PosAirline" />
+                <ScalarProperty Name="PosArr" ColumnName="PosArr" />
+                <ScalarProperty Name="PosDep" ColumnName="PosDep" />
+                <ScalarProperty Name="PosTo" ColumnName="PosTo" />
+                <ScalarProperty Name="PosFrom" ColumnName="PosFrom" />
+                <ScalarProperty Name="BaseAirportId" ColumnName="BaseAirportId" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="IsConfirmed" ColumnName="IsConfirmed" />
+                <ScalarProperty Name="ConfirmedBy" ColumnName="ConfirmedBy" />
+                <ScalarProperty Name="DateConfirmed" ColumnName="DateConfirmed" />
+                <ScalarProperty Name="IsExtension" ColumnName="IsExtension" />
+                <ScalarProperty Name="Extension" ColumnName="Extension" />
+                <ScalarProperty Name="IsOver" ColumnName="IsOver" />
+                <ScalarProperty Name="Duty" ColumnName="Duty" />
+                <ScalarProperty Name="DutyScheduled" ColumnName="DutyScheduled" />
+                <ScalarProperty Name="MaxFDPExtended" ColumnName="MaxFDPExtended" />
+                <ScalarProperty Name="IsExtendedBySplitDuty" ColumnName="IsExtendedBySplitDuty" />
+                <ScalarProperty Name="ExtendedBySplitDuty" ColumnName="ExtendedBySplitDuty" />
+                <ScalarProperty Name="IsVisitedStr" ColumnName="IsVisitedStr" />
+                <ScalarProperty Name="IsVisited" ColumnName="IsVisited" />
+                <ScalarProperty Name="DateVisit" ColumnName="DateVisit" />
+                <ScalarProperty Name="CanceledRoute" ColumnName="CanceledRoute" />
+                <ScalarProperty Name="CanceledNo" ColumnName="CanceledNo" />
+                <ScalarProperty Name="InitRoute" ColumnName="InitRoute" />
+                <ScalarProperty Name="InitFlts" ColumnName="InitFlts" />
+                <ScalarProperty Name="Remark2" ColumnName="Remark2" />
+                <ScalarProperty Name="RestUntilLocal" ColumnName="RestUntilLocal" />
+                <ScalarProperty Name="RestUntil" ColumnName="RestUntil" />
+                <ScalarProperty Name="DateStartDay" ColumnName="DateStartDay" />
+                <ScalarProperty Name="DateStartMonth" ColumnName="DateStartMonth" />
+                <ScalarProperty Name="DateStartYear" ColumnName="DateStartYear" />
+                <ScalarProperty Name="OrderIndex" ColumnName="OrderIndex" />
+                <ScalarProperty Name="SMS" ColumnName="SMS" />
+                <ScalarProperty Name="SMSId" ColumnName="SMSId" />
+                <ScalarProperty Name="Delivery" ColumnName="Delivery" />
+                <ScalarProperty Name="ResDate" ColumnName="ResDate" />
+                <ScalarProperty Name="ResStr" ColumnName="ResStr" />
+                <ScalarProperty Name="ResId" ColumnName="ResId" />
+                <ScalarProperty Name="Ref" ColumnName="Ref" />
+                <ScalarProperty Name="DateSent" ColumnName="DateSent" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="AircraftType" ColumnName="AircraftType" />
+                <ScalarProperty Name="Register" ColumnName="Register" />
+                <ScalarProperty Name="EndUTC" ColumnName="EndUTC" />
+                <ScalarProperty Name="StartUTC" ColumnName="StartUTC" />
+                <ScalarProperty Name="End" ColumnName="End" />
+                <ScalarProperty Name="Start" ColumnName="Start" />
+                <ScalarProperty Name="DateEndLocal" ColumnName="DateEndLocal" />
+                <ScalarProperty Name="DateStartLocal" ColumnName="DateStartLocal" />
+                <ScalarProperty Name="STALocal" ColumnName="STALocal" />
+                <ScalarProperty Name="STDLocal" ColumnName="STDLocal" />
+                <ScalarProperty Name="DutyTypeTitle" ColumnName="DutyTypeTitle" />
+                <ScalarProperty Name="DutyType" ColumnName="DutyType" />
+                <ScalarProperty Name="Route" ColumnName="Route" />
+                <ScalarProperty Name="FltNo" ColumnName="FltNo" />
+                <ScalarProperty Name="DateLocal2" ColumnName="DateLocal2" />
+                <ScalarProperty Name="DateLocal" ColumnName="DateLocal" />
+                <ScalarProperty Name="IsCabin" ColumnName="IsCabin" />
+                <ScalarProperty Name="IsCockpit" ColumnName="IsCockpit" />
+                <ScalarProperty Name="JobGroupCode" ColumnName="JobGroupCode" />
+                <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+                <ScalarProperty Name="JobGroup" ColumnName="JobGroup" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="ScheduleName" ColumnName="ScheduleName" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CrewId" ColumnName="CrewId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
