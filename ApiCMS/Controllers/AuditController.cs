@@ -79,7 +79,7 @@ namespace ApiCMS.Controllers
         public class finding_save_dto
         {
             public int id { get; set; }
-            public int? audit_id { get; set; }
+            public int audit_id { get; set; }
             public string code { get; set; }
             public string title { get; set; }
             public string level { get; set; }
@@ -891,20 +891,21 @@ namespace ApiCMS.Controllers
                         //entity.updated_by = dto.updated_by ?? dto.created_by ?? 1;
                     }
 
-                    entity.audit_id = (int)dto.audit_id;
+                    entity.audit_id = dto.audit_id;
                     entity.code = dto.code;
                     entity.title = dto.title;
                     entity.level = dto.level;
-                    entity.standard_id = (int)dto.standard_id;
+                    entity.standard_id = (int?)dto.standard_id;
                     entity.standard_title = dto.standard_title;
                     entity.standard_description = dto.standard_description;
                     entity.none_compliance_description = dto.none_compliance_description;
-                    entity.closure_deadline = (DateTime)dto.closure_deadline;
-                    entity.closure_auditor_date = (DateTime)dto.closure_auditor_date;
-                    entity.sent_report_date = (DateTime)dto.sent_report_date;
-                    entity.auditor_id = (int)dto.auditor_id;
-                    entity.verified_qa_by = (int) dto.verified_qa_by;
-                    entity.verified_qa_date = (DateTime) dto.verified_qa_date;
+                    // entity.closure_deadline = (DateTime)dto.closure_deadline;
+                    entity.closure_deadline = DateTime.Now;
+                    entity.closure_auditor_date = (DateTime?)dto.closure_auditor_date;
+                    entity.sent_report_date =(DateTime?) dto.sent_report_date;
+                    entity.auditor_id = (int?)dto.auditor_id;
+                    entity.verified_qa_by = (int?) dto.verified_qa_by;
+                    entity.verified_qa_date =(DateTime?) dto.verified_qa_date;
 
                     await context.SaveChangesAsync();
 
