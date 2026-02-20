@@ -40,11 +40,12 @@ namespace ApiCMS.Models
         public Nullable<System.DateTime> created_date { get; set; }
         public Nullable<int> updated_by { get; set; }
         public Nullable<System.DateTime> updated_date { get; set; }
+        public string status { get; set; }
     
-        public virtual cms2_audit cms2_audit { get; set; }
         public virtual cms2_auditors cms2_auditors { get; set; }
         public virtual cms2_audit_finding cms2_audit_finding { get; set; }
         public virtual cms2_auditors cms2_auditors1 { get; set; }
         public virtual cms2_auditors cms2_auditors2 { get; set; }
+        public virtual cms2_audit cms2_audit { get; set; }
     }
 }

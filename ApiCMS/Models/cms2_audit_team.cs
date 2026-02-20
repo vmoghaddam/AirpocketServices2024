@@ -17,9 +17,11 @@ namespace ApiCMS.Models
         public int id { get; set; }
         public int audit_id { get; set; }
         public int auditor_id { get; set; }
-        public bool is_leader { get; set; }
+        public int role_id { get; set; }
+        public bool is_lead { get; set; }
     
-        public virtual cms2_audit_plan cms2_audit_plan { get; set; }
         public virtual cms2_auditors cms2_auditors { get; set; }
+        public virtual cms2_audit_team_role cms2_audit_team_role { get; set; }
+        public virtual cms2_audit cms2_audit { get; set; }
     }
 }

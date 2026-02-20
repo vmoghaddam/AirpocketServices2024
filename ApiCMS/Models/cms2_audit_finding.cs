@@ -18,6 +18,7 @@ namespace ApiCMS.Models
         public cms2_audit_finding()
         {
             this.cms2_audit_corrective_action = new HashSet<cms2_audit_corrective_action>();
+            this.cms2_audit_finding_ref = new HashSet<cms2_audit_finding_ref>();
         }
     
         public int id { get; set; }
@@ -36,9 +37,11 @@ namespace ApiCMS.Models
         public Nullable<int> verified_qa_by { get; set; }
         public Nullable<System.DateTime> verified_qa_date { get; set; }
     
-        public virtual cms2_audit cms2_audit { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<cms2_audit_corrective_action> cms2_audit_corrective_action { get; set; }
         public virtual cms2_auditors cms2_auditors { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<cms2_audit_finding_ref> cms2_audit_finding_ref { get; set; }
+        public virtual cms2_audit cms2_audit { get; set; }
     }
 }

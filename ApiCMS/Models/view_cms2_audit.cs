@@ -15,24 +15,40 @@ namespace ApiCMS.Models
     public partial class view_cms2_audit
     {
         public int id { get; set; }
-        public int audit_plan_id { get; set; }
+        public Nullable<int> audit_program_id { get; set; }
+        public Nullable<int> audit_plan_id { get; set; }
         public string code { get; set; }
         public string title { get; set; }
         public string remark { get; set; }
-        public int type_id { get; set; }
+        public Nullable<int> type_id { get; set; }
         public string scope { get; set; }
         public string area { get; set; }
+        public string status { get; set; }
+        public string scheduling_type { get; set; }
+        public string audit_method { get; set; }
+        public string execution_mode { get; set; }
+        public Nullable<System.DateTime> scheduled_start { get; set; }
+        public Nullable<System.DateTime> scheduled_end { get; set; }
+        public Nullable<System.DateTime> actual_start { get; set; }
+        public Nullable<System.DateTime> actual_end { get; set; }
+        public Nullable<System.DateTime> opening_meeting_start { get; set; }
+        public Nullable<System.DateTime> opening_meeting_end { get; set; }
+        public string opening_meeting_venue { get; set; }
+        public Nullable<System.DateTime> closing_meeting_start { get; set; }
+        public Nullable<System.DateTime> closing_meeting_end { get; set; }
+        public string closing_meeting_venue { get; set; }
         public Nullable<System.DateTime> audit_date { get; set; }
         public string standards_refrences { get; set; }
-        public int created_by { get; set; }
+        public Nullable<int> created_by { get; set; }
         public System.DateTime created_at { get; set; }
         public Nullable<int> updated_by { get; set; }
         public Nullable<System.DateTime> updated_at { get; set; }
-        public int auditee_id { get; set; }
+        public Nullable<int> auditee_id { get; set; }
         public string auditee_name { get; set; }
-        public int location_id { get; set; }
-        public string location_title { get; set; }
-        public int auditor_id { get; set; }
+        public string audit_location { get; set; }
+        public Nullable<int> auditor_id { get; set; }
         public string auditor_name { get; set; }
+        public Nullable<int> department_id { get; set; }
+        public string auditee_department_title { get; set; }
     }
 }

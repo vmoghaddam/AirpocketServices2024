@@ -12,17 +12,17 @@ namespace ApiCMS.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class cms2_audit_hazard
+    public partial class cms2_audit_finding_ref
     {
         public int id { get; set; }
-        public int hazard_id { get; set; }
-        public int audit_id { get; set; }
-        public bool is_primary { get; set; }
-        public string comment { get; set; }
-        public Nullable<int> created_by { get; set; }
+        public int finding_id { get; set; }
+        public int doc_id { get; set; }
+        public Nullable<int> clause_id { get; set; }
+        public string note { get; set; }
         public System.DateTime created_at { get; set; }
     
-        public virtual cms2_audit cms2_audit { get; set; }
-        public virtual cms2_hazard cms2_hazard { get; set; }
+        public virtual cms2_audit_finding cms2_audit_finding { get; set; }
+        public virtual cms2_ref_clause cms2_ref_clause { get; set; }
+        public virtual cms2_ref_doc cms2_ref_doc { get; set; }
     }
 }

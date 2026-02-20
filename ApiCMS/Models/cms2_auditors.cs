@@ -17,13 +17,12 @@ namespace ApiCMS.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public cms2_auditors()
         {
-            this.cms2_audit = new HashSet<cms2_audit>();
             this.cms2_audit_corrective_action = new HashSet<cms2_audit_corrective_action>();
             this.cms2_audit_corrective_action1 = new HashSet<cms2_audit_corrective_action>();
             this.cms2_audit_corrective_action2 = new HashSet<cms2_audit_corrective_action>();
             this.cms2_audit_finding = new HashSet<cms2_audit_finding>();
-            this.cms2_audit_plan = new HashSet<cms2_audit_plan>();
             this.cms2_audit_team = new HashSet<cms2_audit_team>();
+            this.cms2_audit = new HashSet<cms2_audit>();
         }
     
         public int id { get; set; }
@@ -33,8 +32,6 @@ namespace ApiCMS.Models
         public Nullable<bool> active { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<cms2_audit> cms2_audit { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<cms2_audit_corrective_action> cms2_audit_corrective_action { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<cms2_audit_corrective_action> cms2_audit_corrective_action1 { get; set; }
@@ -43,8 +40,8 @@ namespace ApiCMS.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<cms2_audit_finding> cms2_audit_finding { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<cms2_audit_plan> cms2_audit_plan { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<cms2_audit_team> cms2_audit_team { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<cms2_audit> cms2_audit { get; set; }
     }
 }

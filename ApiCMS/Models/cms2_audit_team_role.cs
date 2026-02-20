@@ -12,13 +12,20 @@ namespace ApiCMS.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class view_cms2_audit_team
+    public partial class cms2_audit_team_role
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public cms2_audit_team_role()
+        {
+            this.cms2_audit_team = new HashSet<cms2_audit_team>();
+        }
+    
         public int id { get; set; }
-        public int audit_id { get; set; }
-        public int role_id { get; set; }
+        public string title { get; set; }
         public bool is_lead { get; set; }
-        public int auditor_id { get; set; }
-        public string auditor_name { get; set; }
+        public int sort_order { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<cms2_audit_team> cms2_audit_team { get; set; }
     }
 }

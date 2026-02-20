@@ -12,13 +12,17 @@ namespace ApiCMS.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class view_cms2_audit_team
+    public partial class view_cms2_audit_program
     {
         public int id { get; set; }
-        public int audit_id { get; set; }
-        public int role_id { get; set; }
-        public bool is_lead { get; set; }
-        public int auditor_id { get; set; }
-        public string auditor_name { get; set; }
+        public string code { get; set; }
+        public string title { get; set; }
+        public string program_type { get; set; }
+        public System.DateTime period_from { get; set; }
+        public System.DateTime period_to { get; set; }
+        public string status { get; set; }
+        public Nullable<System.DateTime> created_date { get; set; }
+        public Nullable<System.DateTime> updated_date { get; set; }
+        public string notes { get; set; }
     }
 }

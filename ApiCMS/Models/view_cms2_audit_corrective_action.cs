@@ -20,6 +20,7 @@ namespace ApiCMS.Models
         public string root_cause_analysis_desc { get; set; }
         public string action_title { get; set; }
         public string code { get; set; }
+        public string status { get; set; }
         public Nullable<System.DateTime> request_implementation_date { get; set; }
         public Nullable<System.DateTime> sign_date { get; set; }
         public Nullable<bool> is_approved { get; set; }

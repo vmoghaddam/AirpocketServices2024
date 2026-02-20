@@ -19,6 +19,7 @@ namespace ApiCMS.Models
         public string code { get; set; }
         public string title { get; set; }
         public string level { get; set; }
+        public string level_title { get; set; }
         public Nullable<int> standard_id { get; set; }
         public string standard_title { get; set; }
         public string standard_description { get; set; }

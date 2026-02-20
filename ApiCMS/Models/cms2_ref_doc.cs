@@ -12,41 +12,36 @@ namespace ApiCMS.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class cms2_audit_plan
+    public partial class cms2_ref_doc
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public cms2_audit_plan()
+        public cms2_ref_doc()
         {
+            this.cms2_audit_finding_ref = new HashSet<cms2_audit_finding_ref>();
+            this.cms2_audit_ref = new HashSet<cms2_audit_ref>();
+            this.cms2_ref_clause = new HashSet<cms2_ref_clause>();
             this.cms2_audit_plan_ref = new HashSet<cms2_audit_plan_ref>();
         }
     
         public int id { get; set; }
-        public int program_id { get; set; }
-        public string code { get; set; }
+        public string doc_type { get; set; }
         public string title { get; set; }
-        public string description { get; set; }
-        public int type_id { get; set; }
-        public string objective { get; set; }
-        public Nullable<System.DateTime> planned_from { get; set; }
-        public Nullable<System.DateTime> planned_to { get; set; }
+        public string issuer { get; set; }
+        public string edition { get; set; }
         public Nullable<System.DateTime> issue_date { get; set; }
-        public int created_by { get; set; }
-        public System.DateTime created_at { get; set; }
-        public Nullable<int> updated_by { get; set; }
-        public Nullable<System.DateTime> updated_at { get; set; }
-        public Nullable<int> department_id { get; set; }
-        public string planned_period_type { get; set; }
-        public Nullable<int> planned_period_value { get; set; }
-        public Nullable<int> planned_year { get; set; }
-        public string priority { get; set; }
-        public string audit_method { get; set; }
-        public string execution_mode { get; set; }
-        public string selection_basis { get; set; }
-        public Nullable<int> planned_count { get; set; }
+        public Nullable<System.DateTime> effective_date { get; set; }
+        public string status { get; set; }
+        public string url { get; set; }
         public string notes { get; set; }
-        public bool is_active { get; set; }
+        public System.DateTime created_at { get; set; }
+        public Nullable<System.DateTime> updated_at { get; set; }
     
-        public virtual cms2_audit_program cms2_audit_program { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<cms2_audit_finding_ref> cms2_audit_finding_ref { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<cms2_audit_ref> cms2_audit_ref { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<cms2_ref_clause> cms2_ref_clause { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<cms2_audit_plan_ref> cms2_audit_plan_ref { get; set; }
     }

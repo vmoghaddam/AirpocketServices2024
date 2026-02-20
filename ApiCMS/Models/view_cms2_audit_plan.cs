@@ -15,23 +15,30 @@ namespace ApiCMS.Models
     public partial class view_cms2_audit_plan
     {
         public int id { get; set; }
+        public int program_id { get; set; }
         public string code { get; set; }
         public string title { get; set; }
         public string description { get; set; }
         public int type_id { get; set; }
         public string objective { get; set; }
+        public Nullable<System.DateTime> planned_from { get; set; }
+        public Nullable<System.DateTime> planned_to { get; set; }
         public Nullable<System.DateTime> issue_date { get; set; }
         public int created_by { get; set; }
         public System.DateTime created_at { get; set; }
         public Nullable<int> updated_by { get; set; }
         public Nullable<System.DateTime> updated_at { get; set; }
-        public Nullable<System.DateTime> opening_meeting_start { get; set; }
-        public Nullable<System.DateTime> opening_meeting_end { get; set; }
-        public string opening_meeting_venue { get; set; }
-        public Nullable<System.DateTime> closing_meeting_start { get; set; }
-        public Nullable<System.DateTime> closing_meeting_end { get; set; }
-        public string closing_meeting_venue { get; set; }
-        public Nullable<int> lead_auditor { get; set; }
-        public string lead_auditor_name { get; set; }
+        public string planned_period_type { get; set; }
+        public Nullable<int> planned_period_value { get; set; }
+        public Nullable<int> planned_year { get; set; }
+        public string priority { get; set; }
+        public string audit_method { get; set; }
+        public string execution_mode { get; set; }
+        public string selection_basis { get; set; }
+        public Nullable<int> planned_count { get; set; }
+        public Nullable<int> department_id { get; set; }
+        public string department_title { get; set; }
+        public bool is_active { get; set; }
+        public string notes { get; set; }
     }
 }
